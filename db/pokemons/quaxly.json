@@ -1,0 +1,11 @@
+{
+    "types": [
+        "water"
+    ],
+    "hp": 55,
+    "attack": 65,
+    "defense": 45,
+    "special-attack": 50,
+    "special-defense": 45,
+    "speed": 50
+}

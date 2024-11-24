@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 120,
+    "accuracy": 100,
+    "pp": 2,
+    "damage_class": "physical",
+    "type": "ground",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 2.5
+}

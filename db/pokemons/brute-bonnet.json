@@ -1,0 +1,12 @@
+{
+    "types": [
+        "grass",
+        "dark"
+    ],
+    "hp": 111,
+    "attack": 127,
+    "defense": 99,
+    "special-attack": 79,
+    "special-defense": 99,
+    "speed": 55
+}

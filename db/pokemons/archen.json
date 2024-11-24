@@ -1,0 +1,12 @@
+{
+    "types": [
+        "rock",
+        "flying"
+    ],
+    "hp": 55,
+    "attack": 112,
+    "defense": 45,
+    "special-attack": 74,
+    "special-defense": 45,
+    "speed": 70
+}

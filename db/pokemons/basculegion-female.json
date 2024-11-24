@@ -1,0 +1,12 @@
+{
+    "types": [
+        "water",
+        "ghost"
+    ],
+    "hp": 120,
+    "attack": 92,
+    "defense": 65,
+    "special-attack": 100,
+    "special-defense": 75,
+    "speed": 78
+}

@@ -1,0 +1,161 @@
+{
+    "normal": {
+        "rock": 0.7,
+        "steel": 0.7,
+        "ghost": 0.3
+    },
+    "fighting": {
+        "normal": 1.2,
+        "rock": 1.2,
+        "steel": 1.2,
+        "ice": 1.2,
+        "dark": 1.2,
+        "flying": 0.7,
+        "poison": 0.7,
+        "bug": 0.7,
+        "psychic": 0.7,
+        "fairy": 0.7,
+        "ghost": 0.3
+    },
+    "flying": {
+        "fighting": 1.2,
+        "bug": 1.2,
+        "grass": 1.2,
+        "rock": 0.7,
+        "steel": 0.7,
+        "electric": 0.7
+    },
+    "poison": {
+        "grass": 1.2,
+        "fairy": 1.2,
+        "poison": 0.7,
+        "ground": 0.7,
+        "rock": 0.7,
+        "ghost": 0.7,
+        "steel": 0.3
+    },
+    "ground": {
+        "poison": 1.2,
+        "rock": 1.2,
+        "steel": 1.2,
+        "fire": 1.2,
+        "electric": 1.2,
+        "bug": 0.7,
+        "grass": 0.7,
+        "flying": 0.3
+    },
+    "rock": {
+        "flying": 1.2,
+        "bug": 1.2,
+        "fire": 1.2,
+        "ice": 1.2,
+        "fighting": 0.7,
+        "ground": 0.7,
+        "steel": 0.7
+    },
+    "bug": {
+        "grass": 1.2,
+        "psychic": 1.2,
+        "dark": 1.2,
+        "fighting": 0.7,
+        "flying": 0.7,
+        "poison": 0.7,
+        "ghost": 0.7,
+        "steel": 0.7,
+        "fire": 0.7,
+        "fairy": 0.7
+    },
+    "ghost": {
+        "ghost": 1.2,
+        "psychic": 1.2,
+        "dark": 0.7,
+        "normal": 0.3
+    },
+    "steel": {
+        "rock": 1.2,
+        "ice": 1.2,
+        "fairy": 1.2,
+        "steel": 0.7,
+        "fire": 0.7,
+        "water": 0.7,
+        "electric": 0.7
+    },
+    "fire": {
+        "bug": 1.2,
+        "steel": 1.2,
+        "grass": 1.2,
+        "ice": 1.2,
+        "rock": 0.7,
+        "fire": 0.7,
+        "water": 0.7,
+        "dragon": 0.7
+    },
+    "water": {
+        "ground": 1.2,
+        "rock": 1.2,
+        "fire": 1.2,
+        "water": 0.7,
+        "grass": 0.7,
+        "dragon": 0.7
+    },
+    "grass": {
+        "ground": 1.2,
+        "rock": 1.2,
+        "water": 1.2,
+        "flying": 0.7,
+        "poison": 0.7,
+        "bug": 0.7,
+        "steel": 0.7,
+        "fire": 0.7,
+        "grass": 0.7,
+        "dragon": 0.7
+    },
+    "electric": {
+        "flying": 1.2,
+        "water": 1.2,
+        "grass": 0.7,
+        "electric": 0.7,
+        "dragon": 0.7,
+        "ground": 0.3
+    },
+    "psychic": {
+        "fighting": 1.2,
+        "poison": 1.2,
+        "steel": 0.7,
+        "psychic": 0.7,
+        "dark": 0.3
+    },
+    "ice": {
+        "flying": 1.2,
+        "ground": 1.2,
+        "grass": 1.2,
+        "dragon": 1.2,
+        "steel": 0.7,
+        "fire": 0.7,
+        "water": 0.7,
+        "ice": 0.7
+    },
+    "dragon": {
+        "dragon": 1.2,
+        "steel": 0.7,
+        "fairy": 0.3
+    },
+    "dark": {
+        "ghost": 1.2,
+        "psychic": 1.2,
+        "fighting": 0.7,
+        "dark": 0.7,
+        "fairy": 0.7
+    },
+    "fairy": {
+        "fighting": 1.2,
+        "dragon": 1.2,
+        "dark": 1.2,
+        "poison": 0.7,
+        "steel": 0.7,
+        "fire": 0.7
+    },
+    "stellar": {},
+    "unknown": {},
+    "shadow": {}
+}

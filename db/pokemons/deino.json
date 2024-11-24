@@ -1,0 +1,12 @@
+{
+    "types": [
+        "dark",
+        "dragon"
+    ],
+    "hp": 52,
+    "attack": 65,
+    "defense": 50,
+    "special-attack": 45,
+    "special-defense": 50,
+    "speed": 38
+}

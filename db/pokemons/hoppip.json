@@ -1,0 +1,12 @@
+{
+    "types": [
+        "grass",
+        "flying"
+    ],
+    "hp": 35,
+    "attack": 35,
+    "defense": 40,
+    "special-attack": 35,
+    "special-defense": 55,
+    "speed": 50
+}

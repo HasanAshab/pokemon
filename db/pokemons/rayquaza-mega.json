@@ -1,0 +1,12 @@
+{
+    "types": [
+        "dragon",
+        "flying"
+    ],
+    "hp": 105,
+    "attack": 180,
+    "defense": 100,
+    "special-attack": 180,
+    "special-defense": 100,
+    "speed": 115
+}

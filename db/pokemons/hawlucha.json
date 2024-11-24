@@ -1,0 +1,12 @@
+{
+    "types": [
+        "fighting",
+        "flying"
+    ],
+    "hp": 78,
+    "attack": 92,
+    "defense": 75,
+    "special-attack": 74,
+    "special-defense": 63,
+    "speed": 118
+}

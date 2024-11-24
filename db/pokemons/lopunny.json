@@ -1,0 +1,11 @@
+{
+    "types": [
+        "normal"
+    ],
+    "hp": 65,
+    "attack": 76,
+    "defense": 84,
+    "special-attack": 54,
+    "special-defense": 96,
+    "speed": 105
+}

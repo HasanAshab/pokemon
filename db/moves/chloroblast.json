@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 150,
+    "accuracy": 95,
+    "pp": 2,
+    "damage_class": "special",
+    "type": "grass",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 3
+}

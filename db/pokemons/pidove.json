@@ -1,0 +1,12 @@
+{
+    "types": [
+        "normal",
+        "flying"
+    ],
+    "hp": 50,
+    "attack": 55,
+    "defense": 50,
+    "special-attack": 36,
+    "special-defense": 30,
+    "speed": 43
+}

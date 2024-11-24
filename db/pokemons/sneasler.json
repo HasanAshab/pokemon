@@ -1,0 +1,12 @@
+{
+    "types": [
+        "fighting",
+        "poison"
+    ],
+    "hp": 80,
+    "attack": 130,
+    "defense": 60,
+    "special-attack": 40,
+    "special-defense": 80,
+    "speed": 120
+}

@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 70,
+    "accuracy": 90,
+    "pp": 3,
+    "damage_class": "special",
+    "type": "psychic",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 1.5
+}

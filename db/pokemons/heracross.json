@@ -1,0 +1,12 @@
+{
+    "types": [
+        "bug",
+        "fighting"
+    ],
+    "hp": 80,
+    "attack": 125,
+    "defense": 75,
+    "special-attack": 40,
+    "special-defense": 95,
+    "speed": 85
+}

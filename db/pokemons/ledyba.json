@@ -1,0 +1,12 @@
+{
+    "types": [
+        "bug",
+        "flying"
+    ],
+    "hp": 40,
+    "attack": 20,
+    "defense": 30,
+    "special-attack": 40,
+    "special-defense": 80,
+    "speed": 55
+}

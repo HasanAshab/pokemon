@@ -1,0 +1,12 @@
+{
+    "types": [
+        "rock",
+        "bug"
+    ],
+    "hp": 45,
+    "attack": 95,
+    "defense": 50,
+    "special-attack": 40,
+    "special-defense": 50,
+    "speed": 75
+}

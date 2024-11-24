@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 50,
+    "accuracy": 100,
+    "pp": 7,
+    "damage_class": "physical",
+    "type": "bug",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 1
+}

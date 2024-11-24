@@ -1,0 +1,12 @@
+{
+    "types": [
+        "bug",
+        "electric"
+    ],
+    "hp": 50,
+    "attack": 47,
+    "defense": 50,
+    "special-attack": 57,
+    "special-defense": 50,
+    "speed": 65
+}

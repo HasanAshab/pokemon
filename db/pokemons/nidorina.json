@@ -1,0 +1,11 @@
+{
+    "types": [
+        "poison"
+    ],
+    "hp": 70,
+    "attack": 62,
+    "defense": 67,
+    "special-attack": 55,
+    "special-defense": 55,
+    "speed": 56
+}

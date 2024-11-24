@@ -1,0 +1,12 @@
+{
+    "types": [
+        "poison",
+        "fairy"
+    ],
+    "hp": 88,
+    "attack": 91,
+    "defense": 82,
+    "special-attack": 70,
+    "special-defense": 125,
+    "speed": 99
+}

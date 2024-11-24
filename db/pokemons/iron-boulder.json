@@ -1,0 +1,12 @@
+{
+    "types": [
+        "rock",
+        "psychic"
+    ],
+    "hp": 90,
+    "attack": 120,
+    "defense": 80,
+    "special-attack": 68,
+    "special-defense": 108,
+    "speed": 124
+}

@@ -1,0 +1,111 @@
+
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.back-btn,
+.image-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 1.5rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* Stats Section */
+.stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: #eee;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   
+}
+.stats > .stats-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+}
+.stat {
+    padding: 5px 10px;
+    font-size: 1rem;
+    background-color: white;
+    border-radius: 4px;
+    width: 8rem;
+}
+.stat:active {
+ background-color: gray;
+}
+.level {
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Moves Section */
+.moves-header {
+    margin: 20px 0;
+    text-align: center;
+
+}
+
+.moves-header h2 {
+    background: #ff0000;
+    color: white;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.move {
+    background: #fff;
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.move-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+    padding: 7px;
+    border-radius: 8px 8px 0 0;
+}
+
+.move-icons {
+    display: flex;
+    gap: 5px;
+}
+
+.move p {
+    margin: 5px;
+}

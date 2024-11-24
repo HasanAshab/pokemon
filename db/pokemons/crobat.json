@@ -1,0 +1,12 @@
+{
+    "types": [
+        "poison",
+        "flying"
+    ],
+    "hp": 85,
+    "attack": 90,
+    "defense": 80,
+    "special-attack": 70,
+    "special-defense": 80,
+    "speed": 130
+}

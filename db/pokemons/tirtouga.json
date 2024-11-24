@@ -1,0 +1,12 @@
+{
+    "types": [
+        "water",
+        "rock"
+    ],
+    "hp": 54,
+    "attack": 78,
+    "defense": 103,
+    "special-attack": 53,
+    "special-defense": 45,
+    "speed": 22
+}

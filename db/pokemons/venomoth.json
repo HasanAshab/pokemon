@@ -1,0 +1,12 @@
+{
+    "types": [
+        "bug",
+        "poison"
+    ],
+    "hp": 70,
+    "attack": 65,
+    "defense": 60,
+    "special-attack": 90,
+    "special-defense": 75,
+    "speed": 90
+}

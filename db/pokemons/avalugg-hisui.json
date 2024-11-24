@@ -1,0 +1,12 @@
+{
+    "types": [
+        "ice",
+        "rock"
+    ],
+    "hp": 95,
+    "attack": 127,
+    "defense": 184,
+    "special-attack": 34,
+    "special-defense": 36,
+    "speed": 38
+}

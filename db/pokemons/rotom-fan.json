@@ -1,0 +1,12 @@
+{
+    "types": [
+        "electric",
+        "flying"
+    ],
+    "hp": 50,
+    "attack": 65,
+    "defense": 107,
+    "special-attack": 105,
+    "special-defense": 107,
+    "speed": 86
+}

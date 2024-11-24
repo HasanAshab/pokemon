@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 80,
+    "accuracy": 100,
+    "pp": 2,
+    "damage_class": "special",
+    "type": "dragon",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 2
+}

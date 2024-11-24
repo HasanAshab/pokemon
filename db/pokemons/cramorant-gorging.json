@@ -1,0 +1,12 @@
+{
+    "types": [
+        "flying",
+        "water"
+    ],
+    "hp": 70,
+    "attack": 85,
+    "defense": 55,
+    "special-attack": 85,
+    "special-defense": 95,
+    "speed": 85
+}

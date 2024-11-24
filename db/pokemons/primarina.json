@@ -1,0 +1,12 @@
+{
+    "types": [
+        "water",
+        "fairy"
+    ],
+    "hp": 80,
+    "attack": 74,
+    "defense": 74,
+    "special-attack": 126,
+    "special-defense": 116,
+    "speed": 60
+}

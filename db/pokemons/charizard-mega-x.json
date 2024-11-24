@@ -1,0 +1,12 @@
+{
+    "types": [
+        "fire",
+        "dragon"
+    ],
+    "hp": 78,
+    "attack": 130,
+    "defense": 111,
+    "special-attack": 130,
+    "special-defense": 85,
+    "speed": 100
+}

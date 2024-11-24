@@ -1,0 +1,30 @@
+{
+    "meta": {
+        "ailment": {
+            "name": "none",
+            "url": "https://pokeapi.co/api/v2/move-ailment/0/"
+        },
+        "ailment_chance": 0,
+        "category": {
+            "name": "damage",
+            "url": "https://pokeapi.co/api/v2/move-category/0/"
+        },
+        "crit_rate": 0,
+        "drain": -33,
+        "flinch_chance": 0,
+        "healing": 0,
+        "max_hits": null,
+        "max_turns": null,
+        "min_hits": null,
+        "min_turns": null,
+        "stat_chance": 0
+    },
+    "power": 120,
+    "accuracy": 100,
+    "pp": 5,
+    "damage_class": "physical",
+    "type": "grass",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 2.5
+}

@@ -1,0 +1,11 @@
+{
+    "types": [
+        "steel"
+    ],
+    "hp": 135,
+    "attack": 143,
+    "defense": 143,
+    "special-attack": 80,
+    "special-defense": 65,
+    "speed": 34
+}

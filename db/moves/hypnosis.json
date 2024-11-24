@@ -1,0 +1,32 @@
+{
+    "meta": {
+        "ailment": {
+            "name": "sleep",
+            "url": "https://pokeapi.co/api/v2/move-ailment/2/"
+        },
+        "ailment_chance": 0,
+        "category": {
+            "name": "ailment",
+            "url": "https://pokeapi.co/api/v2/move-category/1/"
+        },
+        "crit_rate": 0,
+        "drain": 0,
+        "flinch_chance": 0,
+        "healing": 0,
+        "max_hits": null,
+        "max_turns": 4,
+        "min_hits": null,
+        "min_turns": 2,
+        "stat_chance": 0
+    },
+    "power": null,
+    "accuracy": 60,
+    "pp": 7,
+    "damage_class": "status",
+    "type": "psychic",
+    "effect_chance": null,
+    "effect_names": [
+        "sleep"
+    ],
+    "retreat": 1.5
+}

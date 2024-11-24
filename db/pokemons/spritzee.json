@@ -1,0 +1,11 @@
+{
+    "types": [
+        "fairy"
+    ],
+    "hp": 78,
+    "attack": 52,
+    "defense": 60,
+    "special-attack": 63,
+    "special-defense": 65,
+    "speed": 23
+}

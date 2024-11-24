@@ -1,0 +1,32 @@
+{
+    "meta": {
+        "ailment": {
+            "name": "poison",
+            "url": "https://pokeapi.co/api/v2/move-ailment/5/"
+        },
+        "ailment_chance": 10,
+        "category": {
+            "name": "damage+ailment",
+            "url": "https://pokeapi.co/api/v2/move-category/4/"
+        },
+        "crit_rate": 1,
+        "drain": 0,
+        "flinch_chance": 0,
+        "healing": 0,
+        "max_hits": null,
+        "max_turns": null,
+        "min_hits": null,
+        "min_turns": null,
+        "stat_chance": 0
+    },
+    "power": 50,
+    "accuracy": 100,
+    "pp": 8,
+    "damage_class": "physical",
+    "type": "poison",
+    "effect_chance": 10,
+    "effect_names": [
+        "poison"
+    ],
+    "retreat": 1
+}

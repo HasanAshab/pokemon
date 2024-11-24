@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 100,
+    "accuracy": 85,
+    "pp": 3,
+    "damage_class": "physical",
+    "type": "ice",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 2
+}

@@ -1,0 +1,13 @@
+{
+    "meta": null,
+    "power": null,
+    "accuracy": 90,
+    "pp": 10,
+    "damage_class": "status",
+    "type": "shadow",
+    "effect_chance": null,
+    "effect_names": [
+        "confuse"
+    ],
+    "retreat": 1.5
+}

@@ -1,0 +1,12 @@
+{
+    "types": [
+        "dark",
+        "flying"
+    ],
+    "hp": 90,
+    "attack": 85,
+    "defense": 90,
+    "special-attack": 100,
+    "special-defense": 125,
+    "speed": 90
+}

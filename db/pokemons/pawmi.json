@@ -1,0 +1,11 @@
+{
+    "types": [
+        "electric"
+    ],
+    "hp": 45,
+    "attack": 50,
+    "defense": 20,
+    "special-attack": 40,
+    "special-defense": 25,
+    "speed": 60
+}

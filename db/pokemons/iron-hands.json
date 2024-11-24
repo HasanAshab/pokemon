@@ -1,0 +1,12 @@
+{
+    "types": [
+        "fighting",
+        "electric"
+    ],
+    "hp": 154,
+    "attack": 140,
+    "defense": 108,
+    "special-attack": 50,
+    "special-defense": 68,
+    "speed": 50
+}

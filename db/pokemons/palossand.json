@@ -1,0 +1,12 @@
+{
+    "types": [
+        "ghost",
+        "ground"
+    ],
+    "hp": 85,
+    "attack": 75,
+    "defense": 110,
+    "special-attack": 100,
+    "special-defense": 75,
+    "speed": 35
+}

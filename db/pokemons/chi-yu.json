@@ -1,0 +1,12 @@
+{
+    "types": [
+        "dark",
+        "fire"
+    ],
+    "hp": 55,
+    "attack": 80,
+    "defense": 80,
+    "special-attack": 135,
+    "special-defense": 120,
+    "speed": 100
+}

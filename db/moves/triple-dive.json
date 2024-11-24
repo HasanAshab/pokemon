@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 30,
+    "accuracy": 95,
+    "pp": 3,
+    "damage_class": "physical",
+    "type": "water",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 1
+}

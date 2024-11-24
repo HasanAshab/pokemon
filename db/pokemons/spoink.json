@@ -1,0 +1,11 @@
+{
+    "types": [
+        "psychic"
+    ],
+    "hp": 60,
+    "attack": 25,
+    "defense": 35,
+    "special-attack": 70,
+    "special-defense": 80,
+    "speed": 60
+}

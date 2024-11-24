@@ -1,0 +1,12 @@
+{
+    "types": [
+        "water",
+        "dragon"
+    ],
+    "hp": 75,
+    "attack": 95,
+    "defense": 95,
+    "special-attack": 95,
+    "special-defense": 95,
+    "speed": 85
+}

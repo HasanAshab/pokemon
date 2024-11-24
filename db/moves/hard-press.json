@@ -1,0 +1,11 @@
+{
+    "meta": null,
+    "power": 0,
+    "accuracy": 100,
+    "pp": 3,
+    "damage_class": "physical",
+    "type": "steel",
+    "effect_chance": null,
+    "effect_names": [],
+    "retreat": 0.5
+}

@@ -1,0 +1,12 @@
+{
+    "types": [
+        "psychic",
+        "fairy"
+    ],
+    "hp": 28,
+    "attack": 25,
+    "defense": 25,
+    "special-attack": 45,
+    "special-defense": 35,
+    "speed": 40
+}
