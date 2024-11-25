@@ -4,11 +4,29 @@
         "fighting"
     ],
     "stats": {
-        "hp": 91,
-        "attack": 129,
-        "defense": 90,
-        "special-attack": 72,
-        "special-defense": 90,
-        "speed": 108
+        "hp": {
+            "base_stat": 91,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 129,
+            "effort": 3
+        },
+        "defense": {
+            "base_stat": 90,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 72,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 90,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 108,
+            "effort": 0
+        }
     }
 }

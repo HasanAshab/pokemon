@@ -4,11 +4,29 @@
         "grass"
     ],
     "stats": {
-        "hp": 43,
-        "attack": 70,
-        "defense": 48,
-        "special-attack": 50,
-        "special-defense": 60,
-        "speed": 38
+        "hp": {
+            "base_stat": 43,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 70,
+            "effort": 1
+        },
+        "defense": {
+            "base_stat": 48,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 50,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 60,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 38,
+            "effort": 0
+        }
     }
 }

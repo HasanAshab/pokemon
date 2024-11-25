@@ -4,11 +4,29 @@
         "fairy"
     ],
     "stats": {
-        "hp": 68,
-        "attack": 65,
-        "defense": 65,
-        "special-attack": 125,
-        "special-defense": 115,
-        "speed": 80
+        "hp": {
+            "base_stat": 68,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 65,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 65,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 125,
+            "effort": 3
+        },
+        "special-defense": {
+            "base_stat": 115,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 80,
+            "effort": 0
+        }
     }
 }

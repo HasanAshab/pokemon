@@ -4,11 +4,29 @@
         "dark"
     ],
     "stats": {
-        "hp": 72,
-        "attack": 145,
-        "defense": 67,
-        "special-attack": 153,
-        "special-defense": 71,
-        "speed": 132
+        "hp": {
+            "base_stat": 72,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 145,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 67,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 153,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 71,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 132,
+            "effort": 3
+        }
     }
 }

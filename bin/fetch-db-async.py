@@ -26,7 +26,13 @@ def get_types(pokemon):
 
 
 def get_stats(pokemon):
-    return {stat["stat"]["name"]: stat["base_stat"] for stat in pokemon["stats"]}
+    stats = {}
+    for stat in pokemon["stats"]:
+        stats[stat["stat"]["name"]] = {
+            "base_stat": stat["base_stat"],
+            "effort": stat["effort"],
+        }
+    return stats
 
 
 def get_effects(move):

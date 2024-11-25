@@ -3,11 +3,29 @@
         "fire"
     ],
     "stats": {
-        "hp": 75,
-        "attack": 95,
-        "defense": 67,
-        "special-attack": 125,
-        "special-defense": 95,
-        "speed": 83
+        "hp": {
+            "base_stat": 75,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 95,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 67,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 125,
+            "effort": 3
+        },
+        "special-defense": {
+            "base_stat": 95,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 83,
+            "effort": 0
+        }
     }
 }

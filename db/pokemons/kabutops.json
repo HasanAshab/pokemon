@@ -4,11 +4,29 @@
         "water"
     ],
     "stats": {
-        "hp": 60,
-        "attack": 115,
-        "defense": 105,
-        "special-attack": 65,
-        "special-defense": 70,
-        "speed": 80
+        "hp": {
+            "base_stat": 60,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 115,
+            "effort": 2
+        },
+        "defense": {
+            "base_stat": 105,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 65,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 70,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 80,
+            "effort": 0
+        }
     }
 }

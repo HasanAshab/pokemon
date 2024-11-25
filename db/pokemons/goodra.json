@@ -3,11 +3,29 @@
         "dragon"
     ],
     "stats": {
-        "hp": 90,
-        "attack": 100,
-        "defense": 70,
-        "special-attack": 110,
-        "special-defense": 150,
-        "speed": 80
+        "hp": {
+            "base_stat": 90,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 100,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 70,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 110,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 150,
+            "effort": 3
+        },
+        "speed": {
+            "base_stat": 80,
+            "effort": 0
+        }
     }
 }

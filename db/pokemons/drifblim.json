@@ -4,11 +4,29 @@
         "flying"
     ],
     "stats": {
-        "hp": 150,
-        "attack": 80,
-        "defense": 44,
-        "special-attack": 90,
-        "special-defense": 54,
-        "speed": 80
+        "hp": {
+            "base_stat": 150,
+            "effort": 2
+        },
+        "attack": {
+            "base_stat": 80,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 44,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 90,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 54,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 80,
+            "effort": 0
+        }
     }
 }

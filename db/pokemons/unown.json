@@ -3,11 +3,29 @@
         "psychic"
     ],
     "stats": {
-        "hp": 48,
-        "attack": 72,
-        "defense": 48,
-        "special-attack": 72,
-        "special-defense": 48,
-        "speed": 48
+        "hp": {
+            "base_stat": 48,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 72,
+            "effort": 1
+        },
+        "defense": {
+            "base_stat": 48,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 72,
+            "effort": 1
+        },
+        "special-defense": {
+            "base_stat": 48,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 48,
+            "effort": 0
+        }
     }
 }

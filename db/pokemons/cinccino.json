@@ -3,11 +3,29 @@
         "normal"
     ],
     "stats": {
-        "hp": 75,
-        "attack": 95,
-        "defense": 60,
-        "special-attack": 65,
-        "special-defense": 60,
-        "speed": 115
+        "hp": {
+            "base_stat": 75,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 95,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 60,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 65,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 60,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 115,
+            "effort": 2
+        }
     }
 }

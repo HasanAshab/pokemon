@@ -4,11 +4,29 @@
         "poison"
     ],
     "stats": {
-        "hp": 80,
-        "attack": 130,
-        "defense": 60,
-        "special-attack": 40,
-        "special-defense": 80,
-        "speed": 120
+        "hp": {
+            "base_stat": 80,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 130,
+            "effort": 1
+        },
+        "defense": {
+            "base_stat": 60,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 40,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 80,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 120,
+            "effort": 1
+        }
     }
 }

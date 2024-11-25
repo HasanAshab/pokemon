@@ -3,11 +3,29 @@
         "rock"
     ],
     "stats": {
-        "hp": 80,
-        "attack": 100,
-        "defense": 200,
-        "special-attack": 50,
-        "special-defense": 100,
-        "speed": 50
+        "hp": {
+            "base_stat": 80,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 100,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 200,
+            "effort": 3
+        },
+        "special-attack": {
+            "base_stat": 50,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 100,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 50,
+            "effort": 0
+        }
     }
 }

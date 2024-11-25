@@ -4,11 +4,29 @@
         "ground"
     ],
     "stats": {
-        "hp": 68,
-        "attack": 90,
-        "defense": 65,
-        "special-attack": 50,
-        "special-defense": 55,
-        "speed": 82
+        "hp": {
+            "base_stat": 68,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 90,
+            "effort": 2
+        },
+        "defense": {
+            "base_stat": 65,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 50,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 55,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 82,
+            "effort": 0
+        }
     }
 }

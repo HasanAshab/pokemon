@@ -4,11 +4,29 @@
         "ghost"
     ],
     "stats": {
-        "hp": 68,
-        "attack": 80,
-        "defense": 50,
-        "special-attack": 60,
-        "special-defense": 50,
-        "speed": 102
+        "hp": {
+            "base_stat": 68,
+            "effort": 0
+        },
+        "attack": {
+            "base_stat": 80,
+            "effort": 0
+        },
+        "defense": {
+            "base_stat": 50,
+            "effort": 0
+        },
+        "special-attack": {
+            "base_stat": 60,
+            "effort": 0
+        },
+        "special-defense": {
+            "base_stat": 50,
+            "effort": 0
+        },
+        "speed": {
+            "base_stat": 102,
+            "effort": 2
+        }
     }
 }

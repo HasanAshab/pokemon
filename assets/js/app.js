@@ -4,7 +4,7 @@ const charmander = await db.pokemons.get("charmander")
 const bulbasaur = await db.pokemons.get("bulbasaur")
 const ember = await db.moves.get("ember")
 
-console.log(calculateDamage(charmander, bulbasaur, ember, {}))
+alert(calculateDamage(charmander, bulbasaur, ember, {}))
 }
 catch(e) {console.log(e)}
 }
@@ -20,7 +20,7 @@ const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
 
 function getStat(pokemon, name) {
-  return pokemon.stats[name];
+  return pokemon.stats[name].base_stat;
 }
 
 function calculateBaseDamage(attacker, target, move, effects) {
@@ -189,3 +189,5 @@ function canDodge(attacker, target, move) {
     const dodgeChance = (targetSpd - attackerSpd);
     return dodgeChance > hitChance;
 }
+
+
