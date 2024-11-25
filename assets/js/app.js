@@ -2,12 +2,23 @@ import db from "./db.js"
 
 async function t() {
    try{ 
-const charmander = await db.pokemons.get("charizard")
-const bulbasaur = await db.pokemons.get("bulbasaur")
 const ember = await db.moves.get("ember")
 
-console.log("bulba", calculateDamage(charmander, bulbasaur, ember, {}))
-console.log("char", calculateDamage(charmander, charmander, ember, {}))
+
+const charmander = await Pokemon.make("charmander", {
+    level: 10,
+    nature: "calm"
+})
+const bulbasaur = await Pokemon.make("bulbasaur", {
+    level: 10,
+    nature: "calm"
+})
+console.log(charmander)
+
+
+
+console.log("bulba", calculateDamage(charmander, bulbasaur, ember))
+console.log("char", calculateDamage(charmander, charmander, ember))
 }
 catch(e) {console.log(e)}
 }
@@ -15,26 +26,26 @@ setTimeout(t, 1000)
 
 
 
+class Pokemon {
+    constructor(name, meta, data) {
+        this.name = name
+        this.meta = meta
+        this.data = data
+    }
+    static async make(name, meta) {
+        const data = await db.pokemons.get(name)
+        return new this(name, meta, data)
+    }
+}
 
 
 const types = await db.types.all()
-const STAB_MODIFIER = 1.2;
+const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
 
 function getStat(pokemon, name) {
   return pokemon.stats[name];
-}
-
-function calculateBaseDamage(attacker, target, move, effects) {
-  const isSpecial = move.damage_class.name === "special";
-  const attackStat = getStat(attacker, isSpecial ? "special-attack" : "attack");
-  const defenseStat = getStat(target, isSpecial ? "special-defense" : "defense");
-  if (!isSpecial && effects.burn) {
-    const hasGuts = pokemon.abilities.some(a => a.name === "guts");
-    return hasGuts ? attackStat : Math.floor(attackStat / 2);
-  }
-  return Math.floor(((2 * 50 / 5 + 2) * move.power * attackStat) / defenseStat / 50) + 2;
 }
 
 function getRandomHits(move) {
@@ -65,6 +76,13 @@ function weightedRandom(values, weights) {
   }
 
   return values[values.length - 1]; // Fallback
+}
+
+
+function preparePokemon(pokemon, meta) {
+    pokemon.meta = meta
+    pokemon.stats = calculateTotalStat(pokemon, meta)
+    return pokemon
 }
 
 function getEffects(attacker, target, move) {
@@ -127,7 +145,19 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
   }
 }
 
-function calculateDamage(attacker, target, move, effects) {
+function calculateBaseDamage(attacker, target, move) {
+  const isSpecial = move.damage_class.name === "special";
+  const attackStat = getStat(attacker, isSpecial ? "special-attack" : "attack");
+  const defenseStat = getStat(target, isSpecial ? "special-defense" : "defense");
+  return Math.floor(((
+      (((2 * attacker.meta.level) / 5) + 2)
+      * move.power
+      * (attackStat / defenseStat)
+      ) / 10) + 2);
+}
+
+
+function calculateDamage(attacker, target, move) {
   const moveType = move.type;
 
   // Calculate type effectiveness
@@ -137,7 +167,7 @@ function calculateDamage(attacker, target, move, effects) {
       effectiveness *= types[moveType][tType];
     }
   });
-console.log(effectiveness)
+
   // Calculate STAB
   const stab = attacker.types.includes(moveType) ? STAB_MODIFIER : 1;
 
@@ -151,7 +181,7 @@ console.log(effectiveness)
   const randomModifier = Math.random() * 0.15 + 0.85;
 
   // Calculate base damage
-  const baseDamage = calculateBaseDamage(attacker, target, move, effects);
+  const baseDamage = calculateBaseDamage(attacker, target, move);
   
   // Calculate final damage
   return Math.floor(baseDamage * effectiveness * stab * criticalMultiplier * randomModifier);
@@ -222,7 +252,8 @@ function getNatureModifier(statName, nature) {
   return 1; // No effect
 }
 
-function calculateLevelStat(pokemon, level) {
+function calculateLevelStat(pokemon) {
+  const level = pokemon.meta.level
   const stats = {};
 
   Object.keys(pokemon.stats).forEach(statName => {
@@ -246,12 +277,12 @@ function calculateLevelStat(pokemon, level) {
   return stats;
 }
 
-function calculateNatureStat(pokemon, nature) {
+function calculateNatureStat(pokemon) {
   const natureStats = {};
 
   Object.keys(pokemon.stats).forEach(statName => {
     const baseStat = pokemon.stats[statName];
-    const natureModifier = getNatureModifier(statName, nature);
+    const natureModifier = getNatureModifier(statName, pokemon.meta.nature);
 
     // Apply nature modifier
     natureStats[statName] = Math.floor(baseStat * natureModifier);
@@ -260,10 +291,10 @@ function calculateNatureStat(pokemon, nature) {
   return natureStats;
 }
 
-function calculateTotalStat(pokemon, nature, level) {
+function calculateTotalStat(pokemon) {
   const baseStats = pokemon.stats;
-  const levelStats = calculateLevelStat(pokemon, level);
-  const natureStats = calculateNatureStat(pokemon, nature);
+  const levelStats = calculateLevelStat(pokemon);
+  const natureStats = calculateNatureStat(pokemon);
 
   const totalStats = {};
   Object.keys(baseStats).forEach(statName => {

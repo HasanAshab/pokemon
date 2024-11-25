@@ -2,61 +2,61 @@
     "normal": {
         "rock": 0.7,
         "steel": 0.7,
-        "ghost": 0.3
+        "ghost": 0.35
     },
     "fighting": {
-        "normal": 1.2,
-        "rock": 1.2,
-        "steel": 1.2,
-        "ice": 1.2,
-        "dark": 1.2,
+        "normal": 1.3,
+        "rock": 1.3,
+        "steel": 1.3,
+        "ice": 1.3,
+        "dark": 1.3,
         "flying": 0.7,
         "poison": 0.7,
         "bug": 0.7,
         "psychic": 0.7,
         "fairy": 0.7,
-        "ghost": 0.3
+        "ghost": 0.35
     },
     "flying": {
-        "fighting": 1.2,
-        "bug": 1.2,
-        "grass": 1.2,
+        "fighting": 1.3,
+        "bug": 1.3,
+        "grass": 1.3,
         "rock": 0.7,
         "steel": 0.7,
         "electric": 0.7
     },
     "poison": {
-        "grass": 1.2,
-        "fairy": 1.2,
+        "grass": 1.3,
+        "fairy": 1.3,
         "poison": 0.7,
         "ground": 0.7,
         "rock": 0.7,
         "ghost": 0.7,
-        "steel": 0.3
+        "steel": 0.35
     },
     "ground": {
-        "poison": 1.2,
-        "rock": 1.2,
-        "steel": 1.2,
-        "fire": 1.2,
-        "electric": 1.2,
+        "poison": 1.3,
+        "rock": 1.3,
+        "steel": 1.3,
+        "fire": 1.3,
+        "electric": 1.3,
         "bug": 0.7,
         "grass": 0.7,
-        "flying": 0.3
+        "flying": 0.35
     },
     "rock": {
-        "flying": 1.2,
-        "bug": 1.2,
-        "fire": 1.2,
-        "ice": 1.2,
+        "flying": 1.3,
+        "bug": 1.3,
+        "fire": 1.3,
+        "ice": 1.3,
         "fighting": 0.7,
         "ground": 0.7,
         "steel": 0.7
     },
     "bug": {
-        "grass": 1.2,
-        "psychic": 1.2,
-        "dark": 1.2,
+        "grass": 1.3,
+        "psychic": 1.3,
+        "dark": 1.3,
         "fighting": 0.7,
         "flying": 0.7,
         "poison": 0.7,
@@ -66,42 +66,42 @@
         "fairy": 0.7
     },
     "ghost": {
-        "ghost": 1.2,
-        "psychic": 1.2,
+        "ghost": 1.3,
+        "psychic": 1.3,
         "dark": 0.7,
-        "normal": 0.3
+        "normal": 0.35
     },
     "steel": {
-        "rock": 1.2,
-        "ice": 1.2,
-        "fairy": 1.2,
+        "rock": 1.3,
+        "ice": 1.3,
+        "fairy": 1.3,
         "steel": 0.7,
         "fire": 0.7,
         "water": 0.7,
         "electric": 0.7
     },
     "fire": {
-        "bug": 1.2,
-        "steel": 1.2,
-        "grass": 1.2,
-        "ice": 1.2,
+        "bug": 1.3,
+        "steel": 1.3,
+        "grass": 1.3,
+        "ice": 1.3,
         "rock": 0.7,
         "fire": 0.7,
         "water": 0.7,
         "dragon": 0.7
     },
     "water": {
-        "ground": 1.2,
-        "rock": 1.2,
-        "fire": 1.2,
+        "ground": 1.3,
+        "rock": 1.3,
+        "fire": 1.3,
         "water": 0.7,
         "grass": 0.7,
         "dragon": 0.7
     },
     "grass": {
-        "ground": 1.2,
-        "rock": 1.2,
-        "water": 1.2,
+        "ground": 1.3,
+        "rock": 1.3,
+        "water": 1.3,
         "flying": 0.7,
         "poison": 0.7,
         "bug": 0.7,
@@ -111,46 +111,46 @@
         "dragon": 0.7
     },
     "electric": {
-        "flying": 1.2,
-        "water": 1.2,
+        "flying": 1.3,
+        "water": 1.3,
         "grass": 0.7,
         "electric": 0.7,
         "dragon": 0.7,
-        "ground": 0.3
+        "ground": 0.35
     },
     "psychic": {
-        "fighting": 1.2,
-        "poison": 1.2,
+        "fighting": 1.3,
+        "poison": 1.3,
         "steel": 0.7,
         "psychic": 0.7,
-        "dark": 0.3
+        "dark": 0.35
     },
     "ice": {
-        "flying": 1.2,
-        "ground": 1.2,
-        "grass": 1.2,
-        "dragon": 1.2,
+        "flying": 1.3,
+        "ground": 1.3,
+        "grass": 1.3,
+        "dragon": 1.3,
         "steel": 0.7,
         "fire": 0.7,
         "water": 0.7,
         "ice": 0.7
     },
     "dragon": {
-        "dragon": 1.2,
+        "dragon": 1.3,
         "steel": 0.7,
-        "fairy": 0.3
+        "fairy": 0.35
     },
     "dark": {
-        "ghost": 1.2,
-        "psychic": 1.2,
+        "ghost": 1.3,
+        "psychic": 1.3,
         "fighting": 0.7,
         "dark": 0.7,
         "fairy": 0.7
     },
     "fairy": {
-        "fighting": 1.2,
-        "dragon": 1.2,
-        "dark": 1.2,
+        "fighting": 1.3,
+        "dragon": 1.3,
+        "dark": 1.3,
         "poison": 0.7,
         "steel": 0.7,
         "fire": 0.7

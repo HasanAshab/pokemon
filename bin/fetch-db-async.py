@@ -70,9 +70,9 @@ def calculate_retreat(move):
 def serialize_type(data):
     type_effectiveness = {}
     for relation, multiplier in [
-        ("double_damage_to", 1.2),
+        ("double_damage_to", 1.3),
         ("half_damage_to", 0.7),
-        ("no_damage_to", 0.3),
+        ("no_damage_to", 0.35),
     ]:
         for type_entry in data["damage_relations"][relation]:
             type_name = type_entry["name"]
@@ -184,8 +184,8 @@ async def fetch_pokemons(session):
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        #await fetch_types(session)
-        #await fetch_moves(session)
+        await fetch_types(session)
+        await fetch_moves(session)
         await fetch_pokemons(session)
         print("All data fetched and saved successfully!")
 
