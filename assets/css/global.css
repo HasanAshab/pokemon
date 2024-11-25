@@ -35,6 +35,9 @@ body {
     overflow-y: scroll;
     overflow-x:hidden ;
 }
+.blur-bg.active{
+ display: flex;
+}
 .blur-bg{
     width: 100vw;
     height: 100vh;
@@ -42,7 +45,7 @@ body {
      position: fixed;
      left: 0;
      top: 0;
-     display: flex;
+     display: none;
      justify-content: center;
      align-items: center;
     

@@ -1,4 +1,4 @@
-(async () => {
+async function t() {
    try{ 
 const charmander = await db.pokemons.get("charmander")
 const bulbasaur = await db.pokemons.get("bulbasaur")
@@ -7,7 +7,8 @@ const ember = await db.moves.get("ember")
 console.log(calculateDamage(charmander, bulbasaur, ember, {}))
 }
 catch(e) {console.log(e)}
-})()
+}
+t()
 
 
 

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Stats</title>
+  <link rel="stylesheet" href="./assets/css/global.css">
+  <link rel="stylesheet" href="./assets/css/poke_details.css">
+</head>
+<body>
+  <div class="container">
+    <div class="blur-bg ">
+      <div class="move-choose-interface">
+        <div class="toolbar">
+          <input type="text" class="move-search-inp" />
+        <button class="move-search-btn">search</button>
+        <button class="cancel-btn">close</button>
+      </div>
+      <div class="search-result-cont">
+        <div class="result">
+          Charizard
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blur-bg">
+    <div class="stat-update-form" style="background-color:white; padding:40px">
+      <h3 class="stat-name">Stat name</h3>
+      <input class="stat-value-inp" type="number" />
+    <button class="save-btn">save</button>
+    <button class="cancel-btn">cancel</button>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <button class="back-btn" onclick="history.back()">←</button>
+  <h1 class="pokemon-name">Pokemon_name</h1>
+  <button class="image-btn">🖼️</button>
+</div>
+
+<!-- Stats Section -->
+<div class="stats">
+  <div class="stats-row">
+    <div data-value="0" onclick="statClickHandler(event)" class="stat hp" data-value="0">
+      <strong>HP:</strong>
+    </div>
+    <div data-value="0" onclick="statClickHandler(event)" class="stat attack">
+      <strong>ATK:</strong>
+    </div>
+    <div data-value="0" onclick="statClickHandler(event)" class="stat defence">
+      <strong>DEF:</strong>
+    </div>
+    <div data-value="0" onclick="statClickHandler(event)" class="stat retreat">
+      <strong>Retreat:</strong>
+    </div>
+
+  </div>
+  <div class="stats-row">
+    <div data-value="0" onclick="statClickHandler(event)" class="stat level">
+      <strong>LVL:</strong>
+    </div>
+    <div data-value="0" onclick="statClickHandler(event)" class="stat special-attack">
+      <strong>SP. ATK:</strong>
+    </div>
+    <div data-value="0" onclick="statClickHandler(event)" class="stat special-defence">
+      <strong>SP. DEF:</strong>
+    </div>
+    <div data-value="0" onclick="statClickHandler(event)" class="stat speed">
+      <strong>SPEED:</strong>
+    </div>
+  </div>
+
+</div>
+
+<!-- Moves Section -->
+<div class="moves-header">
+  <h2>Moves - 10</h2>
+</div>
+<button id="add-move-btn" onclick="showMoveChooseInterface()">add move</button>
+<div class="move selected">
+  <div class="move-header" style="background-color: var(--fire-type-color);">
+    <span>Flamethrower</span>
+    <div class="move-icons">
+      <span>🖼️</span>
+      <span>🖼️</span>
+    </div>
+  </div>
+  <div class="move-body">
+    <p>
+      Category: Special
+    </p>
+    <p>
+      Damage: 300
+    </p>
+    <p>
+      Power: 40
+    </p>
+    <p>
+      Retreat: 2
+    </p>
+    <p>
+      PP: 5
+    </p>
+    <small class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum nihil officia assumenda non repudiandae sint velit, recusandae magni suscipit rem delectus obcaecati laudantium beatae dolores. Odit doloribus nemo, eveniet doloremque laudantium nam necessitatibus quo libero eum ea ut cupiditate. Cum corporis culpa, minus! Explicabo ut aliquam magni illum minima expedita.</small>
+    <div class="btn-cont">
+      <button class="unselect-move">Unselect</button>
+      <button class="select-move">Select</button>
+      <button class="forget-move">Forget Move</button>
+
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+<script src="./assets/js/poke_details.js"></script>
+</html>

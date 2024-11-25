@@ -3,12 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Pokedex</title>
+    <link rel="stylesheet" href="./assets/css/index.css">
 </head>
 <body>
-    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            Pokedex
+        </div>
+
+        <!-- Info -->
+        <div class="info">
+            <p id="food-cost">
+                Food Cost: 5000$
+            </p>
+            <p>
+                Total Badges: <span id="total-badges">0</span> / 9
+            </p>
+            <div class="badges-cont">
+                <div data-index="0" onclick="badgeClickHandler(event)" class="badge fire">
+                    Fire
+                </div>
+                <div data-index="1" onclick="badgeClickHandler(event)" class="badge water">
+                    Water
+                </div>
+                <div data-index="2" onclick="badgeClickHandler(event)" class="badge grass">
+                    Grass
+                </div>
+                <div data-index="3" onclick="badgeClickHandler(event)" class="badge steel">
+                    Steel
+                </div>
+                <div data-index="4" onclick="badgeClickHandler(event)" class="badge fighting">
+                    Fighting
+                </div>
+                <div data-index="5" onclick="badgeClickHandler(event)" class="badge psy">
+                    PSY
+                </div>
+                <div data-index="6" onclick="badgeClickHandler(event)" class="badge dragon">
+                    Dragon
+                </div>
+                <div data-index="7" onclick="badgeClickHandler(event)" class="badge dark">
+                    Dark
+                </div>
+                <div data-index="8" onclick="badgeClickHandler(event)" class="badge electric">
+                    Electric
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Pokémon List -->
+        <div class="pokemons">
+            <div class="pokemons-header">
+                Pokemons
+            </div>
+            <ul class="pokemon-list">
+
+            </ul>
+        </div>
+        <a href="battle.html">hohhh</a>
+    </div>
 </body>
-<script src="assets/js/db.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="./assets/js/index.js"></script>
 </html>

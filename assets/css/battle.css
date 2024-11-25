@@ -124,6 +124,10 @@
 .card.disabled {
     filter: brightness(40%);
 }
+.card.selected {
+border: 5px solid gold;
+  
+}
 .card:not(.disabled):active {
     filter: invert(20%);
 
@@ -186,16 +190,17 @@
     width: calc(100vw - 40px);
     height: calc(20% - 40px);
     background-color: white;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     display: none;
     z-index: 100;
-    padding: 20px;
+    padding: 20px 0 20px 40px;
+    
 }
 .move-damage-inject-form > button {
     padding: 4px 10px;
-    margin: 4px;
+    margin: 0 4px;
 }
 .enemy-controle-cont > .move-damage-inject-form {
     top: 0;
@@ -203,5 +208,9 @@
     transform: rotate(180deg);
 }
 .move-damage-inject-form.active {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    
 }
