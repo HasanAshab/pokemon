@@ -46,13 +46,11 @@ class MultipleFileTable extends Table {
     async get(name) {
         try {
             const file = `${this._tableDir}/${name}.json`
-            console.log(file)
             const res = await fetch(file)
             if (res.status !== 200) {
                 throw new Error(`file not found: ${file}`)
             }
             const data = await res.json()
-            console.log(data)
             return data
         }
         catch (e) {

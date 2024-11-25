@@ -3,29 +3,19 @@
         "electric"
     ],
     "stats": {
-        "hp": {
-            "base_stat": 45,
-            "effort": 0
-        },
-        "attack": {
-            "base_stat": 60,
-            "effort": 0
-        },
-        "defense": {
-            "base_stat": 32,
-            "effort": 0
-        },
-        "special-attack": {
-            "base_stat": 50,
-            "effort": 0
-        },
-        "special-defense": {
-            "base_stat": 32,
-            "effort": 0
-        },
-        "speed": {
-            "base_stat": 76,
-            "effort": 1
-        }
+        "hp": 45,
+        "attack": 60,
+        "defense": 32,
+        "special-attack": 50,
+        "special-defense": 32,
+        "speed": 76
+    },
+    "efforts": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "special-attack": 0,
+        "special-defense": 0,
+        "speed": 1
     }
 }

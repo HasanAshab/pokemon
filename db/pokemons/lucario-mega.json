@@ -4,29 +4,19 @@
         "steel"
     ],
     "stats": {
-        "hp": {
-            "base_stat": 70,
-            "effort": 0
-        },
-        "attack": {
-            "base_stat": 145,
-            "effort": 1
-        },
-        "defense": {
-            "base_stat": 88,
-            "effort": 0
-        },
-        "special-attack": {
-            "base_stat": 140,
-            "effort": 1
-        },
-        "special-defense": {
-            "base_stat": 70,
-            "effort": 0
-        },
-        "speed": {
-            "base_stat": 112,
-            "effort": 0
-        }
+        "hp": 70,
+        "attack": 145,
+        "defense": 88,
+        "special-attack": 140,
+        "special-defense": 70,
+        "speed": 112
+    },
+    "efforts": {
+        "hp": 0,
+        "attack": 1,
+        "defense": 0,
+        "special-attack": 1,
+        "special-defense": 0,
+        "speed": 0
     }
 }

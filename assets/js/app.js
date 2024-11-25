@@ -4,7 +4,8 @@ const charmander = await db.pokemons.get("charmander")
 const bulbasaur = await db.pokemons.get("bulbasaur")
 const ember = await db.moves.get("ember")
 
-alert(calculateDamage(charmander, bulbasaur, ember, {}))
+console.log(calculateTotalStat(charmander, "bully", 10))
+//alert(calculateDamage(charmander, bulbasaur, ember, {}))
 }
 catch(e) {console.log(e)}
 }
@@ -20,7 +21,7 @@ const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
 
 function getStat(pokemon, name) {
-  return pokemon.stats[name].base_stat;
+  return pokemon.stats[name];
 }
 
 function calculateBaseDamage(attacker, target, move, effects) {
@@ -190,4 +191,91 @@ function canDodge(attacker, target, move) {
     return dodgeChance > hitChance;
 }
 
+
+const NATURE_MODIFIERS = {
+  "adamant": { increase: "attack", decrease: "special-attack" },
+  "bashful": { increase: null, decrease: null },
+  "bold": { increase: "defense", decrease: "attack" },
+  "brave": { increase: "attack", decrease: "speed" },
+  "calm": { increase: "special-defense", decrease: "attack" },
+  "careful": { increase: "special-defense", decrease: "special-attack" },
+  "docile": { increase: null, decrease: null },
+  "gentle": { increase: "special-defense", decrease: "defense" },
+  "hasty": { increase: "speed", decrease: "defense" },
+  "impish": { increase: "defense", decrease: "special-attack" },
+  "jolly": { increase: "speed", decrease: "special-attack" },
+  "lax": { increase: "defense", decrease: "special-defense" },
+  "lonely": { increase: "attack", decrease: "defense" },
+  "mild": { increase: "special-attack", decrease: "defense" },
+  "modest": { increase: "special-attack", decrease: "attack" },
+  "naive": { increase: "speed", decrease: "special-defense" },
+  "naughty": { increase: "attack", decrease: "special-defense" },
+  "quiet": { increase: "special-attack", decrease: "speed" },
+  "quirky": { increase: null, decrease: null },
+  "rash": { increase: "special-attack", decrease: "special-defense" },
+  "relaxed": { increase: "defense", decrease: "speed" },
+  "sassy": { increase: "special-defense", decrease: "speed" },
+  "serious": { increase: null, decrease: null },
+  "timid": { increase: "speed", decrease: "attack" },
+};
+
+function getNatureModifier(statName, nature) {
+  if (!nature || !NATURE_MODIFIERS[nature]) return 1; // Neutral nature
+  const natureEffects = NATURE_MODIFIERS[nature];
+  if (natureEffects.increase === statName) return 1.1; // Boosted stat
+  if (natureEffects.decrease === statName) return 0.9; // Reduced stat
+  return 1; // No effect
+}
+
+function calculateLevelStat(pokemon, level) {
+  const stats = {};
+
+  Object.keys(pokemon.stats).forEach(statName => {
+    const baseStat = pokemon.stats[statName];
+    const ev = pokemon.efforts[statName] || 0; // Effort values from `efforts`
+    const iv = 31; // Default IV value
+
+    if (statName === "hp") {
+      // HP calculation
+      stats[statName] = Math.floor(
+        ((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100 + level + 10
+      );
+    } else {
+      // Other stat calculations
+      stats[statName] = Math.floor(
+        ((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100 + 5
+      );
+    }
+  });
+
+  return stats;
+}
+
+function calculateNatureStat(pokemon, nature) {
+  const natureStats = {};
+
+  Object.keys(pokemon.stats).forEach(statName => {
+    const baseStat = pokemon.stats[statName];
+    const natureModifier = getNatureModifier(statName, nature);
+
+    // Apply nature modifier
+    natureStats[statName] = Math.floor(baseStat * natureModifier);
+  });
+
+  return natureStats;
+}
+
+function calculateTotalStat(pokemon, nature, level) {
+  const baseStats = pokemon.stats;
+  const levelStats = calculateLevelStat(pokemon, level);
+  const natureStats = calculateNatureStat(pokemon, nature);
+
+  const totalStats = {};
+  Object.keys(baseStats).forEach(statName => {
+    totalStats[statName] =
+      baseStats[statName] + levelStats[statName] + natureStats[statName];
+  });
+
+  return totalStats;
+}
 

@@ -3,29 +3,19 @@
         "ice"
     ],
     "stats": {
-        "hp": {
-            "base_stat": 108,
-            "effort": 1
-        },
-        "attack": {
-            "base_stat": 68,
-            "effort": 0
-        },
-        "defense": {
-            "base_stat": 45,
-            "effort": 0
-        },
-        "special-attack": {
-            "base_stat": 30,
-            "effort": 0
-        },
-        "special-defense": {
-            "base_stat": 40,
-            "effort": 0
-        },
-        "speed": {
-            "base_stat": 43,
-            "effort": 0
-        }
+        "hp": 108,
+        "attack": 68,
+        "defense": 45,
+        "special-attack": 30,
+        "special-defense": 40,
+        "speed": 43
+    },
+    "efforts": {
+        "hp": 1,
+        "attack": 0,
+        "defense": 0,
+        "special-attack": 0,
+        "special-defense": 0,
+        "speed": 0
     }
 }

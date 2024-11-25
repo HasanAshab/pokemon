@@ -26,13 +26,16 @@ def get_types(pokemon):
 
 
 def get_stats(pokemon):
-    stats = {}
-    for stat in pokemon["stats"]:
-        stats[stat["stat"]["name"]] = {
-            "base_stat": stat["base_stat"],
-            "effort": stat["effort"],
-        }
-    return stats
+    return { 
+        stat["stat"]["name"]: stat["base_stat"]
+        for stat in pokemon["stats"] 
+    }
+
+def get_efforts(pokemon):
+    return { 
+        stat["stat"]["name"]: stat["effort"]
+        for stat in pokemon["stats"] 
+    }
 
 
 def get_effects(move):
@@ -96,6 +99,7 @@ def serialize_pokemon(data):
     return {
         "types": get_types(data),
         "stats": get_stats(data),
+        "efforts": get_efforts(data),
     }
 
 
@@ -180,8 +184,8 @@ async def fetch_pokemons(session):
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        await fetch_types(session)
-        await fetch_moves(session)
+        #await fetch_types(session)
+        #await fetch_moves(session)
         await fetch_pokemons(session)
         print("All data fetched and saved successfully!")
 

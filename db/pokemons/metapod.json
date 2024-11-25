@@ -3,29 +3,19 @@
         "bug"
     ],
     "stats": {
-        "hp": {
-            "base_stat": 50,
-            "effort": 0
-        },
-        "attack": {
-            "base_stat": 20,
-            "effort": 0
-        },
-        "defense": {
-            "base_stat": 55,
-            "effort": 2
-        },
-        "special-attack": {
-            "base_stat": 25,
-            "effort": 0
-        },
-        "special-defense": {
-            "base_stat": 25,
-            "effort": 0
-        },
-        "speed": {
-            "base_stat": 30,
-            "effort": 0
-        }
+        "hp": 50,
+        "attack": 20,
+        "defense": 55,
+        "special-attack": 25,
+        "special-defense": 25,
+        "speed": 30
+    },
+    "efforts": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 2,
+        "special-attack": 0,
+        "special-defense": 0,
+        "speed": 0
     }
 }
