@@ -1,11 +1,13 @@
+import db from "./db.js"
+
 async function t() {
    try{ 
-const charmander = await db.pokemons.get("charmander")
+const charmander = await db.pokemons.get("charizard")
 const bulbasaur = await db.pokemons.get("bulbasaur")
 const ember = await db.moves.get("ember")
 
-console.log(calculateTotalStat(charmander, "bully", 10))
-//alert(calculateDamage(charmander, bulbasaur, ember, {}))
+console.log("bulba", calculateDamage(charmander, bulbasaur, ember, {}))
+console.log("char", calculateDamage(charmander, charmander, ember, {}))
 }
 catch(e) {console.log(e)}
 }
@@ -15,7 +17,7 @@ setTimeout(t, 1000)
 
 
 
-const types = db.types.all()
+const types = await db.types.all()
 const STAB_MODIFIER = 1.2;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
@@ -104,13 +106,6 @@ function isFrozenThisTurn() {
   return Math.random() < 0.8; // 80% chance to stay frozen
 }
 
-function applyParalysisEffect(pokemon) {
-  const speedStat = getStat(pokemon, "speed");
-  speedStat.base_stat = Math.floor(speedStat.base_stat / 2); // Speed halved
-  return Math.random() < 0.25; // 25% chance to skip turn
-}
-
-
 function handleStatusEffects(pokemon, status, turnCount = 0) {
   switch (status) {
     case "poisoned":
@@ -142,7 +137,7 @@ function calculateDamage(attacker, target, move, effects) {
       effectiveness *= types[moveType][tType];
     }
   });
-
+console.log(effectiveness)
   // Calculate STAB
   const stab = attacker.types.includes(moveType) ? STAB_MODIFIER : 1;
 

@@ -60,4 +60,5 @@ class MultipleFileTable extends Table {
     }
 }
 
-var db = new DB("db")
+export default new DB("db")
+
