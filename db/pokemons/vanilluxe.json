@@ -2,10 +2,12 @@
     "types": [
         "ice"
     ],
-    "hp": 71,
-    "attack": 95,
-    "defense": 85,
-    "special-attack": 110,
-    "special-defense": 95,
-    "speed": 79
+    "stats": {
+        "hp": 71,
+        "attack": 95,
+        "defense": 85,
+        "special-attack": 110,
+        "special-defense": 95,
+        "speed": 79
+    }
 }

@@ -3,10 +3,12 @@
         "rock",
         "flying"
     ],
-    "hp": 80,
-    "attack": 135,
-    "defense": 85,
-    "special-attack": 70,
-    "special-defense": 95,
-    "speed": 150
+    "stats": {
+        "hp": 80,
+        "attack": 135,
+        "defense": 85,
+        "special-attack": 70,
+        "special-defense": 95,
+        "speed": 150
+    }
 }

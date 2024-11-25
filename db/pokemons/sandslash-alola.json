@@ -3,10 +3,12 @@
         "ice",
         "steel"
     ],
-    "hp": 75,
-    "attack": 100,
-    "defense": 120,
-    "special-attack": 25,
-    "special-defense": 65,
-    "speed": 65
+    "stats": {
+        "hp": 75,
+        "attack": 100,
+        "defense": 120,
+        "special-attack": 25,
+        "special-defense": 65,
+        "speed": 65
+    }
 }

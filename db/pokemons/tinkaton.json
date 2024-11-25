@@ -3,10 +3,12 @@
         "fairy",
         "steel"
     ],
-    "hp": 85,
-    "attack": 75,
-    "defense": 77,
-    "special-attack": 70,
-    "special-defense": 105,
-    "speed": 94
+    "stats": {
+        "hp": 85,
+        "attack": 75,
+        "defense": 77,
+        "special-attack": 70,
+        "special-defense": 105,
+        "speed": 94
+    }
 }

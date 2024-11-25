@@ -3,10 +3,12 @@
         "steel",
         "ghost"
     ],
-    "hp": 87,
-    "attack": 60,
-    "defense": 95,
-    "special-attack": 133,
-    "special-defense": 91,
-    "speed": 84
+    "stats": {
+        "hp": 87,
+        "attack": 60,
+        "defense": 95,
+        "special-attack": 133,
+        "special-defense": 91,
+        "speed": 84
+    }
 }

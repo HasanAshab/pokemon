@@ -3,10 +3,12 @@
         "bug",
         "flying"
     ],
-    "hp": 70,
-    "attack": 60,
-    "defense": 62,
-    "special-attack": 100,
-    "special-defense": 82,
-    "speed": 80
+    "stats": {
+        "hp": 70,
+        "attack": 60,
+        "defense": 62,
+        "special-attack": 100,
+        "special-defense": 82,
+        "speed": 80
+    }
 }

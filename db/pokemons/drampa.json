@@ -3,10 +3,12 @@
         "normal",
         "dragon"
     ],
-    "hp": 78,
-    "attack": 60,
-    "defense": 85,
-    "special-attack": 135,
-    "special-defense": 91,
-    "speed": 36
+    "stats": {
+        "hp": 78,
+        "attack": 60,
+        "defense": 85,
+        "special-attack": 135,
+        "special-defense": 91,
+        "speed": 36
+    }
 }

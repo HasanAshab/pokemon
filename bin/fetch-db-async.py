@@ -89,7 +89,7 @@ def serialize_move(data):
 def serialize_pokemon(data):
     return {
         "types": get_types(data),
-        **get_stats(data),
+        "stats": get_stats(data),
     }
 
 

@@ -3,10 +3,12 @@
         "psychic",
         "fairy"
     ],
-    "hp": 70,
-    "attack": 85,
-    "defense": 75,
-    "special-attack": 130,
-    "special-defense": 115,
-    "speed": 95
+    "stats": {
+        "hp": 70,
+        "attack": 85,
+        "defense": 75,
+        "special-attack": 130,
+        "special-defense": 115,
+        "speed": 95
+    }
 }

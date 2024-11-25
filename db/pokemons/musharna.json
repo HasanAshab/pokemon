@@ -2,10 +2,12 @@
     "types": [
         "psychic"
     ],
-    "hp": 116,
-    "attack": 55,
-    "defense": 85,
-    "special-attack": 107,
-    "special-defense": 95,
-    "speed": 29
+    "stats": {
+        "hp": 116,
+        "attack": 55,
+        "defense": 85,
+        "special-attack": 107,
+        "special-defense": 95,
+        "speed": 29
+    }
 }

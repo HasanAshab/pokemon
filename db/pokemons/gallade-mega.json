@@ -3,10 +3,12 @@
         "psychic",
         "fighting"
     ],
-    "hp": 68,
-    "attack": 165,
-    "defense": 95,
-    "special-attack": 65,
-    "special-defense": 115,
-    "speed": 110
+    "stats": {
+        "hp": 68,
+        "attack": 165,
+        "defense": 95,
+        "special-attack": 65,
+        "special-defense": 115,
+        "speed": 110
+    }
 }

@@ -3,10 +3,12 @@
         "ground",
         "dragon"
     ],
-    "hp": 80,
-    "attack": 100,
-    "defense": 80,
-    "special-attack": 80,
-    "special-defense": 80,
-    "speed": 100
+    "stats": {
+        "hp": 80,
+        "attack": 100,
+        "defense": 80,
+        "special-attack": 80,
+        "special-defense": 80,
+        "speed": 100
+    }
 }

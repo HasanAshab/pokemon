@@ -3,10 +3,12 @@
         "poison",
         "fighting"
     ],
-    "hp": 88,
-    "attack": 128,
-    "defense": 115,
-    "special-attack": 58,
-    "special-defense": 86,
-    "speed": 80
+    "stats": {
+        "hp": 88,
+        "attack": 128,
+        "defense": 115,
+        "special-attack": 58,
+        "special-defense": 86,
+        "speed": 80
+    }
 }

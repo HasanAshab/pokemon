@@ -3,10 +3,12 @@
         "bug",
         "psychic"
     ],
-    "hp": 75,
-    "attack": 50,
-    "defense": 85,
-    "special-attack": 115,
-    "special-defense": 100,
-    "speed": 45
+    "stats": {
+        "hp": 75,
+        "attack": 50,
+        "defense": 85,
+        "special-attack": 115,
+        "special-defense": 100,
+        "speed": 45
+    }
 }

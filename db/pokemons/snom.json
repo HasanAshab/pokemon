@@ -3,10 +3,12 @@
         "ice",
         "bug"
     ],
-    "hp": 30,
-    "attack": 25,
-    "defense": 35,
-    "special-attack": 45,
-    "special-defense": 30,
-    "speed": 20
+    "stats": {
+        "hp": 30,
+        "attack": 25,
+        "defense": 35,
+        "special-attack": 45,
+        "special-defense": 30,
+        "speed": 20
+    }
 }

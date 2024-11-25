@@ -3,10 +3,12 @@
         "normal",
         "fairy"
     ],
-    "hp": 115,
-    "attack": 45,
-    "defense": 20,
-    "special-attack": 45,
-    "special-defense": 25,
-    "speed": 20
+    "stats": {
+        "hp": 115,
+        "attack": 45,
+        "defense": 20,
+        "special-attack": 45,
+        "special-defense": 25,
+        "speed": 20
+    }
 }

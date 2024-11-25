@@ -3,10 +3,12 @@
         "water",
         "psychic"
     ],
-    "hp": 68,
-    "attack": 105,
-    "defense": 70,
-    "special-attack": 70,
-    "special-defense": 70,
-    "speed": 92
+    "stats": {
+        "hp": 68,
+        "attack": 105,
+        "defense": 70,
+        "special-attack": 70,
+        "special-defense": 70,
+        "speed": 92
+    }
 }

@@ -2,10 +2,12 @@
     "types": [
         "steel"
     ],
-    "hp": 50,
-    "attack": 65,
-    "defense": 55,
-    "special-attack": 40,
-    "special-defense": 40,
-    "speed": 40
+    "stats": {
+        "hp": 50,
+        "attack": 65,
+        "defense": 55,
+        "special-attack": 40,
+        "special-defense": 40,
+        "speed": 40
+    }
 }

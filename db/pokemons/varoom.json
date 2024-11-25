@@ -3,10 +3,12 @@
         "steel",
         "poison"
     ],
-    "hp": 45,
-    "attack": 70,
-    "defense": 63,
-    "special-attack": 30,
-    "special-defense": 45,
-    "speed": 47
+    "stats": {
+        "hp": 45,
+        "attack": 70,
+        "defense": 63,
+        "special-attack": 30,
+        "special-defense": 45,
+        "speed": 47
+    }
 }

@@ -3,10 +3,12 @@
         "ground",
         "normal"
     ],
-    "hp": 113,
-    "attack": 70,
-    "defense": 120,
-    "special-attack": 135,
-    "special-defense": 65,
-    "speed": 52
+    "stats": {
+        "hp": 113,
+        "attack": 70,
+        "defense": 120,
+        "special-attack": 135,
+        "special-defense": 65,
+        "speed": 52
+    }
 }

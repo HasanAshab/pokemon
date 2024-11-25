@@ -3,10 +3,12 @@
         "ice",
         "ground"
     ],
-    "hp": 50,
-    "attack": 50,
-    "defense": 40,
-    "special-attack": 30,
-    "special-defense": 30,
-    "speed": 50
+    "stats": {
+        "hp": 50,
+        "attack": 50,
+        "defense": 40,
+        "special-attack": 30,
+        "special-defense": 30,
+        "speed": 50
+    }
 }

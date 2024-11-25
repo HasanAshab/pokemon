@@ -2,10 +2,12 @@
     "types": [
         "normal"
     ],
-    "hp": 90,
-    "attack": 65,
-    "defense": 85,
-    "special-attack": 65,
-    "special-defense": 85,
-    "speed": 60
+    "stats": {
+        "hp": 90,
+        "attack": 65,
+        "defense": 85,
+        "special-attack": 65,
+        "special-defense": 85,
+        "speed": 60
+    }
 }

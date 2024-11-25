@@ -3,10 +3,12 @@
         "dragon",
         "fighting"
     ],
-    "hp": 75,
-    "attack": 110,
-    "defense": 125,
-    "special-attack": 100,
-    "special-defense": 105,
-    "speed": 85
+    "stats": {
+        "hp": 75,
+        "attack": 110,
+        "defense": 125,
+        "special-attack": 100,
+        "special-defense": 105,
+        "speed": 85
+    }
 }

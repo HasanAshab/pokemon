@@ -3,10 +3,12 @@
         "bug",
         "dark"
     ],
-    "hp": 71,
-    "attack": 102,
-    "defense": 78,
-    "special-attack": 52,
-    "special-defense": 55,
-    "speed": 92
+    "stats": {
+        "hp": 71,
+        "attack": 102,
+        "defense": 78,
+        "special-attack": 52,
+        "special-defense": 55,
+        "speed": 92
+    }
 }

@@ -3,10 +3,12 @@
         "normal",
         "flying"
     ],
-    "hp": 55,
-    "attack": 75,
-    "defense": 50,
-    "special-attack": 40,
-    "special-defense": 40,
-    "speed": 80
+    "stats": {
+        "hp": 55,
+        "attack": 75,
+        "defense": 50,
+        "special-attack": 40,
+        "special-defense": 40,
+        "speed": 80
+    }
 }

@@ -3,10 +3,12 @@
         "poison",
         "dark"
     ],
-    "hp": 105,
-    "attack": 105,
-    "defense": 75,
-    "special-attack": 65,
-    "special-defense": 100,
-    "speed": 50
+    "stats": {
+        "hp": 105,
+        "attack": 105,
+        "defense": 75,
+        "special-attack": 65,
+        "special-defense": 100,
+        "speed": 50
+    }
 }

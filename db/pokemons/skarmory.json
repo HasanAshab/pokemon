@@ -3,10 +3,12 @@
         "steel",
         "flying"
     ],
-    "hp": 65,
-    "attack": 80,
-    "defense": 140,
-    "special-attack": 40,
-    "special-defense": 70,
-    "speed": 70
+    "stats": {
+        "hp": 65,
+        "attack": 80,
+        "defense": 140,
+        "special-attack": 40,
+        "special-defense": 70,
+        "speed": 70
+    }
 }

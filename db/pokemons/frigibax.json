@@ -3,10 +3,12 @@
         "dragon",
         "ice"
     ],
-    "hp": 65,
-    "attack": 75,
-    "defense": 45,
-    "special-attack": 35,
-    "special-defense": 45,
-    "speed": 55
+    "stats": {
+        "hp": 65,
+        "attack": 75,
+        "defense": 45,
+        "special-attack": 35,
+        "special-defense": 45,
+        "speed": 55
+    }
 }

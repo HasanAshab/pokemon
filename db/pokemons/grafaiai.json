@@ -3,10 +3,12 @@
         "poison",
         "normal"
     ],
-    "hp": 63,
-    "attack": 95,
-    "defense": 65,
-    "special-attack": 80,
-    "special-defense": 72,
-    "speed": 110
+    "stats": {
+        "hp": 63,
+        "attack": 95,
+        "defense": 65,
+        "special-attack": 80,
+        "special-defense": 72,
+        "speed": 110
+    }
 }

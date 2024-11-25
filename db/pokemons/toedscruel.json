@@ -3,10 +3,12 @@
         "ground",
         "grass"
     ],
-    "hp": 80,
-    "attack": 70,
-    "defense": 65,
-    "special-attack": 80,
-    "special-defense": 120,
-    "speed": 100
+    "stats": {
+        "hp": 80,
+        "attack": 70,
+        "defense": 65,
+        "special-attack": 80,
+        "special-defense": 120,
+        "speed": 100
+    }
 }

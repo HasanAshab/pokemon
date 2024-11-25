@@ -3,10 +3,12 @@
         "bug",
         "fighting"
     ],
-    "hp": 71,
-    "attack": 137,
-    "defense": 37,
-    "special-attack": 137,
-    "special-defense": 37,
-    "speed": 151
+    "stats": {
+        "hp": 71,
+        "attack": 137,
+        "defense": 37,
+        "special-attack": 137,
+        "special-defense": 37,
+        "speed": 151
+    }
 }

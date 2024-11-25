@@ -3,10 +3,12 @@
         "grass",
         "flying"
     ],
-    "hp": 99,
-    "attack": 68,
-    "defense": 83,
-    "special-attack": 72,
-    "special-defense": 87,
-    "speed": 51
+    "stats": {
+        "hp": 99,
+        "attack": 68,
+        "defense": 83,
+        "special-attack": 72,
+        "special-defense": 87,
+        "speed": 51
+    }
 }

@@ -3,10 +3,12 @@
         "ground",
         "ghost"
     ],
-    "hp": 59,
-    "attack": 74,
-    "defense": 50,
-    "special-attack": 35,
-    "special-defense": 50,
-    "speed": 35
+    "stats": {
+        "hp": 59,
+        "attack": 74,
+        "defense": 50,
+        "special-attack": 35,
+        "special-defense": 50,
+        "speed": 35
+    }
 }

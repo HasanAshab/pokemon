@@ -2,10 +2,12 @@
     "types": [
         "fighting"
     ],
-    "hp": 75,
-    "attack": 80,
-    "defense": 55,
-    "special-attack": 25,
-    "special-defense": 35,
-    "speed": 35
+    "stats": {
+        "hp": 75,
+        "attack": 80,
+        "defense": 55,
+        "special-attack": 25,
+        "special-defense": 35,
+        "speed": 35
+    }
 }

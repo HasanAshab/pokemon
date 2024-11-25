@@ -3,10 +3,12 @@
         "poison",
         "ghost"
     ],
-    "hp": 88,
-    "attack": 88,
-    "defense": 160,
-    "special-attack": 88,
-    "special-defense": 88,
-    "speed": 88
+    "stats": {
+        "hp": 88,
+        "attack": 88,
+        "defense": 160,
+        "special-attack": 88,
+        "special-defense": 88,
+        "speed": 88
+    }
 }

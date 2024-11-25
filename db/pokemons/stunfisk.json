@@ -3,10 +3,12 @@
         "ground",
         "electric"
     ],
-    "hp": 109,
-    "attack": 66,
-    "defense": 84,
-    "special-attack": 81,
-    "special-defense": 99,
-    "speed": 32
+    "stats": {
+        "hp": 109,
+        "attack": 66,
+        "defense": 84,
+        "special-attack": 81,
+        "special-defense": 99,
+        "speed": 32
+    }
 }

@@ -2,10 +2,12 @@
     "types": [
         "fire"
     ],
-    "hp": 67,
-    "attack": 45,
-    "defense": 59,
-    "special-attack": 63,
-    "special-defense": 40,
-    "speed": 36
+    "stats": {
+        "hp": 67,
+        "attack": 45,
+        "defense": 59,
+        "special-attack": 63,
+        "special-defense": 40,
+        "speed": 36
+    }
 }

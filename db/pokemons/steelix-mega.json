@@ -3,10 +3,12 @@
         "steel",
         "ground"
     ],
-    "hp": 75,
-    "attack": 125,
-    "defense": 230,
-    "special-attack": 55,
-    "special-defense": 95,
-    "speed": 30
+    "stats": {
+        "hp": 75,
+        "attack": 125,
+        "defense": 230,
+        "special-attack": 55,
+        "special-defense": 95,
+        "speed": 30
+    }
 }

@@ -2,10 +2,12 @@
     "types": [
         "dark"
     ],
-    "hp": 64,
-    "attack": 88,
-    "defense": 50,
-    "special-attack": 88,
-    "special-defense": 50,
-    "speed": 106
+    "stats": {
+        "hp": 64,
+        "attack": 88,
+        "defense": 50,
+        "special-attack": 88,
+        "special-defense": 50,
+        "speed": 106
+    }
 }

@@ -3,10 +3,12 @@
         "water",
         "flying"
     ],
-    "hp": 62,
-    "attack": 44,
-    "defense": 50,
-    "special-attack": 44,
-    "special-defense": 50,
-    "speed": 55
+    "stats": {
+        "hp": 62,
+        "attack": 44,
+        "defense": 50,
+        "special-attack": 44,
+        "special-defense": 50,
+        "speed": 55
+    }
 }

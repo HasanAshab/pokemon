@@ -3,10 +3,12 @@
         "poison",
         "psychic"
     ],
-    "hp": 95,
-    "attack": 65,
-    "defense": 80,
-    "special-attack": 110,
-    "special-defense": 110,
-    "speed": 30
+    "stats": {
+        "hp": 95,
+        "attack": 65,
+        "defense": 80,
+        "special-attack": 110,
+        "special-defense": 110,
+        "speed": 30
+    }
 }

@@ -3,10 +3,12 @@
         "fighting",
         "steel"
     ],
-    "hp": 70,
-    "attack": 110,
-    "defense": 70,
-    "special-attack": 115,
-    "special-defense": 70,
-    "speed": 90
+    "stats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 70,
+        "special-attack": 115,
+        "special-defense": 70,
+        "speed": 90
+    }
 }

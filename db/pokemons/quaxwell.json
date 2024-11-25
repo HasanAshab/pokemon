@@ -2,10 +2,12 @@
     "types": [
         "water"
     ],
-    "hp": 70,
-    "attack": 85,
-    "defense": 65,
-    "special-attack": 65,
-    "special-defense": 60,
-    "speed": 65
+    "stats": {
+        "hp": 70,
+        "attack": 85,
+        "defense": 65,
+        "special-attack": 65,
+        "special-defense": 60,
+        "speed": 65
+    }
 }

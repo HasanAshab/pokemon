@@ -3,10 +3,12 @@
         "water",
         "ghost"
     ],
-    "hp": 120,
-    "attack": 112,
-    "defense": 65,
-    "special-attack": 80,
-    "special-defense": 75,
-    "speed": 78
+    "stats": {
+        "hp": 120,
+        "attack": 112,
+        "defense": 65,
+        "special-attack": 80,
+        "special-defense": 75,
+        "speed": 78
+    }
 }

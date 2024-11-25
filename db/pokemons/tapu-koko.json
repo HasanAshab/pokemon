@@ -3,10 +3,12 @@
         "electric",
         "fairy"
     ],
-    "hp": 70,
-    "attack": 115,
-    "defense": 85,
-    "special-attack": 95,
-    "special-defense": 75,
-    "speed": 130
+    "stats": {
+        "hp": 70,
+        "attack": 115,
+        "defense": 85,
+        "special-attack": 95,
+        "special-defense": 75,
+        "speed": 130
+    }
 }

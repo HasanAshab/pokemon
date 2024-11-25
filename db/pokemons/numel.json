@@ -3,10 +3,12 @@
         "fire",
         "ground"
     ],
-    "hp": 60,
-    "attack": 60,
-    "defense": 40,
-    "special-attack": 65,
-    "special-defense": 45,
-    "speed": 35
+    "stats": {
+        "hp": 60,
+        "attack": 60,
+        "defense": 40,
+        "special-attack": 65,
+        "special-defense": 45,
+        "speed": 35
+    }
 }

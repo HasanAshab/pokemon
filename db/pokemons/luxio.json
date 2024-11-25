@@ -2,10 +2,12 @@
     "types": [
         "electric"
     ],
-    "hp": 60,
-    "attack": 85,
-    "defense": 49,
-    "special-attack": 60,
-    "special-defense": 49,
-    "speed": 60
+    "stats": {
+        "hp": 60,
+        "attack": 85,
+        "defense": 49,
+        "special-attack": 60,
+        "special-defense": 49,
+        "speed": 60
+    }
 }

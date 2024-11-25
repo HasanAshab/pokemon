@@ -3,10 +3,12 @@
         "normal",
         "fighting"
     ],
-    "hp": 120,
-    "attack": 125,
-    "defense": 80,
-    "special-attack": 55,
-    "special-defense": 60,
-    "speed": 60
+    "stats": {
+        "hp": 120,
+        "attack": 125,
+        "defense": 80,
+        "special-attack": 55,
+        "special-defense": 60,
+        "speed": 60
+    }
 }

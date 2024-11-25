@@ -3,10 +3,12 @@
         "fighting",
         "ice"
     ],
-    "hp": 97,
-    "attack": 132,
-    "defense": 77,
-    "special-attack": 62,
-    "special-defense": 67,
-    "speed": 43
+    "stats": {
+        "hp": 97,
+        "attack": 132,
+        "defense": 77,
+        "special-attack": 62,
+        "special-defense": 67,
+        "speed": 43
+    }
 }

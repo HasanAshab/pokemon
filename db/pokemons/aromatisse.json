@@ -2,10 +2,12 @@
     "types": [
         "fairy"
     ],
-    "hp": 101,
-    "attack": 72,
-    "defense": 72,
-    "special-attack": 99,
-    "special-defense": 89,
-    "speed": 29
+    "stats": {
+        "hp": 101,
+        "attack": 72,
+        "defense": 72,
+        "special-attack": 99,
+        "special-defense": 89,
+        "speed": 29
+    }
 }

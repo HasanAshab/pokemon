@@ -3,10 +3,12 @@
         "electric",
         "fighting"
     ],
-    "hp": 70,
-    "attack": 115,
-    "defense": 70,
-    "special-attack": 70,
-    "special-defense": 60,
-    "speed": 105
+    "stats": {
+        "hp": 70,
+        "attack": 115,
+        "defense": 70,
+        "special-attack": 70,
+        "special-defense": 60,
+        "speed": 105
+    }
 }

@@ -1,17 +1,10 @@
-pp
-lvl health
-
-
-here is my latest code. but now i want to change my stratagy of storing these data like this
-
-/db/moves/ember.json
-/db/moves/scratch.json
-/db/moves/*.json (remaining moves in this format)
-/db/moves/__all__.json (it contains a array of string, move names)
-
-/db/pokemons/balbasaur.json
-/db/pokemons/charmander.json
-/db/pokemons/*.json (remaining pokemons in this format)
-/db/moves/__all__.json (it contains a array of string, pokemon names)
-
-/db/types.json (the only different here. store all serialized types in one file)
+stat incr
+growl
+fix damage
+damage on air
+damage on attack
+dom
+attribute
+effects
+xp
+nature

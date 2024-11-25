@@ -3,10 +3,12 @@
         "rock",
         "steel"
     ],
-    "hp": 30,
-    "attack": 42,
-    "defense": 118,
-    "special-attack": 42,
-    "special-defense": 88,
-    "speed": 30
+    "stats": {
+        "hp": 30,
+        "attack": 42,
+        "defense": 118,
+        "special-attack": 42,
+        "special-defense": 88,
+        "speed": 30
+    }
 }

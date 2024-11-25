@@ -3,10 +3,12 @@
         "dragon",
         "ghost"
     ],
-    "hp": 68,
-    "attack": 80,
-    "defense": 50,
-    "special-attack": 60,
-    "special-defense": 50,
-    "speed": 102
+    "stats": {
+        "hp": 68,
+        "attack": 80,
+        "defense": 50,
+        "special-attack": 60,
+        "special-defense": 50,
+        "speed": 102
+    }
 }

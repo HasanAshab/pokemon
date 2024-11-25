@@ -3,10 +3,12 @@
         "electric",
         "dragon"
     ],
-    "hp": 125,
-    "attack": 73,
-    "defense": 91,
-    "special-attack": 137,
-    "special-defense": 89,
-    "speed": 75
+    "stats": {
+        "hp": 125,
+        "attack": 73,
+        "defense": 91,
+        "special-attack": 137,
+        "special-defense": 89,
+        "speed": 75
+    }
 }

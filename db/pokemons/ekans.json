@@ -2,10 +2,12 @@
     "types": [
         "poison"
     ],
-    "hp": 35,
-    "attack": 60,
-    "defense": 44,
-    "special-attack": 40,
-    "special-defense": 54,
-    "speed": 55
+    "stats": {
+        "hp": 35,
+        "attack": 60,
+        "defense": 44,
+        "special-attack": 40,
+        "special-defense": 54,
+        "speed": 55
+    }
 }

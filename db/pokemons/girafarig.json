@@ -3,10 +3,12 @@
         "normal",
         "psychic"
     ],
-    "hp": 70,
-    "attack": 80,
-    "defense": 65,
-    "special-attack": 90,
-    "special-defense": 65,
-    "speed": 85
+    "stats": {
+        "hp": 70,
+        "attack": 80,
+        "defense": 65,
+        "special-attack": 90,
+        "special-defense": 65,
+        "speed": 85
+    }
 }

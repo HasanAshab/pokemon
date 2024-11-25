@@ -3,10 +3,12 @@
         "rock",
         "fighting"
     ],
-    "hp": 91,
-    "attack": 129,
-    "defense": 90,
-    "special-attack": 72,
-    "special-defense": 90,
-    "speed": 108
+    "stats": {
+        "hp": 91,
+        "attack": 129,
+        "defense": 90,
+        "special-attack": 72,
+        "special-defense": 90,
+        "speed": 108
+    }
 }

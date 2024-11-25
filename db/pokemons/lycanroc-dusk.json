@@ -2,10 +2,12 @@
     "types": [
         "rock"
     ],
-    "hp": 75,
-    "attack": 117,
-    "defense": 65,
-    "special-attack": 55,
-    "special-defense": 65,
-    "speed": 110
+    "stats": {
+        "hp": 75,
+        "attack": 117,
+        "defense": 65,
+        "special-attack": 55,
+        "special-defense": 65,
+        "speed": 110
+    }
 }

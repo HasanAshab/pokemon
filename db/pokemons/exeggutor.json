@@ -3,10 +3,12 @@
         "grass",
         "psychic"
     ],
-    "hp": 95,
-    "attack": 95,
-    "defense": 85,
-    "special-attack": 125,
-    "special-defense": 75,
-    "speed": 55
+    "stats": {
+        "hp": 95,
+        "attack": 95,
+        "defense": 85,
+        "special-attack": 125,
+        "special-defense": 75,
+        "speed": 55
+    }
 }

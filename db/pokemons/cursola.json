@@ -2,10 +2,12 @@
     "types": [
         "ghost"
     ],
-    "hp": 60,
-    "attack": 95,
-    "defense": 50,
-    "special-attack": 145,
-    "special-defense": 130,
-    "speed": 30
+    "stats": {
+        "hp": 60,
+        "attack": 95,
+        "defense": 50,
+        "special-attack": 145,
+        "special-defense": 130,
+        "speed": 30
+    }
 }

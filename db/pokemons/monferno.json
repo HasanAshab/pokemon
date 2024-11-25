@@ -3,10 +3,12 @@
         "fire",
         "fighting"
     ],
-    "hp": 64,
-    "attack": 78,
-    "defense": 52,
-    "special-attack": 78,
-    "special-defense": 52,
-    "speed": 81
+    "stats": {
+        "hp": 64,
+        "attack": 78,
+        "defense": 52,
+        "special-attack": 78,
+        "special-defense": 52,
+        "speed": 81
+    }
 }

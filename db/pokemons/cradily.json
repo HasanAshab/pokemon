@@ -3,10 +3,12 @@
         "rock",
         "grass"
     ],
-    "hp": 86,
-    "attack": 81,
-    "defense": 97,
-    "special-attack": 81,
-    "special-defense": 107,
-    "speed": 43
+    "stats": {
+        "hp": 86,
+        "attack": 81,
+        "defense": 97,
+        "special-attack": 81,
+        "special-defense": 107,
+        "speed": 43
+    }
 }

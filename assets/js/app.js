@@ -8,7 +8,7 @@ console.log(calculateDamage(charmander, bulbasaur, ember, {}))
 }
 catch(e) {console.log(e)}
 }
-t()
+setTimeout(t, 1000)
 
 
 
@@ -20,7 +20,7 @@ const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
 
 function getStat(pokemon, name) {
-  return pokemon.stats.find(s => s.stat.name === name).base_stat;
+  return pokemon.stats[name];
 }
 
 function calculateBaseDamage(attacker, target, move, effects) {
@@ -132,20 +132,18 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
 }
 
 function calculateDamage(attacker, target, move, effects) {
-  const attackerTypes = attacker.types.map(t => t.type.name);
-  const targetTypes = target.types.map(t => t.type.name);
   const moveType = move.type;
 
   // Calculate type effectiveness
   let effectiveness = 1;
-  targetTypes.forEach(tType => {
+  target.types.forEach(tType => {
     if (types[moveType] && types[moveType][tType]) {
       effectiveness *= types[moveType][tType];
     }
   });
 
   // Calculate STAB
-  const stab = attackerTypes.includes(moveType) ? STAB_MODIFIER : 1;
+  const stab = attacker.types.includes(moveType) ? STAB_MODIFIER : 1;
 
   // Determine critical hit chance
   const critChance = BASE_CRIT_CHANCE * (1 + move.meta.crit_rate)

@@ -2,10 +2,12 @@
     "types": [
         "ground"
     ],
-    "hp": 108,
-    "attack": 112,
-    "defense": 118,
-    "special-attack": 68,
-    "special-defense": 72,
-    "speed": 47
+    "stats": {
+        "hp": 108,
+        "attack": 112,
+        "defense": 118,
+        "special-attack": 68,
+        "special-defense": 72,
+        "speed": 47
+    }
 }

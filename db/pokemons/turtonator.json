@@ -3,10 +3,12 @@
         "fire",
         "dragon"
     ],
-    "hp": 60,
-    "attack": 78,
-    "defense": 135,
-    "special-attack": 91,
-    "special-defense": 85,
-    "speed": 36
+    "stats": {
+        "hp": 60,
+        "attack": 78,
+        "defense": 135,
+        "special-attack": 91,
+        "special-defense": 85,
+        "speed": 36
+    }
 }

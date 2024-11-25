@@ -3,10 +3,12 @@
         "flying",
         "fighting"
     ],
-    "hp": 82,
-    "attack": 115,
-    "defense": 74,
-    "special-attack": 75,
-    "special-defense": 64,
-    "speed": 90
+    "stats": {
+        "hp": 82,
+        "attack": 115,
+        "defense": 74,
+        "special-attack": 75,
+        "special-defense": 64,
+        "speed": 90
+    }
 }

@@ -2,10 +2,12 @@
     "types": [
         "grass"
     ],
-    "hp": 65,
-    "attack": 110,
-    "defense": 130,
-    "special-attack": 60,
-    "special-defense": 65,
-    "speed": 95
+    "stats": {
+        "hp": 65,
+        "attack": 110,
+        "defense": 130,
+        "special-attack": 60,
+        "special-defense": 65,
+        "speed": 95
+    }
 }

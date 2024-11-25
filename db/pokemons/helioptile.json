@@ -3,10 +3,12 @@
         "electric",
         "normal"
     ],
-    "hp": 44,
-    "attack": 38,
-    "defense": 33,
-    "special-attack": 61,
-    "special-defense": 43,
-    "speed": 70
+    "stats": {
+        "hp": 44,
+        "attack": 38,
+        "defense": 33,
+        "special-attack": 61,
+        "special-defense": 43,
+        "speed": 70
+    }
 }

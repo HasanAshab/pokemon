@@ -3,10 +3,12 @@
         "bug",
         "fire"
     ],
-    "hp": 85,
-    "attack": 60,
-    "defense": 65,
-    "special-attack": 135,
-    "special-defense": 105,
-    "speed": 100
+    "stats": {
+        "hp": 85,
+        "attack": 60,
+        "defense": 65,
+        "special-attack": 135,
+        "special-defense": 105,
+        "speed": 100
+    }
 }

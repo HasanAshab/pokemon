@@ -3,10 +3,12 @@
         "dragon",
         "fairy"
     ],
-    "hp": 75,
-    "attack": 110,
-    "defense": 110,
-    "special-attack": 110,
-    "special-defense": 105,
-    "speed": 80
+    "stats": {
+        "hp": 75,
+        "attack": 110,
+        "defense": 110,
+        "special-attack": 110,
+        "special-defense": 105,
+        "speed": 80
+    }
 }

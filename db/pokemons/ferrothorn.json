@@ -3,10 +3,12 @@
         "grass",
         "steel"
     ],
-    "hp": 74,
-    "attack": 94,
-    "defense": 131,
-    "special-attack": 54,
-    "special-defense": 116,
-    "speed": 20
+    "stats": {
+        "hp": 74,
+        "attack": 94,
+        "defense": 131,
+        "special-attack": 54,
+        "special-defense": 116,
+        "speed": 20
+    }
 }

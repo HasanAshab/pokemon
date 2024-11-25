@@ -3,10 +3,12 @@
         "fire",
         "poison"
     ],
-    "hp": 80,
-    "attack": 70,
-    "defense": 60,
-    "special-attack": 140,
-    "special-defense": 110,
-    "speed": 110
+    "stats": {
+        "hp": 80,
+        "attack": 70,
+        "defense": 60,
+        "special-attack": 140,
+        "special-defense": 110,
+        "speed": 110
+    }
 }

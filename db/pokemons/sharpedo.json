@@ -3,10 +3,12 @@
         "water",
         "dark"
     ],
-    "hp": 70,
-    "attack": 120,
-    "defense": 40,
-    "special-attack": 95,
-    "special-defense": 40,
-    "speed": 95
+    "stats": {
+        "hp": 70,
+        "attack": 120,
+        "defense": 40,
+        "special-attack": 95,
+        "special-defense": 40,
+        "speed": 95
+    }
 }

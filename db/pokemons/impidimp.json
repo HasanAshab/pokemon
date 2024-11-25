@@ -3,10 +3,12 @@
         "dark",
         "fairy"
     ],
-    "hp": 45,
-    "attack": 45,
-    "defense": 30,
-    "special-attack": 55,
-    "special-defense": 40,
-    "speed": 50
+    "stats": {
+        "hp": 45,
+        "attack": 45,
+        "defense": 30,
+        "special-attack": 55,
+        "special-defense": 40,
+        "speed": 50
+    }
 }

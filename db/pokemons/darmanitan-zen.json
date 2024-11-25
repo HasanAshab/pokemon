@@ -3,10 +3,12 @@
         "fire",
         "psychic"
     ],
-    "hp": 105,
-    "attack": 30,
-    "defense": 105,
-    "special-attack": 140,
-    "special-defense": 105,
-    "speed": 55
+    "stats": {
+        "hp": 105,
+        "attack": 30,
+        "defense": 105,
+        "special-attack": 140,
+        "special-defense": 105,
+        "speed": 55
+    }
 }

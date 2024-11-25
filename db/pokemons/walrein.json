@@ -3,10 +3,12 @@
         "ice",
         "water"
     ],
-    "hp": 110,
-    "attack": 80,
-    "defense": 90,
-    "special-attack": 95,
-    "special-defense": 90,
-    "speed": 65
+    "stats": {
+        "hp": 110,
+        "attack": 80,
+        "defense": 90,
+        "special-attack": 95,
+        "special-defense": 90,
+        "speed": 65
+    }
 }

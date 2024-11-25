@@ -3,10 +3,12 @@
         "electric",
         "steel"
     ],
-    "hp": 25,
-    "attack": 35,
-    "defense": 70,
-    "special-attack": 95,
-    "special-defense": 55,
-    "speed": 45
+    "stats": {
+        "hp": 25,
+        "attack": 35,
+        "defense": 70,
+        "special-attack": 95,
+        "special-defense": 55,
+        "speed": 45
+    }
 }

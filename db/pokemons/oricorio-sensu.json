@@ -3,10 +3,12 @@
         "ghost",
         "flying"
     ],
-    "hp": 75,
-    "attack": 70,
-    "defense": 70,
-    "special-attack": 98,
-    "special-defense": 70,
-    "speed": 93
+    "stats": {
+        "hp": 75,
+        "attack": 70,
+        "defense": 70,
+        "special-attack": 98,
+        "special-defense": 70,
+        "speed": 93
+    }
 }

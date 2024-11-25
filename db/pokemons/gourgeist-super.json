@@ -3,10 +3,12 @@
         "ghost",
         "grass"
     ],
-    "hp": 85,
-    "attack": 100,
-    "defense": 122,
-    "special-attack": 58,
-    "special-defense": 75,
-    "speed": 54
+    "stats": {
+        "hp": 85,
+        "attack": 100,
+        "defense": 122,
+        "special-attack": 58,
+        "special-defense": 75,
+        "speed": 54
+    }
 }

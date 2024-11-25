@@ -3,10 +3,12 @@
         "dark",
         "normal"
     ],
-    "hp": 38,
-    "attack": 30,
-    "defense": 41,
-    "special-attack": 30,
-    "special-defense": 41,
-    "speed": 60
+    "stats": {
+        "hp": 38,
+        "attack": 30,
+        "defense": 41,
+        "special-attack": 30,
+        "special-defense": 41,
+        "speed": 60
+    }
 }

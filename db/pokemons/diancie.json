@@ -3,10 +3,12 @@
         "rock",
         "fairy"
     ],
-    "hp": 50,
-    "attack": 100,
-    "defense": 150,
-    "special-attack": 100,
-    "special-defense": 150,
-    "speed": 50
+    "stats": {
+        "hp": 50,
+        "attack": 100,
+        "defense": 150,
+        "special-attack": 100,
+        "special-defense": 150,
+        "speed": 50
+    }
 }

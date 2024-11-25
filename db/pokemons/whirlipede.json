@@ -3,10 +3,12 @@
         "bug",
         "poison"
     ],
-    "hp": 40,
-    "attack": 55,
-    "defense": 99,
-    "special-attack": 40,
-    "special-defense": 79,
-    "speed": 47
+    "stats": {
+        "hp": 40,
+        "attack": 55,
+        "defense": 99,
+        "special-attack": 40,
+        "special-defense": 79,
+        "speed": 47
+    }
 }

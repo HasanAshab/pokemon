@@ -3,10 +3,12 @@
         "grass",
         "dark"
     ],
-    "hp": 90,
-    "attack": 100,
-    "defense": 60,
-    "special-attack": 90,
-    "special-defense": 60,
-    "speed": 80
+    "stats": {
+        "hp": 90,
+        "attack": 100,
+        "defense": 60,
+        "special-attack": 90,
+        "special-defense": 60,
+        "speed": 80
+    }
 }

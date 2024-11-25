@@ -3,10 +3,12 @@
         "bug",
         "ground"
     ],
-    "hp": 31,
-    "attack": 45,
-    "defense": 90,
-    "special-attack": 30,
-    "special-defense": 30,
-    "speed": 40
+    "stats": {
+        "hp": 31,
+        "attack": 45,
+        "defense": 90,
+        "special-attack": 30,
+        "special-defense": 30,
+        "speed": 40
+    }
 }

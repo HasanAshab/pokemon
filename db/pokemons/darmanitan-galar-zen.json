@@ -3,10 +3,12 @@
         "ice",
         "fire"
     ],
-    "hp": 105,
-    "attack": 160,
-    "defense": 55,
-    "special-attack": 30,
-    "special-defense": 55,
-    "speed": 135
+    "stats": {
+        "hp": 105,
+        "attack": 160,
+        "defense": 55,
+        "special-attack": 30,
+        "special-defense": 55,
+        "speed": 135
+    }
 }

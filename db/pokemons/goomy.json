@@ -2,10 +2,12 @@
     "types": [
         "dragon"
     ],
-    "hp": 45,
-    "attack": 50,
-    "defense": 35,
-    "special-attack": 55,
-    "special-defense": 75,
-    "speed": 40
+    "stats": {
+        "hp": 45,
+        "attack": 50,
+        "defense": 35,
+        "special-attack": 55,
+        "special-defense": 75,
+        "speed": 40
+    }
 }

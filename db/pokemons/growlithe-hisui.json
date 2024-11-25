@@ -3,10 +3,12 @@
         "fire",
         "rock"
     ],
-    "hp": 60,
-    "attack": 75,
-    "defense": 45,
-    "special-attack": 65,
-    "special-defense": 50,
-    "speed": 55
+    "stats": {
+        "hp": 60,
+        "attack": 75,
+        "defense": 45,
+        "special-attack": 65,
+        "special-defense": 50,
+        "speed": 55
+    }
 }

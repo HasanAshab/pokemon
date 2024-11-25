@@ -3,10 +3,12 @@
         "electric",
         "flying"
     ],
-    "hp": 90,
-    "attack": 90,
-    "defense": 85,
-    "special-attack": 125,
-    "special-defense": 90,
-    "speed": 100
+    "stats": {
+        "hp": 90,
+        "attack": 90,
+        "defense": 85,
+        "special-attack": 125,
+        "special-defense": 90,
+        "speed": 100
+    }
 }

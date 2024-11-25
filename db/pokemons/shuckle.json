@@ -3,10 +3,12 @@
         "bug",
         "rock"
     ],
-    "hp": 20,
-    "attack": 10,
-    "defense": 230,
-    "special-attack": 10,
-    "special-defense": 230,
-    "speed": 5
+    "stats": {
+        "hp": 20,
+        "attack": 10,
+        "defense": 230,
+        "special-attack": 10,
+        "special-defense": 230,
+        "speed": 5
+    }
 }

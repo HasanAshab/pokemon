@@ -3,10 +3,12 @@
         "psychic",
         "flying"
     ],
-    "hp": 72,
-    "attack": 58,
-    "defense": 80,
-    "special-attack": 103,
-    "special-defense": 80,
-    "speed": 97
+    "stats": {
+        "hp": 72,
+        "attack": 58,
+        "defense": 80,
+        "special-attack": 103,
+        "special-defense": 80,
+        "speed": 97
+    }
 }

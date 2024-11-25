@@ -3,10 +3,12 @@
         "grass",
         "poison"
     ],
-    "hp": 80,
-    "attack": 82,
-    "defense": 83,
-    "special-attack": 100,
-    "special-defense": 100,
-    "speed": 80
+    "stats": {
+        "hp": 80,
+        "attack": 82,
+        "defense": 83,
+        "special-attack": 100,
+        "special-defense": 100,
+        "speed": 80
+    }
 }

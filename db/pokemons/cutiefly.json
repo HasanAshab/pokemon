@@ -3,10 +3,12 @@
         "bug",
         "fairy"
     ],
-    "hp": 40,
-    "attack": 45,
-    "defense": 40,
-    "special-attack": 55,
-    "special-defense": 40,
-    "speed": 84
+    "stats": {
+        "hp": 40,
+        "attack": 45,
+        "defense": 40,
+        "special-attack": 55,
+        "special-defense": 40,
+        "speed": 84
+    }
 }

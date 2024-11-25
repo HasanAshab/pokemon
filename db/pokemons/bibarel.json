@@ -3,10 +3,12 @@
         "normal",
         "water"
     ],
-    "hp": 79,
-    "attack": 85,
-    "defense": 60,
-    "special-attack": 55,
-    "special-defense": 60,
-    "speed": 71
+    "stats": {
+        "hp": 79,
+        "attack": 85,
+        "defense": 60,
+        "special-attack": 55,
+        "special-defense": 60,
+        "speed": 71
+    }
 }

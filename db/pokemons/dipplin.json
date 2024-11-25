@@ -3,10 +3,12 @@
         "grass",
         "dragon"
     ],
-    "hp": 80,
-    "attack": 80,
-    "defense": 110,
-    "special-attack": 95,
-    "special-defense": 80,
-    "speed": 40
+    "stats": {
+        "hp": 80,
+        "attack": 80,
+        "defense": 110,
+        "special-attack": 95,
+        "special-defense": 80,
+        "speed": 40
+    }
 }

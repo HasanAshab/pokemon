@@ -3,10 +3,12 @@
         "ghost",
         "dark"
     ],
-    "hp": 50,
-    "attack": 92,
-    "defense": 108,
-    "special-attack": 92,
-    "special-defense": 108,
-    "speed": 35
+    "stats": {
+        "hp": 50,
+        "attack": 92,
+        "defense": 108,
+        "special-attack": 92,
+        "special-defense": 108,
+        "speed": 35
+    }
 }

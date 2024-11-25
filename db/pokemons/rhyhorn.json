@@ -3,10 +3,12 @@
         "ground",
         "rock"
     ],
-    "hp": 80,
-    "attack": 85,
-    "defense": 95,
-    "special-attack": 30,
-    "special-defense": 30,
-    "speed": 25
+    "stats": {
+        "hp": 80,
+        "attack": 85,
+        "defense": 95,
+        "special-attack": 30,
+        "special-defense": 30,
+        "speed": 25
+    }
 }

@@ -3,10 +3,12 @@
         "water",
         "fairy"
     ],
-    "hp": 70,
-    "attack": 20,
-    "defense": 50,
-    "special-attack": 20,
-    "special-defense": 50,
-    "speed": 40
+    "stats": {
+        "hp": 70,
+        "attack": 20,
+        "defense": 50,
+        "special-attack": 20,
+        "special-defense": 50,
+        "speed": 40
+    }
 }

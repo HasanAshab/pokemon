@@ -3,10 +3,12 @@
         "steel",
         "psychic"
     ],
-    "hp": 60,
-    "attack": 75,
-    "defense": 100,
-    "special-attack": 55,
-    "special-defense": 80,
-    "speed": 50
+    "stats": {
+        "hp": 60,
+        "attack": 75,
+        "defense": 100,
+        "special-attack": 55,
+        "special-defense": 80,
+        "speed": 50
+    }
 }

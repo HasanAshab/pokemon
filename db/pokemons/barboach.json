@@ -3,10 +3,12 @@
         "water",
         "ground"
     ],
-    "hp": 50,
-    "attack": 48,
-    "defense": 43,
-    "special-attack": 46,
-    "special-defense": 41,
-    "speed": 60
+    "stats": {
+        "hp": 50,
+        "attack": 48,
+        "defense": 43,
+        "special-attack": 46,
+        "special-defense": 41,
+        "speed": 60
+    }
 }

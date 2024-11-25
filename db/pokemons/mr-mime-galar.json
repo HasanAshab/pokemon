@@ -3,10 +3,12 @@
         "ice",
         "psychic"
     ],
-    "hp": 50,
-    "attack": 65,
-    "defense": 65,
-    "special-attack": 90,
-    "special-defense": 90,
-    "speed": 100
+    "stats": {
+        "hp": 50,
+        "attack": 65,
+        "defense": 65,
+        "special-attack": 90,
+        "special-defense": 90,
+        "speed": 100
+    }
 }

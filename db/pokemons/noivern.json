@@ -3,10 +3,12 @@
         "flying",
         "dragon"
     ],
-    "hp": 85,
-    "attack": 70,
-    "defense": 80,
-    "special-attack": 97,
-    "special-defense": 80,
-    "speed": 123
+    "stats": {
+        "hp": 85,
+        "attack": 70,
+        "defense": 80,
+        "special-attack": 97,
+        "special-defense": 80,
+        "speed": 123
+    }
 }

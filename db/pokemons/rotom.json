@@ -3,10 +3,12 @@
         "electric",
         "ghost"
     ],
-    "hp": 50,
-    "attack": 50,
-    "defense": 77,
-    "special-attack": 95,
-    "special-defense": 77,
-    "speed": 91
+    "stats": {
+        "hp": 50,
+        "attack": 50,
+        "defense": 77,
+        "special-attack": 95,
+        "special-defense": 77,
+        "speed": 91
+    }
 }

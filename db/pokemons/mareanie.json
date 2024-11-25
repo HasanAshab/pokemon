@@ -3,10 +3,12 @@
         "poison",
         "water"
     ],
-    "hp": 50,
-    "attack": 53,
-    "defense": 62,
-    "special-attack": 43,
-    "special-defense": 52,
-    "speed": 45
+    "stats": {
+        "hp": 50,
+        "attack": 53,
+        "defense": 62,
+        "special-attack": 43,
+        "special-defense": 52,
+        "speed": 45
+    }
 }

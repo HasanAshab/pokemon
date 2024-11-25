@@ -2,10 +2,12 @@
     "types": [
         "bug"
     ],
-    "hp": 37,
-    "attack": 25,
-    "defense": 41,
-    "special-attack": 25,
-    "special-defense": 41,
-    "speed": 25
+    "stats": {
+        "hp": 37,
+        "attack": 25,
+        "defense": 41,
+        "special-attack": 25,
+        "special-defense": 41,
+        "speed": 25
+    }
 }

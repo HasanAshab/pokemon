@@ -3,10 +3,12 @@
         "poison",
         "fairy"
     ],
-    "hp": 65,
-    "attack": 90,
-    "defense": 120,
-    "special-attack": 85,
-    "special-defense": 70,
-    "speed": 60
+    "stats": {
+        "hp": 65,
+        "attack": 90,
+        "defense": 120,
+        "special-attack": 85,
+        "special-defense": 70,
+        "speed": 60
+    }
 }
