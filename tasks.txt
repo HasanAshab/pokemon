@@ -1,4 +1,4 @@
-damage on attack
+damage on attack + make contact
 dom
 attribute, growl
 effects

@@ -15,7 +15,7 @@ const charmander = await Pokemon.make("charmander", {
     nature: "calm"
 })
 const charmander2 = await Pokemon.make("charmander", {
-    xp: 15 * 100,
+    xp: 12 * 100,
     nature: "calm"
 })
 const bulbasaur = await Pokemon.make("bulbasaur", {
@@ -128,6 +128,9 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
   }
 }
 
+function fixDamage(damage) {
+    return parseFloat(damage.toFixed(2))
+}
 function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
   const isSpecial = move.damage_class === "special";
   const attackStat = pokemon1.statOf(isSpecial ? "special-attack" : "attack");
@@ -135,13 +138,13 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     ? pokemon2.statOf(isSpecial ? "special-defense" : "defense")
     : 70; // Neutral defense if no target
 
-  return Math.floor(((((2 * pokemon1.level) / 5) + 2) * move.power * (attackStat / defenseStat)) / 10) + 2;
+  return (((((2 * pokemon1.level) / 5) + 2) * move.power * (attackStat / defenseStat)) / 10) + 2;
 }
 
 async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
   if (!pokemon2 && !move2) {
     // No target or second move: calculate base damage only
-    return calculateBaseDamage(pokemon1, move1);
+    return fixDamage(calculateBaseDamage(pokemon1, move1));
   }
 
   // Calculate type effectiveness for pokemon1's move
@@ -150,13 +153,12 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
     : pokemon2 
     ? await pokemon2.effectiveness(move1.type)
     : 1;
-
   const stab1 = pokemon1.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
   const critChance1 = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
   const criticalMultiplier1 = Math.random() < critChance1 ? CRIT_MULTIPLIER : 1;
   const randomModifier1 = Math.random() * 0.15 + 0.85;
   const baseDamage1 = calculateBaseDamage(pokemon1, move1);
-  const finalDamage1 = Math.floor(baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1);
+  const finalDamage1 = fixDamage((baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1));
 
   if (!move2) {
     // If only pokemon1 attacks, return its damage
@@ -170,10 +172,15 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
   const criticalMultiplier2 = Math.random() < critChance2 ? CRIT_MULTIPLIER : 1;
   const randomModifier2 = Math.random() * 0.15 + 0.85;
   const baseDamage2 = calculateBaseDamage(pokemon2, move2);
-  const finalDamage2 = Math.floor(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
-
-  // Return net damage: Positive if pokemon2 takes more, negative if pokemon1 takes more
-  return finalDamage1 - finalDamage2;
+  const finalDamage2 = fixDamage(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
+  
+  const pokeEffect1 = await pokemon2.effectiveness(move1.type)
+  const pokeEffect2 = await pokemon1.effectiveness(move2.type)
+  
+  return fixDamage(
+      ((finalDamage1 / effectiveness1) * pokeEffect1)
+    - ((finalDamage2 / effectiveness2) * pokeEffect2)
+  );
 }
 
 function calculateMultiHitDamage(pokemon1, move, pokemon2) {
