@@ -1,9 +1,6 @@
-growl
-fix damage
-damage on air
 damage on attack
 dom
-attribute
+attribute, growl
 effects
 xp
 nature

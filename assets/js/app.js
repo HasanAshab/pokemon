@@ -13,12 +13,11 @@ const bulbasaur = await Pokemon.make("bulbasaur", {
     level: 10,
     nature: "calm"
 })
-console.log(charmander)
 
 
-
-console.log("bulba", calculateDamage(charmander, bulbasaur, ember))
-console.log("char", calculateDamage(charmander, charmander, ember))
+console.log("char air", calculateBaseDamage(charmander, ember))
+console.log("bulba", calculateDamage(charmander, ember, bulbasaur))
+console.log("char", calculateDamage(charmander, ember, charmander))
 }
 catch(e) {console.log(e)}
 }
@@ -98,7 +97,7 @@ function weightedRandom(values, weights) {
   return values[values.length - 1]; // Fallback
 }
 
-function getEffects(attacker, target, move) {
+function getEffects(attacker, move, target) {
   //todo
 }
 
@@ -158,10 +157,12 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
   }
 }
 
-function calculateBaseDamage(attacker, target, move) {
+function calculateBaseDamage(attacker, move, target = null) {
   const isSpecial = move.damage_class === "special";
   const attackStat = attacker.statOf(isSpecial ? "special-attack" : "attack");
-  const defenseStat = target.statOf(isSpecial ? "special-defense" : "defense");
+  const defenseStat = target === null
+    ? 70
+    : target.statOf(isSpecial ? "special-defense" : "defense");
   return Math.floor(((
       (((2 * attacker.meta.level) / 5) + 2)
       * move.power
@@ -170,7 +171,7 @@ function calculateBaseDamage(attacker, target, move) {
 }
 
 
-function calculateDamage(attacker, target, move) {
+function calculateDamage(attacker, move, target) {
   const moveType = move.type;
 
   // Calculate type effectiveness
@@ -189,23 +190,23 @@ function calculateDamage(attacker, target, move) {
   const randomModifier = Math.random() * 0.15 + 0.85;
 
   // Calculate base damage
-  const baseDamage = calculateBaseDamage(attacker, target, move);
+  const baseDamage = calculateBaseDamage(attacker, move, target);
   
   // Calculate final damage
   return Math.floor(baseDamage * effectiveness * stab * criticalMultiplier * randomModifier);
 }
-function calculateMultiHitDamage(attacker, target, move) {
+function calculateMultiHitDamage(attacker, move, target) {
   const hits = getRandomHits(move);
   let totalDamage = 0;
 
   for (let i = 0; i < hits; i++) {
-    totalDamage += calculateDamage(attacker, target, move);
+    totalDamage += calculateDamage(attacker, move, target);
   }
 
   return { totalDamage, hits };
 }
 
-function canDodge(attacker, target, move) {
+function canDodge(attacker, move, target) {
     if (move.accuracy === null) {
         // Moves with null accuracy always hit
         return false;
