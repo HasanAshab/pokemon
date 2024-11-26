@@ -1,33 +1,30 @@
-import db from "./db.js"
+import db from "./utils/db.js"
 import { Pokemon } from "./utils/models.js"
 
 
 async function t() {
-   try{ 
 const ember = await db.moves.get("ember")
 
 
 const charmander = await Pokemon.make("charmander", {
-    level: 10,
+    xp: 10 * 100,
     nature: "calm"
 })
 const bulbasaur = await Pokemon.make("bulbasaur", {
-    level: 10,
+    xp: 12 * 100,
     nature: "calm"
 })
 
 
-console.log("char air", calculateBaseDamage(charmander, ember))
-console.log("bulba", calculateDamage(charmander, ember, bulbasaur))
-console.log("char", calculateDamage(charmander, ember, charmander))
-}
-catch(e) {console.log(e)}
+//console.log("char air", calculateBaseDamage(charmander, ember))
+//console.log("bulba", calculateDamage(charmander, ember, bulbasaur))
+//console.log("char", calculateDamage(charmander, ember, charmander))
+
+console.log(await calculateWinXP(charmander, bulbasaur))
 }
 setTimeout(t, 1000)
 
 
-
-const types = await db.types.all()
 const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
@@ -137,11 +134,11 @@ function calculateBaseDamage(attacker, move, target = null) {
 }
 
 
-function calculateDamage(attacker, move, target) {
+async function calculateDamage(attacker, move, target) {
   const moveType = move.type;
 
   // Calculate type effectiveness
-  let effectiveness = target.effectiveness(moveType)
+  let effectiveness = await target.effectiveness(moveType)
 
   // Calculate STAB
   const stab = attacker.isTypeOf(moveType) ? STAB_MODIFIER : 1;
@@ -280,3 +277,21 @@ function calculateTotalStat(pokemon) {
   return totalStats;
 }
 
+async function calculateWinXP(poke1, poke2) {
+    const levelMultiplier = (poke2.level / poke1.level) * 5;
+    const baseXp = 10
+    let typeEffectiveness1 = 1
+    let typeEffectiveness2 = 1
+
+    for (const type of poke2.data.types) {
+        typeEffectiveness1 *= await poke1.effectiveness(type)
+    }
+    for (const type of poke1.data.types) {
+        typeEffectiveness2 *= await poke2.effectiveness(type)
+    }
+    
+    const typeEffectiveness = typeEffectiveness1 / typeEffectiveness2
+
+    const xp = Math.floor(baseXp * levelMultiplier * typeEffectiveness);
+    return xp;
+}

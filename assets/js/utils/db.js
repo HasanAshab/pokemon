@@ -1,7 +1,7 @@
 class DB {
     constructor(dir) {
         this._dir = dir
-        this.types = new SingleFileTable(dir, "types")
+        this.types = new SingleFileTable(dir, "types", { shouldCache: true })
         this.moves = new MultipleFileTable(dir, "moves")
         this.pokemons = new MultipleFileTable(dir, "pokemons")
         this.pokemons_meta = new SingleFileTable(dir, "pokemons_meta")
@@ -14,11 +14,18 @@ class Table {
         this._dir = dir
         this._tableDir = `${dir}/${this.tableName}`
     }
-
 }
 
 class SingleFileTable extends Table {
+    constructor(dir, tableName, options = {}) {
+        super(dir, tableName)
+        this.shouldCache = options.shouldCache || false
+    }
+
     async all(name) {
+        if (this.shouldCache && this._cache) {
+            return this._cache
+        }
         try {
             const file = `${this._tableDir}.json`
             const res = await fetch(file)
@@ -26,6 +33,9 @@ class SingleFileTable extends Table {
                 throw new Error(`file not found: ${file}`)
             }
             const data = await res.json()
+            if (this.shouldCache) {
+                this._cache = data
+            }
             return data
         }
         catch (e) {
