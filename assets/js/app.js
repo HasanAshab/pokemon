@@ -5,22 +5,30 @@ import { Pokemon } from "./utils/models.js"
 async function t() {
 const ember = await db.moves.get("ember")
 
+ember.effectiveness = async function(type) {
+    const typeMap = await db.types.get(this.type)
+    return typeMap[type] || 1
+}
 
 const charmander = await Pokemon.make("charmander", {
     xp: 10 * 100,
     nature: "calm"
 })
+const charmander2 = await Pokemon.make("charmander", {
+    xp: 15 * 100,
+    nature: "calm"
+})
 const bulbasaur = await Pokemon.make("bulbasaur", {
-    xp: 12 * 100,
+    xp: 10 * 100,
     nature: "calm"
 })
 
 
-//console.log("char air", calculateBaseDamage(charmander, ember))
-//console.log("bulba", calculateDamage(charmander, ember, bulbasaur))
-//console.log("char", calculateDamage(charmander, ember, charmander))
+console.log("charmander damage without any target", await calculateDamage(charmander, ember))
+console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
+console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
+console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, ember))
 
-console.log(await calculateWinXP(charmander, bulbasaur))
 }
 setTimeout(t, 1000)
 
@@ -60,7 +68,7 @@ function weightedRandom(values, weights) {
   return values[values.length - 1]; // Fallback
 }
 
-function getEffects(attacker, move, target) {
+function getEffects(pokemon1, move, pokemon2) {
   //todo
 }
 
@@ -120,71 +128,81 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
   }
 }
 
-function calculateBaseDamage(attacker, move, target = null) {
+function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
   const isSpecial = move.damage_class === "special";
-  const attackStat = attacker.statOf(isSpecial ? "special-attack" : "attack");
-  const defenseStat = target === null
-    ? 70
-    : target.statOf(isSpecial ? "special-defense" : "defense");
-  return Math.floor(((
-      (((2 * attacker.meta.level) / 5) + 2)
-      * move.power
-      * (attackStat / defenseStat)
-      ) / 10) + 2);
+  const attackStat = pokemon1.statOf(isSpecial ? "special-attack" : "attack");
+  const defenseStat = pokemon2
+    ? pokemon2.statOf(isSpecial ? "special-defense" : "defense")
+    : 70; // Neutral defense if no target
+
+  return Math.floor(((((2 * pokemon1.level) / 5) + 2) * move.power * (attackStat / defenseStat)) / 10) + 2;
 }
 
+async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
+  if (!pokemon2 && !move2) {
+    // No target or second move: calculate base damage only
+    return calculateBaseDamage(pokemon1, move1);
+  }
 
-async function calculateDamage(attacker, move, target) {
-  const moveType = move.type;
+  // Calculate type effectiveness for pokemon1's move
+  const effectiveness1 = move2 
+    ? await move1.effectiveness(move2.type) 
+    : pokemon2 
+    ? await pokemon2.effectiveness(move1.type)
+    : 1;
 
-  // Calculate type effectiveness
-  let effectiveness = await target.effectiveness(moveType)
+  const stab1 = pokemon1.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
+  const critChance1 = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
+  const criticalMultiplier1 = Math.random() < critChance1 ? CRIT_MULTIPLIER : 1;
+  const randomModifier1 = Math.random() * 0.15 + 0.85;
+  const baseDamage1 = calculateBaseDamage(pokemon1, move1);
+  const finalDamage1 = Math.floor(baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1);
 
-  // Calculate STAB
-  const stab = attacker.isTypeOf(moveType) ? STAB_MODIFIER : 1;
+  if (!move2) {
+    // If only pokemon1 attacks, return its damage
+    return finalDamage1;
+  }
 
-  // Determine critical hit chance
-  const critChance = BASE_CRIT_CHANCE * (1 + move.meta.crit_rate)
+  // Calculate type effectiveness for pokemon2's move
+  const effectiveness2 = await move2.effectiveness(move1.type);
+  const stab2 = pokemon2.isTypeOf(move2.type) ? STAB_MODIFIER : 1;
+  const critChance2 = BASE_CRIT_CHANCE * (1 + move2.meta.crit_rate);
+  const criticalMultiplier2 = Math.random() < critChance2 ? CRIT_MULTIPLIER : 1;
+  const randomModifier2 = Math.random() * 0.15 + 0.85;
+  const baseDamage2 = calculateBaseDamage(pokemon2, move2);
+  const finalDamage2 = Math.floor(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
 
-  // Determine if the move is a critical hit
-  const criticalMultiplier = Math.random() < critChance ? CRIT_MULTIPLIER : 1;
-
-  // Add randomness to damage
-  const randomModifier = Math.random() * 0.15 + 0.85;
-
-  // Calculate base damage
-  const baseDamage = calculateBaseDamage(attacker, move, target);
-  
-  // Calculate final damage
-  return Math.floor(baseDamage * effectiveness * stab * criticalMultiplier * randomModifier);
+  // Return net damage: Positive if pokemon2 takes more, negative if pokemon1 takes more
+  return finalDamage1 - finalDamage2;
 }
-function calculateMultiHitDamage(attacker, move, target) {
+
+function calculateMultiHitDamage(pokemon1, move, pokemon2) {
   const hits = getRandomHits(move);
   let totalDamage = 0;
 
   for (let i = 0; i < hits; i++) {
-    totalDamage += calculateDamage(attacker, move, target);
+    totalDamage += calculateDamage(pokemon1, move, pokemon2);
   }
 
   return { totalDamage, hits };
 }
 
-function canDodge(attacker, move, target) {
+function canDodge(pokemon1, move, pokemon2) {
     if (move.accuracy === null) {
         // Moves with null accuracy always hit
         return false;
     }
 
     // Get speed stats
-    const attackerSpd = attacker.statOf("speed");
-    const targetSpd = target.statOf("speed");
+    const pokemon1Spd = pokemon1.statOf("speed");
+    const pokemon2Spd = pokemon2.statOf("speed");
     const isPhysical = move.damage_class === "physical";
 
     // Simulate hit/miss based on final accuracy
     const maxHitChance = isPhysical ? 100 : 50
     const minHitChance = isPhysical ? 25 : 50
     const hitChance = (Math.random() * maxHitChance) - minHitChance; 
-    const dodgeChance = (targetSpd - attackerSpd);
+    const dodgeChance = (pokemon2Spd - pokemon1Spd);
     return dodgeChance > hitChance;
 }
 

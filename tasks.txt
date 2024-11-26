@@ -2,6 +2,6 @@ damage on attack
 dom
 attribute, growl
 effects
-xp
+xp using cp
 nature
 abilities effects (eg guts)
