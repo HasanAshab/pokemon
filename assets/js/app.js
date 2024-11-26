@@ -36,6 +36,29 @@ class Pokemon {
         const data = await db.pokemons.get(name)
         return new this(name, meta, data)
     }
+    
+    isTypeOf(type) {
+        return this.data.types.includes(type)
+    }
+    
+    statOf(name) {
+        return this.data.stats[name];
+    }
+    
+    effortOf(name) {
+        return this.data.efforts[name];
+    }
+    
+    effectiveness(type) {
+      let effectiveness = 1;
+      this.data.types.forEach(tType => {
+        if (types[type] && types[type][tType]) {
+          effectiveness *= types[type][tType];
+        }
+      });
+      return effectiveness
+    }
+    
 }
 
 
@@ -44,9 +67,6 @@ const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
 
-function getStat(pokemon, name) {
-  return pokemon.stats[name];
-}
 
 function getRandomHits(move) {
   if (move.meta.min_hits === move.meta.max_hits) {
@@ -78,33 +98,26 @@ function weightedRandom(values, weights) {
   return values[values.length - 1]; // Fallback
 }
 
-
-function preparePokemon(pokemon, meta) {
-    pokemon.meta = meta
-    pokemon.stats = calculateTotalStat(pokemon, meta)
-    return pokemon
-}
-
 function getEffects(attacker, target, move) {
   //todo
 }
 
 function applyPoisonEffect(pokemon) {
-  const maxHP = getStat(pokemon, "hp");
+  const maxHP = pokemon.statOf("hp");
   const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
   pokemon.currentHP -= poisonDamage;
   return poisonDamage;
 }
 
 function applyBurnEffect(pokemon) {
-  const maxHP = getStat(pokemon, "hp");
+  const maxHP = pokemon.statOf("hp");
   const burnDamage = Math.floor(maxHP / 18); // 1/8th HP loss
   pokemon.currentHP -= burnDamage;
   return burnDamage;
 }
 
 function applyParalysisEffect(pokemon) {
-  const speedStat = getStat(pokemon, "speed");
+  const speedStat = pokemon.statOf("speed");
   speedStat.base_stat = Math.floor(speedStat.base_stat / 2); // Speed halved
   return Math.random() < 0.25; // 25% chance to skip turn
 }
@@ -112,7 +125,7 @@ function applyParalysisEffect(pokemon) {
 function applyConfusionEffect(pokemon) {
   const isConfused = Math.random() < 0.5; // 50% chance to hurt itself
   if (isConfused) {
-    const maxHP = getStat(pokemon, "hp");
+    const maxHP = pokemon.statOf("hp");
     const selfDamage = Math.floor(maxHP / 16); // Deal damage to itself
     pokemon.currentHP -= selfDamage;
     return { isConfused, selfDamage };
@@ -146,9 +159,9 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
 }
 
 function calculateBaseDamage(attacker, target, move) {
-  const isSpecial = move.damage_class.name === "special";
-  const attackStat = getStat(attacker, isSpecial ? "special-attack" : "attack");
-  const defenseStat = getStat(target, isSpecial ? "special-defense" : "defense");
+  const isSpecial = move.damage_class === "special";
+  const attackStat = attacker.statOf(isSpecial ? "special-attack" : "attack");
+  const defenseStat = target.statOf(isSpecial ? "special-defense" : "defense");
   return Math.floor(((
       (((2 * attacker.meta.level) / 5) + 2)
       * move.power
@@ -161,15 +174,10 @@ function calculateDamage(attacker, target, move) {
   const moveType = move.type;
 
   // Calculate type effectiveness
-  let effectiveness = 1;
-  target.types.forEach(tType => {
-    if (types[moveType] && types[moveType][tType]) {
-      effectiveness *= types[moveType][tType];
-    }
-  });
+  let effectiveness = target.effectiveness(moveType)
 
   // Calculate STAB
-  const stab = attacker.types.includes(moveType) ? STAB_MODIFIER : 1;
+  const stab = attacker.isTypeOf(moveType) ? STAB_MODIFIER : 1;
 
   // Determine critical hit chance
   const critChance = BASE_CRIT_CHANCE * (1 + move.meta.crit_rate)
@@ -204,9 +212,9 @@ function canDodge(attacker, target, move) {
     }
 
     // Get speed stats
-    const attackerSpd = getStat(attacker, "speed");
-    const targetSpd = getStat(target, "speed");
-    const isPhysical = move.damage_class.name === "physical";
+    const attackerSpd = attacker.statOf("speed");
+    const targetSpd = target.statOf("speed");
+    const isPhysical = move.damage_class === "physical";
 
     // Simulate hit/miss based on final accuracy
     const maxHitChance = isPhysical ? 100 : 50
