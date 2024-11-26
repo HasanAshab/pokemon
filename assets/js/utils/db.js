@@ -4,6 +4,7 @@ class DB {
         this.types = new SingleFileTable(dir, "types")
         this.moves = new MultipleFileTable(dir, "moves")
         this.pokemons = new MultipleFileTable(dir, "pokemons")
+        this.pokemons_meta = new SingleFileTable(dir, "pokemons_meta")
     }
 }
 
@@ -33,7 +34,7 @@ class SingleFileTable extends Table {
     }
     
     async get(name) {
-        data = await this.all()
+        const data = await this.all()
         return data[name]
     }
 }

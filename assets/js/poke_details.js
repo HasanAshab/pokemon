@@ -1,3 +1,7 @@
+import db from "./utils/db.js"
+import { Pokemon } from "./utils/models.js"
+
+
 function setStat(name, value) {
   const stat = document.querySelector(`.stats .stat.${name}`)
   stat.setAttribute("data-value", value)
@@ -25,4 +29,21 @@ function statClickHandler( {
 }
 function showMoveChooseInterface() {
   
+}
+
+
+window.onload = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');
+    const displayName = name.charAt(0).toUpperCase() + name.slice(1)
+    document.getElementById("pokemon-name").innerText = displayName
+
+    const meta = await db.pokemons_meta.get(name)
+    const pokemon = await Pokemon.make(name, meta)
+
+    setStat("level", pokemon.meta.level)
+    setStat("retreat", pokemon.meta.retreat)
+    for (const stat in pokemon.data.stats) {
+      setStat(stat, pokemon.data.stats[stat])
+    }
 }

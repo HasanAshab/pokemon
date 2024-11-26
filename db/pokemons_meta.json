@@ -1,0 +1,12 @@
+{
+    "charmander": {
+        "level": 3,
+        "nature": "bully",
+        "retreat": 2
+    },
+    "frokie": {
+        "level": 1,
+        "nature": "gentle",
+        "retreat": 2
+    }
+}

@@ -1,3 +1,5 @@
+import db from './utils/db.js';
+
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
 const badgesDataStr = localStorage.getItem("badges-data")
 const badgesData = JSON.parse(badgesDataStr) || [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -34,25 +36,26 @@ function badgeClickHandler( {
     loadTotalBadges()
 }
 function pokemonClickHandler(slug) {
-    window.location = `poke_details.html?${slug}`
+    window.location = `poke_details.html?name=${slug}`
 }
-function loadAllPokemons() {
-    const pokemonList = document.querySelector(".pokemon-list")
-    const pokemons = [{
-        name: "Charmander",
-        slug: "charmander",
-        level: 5,
-    }]
-    pokemonList.innerHTML = ""
-    for (const pokemon of pokemons) {
-        pokemonList.innerHTML += `
-        <li class="pokemon" onclick="pokemonClickHandler('${pokemon.slug}')">
-        <span class="pokemon-name">${pokemon.name}</span>
-        <span class="pokemon-level">LVL: ${pokemon.level}</span>
-        </li>
-        `
+
+async function loadAllPokemons() {
+    const pokemonList = document.querySelector(".pokemon-list");
+    const pokemons = await db.pokemons_meta.all();
+    pokemonList.innerHTML = "";
+    for (const name in pokemons) {
+        const pokemon = pokemons[name];
+        const listItem = document.createElement("li");
+        listItem.classList.add("pokemon");
+        listItem.innerHTML = `
+            <span class="pokemon-name">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
+            <span class="pokemon-level">LVL: ${pokemon.level}</span>
+        `;
+        listItem.addEventListener("click", () => pokemonClickHandler(name));
+        pokemonList.appendChild(listItem);
     }
 }
+
 
 function loadAll() {
     loadTotalBadges()

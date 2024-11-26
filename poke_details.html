@@ -24,6 +24,7 @@
     </div>
   </div>
 
+
   <div class="blur-bg">
     <div class="stat-update-form" style="background-color:white; padding:40px">
       <h3 class="stat-name">Stat name</h3>
@@ -36,7 +37,7 @@
 <!-- Header -->
 <div class="header">
   <button class="back-btn" onclick="history.back()">←</button>
-  <h1 class="pokemon-name">Pokemon_name</h1>
+  <h1 class="pokemon-name" id="pokemon-name">Pokemon_name</h1>
   <button class="image-btn">🖼️</button>
 </div>
 
@@ -49,7 +50,7 @@
     <div data-value="0" onclick="statClickHandler(event)" class="stat attack">
       <strong>ATK:</strong>
     </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat defence">
+    <div data-value="0" onclick="statClickHandler(event)" class="stat defense">
       <strong>DEF:</strong>
     </div>
     <div data-value="0" onclick="statClickHandler(event)" class="stat retreat">
@@ -64,7 +65,7 @@
     <div data-value="0" onclick="statClickHandler(event)" class="stat special-attack">
       <strong>SP. ATK:</strong>
     </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat special-defence">
+    <div data-value="0" onclick="statClickHandler(event)" class="stat special-defense">
       <strong>SP. DEF:</strong>
     </div>
     <div data-value="0" onclick="statClickHandler(event)" class="stat speed">
@@ -115,5 +116,5 @@
 
 </div>
 </body>
-<script src="./assets/js/poke_details.js"></script>
+<script src="./assets/js/poke_details.js" type="module"></script>
 </html>
