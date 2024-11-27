@@ -3,10 +3,11 @@ multi hit move
 xp using cp
 nature
 abilities effects (eg guts)
-
-dom
 stat changes, growl
 effects
+
+
+dom
 reduce level stat
 
 

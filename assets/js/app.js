@@ -1,16 +1,16 @@
 import db from "./utils/db.js"
 import { Pokemon, Move } from "./utils/models.js"
-
+import { calculateDamage } from "./utils/damage.js"
 
 async function t() {
 const ember = await Move.make("ember")
 const growl = await Move.make("growl")
 
 const charmander = await Pokemon.make("charmander", {
-    xp: 10 * 100,
+    xp: 0 * 100,
     nature: "calm"
 })
-console.log(charmander.state.stats())
+console.log("before", charmander.state.stats())
 const charmander2 = await Pokemon.make("charmander", {
     xp: 12 * 100,
     nature: "calm"
@@ -20,15 +20,15 @@ const bulbasaur = await Pokemon.make("bulbasaur", {
     nature: "calm"
 })
 
-
-// console.log("charmander damage without any target", await calculateDamage(charmander, ember))
+console.log("charmander damage without any target", await calculateDamage(charmander, ember))
 // console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
 // console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
 // console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, growl))
 
 
 applyStatChanges(charmander2, charmander, growl)
-console.log(charmander.state.stats())
+console.log("after", charmander.state.stats())
+console.log("charmander damage without any target", await calculateDamage(charmander, ember))
 
 }
 
@@ -36,7 +36,7 @@ setTimeout(t, 1000)
 
 
 function applyStatChanges(attacker, target, move) {
-    const { stat_changes } = move.meta;
+    const { stat_changes } = move;
 
     // Initialize stat stages if not already present
     // Apply changes to defender's stat stages
