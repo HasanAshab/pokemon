@@ -4,7 +4,6 @@ class DB {
         this.types = new SingleFileTable(dir, "types", { shouldCache: true })
         this.moves = new MultipleFileTable(dir, "moves")
         this.pokemons = new MultipleFileTable(dir, "pokemons")
-        this.pokemons_meta = new SingleFileTable(dir, "pokemons_meta")
     }
 }
 

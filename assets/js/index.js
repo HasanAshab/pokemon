@@ -1,4 +1,20 @@
-import db from './utils/db.js';
+function __setDefaultPokeMeta() {
+    const pokemons_meta = {
+        "charmander": {
+            "level": 3,
+            "nature": "bully",
+            "retreat": 2
+        },
+        "frokie": {
+            "level": 1,
+            "nature": "gentle",
+            "retreat": 2
+        }
+    }
+    localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
+}
+__setDefaultPokeMeta()
+
 
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
 const badgesDataStr = localStorage.getItem("badges-data")
@@ -17,7 +33,7 @@ function loadActiveBadges() {
     })
 }
 
-function badgeClickHandler( {
+globalThis.badgeClickHandler = function badgeClickHandler( {
     currentTarget
 }) {
     const classList = currentTarget.classList
@@ -35,24 +51,23 @@ function badgeClickHandler( {
     localStorage.setItem("badges-data", JSON.stringify(badgesData))
     loadTotalBadges()
 }
-function pokemonClickHandler(slug) {
+
+globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
     window.location = `poke_details.html?name=${slug}`
 }
 
-async function loadAllPokemons() {
-    const pokemonList = document.querySelector(".pokemon-list");
-    const pokemons = await db.pokemons_meta.all();
-    pokemonList.innerHTML = "";
-    for (const name in pokemons) {
-        const pokemon = pokemons[name];
-        const listItem = document.createElement("li");
-        listItem.classList.add("pokemon");
-        listItem.innerHTML = `
-            <span class="pokemon-name">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
-            <span class="pokemon-level">LVL: ${pokemon.level}</span>
-        `;
-        listItem.addEventListener("click", () => pokemonClickHandler(name));
-        pokemonList.appendChild(listItem);
+function loadAllPokemons() {
+    const pokemonList = document.querySelector(".pokemon-list")
+    const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
+    pokemonList.innerHTML = ""
+    for (const pokemon in pokemons_meta) {
+        const meta = pokemons_meta[pokemon]
+        pokemonList.innerHTML += `
+        <li class="pokemon" onclick="pokemonClickHandler('${pokemon}')">
+        <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
+        <span class="pokemon-level">LVL: ${meta.level}</span>
+        </li>
+        `
     }
 }
 
