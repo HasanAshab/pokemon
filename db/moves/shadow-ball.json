@@ -26,5 +26,5 @@
     "type": "ghost",
     "effect_chance": 20,
     "effect_names": [],
-    "retreat": 2
+    "retreat": 2.5
 }

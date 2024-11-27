@@ -26,5 +26,5 @@
     "type": "bug",
     "effect_chance": 100,
     "effect_names": [],
-    "retreat": 0.5
+    "retreat": 1.0
 }

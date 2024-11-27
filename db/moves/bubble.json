@@ -26,5 +26,5 @@
     "type": "water",
     "effect_chance": 10,
     "effect_names": [],
-    "retreat": 1
+    "retreat": 1.5
 }

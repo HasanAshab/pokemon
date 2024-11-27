@@ -26,5 +26,5 @@
     "type": "grass",
     "effect_chance": 100,
     "effect_names": [],
-    "retreat": 2
+    "retreat": 2.5
 }

@@ -28,5 +28,5 @@
     "effect_names": [
         "paralyze"
     ],
-    "retreat": 1
+    "retreat": 1.5
 }

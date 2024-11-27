@@ -56,15 +56,22 @@ def get_effects(move):
 
 
 def calculate_retreat(move):
+    damage_class_bonus = {
+        "physical": 0,
+        "special": 0.5,
+        "status": -0.5,
+    }
     retreats = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]
-    thresholds = [250, 250, 230, 210, 190, 170, 150, 130, 110, 70, 50, 20]
+    thresholds = [20, 50, 70, 110, 130, 150, 170, 190, 210, 230, 250, 250]
     power = move["power"]
     if power is None:
-        return retreats[2]
-    for i, threshold in enumerate(thresholds):
-        if power <= threshold:
-            return retreats[i]
-    return retreats[-1]
+        retreat = retreats[2]
+    else:
+        for i, threshold in enumerate(thresholds):
+            if power <= threshold:
+                retreat = retreats[i]
+                break
+    return retreat + damage_class_bonus[move["damage_class"]["name"]]
 
 
 def serialize_type(data):
@@ -87,7 +94,7 @@ def serialize_move(data):
         "power": data["power"],
         "accuracy": data["accuracy"],
         "pp": pp,
-        "description": data["flavor_text_entries"][0]["flavor_text"],
+        #"description": data["flavor_text_entries"][0]["flavor_text"],
         "damage_class": data["damage_class"]["name"],
         "type": data["type"]["name"],
         "effect_chance": data.get("effect_chance"),

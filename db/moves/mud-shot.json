@@ -26,5 +26,5 @@
     "type": "ground",
     "effect_chance": 100,
     "effect_names": [],
-    "retreat": 1.5
+    "retreat": 2.0
 }

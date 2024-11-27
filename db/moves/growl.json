@@ -19,12 +19,6 @@
         "min_turns": null,
         "stat_chance": 0
     },
-    "stat_changes": {
-        "target": {
-            "attack": -1
-        },
-        "self": {}
-    },
     "power": null,
     "accuracy": 100,
     "pp": 13,
@@ -32,5 +26,5 @@
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 1.5
+    "retreat": 1.0
 }
