@@ -7,8 +7,8 @@ const ember = await Move.make("ember")
 const growl = await Move.make("growl")
 
 const charmander = await Pokemon.make("charmander", {
-    xp: 0 * 100,
-    nature: "calm"
+    xp: 10 * 100,
+    nature: "brave"
 })
 console.log("before", charmander.state.stats())
 const charmander2 = await Pokemon.make("charmander", {
@@ -20,15 +20,16 @@ const bulbasaur = await Pokemon.make("bulbasaur", {
     nature: "calm"
 })
 
-console.log("charmander damage without any target", await calculateDamage(charmander, ember))
-// console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
-// console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
+//console.log("charmander damage without any target", await calculateDamage(charmander, ember))
+console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander2, ember, bulbasaur))
+console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
+console.log("charmander thrown ember on charmander", await calculateDamage(charmander2, ember, charmander))
 // console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, growl))
 
 
-applyStatChanges(charmander2, charmander, growl)
-console.log("after", charmander.state.stats())
-console.log("charmander damage without any target", await calculateDamage(charmander, ember))
+//applyStatChanges(charmander2, charmander, growl)
+//console.log("after", charmander.state.stats())
+//console.log("charmander damage without any target", await calculateDamage(charmander, ember))
 
 }
 
