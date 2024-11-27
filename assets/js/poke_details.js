@@ -83,7 +83,7 @@ async function loadMoves() {
 
     for (const moveName of meta.moves) {
         const move = await Move.make(moveName)
-        const damage = awaitcalculateDamage(pokemon, move)
+        const damage = await calculateDamage(pokemon, move)
         movesContainer.innerHTML += `
     <div class="move selected">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
