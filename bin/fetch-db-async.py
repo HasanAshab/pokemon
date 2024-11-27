@@ -57,7 +57,7 @@ def get_effects(move):
 
 def calculate_retreat(move):
     retreats = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]
-    thresholds = [20, 50, 70, 110, 130, 150, 170, 190, 210, 230, 250, 250]
+    thresholds = [250, 250, 230, 210, 190, 170, 150, 130, 110, 70, 50, 20]
     power = move["power"]
     if power is None:
         return retreats[2]
@@ -87,6 +87,7 @@ def serialize_move(data):
         "power": data["power"],
         "accuracy": data["accuracy"],
         "pp": pp,
+        "description": data["flavor_text_entries"][0]["flavor_text"],
         "damage_class": data["damage_class"]["name"],
         "type": data["type"]["name"],
         "effect_chance": data.get("effect_chance"),
@@ -184,9 +185,9 @@ async def fetch_pokemons(session):
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        await fetch_types(session)
+        #await fetch_types(session)
         await fetch_moves(session)
-        await fetch_pokemons(session)
+        #await fetch_pokemons(session)
         print("All data fetched and saved successfully!")
 
 

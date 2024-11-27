@@ -1,5 +1,6 @@
 import { Pokemon, Move } from "./utils/models.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+import { calculateDamage } from "./utils/damage.js"
 import db from "./utils/db.js"
 
 
@@ -80,10 +81,11 @@ async function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
     const meta = getPokemonsMeta(name)
-
+    const pokemon = await Pokemon.make(name, meta)
     for (const moveName of meta.moves) {
         const move = await Move.make(moveName)
-        const damage = await calculateDamage(pokemon, move)
+        const damages = await calculateDamage(pokemon, move)
+        const damage = damages[1].totalDamage
         movesContainer.innerHTML += `
     <div class="move selected">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
@@ -98,7 +100,7 @@ async function loadMoves() {
         Category: ${capitalizeFirstLetter(move.damage_class)}
       </p>
       <p>
-        Damage: ${damage}
+        ${damage !== null ? "Damage: " + damage : ""}
       </p>
       <p>
         ${move.power !== null ? "Power: " + move.power : ""}
