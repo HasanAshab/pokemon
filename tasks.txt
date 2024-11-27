@@ -1,7 +1,7 @@
 damage on attack + make contact
 multi hit move
 dom
-attribute, growl
+stat changes, growl
 effects
 xp using cp
 nature

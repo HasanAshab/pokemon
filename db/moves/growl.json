@@ -19,6 +19,12 @@
         "min_turns": null,
         "stat_chance": 0
     },
+    "stat_changes": {
+        "target": {
+            "attack": -1
+        },
+        "self": {}
+    },
     "power": null,
     "accuracy": 100,
     "pp": 13,

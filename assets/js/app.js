@@ -1,14 +1,10 @@
 import db from "./utils/db.js"
-import { Pokemon } from "./utils/models.js"
+import { Pokemon, Move } from "./utils/models.js"
 
 
 async function t() {
-const ember = await db.moves.get("growl")
-
-ember.effectiveness = async function(type) {
-    const typeMap = await db.types.get(this.type)
-    return typeMap[type] || 1
-}
+const ember = await Move.make("ember")
+const growl = await Move.make("growl")
 
 const charmander = await Pokemon.make("charmander", {
     xp: 10 * 100,
@@ -23,11 +19,15 @@ const bulbasaur = await Pokemon.make("bulbasaur", {
     nature: "calm"
 })
 
-
+/*
 console.log("charmander damage without any target", await calculateDamage(charmander, ember))
 console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
 console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
-console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, ember))
+console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, growl))
+*/
+
+console.log(applyStatChanges(charmander, bulbasaur, growl))
+
 
 }
 setTimeout(t, 1000)
@@ -36,6 +36,45 @@ setTimeout(t, 1000)
 const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24; // 4.17% base critical hit chance
+const MAX_STAGE = 6; // Max stat stage
+const MIN_STAGE = -6;
+
+function applyStatChanges(attacker, defender, move) {
+    const { stat_changes } = move.meta;
+
+    // Initialize stat stages if not already present
+    attacker.stages = attacker.stages || {};
+    defender.stages = defender.stages || {};
+
+    // Apply changes to defender's stat stages
+    if (stat_changes.target) {
+        for (const [stat, change] of Object.entries(stat_changes.target)) {
+            defender.stages[stat] = defender.stages[stat] || 0;
+            defender.stages[stat] = Math.max(
+                MIN_STAGE,
+                Math.min(MAX_STAGE, defender.stages[stat] + change)
+            );
+        }
+    }
+
+    // Apply changes to attacker's stat stages
+    if (stat_changes.self) {
+        for (const [stat, change] of Object.entries(stat_changes.self)) {
+            attacker.stages[stat] = attacker.stages[stat] || 0;
+            attacker.stages[stat] = Math.max(
+                MIN_STAGE,
+                Math.min(MAX_STAGE, attacker.stages[stat] + change)
+            );
+        }
+    }
+}
+
+function calculateModifiedStat(baseStat, stage) {
+    const stageMultiplier = stage > 0
+        ? (2 + stage) / 2 // Positive stage
+        : 2 / (2 - stage); // Negative stage
+    return Math.floor(baseStat * stageMultiplier);
+}
 
 function getEffects(pokemon1, move, pokemon2) {
   //todo
@@ -98,10 +137,15 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
 }
 
 function fixDamage(damage) {
-    return parseFloat(damage.toFixed(2));
+    return damage === null
+        ? null
+        : parseFloat(damage.toFixed(2));
 }
 
 function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
+    if (move.power === null) {
+        return null
+    }
     const isSpecial = move.damage_class === "special";
     const attackStat = pokemon1.statOf(isSpecial ? "special-attack" : "attack");
     const defenseStat = pokemon2
@@ -140,7 +184,9 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
     const criticalMultiplier1 = Math.random() < critChance1 ? CRIT_MULTIPLIER : 1;
     const randomModifier1 = Math.random() * 0.15 + 0.85;
     const baseDamage1 = calculateBaseDamage(pokemon1, move1);
-    const finalDamage1 = fixDamage((baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1));
+    const finalDamage1 = baseDamage1 === null
+        ? null
+        : fixDamage((baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1));
 
     if (!move2) {
         // If only pokemon1 attacks, return its damage
@@ -156,15 +202,15 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
     const criticalMultiplier2 = Math.random() < critChance2 ? CRIT_MULTIPLIER : 1;
     const randomModifier2 = Math.random() * 0.15 + 0.85;
     const baseDamage2 = calculateBaseDamage(pokemon2, move2);
-    const finalDamage2 = fixDamage(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
+    const finalDamage2 = baseDamage2 === null
+        ? null
+        : fixDamage(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
     
     const pokeEffect1 = await pokemon2.effectiveness(move1.type);
     const pokeEffect2 = await pokemon1.effectiveness(move2.type);
-    
-    const remainingDamage = fixDamage(
-        ((finalDamage1 / effectiveness1) * pokeEffect1) - 
-        ((finalDamage2 / effectiveness2) * pokeEffect2)
-    );
+    const remDam1 = ((finalDamage1 / effectiveness1) * pokeEffect1)
+    const remDam2 = ((finalDamage2 / effectiveness2) * pokeEffect2)
+    const remainingDamage = fixDamage(remDam1 - remDam2)
 
     if (remainingDamage > 0) {
         result[1].totalDamage = remainingDamage
@@ -174,6 +220,7 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
         result[1].totalDamage = 0
         result[2].totalDamage = remainingDamage * -1
     }
+
     result[1].hits = 1
     result[2].hits = 1
 

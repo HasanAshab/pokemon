@@ -6,13 +6,13 @@ export class Pokemon {
 
     static async make(name, meta) {
         const data = await db.pokemons.get(name);
-        return new this(name, meta, data);
+        return new this(name, data, meta);
     }
 
-    constructor(name, meta, data) {
+    constructor(name, data, meta) {
         this.name = name;
-        this.meta = meta;
         this.data = data;
+        this.meta = meta;
     }
 
     isTypeOf(type) {
@@ -41,5 +41,23 @@ export class Pokemon {
     get level() {
         const xp = this.meta.xp;
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1; // Level starts at 1
+    }
+}
+
+export class Move {
+    static async make(name) {
+        const data = await db.moves.get(name);
+        return new this(name, data);
+    }
+
+    constructor(name, data) {
+        this.name = name;
+        this._data = data;
+        Object.assign(this, data)
+    }
+
+    async effectiveness(type) {
+        const typeMap = await db.types.get(this.type)
+        return typeMap[type] || 1
     }
 }
