@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "If the user faints, deletes\nthe PP of the final move.",
     "damage_class": "status",
     "type": "ghost",
     "effect_chance": null,

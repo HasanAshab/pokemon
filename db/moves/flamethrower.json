@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
+    "description": "An attack that may\ninflict a burn.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": 10,

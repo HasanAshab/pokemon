@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "The type of attack varies\ndepending on the location.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

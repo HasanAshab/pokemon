@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "The user lays a trap\nof levitating stones\naround the foe. The\ntrap hurts foes that\nswitch into battle.",
     "damage_class": "status",
     "type": "rock",
     "effect_chance": null,

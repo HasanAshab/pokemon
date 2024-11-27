@@ -3,6 +3,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 2,
+    "description": null,
     "damage_class": "special",
     "type": "dragon",
     "effect_chance": null,

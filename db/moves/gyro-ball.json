@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 2,
+    "description": "The user tackles the\nfoe with a high-speed\nspin. The slower the\nuser, the greater\nthe damage.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": null,

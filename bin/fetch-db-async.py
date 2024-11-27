@@ -89,12 +89,16 @@ def serialize_type(data):
 
 def serialize_move(data):
     pp = 10 if data["pp"] is None else round(data["pp"] / 3)
+    description = None
+    if len(data["flavor_text_entries"]):
+        description = data["flavor_text_entries"][0]["flavor_text"]
+
     return {
         "meta": data["meta"],
         "power": data["power"],
         "accuracy": data["accuracy"],
         "pp": pp,
-        #"description": data["flavor_text_entries"][0]["flavor_text"],
+        "description": description,
         "damage_class": data["damage_class"]["name"],
         "type": data["type"]["name"],
         "effect_chance": data.get("effect_chance"),

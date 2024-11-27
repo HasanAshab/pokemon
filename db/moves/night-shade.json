@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
+    "description": "The user's level\nequals damage HP.",
     "damage_class": "special",
     "type": "ghost",
     "effect_chance": null,

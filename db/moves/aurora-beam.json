@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 100,
     "pp": 7,
+    "description": "An attack that may\nlower ATTACK.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": 10,

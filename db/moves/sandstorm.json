@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
+    "description": "Inflicts damage\nevery turn.",
     "damage_class": "status",
     "type": "rock",
     "effect_chance": null,

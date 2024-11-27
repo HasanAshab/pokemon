@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Le lanceur s\u2019asperge d\u2019une poudre\nirritante pour attirer l\u2019attention. Il\nattire toutes les attaques ennemies.",
     "damage_class": "status",
     "type": "bug",
     "effect_chance": null,

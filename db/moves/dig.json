@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 3,
+    "description": "1st turn: Burrow\n2nd turn: Attack",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": null,

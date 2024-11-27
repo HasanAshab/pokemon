@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 60,
     "pp": 7,
+    "description": "May put the foe to\nsleep.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

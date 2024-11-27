@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
+    "description": "Raises the user's\nDEFENSE.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

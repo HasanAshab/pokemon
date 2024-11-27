@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
+    "description": "\u4f7f\u51fa\u6d51\u8eab\u529b\u6c14\n\u6bb4\u6253\u5bf9\u624b\u8fdb\u884c\u653b\u51fb\u3002",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

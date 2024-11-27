@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "Heals all status problems\nwith a soothing scent.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 75,
     "accuracy": 100,
     "pp": 3,
+    "description": "Steals 1/2 of the\ndamage inflicted.",
     "damage_class": "special",
     "type": "grass",
     "effect_chance": null,

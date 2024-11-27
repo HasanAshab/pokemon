@@ -22,6 +22,7 @@
     "power": 75,
     "accuracy": 100,
     "pp": 3,
+    "description": "Un coup de corne qui draine l\u2019\u00e9nergie\nde l\u2019ennemi. Convertit la moiti\u00e9 des d\u00e9g\u00e2ts\ninflig\u00e9s en PV pour le lanceur.",
     "damage_class": "physical",
     "type": "grass",
     "effect_chance": null,

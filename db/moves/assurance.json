@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 3,
+    "description": "\u5982\u679c\u6b64\u56de\u5408\u5167\u5c0d\u624b\n\u5df2\u53d7\u5230\u50b7\u5bb3\uff0c\n\u62db\u5f0f\u5a01\u529b\u6703\u8b8a\u6210\uff12\u500d\u3002",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

@@ -3,6 +3,7 @@
     "power": 100,
     "accuracy": 95,
     "pp": 5,
+    "description": null,
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": null,

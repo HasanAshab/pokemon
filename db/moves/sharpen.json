@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
+    "description": "Reduces the polygon count\nand raises ATTACK.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

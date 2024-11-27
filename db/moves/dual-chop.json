@@ -22,6 +22,7 @@
     "power": 40,
     "accuracy": 90,
     "pp": 5,
+    "description": "Le lanceur frappe l\u2019ennemi deux fois\nd\u2019affil\u00e9e avec les parties les plus\nrobustes de son corps.",
     "damage_class": "physical",
     "type": "dragon",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
+    "description": "The user scatters bursts of spores\nthat induce sleep.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

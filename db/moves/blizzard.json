@@ -22,6 +22,7 @@
     "power": 110,
     "accuracy": 70,
     "pp": 2,
+    "description": "An attack that may\nfreeze the foe.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": 10,

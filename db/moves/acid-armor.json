@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Sharply raises the\nuser's DEFENSE.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

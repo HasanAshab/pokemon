@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 3,
+    "description": "\u5229\u7528\u632f\u52a8\u53d1\u51fa\u97f3\u6ce2\u8fdb\u884c\u653b\u51fb\u3002\n\u6709\u65f6\u4f1a\u964d\u4f4e\u5bf9\u624b\u7684\u7279\u9632\u3002",
     "damage_class": "special",
     "type": "bug",
     "effect_chance": 10,

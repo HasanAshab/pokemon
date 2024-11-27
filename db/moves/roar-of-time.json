@@ -22,6 +22,7 @@
     "power": 150,
     "accuracy": 90,
     "pp": 2,
+    "description": "The user blasts the\nfoe with power that\ndistorts even time.\nThe user must rest\non the next turn.",
     "damage_class": "special",
     "type": "dragon",
     "effect_chance": null,

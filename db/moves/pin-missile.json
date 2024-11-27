@@ -22,6 +22,7 @@
     "power": 25,
     "accuracy": 95,
     "pp": 7,
+    "description": "Fires pins that\nstrike 2-5 times.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": null,

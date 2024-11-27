@@ -22,6 +22,7 @@
     "power": 120,
     "accuracy": 75,
     "pp": 2,
+    "description": "A powerful kicking\nattack.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

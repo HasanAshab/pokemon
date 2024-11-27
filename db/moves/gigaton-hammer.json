@@ -3,6 +3,7 @@
     "power": 160,
     "accuracy": 100,
     "pp": 2,
+    "description": null,
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 7,
+    "description": "Une attaque puissante quand l\u2019ennemi\nbaisse sa garde. Inflige des d\u00e9g\u00e2ts sans\ntenir compte des changements de stats.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

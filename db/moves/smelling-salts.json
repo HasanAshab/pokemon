@@ -22,6 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 3,
+    "description": "Powerful against paralyzed\nfoes, but also heals them.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

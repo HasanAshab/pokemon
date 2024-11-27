@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 85,
     "pp": 13,
+    "description": "Stridio assordante che riduce di molto la Difesa\ndel bersaglio.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

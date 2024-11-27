@@ -22,6 +22,7 @@
     "power": 185,
     "accuracy": null,
     "pp": 0,
+    "description": "\u5f97\u5230\uff3a\u529b\u91cf\u7684\u5922\u5e7b\n\u5168\u529b\u653b\u64ca\u5c0d\u624b\u3002\n\u8173\u4e0b\u8b8a\u6210\u7cbe\u795e\u5834\u5730\u3002",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": null,

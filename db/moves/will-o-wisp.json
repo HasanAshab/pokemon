@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 85,
     "pp": 5,
+    "description": "Inflicts a burn on the foe\nwith intense fire.",
     "damage_class": "status",
     "type": "fire",
     "effect_chance": null,

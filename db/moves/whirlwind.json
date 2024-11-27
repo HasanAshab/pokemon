@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Blows away the foe\n& ends battle.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

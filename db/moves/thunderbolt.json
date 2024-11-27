@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
+    "description": "An attack that may\ncause paralysis.",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": 10,

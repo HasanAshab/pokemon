@@ -22,6 +22,7 @@
     "power": 120,
     "accuracy": 70,
     "pp": 2,
+    "description": "The user heightens\nits mental focus and\nunleashes its power.\nIt may also lower the\ntarget\u2019s Sp. Def.",
     "damage_class": "special",
     "type": "fighting",
     "effect_chance": 10,

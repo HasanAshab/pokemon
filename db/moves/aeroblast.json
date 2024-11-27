@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 95,
     "pp": 2,
+    "description": "Has a high criti\u00ad\ncal hit ratio.",
     "damage_class": "special",
     "type": "flying",
     "effect_chance": null,

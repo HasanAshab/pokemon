@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Le lanceur s\u2019enroule sur lui-m\u00eame et se\nconcentre. Son Attaque, sa D\u00e9fense et\nsa Pr\u00e9cision augmentent.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
+    "description": "An inferno of scarlet\nflames washes over\nall Pok\u00e9mon in battle.\nIt may also inflict\nburns.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": 30,

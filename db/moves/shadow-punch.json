@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": null,
     "pp": 7,
+    "description": "An unavoidable punch that\nis thrown from shadows.",
     "damage_class": "physical",
     "type": "ghost",
     "effect_chance": null,

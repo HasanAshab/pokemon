@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 10,
+    "description": "Agita la cola para bajar la Defensa del equipo rival. ",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

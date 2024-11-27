@@ -22,6 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 5,
+    "description": "The user slashes the\nfoe the instant an\nopportunity arises.\nIt has a high\ncritical-hit ratio.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

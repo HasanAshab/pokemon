@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
+    "description": "Torments the foe and stops\nsuccessive use of a move.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

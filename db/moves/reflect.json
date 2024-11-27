@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Raises DEFENSE\nwith a barrier.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

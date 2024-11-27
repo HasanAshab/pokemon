@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 3,
+    "description": "The user releases\ncountless shots of\nlight. Its type varies\nwith the kind of Plate\nthe user is holding.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

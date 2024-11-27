@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 80,
     "pp": 2,
+    "description": "Clava piedras muy afiladas al objetivo. Suele ser \ncr\u00edtico.",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 7,
+    "description": "Whips up a tornado\nto attack.",
     "damage_class": "special",
     "type": "dragon",
     "effect_chance": 20,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 13,
+    "description": "Heightens the\nuser's DEFENSE.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

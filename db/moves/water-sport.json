@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
+    "description": "The user becomes soaked to\nraise resistance to fire.",
     "damage_class": "status",
     "type": "water",
     "effect_chance": null,

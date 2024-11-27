@@ -22,6 +22,7 @@
     "power": 18,
     "accuracy": 85,
     "pp": 5,
+    "description": "Repeatedly punches\n2-5 times.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

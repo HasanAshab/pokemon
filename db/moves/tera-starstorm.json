@@ -3,6 +3,7 @@
     "power": 120,
     "accuracy": 100,
     "pp": 2,
+    "description": null,
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 140,
     "accuracy": 90,
     "pp": 2,
+    "description": "1st turn: Prepare\n2nd turn: Attack",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": 30,

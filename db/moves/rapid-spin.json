@@ -22,6 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 13,
+    "description": "A high-speed\nspinning attack.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 100,

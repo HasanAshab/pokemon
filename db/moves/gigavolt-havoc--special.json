@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 0,
+    "description": "\u30c0\u30df\u30fc\u30c7\u30fc\u30bf",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": null,

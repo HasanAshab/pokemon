@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
+    "description": "Una onda curativa restaura los PS del objetivo a la\nmitad de su m\u00e1ximo.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

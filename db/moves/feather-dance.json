@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
+    "description": "\u6492\u51fa\u7fbd\u6bdb\uff0c\n\u7b3c\u7f69\u5728\u5bf9\u624b\u7684\u5468\u56f4\u3002\n\u5927\u5e45\u964d\u4f4e\u5bf9\u624b\u7684\u653b\u51fb\u3002",
     "damage_class": "status",
     "type": "flying",
     "effect_chance": null,

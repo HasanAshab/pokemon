@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 95,
     "pp": 5,
+    "description": "The user bites with\nflame-cloaked fangs.\nIt may also make the\nfoe flinch or sustain\na burn.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": 10,

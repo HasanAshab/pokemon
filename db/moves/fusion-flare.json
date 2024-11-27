@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 2,
+    "description": "Projette une boule de feu\ngigantesque. L\u2019effet augmente\nsous l\u2019influence d\u2019\u00c9clair Croix.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": null,

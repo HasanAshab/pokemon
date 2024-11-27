@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "The user lands and\nrests its body.\nIt restores the\nuser\u2019s HP by up to\nhalf of its max HP.",
     "damage_class": "status",
     "type": "flying",
     "effect_chance": null,

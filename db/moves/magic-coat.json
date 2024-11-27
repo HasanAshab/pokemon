@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
+    "description": "Reflects special effects\nback to the attacker.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

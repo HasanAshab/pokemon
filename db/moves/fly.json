@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 95,
     "pp": 5,
+    "description": "1st turn: Fly\n2nd turn: Attack",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

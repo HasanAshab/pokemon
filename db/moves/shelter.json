@@ -3,6 +3,7 @@
     "power": 0,
     "accuracy": null,
     "pp": 3,
+    "description": null,
     "damage_class": "status",
     "type": "steel",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
+    "description": "Hieb mit scharfkantigem Blatt. Hohe Volltrefferquote.",
     "damage_class": "physical",
     "type": "grass",
     "effect_chance": null,

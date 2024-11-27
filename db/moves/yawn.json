@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
+    "description": "Lulls the foe into yawning,\nthen sleeping next turn.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "Sleep for 2 turns\nto fully recover.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

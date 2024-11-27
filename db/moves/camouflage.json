@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Alters the POK\u00e9MON\u2019s type\ndepending on the location.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

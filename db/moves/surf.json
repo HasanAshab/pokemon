@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
+    "description": "A strong water-\ntype attack.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

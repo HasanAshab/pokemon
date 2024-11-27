@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Scares wild foes\nto end battle.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

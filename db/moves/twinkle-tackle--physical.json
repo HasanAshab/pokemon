@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 0,
+    "description": "\u900f\u904e\uff3a\u529b\u91cf\u88fd\u9020\u9b45\u60d1\u7a7a\u9593\uff0c\n\u5168\u529b\u73a9\u5f04\u5c0d\u624b\u3002\n\u5a01\u529b\u6703\u96a8\u539f\u672c\u7684\u62db\u5f0f\u800c\u6539\u8b8a\u3002",
     "damage_class": "physical",
     "type": "fairy",
     "effect_chance": null,

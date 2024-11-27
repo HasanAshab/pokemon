@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 2,
+    "description": "The user creates a\ngust of repulsive\nwind. It may also\nraise all the user\u2019s\nstats at once.",
     "damage_class": "special",
     "type": "ghost",
     "effect_chance": 10,

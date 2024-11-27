@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 95,
     "pp": 5,
+    "description": "The user bites with\ncold-infused fangs.\nIt may also make the\nfoe flinch or freeze.\n",
     "damage_class": "physical",
     "type": "ice",
     "effect_chance": 10,

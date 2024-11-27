@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 3,
+    "description": "Une masse d\u2019eau s\u2019abat sur l\u2019ennemi.\nEn l\u2019utilisant avec Aire de Feu, l\u2019effet\naugmente et un arc-en-ciel appara\u00eet.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

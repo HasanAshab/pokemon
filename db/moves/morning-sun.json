@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "F\u00fcllt KP des Anwenders auf.\nDie Menge h\u00e4ngt vom Wetter ab.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

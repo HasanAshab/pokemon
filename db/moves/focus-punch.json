@@ -22,6 +22,7 @@
     "power": 150,
     "accuracy": 100,
     "pp": 7,
+    "description": "A powerful loyalty attack.\nThe user flinches if hit.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

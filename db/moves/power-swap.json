@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
+    "description": "The user employs its\npsychic power to\nswitch changes to\nits Attack and\nSp. Atk with the foe.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

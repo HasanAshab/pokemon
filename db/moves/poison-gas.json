@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 90,
     "pp": 13,
+    "description": "A move that may\npoison the foe.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

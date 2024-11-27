@@ -3,6 +3,7 @@
     "power": 80,
     "accuracy": 90,
     "pp": 5,
+    "description": null,
     "damage_class": "special",
     "type": "grass",
     "effect_chance": null,

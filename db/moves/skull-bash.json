@@ -22,6 +22,7 @@
     "power": 130,
     "accuracy": 100,
     "pp": 3,
+    "description": "1st turn: Prepare\n2nd turn: Attack",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 100,

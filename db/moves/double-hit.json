@@ -22,6 +22,7 @@
     "power": 35,
     "accuracy": 90,
     "pp": 3,
+    "description": "Chi la usa colpisce il bersaglio due volte di fila\ncon la coda, una liana o simili.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

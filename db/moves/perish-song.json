@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "Wer diese Musik h\u00f6rt, wird nach drei Runden\nbesiegt. Rettung ist durch den Eintausch\neines neuen Pok\u00e9mon m\u00f6glich.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

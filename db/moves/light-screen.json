@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
+    "description": "Ups SPCL.DEF with\na wall of light.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

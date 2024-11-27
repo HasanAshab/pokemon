@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 95,
     "pp": 8,
+    "description": "Hacks with razorlike wind.\nHigh critical-hit ratio.",
     "damage_class": "special",
     "type": "flying",
     "effect_chance": null,

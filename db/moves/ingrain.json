@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Lays roots that restore HP.\nThe user can\u2019t switch out.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

@@ -3,6 +3,7 @@
     "power": 85,
     "accuracy": null,
     "pp": 3,
+    "description": null,
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

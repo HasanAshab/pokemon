@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 2,
+    "description": "A powdery attack that may\nraise abilities.",
     "damage_class": "special",
     "type": "bug",
     "effect_chance": 10,

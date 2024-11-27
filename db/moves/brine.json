@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 100,
     "pp": 3,
+    "description": "If the foe\u2019s HP is\ndown to about half,\nthis attack will hit\nwith double the\npower.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 30,
     "accuracy": 100,
     "pp": 10,
+    "description": "An attack that may\ncause paralysis.",
     "damage_class": "physical",
     "type": "ghost",
     "effect_chance": 30,

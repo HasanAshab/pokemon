@@ -22,6 +22,7 @@
     "power": 15,
     "accuracy": 100,
     "pp": 7,
+    "description": "Schl\u00e4ge mit geradem Arm, die das Ziel\nzwei- bis f\u00fcnfmal treffen.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

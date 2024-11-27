@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 2,
+    "description": "Des flammes rougeoyantes s\u2019abattent\nsur tous les Pok\u00e9mon autour du lanceur.\nPeut aussi br\u00fbler.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": 30,

@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 7,
+    "description": "The user bites the\nfoe. If the foe is\nholding a Berry, the\nuser eats it and\ngains its effect.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": null,

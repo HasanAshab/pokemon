@@ -22,6 +22,7 @@
     "power": 85,
     "accuracy": 95,
     "pp": 3,
+    "description": "Le lanceur attaque l\u2019ennemi avec une onde\nde choc t\u00e9n\u00e9breuse. Peut aussi baisser la\nPr\u00e9cision de l\u2019ennemi.",
     "damage_class": "special",
     "type": "dark",
     "effect_chance": 40,

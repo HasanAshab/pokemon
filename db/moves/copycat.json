@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Le lanceur imite la derni\u00e8re capacit\u00e9 employ\u00e9e.\n\u00c9choue si aucune capacit\u00e9 n\u2019a \u00e9t\u00e9 utilis\u00e9e.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

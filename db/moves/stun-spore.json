@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 75,
     "pp": 10,
+    "description": "A move that may\nparalyze the foe.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

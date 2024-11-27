@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 3,
+    "description": "Un coup tr\u00e8s puissant dont l\u2019effet\nest toujours critique.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

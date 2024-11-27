@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
+    "description": "Le lanceur projette beaucoup d\u2019eau sur\nsa cible, qui devient de type Eau.",
     "damage_class": "status",
     "type": "water",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
+    "description": "Per quattro turni impedisce al bersaglio\ndi riutilizzare l\u2019ultima mossa usata.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

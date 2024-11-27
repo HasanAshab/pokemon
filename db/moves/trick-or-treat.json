@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
+    "description": "\u3042\u3044\u3066\u3092\u3000\u30cf\u30ed\u30a6\u30a3\u30f3\u306b\u3000\u3055\u305d\u3046\u3002\n\u3042\u3044\u3066\u306e\u3000\u30bf\u30a4\u30d7\u306b\n\u30b4\u30fc\u30b9\u30c8\u30bf\u30a4\u30d7\u304c\u3000\u3064\u3044\u304b\u3055\u308c\u308b\u3002",
     "damage_class": "status",
     "type": "ghost",
     "effect_chance": null,

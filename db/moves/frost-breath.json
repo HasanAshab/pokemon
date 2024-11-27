@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 90,
     "pp": 3,
+    "description": "Un souffle froid blesse l\u2019ennemi.\nL\u2019effet est toujours critique.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": 100,

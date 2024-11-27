@@ -22,6 +22,7 @@
     "power": 50,
     "accuracy": 90,
     "pp": 5,
+    "description": "Drops rocks on the\nenemy.",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": null,

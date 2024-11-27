@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
+    "description": "Le lanceur s\u2019aiguise les griffes.\nAugmente l\u2019Attaque et la Pr\u00e9cision.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

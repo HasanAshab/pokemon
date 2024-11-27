@@ -3,6 +3,7 @@
     "power": 120,
     "accuracy": 90,
     "pp": 3,
+    "description": null,
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

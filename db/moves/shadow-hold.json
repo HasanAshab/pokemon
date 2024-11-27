@@ -3,6 +3,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
+    "description": null,
     "damage_class": "status",
     "type": "shadow",
     "effect_chance": null,

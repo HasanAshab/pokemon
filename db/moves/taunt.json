@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
+    "description": "Taunts the foe into only\nusing attack moves.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

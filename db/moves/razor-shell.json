@@ -22,6 +22,7 @@
     "power": 75,
     "accuracy": 95,
     "pp": 3,
+    "description": "\u7528\u92d2\u5229\u7684\u8c9d\u6bbc\u65ac\u5207\n\u5c0d\u624b\u9032\u884c\u653b\u64ca\u3002\n\u6709\u6642\u6703\u964d\u4f4e\u5c0d\u624b\u7684\u9632\u79a6\u3002",
     "damage_class": "physical",
     "type": "water",
     "effect_chance": 50,

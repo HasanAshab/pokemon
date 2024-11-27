@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 100,
     "pp": 7,
+    "description": "Knocks down the foe\u2019s held\nitem to prevent its use.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

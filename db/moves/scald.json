@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
+    "description": "L\u2019ennemi est attaqu\u00e9 par un jet d\u2019eau\nbouillante. Peut aussi le br\u00fbler.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": 30,

@@ -22,6 +22,7 @@
     "power": 15,
     "accuracy": 90,
     "pp": 7,
+    "description": "Squeezes the foe\nfor 2-5 turns.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 100,

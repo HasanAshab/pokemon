@@ -22,6 +22,7 @@
     "power": 50,
     "accuracy": 95,
     "pp": 10,
+    "description": "Cuts using claws,\nscythes, etc.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

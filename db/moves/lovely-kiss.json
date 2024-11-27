@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 75,
     "pp": 3,
+    "description": "May cause the foe\nto fall asleep.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 3,
+    "description": "The user flings its\nheld item at the foe\nto attack. Its power\nand effects depend\non the item.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
+    "description": "The user calls out\nits underlings to\npummel the foe.\nIt has a high\ncritical-hit ratio.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": null,

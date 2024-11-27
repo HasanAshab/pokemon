@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 8,
+    "description": "D\u00e9concentre l\u2019ennemi avec des mouvements\nmignons avant de le frapper violemment.\nPeut apeurer l\u2019ennemi.",
     "damage_class": "physical",
     "type": "psychic",
     "effect_chance": 30,

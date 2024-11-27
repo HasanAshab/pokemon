@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
+    "description": "The user whips up a\nturbulent whirlwind\nthat ups the Speed\nof all party Pok\u00e9mon\nfor three turns.",
     "damage_class": "status",
     "type": "flying",
     "effect_chance": null,

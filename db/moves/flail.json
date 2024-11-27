@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
+    "description": "Stronger if the\nuser's HP is low.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

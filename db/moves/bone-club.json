@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 85,
     "pp": 7,
+    "description": "An attack that may\ncause flinching.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": 10,

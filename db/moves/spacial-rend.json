@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 95,
     "pp": 2,
+    "description": "Chi la usa lacera il bersaglio e lo spazio che\nlo circonda. Probabile brutto colpo.",
     "damage_class": "special",
     "type": "dragon",
     "effect_chance": null,

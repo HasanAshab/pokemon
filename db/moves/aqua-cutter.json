@@ -3,6 +3,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 7,
+    "description": null,
     "damage_class": "physical",
     "type": "water",
     "effect_chance": null,

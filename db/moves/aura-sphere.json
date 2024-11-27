@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": null,
     "pp": 7,
+    "description": "The user looses a\nblast of aura power\nfrom deep within its\nbody. This move is\ncertain to hit.",
     "damage_class": "special",
     "type": "fighting",
     "effect_chance": null,

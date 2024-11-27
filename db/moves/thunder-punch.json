@@ -22,6 +22,7 @@
     "power": 75,
     "accuracy": 100,
     "pp": 5,
+    "description": "An electric punch.\nIt may paralyze.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": 10,

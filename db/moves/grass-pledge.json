@@ -22,6 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 3,
+    "description": "Une masse v\u00e9g\u00e9tale s\u2019abat sur l\u2019ennemi.\nEn l\u2019utilisant avec Aire d\u2019Eau, l\u2019effet\naugmente et un mar\u00e9cage appara\u00eet.",
     "damage_class": "special",
     "type": "grass",
     "effect_chance": null,

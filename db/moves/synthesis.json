@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "Restores HP\n(varies by time).",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

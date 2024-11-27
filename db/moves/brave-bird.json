@@ -22,6 +22,7 @@
     "power": 120,
     "accuracy": 100,
     "pp": 5,
+    "description": "The user tucks in\nits wings and charges\nfrom a low altitude.\nThe user also takes\nserious damage.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

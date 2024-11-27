@@ -3,6 +3,7 @@
     "power": 0,
     "accuracy": 0,
     "pp": 5,
+    "description": null,
     "damage_class": "status",
     "type": "dragon",
     "effect_chance": null,

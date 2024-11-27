@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "The user makes a soothing bell chime\nto heal the status problems of all the\nparty Pok\u00e9mon.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

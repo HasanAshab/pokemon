@@ -22,6 +22,7 @@
     "power": 85,
     "accuracy": 85,
     "pp": 2,
+    "description": "Bounces up, then down the\nnext turn. May paralyze.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": 30,

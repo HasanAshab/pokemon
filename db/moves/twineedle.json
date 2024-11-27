@@ -22,6 +22,7 @@
     "power": 25,
     "accuracy": 100,
     "pp": 7,
+    "description": "Jabs the foe twice\nusing stingers.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": 20,

@@ -3,6 +3,7 @@
     "power": 95,
     "accuracy": 100,
     "pp": 2,
+    "description": null,
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 150,
     "accuracy": 90,
     "pp": 2,
+    "description": "Powerful, but leaves the\nuser immobile the next turn.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

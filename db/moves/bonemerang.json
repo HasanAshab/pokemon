@@ -22,6 +22,7 @@
     "power": 50,
     "accuracy": 90,
     "pp": 3,
+    "description": "An attack that\nstrikes twice.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": null,

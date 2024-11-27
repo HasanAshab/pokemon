@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 13,
+    "description": "Howls to raise the spirit\nand boosts ATTACK.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

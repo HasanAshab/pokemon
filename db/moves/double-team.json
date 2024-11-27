@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
+    "description": "Heightens evasive\u00ad\nness.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

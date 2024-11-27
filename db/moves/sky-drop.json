@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 3,
+    "description": "Le lanceur emm\u00e8ne l\u2019ennemi dans les airs\nau 1er tour et le l\u00e2che dans le vide au\n2\u00e8. L\u2019ennemi saisi ne peut pas attaquer.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

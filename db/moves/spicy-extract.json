@@ -3,6 +3,7 @@
     "power": 0,
     "accuracy": null,
     "pp": 5,
+    "description": null,
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

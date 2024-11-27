@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 13,
+    "description": "Chi la usa rende i Pok\u00e9mon di tipo Spettro\nvulnerabili a qualsiasi tipo di mossa e pu\u00f2,\ninoltre, colpire i nemici sfuggenti.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

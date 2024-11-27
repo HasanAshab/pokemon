@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
+    "description": "Chi la usa intrappola il bersaglio con l\u2019erba e lo fa\ncadere. Danneggia maggiormente i Pok\u00e9mon\npi\u00f9 pesanti.",
     "damage_class": "special",
     "type": "grass",
     "effect_chance": null,

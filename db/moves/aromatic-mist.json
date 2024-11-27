@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Gr\u00e2ce \u00e0 un parfum myst\u00e9rieux, augmente la\nD\u00e9fense Sp\u00e9ciale d\u2019un alli\u00e9.",
     "damage_class": "status",
     "type": "fairy",
     "effect_chance": null,

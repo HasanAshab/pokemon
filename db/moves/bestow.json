@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
+    "description": "Si la cible ne tient pas d\u2019objet, le\nlanceur lui donne l\u2019objet qu\u2019il tient.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

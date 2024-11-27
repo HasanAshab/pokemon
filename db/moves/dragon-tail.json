@@ -22,6 +22,7 @@
     "power": 60,
     "accuracy": 90,
     "pp": 3,
+    "description": "Un coup puissant qui blesse la cible\net l\u2019envoie balader. Dans la nature,\nmet fin au combat.",
     "damage_class": "physical",
     "type": "dragon",
     "effect_chance": null,

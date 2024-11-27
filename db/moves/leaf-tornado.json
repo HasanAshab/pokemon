@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 90,
     "pp": 3,
+    "description": "L\u2019ennemi est pris dans un tourbillon de\nfeuilles ac\u00e9r\u00e9es. Peut aussi baisser\nla Pr\u00e9cision de l\u2019ennemi.",
     "damage_class": "special",
     "type": "grass",
     "effect_chance": 50,

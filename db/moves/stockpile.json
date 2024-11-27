@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Charges up power for up to\n3 turns.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

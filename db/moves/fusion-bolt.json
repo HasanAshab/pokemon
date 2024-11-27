@@ -22,6 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 2,
+    "description": "Projette un orbe \u00e9lectrique\ngigantesque. L\u2019effet augmente\nsous l\u2019influence de Flamme Croix.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": null,

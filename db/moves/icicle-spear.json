@@ -22,6 +22,7 @@
     "power": 25,
     "accuracy": 100,
     "pp": 10,
+    "description": "Feuert zwei bis f\u00fcnf Eiszapfen auf das Ziel.",
     "damage_class": "physical",
     "type": "ice",
     "effect_chance": null,

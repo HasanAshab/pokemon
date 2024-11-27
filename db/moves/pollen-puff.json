@@ -22,6 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
+    "description": "Chi la usa attacca il nemico con una sfera\nesplosiva. Se colpisce degli alleati, fa recuperare\nloro dei PS.",
     "damage_class": "special",
     "type": "bug",
     "effect_chance": null,

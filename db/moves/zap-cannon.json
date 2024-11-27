@@ -22,6 +22,7 @@
     "power": 120,
     "accuracy": 50,
     "pp": 2,
+    "description": "An attack that\nalways paralyzes.",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": 100,

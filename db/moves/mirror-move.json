@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "Counters with the\nsame move.",
     "damage_class": "status",
     "type": "flying",
     "effect_chance": null,

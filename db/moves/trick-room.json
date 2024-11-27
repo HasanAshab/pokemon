@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
+    "description": "The user creates a\nbizarre area in which\nslower Pok\u00e9mon get\nto move first for five\nturns.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

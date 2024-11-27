@@ -22,6 +22,7 @@
     "power": 15,
     "accuracy": 100,
     "pp": 12,
+    "description": "An attack that may\npoison the target.",
     "damage_class": "physical",
     "type": "poison",
     "effect_chance": 30,

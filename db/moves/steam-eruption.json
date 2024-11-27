@@ -22,6 +22,7 @@
     "power": 110,
     "accuracy": 95,
     "pp": 2,
+    "description": "Travolge il bersaglio con un\u2019ondata di vapore\nrovente che pu\u00f2 anche scottarlo.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": 30,

@@ -22,6 +22,7 @@
     "power": 65,
     "accuracy": 100,
     "pp": 3,
+    "description": "Attaque acharn\u00e9e qui cause\ndavantage de d\u00e9g\u00e2ts \u00e0 l\u2019ennemi\ns\u2019il a un probl\u00e8me de statut.",
     "damage_class": "special",
     "type": "ghost",
     "effect_chance": null,

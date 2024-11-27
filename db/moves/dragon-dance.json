@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "A mystical dance that ups\nATTACK and SPEED.",
     "damage_class": "status",
     "type": "dragon",
     "effect_chance": null,

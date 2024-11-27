@@ -22,6 +22,7 @@
     "power": 55,
     "accuracy": 100,
     "pp": 5,
+    "description": "Attaque agile. Si le lanceur ne tient\npas d\u2019objet, l\u2019attaque inflige\ndavantage de d\u00e9g\u00e2ts.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

@@ -3,6 +3,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
+    "description": null,
     "damage_class": "physical",
     "type": "poison",
     "effect_chance": null,

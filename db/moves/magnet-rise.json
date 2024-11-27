@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
+    "description": "The user levitates\nusing electrically\ngenerated magnetism\nfor five turns.\n",
     "damage_class": "status",
     "type": "electric",
     "effect_chance": null,

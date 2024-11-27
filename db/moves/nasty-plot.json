@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
+    "description": "The user stimulates\nits brain by thinking\nbad thoughts.\nIt sharply raises the\nuser\u2019s Sp. Atk.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

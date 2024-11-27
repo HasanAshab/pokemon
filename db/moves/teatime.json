@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
+    "description": "\u304a\u3061\u3083\u304b\u3044\u3092\u3000\u3072\u3089\u3044\u3066\n\u3070\u306b\u3044\u308b\u3000\u30dd\u30b1\u30e2\u30f3\u304c\u3000\u305d\u308c\u305e\u308c\n\u3082\u3063\u3066\u3044\u308b\u3000\u304d\u306e\u307f\u3092\u3000\u305f\u3079\u308b\u3002",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

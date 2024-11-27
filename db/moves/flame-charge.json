@@ -22,6 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 7,
+    "description": "Le lanceur s\u2019entoure de flammes pour\nattaquer l\u2019ennemi. Il se concentre\net sa Vitesse augmente.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": 100,

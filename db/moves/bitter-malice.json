@@ -3,6 +3,7 @@
     "power": 75,
     "accuracy": 100,
     "pp": 3,
+    "description": null,
     "damage_class": "special",
     "type": "ghost",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
+    "description": "An attack with\nvariable power.",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
+    "description": "Eliminates all\nstat changes.",
     "damage_class": "status",
     "type": "ice",
     "effect_chance": null,

@@ -22,6 +22,7 @@
     "power": 130,
     "accuracy": 85,
     "pp": 2,
+    "description": "S\u2019enveloppe d\u2019une charge \u00e9lectrique\nsurpuissante et se jette sur l\u2019ennemi.\nPeut aussi le paralyser.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": 20,
