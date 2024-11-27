@@ -1,14 +1,19 @@
+import { Pokemon } from "./utils/models.js";
+
+
 function __setDefaultPokeMeta() {
     const pokemons_meta = {
         "charmander": {
-            "level": 3,
+            "xp": 2 * 100,
             "nature": "bully",
-            "retreat": 2
+            "retreat": 2,
+            "moves": ["scratch", "growl"]
         },
-        "frokie": {
-            "level": 1,
+        "froakie": {
+            "xp": 1 * 100,
             "nature": "gentle",
-            "retreat": 2
+            "retreat": 2,
+            "moves": ["water-gun", "tail-whip"]
         }
     }
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
@@ -65,7 +70,7 @@ function loadAllPokemons() {
         pokemonList.innerHTML += `
         <li class="pokemon" onclick="pokemonClickHandler('${pokemon}')">
         <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
-        <span class="pokemon-level">LVL: ${meta.level}</span>
+        <span class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</span>
         </li>
         `
     }

@@ -64,7 +64,6 @@ class MultipleFileTable extends Table {
             return data
         }
         catch (e) {
-            alert(1)
             console.error(e)
         }
     }

@@ -12,13 +12,10 @@
     <div class="blur-bg ">
       <div class="move-choose-interface">
         <div class="toolbar">
-          <input type="text" class="move-search-inp" />
-        <button class="move-search-btn">search</button>
-        <button class="cancel-btn">close</button>
-      </div>
-      <div class="search-result-cont">
-        <div class="result">
-          Charizard
+            <input list="move-data-list" class="move-search-inp" id="move-search-inp"/>
+            <datalist id="move-data-list"></datalist> 
+            <button class="move-learn-btn" onclick="learnMove()">learn</button>
+            <button class="cancel-btn" onclick="closeMoveChooseInterface()">close</button>
         </div>
       </div>
     </div>
@@ -80,40 +77,7 @@
   <h2>Moves - 10</h2>
 </div>
 <button id="add-move-btn" onclick="showMoveChooseInterface()">add move</button>
-<div class="move selected">
-  <div class="move-header" style="background-color: var(--fire-type-color);">
-    <span>Flamethrower</span>
-    <div class="move-icons">
-      <span>🖼️</span>
-      <span>🖼️</span>
-    </div>
-  </div>
-  <div class="move-body">
-    <p>
-      Category: Special
-    </p>
-    <p>
-      Damage: 300
-    </p>
-    <p>
-      Power: 40
-    </p>
-    <p>
-      Retreat: 2
-    </p>
-    <p>
-      PP: 5
-    </p>
-    <small class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum nihil officia assumenda non repudiandae sint velit, recusandae magni suscipit rem delectus obcaecati laudantium beatae dolores. Odit doloribus nemo, eveniet doloremque laudantium nam necessitatibus quo libero eum ea ut cupiditate. Cum corporis culpa, minus! Explicabo ut aliquam magni illum minima expedita.</small>
-    <div class="btn-cont">
-      <button class="unselect-move">Unselect</button>
-      <button class="select-move">Select</button>
-      <button class="forget-move">Forget Move</button>
-
-    </div>
-  </div>
-</div>
-
+<div id="moves-container"></div>
 </div>
 </body>
 <script src="./assets/js/poke_details.js" type="module"></script>

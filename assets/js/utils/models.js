@@ -9,6 +9,10 @@ export class Pokemon {
         return new this(name, data, meta);
     }
 
+    static calculateLevel(xp) {
+        return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
+    }
+
     constructor(name, data, meta) {
         this.name = name;
         this.data = data;
@@ -40,7 +44,7 @@ export class Pokemon {
 
     get level() {
         const xp = this.meta.xp;
-        return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1; // Level starts at 1
+        return Pokemon.calculateLevel(xp); // Level starts at 1
     }
 }
 
