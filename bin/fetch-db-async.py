@@ -57,8 +57,8 @@ def get_effects(move):
 
 def calculate_retreat(move):
     damage_class_bonus = {
-        "physical": 0,
         "special": 0.5,
+        "physical": 0,
         "status": -0.5,
     }
     retreats = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6]
