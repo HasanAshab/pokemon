@@ -92,6 +92,14 @@ def serialize_move(data):
     description = None
     if len(data["flavor_text_entries"]):
         description = data["flavor_text_entries"][0]["flavor_text"]
+    
+    stat_changes = {
+        "self": {},
+        "target": {},
+    }
+    for stat_change in data["stat_changes"]:
+        key = "self" if stat_change["change"] > 0 else "target"
+        stat_changes[key][stat_change["stat"]["name"]] = stat_change["change"]
 
     return {
         "meta": data["meta"],
@@ -104,6 +112,7 @@ def serialize_move(data):
         "effect_chance": data.get("effect_chance"),
         "effect_names": get_effects(data),
         "retreat": calculate_retreat(data),
+        "stat_changes": stat_changes,
     }
 
 

@@ -29,5 +29,11 @@
     "effect_names": [
         "confuse"
     ],
-    "retreat": 1.0
+    "retreat": 1.0,
+    "stat_changes": {
+        "self": {
+            "attack": 2
+        },
+        "target": {}
+    }
 }

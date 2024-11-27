@@ -27,5 +27,9 @@
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 1.0
+    "retreat": 1.0,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

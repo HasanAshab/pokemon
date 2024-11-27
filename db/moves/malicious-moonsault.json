@@ -27,5 +27,9 @@
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 4
+    "retreat": 4,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

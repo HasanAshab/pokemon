@@ -27,5 +27,13 @@
     "type": "fire",
     "effect_chance": 100,
     "effect_names": [],
-    "retreat": 4
+    "retreat": 4,
+    "stat_changes": {
+        "self": {},
+        "target": {
+            "defense": -1,
+            "special-defense": -1,
+            "speed": -1
+        }
+    }
 }

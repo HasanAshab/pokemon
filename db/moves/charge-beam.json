@@ -27,5 +27,11 @@
     "type": "electric",
     "effect_chance": 70,
     "effect_names": [],
-    "retreat": 1.5
+    "retreat": 1.5,
+    "stat_changes": {
+        "self": {
+            "special-attack": 1
+        },
+        "target": {}
+    }
 }

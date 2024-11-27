@@ -27,5 +27,11 @@
     "type": "fairy",
     "effect_chance": 30,
     "effect_names": [],
-    "retreat": 2.5
+    "retreat": 2.5,
+    "stat_changes": {
+        "self": {},
+        "target": {
+            "special-attack": -1
+        }
+    }
 }

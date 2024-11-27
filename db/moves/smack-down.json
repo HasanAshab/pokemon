@@ -27,5 +27,9 @@
     "type": "rock",
     "effect_chance": 100,
     "effect_names": [],
-    "retreat": 1
+    "retreat": 1,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

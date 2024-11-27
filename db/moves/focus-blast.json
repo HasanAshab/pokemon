@@ -27,5 +27,11 @@
     "type": "fighting",
     "effect_chance": 10,
     "effect_names": [],
-    "retreat": 3.0
+    "retreat": 3.0,
+    "stat_changes": {
+        "self": {},
+        "target": {
+            "special-defense": -1
+        }
+    }
 }

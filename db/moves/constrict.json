@@ -27,5 +27,11 @@
     "type": "normal",
     "effect_chance": 10,
     "effect_names": [],
-    "retreat": 0.5
+    "retreat": 0.5,
+    "stat_changes": {
+        "self": {},
+        "target": {
+            "speed": -1
+        }
+    }
 }

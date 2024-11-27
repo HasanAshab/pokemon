@@ -27,5 +27,15 @@
     "type": "dragon",
     "effect_chance": 100,
     "effect_names": [],
-    "retreat": 1.0
+    "retreat": 1.0,
+    "stat_changes": {
+        "self": {
+            "attack": 1,
+            "defense": 1,
+            "special-attack": 1,
+            "special-defense": 1,
+            "speed": 1
+        },
+        "target": {}
+    }
 }

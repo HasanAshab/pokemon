@@ -27,5 +27,9 @@
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 2
+    "retreat": 2,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

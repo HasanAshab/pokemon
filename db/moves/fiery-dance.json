@@ -27,5 +27,11 @@
     "type": "fire",
     "effect_chance": 50,
     "effect_names": [],
-    "retreat": 2.5
+    "retreat": 2.5,
+    "stat_changes": {
+        "self": {
+            "special-attack": 1
+        },
+        "target": {}
+    }
 }

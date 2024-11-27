@@ -10,7 +10,7 @@ const charmander = await Pokemon.make("charmander", {
     xp: 10 * 100,
     nature: "calm"
 })
-console.log(charmander)
+console.log(charmander.state.stats())
 const charmander2 = await Pokemon.make("charmander", {
     xp: 12 * 100,
     nature: "calm"
@@ -21,49 +21,32 @@ const bulbasaur = await Pokemon.make("bulbasaur", {
 })
 
 
-console.log("charmander damage without any target", await calculateDamage(charmander, ember))
-console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
-console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
-console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, growl))
+// console.log("charmander damage without any target", await calculateDamage(charmander, ember))
+// console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
+// console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
+// console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, growl))
 
 
-console.log(applyStatChanges(charmander, bulbasaur, growl))
-
+applyStatChanges(charmander2, charmander, growl)
+console.log(charmander.state.stats())
 
 }
 
 setTimeout(t, 1000)
 
-const MAX_STAGE = 6; // Max stat stage
-const MIN_STAGE = -6;
 
-function applyStatChanges(attacker, defender, move) {
+function applyStatChanges(attacker, target, move) {
     const { stat_changes } = move.meta;
 
     // Initialize stat stages if not already present
-    attacker.stages = attacker.stages || {};
-    defender.stages = defender.stages || {};
-
     // Apply changes to defender's stat stages
-    if (stat_changes.target) {
-        for (const [stat, change] of Object.entries(stat_changes.target)) {
-            defender.stages[stat] = defender.stages[stat] || 0;
-            defender.stages[stat] = Math.max(
-                MIN_STAGE,
-                Math.min(MAX_STAGE, defender.stages[stat] + change)
-            );
-        }
+    for (const [stat, change] of Object.entries(stat_changes.target)) {
+        target.state.applyStatChange(stat, change)
     }
 
     // Apply changes to attacker's stat stages
-    if (stat_changes.self) {
-        for (const [stat, change] of Object.entries(stat_changes.self)) {
-            attacker.stages[stat] = attacker.stages[stat] || 0;
-            attacker.stages[stat] = Math.max(
-                MIN_STAGE,
-                Math.min(MAX_STAGE, attacker.stages[stat] + change)
-            );
-        }
+    for (const [stat, change] of Object.entries(stat_changes.self)) {
+        attacker.state.applyStatChange(stat, change)
     }
 }
 

@@ -27,5 +27,9 @@
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 4.5
+    "retreat": 4.5,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

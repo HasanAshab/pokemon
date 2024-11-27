@@ -29,5 +29,9 @@
     "effect_names": [
         "paralyze"
     ],
-    "retreat": 4.5
+    "retreat": 4.5,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

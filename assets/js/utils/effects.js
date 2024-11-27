@@ -1,4 +1,4 @@
-function getEffects(attacker, target, move) {
+export function getEffects(attacker, target, move) {
     const effects = {};
     for (const effectName of move.effect_names) {
         effects[effectName] = Math.random() < (move.effect_chance / 100);
@@ -6,19 +6,18 @@ function getEffects(attacker, target, move) {
     return effects;
 }
 
-function applyPoisonEffect(pokemon) {
+export function calculatePoisonEffect(pokemon) {
   const maxHP = pokemon.statOf("hp");
   const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
-  pokemon.currentHP -= poisonDamage;
   return poisonDamage;
 }
 
-function applyBurnEffect(pokemon) {
+export function calculateBurnEffect(pokemon) {
   const maxHP = pokemon.statOf("hp");
   const burnDamage = Math.floor(maxHP / 18); // 1/8th HP loss
-  pokemon.currentHP -= burnDamage;
   return burnDamage;
 }
+
 
 function applyParalysisEffect(pokemon) {
   const speedStat = pokemon.statOf("speed");

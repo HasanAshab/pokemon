@@ -1,4 +1,5 @@
 import db from "./db.js"
+import { calculateBurnEffect, calculatePoisonEffect } from "./effects.js"
 
 class BattleState {
     constructor(pokemon) {
@@ -63,7 +64,24 @@ class BattleState {
             this._trigger("onEffectRemoved");
         }
     }
+    
+    decreaseHealthForEffects() {
+        let totalDamage = 0;
 
+        this._effects.forEach(effect => {
+            if (effect === "burn") {
+                totalDamage += calculateBurnEffect(this.pokemon);
+            }
+            else if (effect === "poison") {
+                totalDamage += calculatePoisonEffect(this.pokemon);
+            }
+        });
+
+        if (totalDamage > 0) {
+            this.decreaseHealth(totalDamage);
+        }
+    }
+    
     // Stat Management
     applyStatChange(stat, stages) {
         if (!this._statChanges[stat]) {

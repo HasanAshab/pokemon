@@ -13,9 +13,9 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
         return null
     }
     const isSpecial = move.damage_class === "special";
-    const attackStat = pokemon1.statOf(isSpecial ? "special-attack" : "attack");
+    const attackStat = pokemon1.state.statOf(isSpecial ? "special-attack" : "attack");
     const defenseStat = pokemon2
-        ? pokemon2.statOf(isSpecial ? "special-defense" : "defense")
+        ? pokemon2.state.statOf(isSpecial ? "special-defense" : "defense")
         : 70; // Neutral defense if no target
 
     return (((((2 * pokemon1.level) / 5) + 2) * move.power * (attackStat / defenseStat)) / 10) + 2;

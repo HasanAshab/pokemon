@@ -29,5 +29,9 @@
     "effect_names": [
         "flinch"
     ],
-    "retreat": 3
+    "retreat": 3,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

@@ -31,5 +31,9 @@
         "paralyze",
         "poison"
     ],
-    "retreat": 1.5
+    "retreat": 1.5,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }

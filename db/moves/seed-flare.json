@@ -27,5 +27,11 @@
     "type": "grass",
     "effect_chance": 40,
     "effect_names": [],
-    "retreat": 3.0
+    "retreat": 3.0,
+    "stat_changes": {
+        "self": {},
+        "target": {
+            "special-defense": -2
+        }
+    }
 }

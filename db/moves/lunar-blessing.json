@@ -8,5 +8,9 @@
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 0.0
+    "retreat": 0.0,
+    "stat_changes": {
+        "self": {},
+        "target": {}
+    }
 }
