@@ -3,7 +3,7 @@ import { Pokemon } from "./utils/models.js"
 
 
 async function t() {
-const ember = await db.moves.get("fury-attack")
+const ember = await db.moves.get("growl")
 
 ember.effectiveness = async function(type) {
     const typeMap = await db.types.get(this.type)
@@ -112,9 +112,21 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
 }
 
 async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
+    const result = {
+        1: {
+            totalDamage: 0,
+            hits: 0
+        },
+        2: {
+            totalDamage: 0,
+            hits: 0
+        },
+    }
     if (!pokemon2 && !move2) {
         // No target or second move: calculate base damage only
-        return fixDamage(calculateBaseDamage(pokemon1, move1));
+        result[1].totalDamage = fixDamage(calculateBaseDamage(pokemon1, move1));
+        result[1].hits = 1;
+        return result
     }
 
     // Calculate type effectiveness for pokemon1's move
@@ -132,7 +144,9 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
 
     if (!move2) {
         // If only pokemon1 attacks, return its damage
-        return finalDamage1;
+        result[1].totalDamage = finalDamage1;
+        result[1].hits = 1;
+        return result
     }
 
     // Calculate type effectiveness for pokemon2's move
@@ -147,10 +161,23 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
     const pokeEffect1 = await pokemon2.effectiveness(move1.type);
     const pokeEffect2 = await pokemon1.effectiveness(move2.type);
     
-    return fixDamage(
+    const remainingDamage = fixDamage(
         ((finalDamage1 / effectiveness1) * pokeEffect1) - 
         ((finalDamage2 / effectiveness2) * pokeEffect2)
     );
+
+    if (remainingDamage > 0) {
+        result[1].totalDamage = remainingDamage
+        result[2].totalDamage = 0
+    }
+    else {
+        result[1].totalDamage = 0
+        result[2].totalDamage = remainingDamage * -1
+    }
+    result[1].hits = 1
+    result[2].hits = 1
+
+    return result
 }
 
 

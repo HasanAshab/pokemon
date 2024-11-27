@@ -1,7 +1,14 @@
 damage on attack + make contact
+multi hit move
 dom
 attribute, growl
 effects
 xp using cp
 nature
 abilities effects (eg guts)
+
+
+
+now i want to add support to multi hit moves.
+move1 and move2 both can be multi hit, or only
+one or even both can be single hit
