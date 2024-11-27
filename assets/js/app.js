@@ -10,6 +10,7 @@ const charmander = await Pokemon.make("charmander", {
     xp: 10 * 100,
     nature: "calm"
 })
+console.log(charmander)
 const charmander2 = await Pokemon.make("charmander", {
     xp: 12 * 100,
     nature: "calm"
@@ -19,17 +20,18 @@ const bulbasaur = await Pokemon.make("bulbasaur", {
     nature: "calm"
 })
 
-/*
+
 console.log("charmander damage without any target", await calculateDamage(charmander, ember))
 console.log("charmander thrown ember on bulbasaur", await calculateDamage(charmander, ember, bulbasaur))
 console.log("charmander thrown ember on charmander", await calculateDamage(charmander, ember, charmander))
 console.log("2 charmander thrown ember on each others", await calculateDamage(charmander, ember, charmander2, growl))
-*/
+
 
 console.log(applyStatChanges(charmander, bulbasaur, growl))
 
 
 }
+
 setTimeout(t, 1000)
 
 
@@ -76,8 +78,13 @@ function calculateModifiedStat(baseStat, stage) {
     return Math.floor(baseStat * stageMultiplier);
 }
 
-function getEffects(pokemon1, move, pokemon2) {
-  //todo
+
+function getEffects(attacker, target, move) {
+    const effects = {};
+    for (const effectName of move.effect_names) {
+        effects[effectName] = Math.random() < (move.effect_chance / 100);
+    }
+    return effects;
 }
 
 function applyPoisonEffect(pokemon) {
@@ -136,6 +143,8 @@ function handleStatusEffects(pokemon, status, turnCount = 0) {
   }
 }
 
+
+
 function fixDamage(damage) {
     return damage === null
         ? null
@@ -155,7 +164,7 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     return (((((2 * pokemon1.level) / 5) + 2) * move.power * (attackStat / defenseStat)) / 10) + 2;
 }
 
-async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
+export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
     const result = {
         1: {
             totalDamage: 0,
@@ -227,7 +236,6 @@ async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
     return result
 }
 
-
 function getRandomHits(move) {
   if (move.meta.min_hits === move.meta.max_hits) {
     return move.meta.min_hits;
@@ -258,6 +266,7 @@ function weightedRandom(values, weights) {
   return values[values.length - 1]; // Fallback
 }
 
+
 function canDodge(pokemon1, move, pokemon2) {
     if (move.accuracy === null) {
         // Moves with null accuracy always hit
@@ -275,95 +284,6 @@ function canDodge(pokemon1, move, pokemon2) {
     const hitChance = (Math.random() * maxHitChance) - minHitChance; 
     const dodgeChance = (pokemon2Spd - pokemon1Spd);
     return dodgeChance > hitChance;
-}
-
-
-const NATURE_MODIFIERS = {
-  "adamant": { increase: "attack", decrease: "special-attack" },
-  "bashful": { increase: null, decrease: null },
-  "bold": { increase: "defense", decrease: "attack" },
-  "brave": { increase: "attack", decrease: "speed" },
-  "calm": { increase: "special-defense", decrease: "attack" },
-  "careful": { increase: "special-defense", decrease: "special-attack" },
-  "docile": { increase: null, decrease: null },
-  "gentle": { increase: "special-defense", decrease: "defense" },
-  "hasty": { increase: "speed", decrease: "defense" },
-  "impish": { increase: "defense", decrease: "special-attack" },
-  "jolly": { increase: "speed", decrease: "special-attack" },
-  "lax": { increase: "defense", decrease: "special-defense" },
-  "lonely": { increase: "attack", decrease: "defense" },
-  "mild": { increase: "special-attack", decrease: "defense" },
-  "modest": { increase: "special-attack", decrease: "attack" },
-  "naive": { increase: "speed", decrease: "special-defense" },
-  "naughty": { increase: "attack", decrease: "special-defense" },
-  "quiet": { increase: "special-attack", decrease: "speed" },
-  "quirky": { increase: null, decrease: null },
-  "rash": { increase: "special-attack", decrease: "special-defense" },
-  "relaxed": { increase: "defense", decrease: "speed" },
-  "sassy": { increase: "special-defense", decrease: "speed" },
-  "serious": { increase: null, decrease: null },
-  "timid": { increase: "speed", decrease: "attack" },
-};
-
-function getNatureModifier(statName, nature) {
-  if (!nature || !NATURE_MODIFIERS[nature]) return 1; // Neutral nature
-  const natureEffects = NATURE_MODIFIERS[nature];
-  if (natureEffects.increase === statName) return 1.1; // Boosted stat
-  if (natureEffects.decrease === statName) return 0.9; // Reduced stat
-  return 1; // No effect
-}
-
-function calculateLevelStat(pokemon) {
-  const level = pokemon.meta.level
-  const stats = {};
-
-  Object.keys(pokemon.stats).forEach(statName => {
-    const baseStat = pokemon.stats[statName];
-    const ev = pokemon.efforts[statName] || 0; // Effort values from `efforts`
-    const iv = 31; // Default IV value
-
-    if (statName === "hp") {
-      // HP calculation
-      stats[statName] = Math.floor(
-        ((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100 + level + 10
-      );
-    } else {
-      // Other stat calculations
-      stats[statName] = Math.floor(
-        ((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100 + 5
-      );
-    }
-  });
-
-  return stats;
-}
-
-function calculateNatureStat(pokemon) {
-  const natureStats = {};
-
-  Object.keys(pokemon.stats).forEach(statName => {
-    const baseStat = pokemon.stats[statName];
-    const natureModifier = getNatureModifier(statName, pokemon.meta.nature);
-
-    // Apply nature modifier
-    natureStats[statName] = Math.floor(baseStat * natureModifier);
-  });
-
-  return natureStats;
-}
-
-function calculateTotalStat(pokemon) {
-  const baseStats = pokemon.stats;
-  const levelStats = calculateLevelStat(pokemon);
-  const natureStats = calculateNatureStat(pokemon);
-
-  const totalStats = {};
-  Object.keys(baseStats).forEach(statName => {
-    totalStats[statName] =
-      baseStats[statName] + levelStats[statName] + natureStats[statName];
-  });
-
-  return totalStats;
 }
 
 async function calculateWinXP(poke1, poke2) {

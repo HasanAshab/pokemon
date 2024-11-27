@@ -6,8 +6,8 @@ effects
 xp using cp
 nature
 abilities effects (eg guts)
-
-
+retreat bug -- .5 for status
+reduce level stat
 
 now i want to add support to multi hit moves.
 move1 and move2 both can be multi hit, or only
