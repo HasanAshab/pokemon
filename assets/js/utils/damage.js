@@ -1,7 +1,8 @@
 const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24;
-no random stab or effect
+
+
 function fixDamage(damage) {
     return damage === null
         ? null
@@ -34,13 +35,18 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
     }
     if (!move2) {
         // No target or second move: calculate base damage only
-        const totalDamage = fixDamage(calculateBaseDamage(pokemon1, move1, pokemon2));
+        let totalDamage = calculateBaseDamage(pokemon1, move1, pokemon2);
         if(pokemon2) {
-            
+            const stab = pokemon2.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
+            const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
+            const criticalMultiplier = Math.random() < critChance ? CRIT_MULTIPLIER : 1;
+            const randomModifier = Math.random() * 0.15 + 0.85;
+            const effectiveness = await pokemon2.effectiveness(move1.type);
+            totalDamage = totalDamage * effectiveness * stab * criticalMultiplier * randomModifier;
         }
         result[1].hits = 1;
-        result[1].totalDamage = totalDamage
-        return result
+        result[1].totalDamage = fixDamage(totalDamage);
+        return result;
     }
 
     // Calculate type effectiveness for pokemon1's move
