@@ -115,7 +115,7 @@ async function loadStats() {
     const meta = getPokemonsMeta(name)
     const pokemon = await Pokemon.make(name, meta)
 
-    setStat("level", pokemon.meta.level)
+    setStat("level", pokemon.level)
     setStat("retreat", pokemon.meta.retreat)
     for (const stat in pokemon.data.stats) {
       setStat(stat, pokemon.data.stats[stat])
@@ -170,8 +170,11 @@ async function loadMoves() {
 
 window.onload = () => {
     loadName()
-    loadMoves()
-    loadStats()
+    
+    setTimeout(() => {
+        loadMoves()
+        loadStats()
+    }, 1000)
 
 
 }

@@ -258,7 +258,6 @@ export class Pokemon {
       const baseStats = this.data.stats;
       const levelStats = this._calculateLevelStat();
       const natureStats = this._calculateNatureStat();
-    console.log(levelStats,natureStats)
       const totalStats = {};
       Object.keys(baseStats).forEach(statName => {
         totalStats[statName] =

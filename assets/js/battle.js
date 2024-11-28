@@ -1,3 +1,7 @@
+import { Pokemon, Move } from "./utils/models.js"
+import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+
+
 function addEffect(name, playerTag) {
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const html = ` <span class="effect" style="background-color:var(--fire-type-color)">Burn</span>`
@@ -57,13 +61,16 @@ function loadAllMoves(movesArr, playerTag) {
   //clean up old cards
   const oldMoveCards = moveCardsContainer.querySelectorAll('.card')
   for (const card of oldMoveCards) {
+      if (card.dataset.moveName === "__nothing__" || card.dataset.moveName === "__dodge__") {
+          continue
+      }
     moveCardsContainer.removeChild(card)
   }
   // re adding cards
   movesArr.forEach((move)=> {
-    const cardHtml = ` <div class="card " data-retreat-cost="2" data-damage="300" data-move-name="Flamethrower" onclick="moveClickHandler(event,'you')">
+    const cardHtml = ` <div class="card " data-move-name="${move.name}" onclick="moveClickHandler(event, '${playerTag}'')">
     <div class="card-header">
-    <h3>Flamethrower</h3>
+    <h3>${capitalizeFirstLetter(move.name)}</h3>
     <div class="icons">
     <div class="icon"></div>
     <div class="icon"></div>
@@ -71,20 +78,21 @@ function loadAllMoves(movesArr, playerTag) {
     </div>
     <div class="card-body">
     <p>
-    Category: Special
+    Category: ${move.damage_class}
     </p>
     <p>
     Damage: 300
     </p>
     <p>
-    PP: 5
+    PP: ${move.pp}
     </p>
     </div>
     <div class="retreat-cost">
-    2
+    ${move.retreat}
     </div>
     </div>
     `
+    moveCardsContainer.innerHTML += cardHtml
 
   })
 
@@ -94,16 +102,51 @@ function handleMoveCardSelect(card, playerTag) {
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
   if (oponentSelectedMoveCard){
     oponentSelectedMoveCard.classList.remove("selected")
+    const moves = {
+        [playerTag]: card.dataset.moveName,
+        [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveName
+    }
+    console.log(moves)
   }else{
     card.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
   }
   }
-function moveCardClickHandler( {
+ 
+globalThis.moveCardClickHandler = function( {
   currentTarget
 }, playerTag) {
   handleMoveCardSelect(currentTarget, playerTag)
-
-  
 }
-function newWave() {}
+
+
+globalThis.newWave = function() {}
+
+
+async function loadMoves() {
+    const pokemonName = getParam("you")
+    const meta = getPokemonsMeta(pokemonName)
+    const moves = await Promise.all(
+      meta.moves
+        .filter(move => move.isSelected)
+        .map(move => Move.make(move.name))
+    )
+    loadAllMoves(moves, "you")
+}
+
+async function loadOponentMoves() {
+    const moveNames = getParam("moves").split(",")
+    console.log(moveNames)
+    const moves = await Promise.all(
+      moveNames.map(move => Move.make(move))
+    )
+    loadAllMoves(moves, "enemy")
+}
+
+function loadAll() {
+    loadMoves()
+    loadOponentMoves()
+}
+
+
+setTimeout(loadAll, 1000)
