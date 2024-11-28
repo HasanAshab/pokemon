@@ -12,6 +12,10 @@ function setStat(name, value) {
   stat.setAttribute("data-value", value)
 }
 
+globalThis.openEnemyChooseInterface = function() {
+  window.location = `enemy.html?name=${name}`
+}
+
 globalThis.statClickHandler = function( {
   currentTarget
 }) {
@@ -33,6 +37,8 @@ globalThis.statClickHandler = function( {
       statUpdateForm.parentNode.classList.remove("active")
   }
 }
+
+
 
 globalThis.showMoveChooseInterface = async function() {
     const moveChooseInterface = document.querySelector(".move-choose-interface");
