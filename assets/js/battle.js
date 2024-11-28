@@ -1,6 +1,19 @@
 import { Pokemon, Move } from "./utils/models.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
+function showPopupMsg(msg,playerTag){
+    const popupMsgCont = document.getElementById("popup-msg-cont")
+    popupMsgCont.classList.add("active")
+    popupMsgCont.querySelector(".msg").textContent = msg
+    if (playerTag === "enemy"){
+     popupMsgCont.classList.add("enemy-side")
+    }
+    setTimeout(()=>{
+    popupMsgCont.classList.remove("active")
+      popupMsgCont.classList.remove("enemy-side")
+   },2000)
+    
+}
 
 function addEffect(name, playerTag) {
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
