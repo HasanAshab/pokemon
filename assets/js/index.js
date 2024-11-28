@@ -7,7 +7,16 @@ function __setDefaultPokeMeta() {
             "xp": 2 * 100,
             "nature": "bully",
             "retreat": 2,
-            "moves": ["scratch", "growl"]
+            "moves": [
+                {
+                    name: "ember",
+                    isSelected: true
+                },
+                {
+                    name: "growl",
+                    isSelected: false
+                }
+            ]
         },
         "froakie": {
             "xp": 1 * 100,
@@ -18,7 +27,9 @@ function __setDefaultPokeMeta() {
     }
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
 }
-__setDefaultPokeMeta()
+
+if (!localStorage.getItem("pokemons-meta"))
+    __setDefaultPokeMeta()
 
 
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0

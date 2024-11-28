@@ -36,8 +36,8 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
     if (!move2) {
         // No target or second move: calculate base damage only
         let totalDamage = calculateBaseDamage(pokemon1, move1, pokemon2);
+        const stab = pokemon1.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
         if(pokemon2) {
-            const stab = pokemon2.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
             const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
             const criticalMultiplier = Math.random() < critChance ? CRIT_MULTIPLIER : 1;
             const randomModifier = Math.random() * 0.15 + 0.85;

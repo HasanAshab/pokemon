@@ -54,13 +54,51 @@ globalThis.closeMoveChooseInterface = function() {
 globalThis.learnMove = async function() {
     const moveName = document.getElementById("move-search-inp").value
     const meta = getPokemonsMeta(name)
-    if (meta.moves.includes(moveName)) return
-    meta.moves.push(moveName)
+    
+    if (meta.moves.find(move => move.name === moveName)) {
+        return
+    }
+
+    meta.moves.push({
+        name: moveName,
+        isSelected: false
+    })
     setPokemonMeta(name, meta)
     closeMoveChooseInterface()
     loadMoves()
 }
 
+
+globalThis.selectMove = function(moveName) {
+    const meta = getPokemonsMeta(name)
+    meta.moves = meta.moves.map(move => {
+        if (move.name === moveName) {
+            move.isSelected = true
+        }
+        return move
+    })
+    setPokemonMeta(name, meta)
+    loadMoves()
+}
+
+globalThis.unselectMove = function(moveName) {
+    const meta = getPokemonsMeta(name)
+    meta.moves = meta.moves.map(move => {
+        if (move.name === moveName) {
+            move.isSelected = false
+        }
+        return move
+    })
+    setPokemonMeta(name, meta)
+    loadMoves()
+}
+
+globalThis.forgetMove = function(moveName) {
+    const meta = getPokemonsMeta(name)
+    meta.moves = meta.moves.filter(move => move.name !== moveName)
+    setPokemonMeta(name, meta)
+    loadMoves()
+}
 
 function loadName() {
     const displayName = capitalizeFirstLetter(name)
@@ -82,12 +120,12 @@ async function loadMoves() {
     movesContainer.innerHTML = ""
     const meta = getPokemonsMeta(name)
     const pokemon = await Pokemon.make(name, meta)
-    for (const moveName of meta.moves) {
-        const move = await Move.make(moveName)
+    for (const moveMeta of meta.moves) {
+        const move = await Move.make(moveMeta.name)
         const damages = await calculateDamage(pokemon, move)
         const damage = damages[1].totalDamage
         movesContainer.innerHTML += `
-    <div class="move selected">
+    <div class="move ${moveMeta.isSelected ? "selected" : ""}">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
       <span>${capitalizeFirstLetter(move.name)}</span>
       <div class="move-icons">
@@ -111,12 +149,11 @@ async function loadMoves() {
       <p>
         PP: ${move.pp}
       </p>
-      <small class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum nihil officia assumenda non repudiandae sint velit, recusandae magni suscipit rem delectus obcaecati laudantium beatae dolores. Odit doloribus nemo, eveniet doloremque laudantium nam necessitatibus quo libero eum ea ut cupiditate. Cum corporis culpa, minus! Explicabo ut aliquam magni illum minima expedita.</small>
+      <small class="desc">${move.description}</small>
       <div class="btn-cont">
-        <button class="unselect-move">Unselect</button>
-        <button class="select-move">Select</button>
-        <button class="forget-move">Forget Move</button>
-  
+        <button class="unselect-move" onclick="unselectMove('${move.name}')">Unselect</button>
+        <button class="select-move" onclick="selectMove('${move.name}')">Select</button>
+        <button class="forget-move" onclick="forgetMove('${move.name}')">Forget Move</button>
       </div>
     </div>
   </div>

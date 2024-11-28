@@ -6,6 +6,7 @@ abilities effects (eg guts)
 stat changes, growl
 effects
 BattleGround class
+add limit to move selection
 
 dom
 increase level stat damage
