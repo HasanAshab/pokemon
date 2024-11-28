@@ -81,8 +81,8 @@ function loadAllMoves(movesArr, playerTag) {
   }
   // re adding cards
   movesArr.forEach((move)=> {
-    const cardHtml = ` <div class="card " data-move-name="${move.name}" onclick="moveClickHandler(event, '${playerTag}'')">
-    <div class="card-header">
+    const cardHtml = ` <div class="card "  data-move-name="${move.name}" onclick="moveClickHandler(event, '${playerTag}'')">
+    <div class="card-header" style="background-color:var(--${move.type}-type-color)">
     <h3>${capitalizeFirstLetter(move.name)}</h3>
     <div class="icons">
     <div class="icon"></div>
