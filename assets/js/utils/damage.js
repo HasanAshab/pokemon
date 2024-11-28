@@ -1,7 +1,7 @@
 const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24;
-
+no random stab or effect
 function fixDamage(damage) {
     return damage === null
         ? null
@@ -32,10 +32,14 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
             hits: 0
         },
     }
-    if (!pokemon2 && !move2) {
+    if (!move2) {
         // No target or second move: calculate base damage only
-        result[1].totalDamage = fixDamage(calculateBaseDamage(pokemon1, move1));
+        const totalDamage = fixDamage(calculateBaseDamage(pokemon1, move1, pokemon2));
+        if(pokemon2) {
+            
+        }
         result[1].hits = 1;
+        result[1].totalDamage = totalDamage
         return result
     }
 

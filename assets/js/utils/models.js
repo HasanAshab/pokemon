@@ -224,7 +224,7 @@ export class Pokemon {
       Object.keys(this.data.stats).forEach(statName => {
         const baseStat = this.statOf(statName);
         const ev = this.data.efforts[statName] || 0; // Effort values from `efforts`
-        const iv = 5; // Default IV value
+        const iv = 35; // Default IV value
     
         if (statName === "hp") {
           // HP calculation
@@ -258,7 +258,7 @@ export class Pokemon {
       const baseStats = this.data.stats;
       const levelStats = this._calculateLevelStat();
       const natureStats = this._calculateNatureStat();
-
+    console.log(levelStats,natureStats)
       const totalStats = {};
       Object.keys(baseStats).forEach(statName => {
         totalStats[statName] =
