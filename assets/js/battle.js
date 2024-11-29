@@ -56,7 +56,7 @@ function showPopupMsg(msg,playerTag){
 }
 
 
-function setEffect(effects, playerTag) {
+function setEffects(effects, playerTag) {
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   effectsDataColumn.innerHTML = ""
   effects.forEach(effect => {
@@ -132,12 +132,19 @@ function loadAllMoves(movesArr, playerTag) {
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   //clean up old cards
   const oldMoveCards = moveCardsContainer.querySelectorAll('.card')
+  
   for (const card of oldMoveCards) {
-      if (card.dataset.moveName === "__nothing__" || card.dataset.moveName === "__dodge__") {
+      if (card.dataset.moveName === "__nothing__") {
           continue
       }
     moveCardsContainer.removeChild(card)
   }
+  
+  moveCardsContainer.innerHTML += `
+    <div onclick="moveCardClickHandler(event,'${playerTag}')" class="card ${0.5 <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}" class="card dodge" style="display:flex;justify-content:center;align-items:center" data-move-name="__dodge__">
+        <h1>Dodge</h1>
+      </div>
+  `
 
   // re adding cards
   movesArr.forEach((move)=> {
@@ -181,7 +188,7 @@ async function handleMoveCardSelect(card, playerTag) {
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveName
     }
     try {
-    await fight(moveNames)
+    await battle(moveNames)
     }
     catch(e) {
         console.log(e)
@@ -218,7 +225,7 @@ globalThis.newWave = function() {
 }
 
 
-async function fight(moveNames) {
+async function battle(moveNames) {
     const {you: moveName, enemy: enemyMoveName} = moveNames
     const isNotMove = name => ["__dodge__", "__nothing__"].includes(name)
     
@@ -252,8 +259,6 @@ async function fight(moveNames) {
         const dodged = canDodge(pokemon, enemyPokemon, move1)
         pokemon.state.retreat -= move1.retreat
         enemyPokemon.state.retreat -= 0.5
-              console.log(dodged)
-
         if (!dodged) {
             const damages = await calculateDamage(pokemon, move1, enemyPokemon)
             const effects = await getEffects(pokemon, enemyPokemon, move1)
@@ -283,19 +288,19 @@ async function fight(moveNames) {
         enemyPokemon.state.retreat -= move2.retreat
 
         const damages = await calculateDamage(pokemon, move1, enemyPokemon, move2)
-        const hurtedPokemon = damages[1] > 0
+        const hurtedPokemon = damages[1].totalDamage > 0
             ? enemyPokemon
             : pokemon
-        const hittedPokemon = hurtedPokemon === enemyPokemon
+        const hitterPokemon = hurtedPokemon === enemyPokemon
             ? pokemon
             : enemyPokemon
-        const move = hittedPokemon === pokemon
+                console.log(hurtedPokemon.name, hitterPokemon.name)
+        const move = hitterPokemon === pokemon
             ? move1
             : move2
-        const effects = await getEffects(hittedPokemon, hurtedPokemon, move)
+        const effects = await getEffects(hitterPokemon, hurtedPokemon, move)
         effects.forEach(effect => hurtedPokemon.state.addEffect(effect))
         hurtedPokemon.state.decreaseHealth(damages[1].totalDamage)
-  
     }
     
     setCurrentRetreat(pokemon.state.retreat, "you")
@@ -304,27 +309,31 @@ async function fight(moveNames) {
 
 
 async function loadMoves() {
-    const moves = await Promise.all(
-      pokemon.meta.moves
-        .filter(move => move.isSelected)
-        .map(async moveMeta => {
-            const move = await Move.make(moveMeta.name)
-            move.damage = (await calculateDamage(pokemon, move))[1].totalDamage
-            return move
-        })
-    )
+    const moves = []
+    for (const moveMeta of pokemon.meta.moves) {
+        if (!moveMeta.isSelected) continue
+        const move = await Move.make(moveMeta.name)
+        move.damage = (await calculateDamage(pokemon, move))[1].totalDamage
+        moves.push(move)
+    }
     loadAllMoves(moves, "you")
 }
 
 async function loadOponentMoves() {
     const moveNames = getParam("moves").split(",")
-    const moves = await Promise.all(
-      moveNames.map(async moveName => {
-            const move = await Move.make(moveName)
-            move.damage = (await calculateDamage(enemyPokemon, move))[1].totalDamage
-            return move
-        })
-    )
+    // const moves = await Promise.all(
+//       moveNames.map(async moveName => {
+//             const move = await Move.make(moveName)
+//             move.damage = (await calculateDamage(enemyPokemon, move))[1].totalDamage
+//             return move
+//         })
+//     )
+    const moves = []
+    for (const moveName of moveNames) {
+        const move = await Move.make(moveName)
+        move.damage = (await calculateDamage(enemyPokemon, move))[1].totalDamage
+        moves.push(move)
+    }
     loadAllMoves(moves, "enemy")
 }
 
@@ -364,4 +373,4 @@ async function loadAll() {
 }
 
 
-setTimeout(loadAll, 1500)
+setTimeout(loadAll, 1000)

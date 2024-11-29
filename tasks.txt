@@ -13,6 +13,7 @@ increase level stat damage
 
 damages map
 dodge, nothing move .json
+point damage
 
 
 now i want to add support to multi hit moves.

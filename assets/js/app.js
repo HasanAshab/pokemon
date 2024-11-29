@@ -33,7 +33,7 @@ console.log("charmander thrown ember on charmander", await calculateDamage(charm
 
 }
 
-setTimeout(t, 1000)
+//setTimeout(t, 1000)
 
 
 function applyStatChanges(attacker, target, move) {
