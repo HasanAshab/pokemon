@@ -15,6 +15,22 @@ async function loadPokemonsToGlobal() {
     ])
     globalThis.pokemon = pokemon
     globalThis.enemyPokemon = enemyPokemon
+    
+    pokemon.state.addListener("onHealthChange", state => {
+        setTotalHealth(state.hp, "you")
+    })
+    
+    enemyPokemon.state.addListener("onHealthChange", state => {
+        setTotalHealth(state.hp, "enemy")
+    })
+    
+    pokemon.state.addListener("onEffectAdded", state => {
+        setEffects(state._effects, "you")
+    })
+    
+    enemyPokemon.state.addListener("onEffectAdded", state => {
+        setEffects(state._effects, "enemy")
+    })
 }
 
 
@@ -32,7 +48,7 @@ function showPopupMsg(msg,playerTag){
     
 }
 
-function addEffect(effects, playerTag) {
+function setEffect(effects, playerTag) {
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   effectsDataColumn.innerHTML = ""
   effects.forEach(effect => {
@@ -63,6 +79,8 @@ function setTotalHealth(hp, playerTag) {
   healthProgressBar.setAttribute("data-total-hp", hp)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".inner").style.width = '100%'
+  healthProgressBar.querySelector(".current-hp").textContent = hp
+  healthProgressBar.querySelector(".total-hp").textContent = hp
 
 }
 function injectDamage(damage, playerTag) {
@@ -139,11 +157,12 @@ function handleMoveCardSelect(card, playerTag) {
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
   if (oponentSelectedMoveCard){
     oponentSelectedMoveCard.classList.remove("selected")
-    const moves = {
+    const moveNames = {
         [playerTag]: card.dataset.moveName,
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveName
     }
-    console.log(moves)
+    pokemon.state.decreaseHealth(20)
+    fight(moveNames)
   }else{
     card.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
@@ -158,10 +177,37 @@ globalThis.moveCardClickHandler = function( {
 
 
 globalThis.newWave = function() {
+    pokemon.state.decreaseHealthForEffects()
+    enemyPokemon.state.decreaseHealthForEffects()
+    
     pokemon.state.addWaveRetreat()
     enemyPokemon.state.addWaveRetreat()
+    
     setCurrentRetreat(pokemon.state.retreat, "you")
     setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
+}
+
+
+async function fight(moveNames) {
+    let damages = {}
+    const {you: moveName, enemy: enemyMoveName} = moveNames
+    const isNotMove = name => ["__dodge__", "__nothing__"].includes(name)
+    
+    const move1 = isNotMove(moveName)
+        ? null
+        : await Move.make(moveName)
+    const move2 = isNotMove(enemyMoveName)
+        ? null
+        : await Move.make(enemyMoveName)
+
+    if(moveName === "__dodge__") {
+        const dodged = canDodge(enemyPokemon, pokemon, move2)
+        if (dodged) return
+        damages = await calculateDamage(enemyPokemon, move2, pokemon)
+        const effects = await getEffects(enemyPokemon, pokemon, moves)
+        effects.forEach(effect => pokemon.state.addEffect(effect))
+    }
+    
 }
 
 
@@ -191,16 +237,25 @@ async function loadOponentMoves() {
 }
 
 function loadRetreat() {
-    const retreat = pokemon.meta.retreat
+    const retreat = pokemon.state.retreat
     setRetreatPerWave(retreat, "you")
     setCurrentRetreat(retreat, "you")
-    
 }
 
 function loadEnemyRetreat() {
-    const retreat = enemyPokemon.meta.retreat
+    const retreat = enemyPokemon.state.retreat
     setRetreatPerWave(retreat, "enemy")
     setCurrentRetreat(retreat, "enemy")
+}
+
+function loadHealth() {
+    const hp = pokemon.state.statOf("hp")
+    setTotalHealth(hp, "you")
+}
+
+function loadEnemyHealth() {
+    const hp = enemyPokemon.state.statOf("hp")
+    setTotalHealth(hp, "enemy")
 }
 
 async function loadAll() {
@@ -211,6 +266,9 @@ async function loadAll() {
     
     loadRetreat()
     loadEnemyRetreat()
+    
+    loadHealth()
+    loadEnemyHealth()
 }
 
 
