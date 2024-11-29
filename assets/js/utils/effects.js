@@ -1,7 +1,9 @@
 export function getEffects(attacker, target, move) {
-    const effects = {};
+    const effects = [];
     for (const effectName of move.effect_names) {
-        effects[effectName] = Math.random() < (move.effect_chance / 100);
+        if (Math.random() < (move.effect_chance / 100)) {
+            effects.push(effectName)
+        }
     }
     return effects;
 }

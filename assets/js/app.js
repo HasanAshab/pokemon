@@ -52,7 +52,7 @@ function applyStatChanges(attacker, target, move) {
 }
 
 
-function canDodge(pokemon1, pokemon2, move) {
+export function canDodge(pokemon1, pokemon2, move) {
     if (move.accuracy === null) {
         // Moves with null accuracy always hit
         return false;

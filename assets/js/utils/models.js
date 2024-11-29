@@ -27,7 +27,7 @@ class BattleState {
     stats() {
         const calculatedStats = {};
         for (const stat in this._stats) {
-            const baseStat = this.pokemon.data.stats[stat];
+            const baseStat = this._stats[stat];
             const stage = this._statChanges[stat] || 0;
             const multiplier = this._statStageMultiplier(stage);
             calculatedStats[stat] = Math.floor(baseStat * multiplier);
@@ -36,7 +36,7 @@ class BattleState {
     }
 
     statOf(name) {
-        const baseStat = this.pokemon.data.stats[name];
+        const baseStat = this._stats[name];
         const stage = this._statChanges[name] || 0;
         const multiplier = this._statStageMultiplier(stage);
         return Math.floor(baseStat * multiplier);

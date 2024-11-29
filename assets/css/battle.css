@@ -28,13 +28,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 5px;
 }
-
 #new-wave-btn {
     padding: 4px 8px;
     background-color: black;
     color: white;
     border-radius: 5px;
+    border: none;
+}
+#too-close-btn{
+  padding: 4px 8px;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+        border: none;
+ filter:brightness(20%);
+}
+#too-close-btn.active{
+ filter:brightness(100%);
 }
 .you-controle-cont {
     height: 47.50%;

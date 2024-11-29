@@ -11,6 +11,8 @@ add limit to move selection
 dom
 increase level stat damage
 
+damages map
+dodge, nothing move .json
 
 
 now i want to add support to multi hit moves.

@@ -12,69 +12,75 @@
     <div class="blur-bg ">
       <div class="move-choose-interface">
         <div class="toolbar">
-            <input list="move-data-list" class="move-search-inp" id="move-search-inp"/>
-            <datalist id="move-data-list"></datalist> 
-            <button class="move-learn-btn" onclick="learnMove()">learn</button>
-            <button class="cancel-btn" onclick="closeMoveChooseInterface()">close</button>
-        </div>
+          <input list="move-data-list" class="move-search-inp" id="move-search-inp" />
+        <datalist id="move-data-list"></datalist>
+        <button class="move-learn-btn" onclick="learnMove()">learn</button>
+        <button class="cancel-btn" onclick="closeMoveChooseInterface()">close</button>
       </div>
     </div>
   </div>
+</div>
 
 
-  <div class="blur-bg">
-    <div class="stat-update-form" style="background-color:white; padding:40px">
-      <h3 class="stat-name">Stat name</h3>
-      <input class="stat-value-inp" type="number" />
-    <button class="save-btn">save</button>
-    <button class="cancel-btn">cancel</button>
-  </div>
+<div class="blur-bg">
+  <div class="stat-update-form" style="background-color:white; padding:40px">
+    <h3 class="stat-name">Stat name</h3>
+    <input class="stat-value-inp" type="text" />
+  <button class="save-btn">save</button>
+  <button class="cancel-btn">cancel</button>
+</div>
 </div>
 
 <!-- Header -->
 <div class="header">
-  <button class="back-btn" onclick="history.back()">←</button>
-  <h1 class="pokemon-name" id="pokemon-name">Pokemon_name</h1>
-  <button class="image-btn" onclick="openEnemyChooseInterface()">🖼️</button>
+<button class="back-btn" onclick="history.back()">←</button>
+<h1 class="pokemon-name" id="pokemon-name">Pokemon_name</h1>
+<button class="image-btn" onclick="openEnemyChooseInterface()">🖼️</button>
 </div>
 
 <!-- Stats Section -->
 <div class="stats">
-  <div class="stats-row">
-    <div data-value="0" onclick="statClickHandler(event)" class="stat hp" data-value="0">
-      <strong>HP:</strong>
-    </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat attack">
-      <strong>ATK:</strong>
-    </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat defense">
-      <strong>DEF:</strong>
-    </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat retreat">
-      <strong>Retreat:</strong>
-    </div>
+<div class="stats-row">
+<div data-value="0" onclick="statClickHandler(event)" class="stat hp" data-value="0">
+<strong>HP:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat attack">
+<strong>ATK:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat defense">
+<strong>DEF:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat retreat">
+<strong>Retreat:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat speed">
+<strong>SPEED:</strong>
+</div>
+</div>
+<div class="stats-row">
+<div data-value="0" onclick="statClickHandler(event)" class="stat level">
+<strong>LVL:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat xp">
+<strong>XP:</strong>
+</div>
+<div data-value="none" onclick="statClickHandler(event)" class="stat nature">
+<strong>Nature:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat special-attack">
+<strong>SP. ATK:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat special-defense">
+<strong>SP. DEF:</strong>
+</div>
 
-  </div>
-  <div class="stats-row">
-    <div data-value="0" onclick="statClickHandler(event)" class="stat level">
-      <strong>LVL:</strong>
-    </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat special-attack">
-      <strong>SP. ATK:</strong>
-    </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat special-defense">
-      <strong>SP. DEF:</strong>
-    </div>
-    <div data-value="0" onclick="statClickHandler(event)" class="stat speed">
-      <strong>SPEED:</strong>
-    </div>
-  </div>
+</div>
 
 </div>
 
 <!-- Moves Section -->
 <div class="moves-header">
-  <h2>Moves - 10</h2>
+<h2>Moves - 10</h2>
 </div>
 <button id="add-move-btn" onclick="showMoveChooseInterface()">add move</button>
 <div id="moves-container"></div>

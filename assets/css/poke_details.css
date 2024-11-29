@@ -1,4 +1,3 @@
-
 .container {
     width: 90%;
     margin: 0 auto;
@@ -83,13 +82,27 @@ h1 {
     padding: 5px 15px;
     border-radius: 5px;
 }
+#add-move-btn{
+    position: relative;
+  margin: 10px 35px;
+  
+}
+#moves-container{
+  padding: 0 10px;
+  width: calc(100vw - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 
+}
 .move {
-    background: #fff;
+    width: 280px;
+    background: white;
     padding-bottom: 15px;
-    margin-bottom: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .move.selected {
   border: 2px solid gold;
