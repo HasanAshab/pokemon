@@ -1,5 +1,22 @@
 import { Pokemon, Move } from "./utils/models.js"
+import { calculateDamage } from "./utils/damage.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+
+
+async function loadPokemonsToGlobal() {
+    const pokemonName = getParam("you")
+    const [pokemon, enemyPokemon] = await Promise.all([
+        Pokemon.make(pokemonName, getPokemonsMeta(pokemonName)),
+        Pokemon.make(getParam("enemy"), {
+            xp: parseInt(getParam("xp")),
+            retreat: parseInt(getParam("retreat")),
+            nature: getParam("nature"),
+        })
+    ])
+    globalThis.pokemon = pokemon
+    globalThis.enemyPokemon = enemyPokemon
+}
+
 
 function showPopupMsg(msg,playerTag){
     const popupMsgCont = document.getElementById("popup-msg-cont")
@@ -15,14 +32,21 @@ function showPopupMsg(msg,playerTag){
     
 }
 
-function addEffect(name, playerTag) {
+function addEffect(effects, playerTag) {
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
-  const html = ` <span class="effect" style="background-color:var(--fire-type-color)">Burn</span>`
-  effectsDataColumn.innerHTML += html
+  effectsDataColumn.innerHTML = ""
+  effects.forEach(effect => {
+    const html = ` <span class="effect" style="background-color:var(--fire-type-color)">${capitalizeFirstLetter(effect)}</span>`
+    effectsDataColumn.innerHTML += html
+  })
 }
-function addPokeAttribute(name, value, playerTag) {
+
+function setPokeAttribute(data, playerTag) {
   const attributesDataRow = document.querySelector(`.${playerTag}-controle-cont .attributes-data-row`)
-  attributesDataRow.innerHTML += `<span>${name}${value}</span>`
+  attributesDataRow.innerHTML = ""
+  for (stat in data) {
+    attributesDataRow.innerHTML += `<span class>${stat}${data[stat]}</span>`
+  }
 }
 
 function setRetreatPerWave(retreat, playerTag) {
@@ -30,9 +54,8 @@ function setRetreatPerWave(retreat, playerTag) {
   retreatPerWave.textContent = retreat
 }
 function setCurrentRetreat(retreat, playerTag) {
-  const currentRetreat = document.querySelector(`.${playerTag}-controle-cont .current-retreat`)
-  currentRetreat.textContent = retreat
-
+  const currentRetreat = document.getElementById(`${playerTag}-current-retreat`)
+  currentRetreat.innerText = retreat
 }
 
 function setTotalHealth(hp, playerTag) {
@@ -79,9 +102,10 @@ function loadAllMoves(movesArr, playerTag) {
       }
     moveCardsContainer.removeChild(card)
   }
+
   // re adding cards
   movesArr.forEach((move)=> {
-    const cardHtml = ` <div class="card "  data-move-name="${move.name}" onclick="moveClickHandler(event, '${playerTag}'')">
+    const cardHtml = ` <div class="card "  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type}-type-color)">
     <h3>${capitalizeFirstLetter(move.name)}</h3>
     <div class="icons">
@@ -94,7 +118,7 @@ function loadAllMoves(movesArr, playerTag) {
     Category: ${move.damage_class}
     </p>
     <p>
-    Damage: 300
+    ${move.damage !== null ? "Damage: " + move.damage : ""}
     </p>
     <p>
     PP: ${move.pp}
@@ -133,33 +157,61 @@ globalThis.moveCardClickHandler = function( {
 }
 
 
-globalThis.newWave = function() {}
+globalThis.newWave = function() {
+    pokemon.state.addWaveRetreat()
+    enemyPokemon.state.addWaveRetreat()
+    setCurrentRetreat(pokemon.state.retreat, "you")
+    setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
+}
 
 
 async function loadMoves() {
-    const pokemonName = getParam("you")
-    const meta = getPokemonsMeta(pokemonName)
     const moves = await Promise.all(
-      meta.moves
+      pokemon.meta.moves
         .filter(move => move.isSelected)
-        .map(move => Move.make(move.name))
+        .map(async moveMeta => {
+            const move = await Move.make(moveMeta.name)
+            move.damage = (await calculateDamage(pokemon, move))[1].totalDamage
+            return move
+        })
     )
     loadAllMoves(moves, "you")
 }
 
 async function loadOponentMoves() {
     const moveNames = getParam("moves").split(",")
-    console.log(moveNames)
     const moves = await Promise.all(
-      moveNames.map(move => Move.make(move))
+      moveNames.map(async moveName => {
+            const move = await Move.make(moveName)
+            move.damage = (await calculateDamage(enemyPokemon, move))[1].totalDamage
+            return move
+        })
     )
     loadAllMoves(moves, "enemy")
 }
 
-function loadAll() {
+function loadRetreat() {
+    const retreat = pokemon.meta.retreat
+    setRetreatPerWave(retreat, "you")
+    setCurrentRetreat(retreat, "you")
+    
+}
+
+function loadEnemyRetreat() {
+    const retreat = enemyPokemon.meta.retreat
+    setRetreatPerWave(retreat, "enemy")
+    setCurrentRetreat(retreat, "enemy")
+}
+
+async function loadAll() {
+    await loadPokemonsToGlobal()
+    
     loadMoves()
     loadOponentMoves()
+    
+    loadRetreat()
+    loadEnemyRetreat()
 }
 
 
-setTimeout(loadAll, 1000)
+setTimeout(loadAll, 1500)

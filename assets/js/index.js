@@ -7,22 +7,13 @@ function __setDefaultPokeMeta() {
             "xp": 2 * 100,
             "nature": "bully",
             "retreat": 2,
-            "moves": [
-                {
-                    name: "ember",
-                    isSelected: true
-                },
-                {
-                    name: "growl",
-                    isSelected: false
-                }
-            ]
+            "moves": []
         },
         "froakie": {
             "xp": 1 * 100,
             "nature": "gentle",
             "retreat": 2,
-            "moves": ["water-gun", "tail-whip"]
+            "moves": []
         }
     }
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
@@ -94,3 +85,5 @@ function loadAll() {
     loadAllPokemons()
 }
 document.body.onload = loadAll
+
+window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=100&retreat=4&nature=adamant&moves=pound,karate-chop,vine-whip,razor-leaf,leer"

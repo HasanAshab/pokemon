@@ -23,6 +23,7 @@ window.onload = () => {
 
 const enemy = document.getElementById("enemy");
 const levelInp = document.getElementById("level-inp");
+const retreatInp = document.getElementById("retreat-inp");
 const natureInp = document.getElementById("nature-inp");
 const enemyStats = document.getElementById("enemy-stats");
 
@@ -36,6 +37,7 @@ globalThis.showStats = async function() {
 
 globalThis.startBattle = function() {
     const level = levelInp.value;
+    const retreat = retreatInp.value;
     const nature = natureInp.value;
     const moves = [
         document.getElementById("move-input-1").value,
@@ -45,5 +47,5 @@ globalThis.startBattle = function() {
         document.getElementById("move-input-5").value,
     ]
 
-    window.location = `battle.html?you=${getParam("name")}&enemy=${enemy.value}&level=${level}&nature=${nature}&moves=${moves.join(',')}`;
+    window.location = `battle.html?you=${getParam("name")}&enemy=${enemy.value}&xp=${level * 100}&retreat=${retreat}&nature=${nature}&moves=${moves.join(',')}`;
 }

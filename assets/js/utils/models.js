@@ -17,6 +17,11 @@ class BattleState {
         this._effects = [];
         this._statChanges = {};
         this._stats = { ...this.pokemon.data.stats };
+        this.retreat = this.pokemon.meta.retreat
+    }
+    
+    addWaveRetreat() {
+        this.retreat += this.pokemon.meta.retreat
     }
 
     stats() {
