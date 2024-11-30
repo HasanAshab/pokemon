@@ -361,7 +361,6 @@ async function battle(moveNames) {
         effects.forEach(effect => hurtedPokemon.state.addEffect(effect))
         applyStatChanges(pokemon, enemyPokemon, move1)
         applyStatChanges(enemyPokemon, pokemon, move2)
-        console.log(damages)
         hurtedPokemon.state.decreaseHealth(damages[damIndex].totalDamage)
     }
     

@@ -97,9 +97,9 @@ def parse_stat_changes(data):
 def serialize_type(data):
     type_effectiveness = {}
     for relation, multiplier in [
-        ("double_damage_to", 1.3),
-        ("half_damage_to", 0.7),
-        ("no_damage_to", 0.35),
+        ("double_damage_to", 1.5),
+        ("half_damage_to", 0.5),
+        ("no_damage_to", 0.25),
     ]:
         for type_entry in data["damage_relations"][relation]:
             type_name = type_entry["name"]
