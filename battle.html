@@ -10,6 +10,17 @@
 </head>
 <body>
   <div class="container">
+      <div class="battle-prompt-popup">
+      <p class="msg">
+        Lorem ipsum dolor.
+      </p>
+      <div class="btns-cont">
+        <button class="dodge-btn">Dodge</button>
+        <button class="block-btn">Block</button>
+        <button class="nothing-btn">Nothing</button>
+
+      </div>
+    </div>
       <div id="popup-msg-cont">
           <b class="msg">msg..</b>
       </div>
@@ -53,7 +64,7 @@
     </div>
   </div>
   <div class="center">
-      <button id="too-close-btn" >Too close</button>
+      <button id="very-close-btn" onclick="veryCloseBtnClickHandler(event)" >Too close</button>
     <button id="new-wave-btn" onclick="newWave()">Wave</button>
   </div>
   <div class="you-controle-cont">

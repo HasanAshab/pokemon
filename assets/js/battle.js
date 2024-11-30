@@ -4,6 +4,14 @@ import { calculateDamage } from "./utils/damage.js"
 import { getEffects } from "./utils/effects.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
+globalThis.isVeryClose = false
+globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
+    console.log("heeii")
+    currentTarget.classList.toggle("active")
+  globalThis.isVeryClose = !isVeryClose
+}
+
+
 
 async function loadPokemonsToGlobal() {
     const pokemonName = getParam("you")
@@ -27,7 +35,6 @@ async function loadPokemonsToGlobal() {
     })
     
     enemyPokemon.state.addListener("onHealthChange", state => {
-        console.log(state.statOf("hp"))
         setCurrentHealth(state.statOf("hp"), "enemy")
     })
     
@@ -40,7 +47,28 @@ async function loadPokemonsToGlobal() {
     })
 }
 
+function showBattlePromptPopup(msg, playerTag) {
+  const battlePromptPopup = document.querySelector(".battle-prompt-popup")
+  const dodgeBtn = battlePromptPopup.querySelector(".btns-cont > .dodge-btn")
+  const nothingBtn = battlePromptPopup.querySelector(".btns-cont > .nothing-btn")
+  function hideShowToggle(){
+    battlePromptPopup.classList.toggle("active")
+  if (playerTag === "enemy") {
+    battlePromptPopup.classList.toggle("enemy")
+  }
+  }
+  hideShowToggle()
+  battlePromptPopup.querySelector(".msg").textContent = msg
 
+ dodgeBtn.onclick = ()=>{
+   //code for dodge
+   hideShowToggle()
+ }
+nothingBtn.onclick = ()=>{
+   //code for nothing
+   hideShowToggle()
+ }
+}
 function showPopupMsg(msg,playerTag){
     const popupMsgCont = document.getElementById("popup-msg-cont")
     popupMsgCont.classList.add("active")
@@ -223,7 +251,6 @@ globalThis.newWave = function() {
     loadMoves()
     loadOponentMoves()
 }
-
 
 async function battle(moveNames) {
     const {you: moveName, enemy: enemyMoveName} = moveNames

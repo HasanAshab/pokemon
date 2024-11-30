@@ -1,6 +1,42 @@
 .container {
     height: 100vh;
 }
+.battle-prompt-popup{
+  width: calc( 80vw - 40px);
+  padding: 20px;
+  position: fixed;
+  left: 10vw;
+  bottom: 3vh;
+  background-color: white;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  box-shadow: 0 0 5px 10px rgba(0,0,0,0.5);
+}
+.battle-prompt-popup.active{
+  display: flex;
+}
+.battle-prompt-popup.enemy{
+  transform: rotate(180deg);
+   bottom: unset;
+  top: 3vh;
+}
+.battle-prompt-popup > .btns-cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.battle-prompt-popup.block-type-move > .btns-cont > .block-btn{
+display: block;
+}
+.battle-prompt-popup > .btns-cont > .block-btn{
+display: none;
+}
 #popup-msg-cont{
     
     position: fixed;
@@ -37,7 +73,7 @@
     border-radius: 5px;
     border: none;
 }
-#too-close-btn{
+#very-close-btn{
   padding: 4px 8px;
     background-color: red;
     color: white;
@@ -45,7 +81,7 @@
         border: none;
  filter:brightness(20%);
 }
-#too-close-btn.active{
+#very-close-btn.active{
  filter:brightness(100%);
 }
 .you-controle-cont {
