@@ -116,6 +116,8 @@ async function loadStats() {
     const pokemon = await Pokemon.make(name, meta)
 
     setStat("level", pokemon.level)
+    setStat("nature", pokemon.meta.nature)
+    setStat("xp", pokemon.meta.xp)
     setStat("retreat", pokemon.meta.retreat)
     for (const stat in pokemon.data.stats) {
       setStat(stat, pokemon.data.stats[stat])

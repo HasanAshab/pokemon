@@ -14,7 +14,14 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
 
 function addBattleStateListeners(pokemon, playerTag) {
     pokemon.state.addListener("onHealthChange", state => {
-        setCurrentHealth(state.statOf("hp"), playerTag)
+        const hp = state.statOf("hp")
+        setCurrentHealth(hp, playerTag)
+        if (hp === 0) {
+            const winnerTag = playerTag === "you"
+                ? "enemy"
+                : "you"
+            handleWin(winnerTag, playerTag)
+        }
     })
 
     pokemon.state.addListener("onEffectAdded", state => {
@@ -23,6 +30,20 @@ function addBattleStateListeners(pokemon, playerTag) {
     
     pokemon.state.addListener("onStatChange", state => {
         setStateChanges(state._statChanges, playerTag)
+    })
+}
+
+async function handleWin(winnerTag, looserTag) {
+    const winner = pokemonMap[winnerTag]
+    const looser = pokemonMap[looserTag]
+    const xp = await calculateWinXP(winner , looser)
+    
+    const meta = getPokemonsMeta(pokemon.name)
+    meta.xp += xp
+    setPokemonMeta(pokemon.name, meta)
+    
+    showPopupMsg("Winner! +" + xp, winnerTag, () => {
+        window.location = `poke_details.html?name=${pokemon.name}`
     })
 }
 
@@ -68,7 +89,8 @@ nothingBtn.onclick = ()=>{
    hideShowToggle()
  }
 }
-function showPopupMsg(msg,playerTag){
+
+function showPopupMsg(msg,playerTag, cb){
     const popupMsgCont = document.getElementById("popup-msg-cont")
     popupMsgCont.classList.add("active")
     popupMsgCont.querySelector(".msg").textContent = msg
@@ -78,6 +100,7 @@ function showPopupMsg(msg,playerTag){
     setTimeout(()=>{
     popupMsgCont.classList.remove("active")
       popupMsgCont.classList.remove("enemy-side")
+      cb()
    },2000)
     
 }
