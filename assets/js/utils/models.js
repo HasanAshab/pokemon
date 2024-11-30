@@ -183,8 +183,8 @@ export class Pokemon {
         this.name = name;
         this.data = data;
         this.meta = meta;
-        this.state = new BattleState(this)
         this.data.stats = this._calculateTotalStat()
+        this.state = new BattleState(this)
     }
 
     isTypeOf(type) {
@@ -229,7 +229,7 @@ export class Pokemon {
       Object.keys(this.data.stats).forEach(statName => {
         const baseStat = this.statOf(statName);
         const ev = this.data.efforts[statName] || 0; // Effort values from `efforts`
-        const iv = 35; // Default IV value
+        const iv = 80; // Default IV value
     
         if (statName === "hp") {
           // HP calculation

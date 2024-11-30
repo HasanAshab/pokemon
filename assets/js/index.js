@@ -86,4 +86,4 @@ function loadAll() {
 }
 document.body.onload = loadAll
 
-window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=100&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
+window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
