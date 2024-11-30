@@ -27,7 +27,7 @@
     "type": "ice",
     "effect_chance": 10,
     "effect_names": [],
-    "retreat": 2.0,
+    "retreat": 1.5,
     "stat_changes": {
         "self": {},
         "target": {}

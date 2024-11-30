@@ -27,7 +27,7 @@
     "type": "steel",
     "effect_chance": 30,
     "effect_names": [],
-    "retreat": 2.0,
+    "retreat": 1.5,
     "stat_changes": {
         "self": {},
         "target": {

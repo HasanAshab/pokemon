@@ -10,7 +10,7 @@
     "effect_names": [
         "freeze"
     ],
-    "retreat": 2.5,
+    "retreat": 2,
     "stat_changes": {
         "self": {},
         "target": {}

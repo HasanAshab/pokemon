@@ -29,7 +29,7 @@
     "effect_names": [
         "burn"
     ],
-    "retreat": 1.5,
+    "retreat": 1,
     "stat_changes": {
         "self": {},
         "target": {}

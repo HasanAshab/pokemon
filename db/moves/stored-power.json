@@ -27,7 +27,7 @@
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 1.0,
+    "retreat": 0.5,
     "stat_changes": {
         "self": {},
         "target": {}

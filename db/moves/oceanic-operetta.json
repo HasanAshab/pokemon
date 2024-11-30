@@ -27,7 +27,7 @@
     "type": "water",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 5.0,
+    "retreat": 4.5,
     "stat_changes": {
         "self": {},
         "target": {}

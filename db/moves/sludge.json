@@ -29,7 +29,7 @@
     "effect_names": [
         "poison"
     ],
-    "retreat": 2.0,
+    "retreat": 1.5,
     "stat_changes": {
         "self": {},
         "target": {}

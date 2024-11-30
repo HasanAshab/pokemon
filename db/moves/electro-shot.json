@@ -8,7 +8,7 @@
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],
-    "retreat": 3.0,
+    "retreat": 2.5,
     "stat_changes": {
         "self": {},
         "target": {}

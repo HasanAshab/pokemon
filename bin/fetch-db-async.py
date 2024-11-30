@@ -57,7 +57,7 @@ def get_effects(move):
 
 def calculate_retreat(move):
     damage_class_bonus = {
-        "special": 0.5,
+        "special": 0,
         "physical": 0,
         "status": -0.5,
     }
@@ -205,9 +205,9 @@ async def fetch_pokemons(session):
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        #await fetch_types(session)
+        await fetch_types(session)
         await fetch_moves(session)
-        #await fetch_pokemons(session)
+        await fetch_pokemons(session)
         print("All data fetched and saved successfully!")
 
 
