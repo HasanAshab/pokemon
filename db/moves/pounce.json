@@ -3,7 +3,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 7,
-    "description": null,
+    "description": "No description...",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 12,
-    "description": "Trifft das Ziel mit vollem K\u00f6rpereinsatz.",
+    "description": "A full-body charge attack.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

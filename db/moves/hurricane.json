@@ -22,7 +22,7 @@
     "power": 110,
     "accuracy": 70,
     "pp": 3,
-    "description": "Le lanceur d\u00e9clenche une temp\u00eate de\nvents violents qui s\u2019abat sur l\u2019ennemi.\nPeut aussi le rendre confus.",
+    "description": "The user attacks by wrapping its opponent in a fierce wind that flies up into the sky. It may also confuse the target.",
     "damage_class": "special",
     "type": "flying",
     "effect_chance": 30,

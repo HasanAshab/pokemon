@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "\u3084\u3051\u305f\u30e0\u30c1\u3067\u3000\u3042\u3044\u3066\u3092\u3000\u3046\u3061\u3064\u3051\u308b\u3002\n\u3053\u3046\u3052\u304d\u3092\u3000\u3046\u3051\u305f\u3000\u3042\u3044\u3066\u306f\n\u307c\u3046\u304e\u3087\u304c\u3000\u3055\u304c\u308b\u3002",
+    "description": "The user strikes the target with a burning lash. This also lowers the target\u2019s Defense stat.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": 100,

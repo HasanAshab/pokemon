@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 5,
-    "description": "The user slashes with\na sharp claw made\nfrom shadows.\nIt has a high\ncritical-hit ratio.",
+    "description": "The user slashes with a sharp claw made from shadows. It has a high critical-hit ratio.",
     "damage_class": "physical",
     "type": "ghost",
     "effect_chance": null,

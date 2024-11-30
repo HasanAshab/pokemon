@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "The user tries to cut\nahead of the foe to\nsteal and use the\nfoe\u2019s intended move\nwith greater power.",
+    "description": "The user tries to cut ahead of the foe to steal and use the foe\u2019s intended move with greater power.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

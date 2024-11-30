@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Waits 2-3 turns &\nhits back double.",
+    "description": "Waits 2-3 turns & hits back double.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

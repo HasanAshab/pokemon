@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 2,
-    "description": "Venge un Pok\u00e9mon de l\u2019\u00e9quipe mis K.O.\nSi un Pok\u00e9mon de l\u2019\u00e9quipe a \u00e9t\u00e9 mis\nK.O. au tour d\u2019avant, l\u2019effet augmente.",
+    "description": "The user gets revenge for a fainted ally. If an ally fainted in the previous turn, this attack\u2019s damage increases.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

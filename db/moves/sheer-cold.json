@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 30,
     "pp": 2,
-    "description": "A chilling attack that\ncauses fainting if it hits.",
+    "description": "A chilling attack that causes fainting if it hits.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": null,

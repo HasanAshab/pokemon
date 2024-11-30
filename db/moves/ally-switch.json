@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
-    "description": "Le lanceur se t\u00e9l\u00e9porte \u00e0 l\u2019aide d\u2019un\npouvoir myst\u00e9rieux. Il \u00e9change sa place\navec celle d\u2019un alli\u00e9 sur le terrain.",
+    "description": "The user teleports using a strange power and switches its place with one of its allies.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

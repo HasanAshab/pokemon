@@ -22,7 +22,7 @@
     "power": 120,
     "accuracy": 100,
     "pp": 3,
-    "description": "Des ondes myst\u00e9rieuses blessent tous\nles Pok\u00e9mon alentour qui sont du m\u00eame\ntype que le lanceur.",
+    "description": "Using an odd shock wave, the user inflicts damage on any Pok\u00e9mon of the same type in the area around it.",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": null,

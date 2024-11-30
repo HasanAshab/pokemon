@@ -22,7 +22,7 @@
     "power": 120,
     "accuracy": 100,
     "pp": 5,
-    "description": "Le lanceur donne un coup avec sa t\u00eate\ncouronn\u00e9e d\u2019une fi\u00e8re crini\u00e8re.\nBlesse aussi l\u00e9g\u00e8rement le lanceur.",
+    "description": "The user charges its head into its target, using its powerful guard hair. It also damages the user a little.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 10,
     "accuracy": 100,
     "pp": 12,
-    "description": "An attack that may\nlower SPEED.",
+    "description": "An attack that may lower SPEED.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 10,

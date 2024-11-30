@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "A flare of electricity\nis loosed to strike\nall Pok\u00e9mon in battle.\nIt may also cause\nparalysis.",
+    "description": "A flare of electricity is loosed to strike all Pok\u00e9mon in battle. It may also cause paralysis.",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": 30,

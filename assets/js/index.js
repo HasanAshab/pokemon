@@ -1,5 +1,5 @@
 import { Pokemon } from "./utils/models.js";
-
+import { getPokemonsMeta } from "./utils/helpers.js";
 
 function __setDefaultPokeMeta() {
     const pokemons_meta = {
@@ -10,8 +10,14 @@ function __setDefaultPokeMeta() {
             "moves": []
         },
         "froakie": {
-            "xp": 1 * 100,
+            "xp": 2 * 100,
             "nature": "gentle",
+            "retreat": 2,
+            "moves": []
+        },
+        "riolu": {
+            "xp": 2 * 100,
+            "nature": "nauty",
             "retreat": 2,
             "moves": []
         }
@@ -79,11 +85,21 @@ function loadAllPokemons() {
 }
 
 
+function loadFoodCost() {
+    const costPerLevel = 300
+    const foodCost = document.getElementById("food-cost")
+    const cost = Object.values(getPokemonsMeta()).reduce((acc, meta) => {
+        return acc + ((meta.xp / 100) * costPerLevel)
+    }, 0)
+    foodCost.textContent = cost
+}   
+
 function loadAll() {
     loadTotalBadges()
     loadActiveBadges()
     loadAllPokemons()
+    loadFoodCost()
 }
 document.body.onload = loadAll
 
-window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
+//window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"

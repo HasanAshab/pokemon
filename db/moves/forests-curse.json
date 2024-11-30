@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "\u3042\u3044\u3066\u306b\u3000\u3082\u308a\u306e\u306e\u308d\u3044\u3092\u3000\u304b\u3051\u308b\u3002\n\u306e\u308d\u3044\u3092\u3000\u304b\u3051\u3089\u308c\u305f\u3000\u3042\u3044\u3066\u306f\n\u30bf\u30a4\u30d7\u306b\u3000\u304f\u3055\u30bf\u30a4\u30d7\u304c\u3000\u3064\u3044\u304b\u3055\u308c\u308b\u3002",
+    "description": "The user puts a forest curse on the target. Afflicted targets are now Grass type as well.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

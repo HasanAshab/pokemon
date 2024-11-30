@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 3,
-    "description": "A 1st-turn, 1st-strike move\nthat causes flinching.",
+    "description": "A 1st-turn, 1st-strike move that causes flinching.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 100,

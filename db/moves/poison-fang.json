@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 5,
-    "description": "A sharp-fanged attack.\nMay badly poison the foe.",
+    "description": "A sharp-fanged attack. May badly poison the foe.",
     "damage_class": "physical",
     "type": "poison",
     "effect_chance": 50,

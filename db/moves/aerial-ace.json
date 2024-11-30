@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": null,
     "pp": 7,
-    "description": "An extremely speedy and\nunavoidable attack.",
+    "description": "An extremely speedy and unavoidable attack.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

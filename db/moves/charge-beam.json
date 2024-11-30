@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 90,
     "pp": 3,
-    "description": "The user fires a\nconcentrated bundle\nof electricity. It may\nalso raise the user\u2019s\nSp. Atk stat.",
+    "description": "The user fires a concentrated bundle of electricity. It may also raise the user\u2019s Sp. Atk stat.",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": 70,

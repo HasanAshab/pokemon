@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
-    "description": "Une charge \u00e9lectrique violente qui blesse\naussi l\u00e9g\u00e8rement le lanceur.",
+    "description": "The user shrouds itself in electricity and smashes into its target. It also damages the user a little.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": null,

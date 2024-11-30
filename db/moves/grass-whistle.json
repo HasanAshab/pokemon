@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 55,
     "pp": 5,
-    "description": "Lulls the foe into sleep\nwith a pleasant melody.",
+    "description": "Lulls the foe into sleep with a pleasant melody.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

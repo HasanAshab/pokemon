@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 8,
-    "description": "An attack that may\nsteal a held item.",
+    "description": "An attack that may steal a held item.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

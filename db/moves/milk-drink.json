@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Restores HP by 1/2\nthe max HP.",
+    "description": "Restores HP by 1/2 the max HP.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

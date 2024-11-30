@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 90,
     "pp": 8,
-    "description": "Stiff wings strike\nthe foe.",
+    "description": "Stiff wings strike the foe.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": 10,

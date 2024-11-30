@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Raises SP. ATK and SP. DEF\nby focusing the mind.",
+    "description": "Raises SP. ATK and SP. DEF by focusing the mind.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Randomly attacks\nwhile asleep.",
+    "description": "Randomly attacks while asleep.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

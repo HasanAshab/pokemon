@@ -22,7 +22,7 @@
     "power": 30,
     "accuracy": 100,
     "pp": 3,
-    "description": "An attack that hits a\nfoe using Protect or\nDetect. It also lifts\nthe effects of those\nmoves.",
+    "description": "An attack that hits a foe using Protect or Detect. It also lifts the effects of those moves.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 90,
     "pp": 3,
-    "description": "Poisons the foe with an\nintensifying toxin.",
+    "description": "Poisons the foe with an intensifying toxin.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

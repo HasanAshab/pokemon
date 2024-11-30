@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 0,
-    "description": "\uff3a\u30d1\u30ef\u30fc\u3092\u3000\u3048\u305f\u3000\u30a4\u30fc\u30d6\u30a4\u304c\n\u3057\u3093\u304b\u3057\u305f\u3000\u306a\u304b\u307e\u305f\u3061\u306e\u3000\u3061\u304b\u3089\u3092\u3000\u304b\u308a\u3066\n\u306e\u3046\u308a\u3087\u304f\u3092\u3000\u3050\u30fc\u3093\u3068\u3000\u3042\u3052\u308b\u3002",
+    "description": "After obtaining Z-Power, the user, Eevee, gets energy from its evolved friends and boosts its stats sharply.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": 100,

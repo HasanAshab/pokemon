@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "An attack based on\nlack of loyalty.",
+    "description": "An attack based on lack of loyalty.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

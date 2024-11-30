@@ -22,7 +22,7 @@
     "power": 140,
     "accuracy": 90,
     "pp": 2,
-    "description": "Projette un bloc de glace \u00e9lectrifi\u00e9\nsur l\u2019ennemi au second tour.\nPeut aussi le paralyser.",
+    "description": "On the second turn, the user hits the target with electrically charged ice. It may leave the target with paralysis.",
     "damage_class": "physical",
     "type": "ice",
     "effect_chance": 30,

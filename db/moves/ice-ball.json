@@ -22,7 +22,7 @@
     "power": 30,
     "accuracy": 90,
     "pp": 7,
-    "description": "A 5-turn attack that gains\npower on successive hits.",
+    "description": "A 5-turn attack that gains power on successive hits.",
     "damage_class": "physical",
     "type": "ice",
     "effect_chance": null,

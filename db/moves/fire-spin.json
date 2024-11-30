@@ -22,7 +22,7 @@
     "power": 35,
     "accuracy": 85,
     "pp": 5,
-    "description": "\u5c06\u5bf9\u624b\u56f0\u5728\n\u6fc0\u70c8\u7684\u706b\u7130\u65cb\u6da1\u4e2d\uff0c\n\u5728\uff14\uff5e\uff15\u56de\u5408\u5185\u8fdb\u884c\u653b\u51fb\u3002",
+    "description": "Traps foe in fire for 2-5 turns.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": 100,

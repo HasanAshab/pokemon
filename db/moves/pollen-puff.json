@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
-    "description": "Chi la usa attacca il nemico con una sfera\nesplosiva. Se colpisce degli alleati, fa recuperare\nloro dei PS.",
+    "description": "The user attacks the enemy with a pollen puff that explodes. If the target is an ally, it gives the ally a pollen puff that restores its HP instead.",
     "damage_class": "special",
     "type": "bug",
     "effect_chance": null,

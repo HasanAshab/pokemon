@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 13,
-    "description": "Raises the user's\nATTACK.",
+    "description": "Raises the user's ATTACK.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

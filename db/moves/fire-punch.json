@@ -22,7 +22,7 @@
     "power": 75,
     "accuracy": 100,
     "pp": 5,
-    "description": "A fiery punch. May\ncause a burn.",
+    "description": "A fiery punch. May cause a burn.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": 10,

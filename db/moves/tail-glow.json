@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Flashes a light that sharply\nraises SP. ATK.",
+    "description": "Flashes a light that sharply raises SP. ATK.",
     "damage_class": "status",
     "type": "bug",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 12,
-    "description": "Pounds with fore\u00ad\nlegs or tail.",
+    "description": "Pounds with fore\u00ad legs or tail.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

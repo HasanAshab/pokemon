@@ -22,7 +22,7 @@
     "power": 140,
     "accuracy": 100,
     "pp": 2,
-    "description": "Summons strong sunlight to\nattack 2 turns later.",
+    "description": "Summons strong sunlight to attack 2 turns later.",
     "damage_class": "special",
     "type": "steel",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": null,
     "pp": 7,
-    "description": "The user launches a\nsteel bomb that\nsticks to the target.\nThis attack will not\nmiss.",
+    "description": "The user launches a steel bomb that sticks to the target. This attack will not miss.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": null,

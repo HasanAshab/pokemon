@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 3,
-    "description": "A seed that causes\nworry is planted on\nthe foe. It prevents\nsleep by making its\nability Insomnia.",
+    "description": "A seed that causes worry is planted on the foe. It prevents sleep by making its ability Insomnia.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

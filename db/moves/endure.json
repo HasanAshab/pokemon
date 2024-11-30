@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Always leaves at\nleast 1HP.",
+    "description": "Always leaves at least 1HP.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

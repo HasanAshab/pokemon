@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 3,
-    "description": "Fires three kinds\nof beams at once.",
+    "description": "Fires three kinds of beams at once.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": 20,

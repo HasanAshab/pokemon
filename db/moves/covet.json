@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 8,
-    "description": "Cutely begs to obtain an\nitem held by the foe.",
+    "description": "Cutely begs to obtain an item held by the foe.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

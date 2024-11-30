@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Works differently\nfor ghost-types.",
+    "description": "Works differently for ghost-types.",
     "damage_class": "status",
     "type": "ghost",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Heals poisoning, paralysis,\nor a burn.",
+    "description": "Heals poisoning, paralysis, or a burn.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

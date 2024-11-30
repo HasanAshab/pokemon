@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 8,
-    "description": "\u3067\u3093\u304d\u3092\u3000\u304a\u3073\u305f\u3000\u308a\u3085\u3046\u3057\u3092\n\u304b\u304f\u3055\u3093\u3057\u3000\u30ce\u30fc\u30de\u30eb\u30bf\u30a4\u30d7\u306e\u3000\u308f\u3056\u3092\n\u3067\u3093\u304d\u30bf\u30a4\u30d7\u306b\u3000\u3057\u3066\u3057\u307e\u3046\u3002",
+    "description": "The user disperses electrically charged particles, which changes Normal-type moves to Electric-type moves.",
     "damage_class": "status",
     "type": "electric",
     "effect_chance": null,

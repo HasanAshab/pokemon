@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
-    "description": "Prevents stat\nreduction.",
+    "description": "Prevents stat reduction.",
     "damage_class": "status",
     "type": "ice",
     "effect_chance": null,

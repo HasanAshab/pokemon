@@ -22,7 +22,7 @@
     "power": 110,
     "accuracy": 85,
     "pp": 2,
-    "description": "An attack that\nmay cause a burn.",
+    "description": "An attack that may cause a burn.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": 10,

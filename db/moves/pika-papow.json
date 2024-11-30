@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "\u30d4\u30ab\u30c1\u30e5\u30a6\u306e\u3000\u30c8\u30ec\u30fc\u30ca\u30fc\u3078\u306e\u3000\u3060\u3044\u3059\u304d\u306a\n\u304d\u3082\u3061\u304c\u3000\u3064\u3088\u3044\u307b\u3069\u3000\u3044\u308a\u3087\u304f\u304c\u3000\u3042\u304c\u308b\n\u3067\u3093\u3052\u304d\u3002\u3000\u304b\u306a\u3089\u305a\u3000\u3081\u3044\u3061\u3085\u3046\u3059\u308b\u3002",
+    "description": "The more Pikachu loves its Trainer, the greater the move\u2019s power. It never misses.",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": null,

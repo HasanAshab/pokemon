@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 7,
-    "description": "A strong, spin\u00ad\nning-peck attack.",
+    "description": "A strong, spin\u00ad ning-peck attack.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 13,
-    "description": "Has no effect\nwhatsoever.",
+    "description": "Has no effect whatsoever.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "An attack that may\nlower SPCL.DEF.",
+    "description": "An attack that may lower SPCL.DEF.",
     "damage_class": "special",
     "type": "ghost",
     "effect_chance": 20,

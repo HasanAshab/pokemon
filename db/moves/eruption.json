@@ -22,7 +22,7 @@
     "power": 150,
     "accuracy": 100,
     "pp": 2,
-    "description": "The higher the user\u2019s HP,\nthe more damage caused.",
+    "description": "The higher the user\u2019s HP, the more damage caused.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": null,

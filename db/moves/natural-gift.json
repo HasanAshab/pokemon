@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
-    "description": "The user draws power\nto attack by using\nits held Berry.\nThe Berry determines\nits type and power.",
+    "description": "The user draws power to attack by using its held Berry. The Berry determines its type and power.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

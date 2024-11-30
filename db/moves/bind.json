@@ -22,7 +22,7 @@
     "power": 15,
     "accuracy": 85,
     "pp": 7,
-    "description": "Binds the target\nfor 2-5 turns.",
+    "description": "Binds the target for 2-5 turns.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 100,

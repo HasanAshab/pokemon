@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 5,
-    "description": "Des flammes calcinent l\u2019ennemi.\nS\u2019il tient une Baie, elle est\nbr\u00fbl\u00e9e et devient inutilisable.",
+    "description": "The user attacks the target with fire. If the target is holding a Berry, the Berry becomes burnt up and unusable.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": null,

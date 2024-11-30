@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 50,
     "pp": 3,
-    "description": "The foe is dragged\ninto a world of total\ndarkness that puts it\nto sleep.\n",
+    "description": "The foe is dragged into a world of total darkness that puts it to sleep. ",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "Makes the foe laugh to\nlower ATTACK and DEFENSE.",
+    "description": "Makes the foe laugh to lower ATTACK and DEFENSE.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

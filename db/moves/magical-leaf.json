@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": null,
     "pp": 7,
-    "description": "Attacks with a strange leaf\nthat cannot be evaded.",
+    "description": "Attacks with a strange leaf that cannot be evaded.",
     "damage_class": "special",
     "type": "grass",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 7,
-    "description": "The user lunges at\nthe foe at a speed\nthat makes it almost\ninvisible. It is sure\nto strike first.",
+    "description": "The user lunges at the foe at a speed that makes it almost invisible. It is sure to strike first.",
     "damage_class": "physical",
     "type": "water",
     "effect_chance": null,

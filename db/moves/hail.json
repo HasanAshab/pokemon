@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Summons a hailstorm that\nstrikes every turn.",
+    "description": "Summons a hailstorm that strikes every turn.",
     "damage_class": "status",
     "type": "ice",
     "effect_chance": null,

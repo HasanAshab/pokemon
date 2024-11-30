@@ -22,7 +22,7 @@
     "power": 25,
     "accuracy": 100,
     "pp": 7,
-    "description": "Jabs the foe twice\nusing stingers.",
+    "description": "Jabs the foe twice using stingers.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": 20,

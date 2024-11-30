@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 8,
-    "description": "Has a high critical-hit\nratio. May also poison.",
+    "description": "Has a high critical-hit ratio. May also poison.",
     "damage_class": "physical",
     "type": "poison",
     "effect_chance": 10,

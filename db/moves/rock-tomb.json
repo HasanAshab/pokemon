@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 95,
     "pp": 5,
-    "description": "Stops the foe from moving\nwith rocks and cuts SPEED.",
+    "description": "Stops the foe from moving with rocks and cuts SPEED.",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": 100,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
-    "description": "The user prevents\nthe foe from using\nany HP-recovery\nmoves for five turns.\n",
+    "description": "The user prevents the foe from using any HP-recovery moves for five turns. ",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

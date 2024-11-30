@@ -22,7 +22,7 @@
     "power": 180,
     "accuracy": 95,
     "pp": 2,
-    "description": "Le lanceur projette une flamme ardente de\nson front et se jette sur l\u2019ennemi. Baisse\nla D\u00e9fense, la D\u00e9f. Sp\u00e9. et la Vitesse.",
+    "description": "With a hot flame on its forehead, the user hurls itself at its target. It lowers the user\u2019s Defense, Sp. Def, and Speed stats.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": 100,

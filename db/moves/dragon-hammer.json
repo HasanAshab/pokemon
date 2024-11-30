@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
-    "description": "\u304b\u3089\u3060\u3092\u3000\u30cf\u30f3\u30de\u30fc\u306e\u3088\u3046\u306b\n\u3064\u304b\u3063\u3066\u3000\u3042\u3044\u3066\u306b\u3000\u304a\u305d\u3044\u304b\u304b\u308a\n\u30c0\u30e1\u30fc\u30b8\u3092\u3000\u3042\u305f\u3048\u308b\u3002",
+    "description": "The user uses its body like a hammer to attack the target and inflict damage.",
     "damage_class": "physical",
     "type": "dragon",
     "effect_chance": null,

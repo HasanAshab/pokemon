@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 3,
-    "description": "An attack that may\nlower SPCL.DEF.",
+    "description": "An attack that may lower SPCL.DEF.",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": 10,

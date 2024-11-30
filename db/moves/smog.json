@@ -22,7 +22,7 @@
     "power": 30,
     "accuracy": 70,
     "pp": 7,
-    "description": "An attack that may\npoison the foe.",
+    "description": "An attack that may poison the foe.",
     "damage_class": "special",
     "type": "poison",
     "effect_chance": 40,

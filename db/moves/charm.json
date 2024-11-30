@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "Sharply lowers the\nfoe's ATTACK.",
+    "description": "Sharply lowers the foe's ATTACK.",
     "damage_class": "status",
     "type": "fairy",
     "effect_chance": null,

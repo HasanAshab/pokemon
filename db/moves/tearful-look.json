@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "\u53d8\u5f97\u6cea\u773c\u6c6a\u6c6a\uff0c\n\u8ba9\u5bf9\u624b\u4e27\u5931\u6597\u5fd7\u3002\n\u4ece\u800c\u964d\u4f4e\u5bf9\u624b\u7684\u653b\u51fb\u548c\u7279\u653b\u3002",
+    "description": "The user gets teary eyed to make the target lose its combative spirit. This lowers the target\u2019s Attack and Sp. Atk stats.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": 100,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Charges power to boost the\nelectric move used next.",
+    "description": "Charges power to boost the electric move used next.",
     "damage_class": "status",
     "type": "electric",
     "effect_chance": null,

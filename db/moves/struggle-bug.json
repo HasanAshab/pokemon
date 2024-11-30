@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 7,
-    "description": "Le lanceur se d\u00e9bat de toutes ses forces,\net baisse l\u2019Attaque Sp\u00e9ciale de l\u2019ennemi.",
+    "description": "While resisting, the user attacks the opposing Pok\u00e9mon. The targets\u2019 Sp. Atk stat is reduced.",
     "damage_class": "special",
     "type": "bug",
     "effect_chance": 100,

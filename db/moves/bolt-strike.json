@@ -22,7 +22,7 @@
     "power": 130,
     "accuracy": 85,
     "pp": 2,
-    "description": "S\u2019enveloppe d\u2019une charge \u00e9lectrique\nsurpuissante et se jette sur l\u2019ennemi.\nPeut aussi le paralyser.",
+    "description": "The user charges its target, surrounding itself with a great amount of electricity. It may leave the target with paralysis.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": 20,

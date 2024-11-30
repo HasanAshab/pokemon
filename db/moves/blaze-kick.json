@@ -22,7 +22,7 @@
     "power": 85,
     "accuracy": 90,
     "pp": 3,
-    "description": "A kick with a high critical-\nhit ratio. May cause a burn.",
+    "description": "A kick with a high critical- hit ratio. May cause a burn.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": 10,

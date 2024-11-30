@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 2,
-    "description": "A powerful first-\nstrike move.",
+    "description": "A powerful first- strike move.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

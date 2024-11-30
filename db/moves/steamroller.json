@@ -22,7 +22,7 @@
     "power": 65,
     "accuracy": 100,
     "pp": 7,
-    "description": "Le lanceur se roule en boule et\n\u00e9crase son ennemi. Peut aussi\napeurer l\u2019ennemi.",
+    "description": "The user crushes its targets by rolling over them with its rolled-up body. This attack may make the target flinch.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": 30,

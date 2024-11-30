@@ -22,7 +22,7 @@
     "power": 150,
     "accuracy": 90,
     "pp": 2,
-    "description": "The user launches a\nhuge boulder at the\nfoe to attack.\nIt must rest on the\nnext turn, however.",
+    "description": "The user launches a huge boulder at the foe to attack. It must rest on the next turn, however.",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": null,

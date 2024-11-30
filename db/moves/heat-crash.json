@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 3,
-    "description": "Le lanceur projette son corps enflamm\u00e9\ncontre l\u2019ennemi. S\u2019il est plus lourd que\nl\u2019ennemi, l\u2019effet augmente en cons\u00e9quence.",
+    "description": "The user slams its target with its flame- covered body. The more the user outweighs the target, the greater the damage.",
     "damage_class": "physical",
     "type": "fire",
     "effect_chance": null,

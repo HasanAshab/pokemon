@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 0,
-    "description": "\uff3a\u30d1\u30ef\u30fc\u3067\u3000\u3044\u304d\u304a\u3044\u3088\u304f\u3000\u3068\u3073\u3042\u304c\u308a\n\u3042\u3044\u3066\u306b\u3000\u3080\u304b\u3063\u3066\u3000\u305c\u3093\u308a\u3087\u304f\u3067\u3000\u3089\u3063\u304b\u3002\n\u3082\u3068\u306b\u306a\u3063\u305f\u3000\u308f\u3056\u3067\u3000\u3044\u308a\u3087\u304f\u304c\u3000\u304b\u308f\u308b\u3002",
+    "description": "The user soars up with its Z-Power and plummets toward the target at full speed. The power varies, depending on the original move.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

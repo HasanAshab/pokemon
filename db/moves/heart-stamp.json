@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 8,
-    "description": "D\u00e9concentre l\u2019ennemi avec des mouvements\nmignons avant de le frapper violemment.\nPeut apeurer l\u2019ennemi.",
+    "description": "The user unleashes a vicious blow after its cute act makes the target less wary. It may also make the target flinch.",
     "damage_class": "physical",
     "type": "psychic",
     "effect_chance": 30,

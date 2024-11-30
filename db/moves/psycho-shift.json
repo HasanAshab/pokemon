@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 3,
-    "description": "Using its psychic\npower of suggestion,\nthe user transfers\nits status problems\nto the target.",
+    "description": "Using its psychic power of suggestion, the user transfers its status problems to the target.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

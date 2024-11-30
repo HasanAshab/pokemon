@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
-    "description": "The user's type is\nmade resistant.",
+    "description": "The user's type is made resistant.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

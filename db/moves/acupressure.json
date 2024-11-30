@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
-    "description": "The user applies\npressure to stress\npoints, sharply\nboosting one of its\nstats.",
+    "description": "The user applies pressure to stress points, sharply boosting one of its stats.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

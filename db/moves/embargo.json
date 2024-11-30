@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
-    "description": "It prevents the foe\nfrom using its held\nitem. Its Trainer is\nalso prevented from\nusing items on it.",
+    "description": "It prevents the foe from using its held item. Its Trainer is also prevented from using items on it.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

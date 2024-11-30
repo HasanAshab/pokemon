@@ -22,7 +22,7 @@
     "power": 120,
     "accuracy": 100,
     "pp": 5,
-    "description": "A life-risking tackle that\nslightly hurts the user.",
+    "description": "A life-risking tackle that slightly hurts the user.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": 10,

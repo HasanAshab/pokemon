@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 7,
-    "description": "A slashing attack\nthat may also leave\nthe target poisoned.\nIt has a high\ncritical-hit ratio.",
+    "description": "A slashing attack that may also leave the target poisoned. It has a high critical-hit ratio.",
     "damage_class": "physical",
     "type": "poison",
     "effect_chance": 10,

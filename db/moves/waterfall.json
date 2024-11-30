@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "An aquatic charge\nattack.",
+    "description": "An aquatic charge attack.",
     "damage_class": "physical",
     "type": "water",
     "effect_chance": 20,

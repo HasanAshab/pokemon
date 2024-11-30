@@ -22,7 +22,7 @@
     "power": 20,
     "accuracy": 100,
     "pp": 3,
-    "description": "\u3058\u3076\u3093\u306e\u3000\u3064\u3088\u3055\u3092\u3000\u306f\u306a\u305f\u304b\u3060\u304b\u306b\n\u3053\u3046\u3052\u304d\u3059\u308b\u3002\u3058\u3076\u3093\u306e\u3000\u306e\u3046\u308a\u3087\u304f\u304c\n\u3042\u304c\u3063\u3066\u3000\u3044\u308b\u307b\u3069\u3000\u3044\u308a\u3087\u304f\u304c\u3000\u3042\u304c\u308b\u3002",
+    "description": "The user boasts its strength and attacks the target. The more the user\u2019s stats are raised, the greater the move\u2019s power.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

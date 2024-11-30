@@ -22,7 +22,7 @@
     "power": 15,
     "accuracy": 100,
     "pp": 7,
-    "description": "Schl\u00e4ge mit geradem Arm, die das Ziel\nzwei- bis f\u00fcnfmal treffen.",
+    "description": "Straight-arm punches that strike the foe 2 to 5 times.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

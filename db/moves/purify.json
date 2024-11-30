@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "\u3042\u3044\u3066\u306e\u3000\u3058\u3087\u3046\u305f\u3044\u3044\u3058\u3087\u3046\u3092\u3000\u306a\u304a\u3059\u3002\n\u306a\u304a\u3059\u3068\u3000\u3058\u3076\u3093\u306f\u3000\uff28\uff30\u3092\n\u304b\u3044\u3075\u304f\u3000\u3059\u308b\u3053\u3068\u304c\u3000\u3067\u304d\u308b\u3002",
+    "description": "The user heals the target\u2019s status condition. If the move succeeds, it also restores the user\u2019s own HP.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

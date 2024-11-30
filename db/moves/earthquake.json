@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 3,
-    "description": "Tough but useless\nvs. flying foes.",
+    "description": "Tough but useless vs. flying foes.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": null,

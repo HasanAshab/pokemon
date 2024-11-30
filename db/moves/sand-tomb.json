@@ -22,7 +22,7 @@
     "power": 35,
     "accuracy": 85,
     "pp": 5,
-    "description": "The user traps the target inside a harshly raging\nsandstorm for four to five turns.",
+    "description": "The user traps the target inside a harshly raging sandstorm for four to five turns.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": 100,

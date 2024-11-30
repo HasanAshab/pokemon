@@ -22,7 +22,7 @@
     "power": 140,
     "accuracy": 90,
     "pp": 2,
-    "description": "Au second tour, le lanceur projette un\nsouffle de vent glacial d\u00e9vastateur\nsur l\u2019ennemi. Peut le br\u00fbler.",
+    "description": "On the second turn, an ultracold, freezing wind surrounds the target. This may leave the target with a burn.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": 30,

@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "The foe slams the\ntarget with its\nsteel-hard head.\nIt may also make the\ntarget flinch.",
+    "description": "The foe slams the target with its steel-hard head. It may also make the target flinch.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": 30,

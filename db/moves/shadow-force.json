@@ -22,7 +22,7 @@
     "power": 120,
     "accuracy": 100,
     "pp": 2,
-    "description": "The user disappears,\nthen strikes the foe\non the second turn.\nIt hits even if the\nfoe used Protect.",
+    "description": "The user disappears, then strikes the foe on the second turn. It hits even if the foe used Protect.",
     "damage_class": "physical",
     "type": "ghost",
     "effect_chance": null,

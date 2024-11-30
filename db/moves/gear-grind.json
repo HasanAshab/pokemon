@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 85,
     "pp": 5,
-    "description": "Le lanceur jette deux \u00e9crous d\u2019acier qui\nfrappent l\u2019ennemi deux fois d\u2019affil\u00e9e.",
+    "description": "The user attacks by throwing two steel gears at its target.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": null,

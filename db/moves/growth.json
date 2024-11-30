@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Raises the SPCL.\nATK rating.",
+    "description": "Raises the SPCL. ATK rating.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 3,
-    "description": "Causes an uproar for 2 to 5\nturns and prevents sleep.",
+    "description": "Causes an uproar for 2 to 5 turns and prevents sleep.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

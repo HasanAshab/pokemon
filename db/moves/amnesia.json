@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Sharply raises the\nuser's SPCL.DEF.",
+    "description": "Sharply raises the user's SPCL.DEF.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

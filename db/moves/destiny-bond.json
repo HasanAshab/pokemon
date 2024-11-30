@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "The foe faints if\nthe user does.",
+    "description": "The foe faints if the user does.",
     "damage_class": "status",
     "type": "ghost",
     "effect_chance": null,

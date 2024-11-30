@@ -22,7 +22,7 @@
     "power": 160,
     "accuracy": 100,
     "pp": 3,
-    "description": "\u30d7\u30ea\u30ba\u30e0\u306e\u3000\u3061\u304b\u3089\u3067\u3000\u304d\u3087\u3046\u308a\u3087\u304f\u306a\n\u3053\u3046\u305b\u3093\u3092\u3000\u306f\u3063\u3057\u3083\u3059\u308b\u3002\n\u3064\u304e\u306e\u3000\u30bf\u30fc\u30f3\u306f\u3000\u3046\u3054\u3051\u306a\u304f\u306a\u308b\u3002",
+    "description": "The user shoots powerful lasers using the power of a prism. The user can\u2019t move on the next turn.",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": null,

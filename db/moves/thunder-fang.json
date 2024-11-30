@@ -22,7 +22,7 @@
     "power": 65,
     "accuracy": 95,
     "pp": 5,
-    "description": "The user bites with\nelectrified fangs.\nIt may also make the\nfoe flinch or become\nparalyzed.",
+    "description": "The user bites with electrified fangs. It may also make the foe flinch or become paralyzed.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": 10,

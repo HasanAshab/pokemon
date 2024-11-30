@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 95,
     "pp": 3,
-    "description": "Le lanceur tourne sur lui-m\u00eame comme\nune perceuse et se jette sur l\u2019ennemi.\nTaux de critiques \u00e9lev\u00e9.",
+    "description": "The user crashes into its target while rotating its body like a drill. Critical hits land more easily.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": null,

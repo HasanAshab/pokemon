@@ -22,7 +22,7 @@
     "power": 130,
     "accuracy": 90,
     "pp": 2,
-    "description": "Cae una lluvia de hojas afiladas. Baja mucho el\nAtaque Especial de quien lo usa.",
+    "description": "A storm of sharp leaves is whipped up. The attack\u2019s recoil sharply reduces the user\u2019s Sp. Atk stat.",
     "damage_class": "special",
     "type": "grass",
     "effect_chance": 100,

@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 10,
-    "description": "Coup de poing fulgurant.\nFrappe toujours en premier.",
+    "description": "A fast punch that lands first.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

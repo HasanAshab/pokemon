@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Le lanceur fait tourner ses engrenages.\nCeci augmente son Attaque et augmente\nfortement sa Vitesse.",
+    "description": "The user rotates its gears, raising its Attack and sharply raising its Speed.",
     "damage_class": "status",
     "type": "steel",
     "effect_chance": null,

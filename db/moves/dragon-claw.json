@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "Slashes the foe with sharp\nclaws.",
+    "description": "Slashes the foe with sharp claws.",
     "damage_class": "physical",
     "type": "dragon",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 85,
     "pp": 5,
-    "description": "A fast, spinning\nkick.",
+    "description": "A fast, spinning kick.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": 30,

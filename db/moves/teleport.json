@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "A move for fleeing\nfrom battle.",
+    "description": "A move for fleeing from battle.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

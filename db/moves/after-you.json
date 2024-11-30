@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
-    "description": "S\u2019il est le premier \u00e0 agir, le lanceur\npermet \u00e0 sa cible d\u2019utiliser une\ncapacit\u00e9 juste apr\u00e8s lui.",
+    "description": "The user helps the target and makes it use its move right after the user.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

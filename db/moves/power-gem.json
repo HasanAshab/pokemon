@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 7,
-    "description": "\u767c\u5c04\u5982\u5bf6\u77f3\u822c\n\u9583\u8000\u7684\u5149\u8292\u653b\u64ca\u5c0d\u624b\u3002",
+    "description": "The user attacks with a ray of light that sparkles as if it were made of gemstones. ",
     "damage_class": "special",
     "type": "rock",
     "effect_chance": null,

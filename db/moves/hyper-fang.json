@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 90,
     "pp": 5,
-    "description": "An attack that may\ncause flinching.",
+    "description": "An attack that may cause flinching.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 10,

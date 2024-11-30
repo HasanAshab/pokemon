@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "\ub9c8\ubc95\uac00\ub8e8\ub97c \ub0a0\ub824\uc11c\n\uc0c1\ub300\ub97c \uc5d0\uc2a4\ud37c\ud0c0\uc785\uc73c\ub85c \ubc14\uafbc\ub2e4.",
+    "description": "The user scatters a cloud of magic powder that changes the target to Psychic type.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

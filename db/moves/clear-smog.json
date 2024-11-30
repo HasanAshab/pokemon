@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": null,
     "pp": 5,
-    "description": "Le lanceur jette un tas de d\u00e9tritus\nsp\u00e9ciaux sur la cible. Les changements\nde stats de la cible sont annul\u00e9s.",
+    "description": "The user attacks by throwing a clump of special mud. All status changes are returned to normal.",
     "damage_class": "special",
     "type": "poison",
     "effect_chance": null,

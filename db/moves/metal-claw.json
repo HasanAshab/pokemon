@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 95,
     "pp": 12,
-    "description": "An attack that may\nup user's ATTACK.",
+    "description": "An attack that may up user's ATTACK.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": 10,

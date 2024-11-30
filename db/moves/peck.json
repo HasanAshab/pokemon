@@ -22,7 +22,7 @@
     "power": 35,
     "accuracy": 100,
     "pp": 12,
-    "description": "Greift das Ziel mit dem Schnabel oder Horn an.",
+    "description": "Jabs the foe with a beak, etc.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

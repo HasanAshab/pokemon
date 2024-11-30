@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 75,
     "pp": 5,
-    "description": "An attack that may\nreduce DEFENSE.",
+    "description": "An attack that may reduce DEFENSE.",
     "damage_class": "physical",
     "type": "steel",
     "effect_chance": 30,

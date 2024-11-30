@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 0,
-    "description": "Copies the foe's\nmove permanently.",
+    "description": "Copies the foe's move permanently.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

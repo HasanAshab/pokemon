@@ -22,7 +22,7 @@
     "power": 130,
     "accuracy": 85,
     "pp": 2,
-    "description": "De magnifiques et redoutables flammes\nbleues fondent sur l\u2019ennemi.\nPeut aussi le br\u00fbler.",
+    "description": "The user attacks by engulfing the target in an intense, yet beautiful, blue flame. It may leave the target with a burn.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": 20,

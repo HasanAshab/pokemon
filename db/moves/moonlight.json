@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Restores HP\n(varies by time).",
+    "description": "Restores HP (varies by time).",
     "damage_class": "status",
     "type": "fairy",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "The user lays a trap\nof poison spikes at\nthe foe\u2019s feet. They\npoison foes that\nswitch into battle.",
+    "description": "The user lays a trap of poison spikes at the foe\u2019s feet. They poison foes that switch into battle.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

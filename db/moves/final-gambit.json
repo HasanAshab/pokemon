@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 2,
-    "description": "Une attaque tr\u00e8s risqu\u00e9e. Le lanceur perd\ntous ses PV restants et inflige autant de\nd\u00e9g\u00e2ts \u00e0 l\u2019ennemi.",
+    "description": "The user risks everything to attack its target. The user faints but does damage equal to the user\u2019s HP.",
     "damage_class": "special",
     "type": "fighting",
     "effect_chance": null,

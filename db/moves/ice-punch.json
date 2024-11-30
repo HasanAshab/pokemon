@@ -22,7 +22,7 @@
     "power": 75,
     "accuracy": 100,
     "pp": 5,
-    "description": "An icy punch. May\ncause freezing.",
+    "description": "An icy punch. May cause freezing.",
     "damage_class": "physical",
     "type": "ice",
     "effect_chance": 10,

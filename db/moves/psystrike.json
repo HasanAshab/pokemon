@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 3,
-    "description": "Le lanceur mat\u00e9rialise des ondes\nmyst\u00e9rieuses qu\u2019il projette sur\nl\u2019ennemi. Inflige des d\u00e9g\u00e2ts physiques.",
+    "description": "The user materializes an odd psychic wave to attack the target. This attack does physical damage.",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": null,

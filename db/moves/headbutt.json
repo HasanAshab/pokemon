@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 5,
-    "description": "An attack that may\nmake foe flinch.",
+    "description": "An attack that may make foe flinch.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 30,

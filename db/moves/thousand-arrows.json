@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 3,
-    "description": "\u3046\u3044\u3066\u3044\u308b\u3000\u30dd\u30b1\u30e2\u30f3\u306b\u3082\u3000\u3042\u305f\u308b\u3002\n\u3046\u3044\u3066\u3044\u305f\u3000\u3042\u3044\u3066\u306f\n\u3046\u3061\u304a\u3068\u3055\u308c\u3066\u3000\u3058\u3081\u3093\u306b\u3000\u304a\u3061\u308b\u3002",
+    "description": "This move also hits opposing Pok\u00e9mon that are in the air. Those Pok\u00e9mon are knocked down to the ground.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": 100,

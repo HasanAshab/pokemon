@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "The user polishes its\nbody to reduce drag.\nIt can sharply raise\nthe Speed stat.\n",
+    "description": "The user polishes its body to reduce drag. It can sharply raise the Speed stat. ",
     "damage_class": "status",
     "type": "rock",
     "effect_chance": null,

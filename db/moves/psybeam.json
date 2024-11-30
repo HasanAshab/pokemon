@@ -22,7 +22,7 @@
     "power": 65,
     "accuracy": 100,
     "pp": 7,
-    "description": "The target is attacked with a peculiar ray. This may\nalso leave the target confused.",
+    "description": "The target is attacked with a peculiar ray. This may also leave the target confused.",
     "damage_class": "special",
     "type": "psychic",
     "effect_chance": 10,

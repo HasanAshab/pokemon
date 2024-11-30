@@ -22,7 +22,7 @@
     "power": 110,
     "accuracy": 80,
     "pp": 2,
-    "description": "The target is blasted by a huge volume\nof water launched under great pressure.",
+    "description": "The target is blasted by a huge volume of water launched under great pressure.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

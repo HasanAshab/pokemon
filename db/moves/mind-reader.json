@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Ensures the next\nattack will hit.",
+    "description": "Ensures the next attack will hit.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

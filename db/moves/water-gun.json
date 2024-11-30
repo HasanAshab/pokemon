@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 8,
-    "description": "Squirts water to\nattack.",
+    "description": "Squirts water to attack.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

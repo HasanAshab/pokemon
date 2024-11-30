@@ -22,7 +22,7 @@
     "power": 65,
     "accuracy": 95,
     "pp": 3,
-    "description": "Ataque con aire helado que baja la Velocidad del\nobjetivo.",
+    "description": "The user attacks by blowing freezing cold air at opposing Pok\u00e9mon. This attack reduces the targets\u2019 Speed stat.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": 100,

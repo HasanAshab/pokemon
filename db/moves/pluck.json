@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 7,
-    "description": "The user pecks the\nfoe. If the foe is\nholding a Berry, the\nuser plucks it and\ngains its effect.",
+    "description": "The user pecks the foe. If the foe is holding a Berry, the user plucks it and gains its effect.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

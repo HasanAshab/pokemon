@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 85,
     "pp": 7,
-    "description": "A charging attack\nthat may also leave\nthe foe confused.\nIt can also be used\nto scale rocky walls.",
+    "description": "A charging attack that may also leave the foe confused. It can also be used to scale rocky walls.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": 20,

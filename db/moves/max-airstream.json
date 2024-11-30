@@ -22,7 +22,7 @@
     "power": 10,
     "accuracy": null,
     "pp": 3,
-    "description": "\u30c0\u30a4\u30de\u30c3\u30af\u30b9\u3057\u305f\u3000\u30dd\u30b1\u30e2\u30f3\u304c\n\u304f\u308a\u3060\u3059\u3000\u3072\u3053\u3046\u30bf\u30a4\u30d7\u306e\u3000\u3053\u3046\u3052\u304d\u3002\n\u307f\u304b\u305f\u306e\u3000\u3059\u3070\u3084\u3055\u3092\u3000\u3042\u3052\u308b\u3002",
+    "description": "This is a Flying-type attack Dynamax Pok\u00e9mon use. This raises ally Pok\u00e9mon\u2019s Speed stats.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

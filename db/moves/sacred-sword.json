@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 100,
     "pp": 5,
-    "description": "Un coup de lame violent qui lac\u00e8re\nl\u2019ennemi et lui inflige des d\u00e9g\u00e2ts quels\nque soient ses changements de stats.",
+    "description": "The user attacks by slicing with its long horns. The target\u2019s stat changes don\u2019t affect this attack\u2019s damage.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

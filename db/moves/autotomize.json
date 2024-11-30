@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
-    "description": "Le lanceur se d\u00e9barrasse des parties\ninutiles de son corps. Son poids diminue\net sa Vitesse augmente fortement.",
+    "description": "The user sheds part of its body to make itself lighter and sharply raise its Speed stat.",
     "damage_class": "status",
     "type": "steel",
     "effect_chance": null,

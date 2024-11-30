@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "The user slashes at\nthe foe by crossing\nits scythes or claws\nas if they were a pair\nof scissors.",
+    "description": "The user slashes at the foe by crossing its scythes or claws as if they were a pair of scissors.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": null,

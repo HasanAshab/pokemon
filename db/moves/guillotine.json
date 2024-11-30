@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 30,
     "pp": 2,
-    "description": "A one-hit KO,\npincer attack.",
+    "description": "A one-hit KO, pincer attack.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 30,
     "accuracy": 90,
     "pp": 7,
-    "description": "Attacks 5 turns\nwith rising power.",
+    "description": "Attacks 5 turns with rising power.",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": null,

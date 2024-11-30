@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
-    "description": "Sharply increases\nthe user's SPEED.",
+    "description": "Sharply increases the user's SPEED.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

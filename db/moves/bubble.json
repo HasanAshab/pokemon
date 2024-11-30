@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 10,
-    "description": "An attack that may\nreduce SPEED.",
+    "description": "An attack that may reduce SPEED.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": 10,

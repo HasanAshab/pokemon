@@ -22,7 +22,7 @@
     "power": 30,
     "accuracy": 100,
     "pp": 10,
-    "description": "A double kicking\nattack.",
+    "description": "A double kicking attack.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

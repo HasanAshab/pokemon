@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": null,
     "pp": 3,
-    "description": "A 2nd-strike move\nthat never misses.",
+    "description": "A 2nd-strike move that never misses.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

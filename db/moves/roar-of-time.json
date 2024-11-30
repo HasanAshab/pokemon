@@ -22,7 +22,7 @@
     "power": 150,
     "accuracy": 90,
     "pp": 2,
-    "description": "The user blasts the\nfoe with power that\ndistorts even time.\nThe user must rest\non the next turn.",
+    "description": "The user blasts the foe with power that distorts even time. The user must rest on the next turn.",
     "damage_class": "special",
     "type": "dragon",
     "effect_chance": null,

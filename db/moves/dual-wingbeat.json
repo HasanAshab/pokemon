@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 90,
     "pp": 3,
-    "description": "\u3064\u3070\u3055\u3092\u3000\u3042\u3044\u3066\u306b\u3000\u3076\u3064\u3051\u3066\n\u3053\u3046\u3052\u304d\u3059\u308b\u3002\u3000\uff12\u304b\u3044\u3000\u308c\u3093\u305e\u304f\u3067\n\u30c0\u30e1\u30fc\u30b8\u3092\u3000\u3042\u305f\u3048\u308b\u3002",
+    "description": "The user slams the target with its wings. The target is hit twice in a row.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

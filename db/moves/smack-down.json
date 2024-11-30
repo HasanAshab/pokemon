@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 5,
-    "description": "Le lanceur jette toutes sortes\nde projectiles \u00e0 un ennemi. Si ce\ndernier vole, il tombe au sol.",
+    "description": "The user throws a stone or projectile to attack an opponent. A flying Pok\u00e9mon will fall to the ground when hit.",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": 100,

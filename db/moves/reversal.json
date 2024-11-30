@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
-    "description": "Ataque desesperado que causa m\u00e1s da\u00f1o cuantos \nmenos PS tenga el usuario.",
+    "description": "Stronger if the user's HP is low.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

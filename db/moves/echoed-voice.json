@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 5,
-    "description": "Un cri retentissant blesse l\u2019ennemi. Si le\nlanceur ou d\u2019autres Pok\u00e9mon l\u2019utilisent\n\u00e0 chaque tour, l\u2019effet augmente.",
+    "description": "The user attacks the target with an echoing voice. If this move is used every turn, it does greater damage.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "The user releases a\nhorrible aura imbued\nwith dark thoughts.\nIt may also make the\ntarget flinch.",
+    "description": "The user releases a horrible aura imbued with dark thoughts. It may also make the target flinch.",
     "damage_class": "special",
     "type": "dark",
     "effect_chance": 20,

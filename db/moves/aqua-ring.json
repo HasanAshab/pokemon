@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "\uc790\uc2e0\uc758 \ubab8 \uc8fc\ubcc0\uc744\n\ubb3c\ub85c \ub9cc\ub4e0 \ubca0\uc77c\ub85c \ub36e\ub294\ub2e4.\n\ub9e4 \ud134 HP\ub97c \ud68c\ubcf5\ud55c\ub2e4.",
+    "description": "The user envelops itself in a veil made of water. It regains some HP on every turn.",
     "damage_class": "status",
     "type": "water",
     "effect_chance": null,

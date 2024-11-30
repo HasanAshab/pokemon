@@ -22,7 +22,7 @@
     "power": 85,
     "accuracy": 90,
     "pp": 5,
-    "description": "An uppercut thrown as if\nleaping into the sky.",
+    "description": "An uppercut thrown as if leaping into the sky.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

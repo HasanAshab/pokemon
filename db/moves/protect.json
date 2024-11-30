@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Foils attack that\nturn. It may fail.",
+    "description": "Foils attack that turn. It may fail.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

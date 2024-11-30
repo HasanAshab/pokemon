@@ -22,7 +22,7 @@
     "power": 20,
     "accuracy": 100,
     "pp": 7,
-    "description": "Raises ATTACK if\nthe user is hit.",
+    "description": "Raises ATTACK if the user is hit.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

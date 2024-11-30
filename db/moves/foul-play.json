@@ -22,7 +22,7 @@
     "power": 95,
     "accuracy": 100,
     "pp": 5,
-    "description": "Le lanceur utilise la force de l\u2019ennemi.\nPlus l\u2019Attaque de l\u2019ennemi est \u00e9lev\u00e9e,\nplus le lanceur inflige de d\u00e9g\u00e2ts.",
+    "description": "The user turns the target\u2019s power against it. The higher the target\u2019s Attack stat, the greater the damage.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

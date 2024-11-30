@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": null,
     "pp": 7,
-    "description": "An attack that\nnever misses.",
+    "description": "An attack that never misses.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

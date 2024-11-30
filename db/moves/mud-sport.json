@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
-    "description": "Covers the user in mud to\nraise electrical resistance.",
+    "description": "Covers the user in mud to raise electrical resistance.",
     "damage_class": "status",
     "type": "ground",
     "effect_chance": null,

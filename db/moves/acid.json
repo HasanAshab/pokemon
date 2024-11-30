@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 10,
-    "description": "An attack that may\nlower DEFENSE.",
+    "description": "An attack that may lower DEFENSE.",
     "damage_class": "special",
     "type": "poison",
     "effect_chance": 10,

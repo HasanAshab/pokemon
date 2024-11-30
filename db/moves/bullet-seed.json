@@ -22,7 +22,7 @@
     "power": 25,
     "accuracy": 100,
     "pp": 10,
-    "description": "Shoots 2 to 5 seeds in a row\nto strike the foe.",
+    "description": "Shoots 2 to 5 seeds in a row to strike the foe.",
     "damage_class": "physical",
     "type": "grass",
     "effect_chance": null,

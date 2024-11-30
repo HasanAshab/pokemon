@@ -22,7 +22,7 @@
     "power": 55,
     "accuracy": 95,
     "pp": 5,
-    "description": "Le lanceur hurle sur l\u2019ennemi.\nBaisse l\u2019Attaque Sp\u00e9ciale de l\u2019ennemi.",
+    "description": "The user yells as if it is ranting about something, making the target\u2019s Sp. Atk stat decrease.",
     "damage_class": "special",
     "type": "dark",
     "effect_chance": 100,

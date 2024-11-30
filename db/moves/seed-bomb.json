@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 5,
-    "description": "The user slams a\nbarrage of hard-\nshelled seeds\ndown on the foe\nfrom above.",
+    "description": "The user slams a barrage of hard- shelled seeds down on the foe from above.",
     "damage_class": "physical",
     "type": "grass",
     "effect_chance": null,

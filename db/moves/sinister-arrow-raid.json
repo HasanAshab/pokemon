@@ -22,7 +22,7 @@
     "power": 180,
     "accuracy": null,
     "pp": 0,
-    "description": "\uff3a\u30d1\u30ef\u30fc\u3067\u3000\u7121\u6570\u306e\u3000\u77e2\u3092\u3000\u4f5c\u308a\u3060\u3057\u305f\n\u30b8\u30e5\u30ca\u30a4\u30d1\u30fc\u304c\u3000\u5168\u529b\u3067\n\u76f8\u624b\u3092\u3000\u5c04\u629c\u304f\u3000\u653b\u6483\u3002",
+    "description": "The user, Decidueye, creates countless arrows using its Z-Power and shoots the target with full force.",
     "damage_class": "physical",
     "type": "ghost",
     "effect_chance": null,

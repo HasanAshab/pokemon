@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 12,
-    "description": "Strikes the target\nwith wings.",
+    "description": "Strikes the target with wings.",
     "damage_class": "physical",
     "type": "flying",
     "effect_chance": null,

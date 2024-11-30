@@ -22,7 +22,7 @@
     "power": 150,
     "accuracy": 100,
     "pp": 2,
-    "description": "Inflicts more damage if the\nuser\u2019s HP is high.",
+    "description": "Inflicts more damage if the user\u2019s HP is high.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": null,

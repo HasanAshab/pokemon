@@ -22,7 +22,7 @@
     "power": 18,
     "accuracy": 80,
     "pp": 5,
-    "description": "Quickly scratches\n2-5 times.",
+    "description": "Quickly scratches 2-5 times.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

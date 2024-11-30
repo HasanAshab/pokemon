@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 90,
     "pp": 5,
-    "description": "Le lanceur frappe l\u2019ennemi deux fois\nd\u2019affil\u00e9e avec les parties les plus\nrobustes de son corps.",
+    "description": "The user attacks its target by hitting it with brutal strikes. The target is hit twice in a row.",
     "damage_class": "physical",
     "type": "dragon",
     "effect_chance": null,

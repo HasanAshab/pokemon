@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 7,
-    "description": "The user tears at\nthe foe with blades\nformed by psychic\npower. It has a high\ncritical-hit ratio.",
+    "description": "The user tears at the foe with blades formed by psychic power. It has a high critical-hit ratio.",
     "damage_class": "physical",
     "type": "psychic",
     "effect_chance": null,

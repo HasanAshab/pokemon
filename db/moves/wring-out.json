@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 2,
-    "description": "The user powerfully\nwrings the foe.\nThe more HP the foe\nhas, the greater this\nattack\u2019s power.",
+    "description": "The user powerfully wrings the foe. The more HP the foe has, the greater this attack\u2019s power.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

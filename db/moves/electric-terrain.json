@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "5\ud134 \ub3d9\uc548 \ubc1c\ubc11\uc744\n\uc77c\ub809\ud2b8\ub9ad\ud544\ub4dc\ub85c \ub9cc\ub4e0\ub2e4. \ub545\uc5d0 \uc788\ub294\n\ud3ec\ucf13\ubaac\uc740 \uc7a0\ub4e4\uc9c0 \uc54a\uac8c \ub41c\ub2e4.",
+    "description": "The user electrifies the ground under everyone\u2019s feet for five turns. Pok\u00e9mon on the ground no longer fall asleep.",
     "damage_class": "status",
     "type": "electric",
     "effect_chance": null,

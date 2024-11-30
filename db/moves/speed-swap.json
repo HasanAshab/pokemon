@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "\u3042\u3044\u3066\u306e\u3000\u3059\u3070\u3084\u3055\u3068\n\u3058\u3076\u3093\u306e\u3000\u3059\u3070\u3084\u3055\u3092\n\u3044\u308c\u304b\u3048\u3066\u3000\u3057\u307e\u3046\u3002",
+    "description": "The user exchanges Speed stats with the target.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

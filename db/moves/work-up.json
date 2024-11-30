@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 10,
-    "description": "\u6fc0\u52f5\u81ea\u5df1\uff0c\n\u63d0\u9ad8\u81ea\u5df1\u7684\u653b\u64ca\u548c\u7279\u653b\u3002",
+    "description": "The user is roused, and its Attack and Sp. Atk stats increase.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 80,
     "accuracy": 100,
     "pp": 3,
-    "description": "1st turn: Prepare\n2nd turn: Attack",
+    "description": "1st turn: Prepare 2nd turn: Attack",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

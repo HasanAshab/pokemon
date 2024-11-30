@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
-    "description": "Un pouvoir qui fait flotter l\u2019ennemi dans\nles airs. Pendant 3 tours, il devient plus\nfacile \u00e0 atteindre.",
+    "description": "The user makes the target float with its psychic power. The target is easier to hit for three turns.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

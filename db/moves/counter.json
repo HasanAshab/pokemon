@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "Returns a physical\nblow double.",
+    "description": "Returns a physical blow double.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": null,

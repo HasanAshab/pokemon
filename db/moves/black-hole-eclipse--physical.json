@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 0,
-    "description": "The user gathers dark energy using its Z-Power\nand sucks the target into it. The power varies,\ndepending on the original move.",
+    "description": "The user gathers dark energy using its Z-Power and sucks the target into it. The power varies, depending on the original move.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

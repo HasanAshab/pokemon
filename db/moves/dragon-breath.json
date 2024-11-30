@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 7,
-    "description": "A strong breath\nattack.",
+    "description": "A strong breath attack.",
     "damage_class": "special",
     "type": "dragon",
     "effect_chance": 30,

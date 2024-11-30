@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Boosts fire-type\nmoves for 5 turns.",
+    "description": "Boosts fire-type moves for 5 turns.",
     "damage_class": "status",
     "type": "fire",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 90,
     "accuracy": 85,
     "pp": 7,
-    "description": "A tackle that also\nhurts the user.",
+    "description": "A tackle that also hurts the user.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

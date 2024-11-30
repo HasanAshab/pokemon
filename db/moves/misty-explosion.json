@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 2,
-    "description": "\u3058\u3076\u3093\u306e\u3000\u307e\u308f\u308a\u306b\u3000\u3044\u308b\u3000\u3059\u3079\u3066\u3092\n\u3053\u3046\u3052\u304d\u3000\u3059\u308b\u304c\u3000\u3064\u304b\u3046\u3068\u3000\u3072\u3093\u3057\u306b\u306a\u308b\u3002\n\u30df\u30b9\u30c8\u30d5\u30a3\u30fc\u30eb\u30c9\u3067\u3000\u3044\u308a\u3087\u304f\u304c\u3000\u3042\u304c\u308b\u3002",
+    "description": "The user attacks everything around it and faints upon using this move. This move\u2019s power is increased on Misty Terrain.",
     "damage_class": "special",
     "type": "fairy",
     "effect_chance": null,

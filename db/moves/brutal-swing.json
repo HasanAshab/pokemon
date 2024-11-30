@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 7,
-    "description": "\u3058\u3076\u3093\u306e\u3000\u304b\u3089\u3060\u3092\n\u3076\u3093\u307e\u308f\u3057\u3066\u3000\u3042\u3044\u3066\u306b\n\u30c0\u30e1\u30fc\u30b8\u3092\u3000\u3042\u305f\u3048\u308b\u3002",
+    "description": "The user swings its body around violently to inflict damage on everything in its vicinity.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

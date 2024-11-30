@@ -22,7 +22,7 @@
     "power": 50,
     "accuracy": 100,
     "pp": 5,
-    "description": "An attack useable\nonly while asleep.",
+    "description": "An attack useable only while asleep.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": 30,

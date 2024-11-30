@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "\u3075\u3057\u304e\u306a\u3000\u3061\u304b\u3089\u3092\u3000\u3064\u304b\u3063\u3066\n\u307f\u304b\u305f\u3078\u306e\u3000\u3078\u3093\u304b\u308f\u3056\u3092\u3000\u3075\u305b\u3050\u3002\n\u30c0\u30e1\u30fc\u30b8\u308f\u3056\u306f\u3000\u3046\u3051\u3066\u3057\u307e\u3046\u3002",
+    "description": "The user protects itself and its allies from status moves with a mysterious power. This does not stop moves that do damage.",
     "damage_class": "status",
     "type": "fairy",
     "effect_chance": null,

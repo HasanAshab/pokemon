@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "The fewer PP this move has, the greater\nits attack power.",
+    "description": "The fewer PP this move has, the greater its attack power.",
     "damage_class": "special",
     "type": "normal",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Una onda curativa restaura los PS del objetivo a la\nmitad de su m\u00e1ximo.",
+    "description": "The user emits a healing pulse which restores the target\u2019s HP by up to half of its max HP.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

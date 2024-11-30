@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 3,
-    "description": "The user hurls up its\nstomach acids on\nthe foe. The fluid\neliminates the effect\nof the foe\u2019s ability.",
+    "description": "The user hurls up its stomach acids on the foe. The fluid eliminates the effect of the foe\u2019s ability.",
     "damage_class": "status",
     "type": "poison",
     "effect_chance": null,

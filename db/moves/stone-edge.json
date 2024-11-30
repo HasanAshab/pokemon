@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 80,
     "pp": 2,
-    "description": "Clava piedras muy afiladas al objetivo. Suele ser \ncr\u00edtico.",
+    "description": "The user stabs the foe with a sharpened stone. It has a high critical-hit ratio. ",
     "damage_class": "physical",
     "type": "rock",
     "effect_chance": null,

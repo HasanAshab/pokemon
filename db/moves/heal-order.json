@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "The user calls out\nits underlings to heal\nit. The user regains\nup to half of its\nmax HP.",
+    "description": "The user calls out its underlings to heal it. The user regains up to half of its max HP.",
     "damage_class": "status",
     "type": "bug",
     "effect_chance": null,

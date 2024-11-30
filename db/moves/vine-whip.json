@@ -22,7 +22,7 @@
     "power": 45,
     "accuracy": 100,
     "pp": 8,
-    "description": "Whips the foe with\nslender vines.",
+    "description": "Whips the foe with slender vines.",
     "damage_class": "physical",
     "type": "grass",
     "effect_chance": null,

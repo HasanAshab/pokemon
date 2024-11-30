@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
-    "description": "Rend la cible confuse, mais\naugmente son Attaque Sp\u00e9ciale.",
+    "description": "Confuses the foe, but raises its SP. ATK.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

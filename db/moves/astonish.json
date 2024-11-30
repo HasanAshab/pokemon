@@ -22,7 +22,7 @@
     "power": 30,
     "accuracy": 100,
     "pp": 5,
-    "description": "An attack that may shock\nthe foe into flinching.",
+    "description": "An attack that may shock the foe into flinching.",
     "damage_class": "physical",
     "type": "ghost",
     "effect_chance": 30,

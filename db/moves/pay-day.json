@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 7,
-    "description": "Throws coins. Gets\nthem back later.",
+    "description": "Throws coins. Gets them back later.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

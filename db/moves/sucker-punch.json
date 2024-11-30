@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 2,
-    "description": "Permite atacar con prioridad. Falla si el objetivo no\nest\u00e1 preparando ning\u00fan ataque.",
+    "description": "This move enables the user to attack first. It fails if the foe is not readying an attack, however.",
     "damage_class": "physical",
     "type": "dark",
     "effect_chance": null,

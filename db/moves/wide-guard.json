@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Annule les attaques visant toute l\u2019\u00e9quipe\npendant 1 tour. Peut \u00e9chouer si utilis\u00e9e\nplusieurs fois de suite.",
+    "description": "The user and its allies are protected from wide-ranging attacks for one turn. If used in succession, its chance of failing rises.",
     "damage_class": "status",
     "type": "rock",
     "effect_chance": null,

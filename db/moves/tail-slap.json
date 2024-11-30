@@ -22,7 +22,7 @@
     "power": 25,
     "accuracy": 85,
     "pp": 3,
-    "description": "Golpea con la cola u otras partes de su cuerpo de\ndos a cinco veces seguidas.",
+    "description": "The user attacks by striking the target with its hard tail. It hits the target two to five times in a row.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

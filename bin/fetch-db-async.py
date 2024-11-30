@@ -16,6 +16,7 @@ CONCURRENT_LIMIT = 30  # Limit for simultaneous requests
 os.makedirs("db/moves", exist_ok=True)
 os.makedirs("db/pokemons", exist_ok=True)
 
+
 def save_json(filepath, data):
     with open(filepath, "w") as file:
         json.dump(data, file, indent=4)
@@ -30,6 +31,7 @@ def get_stats(pokemon):
         stat["stat"]["name"]: stat["base_stat"]
         for stat in pokemon["stats"] 
     }
+
 
 def get_efforts(pokemon):
     return { 
@@ -54,6 +56,13 @@ def get_effects(move):
     ]
     return [effect for effect in possible_effects if effect in effect_text]
 
+def get_english_description(data):
+    flavor_text_entries = data["flavor_text_entries"]
+    for entry in flavor_text_entries:
+        if entry["language"]["name"] == "en":
+            return entry["flavor_text"].replace("\n", " ")
+    return "No description..."
+
 
 def calculate_retreat(move):
     damage_class_bonus = {
@@ -74,6 +83,17 @@ def calculate_retreat(move):
     return retreat + damage_class_bonus[move["damage_class"]["name"]]
 
 
+def parse_stat_changes(data):
+    stat_changes = {
+        "self": {},
+        "target": {},
+    }
+    for stat_change in data["stat_changes"]:
+        key = "self" if stat_change["change"] > 0 else "target"
+        stat_changes[key][stat_change["stat"]["name"]] = stat_change["change"]
+    return stat_changes
+
+
 def serialize_type(data):
     type_effectiveness = {}
     for relation, multiplier in [
@@ -89,30 +109,19 @@ def serialize_type(data):
 
 def serialize_move(data):
     pp = 10 if data["pp"] is None else round(data["pp"] / 3)
-    description = None
-    if len(data["flavor_text_entries"]):
-        description = data["flavor_text_entries"][0]["flavor_text"]
-    
-    stat_changes = {
-        "self": {},
-        "target": {},
-    }
-    for stat_change in data["stat_changes"]:
-        key = "self" if stat_change["change"] > 0 else "target"
-        stat_changes[key][stat_change["stat"]["name"]] = stat_change["change"]
 
     return {
         "meta": data["meta"],
         "power": data["power"],
         "accuracy": data["accuracy"],
         "pp": pp,
-        "description": description,
+        "description": get_english_description(data),
         "damage_class": data["damage_class"]["name"],
         "type": data["type"]["name"],
         "effect_chance": data.get("effect_chance"),
         "effect_names": get_effects(data),
         "retreat": calculate_retreat(data),
-        "stat_changes": stat_changes,
+        "stat_changes": parse_stat_changes(data),
     }
 
 

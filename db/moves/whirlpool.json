@@ -22,7 +22,7 @@
     "power": 35,
     "accuracy": 85,
     "pp": 5,
-    "description": "Traps the foe for\n2-5 turns.",
+    "description": "Traps the foe for 2-5 turns.",
     "damage_class": "special",
     "type": "water",
     "effect_chance": 100,

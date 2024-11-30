@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 55,
     "pp": 7,
-    "description": "Sound waves that\ncause confusion.",
+    "description": "Sound waves that cause confusion.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

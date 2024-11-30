@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Blocks the foe\u2019s way to\nprevent escape.",
+    "description": "Blocks the foe\u2019s way to prevent escape.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

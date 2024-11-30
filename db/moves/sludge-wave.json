@@ -22,7 +22,7 @@
     "power": 95,
     "accuracy": 100,
     "pp": 3,
-    "description": "Une vague de d\u00e9tritus attaque tous\nles Pok\u00e9mon autour du lanceur.\nPeut aussi empoisonner.",
+    "description": "It swamps the area around the user with a giant sludge wave. It may also poison those hit.",
     "damage_class": "special",
     "type": "poison",
     "effect_chance": 10,

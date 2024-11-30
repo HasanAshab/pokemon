@@ -22,7 +22,7 @@
     "power": 55,
     "accuracy": 95,
     "pp": 5,
-    "description": "A chilling attack that\nlowers the foe\u2019s SPEED.",
+    "description": "A chilling attack that lowers the foe\u2019s SPEED.",
     "damage_class": "special",
     "type": "ice",
     "effect_chance": 100,

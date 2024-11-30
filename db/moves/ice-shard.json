@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 10,
-    "description": "Crea bolas de hielo y las lanza a gran velocidad.\nEste movimiento siempre va primero.",
+    "description": "The user flash freezes chunks of ice and hurls them. This move always goes first.",
     "damage_class": "physical",
     "type": "ice",
     "effect_chance": null,

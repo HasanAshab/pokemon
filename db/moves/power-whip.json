@@ -22,7 +22,7 @@
     "power": 120,
     "accuracy": 85,
     "pp": 3,
-    "description": "\ub369\uad74\uc774\ub098 \ucd09\uc218\ub97c \uc138\ucc28\uac8c \ud754\ub4e4\uc5b4\n\uc0c1\ub300\ub97c \ud798\uaecf \uccd0\uc11c \uacf5\uaca9\ud55c\ub2e4.",
+    "description": "The user violently whirls its vines or tentacles to harshly lash the foe. ",
     "damage_class": "physical",
     "type": "grass",
     "effect_chance": null,

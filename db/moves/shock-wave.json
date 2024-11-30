@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": null,
     "pp": 7,
-    "description": "A fast and unavoidable\nelectric attack.",
+    "description": "A fast and unavoidable electric attack.",
     "damage_class": "special",
     "type": "electric",
     "effect_chance": null,

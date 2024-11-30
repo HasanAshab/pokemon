@@ -22,7 +22,7 @@
     "power": 120,
     "accuracy": 80,
     "pp": 2,
-    "description": "The user shoots\nfilthy garbage at the\nfoe to attack.\nIt may also poison\nthe target.",
+    "description": "The user shoots filthy garbage at the foe to attack. It may also poison the target.",
     "damage_class": "physical",
     "type": "poison",
     "effect_chance": 30,

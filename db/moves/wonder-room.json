@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Cr\u00e9e une zone \u00e9trange o\u00f9 pendant 5 tours,\nla D\u00e9fense et la D\u00e9fense Sp\u00e9ciale de tous\nles Pok\u00e9mon sont invers\u00e9es.",
+    "description": "The user creates a bizarre area in which Pok\u00e9mon\u2019s Defense and Sp. Def stats are swapped for five turns.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 2,
-    "description": "Colpisce il bersaglio con una forza primordiale.\nPu\u00f2 aumentare tutte le statistiche.",
+    "description": "An attack that may raise all stats.",
     "damage_class": "special",
     "type": "rock",
     "effect_chance": 10,

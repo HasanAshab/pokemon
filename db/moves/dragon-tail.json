@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 90,
     "pp": 3,
-    "description": "Un coup puissant qui blesse la cible\net l\u2019envoie balader. Dans la nature,\nmet fin au combat.",
+    "description": "The user knocks away the target and drags out another Pok\u00e9mon in its party. In the wild, the battle ends.",
     "damage_class": "physical",
     "type": "dragon",
     "effect_chance": null,

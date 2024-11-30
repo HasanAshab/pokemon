@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 7,
-    "description": "Feigns crying to sharply\nlower the foe\u2019s SP. DEF.",
+    "description": "Feigns crying to sharply lower the foe\u2019s SP. DEF.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

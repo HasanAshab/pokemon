@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 5,
-    "description": "Le lanceur brise sa coquille. Il baisse sa\nD\u00e9fense et D\u00e9f. Sp\u00e9., mais augmente forte-\nment son Attaque, Atq. Sp\u00e9. et Vitesse.",
+    "description": "The user breaks its shell, lowering its Defense and Sp. Def stats but sharply raising Attack, Sp. Atk, and Speed stats.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

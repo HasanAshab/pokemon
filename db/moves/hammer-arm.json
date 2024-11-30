@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 90,
     "pp": 3,
-    "description": "The user swings and\nhits with its strong\nand heavy fist.\nIt lowers the user\u2019s\nSpeed, however.",
+    "description": "The user swings and hits with its strong and heavy fist. It lowers the user\u2019s Speed, however.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": 100,

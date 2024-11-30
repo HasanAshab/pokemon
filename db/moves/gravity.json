@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Gravity is intensified\nfor five turns, making\nmoves involving flying\nunusable and\nnegating Levitation.",
+    "description": "Gravity is intensified for five turns, making moves involving flying unusable and negating Levitation.",
     "damage_class": "status",
     "type": "psychic",
     "effect_chance": null,

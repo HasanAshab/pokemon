@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "\u548c\u5bf9\u624b\u548c\u7766\u76f8\u5904\uff0c\n\u4f7f\u5176\u5931\u53bb\u6218\u6597\u7684\u6c14\u529b\uff0c\n\u4ece\u800c\u964d\u4f4e\u5bf9\u624b\u7684\u653b\u51fb\u3002",
+    "description": "The user and the target become friends, and the target loses its will to fight. This lowers the target\u2019s Attack stat.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": 100,

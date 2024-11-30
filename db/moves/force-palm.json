@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 3,
-    "description": "The foe is attacked\nwith a shock wave.\nIt may also leave the\ntarget paralyzed.\n",
+    "description": "The foe is attacked with a shock wave. It may also leave the target paralyzed. ",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": 30,

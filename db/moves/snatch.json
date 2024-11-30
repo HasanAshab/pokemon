@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Steals the effects of the\nmove the foe uses next.",
+    "description": "Steals the effects of the move the foe uses next.",
     "damage_class": "status",
     "type": "dark",
     "effect_chance": null,

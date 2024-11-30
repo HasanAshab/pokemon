@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 90,
     "pp": 7,
-    "description": "A move that may\ncause paralysis.",
+    "description": "A move that may cause paralysis.",
     "damage_class": "status",
     "type": "electric",
     "effect_chance": null,

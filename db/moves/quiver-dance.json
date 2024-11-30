@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 7,
-    "description": "Une danse mystique dont le rythme parfait\naugmente l\u2019Attaque Sp\u00e9ciale, la D\u00e9fense\nSp\u00e9ciale et la Vitesse du lanceur.",
+    "description": "The user lightly performs a beautiful, mystic dance. It boosts the user\u2019s Sp. Atk, Sp. Def, and Speed stats.",
     "damage_class": "status",
     "type": "bug",
     "effect_chance": null,

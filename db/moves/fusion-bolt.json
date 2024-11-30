@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 100,
     "pp": 2,
-    "description": "Projette un orbe \u00e9lectrique\ngigantesque. L\u2019effet augmente\nsous l\u2019influence de Flamme Croix.",
+    "description": "The user throws down a giant thunderbolt. This attack does greater damage when influenced by an enormous flame.",
     "damage_class": "physical",
     "type": "electric",
     "effect_chance": null,

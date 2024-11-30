@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 2,
-    "description": "Boosts water-type\nmoves for 5 turns.",
+    "description": "Boosts water-type moves for 5 turns.",
     "damage_class": "status",
     "type": "water",
     "effect_chance": null,

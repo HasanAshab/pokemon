@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Makes a decoy with\n1/4 user's max HP.",
+    "description": "Makes a decoy with 1/4 user's max HP.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

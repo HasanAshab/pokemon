@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 7,
-    "description": "After making its\nattack, the user\nrushes back to switch\nplaces with a party\nPok\u00e9mon in waiting.",
+    "description": "After making its attack, the user rushes back to switch places with a party Pok\u00e9mon in waiting.",
     "damage_class": "physical",
     "type": "bug",
     "effect_chance": null,

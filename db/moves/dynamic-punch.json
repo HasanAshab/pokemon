@@ -22,7 +22,7 @@
     "power": 100,
     "accuracy": 50,
     "pp": 2,
-    "description": "Kr\u00e4ftiger Schlag, der das Ziel bei Erfolg verwirrt.",
+    "description": "An attack that always confuses.",
     "damage_class": "physical",
     "type": "fighting",
     "effect_chance": 100,

@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 75,
     "pp": 5,
-    "description": "May cause the foe\nto fall asleep.",
+    "description": "May cause the foe to fall asleep.",
     "damage_class": "status",
     "type": "grass",
     "effect_chance": null,

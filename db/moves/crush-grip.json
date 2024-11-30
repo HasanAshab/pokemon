@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 2,
-    "description": "The foe is crushed\nwith great force.\nThe attack is more\npowerful the more HP\nthe foe has left.",
+    "description": "The foe is crushed with great force. The attack is more powerful the more HP the foe has left.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

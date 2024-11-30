@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 85,
     "pp": 13,
-    "description": "Emits a horrible screech\nthat sharply lowers SP. DEF.",
+    "description": "Emits a horrible screech that sharply lowers SP. DEF.",
     "damage_class": "status",
     "type": "steel",
     "effect_chance": null,

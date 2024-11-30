@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 7,
-    "description": "Le lanceur pi\u00e9tine le sol et inflige des\nd\u00e9g\u00e2ts \u00e0 tous les Pok\u00e9mon autour\nde lui. Baisse aussi la Vitesse.",
+    "description": "The user stomps down on the ground and attacks everything in the area. Hit Pok\u00e9mon\u2019s Speed stat is reduced.",
     "damage_class": "physical",
     "type": "ground",
     "effect_chance": 100,

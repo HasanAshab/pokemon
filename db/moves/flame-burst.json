@@ -22,7 +22,7 @@
     "power": 70,
     "accuracy": 100,
     "pp": 5,
-    "description": "Quand l\u2019attaque atteint sa cible, elle\nprojette des flammes qui touchent\ntout ennemi situ\u00e9 \u00e0 c\u00f4t\u00e9.",
+    "description": "The user attacks the target with a bursting flame. The bursting flame damages Pok\u00e9mon next to the target as well.",
     "damage_class": "special",
     "type": "fire",
     "effect_chance": null,

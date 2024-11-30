@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": null,
     "pp": 3,
-    "description": "Prevents fleeing\nor switching.",
+    "description": "Prevents fleeing or switching.",
     "damage_class": "status",
     "type": "bug",
     "effect_chance": null,

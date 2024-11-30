@@ -22,7 +22,7 @@
     "power": 40,
     "accuracy": 100,
     "pp": 13,
-    "description": "Leaves the foe\nwith at least 1HP.",
+    "description": "Leaves the foe with at least 1HP.",
     "damage_class": "physical",
     "type": "normal",
     "effect_chance": null,

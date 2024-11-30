@@ -22,7 +22,7 @@
     "power": null,
     "accuracy": 100,
     "pp": 5,
-    "description": "Le lanceur envoie des ondes\nmyst\u00e9rieuses \u00e0 l\u2019ennemi. Sa\ncapacit\u00e9 sp\u00e9ciale devient Simple.",
+    "description": "The user\u2019s mysterious psychic wave changes the target\u2019s Ability to Simple.",
     "damage_class": "status",
     "type": "normal",
     "effect_chance": null,

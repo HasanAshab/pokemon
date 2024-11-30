@@ -22,7 +22,7 @@
     "power": 60,
     "accuracy": 100,
     "pp": 7,
-    "description": "Attacks with ultrasonic\nwaves. May confuse the foe",
+    "description": "Attacks with ultrasonic waves. May confuse the foe",
     "damage_class": "special",
     "type": "water",
     "effect_chance": 20,
