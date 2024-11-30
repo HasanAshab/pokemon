@@ -1,18 +1,13 @@
-damage on attack + make contact
+make contact
 multi hit move
 xp using cp
-nature
 abilities effects (eg guts)
-stat changes, growl
-effects
 BattleGround class
-add limit to move selection
 
 increase level stat damage
 
 damages map
 dodge, nothing move .json
-point damage
 xp reduce on loose
 
 
