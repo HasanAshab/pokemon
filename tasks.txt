@@ -8,14 +8,14 @@ effects
 BattleGround class
 add limit to move selection
 
-dom
 increase level stat damage
 
 damages map
 dodge, nothing move .json
 point damage
 xp reduce on loose
-calculateDamage map
+
+
 
 now i want to add support to multi hit moves.
 move1 and move2 both can be multi hit, or only

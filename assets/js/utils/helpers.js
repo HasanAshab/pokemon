@@ -19,3 +19,9 @@ export function setPokemonMeta(name, value) {
     pokemons_meta[name] = value
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
 }
+
+export function fixFloat(damage) {
+    return damage === null
+        ? null
+        : parseFloat(damage.toFixed(2));
+}

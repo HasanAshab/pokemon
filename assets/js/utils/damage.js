@@ -1,13 +1,10 @@
+import { fixFloat } from "./helpers.js";
+
+
 const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24;
 
-
-function fixDamage(damage) {
-    return damage === null
-        ? null
-        : parseFloat(damage.toFixed(2));
-}
 
 function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     if (move.power === null) {
@@ -45,7 +42,7 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
             totalDamage = totalDamage * effectiveness * stab * criticalMultiplier * randomModifier;
         }
         result[1].hits = 1;
-        result[1].totalDamage = fixDamage(totalDamage);
+        result[1].totalDamage = fixFloat(totalDamage);
         return result;
     }
 
@@ -62,7 +59,7 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
     const baseDamage1 = calculateBaseDamage(pokemon1, move1);
     const finalDamage1 = baseDamage1 === null
         ? null
-        : fixDamage((baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1));
+        : fixFloat((baseDamage1 * effectiveness1 * stab1 * criticalMultiplier1 * randomModifier1));
 
     if (!move2) {
         // If only pokemon1 attacks, return its damage
@@ -80,13 +77,13 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
     const baseDamage2 = calculateBaseDamage(pokemon2, move2);
     const finalDamage2 = baseDamage2 === null
         ? null
-        : fixDamage(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
+        : fixFloat(baseDamage2 * effectiveness2 * stab2 * criticalMultiplier2 * randomModifier2);
     
     const pokeEffect1 = await pokemon2.effectiveness(move1.type);
     const pokeEffect2 = await pokemon1.effectiveness(move2.type);
     const remDam1 = ((finalDamage1 / effectiveness1) * pokeEffect1)
     const remDam2 = ((finalDamage2 / effectiveness2) * pokeEffect2)
-    const remainingDamage = fixDamage(remDam1 - remDam2)
+    const remainingDamage = fixFloat(remDam1 - remDam2)
 
     if (remainingDamage > 0) {
         result[1].totalDamage = remainingDamage

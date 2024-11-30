@@ -1,5 +1,6 @@
 import db from "./db.js"
 import { calculateBurnEffect, calculatePoisonEffect } from "./effects.js"
+import { fixFloat } from "./helpers.js"
 
 class BattleState {
     constructor(pokemon) {
@@ -30,7 +31,7 @@ class BattleState {
             const baseStat = this._stats[stat];
             const stage = this._statChanges[stat] || 0;
             const multiplier = this._statStageMultiplier(stage);
-            calculatedStats[stat] = Math.floor(baseStat * multiplier);
+            calculatedStats[stat] = fixFloat(baseStat * multiplier);
         }
         return calculatedStats;
     }
@@ -39,7 +40,7 @@ class BattleState {
         const baseStat = this._stats[name];
         const stage = this._statChanges[name] || 0;
         const multiplier = this._statStageMultiplier(stage);
-        return Math.floor(baseStat * multiplier);
+        return fixFloat(baseStat * multiplier);
     }
 
     // Health Management
