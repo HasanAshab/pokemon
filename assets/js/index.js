@@ -21,8 +21,8 @@ function __setDefaultPokeMeta() {
             "retreat": 2,
             "moves": []
         },
-        "haxorus": {
-            "xp": 40 * 100,
+        "lucario": {
+            "xp": 36 * 100,
             "nature": "nauty",
             "retreat": 6,
             "moves": []
@@ -73,8 +73,38 @@ globalThis.badgeClickHandler = function badgeClickHandler( {
 }
 
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler(){
-     
+     const addPokemonForm = document.querySelector(".add-pokemon-form")
+         const addBtn = addPokemonForm.querySelector(".add-btn")
+ const closeBtn = addPokemonForm.querySelector(".close-btn")
+    
+     addPokemonForm.parentNode.classList.add("active")
+     addBtn.onclick = ()=>{
+              addPokemonForm.parentNode.classList.remove("active")
+
+     }
+     closeBtn.onclick = ()=>{
+              addPokemonForm.parentNode.classList.remove("active")
+
+     }
 }
+
+
+globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler(){
+     const addPokemonForm = document.querySelector(".add-pokemon-form")
+         const addBtn = addPokemonForm.querySelector(".add-btn")
+ const closeBtn = addPokemonForm.querySelector(".close-btn")
+    
+     addPokemonForm.parentNode.classList.add("active")
+     addBtn.onclick = ()=>{
+              addPokemonForm.parentNode.classList.remove("active")
+
+     }
+     closeBtn.onclick = ()=>{
+              addPokemonForm.parentNode.classList.remove("active")
+
+     }
+}
+
 globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
     window.location = `poke_details.html?name=${slug}`
 }
@@ -118,4 +148,5 @@ function loadAll() {
 document.body.onload = loadAll
 
 //window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
-window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=garchomp-mega&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
+//window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=charizard-mega-x&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
+//window.location = "http://localhost:8888/battle.html?you=lucario&enemy=hitmonchan&xp=3600&retreat=6&nature=adamant&moves=karate-chop,vacuum-wave,swords-dance,mega-punch,fire-punch"
