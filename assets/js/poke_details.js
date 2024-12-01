@@ -135,7 +135,7 @@ async function loadMoves() {
         movesContainer.innerHTML += `
     <div class="move ${moveMeta.isSelected ? "selected" : ""}">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
-      <span>${capitalizeFirstLetter(move.name)}</span>
+      <span>${move.display}</span>
       <div class="move-icons">
         <span>🖼️</span>
         <span>🖼️</span>

@@ -1,9 +1,12 @@
 import { Pokemon, Move } from "./utils/models.js"
+import { BattleField } from "./utils/battle.js"
 import { applyStatChanges } from "./utils/stats.js"
 import { calculateDamage } from "./utils/damage.js"
 import { getEffects } from "./utils/effects.js"
 import { canDodge, calculateWinXP } from "./utils/battle.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+
+
 
 globalThis.isVeryClose = false
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
@@ -49,18 +52,17 @@ async function handleWin(winnerTag, looserTag) {
 
 
 async function loadGlobal() {
-    globalThis.NothingMove = await Move.make("$nothing"),
+    globalThis.NothingMove = await Move.make("$nothing")
     globalThis.DodgeMove = await Move.make("$dodge")
-        
+
     const pokemonName = getParam("you")
-    const [pokemon, enemyPokemon] = await Promise.all([
-        Pokemon.make(pokemonName, getPokemonsMeta(pokemonName)),
-        Pokemon.make(getParam("enemy"), {
-            xp: parseInt(getParam("xp")),
-            retreat: parseInt(getParam("retreat")),
-            nature: getParam("nature"),
-        })
-    ])
+    const pokemon = await Pokemon.make(pokemonName, getPokemonsMeta(pokemonName))
+    const enemyPokemon = await Pokemon.make(getParam("enemy"), {
+        xp: parseInt(getParam("xp")),
+        retreat: parseInt(getParam("retreat")),
+        nature: getParam("nature"),
+    })
+
     globalThis.pokemon = pokemon
     globalThis.enemyPokemon = enemyPokemon
     
@@ -68,6 +70,8 @@ async function loadGlobal() {
         "you": pokemon,
         "enemy": enemyPokemon
     }
+
+    globalThis.battleField = new BattleField(pokemon, enemyPokemon)
 }
 
 function showBattlePromptPopup(msg, playerTag) {
@@ -157,15 +161,6 @@ function setCurrentHealth(hp, playerTag) {
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
 }
 
-function injectDamage(damage, playerTag) {
-  const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
-  const newHp = Number(healthProgressBar.getAttribute("data-current-hp")) - damage
-  const totalHp = Number(healthProgressBar.getAttribute("data-total-hp"))
-  healthProgressBar.setAttribute("data-current-hp", newHp)
-  healthProgressBar.querySelector(".current-hp").textContent = newHp
-  const progress = (newHp / totalHp) * 100
-  healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
-}
 
 function showMoveDamageInjectForm(moveName, damage, playerTag) {
   const moveDamageInjectForm = document.querySelector(`.${playerTag}-controle-cont .move-damage-inject-form`)
@@ -242,10 +237,8 @@ async function handleMoveCardSelect(card, playerTag) {
     catch(e) {
         console.log(e)
     }
-    await Promise.all([
-        loadMoves(),
-        loadOponentMoves()
-    ])
+    await loadMoves()
+    await loadOponentMoves()
   }else{
     card.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
