@@ -3,6 +3,7 @@ multi hit move
 xp using cp
 abilities effects (eg guts)
 BattleGround class
+  replaceChildren
 
 increase level stat damage
 
@@ -10,6 +11,7 @@ damages map
 dodge, nothing move .json
 xp reduce on loose
 
+null pp unlimited
 mega horn
 
 now i want to add support to multi hit moves.

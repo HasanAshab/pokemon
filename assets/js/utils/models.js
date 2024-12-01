@@ -1,6 +1,6 @@
 import db from "./db.js"
 import { calculateBurnEffect, calculatePoisonEffect } from "./effects.js"
-import { fixFloat } from "./helpers.js"
+import { fixFloat, toTitleCase } from "./helpers.js"
 
 class BattleState {
     constructor(pokemon) {
@@ -230,12 +230,12 @@ export class Pokemon {
       Object.keys(this.data.stats).forEach(statName => {
         const baseStat = this.statOf(statName);
         const ev = this.data.efforts[statName] || 0; // Effort values from `efforts`
-        const iv = 80; // Default IV value
+        const iv = 35; // Default IV value
     
         if (statName === "hp") {
           // HP calculation
           stats[statName] = Math.floor(
-            ((2 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
+            ((20 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
           );
         } else {
           // Other stat calculations
@@ -285,6 +285,10 @@ export class Move {
         this.name = name;
         this._data = data;
         Object.assign(this, data)
+    }
+    
+    get display() {
+        return toTitleCase(this.name.replace("$", ""))
     }
 
     async effectiveness(type) {

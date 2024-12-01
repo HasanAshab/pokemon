@@ -1,0 +1,9 @@
+{
+    "power": null,
+    "accuracy": null,
+    "pp": null,
+    "description": "Move quickly to avoid damage.",
+    "damage_class": "none",
+    "type": "normal",
+    "retreat": 0.5
+}

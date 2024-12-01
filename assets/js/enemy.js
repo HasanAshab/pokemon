@@ -5,7 +5,8 @@ import { getParam } from "./utils/helpers.js"
 async function loadPokemonsDatalist() {
     const pokemons = await db.pokemons.all();
     const dataList = document.getElementById("enemy-data-list");
-    dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}</option>`).join("");
+    dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}(${pokemon.type})</option>`).join("");
+
 }
 
 async function loadMovesDatalist() {

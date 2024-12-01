@@ -16,7 +16,7 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
         ? pokemon2.state.statOf(isSpecial ? "special-defense" : "defense")
         : 70; // Neutral defense if no target
 
-    return (((((2 * pokemon1.level) / 5) + 2) * move.power * (attackStat / defenseStat)) / 10) + 2;
+    return (((((2 * pokemon1.level) / 5) + 2) * move.power * ((attackStat * 0.6) / defenseStat)) / 10) + 2;
 }
 
 export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {

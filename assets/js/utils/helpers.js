@@ -2,6 +2,12 @@ export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export function toTitleCase(str) {
+  return str.replace("-", " ").replace(
+    /\w\S*/g,
+    text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
+}
 
 export function getParam(name) {
     const urlParams = new URLSearchParams(window.location.search);

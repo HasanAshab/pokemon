@@ -48,7 +48,10 @@ async function handleWin(winnerTag, looserTag) {
 }
 
 
-async function loadPokemonsToGlobal() {
+async function loadGlobal() {
+    globalThis.NothingMove = await Move.make("$nothing"),
+    globalThis.DodgeMove = await Move.make("$dodge")
+        
     const pokemonName = getParam("you")
     const [pokemon, enemyPokemon] = await Promise.all([
         Pokemon.make(pokemonName, getPokemonsMeta(pokemonName)),
@@ -186,25 +189,15 @@ function loadAllMoves(movesArr, playerTag) {
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   //clean up old cards
   const oldMoveCards = moveCardsContainer.querySelectorAll('.card')
-  
   for (const card of oldMoveCards) {
-      if (card.dataset.moveName === "__nothing__") {
-          continue
-      }
     moveCardsContainer.removeChild(card)
   }
   
-  moveCardsContainer.innerHTML += `
-    <div onclick="moveCardClickHandler(event,'${playerTag}')" class="card ${0.5 <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}" class="card dodge" style="display:flex;justify-content:center;align-items:center" data-move-name="__dodge__">
-        <h1>Dodge</h1>
-      </div>
-  `
-
   // re adding cards
   movesArr.forEach((move)=> {
     const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type}-type-color)">
-    <h3>${capitalizeFirstLetter(move.name)}</h3>
+    <h3>${move.display}</h3>
     <div class="icons">
     <div class="icon"></div>
     <div class="icon"></div>
@@ -218,12 +211,14 @@ function loadAllMoves(movesArr, playerTag) {
     ${move.damage !== null ? "Damage: " + move.damage : ""}
     </p>
     <p>
-    PP: ${move.pp}
+    PP: ${move.pp || "∞"}
     </p>
     </div>
-    <div class="retreat-cost">
-    ${move.retreat}
-    </div>
+    ${
+        move.retreat ? `<div class="retreat-cost">
+        ${move.retreat}
+        </div>` : ''
+    }
     </div>
     `
     moveCardsContainer.innerHTML += cardHtml
@@ -278,25 +273,20 @@ globalThis.newWave = function() {
     loadOponentMoves()
 }
 
+
 async function battle(moveNames) {
     const {you: moveName, enemy: enemyMoveName} = moveNames
-    const isNotMove = name => ["__dodge__", "__nothing__"].includes(name)
+    const move1 = await Move.make(moveName)
+    const move2 = await Move.make(enemyMoveName)
     
-    const move1 = isNotMove(moveName)
-        ? null
-        : await Move.make(moveName)
-    const move2 = isNotMove(enemyMoveName)
-        ? null
-        : await Move.make(enemyMoveName)
-
-    if(moveName === "__dodge__" && enemyMoveName === "__dodge__") {
+    if(moveName === "$dodge" && enemyMoveName === "$dodge") {
         pokemon.state.retreat -= 0.5
         enemyPokemon.state.retreat -= 0.5
     }
 
-    else if(moveName === "__nothing__" && enemyMoveName === "__nothing__") {}
+    else if(moveName === "$nothing" && enemyMoveName === "$nothing") {}
 
-    else if(moveName === "__dodge__") {
+    else if(moveName === "$dodge") {
         const dodged = canDodge(enemyPokemon, pokemon, move2)
         pokemon.state.retreat -= 0.5
         enemyPokemon.state.retreat -= move2.retreat
@@ -309,7 +299,7 @@ async function battle(moveNames) {
         }
     }
     
-    else if(enemyMoveName === "__dodge__") {
+    else if(enemyMoveName === "$dodge") {
         const dodged = canDodge(pokemon, enemyPokemon, move1)
         pokemon.state.retreat -= move1.retreat
         enemyPokemon.state.retreat -= 0.5
@@ -322,7 +312,7 @@ async function battle(moveNames) {
         }
     }
     
-    else if(moveName === "__nothing__") {
+    else if(moveName === "$nothing") {
         enemyPokemon.state.retreat -= move2.retreat
         const damages = await calculateDamage(enemyPokemon, move2, pokemon)
         const effects = await getEffects(enemyPokemon, pokemon, move2)
@@ -331,7 +321,7 @@ async function battle(moveNames) {
         pokemon.state.decreaseHealth(damages[1].totalDamage)
     }
     
-    else if(enemyMoveName === "__nothing__") {
+    else if(enemyMoveName === "$nothing") {
         pokemon.state.retreat -= move1.retreat
         const damages = await calculateDamage(pokemon, move1, enemyPokemon)
         const effects = await getEffects(pokemon, enemyPokemon, move1)
@@ -370,7 +360,10 @@ async function battle(moveNames) {
 
 
 async function loadMoves() {
-    const moves = []
+    const moves = [
+        NothingMove,
+        DodgeMove,
+    ]
     for (const moveMeta of pokemon.meta.moves) {
         if (!moveMeta.isSelected) continue
         const move = await Move.make(moveMeta.name)
@@ -382,7 +375,10 @@ async function loadMoves() {
 
 async function loadOponentMoves() {
     const moveNames = getParam("moves").split(",")
-    const moves = []
+    const moves = [
+        NothingMove,
+        DodgeMove,
+    ]
     for (const moveName of moveNames) {
         const move = await Move.make(moveName)
         move.damage = (await calculateDamage(enemyPokemon, move))[1].totalDamage
@@ -414,7 +410,7 @@ function loadEnemyHealth() {
 }
 
 async function loadAll() {
-    await loadPokemonsToGlobal()
+    await loadGlobal()
     
     loadMoves()
     loadOponentMoves()

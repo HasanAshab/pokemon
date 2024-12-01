@@ -20,11 +20,18 @@ function __setDefaultPokeMeta() {
             "nature": "nauty",
             "retreat": 2,
             "moves": []
+        },
+        "haxorus": {
+            "xp": 40 * 100,
+            "nature": "nauty",
+            "retreat": 6,
+            "moves": []
         }
     }
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
 }
 
+//localStorage.removeItem("pokemons-meta")
 if (!localStorage.getItem("pokemons-meta"))
     __setDefaultPokeMeta()
 
@@ -65,6 +72,9 @@ globalThis.badgeClickHandler = function badgeClickHandler( {
     loadTotalBadges()
 }
 
+globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler(){
+     
+}
 globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
     window.location = `poke_details.html?name=${slug}`
 }
@@ -72,13 +82,18 @@ globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
 function loadAllPokemons() {
     const pokemonList = document.querySelector(".pokemon-list")
     const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
-    pokemonList.innerHTML = ""
+  //  pokemonList.innerHTML = ""
     for (const pokemon in pokemons_meta) {
         const meta = pokemons_meta[pokemon]
         pokemonList.innerHTML += `
-        <li class="pokemon" onclick="pokemonClickHandler('${pokemon}')">
-        <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
-        <span class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</span>
+          <li class="pokemon" >
+      <div class="primary" onclick="pokemonClickHandler('${pokemon}')">
+                 <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
+        <i class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</i>
+            </div>
+      <div class="right-controle-btns-cont">
+          <button class="del-btn">Delete</button>
+      </div>
         </li>
         `
     }
@@ -103,3 +118,4 @@ function loadAll() {
 document.body.onload = loadAll
 
 //window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
+window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=garchomp-mega&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
