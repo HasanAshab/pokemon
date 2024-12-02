@@ -232,7 +232,7 @@ async function handleMoveCardSelect(card, playerTag) {
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveName
     }
     try {
-    await battle(moveNames)
+        await battle(moveNames)
     }
     catch(e) {
         console.log(e)
@@ -272,83 +272,13 @@ async function battle(moveNames) {
     const move1 = await Move.make(moveName)
     const move2 = await Move.make(enemyMoveName)
     
-    if(moveName === "$dodge" && enemyMoveName === "$dodge") {
-        pokemon.state.retreat -= 0.5
-        enemyPokemon.state.retreat -= 0.5
-    }
-
-    else if(moveName === "$nothing" && enemyMoveName === "$nothing") {}
-
-    else if(moveName === "$dodge") {
-        const dodged = canDodge(enemyPokemon, pokemon, move2)
-        pokemon.state.retreat -= 0.5
-        enemyPokemon.state.retreat -= move2.retreat
-        applyStatChanges(enemyPokemon, pokemon, move2)
-        if (!dodged) {
-            const damages = await calculateDamage(enemyPokemon, move2, pokemon)
-            const effects = await getEffects(enemyPokemon, pokemon, move2)
-            effects.forEach(effect => pokemon.state.addEffect(effect))
-            pokemon.state.decreaseHealth(damages[1].totalDamage)
-        }
-    }
+    await battleField.turn([
+        [pokemon, move1],
+        [enemyPokemon, move2],
+    ])
     
-    else if(enemyMoveName === "$dodge") {
-        const dodged = canDodge(pokemon, enemyPokemon, move1)
-        pokemon.state.retreat -= move1.retreat
-        enemyPokemon.state.retreat -= 0.5
-        applyStatChanges(pokemon, enemyPokemon, move1)
-        if (!dodged) {
-            const damages = await calculateDamage(pokemon, move1, enemyPokemon)
-            const effects = await getEffects(pokemon, enemyPokemon, move1)
-            effects.forEach(effect => enemyPokemon.state.addEffect(effect))
-            enemyPokemon.state.decreaseHealth(damages[1].totalDamage)
-        }
-    }
-    
-    else if(moveName === "$nothing") {
-        enemyPokemon.state.retreat -= move2.retreat
-        const damages = await calculateDamage(enemyPokemon, move2, pokemon)
-        const effects = await getEffects(enemyPokemon, pokemon, move2)
-        effects.forEach(effect => pokemon.state.addEffect(effect))
-        applyStatChanges(enemyPokemon, pokemon, move2)
-        pokemon.state.decreaseHealth(damages[1].totalDamage)
-    }
-    
-    else if(enemyMoveName === "$nothing") {
-        pokemon.state.retreat -= move1.retreat
-        const damages = await calculateDamage(pokemon, move1, enemyPokemon)
-        const effects = await getEffects(pokemon, enemyPokemon, move1)
-        effects.forEach(effect => enemyPokemon.state.addEffect(effect))
-        applyStatChanges(pokemon, enemyPokemon, move1)
-        enemyPokemon.state.decreaseHealth(damages[1].totalDamage)
-    }
-    
-    else {
-        pokemon.state.retreat -= move1.retreat
-        enemyPokemon.state.retreat -= move2.retreat
-
-        const damages = await calculateDamage(pokemon, move1, enemyPokemon, move2)
-        const hurtedPokemon = damages[1].totalDamage > 0
-            ? enemyPokemon
-            : pokemon
-        const hitterPokemon = hurtedPokemon === enemyPokemon
-            ? pokemon
-            : enemyPokemon
-        const move = hitterPokemon === pokemon
-            ? move1
-            : move2
-        const damIndex = hitterPokemon === pokemon
-            ? 1
-            : 2
-        const effects = await getEffects(hitterPokemon, hurtedPokemon, move)
-        effects.forEach(effect => hurtedPokemon.state.addEffect(effect))
-        applyStatChanges(pokemon, enemyPokemon, move1)
-        applyStatChanges(enemyPokemon, pokemon, move2)
-        hurtedPokemon.state.decreaseHealth(damages[damIndex].totalDamage)
-    }
-    
-    setCurrentRetreat(pokemon.state.retreat, "you")
-    setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
+    //setCurrentRetreat(pokemon.state.retreat, "you")
+    //setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
 }
 
 

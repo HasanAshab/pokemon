@@ -21,8 +21,6 @@ export async function calculateWinXP(poke1, poke2) {
     return xp;
 }
 
-class Damage {}
-
 export class BattleField {
     constructor(pokemon1, pokemon2) {
         this.pokemon1 = pokemon1;
@@ -39,17 +37,18 @@ export class BattleField {
     }
 
     async turn(senario) {
-        const damage = await calculateDamage(senario)
+        const senarioMap = new Map(senario)
+        const damage = await calculateDamage(senarioMap)
 
-        const move1 = senario.get(this.pokemon1)
-        const move2 = senario.get(this.pokemon2)
+        const move1 = senarioMap.get(this.pokemon1)
+        const move2 = senarioMap.get(this.pokemon2)
 
         const dodged1 = this.state(this.pokemon1).canMove() && this.canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = this.state(this.pokemon2).canMove() && this.canDodge(this.pokemon2, this.pokemon1, move1)
 
         const effects1 = await getEffects(this.pokemon2, this.pokemon1, move2)
         const effects2 = await getEffects(this.pokemon1, this.pokemon2, move1)
-
+/*
         if(
             (move1.name === "$nothing" && move2.name === "$nothing")
             ||
@@ -59,27 +58,7 @@ export class BattleField {
             ||
             (move1.name === "$dodge" && move2.name === "$nothing")
         ) {}
-        
-        else {
-            const damages = await calculateDamage(pokemon, move1, this.pokemon2, move2)
-            const hurtedPokemon = damages[1].totalDamage > 0
-                ? this.pokemon2
-                : pokemon
-            const hitterPokemon = hurtedPokemon === this.pokemon2
-                ? pokemon
-                : this.pokemon2
-            const move = hitterPokemon === pokemon
-                ? move1
-                : move2
-            const damIndex = hitterPokemon === pokemon
-                ? 1
-                : 2
-            const effects = await getEffects(hitterPokemon, hurtedPokemon, move)
-            effects.forEach(effect => hurtedPokemon.state.addEffect(effect))
-            applyStatChanges(pokemon, this.pokemon2, move1)
-            applyStatChanges(this.pokemon2, pokemon, move2)
-        }
-
+*/        
         if ((move1.makes_contact && !dodged2) || !move2.makes_contact) {
             applyStatChanges(this.pokemon1, this.pokemon2, move1)
         }

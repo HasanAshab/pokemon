@@ -5,6 +5,29 @@ const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24;
 
+class DamageManager {
+    constructor(damages) {
+        this._damages = damages
+    }
+    
+    on(pokemon) {
+        return this._damages.get(pokemon)
+    }
+    
+    
+}
+
+class DamageMeta {
+    isCritical = false
+    effectivenessMultiplier = 1
+}
+
+class Damage {
+    constructor(totalDamage = 0, meta = new DamageMeta()) {
+        this.totalDamage = totalDamage
+        this.meta = new DamageMeta() 
+    }
+}
 
 function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     if (move.power === null) {
@@ -19,17 +42,12 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     return (((((2 * pokemon1.level) / 5) + 2) * move.power * ((attackStat * 0.6) / defenseStat)) / 10) + 2;
 }
 
-export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
-    const result = {
-        1: {
-            totalDamage: 0,
-            hits: 0
-        },
-        2: {
-            totalDamage: 0,
-            hits: 0
-        },
-    }
+export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
+    const damages = new Map([
+        [pokemon1, new Damage()],
+        [pokemon2, new Damage()]
+    ])
+
     if (!move2) {
         // No target or second move: calculate base damage only
         let totalDamage = calculateBaseDamage(pokemon1, move1, pokemon2);
@@ -41,9 +59,9 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
             const effectiveness = await pokemon2.effectiveness(move1.type);
             totalDamage = totalDamage * effectiveness * stab * criticalMultiplier * randomModifier;
         }
-        result[1].hits = 1;
-        result[1].totalDamage = fixFloat(totalDamage);
-        return result;
+        damages[1].hits = 1;
+        damages[1].totalDamage = fixFloat(totalDamage);
+        return damages;
     }
 
     // Calculate type effectiveness for pokemon1's move
@@ -63,9 +81,9 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
 
     if (!move2) {
         // If only pokemon1 attacks, return its damage
-        result[1].totalDamage = finalDamage1;
-        result[1].hits = 1;
-        return result
+        damages[1].totalDamage = finalDamage1;
+        damages[1].hits = 1;
+        return damages
     }
 
     // Calculate type effectiveness for pokemon2's move
@@ -86,18 +104,18 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
     const remainingDamage = fixFloat(remDam1 - remDam2)
 
     if (remainingDamage > 0) {
-        result[1].totalDamage = remainingDamage
-        result[2].totalDamage = 0
+        damages[1].totalDamage = remainingDamage
+        damages[2].totalDamage = 0
     }
     else {
-        result[1].totalDamage = 0
-        result[2].totalDamage = remainingDamage * -1
+        damages[1].totalDamage = 0
+        damages[2].totalDamage = remainingDamage * -1
     }
 
-    result[1].hits = 1
-    result[2].hits = 1
+    damages[1].hits = 1
+    damages[2].hits = 1
 
-    return result
+    return damages
 }
 
 function getRandomHits(move) {
