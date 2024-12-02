@@ -21,10 +21,10 @@ function __setDefaultPokeMeta() {
             "retreat": 2,
             "moves": []
         },
-        "haxorus": {
+        "scyther": {
             "xp": 40 * 100,
             "nature": "nauty",
-            "retreat": 6,
+            "retreat": 8,
             "moves": []
         }
     }
@@ -118,4 +118,5 @@ function loadAll() {
 document.body.onload = loadAll
 
 //window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
-window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=garchomp-mega&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
+//window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=garchomp-mega&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
+window.location = "http://localhost:8888/battle.html?you=scyther&enemy=scizor-mega&xp=3000&retreat=8&nature=naughty&moves=x-scissor,iron-head,steel-beam,harden,slash"
