@@ -149,6 +149,10 @@ export class Move {
     get display() {
         return toTitleCase(this.name.replace("$", ""))
     }
+    
+    get isNotMove() {
+        return this.damage_class === "none"
+    }
 
     async effectiveness(type) {
         const typeMap = await db.types.get(this.type)

@@ -18,8 +18,21 @@ class DamageManager {
 }
 
 class DamageMeta {
+    _keys = ["isCritical", "effectiveness", "randomModifier", "hits"]
     isCritical = false
-    effectivenessMultiplier = 1
+    effectiveness = 1
+    randomModifier = 0.85
+    hits = {
+        count: 1,
+        damages: []
+    }
+
+    set(data) {
+        this._keys.forEach(key => {
+            if (key in data)
+                this[key] = data[key]
+        })
+    }
 }
 
 class Damage {
@@ -30,7 +43,7 @@ class Damage {
 }
 
 function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
-    if (move.power === null) {
+    if (move.isNotMove || move.power === null) {
         return null
     }
     const isSpecial = move.damage_class === "special";
@@ -43,23 +56,27 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
 }
 
 export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
-    const damages = new Map([
-        [pokemon1, new Damage()],
-        [pokemon2, new Damage()]
-    ])
+    const damage1 = new Damage()
+    const damage2 = new Damage()
 
-    if (!move2) {
+    if (move2.isNotMove) {
         // No target or second move: calculate base damage only
         let totalDamage = calculateBaseDamage(pokemon1, move1, pokemon2);
         const stab = pokemon1.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
         if(pokemon2) {
             const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
-            const criticalMultiplier = Math.random() < critChance ? CRIT_MULTIPLIER : 1;
+            const isCritical = Math.random() < critChance
+            const criticalMultiplier = isCritical ? CRIT_MULTIPLIER : 1;
             const randomModifier = Math.random() * 0.15 + 0.85;
             const effectiveness = await pokemon2.effectiveness(move1.type);
             totalDamage = totalDamage * effectiveness * stab * criticalMultiplier * randomModifier;
+            damage1.meta.set({
+                isCritical,
+                effectiveness,
+                randomModifier
+            })
         }
-        damages[1].hits = 1;
+        damages1.hits = 1;
         damages[1].totalDamage = fixFloat(totalDamage);
         return damages;
     }
