@@ -1,39 +1,38 @@
-import { Pokemon } from "./utils/models.js";
-import { getPokemonsMeta } from "./utils/helpers.js";
+import db from "./utils/db.js";
 
+import {
+  Pokemon
+} from "./utils/models.js";
+import {
+  getPokemonsMeta
+} from "./utils/helpers.js";
+try{
 function __setDefaultPokeMeta() {
-    const pokemons_meta = {
-        "charmander": {
-            "xp": 2 * 100,
-            "nature": "bully",
-            "retreat": 2,
-            "moves": []
-        },
-        "froakie": {
-            "xp": 2 * 100,
-            "nature": "gentle",
-            "retreat": 2,
-            "moves": []
-        },
-        "riolu": {
-            "xp": 2 * 100,
-            "nature": "nauty",
-            "retreat": 2,
-            "moves": []
-        },
-        "lucario": {
-            "xp": 36 * 100,
-            "nature": "nauty",
-            "retreat": 6,
-            "moves": []
-        }
-    }
-    localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
-}
+  const pokemons_meta = {
+    "charmander": {
+      "xp": 4 * 100,
+      "nature": "bully",
+      "retreat": 2,
+      "moves": []
+    },
+    "froakie": {
+      "xp": 4 * 100,
+      "nature": "gentle",
+      "retreat": 2,
+      "moves": []
+    },
+    "riolu": {
+      "xp": 4 * 100,
+      "nature": "nauty",
+      "retreat": 2,
+      "moves": []
+    },
 
-//localStorage.removeItem("pokemons-meta")
-if (!localStorage.getItem("pokemons-meta"))
-    __setDefaultPokeMeta()
+  }
+  localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
+}
+//if (!localStorage.getItem("pokemons-meta"))
+//  __setDefaultPokeMeta()
 
 
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
@@ -41,112 +40,119 @@ const badgesDataStr = localStorage.getItem("badges-data")
 const badgesData = JSON.parse(badgesDataStr) || [0, 0, 0, 0, 0, 0, 0, 0, 0]
 const totalBadges = document.getElementById("total-badges")
 function loadTotalBadges() {
-    totalBadges.textContent = totalBadgesCount
-    localStorage.setItem("total-badges-count", totalBadgesCount)
+  totalBadges.textContent = totalBadgesCount
+  localStorage.setItem("total-badges-count", totalBadgesCount)
 }
 
 function loadActiveBadges() {
-    const badges = document.querySelectorAll(".badges-cont >.badge")
-    badges.forEach((badge, index)=> {
-        if (badgesData[index])
-            badge.classList.add("active")
-    })
+  const badges = document.querySelectorAll(".badges-cont >.badge")
+  badges.forEach((badge, index)=> {
+    if (badgesData[index])
+      badge.classList.add("active")
+  })
 }
 
 globalThis.badgeClickHandler = function badgeClickHandler( {
-    currentTarget
+  currentTarget
 }) {
-    const classList = currentTarget.classList
-    const index = currentTarget.getAttribute("data-index")
-    if (classList.contains("active")) {
-        classList.remove("active")
-        totalBadgesCount--
-        badgesData[index] = 0
-    } else {
-        classList.add("active")
-        totalBadgesCount++
-        badgesData[index] = 1
+  const classList = currentTarget.classList
+  const index = currentTarget.getAttribute("data-index")
+  if (classList.contains("active")) {
+    classList.remove("active")
+    totalBadgesCount--
+    badgesData[index] = 0
+  } else {
+    classList.add("active")
+    totalBadgesCount++
+    badgesData[index] = 1
 
-    }
-    localStorage.setItem("badges-data", JSON.stringify(badgesData))
-    loadTotalBadges()
+  }
+  localStorage.setItem("badges-data", JSON.stringify(badgesData))
+  loadTotalBadges()
 }
-
-globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler(){
-     const addPokemonForm = document.querySelector(".add-pokemon-form")
-         const addBtn = addPokemonForm.querySelector(".add-btn")
- const closeBtn = addPokemonForm.querySelector(".close-btn")
-    
-     addPokemonForm.parentNode.classList.add("active")
-     addBtn.onclick = ()=>{
-              addPokemonForm.parentNode.classList.remove("active")
-
-     }
-     closeBtn.onclick = ()=>{
-              addPokemonForm.parentNode.classList.remove("active")
-
-     }
+async function loadPokemonsDatalist() {
+  const pokemons = await db.pokemons.all();
+  const dataList = document.getElementById("pokemons-data-list");
+  dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}</option>`).join("");
 }
+globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
+  const addPokemonForm = document.querySelector(".add-pokemon-form")
+  const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name")
+  const levelInput = addPokemonForm.querySelector(".level")
+  const natureInput = addPokemonForm.querySelector(".nature")
+  const retreatInput = addPokemonForm.querySelector(".retreat")
+  const addBtn = addPokemonForm.querySelector(".add-btn")
+  const cancelBtn = addPokemonForm.querySelector(".cancel-btn")
+  addPokemonForm.parentNode.classList.add("active")
+  addBtn.onclick = ()=> {
+    const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
+    pokemonsMeta[pokemonNameInput.value] = {
+      "xp": (levelInput.value - 1) * 100,
+      "nature": natureInput.value,
+      "retreat": retreatInput.value,
+      "moves": [],
+      }
+    localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
+    addPokemonForm.parentNode.classList.remove("active")
+     loadAllPokemons()
 
-
-globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler(){
-     const addPokemonForm = document.querySelector(".add-pokemon-form")
-         const addBtn = addPokemonForm.querySelector(".add-btn")
- const closeBtn = addPokemonForm.querySelector(".close-btn")
-    
-     addPokemonForm.parentNode.classList.add("active")
-     addBtn.onclick = ()=>{
-              addPokemonForm.parentNode.classList.remove("active")
-
-     }
-     closeBtn.onclick = ()=>{
-              addPokemonForm.parentNode.classList.remove("active")
-
-     }
+  }
+  cancelBtn.onclick = ()=> {
+    addPokemonForm.parentNode.classList.remove("active")
+  }
+}
+globalThis.deletePokemon = function deletePokemon(name) {
+  const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
+  const totalPokemonsCount =  Number(localStorage.getItem("total-pokemons-count")) || 0
+  delete pokemonsMeta[name]
+  localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
+ loadAllPokemons()
 }
 
 globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
-    window.location = `poke_details.html?name=${slug}`
+  window.location = `poke_details.html?name=${slug}`
 }
-
 function loadAllPokemons() {
-    const pokemonList = document.querySelector(".pokemon-list")
-    const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
-  //  pokemonList.innerHTML = ""
-    for (const pokemon in pokemons_meta) {
-        const meta = pokemons_meta[pokemon]
-        pokemonList.innerHTML += `
-          <li class="pokemon" >
-      <div class="primary" onclick="pokemonClickHandler('${pokemon}')">
-                 <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
-        <i class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</i>
-            </div>
-      <div class="right-controle-btns-cont">
-          <button class="del-btn">Delete</button>
-      </div>
-        </li>
-        `
-    }
+  const pokemonList = document.querySelector(".pokemon-list")
+  const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
+    pokemonList.innerHTML = ""
+  for (const pokemon in pokemons_meta) {
+    const meta = pokemons_meta[pokemon]
+    pokemonList.innerHTML += `
+    <li class="pokemon" >
+    <div class="primary" onclick="pokemonClickHandler('${pokemon}')">
+    <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
+    <i class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</i>
+    </div>
+    <div class="right-controle-btns-cont">
+    <button class="del-btn" onclick="deletePokemon('${pokemon}')">Delete</button>
+    </div>
+    </li>
+    `
+  }
 }
 
 
 function loadFoodCost() {
-    const costPerLevel = 300
-    const foodCost = document.getElementById("food-cost")
-    const cost = Object.values(getPokemonsMeta()).reduce((acc, meta) => {
-        return acc + ((meta.xp / 100) * costPerLevel)
-    }, 0)
-    foodCost.textContent = cost
-}   
+  const costPerLevel = 300
+  const foodCost = document.getElementById("food-cost")
+  const cost = Object.values(getPokemonsMeta()).reduce((acc, meta) => {
+    return acc + ((meta.xp / 100) * costPerLevel)
+  }, 0)
+  foodCost.textContent = cost
+}
 
 function loadAll() {
-    loadTotalBadges()
-    loadActiveBadges()
-    loadAllPokemons()
-    loadFoodCost()
+  loadTotalBadges()
+  loadActiveBadges()
+  loadAllPokemons()
+  loadFoodCost()
+  loadPokemonsDatalist()
 }
 document.body.onload = loadAll
-
-//window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
+}catch (e){
+  console.log(e)
+}
+//window.location = "http://localhost:8888/battle.html?you=bulbasaur&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
 //window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=charizard-mega-x&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
-//window.location = "http://localhost:8888/battle.html?you=lucario&enemy=hitmonchan&xp=3600&retreat=6&nature=adamant&moves=karate-chop,vacuum-wave,swords-dance,mega-punch,fire-punch"
+//window.location = "http://localhost:8888/battle.html?you=lucario&enemy=hitmonchan&xp=3600&retreat=6&nature=adamant&moves=karate-chop,vacuum-wave,swords-dance,mega-punch,fire-punch")

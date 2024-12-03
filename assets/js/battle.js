@@ -3,7 +3,7 @@ import { BattleField } from "./utils/battle.js"
 import { applyStatChanges } from "./utils/stats.js"
 import { calculateDamage } from "./utils/damage.js"
 import { getEffects } from "./utils/effects.js"
-import { canDodge, calculateWinXP } from "./utils/battle.js"
+import { calculateWinXP } from "./utils/battle.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
 
@@ -37,20 +37,44 @@ function addBattleStateListeners(pokemon, playerTag) {
 }
 
 async function handleWin(winnerTag, looserTag) {
+
+
     const winner = pokemonMap[winnerTag]
     const looser = pokemonMap[looserTag]
+
     const xp = await calculateWinXP(winner , looser)
-    
+ 
     const meta = getPokemonsMeta(pokemon.name)
     meta.xp += xp
     setPokemonMeta(pokemon.name, meta)
-    
+     
+    if (winnerTag === "you")
+     showChoosePokemon()
+     
     showPopupMsg("Winner! +" + xp, winnerTag, () => {
-        window.location = `poke_details.html?name=${pokemon.name}`
+        //window.location = `poke_details.html?name=${pokemon.name}`
     })
 }
+function showChoosePokemon(){
+     const choosePokemonCont = document.querySelector(".choose-pokemon-cont")
+     choosePokemonCont.parentNode.classList.add(active)
+}
+ function loadChoosePokemon(){
+  const choosePokemonCont = document.querySelector(".choose-pokemon-cont")
+   const pokemonsMeta =  getPokemonsMeta()
+   choosePokemonCont.innerHTML = ""
+   for (const pokemon in pokemonsMeta){
+      const meta = pokemonsMeta[pokemon] 
+      const isFainted = false   
+    choosePokemonCont.innerHTML += `
+            <button class="pokemon" ${isFainted ? "disabled" : ""}>
+                <strong class="name">${pokemon}</strong>
+                <strong class="level">${meta.level}lvl</strong>
+            </button> 
+    `
+   }
 
-
+ }
 async function loadGlobal() {
     globalThis.NothingMove = await Move.make("$nothing")
     globalThis.DodgeMove = await Move.make("$dodge")
@@ -97,7 +121,7 @@ nothingBtn.onclick = ()=>{
  }
 }
 
-function showPopupMsg(msg,playerTag, cb){
+function showPopupMsg(msg,playerTag, cb = (() => null)){
     const popupMsgCont = document.getElementById("popup-msg-cont")
     popupMsgCont.classList.add("active")
     popupMsgCont.querySelector(".msg").textContent = msg
@@ -115,9 +139,20 @@ function showPopupMsg(msg,playerTag, cb){
 
 function setEffects(effects, playerTag) {
   const typeMap = {
-      "burn": "fire",
-      "poison": "poison",
-  }
+    "burn": "fire",
+    "poison": "poison",
+    "paralysis": "electric",
+    "freeze": "ice",
+    "sleep": "psychic",
+    "confusion": "psychic",
+    "curse": "ghost",
+    "flinch": "dark",
+    "infatuation": "fairy",
+    "trap": "ground", // e.g., moves like Sand Tomb
+    "leech": "grass", // e.g., Leech Seed
+    "drowsy": "psychic", // e.g., Yawn
+};
+
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   effectsDataColumn.innerHTML = ""
   effects.forEach(effect => {
@@ -272,10 +307,10 @@ async function battle(moveNames) {
     const move1 = await Move.make(moveName)
     const move2 = await Move.make(enemyMoveName)
     
-    await battleField.turn([
-        [pokemon, move1],
-        [enemyPokemon, move2],
-    ])
+    // await battleField.turn([
+//         [pokemon, move1],
+//         [enemyPokemon, move2],
+//     ])
     
     //setCurrentRetreat(pokemon.state.retreat, "you")
     //setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
@@ -334,7 +369,7 @@ function loadEnemyHealth() {
 
 async function loadAll() {
     await loadGlobal()
-    
+
     loadMoves()
     loadOponentMoves()
     
@@ -343,7 +378,7 @@ async function loadAll() {
     
     loadHealth()
     loadEnemyHealth()
-    
+    loadChoosePokemon() 
     addBattleStateListeners(pokemon, "you")
     addBattleStateListeners(enemyPokemon, "enemy")
 }

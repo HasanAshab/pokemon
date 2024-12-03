@@ -26,7 +26,46 @@ h1 {
     flex-grow: 1;
     text-align: center;
 }
+.stats-header{
+  width: calc(100vw - 40px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  
+}
+.stats-header > .health-progress-bar {
+    border: 1px solid black;
+    width: 160px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.stats-header > .health-progress-bar .inner {
+    width: 100%;
+    height: 100%;
+    background-color: limegreen;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: width .3s;
+}
+.stats-header > .health-progress-bar .health-data {
+    color: black;
+    font-weight: bold;
+    z-index: 1;
+}
+.stats-header > .pokemon-cp {
+  font-weight: bold;
+  color: orangered;
+  font-size: large;
+}
+.pokemon-cp::after {
+  content: attr(data-value);
 
+}
 /* Stats Section */
 .stats {
     display: flex;

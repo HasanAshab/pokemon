@@ -1,77 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex</title>
-      <link rel="stylesheet" href="./assets/css/global.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex</title>
+  <link rel="stylesheet" href="./assets/css/global.css">
   <link rel="stylesheet" href="./assets/css/index.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            Pokedex
-        </div>
-
-        <!-- Info -->
-        <div class="info">
-            <p>
-                Food Cost: <span id="food-cost">0</span>$
-            </p>
-            <p>
-                Total Badges: <span id="total-badges">0</span> / 9
-            </p>
-            <div class="badges-cont">
-                <div data-index="0" onclick="badgeClickHandler(event)" class="badge fire">
-                    Fire
-                </div>
-                <div data-index="1" onclick="badgeClickHandler(event)" class="badge water">
-                    Water
-                </div>
-                <div data-index="2" onclick="badgeClickHandler(event)" class="badge grass">
-                    Grass
-                </div>
-                <div data-index="3" onclick="badgeClickHandler(event)" class="badge steel">
-                    Steel
-                </div>
-                <div data-index="4" onclick="badgeClickHandler(event)" class="badge fighting">
-                    Fighting
-                </div>
-                <div data-index="5" onclick="badgeClickHandler(event)" class="badge psy">
-                    PSY
-                </div>
-                <div data-index="6" onclick="badgeClickHandler(event)" class="badge dragon">
-                    Dragon
-                </div>
-                <div data-index="7" onclick="badgeClickHandler(event)" class="badge dark">
-                    Dark
-                </div>
-                <div data-index="8" onclick="badgeClickHandler(event)" class="badge electric">
-                    Electric
-                </div>
-
-            </div>
-        </div>
-    <div class="blur-bg ">
-        <div class="add-pokemon-form">
-            <input type="text"/>
-            <button class="add-btn">Add</button>
-             <button class="close-btn">Close</button>
-        </div>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      Pokedex
     </div>
-        <!-- Pokémon List -->
-        <div class="pokemons">
-            <div class="pokemons-header">
-              <h3 class="title">Pokemons</h3>
-              <button class="add-poke-btn" onclick="addPokeBtnClickHandler()">Add Pokemon</button>
-            </div>
-            <ul class="pokemon-list">
 
-        
-            </ul>
+    <!-- Info -->
+    <div class="info">
+      <p>
+        Food Cost: <span id="food-cost">0</span>$
+      </p>
+      <p>
+        Total Badges: <span id="total-badges">0</span> / 9
+      </p>
+      <div class="badges-cont">
+        <div data-index="0" onclick="badgeClickHandler(event)" class="badge fire">
+          Fire
         </div>
+        <div data-index="1" onclick="badgeClickHandler(event)" class="badge water">
+          Water
+        </div>
+        <div data-index="2" onclick="badgeClickHandler(event)" class="badge grass">
+          Grass
+        </div>
+        <div data-index="3" onclick="badgeClickHandler(event)" class="badge steel">
+          Steel
+        </div>
+        <div data-index="4" onclick="badgeClickHandler(event)" class="badge fighting">
+          Fighting
+        </div>
+        <div data-index="5" onclick="badgeClickHandler(event)" class="badge psy">
+          PSY
+        </div>
+        <div data-index="6" onclick="badgeClickHandler(event)" class="badge dragon">
+          Dragon
+        </div>
+        <div data-index="7" onclick="badgeClickHandler(event)" class="badge dark">
+          Dark
+        </div>
+        <div data-index="8" onclick="badgeClickHandler(event)" class="badge electric">
+          Electric
+        </div>
+
+      </div>
     </div>
+    <div class="blur-bg">
+      <div class="add-pokemon-form">
+        <h2>Pokemon Form</h2>
+        <label for="pokemon-name">Pokemon Name:</label>
+        <input list="pokemons-data-list" type="text" class="pokemon-name" name="pokemon-name" placeholder="Enter Pokemon name">
+        <datalist id="pokemons-data-list"></datalist>
+        <label for="level">Level:</label>
+        <input type="number" value="1" class="level" name="level" placeholder="Enter Level value">
+        <label for="nature">Nature:</label>
+        <input type="text" value="calm" class="nature" name="nature" placeholder="Enter nature">
+
+        <label for="retreat">Retreat:</label>
+        <input type="number"  class="retreat" name="retreat" placeholder="Enter Retreat value">
+
+        <div class="form-buttons">
+          <button class="add-btn">Add</button>
+          <button class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Pokémon List -->
+    <div class="pokemons">
+      <div class="pokemons-header">
+        <h3 class="title">Pokemons</h3>
+        <button class="add-poke-btn" onclick="addPokeBtnClickHandler()">Add Pokemon</button>
+      </div>
+      <ul class="pokemon-list">
+
+
+      </ul>
+    </div>
+  </div>
 </body>
 <script src="./assets/js/index.js" type="module"></script>
 <script src="./assets/js/app.js" type="module"></script>

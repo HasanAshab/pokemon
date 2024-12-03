@@ -280,3 +280,31 @@ border: 5px solid gold;
     flex-wrap: wrap;
     
 }
+
+.choose-pokemon-cont{
+   width: 90vw; 
+   display: flex;
+   flex-direction: column;
+   background-color: white;
+}
+.choose-pokemon-cont > .pokemon{
+width: 100%;
+padding: 8px 5px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border: none;
+background-color: white;
+}
+.choose-pokemon-cont > .pokemon:active{
+ filter: brightness(90%);
+}
+.choose-pokemon-cont > .pokemon:disabled{
+ filter: brightness(30%);
+}
+.choose-pokemon-cont > .pokemon > .level{
+ background-color: royalblue;
+ color: white;
+ padding: 3px;
+ border-radius: 3px;
+}

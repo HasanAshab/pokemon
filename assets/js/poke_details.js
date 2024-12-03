@@ -6,16 +6,49 @@ import db from "./utils/db.js"
 
 const name = getParam("name")
 
+function setTotalHealth(hp) {
+  const healthProgressBar = document.querySelector(".health-progress-bar")
+  healthProgressBar.setAttribute("data-total-hp", hp)
+  healthProgressBar.setAttribute("data-current-hp", hp)
+  healthProgressBar.querySelector(".inner").style.width = '100%'
+  healthProgressBar.querySelector(".current-hp").textContent = hp
+  healthProgressBar.querySelector(".total-hp").textContent = hp
 
-function setStat(name, value) {
-  const stat = document.querySelector(`.stats .stat.${name}`)
+}
+function setCurrentHealth(hp) {
+  const healthProgressBar = document.querySelector(".health-progress-bar")
+  const totalHp = Number(healthProgressBar.getAttribute("data-total-hp"))
+  healthProgressBar.setAttribute("data-current-hp", hp)
+  healthProgressBar.querySelector(".current-hp").textContent = hp
+  const progress = (hp / totalHp) * 100
+  healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
+}
+
+function setStat(_name, value) {
+  const stat = document.querySelector(`.stats .stat.${_name}`)
+   const updatableMetaList = ["retreat","xp","nature"]
+
   stat.setAttribute("data-value", value)
+  if (_name === "hp")
+    setTotalHealth(value)
+  else if (updatableMetaList.includes(_name)){
+    //_name is local and "name" is global
+     const meta = getPokemonsMeta(name) 
+     meta[_name] = value
+    setPokemonMeta(name,meta)
+  }
 }
 
 globalThis.openEnemyChooseInterface = function() {
   window.location = `enemy.html?name=${name}`
 }
-
+globalThis.healthProgressBarClickHandler = function ({currentTarget}){
+const oldCurrentHp = currentTarget.getAttribute('data-current-hp')
+const newHp = prompt("Set current HP:",oldCurrentHp)
+if (newHp && newHp !== oldCurrentHp){
+   setCurrentHealth(newHp)
+}
+}
 globalThis.statClickHandler = function( {
   currentTarget
 }) {
@@ -56,7 +89,6 @@ globalThis.closeMoveChooseInterface = function() {
     const moveChooseInterface = document.querySelector(".move-choose-interface");
     moveChooseInterface.parentNode.classList.remove("active");
 }
-
 globalThis.learnMove = async function() {
     const moveName = document.getElementById("move-search-inp").value
     const meta = getPokemonsMeta(name)
@@ -119,8 +151,12 @@ async function loadStats() {
     setStat("nature", pokemon.meta.nature)
     setStat("xp", pokemon.meta.xp)
     setStat("retreat", pokemon.meta.retreat)
+  
     for (const stat in pokemon.data.stats) {
       setStat(stat, pokemon.data.stats[stat])
+      if (stat === "hp"){
+          setTotalHealth(pokemon.data.stats[stat])
+      }
     }
 }
 async function loadMoves() {
