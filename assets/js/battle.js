@@ -15,10 +15,16 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
 }
 
 
-function addBattleStateListeners(pokemon, playerTag) {
-    pokemon.state.addListener("onHealthChange", state => {
+function setBattleStateChangeListener(playerTag) {
+    const pokemon = pokemonMap[playerTag]
+
+    battleField.state(pokemon).onChange(state => {
         const hp = state.statOf("hp")
+        setCurrentRetreat(state.retreat, playerTag)
+        setStateChanges(state._statChanges, playerTag)
+        setEffects(state._effects, playerTag)
         setCurrentHealth(hp, playerTag)
+        
         if (hp === 0) {
             const winnerTag = playerTag === "you"
                 ? "enemy"
@@ -26,14 +32,7 @@ function addBattleStateListeners(pokemon, playerTag) {
             handleWin(winnerTag, playerTag)
         }
     })
-
-    pokemon.state.addListener("onEffectAdded", state => {
-        setEffects(state._effects, playerTag)
-    })
     
-    pokemon.state.addListener("onStatChange", state => {
-        setStateChanges(state._statChanges, playerTag)
-    })
 }
 
 async function handleWin(winnerTag, looserTag) {
@@ -96,6 +95,9 @@ async function loadGlobal() {
     }
 
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
+    
+    setBattleStateChangeListener("you")
+    setBattleStateChangeListener("enemy")
 }
 
 function showBattlePromptPopup(msg, playerTag) {
@@ -307,13 +309,10 @@ async function battle(moveNames) {
     const move1 = await Move.make(moveName)
     const move2 = await Move.make(enemyMoveName)
     
-    // await battleField.turn([
-//         [pokemon, move1],
-//         [enemyPokemon, move2],
-//     ])
-    
-    //setCurrentRetreat(pokemon.state.retreat, "you")
-    //setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
+     await battleField.turn([
+        [pokemon, move1],
+        [enemyPokemon, move2],
+    ])
 }
 
 
@@ -346,24 +345,24 @@ async function loadOponentMoves() {
 }
 
 function loadRetreat() {
-    const retreat = pokemon.state.retreat
+    const retreat = battleField.state(pokemon).retreat
     setRetreatPerWave(retreat, "you")
     setCurrentRetreat(retreat, "you")
 }
 
 function loadEnemyRetreat() {
-    const retreat = enemyPokemon.state.retreat
+    const retreat = battleField.state(enemyPokemon).retreat
     setRetreatPerWave(retreat, "enemy")
     setCurrentRetreat(retreat, "enemy")
 }
 
 function loadHealth() {
-    const hp = pokemon.state.statOf("hp")
+    const hp = battleField.state(pokemon).statOf("hp")
     setTotalHealth(hp, "you")
 }
 
 function loadEnemyHealth() {
-    const hp = enemyPokemon.state.statOf("hp")
+    const hp = battleField.state(enemyPokemon).statOf("hp")
     setTotalHealth(hp, "enemy")
 }
 
@@ -378,7 +377,7 @@ async function loadAll() {
     
     loadHealth()
     loadEnemyHealth()
-    loadChoosePokemon() 
+    //loadChoosePokemon() 
     addBattleStateListeners(pokemon, "you")
     addBattleStateListeners(enemyPokemon, "enemy")
 }

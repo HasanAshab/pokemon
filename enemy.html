@@ -14,33 +14,10 @@
     <input type="number" id="level-inp" value="1" onchange="showStats()">
     <label for="retreat-inp">Retreat</label>
     <input type="number" id="retreat-inp" value="2">
-    <label for="nature-inp"></label>
-    <select name="nature-inp" id="nature-inp" onchange="showStats()" autocomplete="on">
-        <option value="adamant">adamant</option>
-        <option value="bashful">bashful</option>
-        <option value="bold">bold</option>
-        <option value="brave">brave</option>
-        <option value="calm">calm</option>
-        <option value="careful">careful</option>
-        <option value="docile">docile</option>
-        <option value="gentle">gentle</option>
-        <option value="hasty">hasty</option>
-        <option value="impish">impish</option>
-        <option value="jolly">jolly</option>
-        <option value="lax">lax</option>
-        <option value="lonely">lonely</option>
-        <option value="mild">mild</option>
-        <option value="modest">modest</option>
-        <option value="naive">naive</option>
-        <option value="naughty">naughty</option>
-        <option value="quiet">quiet</option>
-        <option value="quirky">quirky</option>
-        <option value="rash">rash</option>
-        <option value="relaxed">relaxed</option>
-        <option value="sassy">sassy</option>
-        <option value="serious">serious</option>
-        <option value="timid">timid</option>
-    </select>
+    <label for="nature-inp">Nature</label>
+    <input list="natures-data-list" value="calm"  name="nature-inp" type="text" onblur="showStats()" id="nature-inp">
+    <datalist id="natures-data-list"></datalist>
+  
     <pre id="enemy-stats"></pre>
     <br>
     <h3>Moves</h3>

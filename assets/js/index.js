@@ -75,6 +75,14 @@ async function loadPokemonsDatalist() {
   const dataList = document.getElementById("pokemons-data-list");
   dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}</option>`).join("");
 }
+async function loadNaturesDataList(){
+  const natures = await db.natures.all()
+  const dataList = document.getElementById("natures-data-list");
+  for (const nature in natures ){
+  const data = natures[nature]
+  dataList.innerHTML +=  `<option value="${nature}">${data.name} | ${data.description}</option>`
+}
+}
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   const addPokemonForm = document.querySelector(".add-pokemon-form")
   const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name")
@@ -146,8 +154,9 @@ function loadAll() {
   loadTotalBadges()
   loadActiveBadges()
   loadAllPokemons()
-  loadFoodCost()
+  //loadFoodCost()
   loadPokemonsDatalist()
+  loadNaturesDataList()
 }
 document.body.onload = loadAll
 }catch (e){

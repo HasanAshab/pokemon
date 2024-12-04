@@ -8,7 +8,14 @@ async function loadPokemonsDatalist() {
     dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}(${pokemon.type})</option>`).join("");
 
 }
-
+async function loadNaturesDataList(){
+  const natures = await db.natures.all()
+  const dataList = document.getElementById("natures-data-list");
+  for (const nature in natures ){
+  const data = natures[nature]
+  dataList.innerHTML +=  `<option value="${nature}">${data.name} | ${data.description}</option>`
+}
+}
 async function loadMovesDatalist() {
     const moves = await db.moves.all();
     const moveDataList = document.getElementById("moves-data-list");
@@ -19,6 +26,7 @@ async function loadMovesDatalist() {
 
 window.onload = () => {
     loadPokemonsDatalist()
+    loadNaturesDataList()
     loadMovesDatalist()
 }
 
@@ -29,6 +37,7 @@ const natureInp = document.getElementById("nature-inp");
 const enemyStats = document.getElementById("enemy-stats");
 
 globalThis.showStats = async function() {
+
     const level = levelInp.value;
     const nature = natureInp.value;
     const enemyPokemon = await Pokemon.make(enemy.value, { xp: level * 100, nature });

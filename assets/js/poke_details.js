@@ -5,7 +5,14 @@ import db from "./utils/db.js"
 
 
 const name = getParam("name")
-
+async function loadNaturesDataList(){
+  const natures = await db.natures.all()
+  const dataList = document.getElementById("natures-data-list");
+  for (const nature in natures ){
+  const data = natures[nature]
+  dataList.innerHTML +=  `<option value="${nature}">${data.name} | ${data.description}</option>`
+}
+}
 function setTotalHealth(hp) {
   const healthProgressBar = document.querySelector(".health-progress-bar")
   healthProgressBar.setAttribute("data-total-hp", hp)
@@ -36,7 +43,9 @@ function setStat(_name, value) {
      const meta = getPokemonsMeta(name) 
      meta[_name] = value
     setPokemonMeta(name,meta)
+    
   }
+  
 }
 
 globalThis.openEnemyChooseInterface = function() {
@@ -61,13 +70,18 @@ globalThis.statClickHandler = function( {
   statUpdateForm.parentNode.classList.add("active")
   statNameElm.textContent = currentTarget.querySelector("strong").textContent
   statValueInp.value = currentTarget.getAttribute("data-value")
-
+  if (currentTarget.classList.contains("nature"))
+   statValueInp.setAttribute('list',"natures-data-list")
+ 
   saveBtn.onclick = ()=> {
     setStat(currentTarget.classList[1], statValueInp.value)
   statUpdateForm.parentNode.classList.remove("active")
+   statValueInp.removeAttribute('list')
   }
   cancelBtn.onclick = ()=>{
       statUpdateForm.parentNode.classList.remove("active")
+   statValueInp.removeAttribute('list')
+
   }
 }
 
@@ -208,9 +222,11 @@ async function loadMoves() {
 
 window.onload = () => {
     loadName()
-    
+
     setTimeout(() => {
         loadMoves()
+                    loadNaturesDataList()
+
         loadStats()
     }, 1000)
 

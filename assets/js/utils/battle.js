@@ -104,24 +104,21 @@ export class BattleField {
 class BattleState {
     constructor(pokemon) {
         this.pokemon = pokemon;
-        this.listeners = {
-            onHealthChange: [],
-            onEffectAdded: [],
-            onEffectRemoved: [],
-            onStatChange: []
-        };
         this.refresh();
+        // Return a Proxy-wrapped instance
+        return this._createProxy();
     }
 
     refresh() {
+        this._onChange = () => null
         this._effects = [];
         this._statChanges = {};
-        this._stats = { ...this.this.pokemon1.data.stats };
-        this.retreat = this.this.pokemon1.meta.retreat
+        this._stats = { ...this.pokemon.data.stats };
+        this.retreat = this.pokemon.meta.retreat;
     }
-    
+
     addWaveRetreat() {
-        this.retreat += this.this.pokemon1.meta.retreat
+        this.retreat += this.pokemon.meta.retreat;
     }
 
     stats() {
@@ -146,38 +143,31 @@ class BattleState {
     increaseHealth(amount) {
         const maxHealth = this.statOf("hp"); // Use calculated HP stat
         this._stats.hp = Math.min(this._stats.hp + amount, maxHealth);
-        this._trigger("onHealthChange");
     }
 
     decreaseHealth(amount) {
         this._stats.hp = Math.max(this._stats.hp - amount, 0);
-        this._trigger("onHealthChange");
     }
 
     // Effect Management
     addEffect(effect) {
-        if (!this._effects.includes(effect)) {
-            this._effects.push(effect);
-            this._trigger("onEffectAdded");
-        }
+        if (!this._effects.includes(effect)) this._effects.push(effect);
     }
 
     removeEffect(effect) {
         const index = this._effects.indexOf(effect);
         if (index > -1) {
             this._effects.splice(index, 1);
-            this._trigger("onEffectRemoved");
         }
     }
-    
+
     decreaseHealthForEffects() {
         let totalDamage = 0;
 
         this._effects.forEach(effect => {
             if (effect === "burn") {
                 totalDamage += calculateBurnEffect(this.pokemon);
-            }
-            else if (effect === "poison") {
+            } else if (effect === "poison") {
                 totalDamage += calculatePoisonEffect(this.pokemon);
             }
         });
@@ -186,7 +176,7 @@ class BattleState {
             this.decreaseHealth(totalDamage);
         }
     }
-    
+
     // Stat Management
     applyStatChange(stat, stages) {
         if (!this._statChanges[stat]) {
@@ -197,37 +187,10 @@ class BattleState {
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
         const oldStage = this._statChanges[stat];
         this._statChanges[stat] = newStage;
-
-        if (newStage !== oldStage) {
-            this._trigger("onStatChange");
-        }
     }
 
     resetStatChanges() {
         this._statChanges = {};
-        this._trigger("onStatChange");
-    }
-
-    // Listeners
-    addListener(event, callback) {
-        if (this.listeners[event]) {
-            this.listeners[event].push(callback);
-        }
-    }
-
-    removeListener(event, callback) {
-        if (this.listeners[event]) {
-            const index = this.listeners[event].indexOf(callback);
-            if (index > -1) {
-                this.listeners[event].splice(index, 1);
-            }
-        }
-    }
-
-    _trigger(event) {
-        if (this.listeners[event]) {
-            this.listeners[event].forEach(callback => callback(this));
-        }
     }
 
     _statStageMultiplier(stage) {
@@ -238,6 +201,28 @@ class BattleState {
         } else {
             return 1; // Neutral stage
         }
+    }
+
+    // Event Management
+    onChange(listener) {
+        this._onChange = listener;
+    }
+
+    _notifyChange() {
+        return this._onChange(this)
+    }
+
+    _createProxy() {
+        return new Proxy(this, {
+            set: (target, key, value) => {
+                const oldValue = target[key];
+                if (oldValue !== value) {
+                    target[key] = value;
+                    target._notifyChange();
+                }
+                return true;
+            },
+        });
     }
 }
 

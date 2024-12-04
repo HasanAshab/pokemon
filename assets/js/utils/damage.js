@@ -17,17 +17,14 @@ class DamageManager {
     
 }
 
-class DamageMeta {
-    _keys = ["isCritical", "effectiveness", "randomModifier", "hits"]
+class Hit {
+    _keys = ["isCritical", "effectiveness", "randomModifier", "damageCount"]
     isCritical = false
     effectiveness = 1
     randomModifier = 0.85
-    hits = {
-        count: 1,
-        damages: []
-    }
-
-    set(data) {
+    damageCount = 0
+    
+    constructor(data) {
         this._keys.forEach(key => {
             if (key in data)
                 this[key] = data[key]
@@ -36,9 +33,12 @@ class DamageMeta {
 }
 
 class Damage {
-    constructor(totalDamage = 0, meta = new DamageMeta()) {
-        this.totalDamage = totalDamage
-        this.meta = new DamageMeta() 
+    constructor(hits = []) {
+        this.hits = hits
+    }
+    
+    get totalDamage() {
+
     }
 }
 
@@ -55,7 +55,13 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     return (((((2 * pokemon1.level) / 5) + 2) * move.power * ((attackStat * 0.6) / defenseStat)) / 10) + 2;
 }
 
-export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
+export async function calculateDamage() {
+    return {
+        1: {totalDamage:99.99},
+        2: {totalDamage:99.99}
+    }
+}
+export async function calculateDamageNew(pokemon1, move1, pokemon2, move2) {
     const damage1 = new Damage()
     const damage2 = new Damage()
 
@@ -70,14 +76,13 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
             const randomModifier = Math.random() * 0.15 + 0.85;
             const effectiveness = await pokemon2.effectiveness(move1.type);
             totalDamage = totalDamage * effectiveness * stab * criticalMultiplier * randomModifier;
-            damage1.meta.set({
+            const hit = new Hit({
                 isCritical,
                 effectiveness,
                 randomModifier
             })
+            damage1.hits.push(hit)
         }
-        damages1.hits = 1;
-        damages[1].totalDamage = fixFloat(totalDamage);
         return damages;
     }
 
