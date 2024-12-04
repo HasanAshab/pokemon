@@ -91,9 +91,21 @@ h1 {
     background-color: white;
     border-radius: 4px;
     width: 8rem;
+    position: relative;
 }
 .stat::after{
   content: attr(data-value);
+}
+.stat::before{
+  content: attr(data-token-used);
+  position: absolute; 
+  right: 1px;
+  top: 2px;
+  color: white;
+  background-color: gold;
+  padding: 2px 4px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 .stat:active {
  background-color: gray;
