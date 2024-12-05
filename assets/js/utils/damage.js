@@ -172,8 +172,8 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
         )
     }
     
-    const hit1 = new Hit(hitData1)
-    damage2.hits.push(hit1)
+    const hit2 = new Hit(hitData2)
+    damage2.hits.push(hit2)
 
     return damages
 }
