@@ -69,10 +69,10 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   addBtn.onclick = ()=> {
     const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
     pokemonsMeta[pokemonNameInput.value] = {
-      "hp":0,
       "xp": (levelInput.value - 1) * 100,
       "nature": natureInput.value,
       "retreat": retreatInput.value,
+      "stats": {},
       "token_used":{
           "hp":0,
           "speed":0,
@@ -82,11 +82,10 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
           "special-defense":0
       },
       "moves": []
-      }
+    }
     localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
     addPokemonForm.parentNode.classList.remove("active")
      loadAllPokemons()
-
   }
   cancelBtn.onclick = ()=> {
     addPokemonForm.parentNode.classList.remove("active")

@@ -28,11 +28,6 @@ function setCurrentHealth(hp) {
    const healthProgressBar = document.querySelector(".health-progress-bar")
    const totalHp = Number(healthProgressBar.getAttribute("data-total-hp"))
    const progress = (hp / totalHp) * 100
-   const meta = getPokemonsMeta(name)
-   hp = Math.min(hp,totalHp)
-   meta.hp = hp
-   //console.log(meta)
-   setPokemonMeta(name,meta)
    healthProgressBar.setAttribute("data-current-hp", hp)
    healthProgressBar.querySelector(".current-hp").textContent = hp
    healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
@@ -66,8 +61,11 @@ globalThis.openEnemyChooseInterface = function() {
 }
 globalThis.healthProgressBarClickHandler = function ({currentTarget}){
 const oldCurrentHp = currentTarget.getAttribute('data-current-hp')
-const newHp = prompt("Set current HP:",oldCurrentHp)
+let newHp = prompt("Set current HP:",oldCurrentHp)
 if (newHp && newHp !== oldCurrentHp){
+   const meta = getPokemonsMeta(name)
+   meta.stats.hp = newHp
+   setPokemonMeta(name,meta)
    setCurrentHealth(newHp)
 }
 }
@@ -186,7 +184,7 @@ async function loadStats() {
     const pokemon = await Pokemon.make(name, meta)
      // console.log(meta)
 
-    setCurrentHealth(meta.hp)
+    setCurrentHealth(meta.stats.hp ?? pokemon.statOf("hp"))
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)
     setStat("xp", pokemon.meta.xp)
