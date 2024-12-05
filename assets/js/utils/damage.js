@@ -5,9 +5,45 @@ const STAB_MODIFIER = 1.3;
 const CRIT_MULTIPLIER = 1.5;
 const BASE_CRIT_CHANCE = 1 / 24;
 
+class DamageManager {
+    constructor(damages) {
+        this._damages = damages
+    }
+    
+    on(pokemon) {
+        return this._damages.get(pokemon)
+    }
+    
+    
+}
+
+class Hit {
+    _keys = ["isCritical", "effectiveness", "randomModifier", "damageCount"]
+    isCritical = false
+    effectiveness = 1
+    randomModifier = 0.85
+    damageCount = 0
+    
+    constructor(data) {
+        this._keys.forEach(key => {
+            if (key in data)
+                this[key] = data[key]
+        })
+    }
+}
+
+class Damage {
+    constructor(hits = []) {
+        this.hits = hits
+    }
+    
+    get totalDamage() {
+
+    }
+}
 
 function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
-    if (move.power === null) {
+    if (move.isNotMove || move.power === null) {
         return null
     }
     const isSpecial = move.damage_class === "special";
@@ -19,31 +55,35 @@ function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     return (((((2 * pokemon1.level) / 5) + 2) * move.power * ((attackStat * 0.6) / defenseStat)) / 10) + 2;
 }
 
-export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = null) {
-    const result = {
-        1: {
-            totalDamage: 0,
-            hits: 0
-        },
-        2: {
-            totalDamage: 0,
-            hits: 0
-        },
+export async function calculateDamage() {
+    return {
+        1: {totalDamage:99.99},
+        2: {totalDamage:99.99}
     }
-    if (!move2) {
+}
+export async function calculateDamageNew(pokemon1, move1, pokemon2, move2) {
+    const damage1 = new Damage()
+    const damage2 = new Damage()
+
+    if (move2.isNotMove) {
         // No target or second move: calculate base damage only
         let totalDamage = calculateBaseDamage(pokemon1, move1, pokemon2);
         const stab = pokemon1.isTypeOf(move1.type) ? STAB_MODIFIER : 1;
         if(pokemon2) {
             const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
-            const criticalMultiplier = Math.random() < critChance ? CRIT_MULTIPLIER : 1;
+            const isCritical = Math.random() < critChance
+            const criticalMultiplier = isCritical ? CRIT_MULTIPLIER : 1;
             const randomModifier = Math.random() * 0.15 + 0.85;
             const effectiveness = await pokemon2.effectiveness(move1.type);
             totalDamage = totalDamage * effectiveness * stab * criticalMultiplier * randomModifier;
+            const hit = new Hit({
+                isCritical,
+                effectiveness,
+                randomModifier
+            })
+            damage1.hits.push(hit)
         }
-        result[1].hits = 1;
-        result[1].totalDamage = fixFloat(totalDamage);
-        return result;
+        return damages;
     }
 
     // Calculate type effectiveness for pokemon1's move
@@ -63,9 +103,9 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
 
     if (!move2) {
         // If only pokemon1 attacks, return its damage
-        result[1].totalDamage = finalDamage1;
-        result[1].hits = 1;
-        return result
+        damages[1].totalDamage = finalDamage1;
+        damages[1].hits = 1;
+        return damages
     }
 
     // Calculate type effectiveness for pokemon2's move
@@ -86,18 +126,18 @@ export async function calculateDamage(pokemon1, move1, pokemon2 = null, move2 = 
     const remainingDamage = fixFloat(remDam1 - remDam2)
 
     if (remainingDamage > 0) {
-        result[1].totalDamage = remainingDamage
-        result[2].totalDamage = 0
+        damages[1].totalDamage = remainingDamage
+        damages[2].totalDamage = 0
     }
     else {
-        result[1].totalDamage = 0
-        result[2].totalDamage = remainingDamage * -1
+        damages[1].totalDamage = 0
+        damages[2].totalDamage = remainingDamage * -1
     }
 
-    result[1].hits = 1
-    result[2].hits = 1
+    damages[1].hits = 1
+    damages[2].hits = 1
 
-    return result
+    return damages
 }
 
 function getRandomHits(move) {

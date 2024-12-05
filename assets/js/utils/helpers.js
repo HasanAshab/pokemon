@@ -21,9 +21,9 @@ export function getPokemonsMeta(name) {
 }
 
 export function setPokemonMeta(name, value) {
-    const pokemons_meta = getPokemonsMeta()
-    pokemons_meta[name] = value
-    localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
+    const pokemonsMeta = getPokemonsMeta()
+    pokemonsMeta[name] = value
+    localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta))
 }
 
 export function fixFloat(damage) {

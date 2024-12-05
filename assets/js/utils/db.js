@@ -2,6 +2,7 @@ class DB {
     constructor(dir) {
         this._dir = dir
         this.types = new SingleFileTable(dir, "types", { shouldCache: true })
+        this.natures = new SingleFileTable(dir, "natures", { shouldCache: true })
         this.moves = new MultipleFileTable(dir, "moves")
         this.pokemons = new MultipleFileTable(dir, "pokemons")
     }
