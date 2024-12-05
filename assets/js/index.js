@@ -1,40 +1,6 @@
 import db from "./utils/db.js";
 
-<<<<<<< HEAD
-function __setDefaultPokeMeta() {
-    const pokemons_meta = {
-        "charmander": {
-            "xp": 2 * 100,
-            "nature": "bully",
-            "retreat": 2,
-            "moves": []
-        },
-        "froakie": {
-            "xp": 2 * 100,
-            "nature": "gentle",
-            "retreat": 2,
-            "moves": []
-        },
-        "riolu": {
-            "xp": 2 * 100,
-            "nature": "nauty",
-            "retreat": 2,
-            "moves": []
-        },
-        "scyther": {
-            "xp": 40 * 100,
-            "nature": "nauty",
-            "retreat": 8,
-            "moves": []
-        }
-    }
-    localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
-}
 
-//localStorage.removeItem("pokemons-meta")
-if (!localStorage.getItem("pokemons-meta"))
-    __setDefaultPokeMeta()
-=======
 import {
   Pokemon
 } from "./utils/models.js";
@@ -42,7 +8,6 @@ import {
   getPokemonsMeta
 } from "./utils/helpers.js";
 try{
->>>>>>> 2708929904dccb71c214de21a8b18500d90d4331
 
 
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
@@ -177,16 +142,10 @@ function loadAll() {
   loadNaturesDataList()
 }
 document.body.onload = loadAll
-<<<<<<< HEAD
 
-//window.location = "http://localhost:8888/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
-//window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=garchomp-mega&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
-window.location = "http://localhost:8888/battle.html?you=scyther&enemy=scizor-mega&xp=3000&retreat=8&nature=naughty&moves=x-scissor,iron-head,steel-beam,harden,slash"
-=======
 }catch (e){
   console.log(e)
 }
 //window.location = "http://localhost:8888/battle.html?you=bulbasaur&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,karate-chop,crunch,razor-leaf,leer"
 //window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=charizard-mega-x&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
 //window.location = "http://localhost:8888/battle.html?you=lucario&enemy=hitmonchan&xp=3600&retreat=6&nature=adamant&moves=karate-chop,vacuum-wave,swords-dance,mega-punch,fire-punch")
->>>>>>> 2708929904dccb71c214de21a8b18500d90d4331

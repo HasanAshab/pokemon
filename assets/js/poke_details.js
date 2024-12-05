@@ -213,8 +213,8 @@ async function loadMoves() {
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
       <span>${move.display}</span>
       <div class="move-icons">
-        <span>🖼️</span>
-        <span>🖼️</span>
+        <img class="type-img" src="./assets/img/${move.type}.png"/>
+        <img class="category-img" src="./assets/img/${move.damage_class}.png"/>
       </div>
     </div>
     <div class="move-body">
