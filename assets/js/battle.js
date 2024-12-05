@@ -227,7 +227,7 @@ function loadAllMoves(movesArr, playerTag) {
   
   // re adding cards
   movesArr.forEach((move)=> {
-    const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
+     const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type}-type-color)">
     <h3>${move.display}</h3>
     <div class="icons">
@@ -239,13 +239,21 @@ function loadAllMoves(movesArr, playerTag) {
     <p>
     Category: ${move.damage_class}
     </p>
-    <p>
+    <p class="effectiveness">
+     Effectiveness: 
+    <img  src="./assets/svg/arrow-up.svg"/>
+
+    </p>
+        <p>
     ${move.damage !== null ? "Damage: " + move.damage : ""}
     </p>
     <p>
     PP: ${move.pp || "∞"}
     </p>
-    </div>
+    <small class="description">${move.description}</small>
+    </div>    
+   
+    
     ${
         move.retreat ? `<div class="retreat-cost">
         ${move.retreat}
@@ -254,6 +262,7 @@ function loadAllMoves(movesArr, playerTag) {
     </div>
     `
     moveCardsContainer.innerHTML += cardHtml
+
 
   })
 
