@@ -23,12 +23,15 @@ export async function calculateWinXP(poke1, poke2) {
 
 export class BattleField {
     constructor(pokemon1, pokemon2) {
+        pokemon1.state = new BattleState(pokemon1)
+        pokemon2.state = new BattleState(pokemon2)
+        
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
 
         this._states = new Map([
-            [pokemon1, new BattleState(pokemon1)],
-            [pokemon2, new BattleState(pokemon2)]
+            [pokemon1, pokemon1.state],
+            [pokemon2, pokemon2.state]
         ]);
     }
 
@@ -38,7 +41,7 @@ export class BattleField {
 
     async turn(senario) {
         const senarioMap = new Map(senario)
-        const damage = await calculateDamage(senarioMap)
+        const damages = await calculateDamage(senarioMap)
 
         const move1 = senarioMap.get(this.pokemon1)
         const move2 = senarioMap.get(this.pokemon2)
@@ -68,14 +71,13 @@ export class BattleField {
 
         this.state(this.pokemon1).decreaseRetreat(move1.retreat)
         this.state(this.pokemon2).decreaseRetreat(move2.retreat)
-        
-        dodged1 || this.state(this.pokemon1).decreaseHealth(damage.on(this.pokemon1))
-        dodged2 || this.state(this.pokemon2).decreaseHealth(damage.on(this.pokemon2))
 
-        if (damage.isHittee(this.pokemon1) && !dodged1) {
+        if (damages.isHittee(this.pokemon1) && !dodged1) {
+            this.state(this.pokemon1).decreaseHealth(damages.on(this.pokemon1))
             this.state(this.pokemon1).addEffects(effects1)
         }
-        if (damage.isHittee(this.pokemon2) && !dodged2) {
+        if (damages.isHittee(this.pokemon2) && !dodged2) {
+            this.state(this.pokemon2).decreaseHealth(damages.on(this.pokemon2))
             this.state(this.pokemon2).addEffects(effects2)
         }
     }

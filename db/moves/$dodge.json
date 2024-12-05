@@ -4,6 +4,6 @@
     "pp": null,
     "description": "Move quickly to avoid damage.",
     "damage_class": "none",
-    "type": "normal",
+    "type": null,
     "retreat": 0.5
 }

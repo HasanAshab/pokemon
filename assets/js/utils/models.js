@@ -60,6 +60,7 @@ export class Pokemon {
     }
 
     async effectiveness(type) {
+        if (!type) return 1
         const types = await db.types.all()
         let effectiveness = 1;
         this.data.types.forEach(tType => {
@@ -155,6 +156,7 @@ export class Move {
     }
 
     async effectiveness(type) {
+        if (!this.type) return 1
         const typeMap = await db.types.get(this.type)
         return typeMap[type] || 1
     }

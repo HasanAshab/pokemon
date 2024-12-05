@@ -4,6 +4,6 @@
     "pp": null,
     "description": "Do nothing.",
     "damage_class": "none",
-    "type": "normal",
+    "type": null,
     "retreat": 0
 }
