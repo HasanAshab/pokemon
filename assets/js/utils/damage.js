@@ -48,7 +48,7 @@ class DamageManager {
         this._damages = new Map(damages)
     }
     
-    on(pokemon) {
+    async on(pokemon) {
         const pokemon2 = this.opponentOf(pokemon)
         
         const damage1 = this._damages.get(pokemon)
