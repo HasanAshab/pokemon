@@ -58,7 +58,7 @@ class DamageManager {
         const totalDamage2 = damage2.totalDamage()
         
         const effectiveness1 = damage2.avgEffectiveness()
-        const effectiveness1 = damage1.avgEffectiveness()
+        const effectiveness2 = damage1.avgEffectiveness()
         const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
         const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
 
