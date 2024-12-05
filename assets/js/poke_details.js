@@ -206,7 +206,7 @@ async function loadMoves() {
     const pokemon = await Pokemon.make(name, meta)
     for (const moveMeta of meta.moves) {
         const move = await Move.make(moveMeta.name)
-        const damages = await calculateDamage(pokemon, move)
+        const damages = {1: {totalDamage: 0}} //await calculateDamage(pokemon, move)
         const damage = damages[1].totalDamage
         movesContainer.innerHTML += `
     <div class="move ${moveMeta.isSelected ? "selected" : ""}">

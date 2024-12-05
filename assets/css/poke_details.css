@@ -183,6 +183,9 @@ h1 {
     display: flex;
     gap: 5px;
 }
+.move-icons > img {
+    width: 22px;
+}
 
 .move .move-body{
  padding: 3px 8px;
