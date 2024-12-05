@@ -71,7 +71,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
     background: #eee;
     padding: 10px;
     border-radius: 8px;
@@ -84,28 +84,33 @@ h1 {
     align-items: center;
     flex-direction: column;
     gap: 6px;
+    width: calc(45% - 30px);
+
+
 }
 .stat {
     padding: 5px 10px;
     font-size: 1rem;
     background-color: white;
     border-radius: 4px;
-    width: 8rem;
+    width: 100%;
     position: relative;
 }
 .stat::after{
   content: attr(data-value);
 }
+
 .stat::before{
-  content: attr(data-token-used);
+  content: '+' attr(data-token-used);
   position: absolute; 
   right: 1px;
-  top: 2px;
-  color: white;
-  background-color: gold;
-  padding: 2px 4px;
-  border-radius: 5px;
+  color: gold;
   font-weight: bold;
+  display: none; 
+
+}
+.stat[data-token-used]::before{
+    display: block;
 }
 .stat:active {
  background-color: gray;

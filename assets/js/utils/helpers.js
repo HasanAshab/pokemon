@@ -21,6 +21,7 @@ export function getPokemonsMeta(name) {
 }
 
 export function setPokemonMeta(name, value) {
+   console.log(value)
     const pokemons_meta = getPokemonsMeta()
     pokemons_meta[name] = value
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))

@@ -7,32 +7,6 @@ import {
   getPokemonsMeta
 } from "./utils/helpers.js";
 try{
-function __setDefaultPokeMeta() {
-  const pokemons_meta = {
-    "charmander": {
-      "xp": 4 * 100,
-      "nature": "bully",
-      "retreat": 2,
-      "moves": []
-    },
-    "froakie": {
-      "xp": 4 * 100,
-      "nature": "gentle",
-      "retreat": 2,
-      "moves": []
-    },
-    "riolu": {
-      "xp": 4 * 100,
-      "nature": "nauty",
-      "retreat": 2,
-      "moves": []
-    },
-
-  }
-  localStorage.setItem("pokemons-meta", JSON.stringify(pokemons_meta))
-}
-//if (!localStorage.getItem("pokemons-meta"))
-//  __setDefaultPokeMeta()
 
 
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
@@ -95,10 +69,19 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   addBtn.onclick = ()=> {
     const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
     pokemonsMeta[pokemonNameInput.value] = {
+      "hp":0,
       "xp": (levelInput.value - 1) * 100,
       "nature": natureInput.value,
       "retreat": retreatInput.value,
-      "moves": [],
+      "token_used":{
+          "hp":0,
+          "speed":0,
+          "attack":0,
+          "defense":0,
+          "special-attack":0,
+          "special-defense":0
+      },
+      "moves": []
       }
     localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
     addPokemonForm.parentNode.classList.remove("active")
