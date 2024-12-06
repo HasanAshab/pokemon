@@ -14,7 +14,14 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   globalThis.isVeryClose = !isVeryClose
 }
 
-
+globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
+  const totalHp = 50 // give here total hp data
+  const currentHp = 10 //give the hp data here
+  const newHp = prompt(playerTag,currentHp)
+    if (currentHp !== newHp){
+    setCurrentHealth(Math.min(newHp,totalHp))
+    }
+}
 function setBattleStateChangeListener(playerTag) {
     const pokemon = pokemonMap[playerTag]
 
@@ -230,15 +237,13 @@ function loadAllMoves(movesArr, playerTag) {
      const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type}-type-color)">
     <h3>${move.display}</h3>
-    <div class="icons">
+    <div class="move-icons">
     <div class="icon"></div>
     <div class="icon"></div>
     </div>
     </div>
     <div class="card-body">
-    <p>
-    Category: ${move.damage_class}
-    </p>
+
     <p class="effectiveness">
      Effectiveness: 
     <img  src="./assets/svg/arrow-up.svg"/>

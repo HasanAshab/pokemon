@@ -41,10 +41,11 @@ export class BattleField {
 
     async turn(senario) {
         const senarioMap = new Map(senario)
-        const damages = await calculateDamage(senarioMap)
 
         const move1 = senarioMap.get(this.pokemon1)
         const move2 = senarioMap.get(this.pokemon2)
+
+        const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
 
         const dodged1 = this.state(this.pokemon1).canMove() && this.canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = this.state(this.pokemon2).canMove() && this.canDodge(this.pokemon2, this.pokemon1, move1)
@@ -73,11 +74,11 @@ export class BattleField {
         this.state(this.pokemon2).decreaseRetreat(move2.retreat)
 
         if (damages.isHittee(this.pokemon1) && !dodged1) {
-            this.state(this.pokemon1).decreaseHealth(damages.on(this.pokemon1))
+            this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
             this.state(this.pokemon1).addEffects(effects1)
         }
         if (damages.isHittee(this.pokemon2) && !dodged2) {
-            this.state(this.pokemon2).decreaseHealth(damages.on(this.pokemon2))
+            this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
             this.state(this.pokemon2).addEffects(effects2)
         }
     }

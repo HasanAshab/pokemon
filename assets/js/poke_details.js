@@ -1,6 +1,6 @@
 import { Pokemon, Move } from "./utils/models.js"
-import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
-import { calculateDamage } from "./utils/damage.js"
+import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta, fixFloat } from "./utils/helpers.js"
+import { calculateBaseDamage } from "./utils/damage.js"
 import db from "./utils/db.js"
 
 
@@ -115,9 +115,7 @@ globalThis.showMoveChooseInterface = async function() {
     const moves = await db.moves.all();
     moveChooseInterface.parentNode.classList.add("active");
     moveDataList.innerHTML = moves.map(move => {
-        const display = (move.charAt(0).toUpperCase() + move.slice(1))
-            .replace(/-/g, " ")
-        return`<option value="${move}">${display}</option>`
+        return`<option value="${move}">`
     }).join("")
   }
 
@@ -132,7 +130,6 @@ globalThis.learnMove = async function() {
     if (meta.moves.find(move => move.name === moveName)) {
         return
     }
-
     meta.moves.push({
         name: moveName,
         isSelected: false
@@ -199,6 +196,7 @@ async function loadStats() {
       }
     }
 }
+
 async function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
@@ -206,8 +204,7 @@ async function loadMoves() {
     const pokemon = await Pokemon.make(name, meta)
     for (const moveMeta of meta.moves) {
         const move = await Move.make(moveMeta.name)
-        const damages = {1: {totalDamage: 0}} //await calculateDamage(pokemon, move)
-        const damage = damages[1].totalDamage
+        const damage = fixFloat(calculateBaseDamage(pokemon, move))
         movesContainer.innerHTML += `
     <div class="move ${moveMeta.isSelected ? "selected" : ""}">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
@@ -218,9 +215,7 @@ async function loadMoves() {
       </div>
     </div>
     <div class="move-body">
-      <p>
-        Category: ${capitalizeFirstLetter(move.damage_class)}
-      </p>
+
       <p>
         ${damage !== null ? "Damage: " + damage : ""}
       </p>
@@ -251,8 +246,7 @@ window.onload = () => {
 
     setTimeout(() => {
         loadMoves()
-                    loadNaturesDataList()
-
+        loadNaturesDataList()
         loadStats()
     }, 1000)
 

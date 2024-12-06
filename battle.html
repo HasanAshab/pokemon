@@ -38,7 +38,7 @@
         <p class="retreat">
           Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="enemy-current-retreat">6</span>
         </p>
-        <div class="health-progress-bar" data-total-hp="40" data-current-hp="40">
+        <div onclick="healthProgressbarClickHandler(event, 'enemy')" class="health-progress-bar" data-total-hp="40" data-current-hp="40">
           <span class="health-data"><span class="current-hp">40</span> / <span class="total-hp">40</span>
           </span>
           <div class="inner">
@@ -90,7 +90,7 @@
     <p class="retreat">
       Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="you-current-retreat">6</span>
     </p>
-    <div class="health-progress-bar" data-total-hp="40" data-current-hp="40">
+    <div  onclick="healthProgressbarClickHandler(event, 'you')" class="health-progress-bar" data-total-hp="40" data-current-hp="40">
       <span class="health-data"><span class="current-hp">40</span> / <span class="total-hp">40</span>
       </span>
       <div class="inner">
