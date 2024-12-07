@@ -42,8 +42,9 @@ function isFrozenThisTurn() {
   return Math.random() < 0.8; // 80% chance to stay frozen
 }
 
-
 class BurnEffect {
+    static effectName = "burn"
+
     constructor(state) {
         this.state = state;
     }
@@ -68,6 +69,8 @@ class BurnEffect {
 }
 
 class ParalyzeEffect {
+    static effectName = "paralyze"
+
     constructor(state) {
         this.state = state;
     }
@@ -90,36 +93,48 @@ class ParalyzeEffect {
     }
 }
 
-export class EffectManager {
-    static effectsMap = {
-        "burn": BurnEffect,
-        //"poison": PoisonEffect,
-        "paralyze": ParalyzeEffect,
-    }
+export const EFFECTS = [
+    BurnEffect,
+    ParalyzeEffect,
+]
 
+
+export class EffectManager {
     _effects = []
 
     constructor(state) {
         this.state = state;
     }
+    
+    names() {
+        return this._effects.map(effect => effect.constructor.effectName)
+    }
+  
+    get(effectName) {
+        return this._effects.find(effect => {
+            return effect.constructor.effectName === effectName
+        })
+    }
 
+    includes(effectName) {
+        return !!this.get(effectName)
+    }
+    
     add(...effects) {
-        for (const effectName of effects) {
-            const Effect = EffectManager.effectsMap[effectName]
+        effects.filter(effectName => !this.includes(effectName)).forEach(effectName => {
+            const Effect = EFFECTS.find(Effect => Effect.effectName === effectName)
             const effect = new Effect(this.state)
             effect.setup()
             this._effects.push(effect)
-        }
+        })
     }
     
     remove(...effects) {
-        for (const effectName of effects) {
-            this._effects.filter(effect => effect instanceof EffectManager.effectsMap[effectName])
-                .forEach(effect => {
-                effect.teardown()
-                this._effects.splice(this._effects.indexOf(effect), 1)
-            })
-        }
+        effects.forEach(effectName => {
+            const effect = this.get(effectName)
+            effect.teardown()
+            this._effects.splice(this._effects.indexOf(effect), 1)
+        })
     }
 }
 

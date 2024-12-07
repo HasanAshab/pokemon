@@ -72,7 +72,7 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
     pokemonsMeta[pokemonNameInput.value] = {
       "xp": (levelInput.value - 1) * 100,
       "nature": natureInput.value,
-      "retreat": retreatInput.value,
+      "retreat": parseInt(retreatInput.value),
       "stats": {},
       "token_used":{
           "hp":0,

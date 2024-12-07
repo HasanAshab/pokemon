@@ -1,9 +1,11 @@
 {
+    "meta": {},
     "power": null,
     "accuracy": null,
     "pp": null,
     "description": "Move quickly to avoid damage.",
     "damage_class": "none",
     "type": null,
-    "retreat": 0.5
+    "retreat": 0.5,
+    "effect_names": []
 }

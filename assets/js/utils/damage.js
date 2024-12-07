@@ -37,6 +37,7 @@ class Damage {
     }
 
     avgEffectiveness() {
+        if (!this.hits.length) return 1
         return this.totalEffectiveness() / this.hits.length
     }
 }
@@ -64,7 +65,9 @@ class DamageManager {
 
         const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1)
         const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
-        const remainingDamage = fixFloat(remDam1 - remDam2)
+        const remainingDamage = fixFloat(remDam2 - remDam1)
+        console.log(effectiveness1, effectiveness2)
+        return remainingDamage
     }
     
     opponentOf(pokemon) {
@@ -109,19 +112,17 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
         const hitData = {
             damageCount: calculateBaseDamage(pokemon1, move1, pokemon2)
         }
-        if(pokemon2) {
-            const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
-            hitData.isCritical = Math.random() < critChance
-            const criticalMultiplier = hitData.isCritical ? CRIT_MULTIPLIER : 1;
-            hitData.randomModifier = Math.random() * 0.15 + 0.85;
-            hitData.effectiveness = await pokemon2.effectiveness(move1.type);
-            hitData.damageCount = (
+        const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
+        hitData.isCritical = Math.random() < critChance
+        const criticalMultiplier = hitData.isCritical ? CRIT_MULTIPLIER : 1;
+        hitData.randomModifier = Math.random() * 0.15 + 0.85;
+        hitData.effectiveness = await pokemon2.effectiveness(move1.type);
+        hitData.damageCount = (
                 hitData.damageCount 
                 * hitData.effectiveness
                 * hitData.randomModifier
                 * criticalMultiplier
             );
-        }
         const hit = new Hit(hitData)
         damage1.hits.push(hit)
         return damages;

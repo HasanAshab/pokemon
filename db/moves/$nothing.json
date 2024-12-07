@@ -1,9 +1,11 @@
 {
+    "meta": {},
     "power": null,
     "accuracy": null,
     "pp": null,
     "description": "Do nothing.",
     "damage_class": "none",
     "type": null,
-    "retreat": 0
+    "retreat": 0,
+    "effect_names": []
 }

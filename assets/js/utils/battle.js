@@ -61,8 +61,8 @@ export class BattleField extends EventEmitter {
         const canMove1 = this.state(this.pokemon1).canMove()
         const canMove2 = this.state(this.pokemon2).canMove()
 
-        const dodged1 = canMove1 && this.canDodge(this.pokemon1, this.pokemon2, move2)
-        const dodged2 = canMove2 && this.canDodge(this.pokemon2, this.pokemon1, move1)
+        const dodged1 = move1.name === "$dodge" && canMove1 && this.canDodge(this.pokemon1, this.pokemon2, move2)
+        const dodged2 = move2.name === "$dodge" && canMove2 && this.canDodge(this.pokemon2, this.pokemon1, move1)
 
         const effects1 = await getEffects(this.pokemon2, this.pokemon1, move2)
         const effects2 = await getEffects(this.pokemon1, this.pokemon2, move1)
@@ -109,16 +109,49 @@ export class BattleField extends EventEmitter {
         const isPhysical = move.damage_class === "physical";
     
         // Simulate hit/miss based on final accuracy
-        const maxHitChance = isPhysical ? 100 : 50
-        const minHitChance = isPhysical ? 25 : 50
+        const maxHitChance = isPhysical ? 10 : 7
+        const minHitChance = isPhysical ? 2.5 : 3.5
         const hitChance = (Math.random() * maxHitChance) - minHitChance; 
-        const dodgeChance = (pokemon2Spd - pokemon1Spd);
+        const dodgeChance = (pokemon2Spd / pokemon1Spd);
+        console.log(dodgeChance > hitChance)
         return dodgeChance > hitChance;
     }
 }
 
 
-class BattleState extends EventEmitter {
+class Observable extends EventEmitter {
+    constructor() {
+        super();
+        // Wrap the instance in a Proxy
+        return this._createProxy(this);
+    }
+
+    _createProxy(obj) {
+        const self = this; // Preserve context for event emission
+        return new Proxy(obj, {
+            get(target, key) {
+                const value = target[key];
+                // Recursively wrap nested objects
+                if (typeof value === "object" && value !== null && !(value instanceof EventEmitter)) {
+                    return self._createProxy(value);
+                }
+                return value;
+            },
+            set(target, key, value) {
+                const oldValue = target[key];
+                if (oldValue !== value) {
+                    target[key] = value;
+                    // Emit a "change" event with details
+                    self.emit("change", self);
+                }
+                return true;
+            },
+        });
+    }
+}
+
+
+class BattleState extends Observable {
     constructor(pokemon) {
         super()
         this.pokemon = pokemon;
@@ -126,13 +159,9 @@ class BattleState extends EventEmitter {
         this.on("wave", () => {
             this.addWaveRetreat()
         })
-
-        // Return a Proxy-wrapped instance
-        return this._createProxy();
     }
 
     refresh() {
-        this._effects = [];
         this._statChanges = {};
         this._stats = { ...this.pokemon.data.stats };
         this._canMove = { enabled: true, afterTurn: 0 };
@@ -172,18 +201,6 @@ class BattleState extends EventEmitter {
         this._stats.hp = Math.max(this._stats.hp - amount, 0);
     }
 
-    // Effect Management
-    addEffect(effect) {
-        if (!this._effects.includes(effect)) this._effects.push(effect);
-    }
-
-    removeEffect(effect) {
-        const index = this._effects.indexOf(effect);
-        if (index > -1) {
-            this._effects.splice(index, 1);
-        }
-    }
-
     // Stat Management
     applyStatChange(stat, stages) {
         if (!this._statChanges[stat]) {
@@ -207,19 +224,6 @@ class BattleState extends EventEmitter {
         } else {
             return 1; // Neutral stage
         }
-    }
-
-    _createProxy() {
-        return new Proxy(this, {
-            set: (target, key, value) => {
-                const oldValue = target[key];
-                if (oldValue !== value) {
-                    target[key] = value;
-                    this.emit("change", target)
-                }
-                return true;
-            },
-        });
     }
 
     canMove() {

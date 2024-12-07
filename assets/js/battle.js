@@ -1,3 +1,4 @@
+import { fixFloat } from "./utils/helpers.js"
 import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
 import { calculateBaseDamage } from "./utils/damage.js"
@@ -27,9 +28,12 @@ function setBattleStateChangeListener(playerTag) {
         const hp = state.statOf("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state._statChanges, playerTag)
-        setEffects(state._effects, playerTag)
+        setEffects(state.effects.names(), playerTag)
         setCurrentHealth(hp, playerTag)
         
+        loadMoves()
+        loadOponentMoves()
+
         if (hp === 0) {
             const winnerTag = playerTag === "you"
                 ? "enemy"
@@ -283,8 +287,6 @@ async function handleMoveCardSelect(card, playerTag) {
     catch(e) {
         console.log(e)
     }
-    await loadMoves()
-    await loadOponentMoves()
   }else{
     card.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
@@ -298,20 +300,12 @@ globalThis.moveCardClickHandler = function( {
 }
 
 
-globalThis.newWave = function() {
-    battleField.emit("wave")
-
-    loadMoves()
-    loadOponentMoves()
-}
-
-
 async function battle(moveNames) {
     const {you: moveName, enemy: enemyMoveName} = moveNames
     const move1 = await Move.make(moveName)
     const move2 = await Move.make(enemyMoveName)
     
-     await battleField.turn([
+    await battleField.turn([
         [pokemon, move1],
         [enemyPokemon, move2],
     ])
@@ -326,7 +320,7 @@ async function loadMoves() {
     for (const moveMeta of pokemon.meta.moves) {
         if (!moveMeta.isSelected) continue
         const move = await Move.make(moveMeta.name)
-        move.damage = await calculateBaseDamage(pokemon, move)
+        move.damage = fixFloat(await calculateBaseDamage(pokemon, move))
         moves.push(move)
     }
     loadAllMoves(moves, "you")
@@ -340,7 +334,7 @@ async function loadOponentMoves() {
     ]
     for (const moveName of moveNames) {
         const move = await Move.make(moveName)
-        move.damage = await calculateBaseDamage(enemyPokemon, move)
+        move.damage = fixFloat(calculateBaseDamage(enemyPokemon, move))
         moves.push(move)
     }
     loadAllMoves(moves, "enemy")
