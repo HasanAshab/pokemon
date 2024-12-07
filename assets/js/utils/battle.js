@@ -1,4 +1,4 @@
-import { EventEmitter } from "./event.js";
+import { EventEmitter, Observable } from "./event.js";
 import { EffectManager, getEffects } from "./effects.js"
 import { applyStatChanges } from "./stats.js"
 import { calculateDamage } from "./damage.js"
@@ -115,38 +115,6 @@ export class BattleField extends EventEmitter {
         const dodgeChance = (pokemon2Spd / pokemon1Spd);
         console.log(dodgeChance > hitChance)
         return dodgeChance > hitChance;
-    }
-}
-
-
-class Observable extends EventEmitter {
-    constructor() {
-        super();
-        // Wrap the instance in a Proxy
-        return this._createProxy(this);
-    }
-
-    _createProxy(obj) {
-        const self = this; // Preserve context for event emission
-        return new Proxy(obj, {
-            get(target, key) {
-                const value = target[key];
-                // Recursively wrap nested objects
-                if (typeof value === "object" && value !== null && !(value instanceof EventEmitter)) {
-                    return self._createProxy(value);
-                }
-                return value;
-            },
-            set(target, key, value) {
-                const oldValue = target[key];
-                if (oldValue !== value) {
-                    target[key] = value;
-                    // Emit a "change" event with details
-                    self.emit("change", self);
-                }
-                return true;
-            },
-        });
     }
 }
 

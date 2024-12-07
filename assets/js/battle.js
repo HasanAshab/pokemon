@@ -25,14 +25,16 @@ function setBattleStateChangeListener(playerTag) {
     const pokemon = pokemonMap[playerTag]
 
     battleField.state(pokemon).on("change", state => {
+        console.log(1)
         const hp = state.statOf("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state._statChanges, playerTag)
         setEffects(state.effects.names(), playerTag)
         setCurrentHealth(hp, playerTag)
         
-        loadMoves()
-        loadOponentMoves()
+        playerTag === "you"
+            ? loadMoves()
+            : loadOponentMoves()
 
         if (hp === 0) {
             const winnerTag = playerTag === "you"
@@ -88,11 +90,15 @@ async function loadGlobal() {
     globalThis.DodgeMove = await Move.make("$dodge")
 
     const pokemonName = getParam("you")
-    const pokemon = await Pokemon.make(pokemonName, getPokemonsMeta(pokemonName))
+    const pokemon = await Pokemon.make(pokemonName, getPokemonsMeta(pokemonName), moves)
     const enemyPokemon = await Pokemon.make(getParam("enemy"), {
         xp: parseInt(getParam("xp")),
         retreat: parseInt(getParam("retreat")),
         nature: getParam("nature"),
+        moves: [
+            eoiiiiiii
+            
+            ]
     })
 
     globalThis.pokemon = pokemon
