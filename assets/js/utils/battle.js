@@ -1,4 +1,5 @@
-import { calculateBurnEffect, calculatePoisonEffect } from "./effects.js"
+import { EffectManager } from "./effects.js"
+import { EventEmitter } from "./event.js";
 import { calculateDamage } from "./damage.js"
 import { fixFloat } from "./helpers.js"
 
@@ -22,8 +23,9 @@ export async function calculateWinXP(poke1, poke2) {
     return xp;
 }
 
-export class BattleField {
+export class BattleField extends EventEmitter {
     constructor(pokemon1, pokemon2) {
+        super()
         pokemon1.state = new BattleState(pokemon1)
         pokemon2.state = new BattleState(pokemon2)
         
@@ -34,6 +36,11 @@ export class BattleField {
             [pokemon1, pokemon1.state],
             [pokemon2, pokemon2.state]
         ]);
+
+        this.on("wave", (...args) => {
+            this.pokemon1.state.emit("wave", ...args)
+            this.pokemon2.state.emit("wave", ...args)
+        })
     }
 
     state(pokemon) {
@@ -41,6 +48,8 @@ export class BattleField {
     }
 
     async turn(senario) {
+        this.emit("turn", this, senario)
+
         const senarioMap = new Map(senario)
 
         const move1 = senarioMap.get(this.pokemon1)
@@ -48,8 +57,11 @@ export class BattleField {
 
         const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
 
-        const dodged1 = this.state(this.pokemon1).canMove() && this.canDodge(this.pokemon1, this.pokemon2, move2)
-        const dodged2 = this.state(this.pokemon2).canMove() && this.canDodge(this.pokemon2, this.pokemon1, move1)
+        const canMove1 = this.state(this.pokemon1).canMove()
+        const canMove2 = this.state(this.pokemon2).canMove()
+
+        const dodged1 = canMove1 && this.canDodge(this.pokemon1, this.pokemon2, move2)
+        const dodged2 = canMove2 && this.canDodge(this.pokemon2, this.pokemon1, move1)
 
         const effects1 = await getEffects(this.pokemon2, this.pokemon1, move2)
         const effects2 = await getEffects(this.pokemon1, this.pokemon2, move1)
@@ -64,23 +76,23 @@ export class BattleField {
             (move1.name === "$dodge" && move2.name === "$nothing")
         ) {}
 */        
-        if ((move1.makes_contact && !dodged2) || !move2.makes_contact) {
+        if ((move1.makes_contact && !dodged2) || !move2.makes_contact || !canMove2) {
             applyStatChanges(this.pokemon1, this.pokemon2, move1)
         }
-        if ((move2.makes_contact && !dodged1) || !move2.makes_contact) {
+        if ((move2.makes_contact && !dodged1) || !move2.makes_contact || !canMove1) {
             applyStatChanges(this.pokemon2, this.pokemon1, move2)
         }
 
         this.state(this.pokemon1).decreaseRetreat(move1.retreat)
         this.state(this.pokemon2).decreaseRetreat(move2.retreat)
 
-        if (damages.isHittee(this.pokemon1) && !dodged1) {
+        if (damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
-            this.state(this.pokemon1).addEffects(effects1)
+            this.state(this.pokemon1).effects.add(...effects1)
         }
-        if (damages.isHittee(this.pokemon2) && !dodged2) {
+        if (damages.isHittee(this.pokemon2) && canMove1 && !dodged2) {
             this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
-            this.state(this.pokemon2).addEffects(effects2)
+            this.state(this.pokemon2).effects.add(...effects2)
         }
     }
 
@@ -105,20 +117,26 @@ export class BattleField {
 }
 
 
-class BattleState {
+class BattleState extends EventEmitter {
     constructor(pokemon) {
+        super()
         this.pokemon = pokemon;
         this.refresh();
+        this.on("wave", () => {
+            this.addWaveRetreat()
+        })
+
         // Return a Proxy-wrapped instance
         return this._createProxy();
     }
 
     refresh() {
-        this._onChange = () => null
         this._effects = [];
         this._statChanges = {};
         this._stats = { ...this.pokemon.data.stats };
+        this._canMove = { enabled: true, afterTurn: 0 };
         this.retreat = this.pokemon.meta.retreat;
+        this.effects = new EffectManager(this);
     }
 
     addWaveRetreat() {
@@ -165,22 +183,6 @@ class BattleState {
         }
     }
 
-    decreaseHealthForEffects() {
-        let totalDamage = 0;
-
-        this._effects.forEach(effect => {
-            if (effect === "burn") {
-                totalDamage += calculateBurnEffect(this.pokemon);
-            } else if (effect === "poison") {
-                totalDamage += calculatePoisonEffect(this.pokemon);
-            }
-        });
-
-        if (totalDamage > 0) {
-            this.decreaseHealth(totalDamage);
-        }
-    }
-
     // Stat Management
     applyStatChange(stat, stages) {
         if (!this._statChanges[stat]) {
@@ -189,7 +191,6 @@ class BattleState {
 
         // Stat stage clamping (-6 to +6)
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
-        const oldStage = this._statChanges[stat];
         this._statChanges[stat] = newStage;
     }
 
@@ -207,26 +208,20 @@ class BattleState {
         }
     }
 
-    // Event Management
-    onChange(listener) {
-        this._onChange = listener;
-    }
-
-    _notifyChange() {
-        return this._onChange(this)
-    }
-
     _createProxy() {
         return new Proxy(this, {
             set: (target, key, value) => {
                 const oldValue = target[key];
                 if (oldValue !== value) {
                     target[key] = value;
-                    target._notifyChange();
+                    this.emit("change", target)
                 }
                 return true;
             },
         });
     }
-}
 
+    canMove() {
+        return this._canMove.enabled
+    }
+}

@@ -42,23 +42,84 @@ function isFrozenThisTurn() {
   return Math.random() < 0.8; // 80% chance to stay frozen
 }
 
-function handleStatusEffects(pokemon, status, turnCount = 0) {
-  switch (status) {
-    case "poisoned":
-      return applyPoisonEffect(pokemon);
-    case "burned":
-      return applyBurnEffect(pokemon);
-    case "paralyzed":
-      return applyParalysisEffect(pokemon);
-    case "frozen":
-      return isFrozenThisTurn();
-    case "sleep":
-      return turnCount > 0;
-    case "flinched":
-      return;
-    case "confused":
-      return applyConfusionEffect(pokemon);
-    default:
-      return null;
-  }
+
+class BurnEffect {
+    constructor(state) {
+        this.state = state;
+    }
+
+    setup() {
+        this.state.on("wave", this._waveHandler)
+    }
+
+    teardown() {
+        this.state.removeListener("wave", this._waveHandler)
+    }
+
+    _calculateEffectDamage() {
+        const maxHP = this.state.statOf("hp");
+        const effectDamage = Math.floor(maxHP / 18); // 1/8th HP loss
+        return effectDamage;
+    }
+
+    _waveHandler() {
+        this.state.decreaseHealth(this._calculateEffectDamage())
+    }
 }
+
+class ParalyzeEffect {
+    constructor(state) {
+        this.state = state;
+    }
+
+    setup() {
+        const speedStat = this.state.statOf("speed");
+        this.state._stats.speed = Math.floor(speedStat / 2); // Speed halved
+        this.state.on("turn", this._turnHandler)
+    }
+
+    teardown() {
+        const speedStat = this.state.statOf("speed");
+        this.state._stats.speed = Math.floor(speedStat * 2)
+        this.state.removeListener("turn", this._turnHandler)
+    }
+
+    _turnHandler() {
+        const canNotMove = Math.random() < 0.25;
+        this.state._canMove.enabled = !canNotMove
+    }
+}
+
+export class EffectManager {
+    static effectsMap = {
+        "burn": BurnEffect,
+        //"poison": PoisonEffect,
+        "paralyze": ParalyzeEffect,
+    }
+
+    _effects = []
+
+    constructor(state) {
+        this.state = state;
+    }
+
+    add(...effects) {
+        for (const effectName of effects) {
+            const Effect = EffectManager.effectsMap[effectName]
+            const effect = new Effect(this.state)
+            effect.setup()
+            this._effects.push(effect)
+        }
+    }
+    
+    remove(...effects) {
+        for (const effectName of effects) {
+            this._effects.filter(effect => effect instanceof EffectManager.effectsMap[effectName])
+                .forEach(effect => {
+                effect.teardown()
+                this._effects.splice(this._effects.indexOf(effect), 1)
+            })
+        }
+    }
+}
+

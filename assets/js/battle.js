@@ -25,7 +25,7 @@ globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
 function setBattleStateChangeListener(playerTag) {
     const pokemon = pokemonMap[playerTag]
 
-    battleField.state(pokemon).onChange(state => {
+    battleField.state(pokemon).on("change", state => {
         const hp = state.statOf("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state._statChanges, playerTag)
@@ -102,9 +102,6 @@ async function loadGlobal() {
     }
 
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
-    
-    setBattleStateChangeListener("you")
-    setBattleStateChangeListener("enemy")
 }
 
 function showBattlePromptPopup(msg, playerTag) {
@@ -304,15 +301,8 @@ globalThis.moveCardClickHandler = function( {
 
 
 globalThis.newWave = function() {
-    pokemon.state.decreaseHealthForEffects()
-    enemyPokemon.state.decreaseHealthForEffects()
-    
-    pokemon.state.addWaveRetreat()
-    enemyPokemon.state.addWaveRetreat()
-    
-    setCurrentRetreat(pokemon.state.retreat, "you")
-    setCurrentRetreat(enemyPokemon.state.retreat, "enemy")
-    
+    battleField.emit("wave")
+
     loadMoves()
     loadOponentMoves()
 }
@@ -392,8 +382,8 @@ async function loadAll() {
     loadHealth()
     loadEnemyHealth()
     //loadChoosePokemon() 
-    addBattleStateListeners(pokemon, "you")
-    addBattleStateListeners(enemyPokemon, "enemy")
+    setBattleStateChangeListener("you")
+    setBattleStateChangeListener("enemy")
 }
 
 
