@@ -1,7 +1,7 @@
 import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
 import { applyStatChanges } from "./utils/stats.js"
-import { calculateDamage } from "./utils/damage.js"
+import { calculateBaseDamage } from "./utils/damage.js"
 import { getEffects } from "./utils/effects.js"
 import { calculateWinXP } from "./utils/battle.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
@@ -235,7 +235,7 @@ function loadAllMoves(movesArr, playerTag) {
   // re adding cards
   movesArr.forEach((move)=> {
      const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
-    <div class="card-header" style="background-color:var(--${move.type}-type-color)">
+    <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
     <h3>${move.display}</h3>
     <div class="move-icons">
     <div class="icon"></div>
@@ -338,7 +338,7 @@ async function loadMoves() {
     for (const moveMeta of pokemon.meta.moves) {
         if (!moveMeta.isSelected) continue
         const move = await Move.make(moveMeta.name)
-        move.damage = (await calculateDamage(pokemon, move))[1].totalDamage
+        move.damage = await calculateBaseDamage(pokemon, move)
         moves.push(move)
     }
     loadAllMoves(moves, "you")
@@ -352,7 +352,7 @@ async function loadOponentMoves() {
     ]
     for (const moveName of moveNames) {
         const move = await Move.make(moveName)
-        move.damage = (await calculateDamage(enemyPokemon, move))[1].totalDamage
+        move.damage = await calculateBaseDamage(enemyPokemon, move)
         moves.push(move)
     }
     loadAllMoves(moves, "enemy")

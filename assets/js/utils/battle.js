@@ -1,4 +1,5 @@
 import { calculateBurnEffect, calculatePoisonEffect } from "./effects.js"
+import { calculateDamage } from "./damage.js"
 import { fixFloat } from "./helpers.js"
 
 
