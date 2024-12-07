@@ -1,5 +1,6 @@
-import { EffectManager } from "./effects.js"
 import { EventEmitter } from "./event.js";
+import { EffectManager, getEffects } from "./effects.js"
+import { applyStatChanges } from "./stats.js"
 import { calculateDamage } from "./damage.js"
 import { fixFloat } from "./helpers.js"
 
@@ -83,8 +84,8 @@ export class BattleField extends EventEmitter {
             applyStatChanges(this.pokemon2, this.pokemon1, move2)
         }
 
-        this.state(this.pokemon1).decreaseRetreat(move1.retreat)
-        this.state(this.pokemon2).decreaseRetreat(move2.retreat)
+        this.state(this.pokemon1).retreat -= move1.retreat
+        this.state(this.pokemon2).retreat -= move2.retreat
 
         if (damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))

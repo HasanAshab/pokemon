@@ -1,8 +1,6 @@
 import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
-import { applyStatChanges } from "./utils/stats.js"
 import { calculateBaseDamage } from "./utils/damage.js"
-import { getEffects } from "./utils/effects.js"
 import { calculateWinXP } from "./utils/battle.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
