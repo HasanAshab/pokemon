@@ -66,7 +66,7 @@ class DamageManager {
         const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1)
         const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
         const remainingDamage = fixFloat(remDam2 - remDam1)
-        console.log(effectiveness1, effectiveness2)
+        console.log(remainingDamage)
         return remainingDamage
     }
     
@@ -76,7 +76,10 @@ class DamageManager {
             : this.pokemon1
     }
 
-    isHittee(pokemon) {
+    async isHittee(pokemon) {
+        const damage = await this.on(pokemon)
+        console.log(damage)
+        return damage > 0
         const d1 = this._damages.get(pokemon).totalDamage()
         const d2 = this._damages.get(this.opponentOf(pokemon)).totalDamage()
         return d1 < d2

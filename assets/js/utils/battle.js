@@ -72,8 +72,8 @@ export class BattleField extends EventEmitter {
         const dodged1 = move1.name === "$dodge" && canMove1 && this.canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = move2.name === "$dodge" && canMove2 && this.canDodge(this.pokemon2, this.pokemon1, move1)
 
-        const effects1 = await getEffects(this.pokemon2, this.pokemon1, move2)
-        const effects2 = await getEffects(this.pokemon1, this.pokemon2, move1)
+        const effects1 = getEffects(this.pokemon2, this.pokemon1, move2)
+        const effects2 = getEffects(this.pokemon1, this.pokemon2, move1)
 /*
         if(
             (move1.name === "$nothing" && move2.name === "$nothing")
@@ -84,7 +84,7 @@ export class BattleField extends EventEmitter {
             ||
             (move1.name === "$dodge" && move2.name === "$nothing")
         ) {}
-*/        
+*/
         if ((move1.makes_contact && !dodged2) || !move2.makes_contact || !canMove2) {
             applyStatChanges(this.pokemon1, this.pokemon2, move1)
         }
@@ -95,11 +95,11 @@ export class BattleField extends EventEmitter {
         this.state(this.pokemon1).emit("move-used", move1) 
         this.state(this.pokemon2).emit("move-used", move2) 
 
-        if (damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
+        if (await damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
             this.state(this.pokemon1).effects.add(...effects1)
         }
-        if (damages.isHittee(this.pokemon2) && canMove1 && !dodged2) {
+        if (await damages.isHittee(this.pokemon2) && canMove1 && !dodged2) {
             this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
             this.state(this.pokemon2).effects.add(...effects2)
         }
@@ -121,7 +121,6 @@ export class BattleField extends EventEmitter {
         const minHitChance = isPhysical ? 2.5 : 3.5
         const hitChance = (Math.random() * maxHitChance) - minHitChance; 
         const dodgeChance = (pokemon2Spd / pokemon1Spd);
-        console.log(dodgeChance > hitChance)
         return dodgeChance > hitChance;
     }
 }

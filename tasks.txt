@@ -13,7 +13,6 @@ mega horn
 js instead of json
 
 move damage increase move blast blast
-crunch ember ember heal plus
 
 
 now i want to add support to multi hit moves.
