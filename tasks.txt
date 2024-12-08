@@ -2,20 +2,17 @@ make contact
 multi hit move
 xp using cp
 abilities effects (eg guts)
-BattleGround class
-  replaceChildren
+replaceChildren
 
-increase level stat damage
 
-damages map
-dodge, nothing move .json
 xp reduce on loose
 
 null pp unlimited
 mega horn
-use state stats on dam, ...
 
 js instead of json
+
+move damage increase move blast blast
 
 now i want to add support to multi hit moves.
 move1 and move2 both can be multi hit, or only

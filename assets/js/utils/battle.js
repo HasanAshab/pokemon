@@ -25,7 +25,17 @@ export async function calculateWinXP(poke1, poke2) {
 }
 
 export class BattleField extends EventEmitter {
-    constructor(pokemon1, pokemon2) {
+    
+    static async init(pokemon1, pokemon2) {
+        const states = new Map([
+            [pokemon1, pokemon1.state],
+            [pokemon2, pokemon2.state]
+        ]);
+        const battleField = new this(pokemon1, pokemon2 states)
+        return battleField
+    }
+    
+    constructor(pokemon1, pokemon2, states) {
         super()
         pokemon1.state = new BattleState(pokemon1)
         pokemon2.state = new BattleState(pokemon2)
@@ -33,10 +43,7 @@ export class BattleField extends EventEmitter {
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
 
-        this._states = new Map([
-            [pokemon1, pokemon1.state],
-            [pokemon2, pokemon2.state]
-        ]);
+        this._states = states
 
         this.on("wave", (...args) => {
             this.pokemon1.state.emit("wave", ...args)
@@ -66,7 +73,6 @@ export class BattleField extends EventEmitter {
 
         const effects1 = await getEffects(this.pokemon2, this.pokemon1, move2)
         const effects2 = await getEffects(this.pokemon1, this.pokemon2, move1)
-        console.log(effects1, effects2)
 /*
         if(
             (move1.name === "$nothing" && move2.name === "$nothing")
@@ -86,7 +92,12 @@ export class BattleField extends EventEmitter {
         }
 
         this.state(this.pokemon1).retreat -= move1.retreat
-        this.state(this.pokemon2).retreat -= move2.retreat
+        this.state(this.pokemon1).retreat -= move1.retreat
+        this.state(this.pokemon2).moves -= move2.retreat
+
+        // here todo
+        this.state(this.pokemon1).emit("move-used", move1) 
+        this.state(this.pokemon1).emit("move-used", move2) 
 
         if (damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
@@ -121,9 +132,34 @@ export class BattleField extends EventEmitter {
 
 
 class BattleState extends Observable {
-    constructor(pokemon) {
+    static UNIVERSAL_MOVES = [
+        {
+            name: "$nothing",
+            isSelected: true,
+        },
+        {
+            name: "$dodge",
+            isSelected: true,
+        }
+    ]
+    
+    static async prepare(pokemon) {
+        const moves = []
+        if(meta.moves) {
+            const movesMeta = meta.moves.filter(moveMeta => moveMeta.isSelected)
+            movesMeta.unshift(...BattleState.UNIVERSAL_MOVES)
+            for (const moveMeta of movesMeta) {
+                const move = await Move.make(moveMeta.name)
+                moves.push(move)
+            }
+        }
+        return new this(pokemon, moves)
+    }
+    
+    constructor(pokemon, moves) {
         super()
         this.pokemon = pokemon;
+        this.moves = moves;
         this.refresh();
         this.on("wave", () => {
             this.addWaveRetreat()

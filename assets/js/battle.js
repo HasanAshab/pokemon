@@ -44,8 +44,6 @@ function setBattleStateChangeListener(playerTag) {
 }
 
 async function handleWin(winnerTag, looserTag) {
-
-
     const winner = pokemonMap[winnerTag]
     const looser = pokemonMap[looserTag]
 
@@ -103,7 +101,7 @@ async function loadGlobal() {
         "you": pokemon,
         "enemy": enemyPokemon
     }
-    globalThis.battleField = new BattleField(pokemon, enemyPokemon)
+    globalThis.battleField = await BattleField.init(pokemon, enemyPokemon)
 }
 
 function showBattlePromptPopup(msg, playerTag) {
@@ -224,6 +222,7 @@ function showMoveDamageInjectForm(moveName, damage, playerTag) {
 }
 
 function loadMoves(playerTag) {
+    const pokemon = pokemonMap[playerTag]
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   //clean up old cards
   const oldMoveCards = moveCardsContainer.querySelectorAll('.card')
@@ -232,7 +231,7 @@ function loadMoves(playerTag) {
   }
   
   // re adding cards
-  pokemonMap[playerTag].moves.forEach((move)=> {
+  pokemon.state.moves.forEach((move)=> {
       const damage = fixFloat(calculateBaseDamage(pokemonMap[playerTag], move))
      const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
