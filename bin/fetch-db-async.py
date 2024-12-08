@@ -108,7 +108,7 @@ def serialize_type(data):
 
 
 def serialize_move(data):
-    pp = 10 if data["pp"] is None else round(data["pp"] / 3)
+    pp = None if data["pp"] is None else round(data["pp"] / 3)
 
     return {
         "meta": data["meta"],

@@ -2,7 +2,7 @@
     "meta": null,
     "power": null,
     "accuracy": null,
-    "pp": 10,
+    "pp": null,
     "description": "No description...",
     "damage_class": "status",
     "type": "shadow",
