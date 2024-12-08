@@ -233,7 +233,7 @@ function loadMoves(playerTag) {
   // re adding cards
   pokemon.state.moves.forEach((move)=> {
       const damage = fixFloat(calculateBaseDamage(pokemonMap[playerTag], move))
-     const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
+     const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
     <h3>${move.display}</h3>
     <div class="move-icons">
@@ -252,7 +252,7 @@ function loadMoves(playerTag) {
     ${damage !== null ? "Damage: " + damage : ""}
     </p>
     <p>
-    PP: ${move.pp || "∞"}
+    PP: ${move.pp ?? "∞"}
     </p>
     <small class="description">${move.description}</small>
     </div>    

@@ -1,4 +1,5 @@
 import { EventEmitter, Observable } from "./event.js";
+import { Move } from "./models.js";
 import { EffectManager, getEffects } from "./effects.js"
 import { applyStatChanges } from "./stats.js"
 import { calculateDamage } from "./damage.js"
@@ -24,21 +25,21 @@ export async function calculateWinXP(poke1, poke2) {
     return xp;
 }
 
+
 export class BattleField extends EventEmitter {
-    
     static async init(pokemon1, pokemon2) {
+        pokemon1.state = await BattleState.prepare(pokemon1)
+        pokemon2.state = await BattleState.prepare(pokemon2)
+
         const states = new Map([
             [pokemon1, pokemon1.state],
             [pokemon2, pokemon2.state]
         ]);
-        const battleField = new this(pokemon1, pokemon2 states)
-        return battleField
+        return new this(pokemon1, pokemon2, states)
     }
     
     constructor(pokemon1, pokemon2, states) {
         super()
-        pokemon1.state = new BattleState(pokemon1)
-        pokemon2.state = new BattleState(pokemon2)
         
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
@@ -91,13 +92,8 @@ export class BattleField extends EventEmitter {
             applyStatChanges(this.pokemon2, this.pokemon1, move2)
         }
 
-        this.state(this.pokemon1).retreat -= move1.retreat
-        this.state(this.pokemon1).retreat -= move1.retreat
-        this.state(this.pokemon2).moves -= move2.retreat
-
-        // here todo
         this.state(this.pokemon1).emit("move-used", move1) 
-        this.state(this.pokemon1).emit("move-used", move2) 
+        this.state(this.pokemon2).emit("move-used", move2) 
 
         if (damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
@@ -145,8 +141,8 @@ class BattleState extends Observable {
     
     static async prepare(pokemon) {
         const moves = []
-        if(meta.moves) {
-            const movesMeta = meta.moves.filter(moveMeta => moveMeta.isSelected)
+        if(pokemon.meta.moves) {
+            const movesMeta = pokemon.meta.moves.filter(moveMeta => moveMeta.isSelected)
             movesMeta.unshift(...BattleState.UNIVERSAL_MOVES)
             for (const moveMeta of movesMeta) {
                 const move = await Move.make(moveMeta.name)
@@ -161,8 +157,13 @@ class BattleState extends Observable {
         this.pokemon = pokemon;
         this.moves = moves;
         this.refresh();
+        
         this.on("wave", () => {
             this.addWaveRetreat()
+        })
+        this.on("move-used", move => {
+            this.retreat -= move.retreat
+            this.reducePP(move.name)
         })
     }
 
@@ -215,6 +216,17 @@ class BattleState extends Observable {
         // Stat stage clamping (-6 to +6)
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
         this._statChanges[stat] = newStage;
+    }
+
+    canUseMove(moveName) {
+        const move = this.moves.find(m => m.name === moveName)
+        return move.retreat <= this.retreat && (move.pp === null || move.pp > 0)
+    }
+
+    reducePP(moveName) {
+        const move = this.moves.find(m => m.name === moveName)
+        move.pp--;
+        return move
     }
 
     resetStatChanges() {
