@@ -1,3 +1,6 @@
+import { capitalizeFirstLetter } from "./helpers.js"
+
+
 export function getEffects(attacker, target, move) {
     const effects = [];
     for (const effectName of move.effect_names) {
@@ -8,18 +11,11 @@ export function getEffects(attacker, target, move) {
     return effects;
 }
 
-export function calculatePoisonEffect(pokemon) {
+function calculatePoisonEffect(pokemon) {
   const maxHP = pokemon.statOf("hp");
   const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
   return poisonDamage;
 }
-
-export function calculateBurnEffect(pokemon) {
-  const maxHP = pokemon.statOf("hp");
-  const burnDamage = Math.floor(maxHP / 18); // 1/8th HP loss
-  return burnDamage;
-}
-
 
 function applyParalysisEffect(pokemon) {
   const speedStat = pokemon.statOf("speed");
@@ -42,52 +38,77 @@ function isFrozenThisTurn() {
   return Math.random() < 0.8; // 80% chance to stay frozen
 }
 
-class BurnEffect {
-    static effectName = "burn"
+class Effect {
+    events = [
+        "turn",
+        "wave",
+    ]
+    _listeners = {}
 
     constructor(state) {
         this.state = state;
     }
-
+    
     setup() {
-        this.state.on("wave", this._waveHandler)
+        this.events.forEach(event => {
+            this._subscribeTo(event)
+        })
     }
 
     teardown() {
-        this.state.removeListener("wave", this._waveHandler)
+        this.events.forEach(event => {
+            this._unsubscribeTo(event)
+        })
     }
 
+    _subscribeTo(event) {
+        const listener = this[`on${capitalizeFirstLetter(event)}`]
+        if (listener) {
+            this._listeners[event] = listener.bind(this)
+            this.state.on(event, this._listeners[event])
+        }
+    }
+    
+    _unsubscribeTo(event) {
+        const listener = this[`on${capitalizeFirstLetter(event)}`]
+        if (listener) {
+            this.state.removeListener(event, this._listeners[event])
+        }
+    }
+}
+
+class BurnEffect extends Effect {
+    static effectName = "burn"
+
+    onWave() {
+        this.state.decreaseHealth(this._calculateEffectDamage())
+    }
+    
     _calculateEffectDamage() {
         const maxHP = this.state.statOf("hp");
         const effectDamage = Math.floor(maxHP / 18); // 1/8th HP loss
         return effectDamage;
     }
-
-    _waveHandler() {
-        this.state.decreaseHealth(this._calculateEffectDamage())
-    }
 }
 
-class ParalyzeEffect {
+class ParalyzeEffect extends Effect {
     static effectName = "paralyze"
 
-    constructor(state) {
-        this.state = state;
-    }
-
     setup() {
+        super.setup()
+
         const speedStat = this.state.statOf("speed");
         this.state._stats.speed = Math.floor(speedStat / 2); // Speed halved
-        this.state.on("turn", this._turnHandler)
     }
 
     teardown() {
+        super.teardown()
+
         const speedStat = this.state.statOf("speed");
         this.state._stats.speed = Math.floor(speedStat * 2)
-        this.state.removeListener("turn", this._turnHandler)
     }
 
-    _turnHandler() {
+    onTurn() {
         const canNotMove = Math.random() < 0.25;
         this.state._canMove.enabled = !canNotMove
     }
@@ -122,8 +143,8 @@ export class EffectManager {
     
     add(...effects) {
         effects.filter(effectName => !this.includes(effectName)).forEach(effectName => {
-            const Effect = EFFECTS.find(Effect => Effect.effectName === effectName)
-            const effect = new Effect(this.state)
+            const EffectClass = EFFECTS.find(Effect => Effect.effectName === effectName)
+            const effect = new EffectClass(this.state)
             effect.setup()
             this._effects.push(effect)
         })

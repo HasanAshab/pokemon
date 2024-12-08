@@ -66,6 +66,7 @@ export class BattleField extends EventEmitter {
 
         const effects1 = await getEffects(this.pokemon2, this.pokemon1, move2)
         const effects2 = await getEffects(this.pokemon1, this.pokemon2, move1)
+        console.log(effects1, effects2)
 /*
         if(
             (move1.name === "$nothing" && move2.name === "$nothing")

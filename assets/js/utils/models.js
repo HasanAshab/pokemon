@@ -30,20 +30,40 @@ export class Pokemon {
         "serious": { increase: null, decrease: null },
         "timid": { increase: "speed", decrease: "attack" },
     };
+    static UNIVERSAL_MOVES = [
+        {
+            name: "$nothing",
+            isSelected: true,
+        },
+        {
+            name: "$dodge",
+            isSelected: true,
+        }
+    ]
 
     static async make(name, meta) {
         const data = await db.pokemons.get(name);
-        return new this(name, data, meta);
+        const moves = []
+        if(meta.moves) {
+            const movesMeta = meta.moves.filter(moveMeta => moveMeta.isSelected)
+            movesMeta.unshift(...Pokemon.UNIVERSAL_MOVES)
+            for (const moveMeta of movesMeta) {
+                const move = await Move.make(moveMeta.name)
+                moves.push(move)
+            }
+        }
+        return new this(name, data, meta, moves);
     }
 
     static calculateLevel(xp) {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
     }
 
-    constructor(name, data, meta) {
+    constructor(name, data, meta, moves) {
         this.name = name;
         this.data = data;
         this.meta = meta;
+        this.moves = moves;
         this.data.stats = this._calculateTotalStat()
     }
 

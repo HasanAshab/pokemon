@@ -6,8 +6,8 @@ import { calculateWinXP } from "./utils/battle.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
 
-
 globalThis.isVeryClose = false
+
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
   globalThis.isVeryClose = !isVeryClose
@@ -21,20 +21,17 @@ globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
     setCurrentHealth(Math.min(newHp,totalHp))
     }
 }
+
 function setBattleStateChangeListener(playerTag) {
     const pokemon = pokemonMap[playerTag]
 
     battleField.state(pokemon).on("change", state => {
-        console.log(1)
         const hp = state.statOf("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state._statChanges, playerTag)
         setEffects(state.effects.names(), playerTag)
         setCurrentHealth(hp, playerTag)
-        
-        playerTag === "you"
-            ? loadMoves()
-            : loadOponentMoves()
+        loadMoves(playerTag)
 
         if (hp === 0) {
             const winnerTag = playerTag === "you"
@@ -65,11 +62,13 @@ async function handleWin(winnerTag, looserTag) {
         //window.location = `poke_details.html?name=${pokemon.name}`
     })
 }
+
 function showChoosePokemon(){
      const choosePokemonCont = document.querySelector(".choose-pokemon-cont")
      choosePokemonCont.parentNode.classList.add(active)
 }
- function loadChoosePokemon(){
+
+function loadChoosePokemon(){
   const choosePokemonCont = document.querySelector(".choose-pokemon-cont")
    const pokemonsMeta =  getPokemonsMeta()
    choosePokemonCont.innerHTML = ""
@@ -85,30 +84,25 @@ function showChoosePokemon(){
    }
 
  }
-async function loadGlobal() {
-    globalThis.NothingMove = await Move.make("$nothing")
-    globalThis.DodgeMove = await Move.make("$dodge")
 
+async function loadGlobal() {
     const pokemonName = getParam("you")
-    const pokemon = await Pokemon.make(pokemonName, getPokemonsMeta(pokemonName), moves)
-    const enemyPokemon = await Pokemon.make(getParam("enemy"), {
+    const enemyMovesMeta = getParam("moves").split(",").map(moveName => ({
+        name: moveName,
+        isSelected: true
+    }))
+
+    globalThis.enemyPokemon = await Pokemon.make(getParam("enemy"), {
         xp: parseInt(getParam("xp")),
         retreat: parseInt(getParam("retreat")),
         nature: getParam("nature"),
-        moves: [
-            eoiiiiiii
-            
-            ]
+        moves: enemyMovesMeta
     })
-
-    globalThis.pokemon = pokemon
-    globalThis.enemyPokemon = enemyPokemon
-    
+    globalThis.pokemon = await Pokemon.make(pokemonName, getPokemonsMeta(pokemonName))
     globalThis.pokemonMap = {
         "you": pokemon,
         "enemy": enemyPokemon
     }
-
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
 }
 
@@ -229,7 +223,7 @@ function showMoveDamageInjectForm(moveName, damage, playerTag) {
 
 }
 
-function loadAllMoves(movesArr, playerTag) {
+function loadMoves(playerTag) {
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   //clean up old cards
   const oldMoveCards = moveCardsContainer.querySelectorAll('.card')
@@ -238,7 +232,8 @@ function loadAllMoves(movesArr, playerTag) {
   }
   
   // re adding cards
-  movesArr.forEach((move)=> {
+  pokemonMap[playerTag].moves.forEach((move)=> {
+      const damage = fixFloat(calculateBaseDamage(pokemonMap[playerTag], move))
      const cardHtml = ` <div class="card ${move.retreat <= pokemonMap[playerTag].state.retreat ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
     <h3>${move.display}</h3>
@@ -255,7 +250,7 @@ function loadAllMoves(movesArr, playerTag) {
 
     </p>
         <p>
-    ${move.damage !== null ? "Damage: " + move.damage : ""}
+    ${damage !== null ? "Damage: " + damage : ""}
     </p>
     <p>
     PP: ${move.pp || "∞"}
@@ -263,7 +258,6 @@ function loadAllMoves(movesArr, playerTag) {
     <small class="description">${move.description}</small>
     </div>    
    
-    
     ${
         move.retreat ? `<div class="retreat-cost">
         ${move.retreat}
@@ -318,34 +312,6 @@ async function battle(moveNames) {
 }
 
 
-async function loadMoves() {
-    const moves = [
-        NothingMove,
-        DodgeMove,
-    ]
-    for (const moveMeta of pokemon.meta.moves) {
-        if (!moveMeta.isSelected) continue
-        const move = await Move.make(moveMeta.name)
-        move.damage = fixFloat(await calculateBaseDamage(pokemon, move))
-        moves.push(move)
-    }
-    loadAllMoves(moves, "you")
-}
-
-async function loadOponentMoves() {
-    const moveNames = getParam("moves").split(",")
-    const moves = [
-        NothingMove,
-        DodgeMove,
-    ]
-    for (const moveName of moveNames) {
-        const move = await Move.make(moveName)
-        move.damage = fixFloat(calculateBaseDamage(enemyPokemon, move))
-        moves.push(move)
-    }
-    loadAllMoves(moves, "enemy")
-}
-
 function loadRetreat() {
     const retreat = battleField.state(pokemon).retreat
     setRetreatPerWave(retreat, "you")
@@ -371,8 +337,8 @@ function loadEnemyHealth() {
 async function loadAll() {
     await loadGlobal()
 
-    loadMoves()
-    loadOponentMoves()
+    loadMoves("you")
+    loadMoves("enemy")
     
     loadRetreat()
     loadEnemyRetreat()
