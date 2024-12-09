@@ -224,15 +224,13 @@ function showMoveDamageInjectForm(moveName, damage, playerTag) {
 function loadMoves(playerTag) {
     const pokemon = pokemonMap[playerTag]
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
-  //clean up old cards
-  const oldMoveCards = moveCardsContainer.querySelectorAll('.card')
-  for (const card of oldMoveCards) {
-    moveCardsContainer.removeChild(card)
-  }
   
+    moveCardsContainer.innerHTML = ''
   // re adding cards
-  pokemon.state.moves.forEach((move)=> {
-      const damage = fixFloat(calculateBaseDamage(pokemonMap[playerTag], move))
+  for (const move of pokemon.state.moves) {
+      const damage = fixFloat(calculateBaseDamage(pokemon, move))
+      const effectiveness = move._effectiveness
+     console.log(effectiveness, move.name)
      const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
     <h3>${move.display}</h3>
@@ -243,11 +241,14 @@ function loadMoves(playerTag) {
     </div>
     <div class="card-body">
 
-    <p class="effectiveness">
+${
+    effectiveness === 1 ? ''
+    : `<p class="effectiveness">
      Effectiveness: 
-    <img  src="./assets/svg/arrow-up.svg"/>
+    <img  src="./assets/svg/arrow-${effectiveness > 1 ? 'up' : 'down'}.svg"/>
+    </p>`
+}
 
-    </p>
         <p>
     ${damage !== null ? "Damage: " + damage : ""}
     </p>
@@ -265,11 +266,9 @@ function loadMoves(playerTag) {
     </div>
     `
     moveCardsContainer.innerHTML += cardHtml
-
-
-  })
-
+  }
 }
+
 async function handleMoveCardSelect(card, playerTag) {
   if (card.classList.contains("disabled")) return
   const oponentPlayerTag = playerTag === "you" ? "enemy": "you"
@@ -333,15 +332,30 @@ function loadEnemyHealth() {
     setTotalHealth(hp, "enemy")
 }
 
+function prepareMoves(playerTag) {
+    const pokemon = pokemonMap[playerTag]
+    const oponentPokemon = pokemonMap[playerTag === "you" ? "enemy" : "you"]
+    const tasks = pokemon.state.moves.map(async move => {
+        move._effectiveness = await oponentPokemon.effectiveness(move.type)
+    })
+
+    return Promise.all(tasks)
+}
+
 async function loadAll() {
     await loadGlobal()
+    
+    await Promise.all([
+        prepareMoves("you"),
+        prepareMoves("enemy"),
+    ])
 
     loadMoves("you")
     loadMoves("enemy")
-    
+
     loadRetreat()
     loadEnemyRetreat()
-    
+
     loadHealth()
     loadEnemyHealth()
     //loadChoosePokemon() 

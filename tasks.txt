@@ -1,3 +1,4 @@
+try dodge
 make contact
 multi hit move
 xp using cp
@@ -12,7 +13,8 @@ mega horn
 
 js instead of json
 
-move damage increase move blast blast
+move damage increase ember razorleaf (.25 ulta)
+damage bug health increase (crit sometime)
 
 
 now i want to add support to multi hit moves.
