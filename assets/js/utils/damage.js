@@ -66,19 +66,13 @@ class DamageManager {
             const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1) 
             const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
             
-            let remainingDamage
-            
-            if (damage1.move.makes_contact !== damage2.move.makes_contact) {
-                console.log(damage1.move.makes_contact);
-                remainingDamage = damage1.move.makes_contact === false ? fixFloat(remDam1) : fixFloat(remDam2)
+            let remainingDamage;
+            if ((damage1.move.damage_class !== "status" && damage2.move.damage_class !== "status") && damage1.move.makes_contact !== damage2.move.makes_contact) {
+                remainingDamage = damage2.move.makes_contact === false ? fixFloat(remDam2) : -fixFloat(remDam1)
             }
-
             else {
                 remainingDamage = fixFloat(remDam2 - remDam1)
             }
-            
-            console.log(remainingDamage, remDam1, remDam2);
-            
             this._cache = [pokemon, remainingDamage]
         }
         const damage = this._cache[0] === pokemon ? this._cache[1] : -this._cache[1]
