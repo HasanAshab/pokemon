@@ -50,24 +50,26 @@ class DamageManager {
     }
     
     async on(pokemon) {
-        const pokemon2 = this.opponentOf(pokemon)
-        
-        const damage1 = this._damages.get(pokemon)
-        const damage2 = this._damages.get(pokemon2)
-        
-        const totalDamage1 = damage1.totalDamage()
-        const totalDamage2 = damage2.totalDamage()
-        
-        const effectiveness1 = damage2.avgEffectiveness()
-        const effectiveness2 = damage1.avgEffectiveness()
-        const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
-        const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
+        if (!this._cache) {
+            const pokemon2 = this.opponentOf(pokemon)
+            const damage1 = this._damages.get(pokemon)
+            const damage2 = this._damages.get(pokemon2)
+            
+            const totalDamage1 = damage1.totalDamage()
+            const totalDamage2 = damage2.totalDamage()
+            
+            const effectiveness1 = damage2.avgEffectiveness()
+            const effectiveness2 = damage1.avgEffectiveness()
+            const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
+            const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
 
-        const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1)
-        const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
-        const remainingDamage = fixFloat(remDam2 - remDam1)
-        console.log(remainingDamage)
-        return remainingDamage
+            const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1)
+            const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
+            const remainingDamage = fixFloat(remDam2 - remDam1)
+            this._cache = [pokemon, remainingDamage]
+        }
+        const damage = this._cache[0] === pokemon ? this._cache[1] : -this._cache[1]
+        return damage
     }
     
     opponentOf(pokemon) {
@@ -78,11 +80,7 @@ class DamageManager {
 
     async isHittee(pokemon) {
         const damage = await this.on(pokemon)
-        console.log(damage)
         return damage > 0
-        const d1 = this._damages.get(pokemon).totalDamage()
-        const d2 = this._damages.get(this.opponentOf(pokemon)).totalDamage()
-        return d1 < d2
     }
 }
 

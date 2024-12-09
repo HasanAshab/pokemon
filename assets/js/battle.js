@@ -221,6 +221,7 @@ function showMoveDamageInjectForm(moveName, damage, playerTag) {
 
 }
 
+
 function loadMoves(playerTag) {
     const pokemon = pokemonMap[playerTag]
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
@@ -230,7 +231,6 @@ function loadMoves(playerTag) {
   for (const move of pokemon.state.moves) {
       const damage = fixFloat(calculateBaseDamage(pokemon, move))
       const effectiveness = move._effectiveness
-     console.log(effectiveness, move.name)
      const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
     <h3>${move.display}</h3>
