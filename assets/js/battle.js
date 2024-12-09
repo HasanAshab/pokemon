@@ -147,7 +147,7 @@ function setEffects(effects, playerTag) {
   const typeMap = {
     "burn": "fire",
     "poison": "poison",
-    "paralysis": "electric",
+    "paralyze": "electric",
     "freeze": "ice",
     "sleep": "psychic",
     "confusion": "psychic",

@@ -11,18 +11,6 @@ export function getEffects(attacker, target, move) {
     return effects;
 }
 
-function calculatePoisonEffect(pokemon) {
-  const maxHP = pokemon.statOf("hp");
-  const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
-  return poisonDamage;
-}
-
-function applyParalysisEffect(pokemon) {
-  const speedStat = pokemon.statOf("speed");
-  speedStat.base_stat = Math.floor(speedStat.base_stat / 2); // Speed halved
-  return Math.random() < 0.25; // 25% chance to skip turn
-}
-
 function applyConfusionEffect(pokemon) {
   const isConfused = Math.random() < 0.5; // 50% chance to hurt itself
   if (isConfused) {
@@ -86,8 +74,22 @@ class BurnEffect extends Effect {
     
     _calculateEffectDamage() {
         const maxHP = this.state.statOf("hp");
-        const effectDamage = Math.floor(maxHP / 18); // 1/8th HP loss
+        const effectDamage = Math.floor(maxHP / 8); // 1/8th HP loss
         return effectDamage;
+    }
+}
+
+class PoisonEffect extends Effect {
+    static effectName = "poison"
+
+    onWave() {
+        this.state.decreaseHealth(this._calculateEffectDamage())
+    }
+    
+    _calculateEffectDamage() {
+        const maxHP = this.state.statOf("hp");
+        const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
+        return poisonDamage;
     }
 }
 
@@ -108,14 +110,17 @@ class ParalyzeEffect extends Effect {
         this.state._stats.speed = Math.floor(speedStat * 2)
     }
 
-    onTurn() {
+    onTurn(battleField) {
         const canNotMove = Math.random() < 0.25;
-        this.state._canMove.enabled = !canNotMove
+        if (canNotMove) {
+            this.state._canMoveAfter.turn = battleField.turnNo
+        }
     }
 }
 
 export const EFFECTS = [
     BurnEffect,
+    PoisonEffect,
     ParalyzeEffect,
 ]
 

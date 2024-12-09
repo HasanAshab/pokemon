@@ -38,18 +38,32 @@ export class BattleField extends EventEmitter {
         return new this(pokemon1, pokemon2, states)
     }
     
+    turnNo = 1
+    waveNo = 1
+
+    
     constructor(pokemon1, pokemon2, states) {
         super()
         
+        states.get(pokemon1).battleField = this
+        states.get(pokemon2).battleField = this
+
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
-
         this._states = states
 
+        this.on("turn", (...args) => {
+            this.turnNo++
+            this.pokemon1.state.emit("turn", ...args)
+            this.pokemon2.state.emit("turn", ...args)
+        })
+        
         this.on("wave", (...args) => {
+            this.waveNo++
             this.pokemon1.state.emit("wave", ...args)
             this.pokemon2.state.emit("wave", ...args)
         })
+
     }
 
     state(pokemon) {
@@ -81,10 +95,11 @@ export class BattleField extends EventEmitter {
         if ((move2.makes_contact && !dodged1) || !move2.makes_contact || !canMove1) {
             applyStatChanges(this.pokemon2, this.pokemon1, move2)
         }
-
-        this.state(this.pokemon1).emit("move-used", move1) 
-        this.state(this.pokemon2).emit("move-used", move2) 
-
+    
+        
+        canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
+        canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
+        
         if (await damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
             this.state(this.pokemon1).effects.add(...effects1)
@@ -141,12 +156,22 @@ class BattleState extends Observable {
         return new this(pokemon, moves)
     }
     
+    _statChanges = {};
+    _canMoveAfter = { 
+        never: false,
+        turn: 0,
+        wave: 0
+    };
+
+    
     constructor(pokemon, moves) {
         super()
         this.pokemon = pokemon;
         this.moves = moves;
-        this.refresh();
-        
+        this._stats = { ...this.pokemon.data.stats };
+        this.retreat = this.pokemon.meta.retreat;
+        this.effects = new EffectManager(this);
+
         this.on("wave", () => {
             this.addWaveRetreat()
         })
@@ -154,14 +179,6 @@ class BattleState extends Observable {
             this.retreat -= move.retreat
             this.reducePP(move.name)
         })
-    }
-
-    refresh() {
-        this._statChanges = {};
-        this._stats = { ...this.pokemon.data.stats };
-        this._canMove = { enabled: true, afterTurn: 0 };
-        this.retreat = this.pokemon.meta.retreat;
-        this.effects = new EffectManager(this);
     }
 
     addWaveRetreat() {
@@ -233,6 +250,8 @@ class BattleState extends Observable {
     }
 
     canMove() {
-        return this._canMove.enabled
+        return !this._canMoveAfter.never
+        && this._canMoveAfter.turn < this.battleField.turnNo
+        && this._canMoveAfter.wave < this.battleField.waveNo
     }
 }
