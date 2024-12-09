@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An attack that may shock the foe into flinching.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ghost",
     "effect_chance": 30,
     "effect_names": [

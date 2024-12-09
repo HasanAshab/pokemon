@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user turns the ground under everyone\u2019s feet to grass for five turns. This restores the HP of Pok\u00e9mon on the ground a little every turn.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

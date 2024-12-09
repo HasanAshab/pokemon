@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Steals HP from a sleeping victim.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [

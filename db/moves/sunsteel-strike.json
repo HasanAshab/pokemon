@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user slams into the target with the force of a meteor. This move can be used on the target  regardless of its Abilities.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

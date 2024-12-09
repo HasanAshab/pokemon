@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user regains up to half of its max HP. It restores more HP in a sandstorm.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ground",
     "effect_chance": null,
     "effect_names": [],

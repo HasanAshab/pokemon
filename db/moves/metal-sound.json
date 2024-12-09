@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "Emits a horrible screech that sharply lowers SP. DEF.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

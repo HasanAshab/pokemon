@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Boosts strength sharply, but lowers abilities.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": 100,
     "effect_names": [],

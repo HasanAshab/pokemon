@@ -5,6 +5,7 @@
     "pp": null,
     "description": "No description...",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "shadow",
     "effect_chance": null,
     "effect_names": [],

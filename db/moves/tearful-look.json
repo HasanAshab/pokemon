@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user gets teary eyed to make the target lose its combative spirit. This lowers the target\u2019s Attack and Sp. Atk stats.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": 100,
     "effect_names": [],

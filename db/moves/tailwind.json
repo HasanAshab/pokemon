@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user whips up a turbulent whirlwind that ups the Speed of all party Pok\u00e9mon for three turns.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

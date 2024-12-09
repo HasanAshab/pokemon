@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Grips with power\u00ad ful pincers.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

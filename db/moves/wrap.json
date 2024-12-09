@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Squeezes the foe for 2-5 turns.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": 100,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Morpeko attacks and raises its Speed with the energy stored in its cheeks. This move\u2019s type changes depending on the user\u2019s form.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": 100,
     "effect_names": [],

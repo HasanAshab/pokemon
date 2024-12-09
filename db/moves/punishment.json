@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "This attack\u2019s power increases the more the foe has powered up with stat changes. ",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

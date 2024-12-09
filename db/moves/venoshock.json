@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user drenches the target in a special poisonous liquid. Its power is doubled if the target is poisoned.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [

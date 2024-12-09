@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Powerful but makes the user faint.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

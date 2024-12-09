@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user manipulates magnetic fields, which raises the Defense and Sp. Def stats of ally Pok\u00e9mon with the Plus or Minus Ability.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

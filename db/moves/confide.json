@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user tells the target a secret, and the target loses its ability to concentrate. This lowers the target\u2019s Sp. Atk stat.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": 100,
     "effect_names": [],

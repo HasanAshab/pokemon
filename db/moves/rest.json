@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Sleep for 2 turns to fully recover.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [

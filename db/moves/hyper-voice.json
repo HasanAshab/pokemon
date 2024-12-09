@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "A loud attack that uses sound waves to injure.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

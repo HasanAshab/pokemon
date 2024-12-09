@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user snares the foe with grass and trips it. The heavier the foe, the greater the damage.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

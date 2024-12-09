@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user raises all its stats by using some of its HP.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": 100,
     "effect_names": [],

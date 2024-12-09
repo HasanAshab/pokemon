@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user bombards the target with telekinetic force. A wondrous wall of light is put up to weaken the power of the opposing Pok\u00e9mon\u2019s special moves.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

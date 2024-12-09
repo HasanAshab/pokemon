@@ -63,9 +63,22 @@ class DamageManager {
             const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
             const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
 
-            const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1)
+            const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1) 
             const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
-            const remainingDamage = fixFloat(remDam2 - remDam1)
+            
+            let remainingDamage
+            
+            if (damage1.move.makes_contact !== damage2.move.makes_contact) {
+                console.log(damage1.move.makes_contact);
+                remainingDamage = damage1.move.makes_contact === false ? fixFloat(remDam1) : fixFloat(remDam2)
+            }
+
+            else {
+                remainingDamage = fixFloat(remDam2 - remDam1)
+            }
+            
+            console.log(remainingDamage, remDam1, remDam2);
+            
             this._cache = [pokemon, remainingDamage]
         }
         const damage = this._cache[0] === pokemon ? this._cache[1] : -this._cache[1]
@@ -108,27 +121,6 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
         [pokemon2, damage2],
     ])
 
-    if (move2.isNotMove) {
-        // No target or second move: calculate base damage only
-        const hitData = {
-            damageCount: calculateBaseDamage(pokemon1, move1, pokemon2)
-        }
-        const critChance = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
-        hitData.isCritical = Math.random() < critChance
-        const criticalMultiplier = hitData.isCritical ? CRIT_MULTIPLIER : 1;
-        hitData.randomModifier = Math.random() * 0.15 + 0.85;
-        hitData.effectiveness = await pokemon2.effectiveness(move1.type);
-        hitData.damageCount = (
-                hitData.damageCount 
-                * hitData.effectiveness
-                * hitData.randomModifier
-                * criticalMultiplier
-            );
-        const hit = new Hit(hitData)
-        damage1.hits.push(hit)
-        return damages;
-    }
-    
     const hitData1 = {}
 
     // Calculate type effectiveness for pokemon1's move

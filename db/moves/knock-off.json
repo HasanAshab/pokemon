@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Knocks down the foe\u2019s held item to prevent its use.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

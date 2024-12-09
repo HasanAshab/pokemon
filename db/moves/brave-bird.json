@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user tucks in its wings and charges from a low altitude. The user also takes serious damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

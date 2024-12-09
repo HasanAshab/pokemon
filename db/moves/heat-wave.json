@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Exhales a hot breath on the foe. May inflict a burn.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": 10,
     "effect_names": [

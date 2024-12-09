@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user, Primarina, summons a massive amount of  water using its Z-Power and attacks the target with  full force.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

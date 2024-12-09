@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "All stat changes affecting the target turn topsy-turvy and become the opposite of what they were.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

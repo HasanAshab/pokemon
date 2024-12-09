@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user releases a horrible aura imbued with dark thoughts. It may also make the target flinch.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": 20,
     "effect_names": [

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Straight-arm punches that strike the foe 2 to 5 times.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

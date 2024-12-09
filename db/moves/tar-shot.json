@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user pours sticky tar over the target, lowering the target\u2019s Speed stat. The target becomes weaker to Fire-type moves.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "rock",
     "effect_chance": 100,
     "effect_names": [],

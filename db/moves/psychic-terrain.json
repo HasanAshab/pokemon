@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "This protects Pok\u00e9mon on the ground from priority moves and powers up Psychic-type moves for five turns.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

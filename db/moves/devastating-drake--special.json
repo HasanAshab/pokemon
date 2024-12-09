@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "Dummy Data",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

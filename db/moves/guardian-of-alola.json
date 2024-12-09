@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user, the Land Spirit Pok\u00e9mon, obtains Alola\u2019s energy using its Z-Power and attacks the target with full force. This reduces the target\u2019s HP greatly.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

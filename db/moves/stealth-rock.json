@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user lays a trap of levitating stones around the foe. The trap hurts foes that switch into battle.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "rock",
     "effect_chance": null,
     "effect_names": [],

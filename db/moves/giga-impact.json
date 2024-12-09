@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user charges at the foe using every bit of its power. The user must rest on the next turn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

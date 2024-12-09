@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A sharp-fanged attack. May badly poison the foe.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "poison",
     "effect_chance": 50,
     "effect_names": [

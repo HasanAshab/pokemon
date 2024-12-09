@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user dramatically drops the temperature using its Z-Power and freezes the target with full force. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

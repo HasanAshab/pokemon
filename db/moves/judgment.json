@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user releases countless shots of light. Its type varies with the kind of Plate the user is holding.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

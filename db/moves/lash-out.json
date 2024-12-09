@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user lashes out to vent its frustration toward the target. If the user\u2019s stats were lowered during this turn, the power of this move is doubled.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

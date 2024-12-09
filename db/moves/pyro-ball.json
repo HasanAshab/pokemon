@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks by igniting a small stone and launching it as a fiery ball at the target. This may also leave the target with a burn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": 10,
     "effect_names": [

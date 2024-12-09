@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "After obtaining Z-Power, the user, Eevee, gets energy from its evolved friends and boosts its stats sharply.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": 100,
     "effect_names": [],

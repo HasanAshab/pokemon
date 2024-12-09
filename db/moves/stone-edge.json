@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user stabs the foe with a sharpened stone. It has a high critical-hit ratio. ",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": null,
     "effect_names": [],

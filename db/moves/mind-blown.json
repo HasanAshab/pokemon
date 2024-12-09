@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks everything around it by causing its own head to explode. This also damages the user.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

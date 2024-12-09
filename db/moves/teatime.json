@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user has teatime with all the Pok\u00e9mon in the battle. Each Pok\u00e9mon eats its held Berry.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

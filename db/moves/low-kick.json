@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "An attack that may cause flinching.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

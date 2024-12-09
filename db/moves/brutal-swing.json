@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user swings its body around violently to inflict damage on everything in its vicinity.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

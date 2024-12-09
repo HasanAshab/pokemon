@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Inflicts a burn on the foe with intense fire.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [

@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Tilling the soil, the user makes it easier for plants to grow. This raises the Attack and Sp. Atk stats of Grass-type Pok\u00e9mon.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ground",
     "effect_chance": 100,
     "effect_names": [],

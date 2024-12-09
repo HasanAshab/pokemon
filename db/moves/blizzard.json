@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "An attack that may freeze the foe.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ice",
     "effect_chance": 10,
     "effect_names": [

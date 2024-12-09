@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Always inflicts 40HP damage.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

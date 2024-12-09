@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user flings its held item at the foe to attack. Its power and effects depend on the item.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

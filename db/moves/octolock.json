@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user locks the target in and prevents it from fleeing. This move also lowers the target\u2019s Defense and Sp. Def every turn.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

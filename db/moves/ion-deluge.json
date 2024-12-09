@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "The user disperses electrically charged particles, which changes Normal-type moves to Electric-type moves.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

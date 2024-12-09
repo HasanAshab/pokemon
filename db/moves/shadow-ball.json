@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An attack that may lower SPCL.DEF.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": 20,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Cloaking itself in high energy, the user slams into the target. The memory held determines the move\u2019s type.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

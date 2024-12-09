@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "An attack that may lower ATTACK.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ice",
     "effect_chance": 10,
     "effect_names": [],

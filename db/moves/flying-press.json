@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user dives down onto the target from the sky. This move is Fighting and Flying type simultaneously.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

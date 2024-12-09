@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user tackles the foe with a high-speed spin. The slower the user, the greater the damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

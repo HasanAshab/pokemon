@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "A powdery attack that may raise abilities.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": 10,
     "effect_names": [],

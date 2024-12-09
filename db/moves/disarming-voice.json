@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Letting out a charming cry, the user does emotional damage to opposing Pok\u00e9mon. This attack never misses.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

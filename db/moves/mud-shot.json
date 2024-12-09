@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Hurls mud at the foe and reduces SPEED.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ground",
     "effect_chance": 100,
     "effect_names": [],

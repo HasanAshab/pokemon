@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user attacks everything around it. The user\u2019s HP is restored by half the damage taken by those hit.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

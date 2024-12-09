@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user throws down a giant thunderbolt. This attack does greater damage when influenced by an enormous flame.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

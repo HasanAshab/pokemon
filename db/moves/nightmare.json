@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A sleeper loses 1/4 HP every turn.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [

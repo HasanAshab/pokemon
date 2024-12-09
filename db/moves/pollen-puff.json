@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks the enemy with a pollen puff that explodes. If the target is an ally, it gives the ally a pollen puff that restores its HP instead.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

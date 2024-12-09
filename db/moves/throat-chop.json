@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks the target\u2019s throat, and the resultant suffering prevents the target from using moves that emit sound for two turns.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": 100,
     "effect_names": [],

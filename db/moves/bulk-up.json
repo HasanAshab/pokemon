@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Bulks up the body to boost both ATTACK and DEFENSE.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

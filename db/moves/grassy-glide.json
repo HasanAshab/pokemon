@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Gliding on the ground, the user attacks the target. This move always goes first on Grassy Terrain.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

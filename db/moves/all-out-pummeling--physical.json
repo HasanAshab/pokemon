@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user rams an energy orb created by its Z-Power into the target with full force. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

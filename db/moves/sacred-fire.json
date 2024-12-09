@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "An attack that may inflict a burn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": 50,
     "effect_names": [

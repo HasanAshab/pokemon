@@ -5,6 +5,7 @@
     "pp": 5,
     "description": "No description...",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

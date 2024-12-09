@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user, having mastered the Water style, strikes the target with a flowing motion three times in a row. This attack always results in a critical hit.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

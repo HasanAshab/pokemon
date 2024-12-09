@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "Sharply reduces the foe's SPEED.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

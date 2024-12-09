@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user slams the foe with a tail, etc. The target is hit twice in a row. ",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

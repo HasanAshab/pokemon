@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Borrowing the power of the moon, the user attacks the target. This may also lower the target\u2019s Sp. Atk stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": 30,
     "effect_names": [],

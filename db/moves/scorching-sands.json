@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user throws scorching sand at the target to attack. This may also leave the target with a burn.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ground",
     "effect_chance": 30,
     "effect_names": [],

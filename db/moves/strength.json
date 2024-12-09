@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A powerful physi\u00ad cal attack.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

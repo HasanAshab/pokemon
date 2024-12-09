@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "An attack that may lower SPEED.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": 10,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user throws a stone or projectile to attack an opponent. A flying Pok\u00e9mon will fall to the ground when hit.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": 100,
     "effect_names": [],

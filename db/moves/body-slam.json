@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An attack that may cause paralysis.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": 30,
     "effect_names": [

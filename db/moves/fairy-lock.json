@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "By locking down the battlefield, the user keeps all Pok\u00e9mon from fleeing during the next turn.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

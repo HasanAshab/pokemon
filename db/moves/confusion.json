@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "An attack that may cause confusion.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": 10,
     "effect_names": [

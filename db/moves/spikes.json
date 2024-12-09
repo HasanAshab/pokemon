@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Hurts foes when they switch out.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ground",
     "effect_chance": null,
     "effect_names": [],

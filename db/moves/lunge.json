@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user makes a lunge at the target, attacking with full force. This also lowers the target\u2019s Attack stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": 100,
     "effect_names": [],

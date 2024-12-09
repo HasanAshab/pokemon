@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user tears the foe along with the space around it. This move has a high critical-hit ratio.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

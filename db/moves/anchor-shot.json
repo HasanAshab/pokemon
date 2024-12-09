@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user entangles the target with its anchor chain while attacking. The target becomes unable to flee.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

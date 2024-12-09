@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user hits the target with throwing stars two to five times in a row. This move always goes first.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

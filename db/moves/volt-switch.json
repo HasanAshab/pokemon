@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "After making its attack, the user rushes back to switch places with a party Pok\u00e9mon in waiting.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

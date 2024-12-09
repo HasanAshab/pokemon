@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Dives underwater the first turn and strikes next turn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

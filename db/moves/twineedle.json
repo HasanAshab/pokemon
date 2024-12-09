@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Jabs the foe twice using stingers.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": 20,
     "effect_names": [

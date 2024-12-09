@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user lets out a damaging belch at the target. The user must eat a held Berry to use this move.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user weaves a sticky net around the opposing team, which lowers their Speed stat upon switching into battle.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

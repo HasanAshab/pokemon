@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user attacks with electric voltage rising from the ground. This move\u2019s power doubles when the target is on Electric Terrain.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A strange beam attack that may confuse the foe.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": 10,
     "effect_names": [

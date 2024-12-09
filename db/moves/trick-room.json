@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user creates a bizarre area in which slower Pok\u00e9mon get to move first for five turns.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

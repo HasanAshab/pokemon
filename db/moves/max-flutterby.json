@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "This is a Bug-type attack Dynamax Pok\u00e9mon use. This lowers the target\u2019s Sp. Atk stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

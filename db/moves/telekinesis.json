@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user makes the target float with its psychic power. The target is easier to hit for three turns.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

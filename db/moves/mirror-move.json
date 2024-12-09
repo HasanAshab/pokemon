@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Counters with the same move.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

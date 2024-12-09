@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user charges its target, surrounding itself with a great amount of electricity. It may leave the target with paralysis.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": 20,
     "effect_names": [

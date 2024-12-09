@@ -1,5 +1,7 @@
 try dodge
 make contact
+
+
 multi hit move
 xp using cp
 abilities effects (eg guts)
@@ -14,7 +16,3 @@ js instead of json
 
 move damage increase ember razorleaf (.25 ulta)
 
-
-now i want to add support to multi hit moves.
-move1 and move2 both can be multi hit, or only
-one or even both can be single hit

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user bites the foe. If the foe is holding a Berry, the user eats it and gains its effect.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "On the second turn, the user hits the target with electrically charged ice. It may leave the target with paralysis.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": 30,
     "effect_names": [

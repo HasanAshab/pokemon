@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Inflicts damage identical to the user\u2019s level.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

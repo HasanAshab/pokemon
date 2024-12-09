@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Fires spikes to hit 2-5 times.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

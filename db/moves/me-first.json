@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user tries to cut ahead of the foe to steal and use the foe\u2019s intended move with greater power.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

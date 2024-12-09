@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Slashes with a sharp leaf. High critical-hit ratio.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

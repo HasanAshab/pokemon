@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "In addition to protecting the user from attacks, this move also poisons any attacker that makes direct contact.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [

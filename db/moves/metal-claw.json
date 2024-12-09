@@ -24,6 +24,7 @@
     "pp": 12,
     "description": "An attack that may up user's ATTACK.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": 10,
     "effect_names": [],

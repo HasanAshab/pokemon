@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "This is a Fire-type attack Dynamax Pok\u00e9mon use. The user intensifies the sun for five turns.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

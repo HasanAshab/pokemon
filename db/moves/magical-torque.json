@@ -5,6 +5,7 @@
     "pp": 3,
     "description": "No description...",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

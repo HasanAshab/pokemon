@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Powerful, but leaves the user immobile the next turn.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

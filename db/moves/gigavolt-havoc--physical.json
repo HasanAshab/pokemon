@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user hits the target with a powerful electric current collected by its Z-Power. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

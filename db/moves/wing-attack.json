@@ -24,6 +24,7 @@
     "pp": 12,
     "description": "Strikes the target with wings.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Letting out a noble roar, the user intimidates the target and lowers its Attack and Sp. Atk stats.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": 100,
     "effect_names": [],

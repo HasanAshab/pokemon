@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user launches a huge boulder at the foe to attack. It must rest on the next turn, however.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": null,
     "effect_names": [],

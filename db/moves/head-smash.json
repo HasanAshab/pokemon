@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user delivers a life-endangering head butt at full power. The user also takes terrible damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": null,
     "effect_names": [],

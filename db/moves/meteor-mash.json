@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Fires a meteor-like punch. May raise ATTACK.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": 20,
     "effect_names": [],

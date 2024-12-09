@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Stops the foe from moving with rocks and cuts SPEED.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": 100,
     "effect_names": [],

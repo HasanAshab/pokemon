@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "Z-Power brings out the true capabilities of the user, Snorlax. The Pok\u00e9mon moves its enormous body energetically and attacks the target with full force.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

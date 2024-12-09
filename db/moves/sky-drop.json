@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user takes the target into the sky, then drops it during the next turn. The target cannot attack while in the sky.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

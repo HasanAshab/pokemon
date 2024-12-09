@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "With its mysterious power, the user swaps the effects on either side of the field.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

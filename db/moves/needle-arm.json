@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Attacks with thorny arms. May cause flinching.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": 30,
     "effect_names": [

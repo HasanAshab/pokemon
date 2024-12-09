@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Boosts water-type moves for 5 turns.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

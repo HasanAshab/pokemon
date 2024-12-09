@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user vanishes somewhere, then strikes the target on the next turn. This move hits even if the target protects itself.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

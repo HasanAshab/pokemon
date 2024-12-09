@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Sharply increases the user's SPEED.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

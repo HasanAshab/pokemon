@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Always leaves at least 1HP.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user\u2019s mysterious psychic wave changes the target\u2019s Ability to Simple.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

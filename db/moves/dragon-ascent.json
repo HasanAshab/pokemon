@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "After soaring upward, the user attacks its target by dropping out of the sky at high speeds, although it lowers its own Defense and Sp. Def in the process.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": 100,
     "effect_names": [],

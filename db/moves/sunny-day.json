@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Boosts fire-type moves for 5 turns.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user protects itself and its allies from status moves with a mysterious power. This does not stop moves that do damage.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

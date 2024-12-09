@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user acts bad and attacks the target. A wondrous wall of light is put up to weaken the power of the opposing Pok\u00e9mon\u2019s physical moves.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

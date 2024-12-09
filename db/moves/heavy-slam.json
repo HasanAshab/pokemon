@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user slams into the target with its heavy body. The more the user outweighs the target, the greater its damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

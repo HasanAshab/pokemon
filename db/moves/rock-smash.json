@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A rock-crushing attack that may lower DEFENSE.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": 50,
     "effect_names": [],

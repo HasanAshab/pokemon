@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "With a parting threat, the user lowers the target\u2019s Attack and Sp. Atk stats. Then it switches with a party Pok\u00e9mon.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": 100,
     "effect_names": [],

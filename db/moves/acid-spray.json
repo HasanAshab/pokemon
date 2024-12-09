@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user spits fluid that works to melt the target. This harshly reduces the target\u2019s Sp. Def stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": 100,
     "effect_names": [],

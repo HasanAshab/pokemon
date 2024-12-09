@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "An attack that intensifies on each successive hit.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

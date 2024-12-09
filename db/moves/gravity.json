@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Gravity is intensified for five turns, making moves involving flying unusable and negating Levitation.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

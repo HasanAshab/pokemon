@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "After obtaining Z-Power, the user, Alolan Raichu, attacks the target with full force. This move leaves the target with paralysis.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": 100,
     "effect_names": [

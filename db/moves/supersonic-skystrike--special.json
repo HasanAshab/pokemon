@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "Dummy Data",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

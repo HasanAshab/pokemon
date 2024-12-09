@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "This is Eternatus\u2019s most powerful attack in its original form. The user can\u2019t move on the next turn.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

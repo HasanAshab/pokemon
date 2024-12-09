@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Shoots 2 to 5 seeds in a row to strike the foe.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

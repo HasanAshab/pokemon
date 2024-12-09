@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user heals the target\u2019s status condition. If the move succeeds, it also restores the user\u2019s own HP.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [],

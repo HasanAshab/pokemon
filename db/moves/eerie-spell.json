@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks with its tremendous psychic power. This also removes 3 PP from the target\u2019s last move.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

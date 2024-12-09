@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user sheds part of its body to make itself lighter and sharply raise its Speed stat.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

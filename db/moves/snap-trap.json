@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user snares the target in a snap trap for four to five turns.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": 100,
     "effect_names": [],

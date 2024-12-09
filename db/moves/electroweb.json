@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user captures and attacks opposing Pok\u00e9mon by using an electric net. It reduces the targets\u2019 Speed stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": 100,
     "effect_names": [],

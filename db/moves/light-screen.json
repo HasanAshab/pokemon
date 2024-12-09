@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Ups SPCL.DEF with a wall of light.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

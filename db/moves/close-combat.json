@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user fights the foe in close without guarding itself. It also cuts the user\u2019s Defense and Sp. Def.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": 100,
     "effect_names": [],

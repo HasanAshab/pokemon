@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Heals all status problems with a soothing scent.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

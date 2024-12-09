@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "Negates accuracy reduction moves.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

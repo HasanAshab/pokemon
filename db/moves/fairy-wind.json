@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "The user stirs up a fairy wind and strikes the target with it.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

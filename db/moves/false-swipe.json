@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "Leaves the foe with at least 1HP.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

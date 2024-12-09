@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "An energy-draining punch. The user\u2019s HP is restored by half the damage taken by the target.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

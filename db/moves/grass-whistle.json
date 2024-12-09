@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Lulls the foe into sleep with a pleasant melody.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [

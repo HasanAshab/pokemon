@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A fast and unavoidable electric attack.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

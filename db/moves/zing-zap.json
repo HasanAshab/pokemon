@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "A strong electric blast crashes down on the target, giving it an electric shock. This may also make the target flinch.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": 30,
     "effect_names": [

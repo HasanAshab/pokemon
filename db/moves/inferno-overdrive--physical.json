@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user breathes a stream of intense fire toward the target with the full force of its Z-Power. The power varies depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

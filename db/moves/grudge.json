@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "If the user faints, deletes the PP of the final move.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

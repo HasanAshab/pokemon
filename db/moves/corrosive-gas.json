@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "The user surrounds everything around it with highly acidic gas and melts away items they hold.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [],

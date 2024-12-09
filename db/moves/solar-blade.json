@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "In this two-turn attack, the user gathers light and fills a blade with the light\u2019s energy, attacking the target on the next turn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

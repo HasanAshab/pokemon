@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Using its psychic power of suggestion, the user transfers its status problems to the target.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

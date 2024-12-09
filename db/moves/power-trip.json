@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user boasts its strength and attacks the target. The more the user\u2019s stats are raised, the greater the move\u2019s power.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

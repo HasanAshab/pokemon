@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user stomps down on the ground and attacks everything in the area. Hit Pok\u00e9mon\u2019s Speed stat is reduced.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ground",
     "effect_chance": 100,
     "effect_names": [],

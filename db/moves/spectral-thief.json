@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user hides in the target\u2019s shadow, steals the target\u2019s stat boosts, and then attacks.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user creates a huge whirling current using its Z-Power to swallow the target with full force. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

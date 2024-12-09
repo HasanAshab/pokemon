@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Attacks with a flurry of down. May lower SP. ATK.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": 50,
     "effect_names": [],

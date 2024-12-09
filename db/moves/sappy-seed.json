@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user grows a gigantic stalk that scatters seeds to attack the target. The seeds drain the target\u2019s HP every turn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": 100,
     "effect_names": [],

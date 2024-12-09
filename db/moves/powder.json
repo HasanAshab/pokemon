@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user covers the target in a powder that explodes and damages the target if it uses a Fire-type move.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

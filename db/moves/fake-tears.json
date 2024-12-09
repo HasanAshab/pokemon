@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Feigns crying to sharply lower the foe\u2019s SP. DEF.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

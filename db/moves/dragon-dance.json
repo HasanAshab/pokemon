@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A mystical dance that ups ATTACK and SPEED.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user hurls an electric orb at the target. The faster the user is than the target, the greater the damage.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

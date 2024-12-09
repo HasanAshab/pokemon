@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "A column of fire hits opposing Pok\u00e9mon. When used with its Grass equivalent, its damage increases into a vast sea of fire.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

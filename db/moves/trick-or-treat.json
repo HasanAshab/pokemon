@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user takes the target trick-or-treating. This adds Ghost type to the target\u2019s type.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

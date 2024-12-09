@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user rubs the scales on its entire body and makes a huge noise to attack the opposing Pok\u00e9mon. The user\u2019s Defense stat goes down after the attack.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": 100,
     "effect_names": [],

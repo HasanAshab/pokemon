@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user charges a huge wave with electricity and hits the opposing Pok\u00e9mon with the wave. This may also leave the opposing Pok\u00e9mon with paralysis.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": 30,
     "effect_names": [],

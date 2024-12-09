@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "The user whirls its fists to send a wave of pure vacuum at the foe. This move always goes first.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

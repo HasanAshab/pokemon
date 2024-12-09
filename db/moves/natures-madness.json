@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user hits the target with the force of nature. It halves the target\u2019s HP.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

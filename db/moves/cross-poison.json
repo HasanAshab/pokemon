@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A slashing attack that may also leave the target poisoned. It has a high critical-hit ratio.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "poison",
     "effect_chance": 10,
     "effect_names": [

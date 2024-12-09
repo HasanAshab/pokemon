@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Obstacles are moved, reducing the foe\u2019s evasion stat. It can also be used to clear deep fog, etc.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

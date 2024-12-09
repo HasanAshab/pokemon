@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user instructs the target to use the target\u2019s last move again.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

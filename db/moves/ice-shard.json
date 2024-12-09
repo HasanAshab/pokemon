@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "The user flash freezes chunks of ice and hurls them. This move always goes first.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

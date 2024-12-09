@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A life-risking tackle that slightly hurts the user.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": 10,
     "effect_names": [

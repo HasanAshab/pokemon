@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "1st turn: Prepare 2nd turn: Attack",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": 30,
     "effect_names": [

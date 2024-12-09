@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user sharpens its claws to boost its Attack stat and accuracy.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

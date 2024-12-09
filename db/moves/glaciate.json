@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user attacks by blowing freezing cold air at opposing Pok\u00e9mon. This attack reduces the targets\u2019 Speed stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ice",
     "effect_chance": 100,
     "effect_names": [],

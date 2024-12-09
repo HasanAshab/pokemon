@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An electric punch. It may paralyze.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": 10,
     "effect_names": [

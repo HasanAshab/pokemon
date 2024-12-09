@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "An inferno of scarlet flames torches everything around the user. It may leave targets with a burn.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": 30,
     "effect_names": [

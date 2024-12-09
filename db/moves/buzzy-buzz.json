@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user shoots a jolt of electricity to attack the target. This also leaves the target with paralysis.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": 100,
     "effect_names": [],

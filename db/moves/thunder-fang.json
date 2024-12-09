@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user bites with electrified fangs. It may also make the foe flinch or become paralyzed.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": 10,
     "effect_names": [

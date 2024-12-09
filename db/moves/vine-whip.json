@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "Whips the foe with slender vines.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

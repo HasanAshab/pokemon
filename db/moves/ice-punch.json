@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An icy punch. May cause freezing.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": 10,
     "effect_names": [

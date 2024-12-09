@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Attacks 5 turns with rising power.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": null,
     "effect_names": [],

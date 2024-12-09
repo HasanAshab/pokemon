@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user emits a sinister ray to attack the target. This move can be used on the target regardless of  its Abilities.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

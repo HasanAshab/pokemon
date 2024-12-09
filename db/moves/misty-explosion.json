@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks everything around it and faints upon using this move. This move\u2019s power is increased on Misty Terrain.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

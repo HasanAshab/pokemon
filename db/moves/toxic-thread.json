@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user shoots poisonous threads to poison the target and lower the target\u2019s Speed stat.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": 100,
     "effect_names": [

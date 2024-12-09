@@ -24,6 +24,7 @@
     "pp": 12,
     "description": "Whips up a strong gust of wind.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

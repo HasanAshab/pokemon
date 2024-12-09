@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Destroys barriers such as REFLECT and causes damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "This move prevents the user and the target from switching out until either of them faints. The effect goes away if either of the Pok\u00e9mon leaves the field.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A charging attack that may also leave the foe confused. It can also be used to scale rocky walls.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": 20,
     "effect_names": [

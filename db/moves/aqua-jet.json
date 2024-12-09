@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user lunges at the foe at a speed that makes it almost invisible. It is sure to strike first.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A strong water- type attack.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

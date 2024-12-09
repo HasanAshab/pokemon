@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks by throwing a clump of special mud. All status changes are returned to normal.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [],

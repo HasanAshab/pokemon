@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user traps the target in a cage of sparking electricity for four to five turns.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": 100,
     "effect_names": [],

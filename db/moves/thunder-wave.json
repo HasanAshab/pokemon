@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A move that may cause paralysis.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [

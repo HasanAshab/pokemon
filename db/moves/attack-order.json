@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user calls out its underlings to pummel the foe. It has a high critical-hit ratio.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Confuses the foe, but raises its SP. ATK.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [

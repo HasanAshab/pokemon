@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user attacks by shooting water bubbles at the target. It then absorbs water and restores its HP by half the damage taken by the target.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

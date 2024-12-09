@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "An attack that may poison the foe.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": 40,
     "effect_names": [

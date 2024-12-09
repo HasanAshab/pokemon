@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "A storm of sharp leaves is whipped up. The attack\u2019s recoil sharply reduces the user\u2019s Sp. Atk stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": 100,
     "effect_names": [],

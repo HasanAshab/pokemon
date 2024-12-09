@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "After obtaining Z-Power, the user, Marshadow, punches and kicks the target consecutively with full force.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

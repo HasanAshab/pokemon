@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user faints and lowers the foe\u2019s abilities.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

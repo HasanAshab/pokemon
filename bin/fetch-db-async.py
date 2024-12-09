@@ -117,6 +117,7 @@ def serialize_move(data):
         "pp": pp,
         "description": get_english_description(data),
         "damage_class": data["damage_class"]["name"],
+        "makes_contact": data["damage_class"]["name"] == "physical",
         "type": data["type"]["name"],
         "effect_chance": data.get("effect_chance"),
         "effect_names": get_effects(data),

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The more Eevee loves its Trainer, the greater the move\u2019s power. It never misses.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

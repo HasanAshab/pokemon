@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks its target by hitting it with brutal strikes. The target is hit twice in a row.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

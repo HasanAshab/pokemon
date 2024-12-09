@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "After obtaining Z-Power, the user, Lunala, attacks the target with full force. This move can ignore the effect of the target\u2019s Ability.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

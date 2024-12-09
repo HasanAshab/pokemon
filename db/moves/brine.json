@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "If the foe\u2019s HP is down to about half, this attack will hit with double the power.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

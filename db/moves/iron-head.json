@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The foe slams the target with its steel-hard head. It may also make the target flinch.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": 30,
     "effect_names": [

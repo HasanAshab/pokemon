@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "An attack that may cause paralysis.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ghost",
     "effect_chance": 30,
     "effect_names": [

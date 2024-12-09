@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user draws power to attack by using its held Berry. The Berry determines its type and power.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

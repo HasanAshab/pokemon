@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user controls the target with its Z-Power and hurts the target with full force. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

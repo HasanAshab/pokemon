@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user turns the target\u2019s power against it. The higher the target\u2019s Attack stat, the greater the damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

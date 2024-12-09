@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks by throwing two steel gears at its target.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

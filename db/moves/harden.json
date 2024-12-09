@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Raises the user's DEFENSE.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

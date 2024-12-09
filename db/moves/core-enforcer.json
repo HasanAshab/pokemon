@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "If the Pok\u00e9mon the user has inflicted damage on have already used their moves, this move eliminates the effect of the target\u2019s Ability.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

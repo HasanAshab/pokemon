@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user heightens its mental focus and unleashes its power. It may also lower the target\u2019s Sp. Def.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fighting",
     "effect_chance": 10,
     "effect_names": [],

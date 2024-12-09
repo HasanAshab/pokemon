@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "This move reduces damage from physical and special moves for five turns. This can be used only in a hailstorm.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

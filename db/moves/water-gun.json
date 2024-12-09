@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "Squirts water to attack.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

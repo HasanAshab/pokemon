@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user bites with flame-cloaked fangs. It may also make the foe flinch or sustain a burn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": 10,
     "effect_names": [

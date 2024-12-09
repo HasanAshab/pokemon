@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "Attacks the foe by firing 2 to 5 icicles in a row.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "It prevents the foe from using its held item. Its Trainer is also prevented from using items on it.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

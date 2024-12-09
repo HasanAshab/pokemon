@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Always inflicts 20HP damage.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

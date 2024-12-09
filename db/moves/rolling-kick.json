@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A fast, spinning kick.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": 30,
     "effect_names": [

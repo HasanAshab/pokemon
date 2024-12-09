@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user attacks by breathing a special, hot fire. This also lowers the target\u2019s Sp. Atk stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": 100,
     "effect_names": [],

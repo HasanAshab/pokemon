@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks with electrically charged fists. This move changes Normal-type moves to Electric-type moves.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

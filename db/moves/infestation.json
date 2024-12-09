@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The target is infested and attacked for four to five turns. The target can\u2019t flee during this time.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": 100,
     "effect_names": [],

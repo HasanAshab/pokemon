@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A tackle that also hurts the user.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

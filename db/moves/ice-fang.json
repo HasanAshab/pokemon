@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user bites with cold-infused fangs. It may also make the foe flinch or freeze. ",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": 10,
     "effect_names": [

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Sharply increases user's DEFENSE.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

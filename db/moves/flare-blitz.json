@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user cloaks itself in fire and charges at the foe. The user sustains serious damage, too.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": 10,
     "effect_names": [

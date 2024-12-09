@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "An attack that may raise all stats.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "rock",
     "effect_chance": 10,
     "effect_names": [],

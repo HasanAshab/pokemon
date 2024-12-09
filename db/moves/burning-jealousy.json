@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks with energy from jealousy. This leaves all opposing Pok\u00e9mon that have had their stats boosted during the turn with a burn.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": 100,
     "effect_names": [],

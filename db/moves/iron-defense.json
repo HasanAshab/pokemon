@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Hardens the body\u2019s surface to sharply raise DEFENSE.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

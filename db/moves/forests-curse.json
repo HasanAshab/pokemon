@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user puts a forest curse on the target. Afflicted targets are now Grass type as well.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

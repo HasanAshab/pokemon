@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user skitters behind the target to attack. This also lowers the target\u2019s Sp. Atk stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": 100,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks by hurling a blizzard-cloaked icicle lance at opposing Pok\u00e9mon.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

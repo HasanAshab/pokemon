@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user cuts its target with sharp shells. This attack may also lower the target\u2019s Defense stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": 50,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks a target with a pillar of light. This move inflicts Attack or Sp. Atk damage\u2014whichever stat is higher for the user.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

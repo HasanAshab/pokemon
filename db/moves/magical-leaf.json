@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Attacks with a strange leaf that cannot be evaded.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

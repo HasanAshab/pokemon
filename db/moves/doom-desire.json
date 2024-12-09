@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Summons strong sunlight to attack 2 turns later.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

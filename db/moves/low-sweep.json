@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user attacks the target\u2019s legs swiftly, reducing the target\u2019s Speed stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": 100,
     "effect_names": [],

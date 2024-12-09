@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "Has a high critical-hit ratio. May also poison.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "poison",
     "effect_chance": 10,
     "effect_names": [

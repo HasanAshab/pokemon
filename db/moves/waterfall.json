@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An aquatic charge attack.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": 20,
     "effect_names": [

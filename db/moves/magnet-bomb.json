@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user launches a steel bomb that sticks to the target. This attack will not miss.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

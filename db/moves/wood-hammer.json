@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user slams its rugged body into the foe to attack. The user also sustains serious damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

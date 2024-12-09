@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Covers the user in mud to raise electrical resistance.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "ground",
     "effect_chance": null,
     "effect_names": [],

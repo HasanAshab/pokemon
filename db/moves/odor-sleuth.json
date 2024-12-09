@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "Negates the foe\u2019s efforts to heighten evasiveness.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

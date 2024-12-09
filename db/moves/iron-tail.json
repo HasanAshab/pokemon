@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An attack that may reduce DEFENSE.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": 30,
     "effect_names": [],

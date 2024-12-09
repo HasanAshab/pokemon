@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks by slicing with its long horns. The target\u2019s stat changes don\u2019t affect this attack\u2019s damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A strong, spin\u00ad ning-peck attack.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

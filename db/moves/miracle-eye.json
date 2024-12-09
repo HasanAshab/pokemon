@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "Enables the user to hit a Ghost type with any type of move. It also enables the user to hit an evasive foe.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

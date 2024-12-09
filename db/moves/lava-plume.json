@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An inferno of scarlet flames washes over all Pok\u00e9mon in battle. It may also inflict burns.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": 30,
     "effect_names": [

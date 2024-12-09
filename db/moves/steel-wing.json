@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "Stiff wings strike the foe.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": 10,
     "effect_names": [],

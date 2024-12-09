@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Taunts the foe into only using attack moves.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dark",
     "effect_chance": null,
     "effect_names": [],

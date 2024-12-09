@@ -5,6 +5,7 @@
     "pp": 5,
     "description": "No description...",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

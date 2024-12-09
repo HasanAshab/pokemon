@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "The user strikes with a tough punch as fast as a bullet. This move always goes first.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

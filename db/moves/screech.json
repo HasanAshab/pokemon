@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "An earsplitting screech harshly lowers the target\u2019s Defense stat.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

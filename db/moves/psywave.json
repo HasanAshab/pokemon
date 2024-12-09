@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "An attack with variable power.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

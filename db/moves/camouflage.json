@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Alters the POK\u00e9MON\u2019s type depending on the location.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

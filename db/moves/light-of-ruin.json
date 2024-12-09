@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Drawing power from the Eternal Flower, the user fires a powerful beam of light. This also damages the user quite a lot.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

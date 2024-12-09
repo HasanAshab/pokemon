@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user rends the target with its hard gills. If the user attacks before the target, the power of this move is doubled.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 8,
     "description": "Hacks with razorlike wind. High critical-hit ratio.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

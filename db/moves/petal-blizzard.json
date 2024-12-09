@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user stirs up a violent petal blizzard and attacks everything around it.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

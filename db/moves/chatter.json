@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user attacks using a sound wave based on words it has learned. It may also confuse the foe.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": 100,
     "effect_names": [

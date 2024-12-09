@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The power varies with the POK\u00e9MON.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

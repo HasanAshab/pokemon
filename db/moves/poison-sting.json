@@ -24,6 +24,7 @@
     "pp": 12,
     "description": "An attack that may poison the target.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "poison",
     "effect_chance": 30,
     "effect_names": [

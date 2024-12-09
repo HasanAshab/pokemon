@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Using a hyperspace hole, the user appears right next to the target and strikes. This also hits a target using Protect or Detect.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

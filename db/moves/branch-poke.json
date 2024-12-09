@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "The user attacks the target by poking it with a sharply pointed branch.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

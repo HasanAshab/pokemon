@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "A ground attack with random power.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ground",
     "effect_chance": null,
     "effect_names": [],

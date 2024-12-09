@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user focuses its willpower to its head and rams the foe. It may also make the target flinch.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "psychic",
     "effect_chance": 20,
     "effect_names": [

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Restores HP (varies by time).",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

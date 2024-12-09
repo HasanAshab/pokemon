@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user\u2019s body generates an eerie impulse. Exposing the target to it harshly lowers the target\u2019s Sp. Atk stat.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Converting its life-force into power, the user attacks opposing Pok\u00e9mon. The lower the user\u2019s HP, the lower the move\u2019s power.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

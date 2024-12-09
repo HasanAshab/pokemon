@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user crushes its targets by rolling over them with its rolled-up body. This attack may make the target flinch.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "bug",
     "effect_chance": 30,
     "effect_names": [

@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user collects energy from plants using its Z-Power and attacks the target with full force. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

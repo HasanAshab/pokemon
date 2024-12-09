@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user scatters a cloud of irritating powder to draw attention to itself. Opponents aim only at the user.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": null,
     "effect_names": [],

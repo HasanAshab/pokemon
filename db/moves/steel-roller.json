@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks while destroying the terrain. This move fails when the ground hasn\u2019t turned into a terrain.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

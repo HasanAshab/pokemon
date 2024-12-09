@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "Inflicts damage every turn.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "rock",
     "effect_chance": null,
     "effect_names": [],

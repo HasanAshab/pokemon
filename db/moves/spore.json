@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user scatters bursts of spores that induce sleep.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [

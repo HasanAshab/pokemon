@@ -24,6 +24,7 @@
     "pp": 13,
     "description": "The user attacks by pelting the target with leaves.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": null,
     "effect_names": [],

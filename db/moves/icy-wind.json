@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A chilling attack that lowers the foe\u2019s SPEED.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ice",
     "effect_chance": 100,
     "effect_names": [],

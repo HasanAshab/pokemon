@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "Blows away the foe & ends battle.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

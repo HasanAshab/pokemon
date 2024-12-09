@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user raises the Sp. Def stat of an ally Pok\u00e9mon by using a mysterious aroma.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

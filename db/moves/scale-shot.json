@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user attacks by shooting scales two to five times in a row. This move boosts the user\u2019s Speed stat but lowers its Defense stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

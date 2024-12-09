@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks the target with fire. If the target is holding a Berry, the Berry becomes burnt up and unusable.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

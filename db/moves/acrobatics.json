@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user nimbly strikes the target. If the user is not holding an item, this attack inflicts massive damage.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

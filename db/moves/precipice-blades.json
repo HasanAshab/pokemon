@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user attacks opposing Pok\u00e9mon by manifesting the power of the land in fearsome blades of stone.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ground",
     "effect_chance": null,
     "effect_names": [],

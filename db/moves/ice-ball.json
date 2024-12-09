@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A 5-turn attack that gains power on successive hits.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

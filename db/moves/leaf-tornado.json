@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user attacks its target by encircling it in sharp leaves. This attack may also lower the target\u2019s accuracy.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "grass",
     "effect_chance": 50,
     "effect_names": [],

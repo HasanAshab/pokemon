@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Allows a full-power attack, but sharply lowers SP. ATK.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": 100,
     "effect_names": [],

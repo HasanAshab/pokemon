@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Slashes the foe with sharp claws.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

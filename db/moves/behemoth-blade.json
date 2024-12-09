@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user becomes a gigantic sword and cuts the target. This move deals twice the damage if the target is Dynamaxed.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "steel",
     "effect_chance": null,
     "effect_names": [],

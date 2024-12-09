@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "After obtaining Z-Power, the user, Mimikyu, punches the target with full force.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

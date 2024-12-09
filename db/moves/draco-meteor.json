@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Comets are summoned down from the sky. The attack\u2019s recoil sharply reduces the user\u2019s Sp. Atk stat.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": 100,
     "effect_names": [],

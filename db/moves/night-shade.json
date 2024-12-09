@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user's level equals damage HP.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

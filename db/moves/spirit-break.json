@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks the target with so much force that it could break the target\u2019s spirit. This also lowers the target\u2019s Sp. Atk stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fairy",
     "effect_chance": 100,
     "effect_names": [],

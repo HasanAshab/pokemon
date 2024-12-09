@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "A strong breath attack.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": 30,
     "effect_names": [

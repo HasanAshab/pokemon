@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user pecks the foe. If the foe is holding a Berry, the user plucks it and gains its effect.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

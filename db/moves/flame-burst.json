@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user attacks the target with a bursting flame. The bursting flame damages Pok\u00e9mon next to the target as well.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

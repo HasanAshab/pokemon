@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user teleports using a strange power and switches its place with one of its allies.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

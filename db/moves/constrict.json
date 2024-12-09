@@ -24,6 +24,7 @@
     "pp": 12,
     "description": "An attack that may lower SPEED.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": 10,
     "effect_names": [],

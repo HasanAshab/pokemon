@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user unleashes a strong beam from its core. This move deals twice the damage if the target is Dynamaxed.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "dragon",
     "effect_chance": null,
     "effect_names": [],

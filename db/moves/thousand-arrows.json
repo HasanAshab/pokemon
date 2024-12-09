@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "This move also hits opposing Pok\u00e9mon that are in the air. Those Pok\u00e9mon are knocked down to the ground.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ground",
     "effect_chance": 100,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "This attack inflicts Attack or Sp. Atk damage\u2014 whichever stat is higher for the user, Necrozma.  This move ignores the target\u2019s Ability.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "psychic",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user sets a shell trap. If the user is hit by a physical move, the trap will explode and inflict damage on the opposing Pok\u00e9mon.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

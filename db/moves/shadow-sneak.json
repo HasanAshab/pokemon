@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "The user extends its shadow and attacks the foe from behind. This move always goes first.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ghost",
     "effect_chance": null,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "While resisting, the user attacks the opposing Pok\u00e9mon. The targets\u2019 Sp. Atk stat is reduced.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "bug",
     "effect_chance": 100,
     "effect_names": [],

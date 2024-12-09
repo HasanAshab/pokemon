@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Has a high criti\u00ad cal hit ratio.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

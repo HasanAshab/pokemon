@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "An attack move that inflicts double the damage if the user has been hurt by the foe in the same turn.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "ice",
     "effect_chance": null,
     "effect_names": [],

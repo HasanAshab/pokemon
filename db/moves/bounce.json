@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Bounces up, then down the next turn. May paralyze.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": 30,
     "effect_names": [],

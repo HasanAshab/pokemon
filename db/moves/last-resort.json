@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "This move can be used only after the user has used all the other moves it knows in the battle.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "normal",
     "effect_chance": null,
     "effect_names": [],

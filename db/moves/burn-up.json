@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "To inflict massive damage, the user burns itself out. After using this move, the user will no longer be Fire type.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fire",
     "effect_chance": null,
     "effect_names": [],

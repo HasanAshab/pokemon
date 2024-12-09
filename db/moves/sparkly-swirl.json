@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks the target by wrapping it with a whirlwind of an overpowering scent. This also heals all status conditions of the user\u2019s party.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

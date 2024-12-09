@@ -24,6 +24,7 @@
     "pp": 7,
     "description": "The user cloaks itself with flame and attacks. Building up more power, it raises the user\u2019s Speed stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fire",
     "effect_chance": 100,
     "effect_names": [],

@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user attacks wildly with its thick leek. The user can\u2019t move on the next turn, because the force of this move makes it stagger.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fighting",
     "effect_chance": null,
     "effect_names": [],

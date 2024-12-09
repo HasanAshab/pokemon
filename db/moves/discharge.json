@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "A flare of electricity is loosed to strike all Pok\u00e9mon in battle. It may also cause paralysis.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": 30,
     "effect_names": [

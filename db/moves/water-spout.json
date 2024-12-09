@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "Inflicts more damage if the user\u2019s HP is high.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "water",
     "effect_chance": null,
     "effect_names": [],

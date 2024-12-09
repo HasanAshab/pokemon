@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "The user stares at the target with its baby-doll eyes, which lowers its Attack stat. This move always goes first.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

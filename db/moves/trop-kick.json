@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "The user lands an intense kick of tropical origins on the target. This also lowers the target\u2019s Attack stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "grass",
     "effect_chance": 100,
     "effect_names": [],

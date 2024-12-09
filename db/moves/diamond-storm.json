@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user whips up a storm of diamonds to damage opposing Pok\u00e9mon. This may also raise the user\u2019s Defense stat.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "rock",
     "effect_chance": 50,
     "effect_names": [],

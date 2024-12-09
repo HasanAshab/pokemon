@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user shoots filthy garbage at the foe to attack. It may also poison the target.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "poison",
     "effect_chance": 30,
     "effect_names": [

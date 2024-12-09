@@ -24,6 +24,7 @@
     "pp": 10,
     "description": "An attack that may cause paralysis.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "electric",
     "effect_chance": 10,
     "effect_names": [

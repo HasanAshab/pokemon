@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "1st turn: Fly 2nd turn: Attack",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

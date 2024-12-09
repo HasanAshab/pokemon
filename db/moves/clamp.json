@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Traps the foe for 2-5 turns.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "water",
     "effect_chance": 100,
     "effect_names": [],

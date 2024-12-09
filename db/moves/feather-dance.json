@@ -24,6 +24,7 @@
     "pp": 5,
     "description": "Envelops the foe with down to sharply reduce ATTACK.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "flying",
     "effect_chance": null,
     "effect_names": [],

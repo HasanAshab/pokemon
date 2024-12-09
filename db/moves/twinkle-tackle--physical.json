@@ -24,6 +24,7 @@
     "pp": 0,
     "description": "The user creates a very charming space using its Z-Power and totally toys with the target. The power varies, depending on the original move.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "fairy",
     "effect_chance": null,
     "effect_names": [],

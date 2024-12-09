@@ -24,6 +24,7 @@
     "pp": 12,
     "description": "A move that may poison the foe.",
     "damage_class": "status",
+    "makes_contact": false,
     "type": "poison",
     "effect_chance": null,
     "effect_names": [

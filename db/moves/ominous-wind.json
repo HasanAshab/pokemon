@@ -24,6 +24,7 @@
     "pp": 2,
     "description": "The user creates a gust of repulsive wind. It may also raise all the user\u2019s stats at once.",
     "damage_class": "special",
+    "makes_contact": false,
     "type": "ghost",
     "effect_chance": 10,
     "effect_names": [],

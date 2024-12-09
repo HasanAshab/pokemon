@@ -24,6 +24,7 @@
     "pp": 3,
     "description": "The user stabs the target with its electrified beak. If the user attacks before the target, the power of this move is doubled.",
     "damage_class": "physical",
+    "makes_contact": true,
     "type": "electric",
     "effect_chance": null,
     "effect_names": [],
