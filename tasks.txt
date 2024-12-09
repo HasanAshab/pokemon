@@ -4,11 +4,10 @@ multi hit move
 xp using cp
 abilities effects (eg guts)
 replaceChildren
-
+priority
 effect remove
 xp reduce on loose
 
-null pp unlimited
 mega horn
 
 js instead of json

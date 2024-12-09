@@ -224,7 +224,7 @@ class BattleState extends Observable {
 
     reducePP(moveName) {
         const move = this.moves.find(m => m.name === moveName)
-        move.pp--;
+        if (move.pp !== null) move.pp--
         return move
     }
 
