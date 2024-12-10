@@ -240,6 +240,7 @@ function loadMoves(playerTag) {
     </div>
     </div>
     <div class="card-body">
+    ${move.damage_class}
 
 ${
     effectiveness === 1 ? ''

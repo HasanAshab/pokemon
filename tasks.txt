@@ -1,6 +1,7 @@
 try dodge
 make contact
 
+expire effects
 
 multi hit move
 xp using cp
@@ -9,8 +10,7 @@ replaceChildren
 priority
 effect remove
 xp reduce on loose
-
-mega horn
+physical vs status bug (only you got damage)
 
 js instead of json
 

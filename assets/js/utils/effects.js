@@ -2,6 +2,7 @@ import { capitalizeFirstLetter } from "./helpers.js"
 
 
 export function getEffects(attacker, target, move) {
+    return move.effect_names
     const effects = [];
     for (const effectName of move.effect_names) {
         if (Math.random() < (move.effect_chance / 100)) {
@@ -93,6 +94,14 @@ class PoisonEffect extends Effect {
     }
 }
 
+class FlinchEffect extends Effect {
+    static effectName = "flinch"
+
+    onTurn(battleField) {
+        this.state._canMoveAfter.turn = battleField.turnNo
+    }
+}
+
 class ParalyzeEffect extends Effect {
     static effectName = "paralyze"
 
@@ -121,6 +130,7 @@ class ParalyzeEffect extends Effect {
 export const EFFECTS = [
     BurnEffect,
     PoisonEffect,
+    FlinchEffect,
     ParalyzeEffect,
 ]
 
