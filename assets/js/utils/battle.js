@@ -87,7 +87,7 @@ export class BattleField extends EventEmitter {
         const dodged2 = move2.name === "$dodge" && canMove2 && this.canDodge(this.pokemon2, this.pokemon1, move1)
 
         const effects1 = getEffects(this.pokemon2, this.pokemon1, move2)
-        const effects2 = getEffects(this.pokemon1, this.pokemon2, move1)
+        const effects2 = getEffects(this.pokemon1, this.pokemon2, move1)        
 
         if ((move1.makes_contact && !dodged2) || !move1.makes_contact || !canMove2) {
             applyStatChanges(this.pokemon1, this.pokemon2, move1)

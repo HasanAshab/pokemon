@@ -66,6 +66,22 @@ class Effect {
     }
 }
 
+class ExpirableEffect extends Effect {
+    lifetime = { turns: null, waves: null }
+
+    onTurn() {
+        this.lifetime.turns && this.lifetime.turns--
+    }
+
+    onWave() {
+        this.lifetime.waves && this.lifetime.waves--
+    }
+
+    isExpired() {
+        return !this.lifetime.turns && !this.lifetime.waves
+    }
+}
+
 class BurnEffect extends Effect {
     static effectName = "burn"
 
@@ -94,10 +110,12 @@ class PoisonEffect extends Effect {
     }
 }
 
-class FlinchEffect extends Effect {
+class FlinchEffect extends ExpirableEffect {
     static effectName = "flinch"
+    lifetime = { turns: 0 }
 
     onTurn(battleField) {
+        super.onTurn(battleField)
         this.state._canMoveAfter.turn = battleField.turnNo
     }
 }
@@ -140,6 +158,9 @@ export class EffectManager {
 
     constructor(state) {
         this.state = state;
+
+        this.state.on("turn", this.removeExpired.bind(this))
+        this.state.on("wave", this.removeExpired.bind(this))
     }
     
     names() {
@@ -154,6 +175,10 @@ export class EffectManager {
 
     includes(effectName) {
         return !!this.get(effectName)
+    }
+
+    expired() {
+        return this._effects.filter(effect => effect instanceof ExpirableEffect && effect.isExpired())
     }
     
     add(...effects) {
@@ -171,6 +196,11 @@ export class EffectManager {
             effect.teardown()
             this._effects.splice(this._effects.indexOf(effect), 1)
         })
+    }
+
+    removeExpired() {
+        const expiredEffects = this.expired().map(effect => effect.constructor.effectName)
+        this.remove(...expiredEffects)
     }
 }
 
