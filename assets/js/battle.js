@@ -14,12 +14,13 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
 }
 
 globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
-  const totalHp = 50 // give here total hp data
-  const currentHp = 10 //give the hp data here
-  const newHp = prompt(playerTag,currentHp)
-    if (currentHp !== newHp){
-    setCurrentHealth(Math.min(newHp,totalHp))
-    }
+  const totalHp = pokemonMap[playerTag].statOf("hp") // give here total hp data
+  const currentHp = pokemonMap[playerTag].state.statOf("hp") //give the hp data here
+  const newHp = prompt(playerTag, currentHp)
+  if (currentHp !== newHp){
+    pokemonMap[playerTag].state._stats.hp = newHp
+    setCurrentHealth(Math.min(newHp, totalHp))
+  }
 }
 
 function setBattleStateChangeListener(playerTag) {

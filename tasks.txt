@@ -1,13 +1,14 @@
 try dodge
 make contact
+health edit
 
+priority
 multi hit move
-xp using cp
+
+
+xp using cp and xp reduce on loose
 abilities effects (eg guts)
 replaceChildren
-priority
 effect remove
-xp reduce on loose
-
 js instead of json
 
