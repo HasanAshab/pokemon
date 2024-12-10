@@ -95,18 +95,25 @@ export class BattleField extends EventEmitter {
         if ((move2.makes_contact && !dodged1) || !move2.makes_contact || !canMove1) {
             applyStatChanges(this.pokemon2, this.pokemon1, move2)
         }
+        
+        if (move1.damage_class === "status") {
+            this.state(this.pokemon2).effects.add(...effects2)
+        }
+        if (move2.damage_class === "status") {
+            this.state(this.pokemon1).effects.add(...effects1)
+        }
     
         
         canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
         canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
         
         if (await damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
-            this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
             this.state(this.pokemon1).effects.add(...effects1)
+            this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
         }
         if (await damages.isHittee(this.pokemon2) && canMove1 && !dodged2) {
-            this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
             this.state(this.pokemon2).effects.add(...effects2)
+            this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
         }
     }
 

@@ -2,7 +2,7 @@ import { capitalizeFirstLetter } from "./helpers.js"
 
 
 export function getEffects(attacker, target, move) {
-    return move.effect_names
+    //return move.effect_names
     const effects = [];
     for (const effectName of move.effect_names) {
         if (Math.random() < (move.effect_chance / 100)) {
@@ -78,20 +78,35 @@ class ExpirableEffect extends Effect {
     }
 
     isExpired() {
-        return !this.lifetime.turns && !this.lifetime.waves
+        return [null, undefined, 0].includes(this.lifetime.turns)
+            && [null, undefined, 0].includes(this.lifetime.waves)
     }
 }
 
 class BurnEffect extends Effect {
     static effectName = "burn"
+    
+    setup() {
+        super.setup()
+
+        const attackStat = this.state.statOf("attack");
+        this.state._stats.attack = Math.floor(attackStat / 2); // ATK halved
+    }
+
+    teardown() {
+        super.teardown()
+
+        const attackStat = this.state.statOf("attack");
+        this.state._stats.attack = Math.floor(attackStat * 2)
+    }
 
     onWave() {
         this.state.decreaseHealth(this._calculateEffectDamage())
     }
     
     _calculateEffectDamage() {
-        const maxHP = this.state.statOf("hp");
-        const effectDamage = Math.floor(maxHP / 8); // 1/8th HP loss
+        const maxHP = this.state.pokemon.statOf("hp");
+        const effectDamage = Math.floor(maxHP / 16); // 1/16th HP loss
         return effectDamage;
     }
 }
@@ -104,7 +119,7 @@ class PoisonEffect extends Effect {
     }
     
     _calculateEffectDamage() {
-        const maxHP = this.state.statOf("hp");
+        const maxHP = this.state.pokemon.statOf("hp");
         const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
         return poisonDamage;
     }
@@ -112,11 +127,29 @@ class PoisonEffect extends Effect {
 
 class FlinchEffect extends ExpirableEffect {
     static effectName = "flinch"
-    lifetime = { turns: 0 }
+    lifetime = { turns: 1 }
 
     onTurn(battleField) {
         super.onTurn(battleField)
         this.state._canMoveAfter.turn = battleField.turnNo
+    }
+}
+
+class SleepEffect extends ExpirableEffect {
+    static effectName = "sleep"
+
+    setup() {
+        super.setup()
+        
+        const sleepingTurns = Math.floor(Math.random() * 4) + 1
+        console.log(sleepingTurns)
+        this.lifetime.turns = sleepingTurns
+        this.state._canMoveAfter.never = true
+    }
+
+    teardown() {
+        super.teardown()
+        this.state._canMoveAfter.never = false
     }
 }
 
@@ -149,6 +182,7 @@ export const EFFECTS = [
     BurnEffect,
     PoisonEffect,
     FlinchEffect,
+    SleepEffect,
     ParalyzeEffect,
 ]
 

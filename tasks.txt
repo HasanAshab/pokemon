@@ -11,5 +11,3 @@ xp reduce on loose
 
 js instead of json
 
-move damage increase ember razorleaf (.25 ulta)
-

@@ -54,29 +54,39 @@ class DamageManager {
             const pokemon2 = this.opponentOf(pokemon)
             const damage1 = this._damages.get(pokemon)
             const damage2 = this._damages.get(pokemon2)
+
+            const effectiveness1 = damage1.avgEffectiveness()
+            const effectiveness2 = damage2.avgEffectiveness()
+            
+            const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
+            const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
             
             const totalDamage1 = damage1.totalDamage()
             const totalDamage2 = damage2.totalDamage()
-            
-            const effectiveness1 = damage2.avgEffectiveness()
-            const effectiveness2 = damage1.avgEffectiveness()
-            const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
-            const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
 
-            const remDam1 = ((totalDamage1 / effectiveness1) * pokeEffect1) 
-            const remDam2 = ((totalDamage2 / effectiveness2) * pokeEffect2)
-            
             let remainingDamage;
             if (
-                damage1.move.damage_class !== "none" && damage2.move.damage_class !== "none"
-                && damage1.move.damage_class !== "status" && damage2.move.damage_class !== "status"
+                !["none", "status"].includes(damage1.move.damage_class)
+                && !["none", "status"].includes(damage2.move.damage_class)
                 && damage1.move.makes_contact !== damage2.move.makes_contact
             ) {
-                remainingDamage = damage2.move.makes_contact === false ? fixFloat(remDam2) : -fixFloat(remDam1)
+                remainingDamage = damage2.move.makes_contact === false ? fixFloat(totalDamage2 * pokeEffect2) : -fixFloat(totalDamage1 * pokeEffect1)
             }
             else {
-                remainingDamage = fixFloat(remDam2 - remDam1)
+                const remDam1 = totalDamage1 * effectiveness1
+                const remDam2 = totalDamage2 * effectiveness2
+                remainingDamage = remDam2 - remDam1
+                
+                if (remainingDamage > 0) {
+                    remainingDamage = (remainingDamage / effectiveness2) * pokeEffect2
+                }
+                else {
+                    remainingDamage = (remainingDamage / effectiveness1) * pokeEffect1
+                }
+                remainingDamage = fixFloat(remainingDamage)
             }
+            
+
             this._cache = [pokemon, remainingDamage]
         }
         const damage = this._cache[0] === pokemon ? this._cache[1] : -this._cache[1]
@@ -121,12 +131,6 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
 
     const hitData1 = {}
 
-    // Calculate type effectiveness for pokemon1's move
-    hitData1.effectiveness = move2 
-        ? await move1.effectiveness(move2.type) 
-        : pokemon2 
-        ? await pokemon2.effectiveness(move1.type)
-        : 1;
     const critChance1 = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
     hitData1.isCritical = Math.random() < critChance1
     const criticalMultiplier1 = hitData1.isCritical ? CRIT_MULTIPLIER : 1;
@@ -136,7 +140,6 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
     if (hitData1.damageCount !== null) {
         hitData1.damageCount = (
               hitData1.damageCount
-            * hitData1.effectiveness
             * hitData1.randomModifier
             * criticalMultiplier1
         )
@@ -150,8 +153,6 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
     }
     
     const hitData2 = {}
-    // Calculate type effectiveness for pokemon2's move
-    hitData2.effectiveness = await move2.effectiveness(move1.type);
     const critChance2 = BASE_CRIT_CHANCE * (1 + move2.meta.crit_rate);
     hitData2.isCritical = Math.random() < critChance2
     const criticalMultiplier2 = hitData2.isCritical ? CRIT_MULTIPLIER : 1;
@@ -161,7 +162,6 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
     if (hitData2.damageCount !== null) {
         hitData2.damageCount = (
               hitData2.damageCount
-            * hitData2.effectiveness
             * hitData2.randomModifier
             * criticalMultiplier2
         )
