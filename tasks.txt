@@ -1,6 +1,7 @@
 try dodge
 make contact
-health edit
+commentary
+win
 
 priority
 multi hit move

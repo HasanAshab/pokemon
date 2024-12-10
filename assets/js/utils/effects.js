@@ -1,8 +1,8 @@
-import { capitalizeFirstLetter } from "./helpers.js"
+import { capitalizeFirstLetter, camelize } from "./helpers.js"
 
 
 export function getEffects(attacker, target, move) {
-    //return move.effect_names
+    return move.effect_names
     const effects = [];
     for (const effectName of move.effect_names) {
         if (Math.random() < (move.effect_chance / 100)) {
@@ -30,6 +30,7 @@ function isFrozenThisTurn() {
 class Effect {
     events = [
         "turn",
+        "turn-end",
         "wave",
     ]
     _listeners = {}
@@ -51,7 +52,7 @@ class Effect {
     }
 
     _subscribeTo(event) {
-        const listener = this[`on${capitalizeFirstLetter(event)}`]
+        const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
             this._listeners[event] = listener.bind(this)
             this.state.on(event, this._listeners[event])
@@ -59,7 +60,7 @@ class Effect {
     }
     
     _unsubscribeTo(event) {
-        const listener = this[`on${capitalizeFirstLetter(event)}`]
+        const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
             this.state.removeListener(event, this._listeners[event])
         }
@@ -68,13 +69,26 @@ class Effect {
 
 class ExpirableEffect extends Effect {
     lifetime = { turns: null, waves: null }
-
-    onTurn() {
+    
+    setup() {
+        super.setup()
         this.lifetime.turns && this.lifetime.turns--
+    }
+
+    onTurnEnd() {
+        this.lifetime.turns && this.lifetime.turns--
+        
+        if(this.isExpired()) {
+            this.state.effects.remove(this.constructor.effectName)
+        }
     }
 
     onWave() {
         this.lifetime.waves && this.lifetime.waves--
+        
+        if(this.isExpired()) {
+            this.state.effects.remove(this.constructor.name)
+        }
     }
 
     isExpired() {
@@ -129,9 +143,13 @@ class FlinchEffect extends ExpirableEffect {
     static effectName = "flinch"
     lifetime = { turns: 1 }
 
-    onTurn(battleField) {
-        super.onTurn(battleField)
-        this.state._canMoveAfter.turn = battleField.turnNo
+    setup() {
+        super.setup()
+        this.state._canMoveAfter.never = true
+    }
+    teardown() {
+        super.teardown()
+        this.state._canMoveAfter.never = false
     }
 }
 
@@ -193,8 +211,8 @@ export class EffectManager {
     constructor(state) {
         this.state = state;
 
-        this.state.on("turn", this.removeExpired.bind(this))
-        this.state.on("wave", this.removeExpired.bind(this))
+        //this.state.on("turn-end", this.removeExpired.bind(this))
+        //this.state.on("wave", this.removeExpired.bind(this))
     }
     
     names() {
@@ -234,6 +252,7 @@ export class EffectManager {
 
     removeExpired() {
         const expiredEffects = this.expired().map(effect => effect.constructor.effectName)
+        console.log(expiredEffects)
         this.remove(...expiredEffects)
     }
 }

@@ -62,7 +62,7 @@ async function handleWin(winnerTag, looserTag) {
     })
 }
 
-function showChoosePokemon(){
+function showChoosePokemon() {
      const choosePokemonCont = document.querySelector(".choose-pokemon-cont")
      choosePokemonCont.parentNode.classList.add(active)
 }
