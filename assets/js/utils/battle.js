@@ -83,13 +83,13 @@ export class BattleField extends EventEmitter {
         const move1 = senarioMap.get(this.pokemon1)
         const move2 = senarioMap.get(this.pokemon2)
 
-        const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
-
         const effects1 = getEffects(this.pokemon2, this.pokemon1, move2)
         const effects2 = getEffects(this.pokemon1, this.pokemon2, move1)        
         
-        const isFlinched1 = this._isFlinched(this.pokemon1, this.pokemon2, move1)
-        const isFlinched2 = this._isFlinched(this.pokemon2, this.pokemon1, move2)
+        const isFlinched1 = this._isFlinched(this.pokemon2, this.pokemon1, move2)
+        const isFlinched2 = this._isFlinched(this.pokemon1, this.pokemon2, move1)
+        console.log("char", isFlinched1)
+        console.log("bulba", isFlinched2)
         
         const canMove1 = !isFlinched1 && this.state(this.pokemon1).canMove()
         const canMove2 = !isFlinched2 && this.state(this.pokemon2).canMove()
@@ -97,6 +97,9 @@ export class BattleField extends EventEmitter {
         const dodged1 = move1.name === "$dodge" && canMove1 && this._canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = move2.name === "$dodge" && canMove2 && this._canDodge(this.pokemon2, this.pokemon1, move1)
 
+        const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
+
+        
         if (move1.damage_class === "status") {
             this.state(this.pokemon2).effects.add(...effects2)
         }
@@ -143,6 +146,8 @@ export class BattleField extends EventEmitter {
     }
     
     _isFlinched(attacker, target, move) {
+        if(!move?.meta?.flinch_chance) return false
+        return true
         return Math.random() < (move.meta.flinch_chance / 100)
     }
 }
@@ -174,11 +179,7 @@ class BattleState extends Observable {
     }
     
     _statChanges = {};
-    _canMoveAfter = { 
-        never: false,
-        turn: 0,
-        wave: 0
-    };
+    _canMove = true
 
     
     constructor(pokemon, moves) {
@@ -267,8 +268,6 @@ class BattleState extends Observable {
     }
 
     canMove() {
-        return !this._canMoveAfter.never
-        && this._canMoveAfter.turn < this.battleField.turnNo
-        && this._canMoveAfter.wave < this.battleField.waveNo
+        return this._canMove
     }
 }

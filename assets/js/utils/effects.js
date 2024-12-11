@@ -50,6 +50,10 @@ class Effect {
             this._unsubscribeTo(event)
         })
     }
+    
+    remove() {
+        return this.state.effects.remove(this.constructor.effectName)
+    }
 
     _subscribeTo(event) {
         const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
@@ -79,7 +83,7 @@ class ExpirableEffect extends Effect {
         this.lifetime.turns && this.lifetime.turns--
         
         if(this.isExpired()) {
-            this.state.effects.remove(this.constructor.effectName)
+            this.remove()
         }
     }
 
@@ -87,10 +91,10 @@ class ExpirableEffect extends Effect {
         this.lifetime.waves && this.lifetime.waves--
         
         if(this.isExpired()) {
-            this.state.effects.remove(this.constructor.name)
+            this.remove()
         }
     }
-
+    
     isExpired() {
         return [null, undefined, 0].includes(this.lifetime.turns)
             && [null, undefined, 0].includes(this.lifetime.waves)
@@ -148,12 +152,12 @@ class SleepEffect extends ExpirableEffect {
         const sleepingTurns = Math.floor(Math.random() * 4) + 1
         console.log(sleepingTurns)
         this.lifetime.turns = sleepingTurns
-        this.state._canMoveAfter.never = true
+        this.state._canMove = false
     }
 
     teardown() {
         super.teardown()
-        this.state._canMoveAfter.never = false
+        this.state._canMove = true
     }
 }
 
@@ -174,11 +178,15 @@ class ParalyzeEffect extends Effect {
         this.state._stats.speed = Math.floor(speedStat * 2)
     }
 
-    onTurn(battleField) {
+    onTurn() {
         const canNotMove = Math.random() < 0.25;
         if (canNotMove) {
-            this.state._canMoveAfter.turn = battleField.turnNo
+            this.state._canMove = false
         }
+    }
+    
+    onTurnEnd() {
+        this.state._canMove = true
     }
 }
 
