@@ -28,8 +28,7 @@
     "type": "normal",
     "effect_chance": 30,
     "effect_names": [
-        "sleep",
-        "flinch"
+        "sleep"
     ],
     "retreat": 1,
     "stat_changes": {

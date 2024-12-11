@@ -139,20 +139,6 @@ class PoisonEffect extends Effect {
     }
 }
 
-class FlinchEffect extends ExpirableEffect {
-    static effectName = "flinch"
-    lifetime = { turns: 1 }
-
-    setup() {
-        super.setup()
-        this.state._canMoveAfter.never = true
-    }
-    teardown() {
-        super.teardown()
-        this.state._canMoveAfter.never = false
-    }
-}
-
 class SleepEffect extends ExpirableEffect {
     static effectName = "sleep"
 
@@ -199,7 +185,6 @@ class ParalyzeEffect extends Effect {
 export const EFFECTS = [
     BurnEffect,
     PoisonEffect,
-    FlinchEffect,
     SleepEffect,
     ParalyzeEffect,
 ]

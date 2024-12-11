@@ -28,8 +28,7 @@
     "type": "electric",
     "effect_chance": 10,
     "effect_names": [
-        "paralyze",
-        "flinch"
+        "paralyze"
     ],
     "retreat": 1.5,
     "stat_changes": {

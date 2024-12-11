@@ -52,7 +52,6 @@ def get_effects(move):
         "badly",
         "sleep",
         "confuse",
-        "flinch",
     ]
     return [effect for effect in possible_effects if effect in effect_text]
 

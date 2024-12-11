@@ -27,9 +27,7 @@
     "makes_contact": true,
     "type": "ghost",
     "effect_chance": 30,
-    "effect_names": [
-        "flinch"
-    ],
+    "effect_names": [],
     "retreat": 1,
     "stat_changes": {
         "self": {},

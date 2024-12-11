@@ -27,9 +27,7 @@
     "makes_contact": false,
     "type": "dark",
     "effect_chance": 20,
-    "effect_names": [
-        "flinch"
-    ],
+    "effect_names": [],
     "retreat": 2,
     "stat_changes": {
         "self": {},

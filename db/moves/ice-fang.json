@@ -28,8 +28,7 @@
     "type": "ice",
     "effect_chance": 10,
     "effect_names": [
-        "freeze",
-        "flinch"
+        "freeze"
     ],
     "retreat": 1.5,
     "stat_changes": {

@@ -27,9 +27,7 @@
     "makes_contact": true,
     "type": "normal",
     "effect_chance": 10,
-    "effect_names": [
-        "flinch"
-    ],
+    "effect_names": [],
     "retreat": 2,
     "stat_changes": {
         "self": {},

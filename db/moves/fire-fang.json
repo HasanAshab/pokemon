@@ -28,8 +28,7 @@
     "type": "fire",
     "effect_chance": 10,
     "effect_names": [
-        "burn",
-        "flinch"
+        "burn"
     ],
     "retreat": 1.5,
     "stat_changes": {

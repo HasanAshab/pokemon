@@ -27,9 +27,7 @@
     "makes_contact": true,
     "type": "steel",
     "effect_chance": 30,
-    "effect_names": [
-        "flinch"
-    ],
+    "effect_names": [],
     "retreat": 2,
     "stat_changes": {
         "self": {},
