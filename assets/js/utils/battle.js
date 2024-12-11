@@ -27,30 +27,22 @@ export async function calculateWinXP(poke1, poke2) {
 
 
 export class BattleField extends EventEmitter {
-    static async init(pokemon1, pokemon2) {
-        pokemon1.state = await BattleState.prepare(pokemon1)
-        pokemon2.state = await BattleState.prepare(pokemon2)
-
-        const states = new Map([
-            [pokemon1, pokemon1.state],
-            [pokemon2, pokemon2.state]
-        ]);
-        return new this(pokemon1, pokemon2, states)
-    }
-    
     turnNo = 1
     waveNo = 1
 
-    
-    constructor(pokemon1, pokemon2, states) {
+    constructor(pokemon1, pokemon2) {
         super()
         
-        states.get(pokemon1).battleField = this
-        states.get(pokemon2).battleField = this
-
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
-        this._states = states
+
+        this.pokemon1.state = new BattleState(this, pokemon1)
+        this.pokemon2.state = new BattleState(this, pokemon2)
+
+        this._states = new Map([
+            [pokemon1, pokemon1.state],
+            [pokemon2, pokemon2.state]
+        ]);
 
         this.on("turn", (...args) => {
             this.pokemon1.state.emit("turn", ...args)
@@ -158,41 +150,31 @@ export class BattleField extends EventEmitter {
 
 
 class BattleState extends Observable {
-    static UNIVERSAL_MOVES = [
-        {
-            name: "$nothing",
-            isSelected: true,
-        },
-        {
-            name: "$dodge",
-            isSelected: true,
-        }
+    moves = [
+        new Move("stay-there"),
+        new Move("dodge")
     ]
-    
-    static async prepare(pokemon) {
-        const moves = []
-        if(pokemon.meta.moves) {
-            const movesMeta = pokemon.meta.moves.filter(moveMeta => moveMeta.isSelected)
-            movesMeta.unshift(...BattleState.UNIVERSAL_MOVES)
-            for (const moveMeta of movesMeta) {
-                const move = await Move.make(moveMeta.name)
-                moves.push(move)
-            }
-        }
-        return new this(pokemon, moves)
-    }
-    
+
     _statChanges = {};
     _canMove = true
 
-    
-    constructor(pokemon, moves) {
+    constructor(battleField, pokemon) {
         super()
+        this.battleField = pokemon;
         this.pokemon = pokemon;
-        this.moves = moves;
-        this._stats = { ...this.pokemon.data.stats };
-        this.retreat = this.pokemon.meta.retreat;
+
+        this._stats = pokemon.stats.all();
+        this.retreat = pokemon.meta.retreat;
         this.effects = new EffectManager(this);
+        
+        if(pokemon.meta.moves) {
+            pokemon.meta.moves.forEach(moveMeta => {
+                if (moveMeta.isSelected) {
+                    const move = new Move(moveMeta.name)
+                    this.moves.push(move)
+                }
+            }
+        }
 
         this.on("wave", () => {
             this.addWaveRetreat()

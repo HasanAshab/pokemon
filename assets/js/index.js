@@ -1,4 +1,5 @@
-import db from "./utils/db.js";
+import pokemons from "../../data/pokemons.js"
+import natures from "../../data/natures.js"
 import {
   Pokemon
 } from "./utils/models.js";
@@ -42,18 +43,20 @@ globalThis.badgeClickHandler = function badgeClickHandler( {
   localStorage.setItem("badges-data", JSON.stringify(badgesData))
   loadTotalBadges()
 }
-async function loadPokemonsDatalist() {
-  const pokemons = await db.pokemons.all();
+function loadPokemonsDatalist() {
   const dataList = document.getElementById("pokemons-data-list");
-  dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}</option>`).join("");
+  const html = Object.keys(pokemons)
+    .map(id => `<option value="${id}">${pokemons[id].name}</option>`)
+    .join("")
+  dataList.innerHTML = html;
 }
-async function loadNaturesDataList(){
-  const natures = await db.natures.all()
+
+function loadNaturesDataList(){
   const dataList = document.getElementById("natures-data-list");
-  for (const nature in natures ){
-  const data = natures[nature]
-  dataList.innerHTML +=  `<option value="${nature}">${data.name} | ${data.description}</option>`
-}
+  const html = Object.keys(natures)
+    .map(id => `<option value="${id}">${natures[id].name} | ${natures[id].description}</option>`)
+    .join("")
+  dataList.innerHTML =  html
 }
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   const addPokemonForm = document.querySelector(".add-pokemon-form")
@@ -140,7 +143,7 @@ function loadAll() {
 }
 document.body.onload = loadAll
 
-window.location = "/battle.html?you=charmander&enemy=riolu&xp=500&retreat=3&nature=calm&moves=scratch,force-palm,sleep-powder,crunch,fire-fang"
+//window.location = "/battle.html?you=charmander&enemy=riolu&xp=500&retreat=3&nature=calm&moves=scratch,force-palm,sleep-powder,crunch,fire-fang"
 //window.location = "/battle.html?you=charmander&enemy=charmander&xp=500&retreat=3&nature=calm&moves=growl,scratch,ember"
 //window.location = "/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,rage,crunch,razor-leaf,leer"
 //window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=charizard-mega-x&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"

@@ -112,7 +112,7 @@ class DamageManager {
 }
 
 export function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
-    if (move.isNotMove || move.power === null) {
+    if (move.power === null) {
         return null
     }
     const stab = pokemon1.isTypeOf(move.type) ? STAB_MODIFIER : 1;

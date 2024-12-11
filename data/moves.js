@@ -1,17 +1,20 @@
-// List of flags and their descriptions can be found in sim/dex-moves.ts
-export const MOVES = {
+import process from './processors/move.js'
+
+const MOVES = {
     "stay-there": {
       num: 100001,
       accuracy: true,
       basePower: 0,
-      category: "System",
+      category: "None",
       name: "Stay There",
       pp: null,
       priority: 0,
       flags: {},
       secondary: null,
       target: "normal",
-      type: null
+      type: null,
+      isCustom: true,
+      retreat: 0,
     },
     "dodge": {
       num: 100002,
@@ -24,7 +27,9 @@ export const MOVES = {
       flags: {},
       secondary: null,
       target: "normal",
-      type: null
+      type: null,
+      isCustom: true,
+      retreat: 0.5
     },
     "10000000voltthunderbolt": {
       num: 719,
@@ -24065,13 +24070,7 @@ export const MOVES = {
       contestType: "Clever"
     }
   }
-  
 
-function processMoves() {
-    
-
-}
-
-
-export default processMoves()
+// Export processed moves
+export default process(MOVES);
 

@@ -84,25 +84,25 @@ function loadChoosePokemon(){
 
  }
 
-async function loadGlobal() {
+function loadGlobal() {
     const pokemonName = getParam("you")
     const enemyMovesMeta = getParam("moves").split(",").map(moveName => ({
         name: moveName,
         isSelected: true
     }))
 
-    globalThis.enemyPokemon = await Pokemon.make(getParam("enemy"), {
+    globalThis.enemyPokemon = new Pokemon(getParam("enemy"), {
         xp: parseInt(getParam("xp")),
         retreat: parseInt(getParam("retreat")),
         nature: getParam("nature"),
         moves: enemyMovesMeta
     })
-    globalThis.pokemon = await Pokemon.make(pokemonName, getPokemonsMeta(pokemonName))
+    globalThis.pokemon = new Pokemon(pokemonName, getPokemonsMeta(pokemonName))
     globalThis.pokemonMap = {
         "you": pokemon,
         "enemy": enemyPokemon
     }
-    globalThis.battleField = await BattleField.init(pokemon, enemyPokemon)
+    globalThis.battleField = new BattleField(pokemon, enemyPokemon)
 }
 
 function showBattlePromptPopup(msg, playerTag) {
@@ -225,23 +225,24 @@ function showMoveDamageInjectForm(moveName, damage, playerTag) {
 
 function loadMoves(playerTag) {
     const pokemon = pokemonMap[playerTag]
-  const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
+    const oponentPokemon = pokemonMap[playerTag === "you" ? "enemy" : "you"]
+    const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   
     moveCardsContainer.innerHTML = ''
-  // re adding cards
+
   for (const move of pokemon.state.moves) {
+      const effectiveness = oponentPokemon.effectiveness(move.type)
       const damage = fixFloat(calculateBaseDamage(pokemon, move))
-      const effectiveness = move._effectiveness
      const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
-    <h3>${move.display}</h3>
+    <h3>${move.name}</h3>
     <div class="move-icons">
     <div class="icon"></div>
     <div class="icon"></div>
     </div>
     </div>
     <div class="card-body">
-    ${move.damage_class}
+    ${move.category}
 
 ${
     effectiveness === 1 ? ''
@@ -302,8 +303,8 @@ globalThis.moveCardClickHandler = function( {
 
 async function battle(moveNames) {
     const {you: moveName, enemy: enemyMoveName} = moveNames
-    const move1 = await Move.make(moveName)
-    const move2 = await Move.make(enemyMoveName)
+    const move1 = new Move(moveName)
+    const move2 = new Move(enemyMoveName)
     
     await battleField.turn([
         [pokemon, move1],
@@ -312,58 +313,34 @@ async function battle(moveNames) {
 }
 
 
-function loadRetreat() {
-    const retreat = battleField.state(pokemon).retreat
-    setRetreatPerWave(retreat, "you")
-    setCurrentRetreat(retreat, "you")
+function loadRetreat(playerTag) {
+    const retreat = pokemonMap[playerTag].state.retreat
+    setRetreatPerWave(retreat, playerTag)
+    setCurrentRetreat(retreat, playerTag)
 }
 
-function loadEnemyRetreat() {
-    const retreat = battleField.state(enemyPokemon).retreat
-    setRetreatPerWave(retreat, "enemy")
-    setCurrentRetreat(retreat, "enemy")
+function loadHealth(playerTag) {
+    const hp = pokemonMap[playerTag].stats.get("hp")
+    setTotalHealth(hp, playerTag)
 }
 
-function loadHealth() {
-    const hp = battleField.state(pokemon).statOf("hp")
-    setTotalHealth(hp, "you")
-}
 
-function loadEnemyHealth() {
-    const hp = battleField.state(enemyPokemon).statOf("hp")
-    setTotalHealth(hp, "enemy")
-}
-
-function prepareMoves(playerTag) {
-    const pokemon = pokemonMap[playerTag]
-    const oponentPokemon = pokemonMap[playerTag === "you" ? "enemy" : "you"]
-    const tasks = pokemon.state.moves.map(async move => {
-        move._effectiveness = await oponentPokemon.effectiveness(move.type)
-    })
-
-    return Promise.all(tasks)
-}
-
-async function loadAll() {
-    await loadGlobal()
-    
-    await Promise.all([
-        prepareMoves("you"),
-        prepareMoves("enemy"),
-    ])
+function loadAll() {
+    loadGlobal()
 
     loadMoves("you")
     loadMoves("enemy")
 
-    loadRetreat()
-    loadEnemyRetreat()
+    loadRetreat("you")
+    loadRetreat("enemy")
 
-    loadHealth()
-    loadEnemyHealth()
+    loadHealth("you")
+    loadHealth("enemy")
+
     //loadChoosePokemon() 
     setBattleStateChangeListener("you")
     setBattleStateChangeListener("enemy")
 }
 
 
-setTimeout(loadAll, 1000)
+loadAll()

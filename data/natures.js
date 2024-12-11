@@ -1,4 +1,7 @@
-export default {
+import process from './processors/nature.js'
+
+
+const NATURES = {
     adamant: {
       name: "Adamant",
       plus: "atk",
@@ -116,3 +119,4 @@ export default {
     }
   }
   
+export default process(NATURES);

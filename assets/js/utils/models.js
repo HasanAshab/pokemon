@@ -1,7 +1,7 @@
-import pokemons from "./data/pokemons.js"
-import moves from "./data/moves.js"
-import typeChart from "./data/types.js"
-import natures from "./data/natures.js"
+import pokemons from "../../../data/pokemons.js"
+import moves from "../../../data/moves.js"
+import typeChart from "../../../data/types.js"
+import natures from "../../../data/natures.js"
 
 
 class StatsManager {
@@ -127,10 +127,6 @@ export class Move {
         this.id = id;
         this._move = moves[id];
         Object.assign(this, this._move)
-    }
-
-    get isNotMove() {
-        return this.category === "System"
     }
 
     effectiveness(type) {
