@@ -91,26 +91,29 @@ export class BattleField extends EventEmitter {
         console.log("char", isFlinched1)
         console.log("bulba", isFlinched2)
         
-        const canMove1 = !isFlinched1 && this.state(this.pokemon1).canMove()
-        const canMove2 = !isFlinched2 && this.state(this.pokemon2).canMove()
+        this.pokemon1.state.isFlinched = isFlinched1
+        this.pokemon2.state.isFlinched = isFlinched2
+        
+        const canMove1 = this.state(this.pokemon1).canMove()
+        const canMove2 = this.state(this.pokemon2).canMove()
 
-        const dodged1 = move1.name === "$dodge" && canMove1 && this._canDodge(this.pokemon1, this.pokemon2, move2)
-        const dodged2 = move2.name === "$dodge" && canMove2 && this._canDodge(this.pokemon2, this.pokemon1, move1)
+        const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
+        const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
 
         const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
 
-        
+        effects e zah
         if (move1.damage_class === "status") {
             this.state(this.pokemon2).effects.add(...effects2)
         }
         if (move2.damage_class === "status") {
             this.state(this.pokemon1).effects.add(...effects1)
         }
-        if (await damages.isHittee(this.pokemon1) && canMove2 && !dodged1) {
+        if (await damages.isHittee(this.pokemon1) && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
             this.state(this.pokemon1).effects.add(...effects1)
         }
-        if (await damages.isHittee(this.pokemon2) && canMove1 && !dodged2) {
+        if (await damages.isHittee(this.pokemon2) && !dodged2) {
             this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
             this.state(this.pokemon2).effects.add(...effects2)
         }
@@ -121,13 +124,16 @@ export class BattleField extends EventEmitter {
             applyStatChanges(this.pokemon2, this.pokemon1, move2)
         }
         
+        this.pokemon1.state.isFlinched = false
+        this.pokemon2.state.isFlinched = false
+
         canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
         canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
         this.emit("turn-end", this, senario)
     }
 
     _canDodge(attacker, target, move) {
-        if (move.accuracy === null) {
+        if (move.accuracy === null || !target.state.canMove()) {
             // Moves with null accuracy always hit
             return false;
         }
@@ -147,7 +153,6 @@ export class BattleField extends EventEmitter {
     
     _isFlinched(attacker, target, move) {
         if(!move?.meta?.flinch_chance) return false
-        return true
         return Math.random() < (move.meta.flinch_chance / 100)
     }
 }
@@ -268,6 +273,6 @@ class BattleState extends Observable {
     }
 
     canMove() {
-        return this._canMove
+        return !this.isFlinched && this._canMove
     }
 }
