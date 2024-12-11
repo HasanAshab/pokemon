@@ -1,6 +1,31 @@
 // List of flags and their descriptions can be found in sim/dex-moves.ts
-
-export const Moves = {
+export default {
+    "stay-there": {
+      num: 100001,
+      accuracy: true,
+      basePower: 0,
+      category: "System",
+      name: "Stay There",
+      pp: null,
+      priority: 0,
+      flags: {},
+      secondary: null,
+      target: "normal",
+      type: null
+    },
+    "dodge": {
+      num: 100002,
+      accuracy: true,
+      basePower: 0,
+      category: "System",
+      name: "Dodge",
+      pp: null,
+      priority: 0,
+      flags: {},
+      secondary: null,
+      target: "normal",
+      type: null
+    },
     "10000000voltthunderbolt": {
       num: 719,
       accuracy: true,

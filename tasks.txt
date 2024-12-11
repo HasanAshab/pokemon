@@ -1,9 +1,11 @@
 try dodge
-make contact
 commentary
 win
-
+paralyzed and sleep bug
 priority
+ev
+
+make contact
 multi hit move
 
 

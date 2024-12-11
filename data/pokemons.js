@@ -1,4 +1,4 @@
-export const Pokedex = {
+export default {
     bulbasaur: {
       num: 1,
       name: "Bulbasaur",

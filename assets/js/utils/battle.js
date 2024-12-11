@@ -102,7 +102,6 @@ export class BattleField extends EventEmitter {
 
         const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
 
-        effects e zah
         if (move1.damage_class === "status") {
             this.state(this.pokemon2).effects.add(...effects2)
         }
