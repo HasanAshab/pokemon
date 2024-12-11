@@ -1,5 +1,5 @@
 // List of flags and their descriptions can be found in sim/dex-moves.ts
-export default {
+export const MOVES = {
     "stay-there": {
       num: 100001,
       accuracy: true,
@@ -24066,3 +24066,12 @@ export default {
     }
   }
   
+
+function processMoves() {
+    
+
+}
+
+
+export default processMoves()
+
