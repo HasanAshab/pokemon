@@ -32,8 +32,12 @@ function setRetreat(move) {
       }
     }
   }
-
-  move.retreat = retreat + categoryBonus[move.category];
+  retreat = retreat + categoryBonus[move.category];
+  
+  if (move.category !== "Status" && move.secondary)
+    retreat += 0.5
+  
+  move.retreat = Math.max(retreat, 0.5)
 }
 
 

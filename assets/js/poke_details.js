@@ -113,14 +113,14 @@ globalThis.closeMoveChooseInterface = function() {
     moveChooseInterface.parentNode.classList.remove("active");
 }
 globalThis.learnMove = async function() {
-    const moveName = document.getElementById("move-search-inp").value
+    const moveId = document.getElementById("move-search-inp").value
     const meta = getPokemonsMeta(name)
     
-    if (meta.moves.find(move => move.name === moveName)) {
+    if (meta.moves.find(move => move.id === moveId)) {
         return
     }
     meta.moves.push({
-        name: moveName,
+        id: moveId,
         isSelected: false
     })
     setPokemonMeta(name, meta)
@@ -129,10 +129,10 @@ globalThis.learnMove = async function() {
 }
 
 
-globalThis.selectMove = function(moveName) {
+globalThis.selectMove = function(moveId) {
     const meta = getPokemonsMeta(name)
     meta.moves = meta.moves.map(move => {
-        if (move.name === moveName) {
+        if (move.id === moveId) {
             move.isSelected = true
         }
         return move
@@ -141,10 +141,10 @@ globalThis.selectMove = function(moveName) {
     loadMoves()
 }
 
-globalThis.unselectMove = function(moveName) {
+globalThis.unselectMove = function(moveId) {
     const meta = getPokemonsMeta(name)
     meta.moves = meta.moves.map(move => {
-        if (move.name === moveName) {
+        if (move.id === moveId) {
             move.isSelected = false
         }
         return move
@@ -153,9 +153,9 @@ globalThis.unselectMove = function(moveName) {
     loadMoves()
 }
 
-globalThis.forgetMove = function(moveName) {
+globalThis.forgetMove = function(id) {
     const meta = getPokemonsMeta(name)
-    meta.moves = meta.moves.filter(move => move.name !== moveName)
+    meta.moves = meta.moves.filter(move => move.id !== id)
     setPokemonMeta(name, meta)
     loadMoves()
 }
@@ -193,19 +193,18 @@ function loadMoves() {
     const meta = getPokemonsMeta(name)
     const pokemon = new Pokemon(name, meta)
     for (const moveMeta of meta.moves) {
-        const move = new Move(moveMeta.name)
+        const move = new Move(moveMeta.id)
         const damage = fixFloat(calculateBaseDamage(pokemon, move))
         movesContainer.innerHTML += `
     <div class="move ${moveMeta.isSelected ? "selected" : ""}">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
       <span>${move.name}</span>
       <div class="move-icons">
-        <img class="type-img" src="./assets/img/${move.type}.png"/>
-        <img class="category-img" src="./assets/img/${move.category}.png"/>
+        <img class="type-img" src="./assets/img/types/${move.type}.png"/>
+        <img class="category-img" src="./assets/img/categories/${move.category}.png"/>
       </div>
     </div>
     <div class="move-body">
-
       <p>
         ${damage !== null ? "Damage: " + damage : ""}
       </p>
@@ -220,9 +219,9 @@ function loadMoves() {
       </p>
       <small class="desc">${move.description}</small>
       <div class="btn-cont">
-        <button class="unselect-move" onclick="unselectMove('${move.name}')">Unselect</button>
-        <button class="select-move" onclick="selectMove('${move.name}')">Select</button>
-        <button class="forget-move" onclick="forgetMove('${move.name}')">Forget Move</button>
+        <button class="unselect-move" onclick="unselectMove('${move.id}')">Unselect</button>
+        <button class="select-move" onclick="selectMove('${move.id}')">Select</button>
+        <button class="forget-move" onclick="forgetMove('${move.id}')">Forget Move</button>
       </div>
     </div>
   </div>

@@ -7,24 +7,24 @@ body {
     color: #333;
 }
 :root {
-    --normal-type-color: #A8A77A;
-    --fire-type-color: #F08030;
-    --water-type-color: #6390F0;
-    --electric-type-color: #F7D02C;
-    --grass-type-color: #7AC74C;
-    --ice-type-color: #96D9D6;
-    --fighting-type-color: #C22E28;
-    --poison-type-color: #A33EA1;
-    --ground-type-color: #E2BF65;
-    --flying-type-color: #A98FF3;
-    --psychic-type-color: #F95587;
-    --bug-type-color: #A6B91A;
-    --rock-type-color: #B6A136;
-    --ghost-type-color: #735797;
-    --dragon-type-color: #6F35FC;
-    --dark-type-color: #705746;
-    --steel-type-color: #B7B7CE;
-    --fairy-type-color: #D685AD;
+    --Normal-type-color: #A8A77A;
+    --Fire-type-color: #F08030;
+    --Water-type-color: #6390F0;
+    --Electric-type-color: #F7D02C;
+    --Grass-type-color: #7AC74C;
+    --Ice-type-color: #96D9D6;
+    --Fighting-type-color: #C22E28;
+    --Poison-type-color: #A33EA1;
+    --Ground-type-color: #E2BF65;
+    --Flying-type-color: #A98FF3;
+    --Psychic-type-color: #F95587;
+    --Bug-type-color: #A6B91A;
+    --Rock-type-color: #B6A136;
+    --Ghost-type-color: #735797;
+    --Dragon-type-color: #6F35FC;
+    --Dark-type-color: #705746;
+    --Steel-type-color: #B7B7CE;
+    --Fairy-type-color: #D685AD;
 }
 .scroller {
     width: 100vw;
