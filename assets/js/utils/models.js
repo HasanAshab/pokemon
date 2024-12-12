@@ -33,7 +33,7 @@ class StatsManager {
         const stats = {};
 
         Object.keys(this.pokemon._pokemon.baseStats).forEach(statName => {
-          const baseStat = this.get(statName);
+          const baseStat = this.pokemon._pokemon.baseStats[statName];
           const ev = 0; // Effort values from `efforts`
           const iv = 35; // Default IV value
       
@@ -56,7 +56,7 @@ class StatsManager {
         const natureStats = {};
       
         Object.keys(this.pokemon._pokemon.baseStats).forEach(statName => {
-          const baseStat = this.statOf(statName);
+          const baseStat = this.pokemon._pokemon.baseStats[statName];
           const natureModifier = StatsManager.natureModifierFor(statName, this.pokemon.meta.nature);
           // Apply nature modifier
           natureStats[statName] = Math.floor(baseStat * natureModifier) - baseStat;

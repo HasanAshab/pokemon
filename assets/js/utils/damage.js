@@ -112,19 +112,19 @@ class DamageManager {
 }
 
 export function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
-    if (move.power === null) {
+    if (move.basePower === null) {
         return null
     }
     const stab = pokemon1.isTypeOf(move.type) ? STAB_MODIFIER : 1;
-    const isSpecial = move.damage_class === "special";
+    const isSpecial = move.category === "Special";
     const attackStat = "state" in pokemon1 
-        ? pokemon1.state.statOf(isSpecial ? "special-attack" : "attack")
-        : pokemon1.statOf(isSpecial ? "special-attack" : "attack");
+        ? pokemon1.state.statOf(isSpecial ? "spa" : "atk")
+        : pokemon1.stats.get(isSpecial ? "spa" : "atk");
 
     const defenseStat = pokemon2
-        ? pokemon2.state.statOf(isSpecial ? "special-defense" : "defense")
+        ? pokemon2.state.statOf(isSpecial ? "spd" : "def")
         : 70; // Neutral defense if no target
-    return stab * ((((((2 * pokemon1.level) / 5) + 2) * move.power * ((attackStat * 0.6) / defenseStat)) / 10) + 2);
+    return stab * ((((((2 * pokemon1.level) / 5) + 2) * move.basePower * ((attackStat * 0.6) / defenseStat)) / 10) + 2);
 }
 
 export async function calculateDamage(pokemon1, move1, pokemon2, move2) {

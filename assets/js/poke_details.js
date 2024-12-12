@@ -1,3 +1,4 @@
+import { loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
 import { Pokemon, Move } from "./utils/models.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta, fixFloat } from "./utils/helpers.js"
 import { calculateBaseDamage } from "./utils/damage.js"
@@ -7,14 +8,6 @@ import db from "./utils/db.js"
 const name = getParam("name")
 const updatablePokemonMetaList = ["retreat","xp","nature"]
 
-async function loadNaturesDataList(){
-  const natures = await db.natures.all()
-  const dataList = document.getElementById("natures-data-list");
-  for (const nature in natures ){
-  const data = natures[nature]
-  dataList.innerHTML +=  `<option value="${nature}">${data.name} | ${data.description}</option>`
-}
-}
 function setTotalHealth(totalHp) {
   const healthProgressBar = document.querySelector(".health-progress-bar")
   const hp = healthProgressBar.getAttribute("data-current-hp")
@@ -109,14 +102,10 @@ globalThis.statClickHandler = function( {
 
 
 
-globalThis.showMoveChooseInterface = async function() {
+globalThis.showMoveChooseInterface = function() {
     const moveChooseInterface = document.querySelector(".move-choose-interface");
-    const moveDataList = document.getElementById("move-data-list");
-    const moves = await db.moves.all();
     moveChooseInterface.parentNode.classList.add("active");
-    moveDataList.innerHTML = moves.map(move => {
-        return`<option value="${move}">`
-    }).join("")
+    loadMovesDatalist("move-data-list")
   }
 
 globalThis.closeMoveChooseInterface = function() {
@@ -176,19 +165,20 @@ function loadName() {
     document.getElementById("pokemon-name").innerText = displayName
 }
 
-async function loadStats() {
+function loadStats() {
     const meta = getPokemonsMeta(name)
-    const pokemon = await Pokemon.make(name, meta)
-     // console.log(meta)
+    const pokemon = new Pokemon(name, meta)
 
-    setCurrentHealth(meta.stats.hp ?? pokemon.statOf("hp"))
+    setCurrentHealth(meta.stats.hp ?? pokemon.stats.get("hp"))
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)
     setStat("xp", pokemon.meta.xp)
     setStat("retreat", pokemon.meta.retreat)
+    
+    setStat("weight", (pokemon.getWeight() / 10) + "kg")
 
-    for (const stat in pokemon.data.stats) {
-     const statValue = pokemon.data.stats[stat]
+    for (const stat in pokemon.stats.all()) {
+     const statValue = pokemon.stats.get(stat)
       setStat(stat,statValue)
       setStatToken(stat,meta.token_used[stat],false)
       if (stat === "hp"){
@@ -197,21 +187,21 @@ async function loadStats() {
     }
 }
 
-async function loadMoves() {
+function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
     const meta = getPokemonsMeta(name)
-    const pokemon = await Pokemon.make(name, meta)
+    const pokemon = new Pokemon(name, meta)
     for (const moveMeta of meta.moves) {
-        const move = await Move.make(moveMeta.name)
+        const move = new Move(moveMeta.name)
         const damage = fixFloat(calculateBaseDamage(pokemon, move))
         movesContainer.innerHTML += `
     <div class="move ${moveMeta.isSelected ? "selected" : ""}">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
-      <span>${move.display}</span>
+      <span>${move.name}</span>
       <div class="move-icons">
         <img class="type-img" src="./assets/img/${move.type}.png"/>
-        <img class="category-img" src="./assets/img/${move.damage_class}.png"/>
+        <img class="category-img" src="./assets/img/${move.category}.png"/>
       </div>
     </div>
     <div class="move-body">
@@ -220,7 +210,7 @@ async function loadMoves() {
         ${damage !== null ? "Damage: " + damage : ""}
       </p>
       <p>
-        ${move.power !== null ? "Power: " + move.power : ""}
+        ${move.basePower !== null ? "Power: " + move.basePower : ""}
       </p>
       <p>
         Retreat: ${move.retreat}
@@ -242,13 +232,8 @@ async function loadMoves() {
 }
 
 window.onload = () => {
+    loadNaturesDataList("natures-data-list")
     loadName()
-
-    setTimeout(() => {
-        loadMoves()
-        loadNaturesDataList()
-        loadStats()
-    }, 1000)
-
-
+    loadMoves()
+    loadStats()
 }

@@ -1,11 +1,6 @@
-import pokemons from "../../data/pokemons.js"
-import natures from "../../data/natures.js"
-import {
-  Pokemon
-} from "./utils/models.js";
-import {
-  getPokemonsMeta
-} from "./utils/helpers.js";
+import { Pokemon } from "./utils/models.js";
+import { getPokemonsMeta } from "./utils/helpers.js";
+import { loadPokemonsDatalist, loadNaturesDataList } from "./utils/dom.js";
 
 
 var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
@@ -43,21 +38,7 @@ globalThis.badgeClickHandler = function badgeClickHandler( {
   localStorage.setItem("badges-data", JSON.stringify(badgesData))
   loadTotalBadges()
 }
-function loadPokemonsDatalist() {
-  const dataList = document.getElementById("pokemons-data-list");
-  const html = Object.keys(pokemons)
-    .map(id => `<option value="${id}">${pokemons[id].name}</option>`)
-    .join("")
-  dataList.innerHTML = html;
-}
 
-function loadNaturesDataList(){
-  const dataList = document.getElementById("natures-data-list");
-  const html = Object.keys(natures)
-    .map(id => `<option value="${id}">${natures[id].name} | ${natures[id].description}</option>`)
-    .join("")
-  dataList.innerHTML =  html
-}
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   const addPokemonForm = document.querySelector(".add-pokemon-form")
   const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name")
@@ -76,11 +57,11 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
       "stats": {},
       "token_used":{
           "hp":0,
-          "speed":0,
-          "attack":0,
-          "defense":0,
-          "special-attack":0,
-          "special-defense":0
+          "spe":0,
+          "atk":0,
+          "def":0,
+          "spa":0,
+          "spd":0
       },
       "moves": []
     }
@@ -138,8 +119,8 @@ function loadAll() {
   loadActiveBadges()
   loadAllPokemons()
   //loadFoodCost()
-  loadPokemonsDatalist()
-  loadNaturesDataList()
+  loadPokemonsDatalist("pokemons-data-list")
+  loadNaturesDataList("natures-data-list")
 }
 document.body.onload = loadAll
 
