@@ -118,11 +118,11 @@ export function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
     const stab = pokemon1.isTypeOf(move.type) ? STAB_MODIFIER : 1;
     const isSpecial = move.category === "Special";
     const attackStat = "state" in pokemon1 
-        ? pokemon1.state.statOf(isSpecial ? "spa" : "atk")
-        : pokemon1.stats.get(isSpecial ? "spa" : "atk");
+        ? pokemon1.state.stats.get(isSpecial ? "spa" : "atk")
+        : pokemon1.stats[isSpecial ? "spa" : "atk"];
 
     const defenseStat = pokemon2
-        ? pokemon2.state.statOf(isSpecial ? "spd" : "def")
+        ? pokemon2.state.stats.get(isSpecial ? "spd" : "def")
         : 70; // Neutral defense if no target
     return stab * ((((((2 * pokemon1.level) / 5) + 2) * move.basePower * ((attackStat * 0.6) / defenseStat)) / 10) + 2);
 }
@@ -137,7 +137,7 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
 
     const hitData1 = {}
 
-    const critChance1 = BASE_CRIT_CHANCE * (1 + move1.meta.crit_rate);
+    const critChance1 = BASE_CRIT_CHANCE * (1 + move1.critRatio);
     hitData1.isCritical = Math.random() < critChance1
     const criticalMultiplier1 = hitData1.isCritical ? CRIT_MULTIPLIER : 1;
     hitData1.randomModifier = Math.random() * 0.15 + 0.85;
@@ -157,9 +157,9 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
         // If only pokemon1 attacks, return its damage
         return damages
     }
-    
+
     const hitData2 = {}
-    const critChance2 = BASE_CRIT_CHANCE * (1 + move2.meta.crit_rate);
+    const critChance2 = BASE_CRIT_CHANCE * (1 + move2.critRatio);
     hitData2.isCritical = Math.random() < critChance2
     const criticalMultiplier2 = hitData2.isCritical ? CRIT_MULTIPLIER : 1;
     hitData2.randomModifier = Math.random() * 0.15 + 0.85;
@@ -180,19 +180,19 @@ export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
 }
 
 function getRandomHits(move) {
-  if (move.meta.min_hits === move.meta.max_hits) {
-    return move.meta.min_hits;
+  if (!Array.isArray(move.multihit)) {
+    return move.multihit;
   }
-  if (move.meta.min_hits === null && move.meta.max_hits === null) {
+  if (!move.multihit) {
     return 1;
   }
   // Specific probabilities for multi-hit moves like Fury Attack
-  if (move.meta.min_hits === 2 && move.meta.max_hits === 5) {
+  if (move.multihit[0] === 2 && move.multihit[1] === 5) {
     const probabilities = [2, 3, 4, 5];
     const weights = [3 / 8, 3 / 8, 1 / 8, 1 / 8];
     return weightedRandom(probabilities, weights);
   }
-  return Math.floor(Math.random() * (move.meta.max_hits - move.meta.min_hits + 1)) + move.meta.min_hits;
+  return Math.floor(Math.random() * (move.multihit[1] - move.multihit[0] + 1)) + move.multihit[0];
 }
 
 function weightedRandom(values, weights) {

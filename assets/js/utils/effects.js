@@ -1,26 +1,9 @@
 import { capitalizeFirstLetter, camelize } from "./helpers.js"
 
 
-export function getEffects(attacker, target, move) {
-    return move.effect_names
-    const effects = [];
-    for (const effectName of move.effect_names) {
-        if (Math.random() < (move.effect_chance / 100)) {
-            effects.push(effectName)
-        }
-    }
-    return effects;
-}
-
 function applyConfusionEffect(pokemon) {
   const isConfused = Math.random() < 0.5; // 50% chance to hurt itself
-  if (isConfused) {
-    const maxHP = pokemon.statOf("hp");
-    const selfDamage = Math.floor(maxHP / 16); // Deal damage to itself
-    pokemon.currentHP -= selfDamage;
-    return { isConfused, selfDamage };
-  }
-  return { isConfused, selfDamage: 0 };
+  return isConfused;
 }
 
 function isFrozenThisTurn() {
@@ -102,20 +85,20 @@ class ExpirableEffect extends Effect {
 }
 
 class BurnEffect extends Effect {
-    static effectName = "burn"
+    static effectName = "brn"
     
     setup() {
         super.setup()
 
-        const attackStat = this.state.statOf("attack");
-        this.state._stats.attack = Math.floor(attackStat / 2); // ATK halved
+        const attackStat = this.state.stats.get("attack");
+        this.state.stats.set("attack", Math.floor(attackStat / 2));
     }
 
     teardown() {
         super.teardown()
 
-        const attackStat = this.state.statOf("attack");
-        this.state._stats.attack = Math.floor(attackStat * 2)
+        const attackStat = this.state.stats.get("attack");
+        this.state.stats.set("attack", Math.floor(attackStat * 2));
     }
 
     onWave() {
@@ -123,28 +106,28 @@ class BurnEffect extends Effect {
     }
     
     _calculateEffectDamage() {
-        const maxHP = this.state.pokemon.statOf("hp");
+        const maxHP = this.state.pokemon.stats.hp;
         const effectDamage = Math.floor(maxHP / 16); // 1/16th HP loss
         return effectDamage;
     }
 }
 
 class PoisonEffect extends Effect {
-    static effectName = "poison"
+    static effectName = "psn"
 
     onWave() {
         this.state.decreaseHealth(this._calculateEffectDamage())
     }
     
     _calculateEffectDamage() {
-        const maxHP = this.state.pokemon.statOf("hp");
+        const maxHP = this.state.pokemon.stats.hp;
         const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
         return poisonDamage;
     }
 }
 
 class SleepEffect extends ExpirableEffect {
-    static effectName = "sleep"
+    static effectName = "slp"
 
     setup() {
         super.setup()
@@ -162,20 +145,20 @@ class SleepEffect extends ExpirableEffect {
 }
 
 class ParalyzeEffect extends Effect {
-    static effectName = "paralyze"
+    static effectName = "par"
 
     setup() {
         super.setup()
 
-        const speedStat = this.state.statOf("speed");
-        this.state._stats.speed = Math.floor(speedStat / 2); // Speed halved
+        const speedStat = this.state.stats.get("speed");
+        this.state.stats.set("speed", Math.floor(speedStat / 2)); // Speed halved
     }
 
     teardown() {
         super.teardown()
 
-        const speedStat = this.state.statOf("speed");
-        this.state._stats.speed = Math.floor(speedStat * 2)
+        const speedStat = this.state.stats.get("speed");
+        this.state.stats.set("speed", Math.floor(speedStat * 2));
     }
 
     onTurn() {
@@ -247,6 +230,14 @@ export class EffectManager {
         const expiredEffects = this.expired().map(effect => effect.constructor.effectName)
         console.log(expiredEffects)
         this.remove(...expiredEffects)
+    }
+
+    apply(move) {
+        for (const effectName of move.effect_names) {
+            if (Math.random() < (move.effect_chance / 100)) {
+                this.add(effectName)
+            }
+        }
     }
 }
 

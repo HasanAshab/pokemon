@@ -37,6 +37,9 @@ function setRetreat(move) {
   if (move.category !== "Status" && move.secondary)
     retreat += 0.5
   
+  if (move.secondaries)
+    retreat += 0.5 * move.secondaries.length    
+  
   move.retreat = Math.max(retreat, 0.5)
 }
 

@@ -4,7 +4,13 @@ import typeChart from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 
 
-class StatsManager {
+export class Pokemon {
+    static XP_PER_LEVEL = 100;
+
+    static calculateLevel(xp) {
+        return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
+    }
+
     static natureModifierFor(statName, nature) {
         if (!nature || !natures[nature]) return 1; // Neutral nature
         const natureEffects = natures[nature];
@@ -13,84 +19,11 @@ class StatsManager {
         return 1; // No effect
     }
 
-    constructor(pokemon) {
-        this.pokemon = pokemon;
-    }
-
-    all() {
-        return this._calculateTotalStat();
-    }
-
-    get(name) {
-        return this.all()[name];
-    }
-
-    set(name, value) {
-        this.pokemon._pokemon.baseStats[name] = value;
-    }
-
-    _calculateLevelStat() {
-        const stats = {};
-
-        Object.keys(this.pokemon._pokemon.baseStats).forEach(statName => {
-          const baseStat = this.pokemon._pokemon.baseStats[statName];
-          const ev = 0; // Effort values from `efforts`
-          const iv = 35; // Default IV value
-      
-          if (statName === "hp") {
-            // HP calculation
-            stats[statName] = Math.floor(
-              ((20 * baseStat + iv + Math.floor(ev / 4)) * this.pokemon.level) / 100 + this.pokemon.level + 10
-            );
-          } else {
-            // Other stat calculations
-            stats[statName] = Math.floor(
-              ((2 * baseStat + iv + Math.floor(ev / 4)) * this.pokemon.level) / 100 + 5
-            );
-          }
-        });
-        return stats;
-      }
-      
-      _calculateNatureStat() {
-        const natureStats = {};
-      
-        Object.keys(this.pokemon._pokemon.baseStats).forEach(statName => {
-          const baseStat = this.pokemon._pokemon.baseStats[statName];
-          const natureModifier = StatsManager.natureModifierFor(statName, this.pokemon.meta.nature);
-          // Apply nature modifier
-          natureStats[statName] = Math.floor(baseStat * natureModifier) - baseStat;
-        });
-      
-        return natureStats;
-      }
-      
-      _calculateTotalStat() {
-        const baseStats = this.pokemon._pokemon.baseStats;
-        const levelStats = this._calculateLevelStat();
-        const natureStats = this._calculateNatureStat();
-        const totalStats = {};
-        Object.keys(baseStats).forEach(statName => {
-          totalStats[statName] =
-            baseStats[statName] + levelStats[statName] + natureStats[statName];
-        });
-      
-        return totalStats;
-      }  
-}
-
-export class Pokemon {
-    static XP_PER_LEVEL = 100;
-
-    static calculateLevel(xp) {
-        return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
-    }
-
     constructor(id, meta) {
         this.id = id;
         this.meta = meta;
         this._pokemon = pokemons[id];
-        this.stats = new StatsManager(this); 
+        this.stats = this._calculateTotalStat(); 
     }
 
     get types() {
@@ -120,6 +53,55 @@ export class Pokemon {
         });
         return effectiveness;
     }
+
+    _calculateLevelStat() {
+        const stats = {};
+
+        Object.keys(this._pokemon.baseStats).forEach(statName => {
+          const baseStat = this._pokemon.baseStats[statName];
+          const ev = 0; // Effort values from `efforts`
+          const iv = 35; // Default IV value
+      
+          if (statName === "hp") {
+            // HP calculation
+            stats[statName] = Math.floor(
+              ((20 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
+            );
+          } else {
+            // Other stat calculations
+            stats[statName] = Math.floor(
+              ((2 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + 5
+            );
+          }
+        });
+        return stats;
+      }
+      
+      _calculateNatureStat() {
+        const natureStats = {};
+      
+        Object.keys(this._pokemon.baseStats).forEach(statName => {
+          const baseStat = this._pokemon.baseStats[statName];
+          const natureModifier = Pokemon.natureModifierFor(statName, this.meta.nature);
+          // Apply nature modifier
+          natureStats[statName] = Math.floor(baseStat * natureModifier) - baseStat;
+        });
+      
+        return natureStats;
+      }
+      
+      _calculateTotalStat() {
+        const baseStats = this._pokemon.baseStats;
+        const levelStats = this._calculateLevelStat();
+        const natureStats = this._calculateNatureStat();
+        const totalStats = {};
+        Object.keys(baseStats).forEach(statName => {
+          totalStats[statName] =
+            baseStats[statName] + levelStats[statName] + natureStats[statName];
+        });
+      
+        return totalStats;
+      }
 }
 
 export class Move {

@@ -14,20 +14,19 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
 }
 
 globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
-  const totalHp = pokemonMap[playerTag].statOf("hp") // give here total hp data
-  const currentHp = pokemonMap[playerTag].state.statOf("hp") //give the hp data here
+  const totalHp = pokemonMap[playerTag].stats["hp"] // give here total hp data
+  const currentHp = pokemonMap[playerTag].state.stats.get("hp") //give the hp data here
   const newHp = prompt(playerTag, currentHp)
   if (currentHp !== newHp){
-    pokemonMap[playerTag].state._stats.hp = newHp
+    pokemonMap[playerTag].state.stats.set("hp", newHp)
     setCurrentHealth(Math.min(newHp, totalHp))
   }
 }
 
 function setBattleStateChangeListener(playerTag) {
     const pokemon = pokemonMap[playerTag]
-
-    battleField.state(pokemon).on("change", state => {
-        const hp = state.statOf("hp")
+    pokemon.state.on("change", state => {
+        const hp = state.stats.get("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state._statChanges, playerTag)
         setEffects(state.effects.names(), playerTag)
@@ -145,25 +144,60 @@ function showPopupMsg(msg,playerTag, cb = (() => null)){
 
 
 function setEffects(effects, playerTag) {
-  const typeMap = {
-    "burn": "fire",
-    "poison": "poison",
-    "paralyze": "electric",
-    "freeze": "ice",
-    "sleep": "psychic",
-    "confusion": "psychic",
-    "curse": "ghost",
-    "flinch": "dark",
-    "infatuation": "fairy",
-    "trap": "ground", // e.g., moves like Sand Tomb
-    "leech": "grass", // e.g., Leech Seed
-    "drowsy": "psychic", // e.g., Yawn
+  const effectsMap = {
+    "brn": {
+        "name": "Burn",
+        "color": "fire" 
+    },
+    "psn": {
+      "name": "Poison",
+      "color": "poison"
+    },
+    "par": {
+      "name": "Paralyze",
+      "color": "electric"
+    },
+    "frz": {
+      "name": "Freeze",
+      "color": "ice"
+    },
+    "slp": {
+      "name": "Sleep",
+      "color": "psychic"
+    },
+    "cnf": {
+      "name": "Confusion",
+      "color": "psychic"
+    },
+    "cur": {
+      "name": "Curse",
+      "color": "ghost"
+    },
+    "fln": {
+      "name": "Flinch",
+      "color": "dark"
+    },
+    "inf": {
+      "name": "Infatuation",
+      "color": "fairy"
+    },
+    "trp": {
+      "name": "Trap",
+      "color": "ground"
+    },
+    "lch": {
+      "name": "Leech",
+      "color": "grass"
+    },
+    "dws": {
+      "name": "Drowsy",
+      "color": "psychic"
+    },
 };
-
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   effectsDataColumn.innerHTML = ""
   effects.forEach(effect => {
-    const html = ` <span class="effect" style="background-color:var(--${typeMap[effect]}-type-color)">${capitalizeFirstLetter(effect)}</span>`
+    const html = ` <span class="effect" style="background-color:var(--${effectsMap[effect].color}-type-color)">${effectsMap[effect].name}</span>`
     effectsDataColumn.innerHTML += html
   })
 }
@@ -229,7 +263,6 @@ function loadMoves(playerTag) {
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   
     moveCardsContainer.innerHTML = ''
-    console.log(pokemon.state.moves)
   for (const move of pokemon.state.moves) {
       const effectiveness = oponentPokemon.effectiveness(move.type)
       const damage = fixFloat(calculateBaseDamage(pokemon, move))
@@ -320,7 +353,7 @@ function loadRetreat(playerTag) {
 }
 
 function loadHealth(playerTag) {
-    const hp = pokemonMap[playerTag].stats.get("hp")
+    const hp = pokemonMap[playerTag].stats.hp
     setTotalHealth(hp, playerTag)
 }
 

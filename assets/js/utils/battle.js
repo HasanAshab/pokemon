@@ -1,9 +1,9 @@
 import { EventEmitter, Observable } from "./event.js";
 import { Move } from "./models.js";
-import { EffectManager, getEffects } from "./effects.js"
-import { applyStatChanges } from "./stats.js"
+import { EffectManager } from "./effects.js"
 import { calculateDamage } from "./damage.js"
 import { fixFloat } from "./helpers.js"
+import move from "../../../data/processors/move.js";
 
 
 export async function calculateWinXP(poke1, poke2) {
@@ -63,6 +63,10 @@ export class BattleField extends EventEmitter {
 
     }
 
+    opponentOf(pokemon) {
+        return pokemon === this.pokemon1 ? this.pokemon2 : this.pokemon1;
+    }
+
     state(pokemon) {
         return this._states.get(pokemon);
     }
@@ -75,8 +79,6 @@ export class BattleField extends EventEmitter {
         const move1 = senarioMap.get(this.pokemon1)
         const move2 = senarioMap.get(this.pokemon2)
 
-        const effects1 = getEffects(this.pokemon2, this.pokemon1, move2)
-        const effects2 = getEffects(this.pokemon1, this.pokemon2, move1)        
         
         const isFlinched1 = this._isFlinched(this.pokemon2, this.pokemon1, move2)
         const isFlinched2 = this._isFlinched(this.pokemon1, this.pokemon2, move1)
@@ -95,24 +97,24 @@ export class BattleField extends EventEmitter {
         const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
 
         if (move1.damage_class === "status") {
-            this.state(this.pokemon2).effects.add(...effects2)
+            this.state(this.pokemon2).effects.apply(move1)
         }
         if (move2.damage_class === "status") {
-            this.state(this.pokemon1).effects.add(...effects1)
+            this.state(this.pokemon1).effects.apply(move2)
         }
         if (await damages.isHittee(this.pokemon1) && !dodged1) {
             this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
-            this.state(this.pokemon1).effects.add(...effects1)
+            this.state(this.pokemon1).effects.apply(move2)
         }
         if (await damages.isHittee(this.pokemon2) && !dodged2) {
             this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
-            this.state(this.pokemon2).effects.add(...effects2)
+            this.state(this.pokemon2).effects.apply(move1)
         }
         if ((move1.makes_contact && !dodged2) || !move1.makes_contact || !canMove2) {
-            applyStatChanges(this.pokemon1, this.pokemon2, move1)
+            this.pokemon1.state.stats.apply(move1)
         }
         if ((move2.makes_contact && !dodged1) || !move2.makes_contact || !canMove1) {
-            applyStatChanges(this.pokemon2, this.pokemon1, move2)
+            this.pokemon2.state.stats.apply(move2)
         }
         
         this.pokemon1.state.isFlinched = false
@@ -130,8 +132,8 @@ export class BattleField extends EventEmitter {
         }
     
         // Get speed stats
-        const attackerSpd = this.state(attacker).statOf("speed");
-        const targetSpd = this.state(target).statOf("speed");
+        const attackerSpd = this.state(attacker).stats.get("speed");
+        const targetSpd = this.state(target).stats.get("speed");
         const isPhysical = move.damage_class === "physical";
     
         // Simulate hit/miss based on final accuracy
@@ -155,16 +157,15 @@ class BattleState extends Observable {
         new Move("dodge")
     ]
 
-    _statChanges = {};
     _canMove = true
 
     constructor(battleField, pokemon) {
         super()
-        this.battleField = pokemon;
+        this.battleField = battleField;
         this.pokemon = pokemon;
 
-        this._stats = pokemon.stats.all();
         this.retreat = pokemon.meta.retreat;
+        this.stats = new StatsManager(this);
         this.effects = new EffectManager(this);
         
         if(pokemon.meta.moves) {
@@ -189,43 +190,16 @@ class BattleState extends Observable {
         this.retreat += this.pokemon.meta.retreat;
     }
 
-    stats() {
-        const calculatedStats = {};
-        for (const stat in this._stats) {
-            const baseStat = this._stats[stat];
-            const stage = this._statChanges[stat] || 0;
-            const multiplier = this._statStageMultiplier(stage);
-            calculatedStats[stat] = fixFloat(baseStat * multiplier);
-        }
-        return calculatedStats;
-    }
-
-    statOf(name) {
-        const baseStat = this._stats[name];
-        const stage = this._statChanges[name] || 0;
-        const multiplier = this._statStageMultiplier(stage);
-        return fixFloat(baseStat * multiplier);
-    }
-
     // Health Management
     increaseHealth(amount) {
-        const maxHealth = this.statOf("hp"); // Use calculated HP stat
-        this._stats.hp = Math.min(this._stats.hp + amount, maxHealth);
+        const maxHealth = this.stats.get("hp"); // Use calculated HP stat
+        const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
+        this.stats.set("hp", newHp);
+        return newHp
     }
 
     decreaseHealth(amount) {
-        this._stats.hp = Math.max(this._stats.hp - amount, 0);
-    }
-
-    // Stat Management
-    applyStatChange(stat, stages) {
-        if (!this._statChanges[stat]) {
-            this._statChanges[stat] = 0;
-        }
-
-        // Stat stage clamping (-6 to +6)
-        const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
-        this._statChanges[stat] = newStage;
+        this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
     canUseMove(moveName) {
@@ -239,8 +213,63 @@ class BattleState extends Observable {
         return move
     }
 
-    resetStatChanges() {
-        this._statChanges = {};
+    canMove() {
+        return !this.isFlinched && this._canMove
+    }
+}
+
+
+class StatsManager {
+    _statChanges = {};
+
+    constructor(state) {
+        this.state = state;
+        this._stats = {...state.pokemon.stats}; 
+    }
+
+    get(name) {
+        const baseStat = this._stats[name];
+        const stage = this._statChanges[name] || 0;
+        const multiplier = this._statStageMultiplier(stage);
+        return fixFloat(baseStat * multiplier);
+    }
+
+    set(name, value) {
+        this._stats[name] = value;
+    }
+
+    all() {
+        return Object.keys(this._stats).map(stat => this.get(stat));
+    }
+
+    apply(move) {
+        const target = this.state.battleField.opponentOf(this.state.pokemon);
+
+        const statChanged = move.meta.stat_chance === 0
+        || move.meta.stat_chance === 100
+        || Math.random() < (move.meta.stat_chance / 100)
+
+        if (!statChanged) return
+
+        // Apply changes to target's stat stages
+        for (const [stat, change] of Object.entries(move.stat_changes.target)) {
+            target.state.stats.applyStatChange(stat, change)
+        }
+
+        // Apply changes to own stat stages
+        for (const [stat, change] of Object.entries(move.stat_changes.self)) {
+            this.applyStatChange(stat, change)
+        }
+    }
+
+    applyStatChange(stat, stages) {
+        if (!this._statChanges[stat]) {
+            this._statChanges[stat] = 0;
+        }
+
+        // Stat stage clamping (-6 to +6)
+        const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
+        this._statChanges[stat] = newStage;
     }
 
     _statStageMultiplier(stage) {
@@ -251,9 +280,5 @@ class BattleState extends Observable {
         } else {
             return 1; // Neutral stage
         }
-    }
-
-    canMove() {
-        return !this.isFlinched && this._canMove
     }
 }

@@ -22,7 +22,7 @@ globalThis.showStats = async function() {
     const level = levelInp.value;
     const nature = natureInp.value;
     const enemyPokemon = new Pokemon(enemy.value, { xp: level * 100, nature });
-    enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats.all(),  null, 2);
+    enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
 

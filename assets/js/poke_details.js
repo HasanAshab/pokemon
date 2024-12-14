@@ -169,7 +169,7 @@ function loadStats() {
     const meta = getPokemonsMeta(name)
     const pokemon = new Pokemon(name, meta)
 
-    setCurrentHealth(meta.stats.hp ?? pokemon.stats.get("hp"))
+    setCurrentHealth(meta.stats.hp ?? pokemon.stats.hp)
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)
     setStat("xp", pokemon.meta.xp)
@@ -177,8 +177,8 @@ function loadStats() {
     
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
 
-    for (const stat in pokemon.stats.all()) {
-     const statValue = pokemon.stats.get(stat)
+    for (const stat in pokemon.stats) {
+     const statValue = pokemon.stats[stat]
       setStat(stat,statValue)
       setStatToken(stat,meta.token_used[stat],false)
       if (stat === "hp"){
