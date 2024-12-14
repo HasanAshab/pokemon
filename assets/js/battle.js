@@ -85,8 +85,8 @@ function loadChoosePokemon(){
 
 function loadGlobal() {
     const pokemonName = getParam("you")
-    const enemyMovesMeta = getParam("moves").split(",").map(moveName => ({
-        name: moveName,
+    const enemyMovesMeta = getParam("moves").split(",").map(id => ({
+        id,
         isSelected: true
     }))
 
@@ -262,7 +262,6 @@ function loadMoves(playerTag) {
     const oponentPokemon = battleField.opponentOf(pokemon)
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
     moveCardsContainer.innerHTML = ''
-
   for (const move of pokemon.state.moves) {
       const effectiveness = oponentPokemon.effectiveness(move.type)
       const damage = fixFloat(calculateBaseDamage(pokemon, move))

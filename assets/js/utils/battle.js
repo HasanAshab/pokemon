@@ -109,10 +109,10 @@ export class BattleField extends EventEmitter {
             this.state(this.pokemon2).effects.apply(move1)
         }
         if ((move1.makes_contact && !dodged2) || !move1.makes_contact || !canMove2) {
-            //this.pokemon1.state.stats.apply(move1)
+            this.pokemon1.state.stats.apply(move1)
         }
-        if ((move2.makes_contact && !dodged1) || !move2.makes_contact || !canMove1) {
-            //this.pokemon2.state.stats.apply(move2)
+        if ((move2.flags.contact && !dodged1) || !move2.flags.contact || !canMove1) {
+            this.pokemon2.state.stats.apply(move2)
         }
         
         this.pokemon1.state.isFlinched = false
@@ -242,20 +242,18 @@ class StatsManager {
 
     apply(move) {
         const target = this.state.battleField.opponentOf(this.state.pokemon);
-
-        const statChanged = move.meta.stat_chance === 0
-        || move.meta.stat_chance === 100
-        || Math.random() < (move.meta.stat_chance / 100)
+        console.log(move.statChanges)
+        const statChanged = Math.random() < (move.statChanges.chance / 100)
 
         if (!statChanged) return
 
         // Apply changes to target's stat stages
-        for (const [stat, change] of Object.entries(move.stat_changes.target)) {
+        for (const [stat, change] of Object.entries(move.statChanges.target)) {
             target.state.stats.applyStatChange(stat, change)
         }
 
         // Apply changes to own stat stages
-        for (const [stat, change] of Object.entries(move.stat_changes.self)) {
+        for (const [stat, change] of Object.entries(move.statChanges.self)) {
             this.applyStatChange(stat, change)
         }
     }

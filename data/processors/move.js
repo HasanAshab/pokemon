@@ -1,5 +1,11 @@
 import { processor } from "./helpers.js"
 
+function modifyPP(move) {
+    if (![null, undefined].includes(move.pp)) {
+      move.pp = Math.round(move.pp / 3) || 1;
+    }
+}
+
 function setEffects(move) {
     move.effects = []
     if (move.category === "Status" && move.status) {
@@ -24,9 +30,33 @@ function setEffects(move) {
     }
 }
 
-function modifyPP(move) {
-    if (![null, undefined].includes(move.pp)) {
-      move.pp = Math.round(move.pp / 3) || 1;
+function setStatChanges(move) {
+    move.statChanges = {
+        chance: 100,
+        self: {},
+        target: {}
+    }
+    if (move.category === "Status" && move.boosts) {
+        if (move.target === "self")
+            move.statChanges.self = move.boosts
+        else
+            move.statChanges.target = move.boosts
+    }
+    else if(move.secondary?.boosts) {
+        move.statChanges.chance = move.secondary.chance ?? 100
+        move.statChanges.target = move.secondary.boosts
+    }
+    else if(move.secondary?.self?.boosts) {
+        move.statChanges.chance = move.secondary.chance ?? 100
+        move.statChanges.self = move.secondary.self.boosts
+    }
+    
+    else if(move.secondaries) {
+        move.secondaries.forEach(secondary => {
+            if (!secondary.boosts) return
+            move.statChanges.chance = secondary.chance ?? 100
+            move.statChanges.target = secondary.boosts
+        })
     }
 }
 
@@ -68,7 +98,8 @@ function setRetreat(move) {
 
 
 export default processor([
-    setEffects,
     modifyPP,
+    setEffects,
+    setStatChanges,
     setRetreat,
 ])
