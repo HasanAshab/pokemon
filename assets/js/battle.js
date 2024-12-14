@@ -229,12 +229,12 @@ function loadMoves(playerTag) {
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   
     moveCardsContainer.innerHTML = ''
-
+    console.log(pokemon.state.moves)
   for (const move of pokemon.state.moves) {
       const effectiveness = oponentPokemon.effectiveness(move.type)
       const damage = fixFloat(calculateBaseDamage(pokemon, move))
      const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
-    <div class="card-header" style="background-color:var(--${move.type || "normal"}-type-color)">
+    <div class="card-header" style="background-color:var(--${move.type || "Normal"}-type-color)">
     <h3>${move.name}</h3>
     <div class="move-icons">
     <div class="icon"></div>

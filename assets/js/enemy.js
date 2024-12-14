@@ -1,33 +1,14 @@
 import db from "./utils/db.js";
 import { Pokemon } from "./utils/models.js";
 import { getParam } from "./utils/helpers.js"
-
-async function loadPokemonsDatalist() {
-    const pokemons = await db.pokemons.all();
-    const dataList = document.getElementById("enemy-data-list");
-    dataList.innerHTML = pokemons.map(pokemon => `<option value="${pokemon}">${pokemon}(${pokemon.type})</option>`).join("");
-
-}
-async function loadNaturesDataList(){
-  const natures = await db.natures.all()
-  const dataList = document.getElementById("natures-data-list");
-  for (const nature in natures ){
-  const data = natures[nature]
-  dataList.innerHTML +=  `<option value="${nature}">${data.name} | ${data.description}</option>`
-}
-}
-async function loadMovesDatalist() {
-    const moves = await db.moves.all();
-    const moveDataList = document.getElementById("moves-data-list");
-    moveDataList.innerHTML = moves.map(move => `<option value="${move}">${move}</option>`).join("");
-}
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
 
 
 
 window.onload = () => {
-    loadPokemonsDatalist()
-    loadNaturesDataList()
-    loadMovesDatalist()
+    loadPokemonsDatalist("enemy-data-list")
+    loadNaturesDataList("natures-data-list")
+    loadMovesDatalist("moves-data-list")
 }
 
 const enemy = document.getElementById("enemy");
@@ -40,8 +21,8 @@ globalThis.showStats = async function() {
 
     const level = levelInp.value;
     const nature = natureInp.value;
-    const enemyPokemon = await Pokemon.make(enemy.value, { xp: level * 100, nature });
-    enemyStats.innerHTML = JSON.stringify(enemyPokemon.data.stats,  null, 2);
+    const enemyPokemon = new Pokemon(enemy.value, { xp: level * 100, nature });
+    enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats.all(),  null, 2);
 }
 
 
@@ -55,7 +36,7 @@ globalThis.startBattle = function() {
         document.getElementById("move-input-3").value,
         document.getElementById("move-input-4").value,
         document.getElementById("move-input-5").value,
-    ]
+    ].filter(Boolean).join(",")
 
-    window.location = `battle.html?you=${getParam("name")}&enemy=${enemy.value}&xp=${level * 100}&retreat=${retreat}&nature=${nature}&moves=${moves.join(',')}`;
+    window.location = `battle.html?you=${getParam("name")}&enemy=${enemy.value}&xp=${level * 100}&retreat=${retreat}&nature=${nature}&moves=${moves}`;
 }

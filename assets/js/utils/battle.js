@@ -173,7 +173,7 @@ class BattleState extends Observable {
                     const move = new Move(moveMeta.name)
                     this.moves.push(move)
                 }
-            }
+            })
         }
 
         this.on("wave", () => {
