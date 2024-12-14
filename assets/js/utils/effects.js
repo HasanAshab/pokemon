@@ -228,16 +228,16 @@ export class EffectManager {
 
     removeExpired() {
         const expiredEffects = this.expired().map(effect => effect.constructor.effectName)
-        console.log(expiredEffects)
         this.remove(...expiredEffects)
     }
 
     apply(move) {
-        for (const effectName of move.effect_names) {
-            if (Math.random() < (move.effect_chance / 100)) {
-                this.add(effectName)
+        move.effects().forEach(effect => {
+            console.log(effect)
+            if (Math.random() < (effect.chance / 100)) {
+                this.add(effect.name)
             }
-        }
+        })
     }
 }
 

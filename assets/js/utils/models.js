@@ -115,4 +115,8 @@ export class Move {
         if (!this.type) return 1
         return typeChart[this.type][type] || 1
     }
+    
+    effects() {
+        
+    }
 }

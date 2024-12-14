@@ -4,6 +4,7 @@ win
 paralyzed and sleep bug
 priority
 ev
+accuracy
 
 make contact
 multi hit move
@@ -11,7 +12,5 @@ multi hit move
 
 xp using cp and xp reduce on loose
 abilities effects (eg guts)
-replaceChildren
 effect remove
-js instead of json
 

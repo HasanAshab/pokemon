@@ -259,14 +259,13 @@ function showMoveDamageInjectForm(moveName, damage, playerTag) {
 
 function loadMoves(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    const oponentPokemon = pokemonMap[playerTag === "you" ? "enemy" : "you"]
+    const oponentPokemon = battleField.opponentOf(pokemon)
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
-  
     moveCardsContainer.innerHTML = ''
   for (const move of pokemon.state.moves) {
       const effectiveness = oponentPokemon.effectiveness(move.type)
       const damage = fixFloat(calculateBaseDamage(pokemon, move))
-     const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-name="${move.name}" onclick="moveCardClickHandler(event, '${playerTag}')">
+     const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.name) ? "" : "disabled"}"  data-move-id="${move.id}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "Normal"}-type-color)">
     <h3>${move.name}</h3>
     <div class="move-icons">
@@ -312,8 +311,8 @@ async function handleMoveCardSelect(card, playerTag) {
   if (oponentSelectedMoveCard){
     oponentSelectedMoveCard.classList.remove("selected")
     const moveNames = {
-        [playerTag]: card.dataset.moveName,
-        [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveName
+        [playerTag]: card.dataset.moveId,
+        [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
     }
     try {
         await battle(moveNames)
@@ -334,10 +333,10 @@ globalThis.moveCardClickHandler = function( {
 }
 
 
-async function battle(moveNames) {
-    const {you: moveName, enemy: enemyMoveName} = moveNames
-    const move1 = new Move(moveName)
-    const move2 = new Move(enemyMoveName)
+async function battle(moveIds) {
+    const {you: moveId, enemy: enemyMoveId} = moveIds
+    const move1 = new Move(moveId)
+    const move2 = new Move(enemyMoveId)
     
     await battleField.turn([
         [pokemon, move1],

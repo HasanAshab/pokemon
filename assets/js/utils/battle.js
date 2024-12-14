@@ -82,9 +82,7 @@ export class BattleField extends EventEmitter {
         
         const isFlinched1 = this._isFlinched(this.pokemon2, this.pokemon1, move2)
         const isFlinched2 = this._isFlinched(this.pokemon1, this.pokemon2, move1)
-        console.log("char", isFlinched1)
-        console.log("bulba", isFlinched2)
-        
+
         this.pokemon1.state.isFlinched = isFlinched1
         this.pokemon2.state.isFlinched = isFlinched2
         
@@ -111,10 +109,10 @@ export class BattleField extends EventEmitter {
             this.state(this.pokemon2).effects.apply(move1)
         }
         if ((move1.makes_contact && !dodged2) || !move1.makes_contact || !canMove2) {
-            this.pokemon1.state.stats.apply(move1)
+            //this.pokemon1.state.stats.apply(move1)
         }
         if ((move2.makes_contact && !dodged1) || !move2.makes_contact || !canMove1) {
-            this.pokemon2.state.stats.apply(move2)
+            //this.pokemon2.state.stats.apply(move2)
         }
         
         this.pokemon1.state.isFlinched = false
@@ -171,7 +169,7 @@ class BattleState extends Observable {
         if(pokemon.meta.moves) {
             pokemon.meta.moves.forEach(moveMeta => {
                 if (moveMeta.isSelected) {
-                    const move = new Move(moveMeta.name)
+                    const move = new Move(moveMeta.id)
                     this.moves.push(move)
                 }
             })
@@ -182,7 +180,7 @@ class BattleState extends Observable {
         })
         this.on("move-used", move => {
             this.retreat -= move.retreat
-            this.reducePP(move.name)
+            this.reducePP(move.id)
         })
     }
 
@@ -207,8 +205,8 @@ class BattleState extends Observable {
         return move.retreat <= this.retreat && (move.pp === null || move.pp > 0)
     }
 
-    reducePP(moveName) {
-        const move = this.moves.find(m => m.name === moveName)
+    reducePP(moveId) {
+        const move = this.moves.find(m => m.id === moveId)
         if (move.pp !== null) move.pp--
         return move
     }
