@@ -232,8 +232,7 @@ export class EffectManager {
     }
 
     apply(move) {
-        move.effects().forEach(effect => {
-            console.log(effect)
+        move.effects.forEach(effect => {
             if (Math.random() < (effect.chance / 100)) {
                 this.add(effect.name)
             }

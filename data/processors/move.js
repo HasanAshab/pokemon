@@ -1,5 +1,28 @@
 import { processor } from "./helpers.js"
 
+function setEffects(move) {
+    move.effects = []
+    if (move.category === "Status" && move.status) {
+        move.effects.push({
+            name: move.status,
+            chance: 100
+        })
+    }
+    if(move.secondary?.status) {
+        move.effects.push({
+            name: move.secondary.status,
+            chance: move.secondary.chance ?? 100
+        })
+    }
+    if(move.secondaries) {
+        move.secondaries.forEach(secondary => {
+            secondary.status && move.effects.push({
+                name: secondary.status,
+                chance: secondary.chance ?? 100
+            })
+        })
+    }
+}
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
@@ -45,6 +68,7 @@ function setRetreat(move) {
 
 
 export default processor([
+    setEffects,
     modifyPP,
     setRetreat,
 ])

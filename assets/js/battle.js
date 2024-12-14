@@ -262,6 +262,7 @@ function loadMoves(playerTag) {
     const oponentPokemon = battleField.opponentOf(pokemon)
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
     moveCardsContainer.innerHTML = ''
+
   for (const move of pokemon.state.moves) {
       const effectiveness = oponentPokemon.effectiveness(move.type)
       const damage = fixFloat(calculateBaseDamage(pokemon, move))
