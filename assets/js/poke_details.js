@@ -43,11 +43,16 @@ function setStatToken(slug,value,shouldSetMeta = true){
        const stat = document.querySelector(`.stats .stat.${slug}`)
     if (shouldSetMeta){ 
      const meta = getPokemonsMeta(name) 
-     meta.token_used[slug] = value
+     meta.token_used[slug] = parseInt(value)
      setPokemonMeta(name,meta)
     }
       stat.setAttribute("data-token-used",value)
   }
+}
+
+function totalTokenUsed() {
+    return Object.keys(getPokemonsMeta(name).token_used)
+    .reduce((acc,stat) => acc + getPokemonsMeta(name).token_used[stat], 0)
 }
 globalThis.openEnemyChooseInterface = function() {
   window.location = `enemy.html?name=${name}`
@@ -81,6 +86,7 @@ globalThis.statClickHandler = function( {
    statValueInp.setAttribute('list',"natures-data-list")
   } else{
    attributeName = "data-token-used"
+   document.getElementById("remaining-token").textContent = (Pokemon.calculateLevel(getPokemonsMeta(name).xp) * 2) - totalTokenUsed()
    }
    
   statValueInp.value = currentTarget.getAttribute(attributeName)

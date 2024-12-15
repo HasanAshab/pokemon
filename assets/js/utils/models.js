@@ -89,15 +89,28 @@ export class Pokemon {
       
         return natureStats;
       }
+
+      _calculateTokenStat() {
+        const tokenStats = {};
+      
+        Object.keys(this._pokemon.baseStats).forEach(statName => {
+          const baseStat = this._pokemon.baseStats[statName];
+          const tokenModifier = Math.pow(1.05, this.meta.token_used[statName]);
+          // Apply token modifier
+          tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
+        });
+        return tokenStats;
+      }
       
       _calculateTotalStat() {
         const baseStats = this._pokemon.baseStats;
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
+        const tokenStats = this._calculateTokenStat();
         const totalStats = {};
         Object.keys(baseStats).forEach(statName => {
           totalStats[statName] =
-            baseStats[statName] + levelStats[statName] + natureStats[statName];
+            baseStats[statName] + levelStats[statName] + natureStats[statName] + tokenStats[statName];
         });
       
         return totalStats;
