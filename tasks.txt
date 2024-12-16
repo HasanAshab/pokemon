@@ -1,4 +1,5 @@
-movestate, usedtoken
+remove self effect
+pokemon.toHash(), usedtoken
 
 
 try dodge

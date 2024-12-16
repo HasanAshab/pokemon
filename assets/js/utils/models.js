@@ -95,7 +95,7 @@ export class Pokemon {
       
         Object.keys(this._pokemon.baseStats).forEach(statName => {
           const baseStat = this._pokemon.baseStats[statName];
-          const tokenModifier = Math.pow(1.05, this.meta.token_used[statName]);
+          const tokenModifier = Math.pow(1.05, this.meta.token_used[statName] ?? 0);
           // Apply token modifier
           tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
         });

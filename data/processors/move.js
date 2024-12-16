@@ -8,23 +8,41 @@ function modifyPP(move) {
 
 function setEffects(move) {
     move.effects = []
-    if (move.category === "Status" && move.status) {
-        move.effects.push({
+    if (move.category === "Status") {
+        move.status && move.effects.push({
             name: move.status,
-            chance: 100
+            chance: 100,
+            isVolatile: false
+        })
+        move.volatileStatus && move.effects.push({
+            name: move.volatileStatus,
+            chance: 100,
+            isVolatile: true
         })
     }
-    if(move.secondary?.status) {
-        move.effects.push({
+    if(move.secondary) {
+        move.secondary.status && move.effects.push({
             name: move.secondary.status,
-            chance: move.secondary.chance ?? 100
+            chance: move.secondary.chance ?? 100,
+            isVolatile: false
+        })
+        move.secondary.volatileStatus && move.effects.push({
+            name: move.secondary.volatileStatus,
+            chance: move.secondary.chance ?? 100,
+            isVolatile: true
         })
     }
     if(move.secondaries) {
         move.secondaries.forEach(secondary => {
             secondary.status && move.effects.push({
                 name: secondary.status,
-                chance: secondary.chance ?? 100
+                chance: secondary.chance ?? 100,
+                isVolatile: false
+            })
+            secondary.volatileStatus && move.effects.push({
+                name: secondary.volatileStatus,
+                chance: secondary.chance ?? 100,
+                isVolatile: true
             })
         })
     }

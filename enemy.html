@@ -12,12 +12,17 @@
     <br>
     <label for="level-inp">Level</label>
     <input type="number" id="level-inp" value="1" onchange="showStats()">
+    <br>
     <label for="retreat-inp">Retreat</label>
     <input type="number" id="retreat-inp" value="2">
+    <br>
     <label for="nature-inp">Nature</label>
     <input list="natures-data-list" value="calm"  name="nature-inp" type="text" onblur="showStats()" id="nature-inp">
     <datalist id="natures-data-list"></datalist>
-  
+    <br>
+    <label for="token-inp">Token Used</label>
+    <textarea name="token-inp" onblur="showStats()" id="token-inp"></textarea>
+    <br>
     <pre id="enemy-stats"></pre>
     <br>
     <h3>Moves</h3>

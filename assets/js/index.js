@@ -115,8 +115,8 @@ function loadFoodCost() {
 }
 
 function loadAll() {
-    const newUtter = new SpeechSynthesisUtterance("charmander vs bulbasaur");
-speechSynthesis.speak(newUtter);
+   // const newUtter = new SpeechSynthesisUtterance("charmander vs bulbasaur");
+//speechSynthesis.speak(newUtter);
 
   loadTotalBadges()
   loadActiveBadges()
@@ -127,7 +127,7 @@ speechSynthesis.speak(newUtter);
 }
 document.body.onload = loadAll
 
-//window.location = "/battle.html?you=charmander&enemy=riolu&xp=500&retreat=3&nature=calm&moves=scratch,forcepalm,sleeppowder,crunch,firefang"
+window.location = "/battle.html?you=charmander&enemy=riolu&xp=500&retreat=3&nature=calm&moves=scratch,forcepalm,sleeppowder,crunch,firefang"
 //window.location = "/battle.html?you=charmander&enemy=charmander&xp=500&retreat=3&nature=calm&moves=growl,scratch,ember"
 //window.location = "/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,rage,crunch,razor-leaf,leer"
 //window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=charizard-mega-x&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
