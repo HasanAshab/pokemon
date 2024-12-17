@@ -105,7 +105,7 @@ function setRetreat(move) {
   }
   retreat = retreat + categoryBonus[move.category];
   
-  if (move.category !== "Status" && move.secondary)
+  if (move.secondary)
     retreat += 0.5
   
   if (move.secondaries)

@@ -6,26 +6,6 @@ import { fixFloat } from "./helpers.js"
 import move from "../../../data/processors/move.js";
 
 
-export async function calculateWinXP(poke1, poke2) {
-    const levelMultiplier = (poke2.level / poke1.level) * 5;
-    const baseXp = 10
-    let typeEffectiveness1 = 1
-    let typeEffectiveness2 = 1
-
-    for (const type of poke2.data.types) {
-        typeEffectiveness1 *= await poke1.effectiveness(type)
-    }
-    for (const type of poke1.data.types) {
-        typeEffectiveness2 *= await poke2.effectiveness(type)
-    }
-    
-    const typeEffectiveness = typeEffectiveness1 / typeEffectiveness2
-
-    const xp = Math.floor(baseXp * levelMultiplier * typeEffectiveness);
-    return xp;
-}
-
-
 export class BattleField extends EventEmitter {
     turnNo = 1
     waveNo = 1
@@ -94,10 +74,10 @@ export class BattleField extends EventEmitter {
 
         const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
 
-        if (move1.damage_class === "status") {
+        if (move1.category === "Status") {
             this.state(this.pokemon2).effects.apply(move1)
         }
-        if (move2.damage_class === "status") {
+        if (move2.category === "Status") {
             this.state(this.pokemon1).effects.apply(move2)
         }
         if (await damages.isHittee(this.pokemon1) && !dodged1) {
@@ -277,4 +257,24 @@ class StatsManager {
             return 1; // Neutral stage
         }
     }
+}
+
+
+export async function calculateWinXP(poke1, poke2) {
+    const levelMultiplier = (poke2.level / poke1.level) * 5;
+    const baseXp = 10
+    let typeEffectiveness1 = 1
+    let typeEffectiveness2 = 1
+
+    for (const type of poke2.data.types) {
+        typeEffectiveness1 *= await poke1.effectiveness(type)
+    }
+    for (const type of poke1.data.types) {
+        typeEffectiveness2 *= await poke2.effectiveness(type)
+    }
+    
+    const typeEffectiveness = typeEffectiveness1 / typeEffectiveness2
+
+    const xp = Math.floor(baseXp * levelMultiplier * typeEffectiveness);
+    return xp;
 }
