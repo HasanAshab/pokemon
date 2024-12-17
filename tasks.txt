@@ -1,7 +1,6 @@
 remove self effect
-pokemon.toHash(), usedtoken
-
-
+speed - weight + accuracy = dodge
+bug- damage on dodge, acidarmor
 try dodge
 commentary
 win
@@ -9,7 +8,6 @@ paralyzed and sleep bug
 priority
 ev
 accuracy
-shalow copy on move processing
 make contact
 multi hit move
 

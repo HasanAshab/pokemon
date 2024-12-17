@@ -19,8 +19,8 @@ const tokenInp = document.getElementById("token-inp");
 const enemyStats = document.getElementById("enemy-stats");
 
 function makePokemon() {
-    const level = levelInp.value;
-    const retreat = retreatInp.value;
+    const level = parseInt(levelInp.value);
+    const retreat = parseInt(retreatInp.value);
     const nature = natureInp.value;
     const tokens = tokenInp.value ? JSON.parse(tokenInp.value) : {};
     const moves = [
@@ -43,15 +43,12 @@ function makePokemon() {
     });
 }
 globalThis.showStats = async function() {
-    console.log("bb")
     const enemyPokemon = makePokemon()
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
 
 globalThis.startBattle = function() {
-    const enemyPokemon = makePokemon()
-    console.log(enemyPokemon)
-
-    window.location = `battle.html?you=${getParam("name")}&enemy=${enemy.value}&xp=${level * 100}&retreat=${retreat}&nature=${nature}&moves=${moves}`;
+    const enemyBase64 = makePokemon().toBase64();
+    window.location = `battle.html?you=${getParam("name")}&enemy=${enemyBase64}`;
 }

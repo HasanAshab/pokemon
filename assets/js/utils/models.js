@@ -6,9 +6,16 @@ import natures from "../../../data/natures.js"
 
 export class Pokemon {
     static XP_PER_LEVEL = 100;
+    static TOKEN_PER_LEVEL = 2
+    static TOKEN_MODIFIER = 1.05
 
     static calculateLevel(xp) {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
+    }
+
+    static fromBase64(base64) {
+        const { id, meta } = JSON.parse(atob(base64));
+        return new this(id, meta);
     }
 
     static natureModifierFor(statName, nature) {
@@ -54,6 +61,20 @@ export class Pokemon {
         return effectiveness;
     }
 
+    toBase64() {
+        return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
+    }
+
+
+    tokensUsed() {
+        return Object.keys(this.meta.token_used)
+            .reduce((acc,stat) => acc + this.meta.token_used[stat], 0)
+    }
+    
+    tokensRemaining() {
+        return (this.level * Pokemon.TOKEN_PER_LEVEL) - this.tokensUsed()
+    }
+
     _calculateLevelStat() {
         const stats = {};
 
@@ -95,7 +116,7 @@ export class Pokemon {
       
         Object.keys(this._pokemon.baseStats).forEach(statName => {
           const baseStat = this._pokemon.baseStats[statName];
-          const tokenModifier = Math.pow(1.05, this.meta.token_used[statName] ?? 0);
+          const tokenModifier = Math.pow(Pokemon.TOKEN_MODIFIER, this.meta.token_used[statName] ?? 0);
           // Apply token modifier
           tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
         });

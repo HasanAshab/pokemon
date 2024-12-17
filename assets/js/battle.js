@@ -3,7 +3,7 @@ import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
 import { calculateBaseDamage } from "./utils/damage.js"
 import { calculateWinXP } from "./utils/battle.js"
-import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
 
 globalThis.isVeryClose = false
@@ -25,7 +25,7 @@ globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
 
 function setBattleStateChangeListener(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    pokemon.state.on("change", state => {
+    pokemon.state.on("change", (state) => {
         const hp = state.stats.get("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state._statChanges, playerTag)
@@ -85,18 +85,8 @@ function loadChoosePokemon(){
 
 function loadGlobal() {
     const pokemonName = getParam("you")
-    const enemyMovesMeta = getParam("moves").split(",").map(id => ({
-        id,
-        isSelected: true
-    }))
-
-    globalThis.enemyPokemon = new Pokemon(getParam("enemy"), {
-        xp: parseInt(getParam("xp")),
-        retreat: parseInt(getParam("retreat")),
-        nature: getParam("nature"),
-        moves: enemyMovesMeta
-    })
     globalThis.pokemon = new Pokemon(pokemonName, getPokemonsMeta(pokemonName))
+    globalThis.enemyPokemon = Pokemon.fromBase64(getParam("enemy"))
     globalThis.pokemonMap = {
         "you": pokemon,
         "enemy": enemyPokemon
@@ -288,7 +278,7 @@ ${
     ${damage !== null ? "Damage: " + damage : ""}
     </p>
     <p>
-    PP: ${move.pp ?? "∞"}
+    PP: ${move.pp ? `${move.pp}/${move._move.pp}` : "∞"}
     </p>
     <small class="description">${move.description}</small>
     </div>    

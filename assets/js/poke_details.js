@@ -50,10 +50,7 @@ function setStatToken(slug,value,shouldSetMeta = true){
   }
 }
 
-function totalTokenUsed() {
-    return Object.keys(getPokemonsMeta(name).token_used)
-    .reduce((acc,stat) => acc + getPokemonsMeta(name).token_used[stat], 0)
-}
+
 globalThis.openEnemyChooseInterface = function() {
   window.location = `enemy.html?name=${name}`
 }
@@ -86,7 +83,7 @@ globalThis.statClickHandler = function( {
    statValueInp.setAttribute('list',"natures-data-list")
   } else{
    attributeName = "data-token-used"
-   document.getElementById("remaining-token").textContent = (Pokemon.calculateLevel(getPokemonsMeta(name).xp) * 2) - totalTokenUsed()
+   document.getElementById("remaining-token").textContent = pokemon.tokensRemaining()
    }
    
   statValueInp.value = currentTarget.getAttribute(attributeName)
@@ -120,49 +117,45 @@ globalThis.closeMoveChooseInterface = function() {
 }
 globalThis.learnMove = async function() {
     const moveId = document.getElementById("move-search-inp").value
-    const meta = getPokemonsMeta(name)
     
-    if (meta.moves.find(move => move.id === moveId)) {
+    if (pokemon.meta.moves.find(move => move.id === moveId)) {
         return
     }
-    meta.moves.push({
+    pokemon.meta.moves.push({
         id: moveId,
         isSelected: false
     })
-    setPokemonMeta(name, meta)
+    setPokemonMeta(name, pokemon.meta)
     closeMoveChooseInterface()
     loadMoves()
 }
 
 
 globalThis.selectMove = function(moveId) {
-    const meta = getPokemonsMeta(name)
-    meta.moves = meta.moves.map(move => {
+    pokemon.meta.moves = pokemon.meta.moves.map(move => {
         if (move.id === moveId) {
             move.isSelected = true
         }
         return move
     })
-    setPokemonMeta(name, meta)
+    setPokemonMeta(name, pokemon.meta)
     loadMoves()
 }
 
 globalThis.unselectMove = function(moveId) {
-    const meta = getPokemonsMeta(name)
-    meta.moves = meta.moves.map(move => {
+    pokemon.meta.moves = pokemon.meta.moves.map(move => {
         if (move.id === moveId) {
             move.isSelected = false
         }
         return move
     })
-    setPokemonMeta(name, meta)
+    setPokemonMeta(name, pokemon.meta)
     loadMoves()
 }
 
 globalThis.forgetMove = function(id) {
-    const meta = getPokemonsMeta(name)
-    meta.moves = meta.moves.filter(move => move.id !== id)
-    setPokemonMeta(name, meta)
+    pokemon.meta.moves = pokemon.meta.moves.filter(move => move.id !== id)
+    setPokemonMeta(name, pokemon.meta)
     loadMoves()
 }
 
@@ -171,11 +164,9 @@ function loadName() {
     document.getElementById("pokemon-name").innerText = displayName
 }
 
-function loadStats() {
-    const meta = getPokemonsMeta(name)
-    const pokemon = new Pokemon(name, meta)
 
-    setCurrentHealth(meta.stats.hp ?? pokemon.stats.hp)
+function loadStats() {
+    setCurrentHealth(pokemon.meta.stats.hp ?? pokemon.stats.hp)
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)
     setStat("xp", pokemon.meta.xp)
@@ -186,7 +177,7 @@ function loadStats() {
     for (const stat in pokemon.stats) {
      const statValue = pokemon.stats[stat]
       setStat(stat,statValue)
-      setStatToken(stat,meta.token_used[stat],false)
+      setStatToken(stat, pokemon.meta.token_used[stat], false)
       if (stat === "hp"){
           setTotalHealth(statValue)
       }
@@ -196,9 +187,7 @@ function loadStats() {
 function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
-    const meta = getPokemonsMeta(name)
-    const pokemon = new Pokemon(name, meta)
-    for (const moveMeta of meta.moves) {
+    for (const moveMeta of pokemon.meta.moves) {
         const move = new Move(moveMeta.id)
         const damage = fixFloat(calculateBaseDamage(pokemon, move))
         movesContainer.innerHTML += `
@@ -237,6 +226,9 @@ function loadMoves() {
 }
 
 window.onload = () => {
+    const meta = getPokemonsMeta(name)
+    globalThis.pokemon = new Pokemon(name, meta)
+
     loadNaturesDataList("natures-data-list")
     loadName()
     loadMoves()

@@ -79,7 +79,7 @@ function setStatChanges(move) {
 }
 
 function setRetreat(move) {
-  if(move.retreat) return
+  if("retreat" in move) return
   const categoryBonus = {
     Special: 0,
     Physical: 0,

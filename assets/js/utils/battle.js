@@ -4,6 +4,7 @@ import { EffectManager } from "./effects.js"
 import { calculateDamage } from "./damage.js"
 import { fixFloat } from "./helpers.js"
 import move from "../../../data/processors/move.js";
+import pokemons from "../../../data/pokemons.js";
 
 
 export class BattleField extends EventEmitter {
@@ -25,6 +26,10 @@ export class BattleField extends EventEmitter {
         ]);
 
         this.on("turn", (...args) => {
+
+            this.pokemon1.state.usableMoves()
+            this.pokemon2.state.usableMoves()
+
             this.pokemon1.state.emit("turn", ...args)
             this.pokemon2.state.emit("turn", ...args)
         })
@@ -172,17 +177,20 @@ class BattleState extends Observable {
     increaseHealth(amount) {
         const maxHealth = this.stats.get("hp"); // Use calculated HP stat
         const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
-        this.stats.set("hp", newHp);
-        return newHp
+        return this.stats.set("hp", newHp);
     }
 
     decreaseHealth(amount) {
-        this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
+        return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
     canUseMove(moveName) {
         const move = this.moves.find(m => m.name === moveName)
         return move.retreat <= this.retreat && (move.pp === null || move.pp > 0)
+    }
+
+    usableMoves() {
+        return this.moves.filter(m => this.canUseMove(m.name))
     }
 
     reducePP(moveId) {
@@ -202,7 +210,7 @@ class StatsManager {
 
     constructor(state) {
         this.state = state;
-        this._stats = {...state.pokemon.stats}; 
+        this._stats = Object.assign({}, state.pokemon.stats, state.pokemon.meta.stats);
     }
 
     get(name) {
@@ -213,7 +221,7 @@ class StatsManager {
     }
 
     set(name, value) {
-        this._stats[name] = value;
+        return this._stats[name] = value;
     }
 
     all() {
