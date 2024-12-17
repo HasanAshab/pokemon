@@ -14,6 +14,7 @@ const MOVES = {
       target: "normal",
       type: null,
       isCustom: true,
+      isOffensive: false,
       retreat: 0,
     },
     "dodge": {
@@ -29,6 +30,7 @@ const MOVES = {
       target: "normal",
       type: null,
       isCustom: true,
+      isOffensive: false,
       retreat: 0.5
     },
     "10000000voltthunderbolt": {

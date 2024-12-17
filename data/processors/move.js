@@ -1,9 +1,15 @@
 import { processor } from "./helpers.js"
 
+
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
       move.pp = Math.round(move.pp / 3) || 1;
     }
+}
+
+function setOffensiveness(move) {
+    if ("isOffensive" in move) return
+    move.isOffensive = true
 }
 
 function setEffects(move) {
@@ -117,6 +123,7 @@ function setRetreat(move) {
 
 export default processor([
     modifyPP,
+    setOffensiveness,
     setEffects,
     setStatChanges,
     setRetreat,

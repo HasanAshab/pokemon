@@ -26,10 +26,6 @@ export class BattleField extends EventEmitter {
         ]);
 
         this.on("turn", (...args) => {
-
-            this.pokemon1.state.usableMoves()
-            this.pokemon2.state.usableMoves()
-
             this.pokemon1.state.emit("turn", ...args)
             this.pokemon2.state.emit("turn", ...args)
         })
@@ -38,6 +34,10 @@ export class BattleField extends EventEmitter {
             this.turnNo++
             this.pokemon1.state.emit("turn-end", ...args)
             this.pokemon2.state.emit("turn-end", ...args)
+            
+            !this.pokemon1.state.usableOffensiveMoves().length
+            && !this.pokemon2.state.usableOffensiveMoves().length
+            && this.emit("wave")
         })
         
         this.on("wave", (...args) => {
@@ -184,13 +184,17 @@ class BattleState extends Observable {
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
-    canUseMove(moveName) {
-        const move = this.moves.find(m => m.name === moveName)
+    canUseMove(moveId) {
+        const move = this.moves.find(m => m.id === moveId)
         return move.retreat <= this.retreat && (move.pp === null || move.pp > 0)
     }
 
     usableMoves() {
-        return this.moves.filter(m => this.canUseMove(m.name))
+        return this.moves.filter(m => this.canUseMove(m.id))
+    }
+    
+    usableOffensiveMoves() {
+        return this.usableMoves().filter(m => m.isOffensive)
     }
 
     reducePP(moveId) {
