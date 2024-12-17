@@ -1,44 +1,70 @@
 import { fixFloat } from "./helpers.js";
 
 
-const STAB_MODIFIER = 1.3;
-const CRIT_MULTIPLIER = 1.5;
-const BASE_CRIT_CHANCE = 1 / 24;
-
-class Hit {
-    isCritical = false
-    effectiveness = 1
-    randomModifier = 0.85
-    damageCount = 0
+export class Damage {
+    static STAB_MODIFIER = 1.3;
+    static CRIT_MULTIPLIER = 1.5;
+    static BASE_CRIT_CHANCE = 1 / 24;
+    static RAND_MODIFIER_RANGE = [0.85, 0.15]
     
-    constructor(data) {
-        Object.assign(this, data)
-    }
-}
-
-class Damage {
-    constructor(move, hits = []) {
+    constructor(attacker, move, target = null) {
+        this.attacker = attacker
+        this.target = target
         this.move = move
-        this.hits = hits
+        
+        this._calculate()
+        this.count = fixFloat(this.count)
     }
     
-    totalDamage() {
-        const damage = this.hits.reduce((total, hit) => {
-            return total + hit.damageCount
-        }, 0)
+    get isCritical() {
+        return this.criticalMultiplier > 1
+    }
 
-        return fixFloat(damage)
+    _setCriticalMultiplier() {
+        const critChance = Damage.BASE_CRIT_CHANCE * (1 + this.move.critRatio);
+        const isCritical = Math.random() < critChance
+        return this.criticalMultiplier = isCritical ? Damage.CRIT_MULTIPLIER : 1
+    }
+
+    _setRandomModifier() {
+        const min = Damage.RAND_MODIFIER_RANGE[0]
+        const max = Damage.RAND_MODIFIER_RANGE[1]
+        return this.randomModifier = Math.random() * max + min;
     }
     
-    totalEffectiveness() {
-        return this.hits.reduce((total, hit) => {
-            return total + hit.effectiveness
-        }, 0)
+    _calculateBase(){
+        if (!this.move.basePower) {
+            return null
+        }
+        const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1;
+        const isSpecial = this.move.category === "Special";
+        const attackStat = "state" in this.attacker 
+            ? this.attacker.state.stats.get(isSpecial ? "spa" : "atk")
+            : this.attacker.stats[isSpecial ? "spa" : "atk"];
+    
+        const defenseStat = this.target
+            ? this.target.state.stats.get(isSpecial ? "spd" : "def")
+            : 70; // Neutral defense if no target
+        return stab * ((((((2 * this.attacker.level) / 7) + 2) * this.move.basePower * ((attackStat * 0.6) / defenseStat)) / 10) + 2);
     }
 
-    avgEffectiveness() {
-        if (!this.hits.length) return 1
-        return this.totalEffectiveness() / this.hits.length
+    _calculate() {
+        this.count = this._calculateBase();
+        if (!this.target) {
+            return this.count
+        }
+        
+        this._setCriticalMultiplier()
+        this._setRandomModifier()
+
+        if (this.count !== null) {
+            this.count = (
+                  this.count
+                * this.randomModifier
+                * this.criticalMultiplier
+            )
+        }
+        return this.count
     }
 }
 
@@ -49,7 +75,7 @@ class DamageManager {
         this._damages = new Map(damages)
     }
     
-    async on(pokemon) {
+    on(pokemon) {
         if (!this._cache) {
             const pokemon2 = this.opponentOf(pokemon)
             const damage1 = this._damages.get(pokemon)
@@ -58,8 +84,8 @@ class DamageManager {
             const effectiveness1 = damage1.avgEffectiveness()
             const effectiveness2 = damage2.avgEffectiveness()
             
-            const pokeEffect1 = await pokemon2.effectiveness(damage1.move.type);
-            const pokeEffect2 = await pokemon.effectiveness(damage2.move.type);
+            const pokeEffect1 = pokemon2.effectiveness(damage1.move.type);
+            const pokeEffect2 = pokemon.effectiveness(damage2.move.type);
             
             const totalDamage1 = damage1.totalDamage()
             const totalDamage2 = damage2.totalDamage()
@@ -111,73 +137,6 @@ class DamageManager {
     }
 }
 
-export function calculateBaseDamage(pokemon1, move, pokemon2 = null) {
-    if (move.basePower === null) {
-        return null
-    }
-    const stab = pokemon1.isTypeOf(move.type) ? STAB_MODIFIER : 1;
-    const isSpecial = move.category === "Special";
-    const attackStat = "state" in pokemon1 
-        ? pokemon1.state.stats.get(isSpecial ? "spa" : "atk")
-        : pokemon1.stats[isSpecial ? "spa" : "atk"];
-
-    const defenseStat = pokemon2
-        ? pokemon2.state.stats.get(isSpecial ? "spd" : "def")
-        : 70; // Neutral defense if no target
-    return stab * ((((((2 * pokemon1.level) / 5) + 2) * move.basePower * ((attackStat * 0.6) / defenseStat)) / 10) + 2);
-}
-
-export async function calculateDamage(pokemon1, move1, pokemon2, move2) {
-    const damage1 = new Damage(move1)
-    const damage2 = new Damage(move2)
-    const damages = new DamageManager([
-        [pokemon1, damage1],
-        [pokemon2, damage2],
-    ])
-
-    const hitData1 = {}
-
-    const critChance1 = BASE_CRIT_CHANCE * (1 + move1.critRatio);
-    hitData1.isCritical = Math.random() < critChance1
-    const criticalMultiplier1 = hitData1.isCritical ? CRIT_MULTIPLIER : 1;
-    hitData1.randomModifier = Math.random() * 0.15 + 0.85;
-    hitData1.damageCount = calculateBaseDamage(pokemon1, move1);
-
-    if (hitData1.damageCount !== null) {
-        hitData1.damageCount = (
-              hitData1.damageCount
-            * hitData1.randomModifier
-            * criticalMultiplier1
-        )
-    }
-    const hit1 = new Hit(hitData1)
-    damage1.hits.push(hit1)
-
-    if (!move2) {
-        // If only pokemon1 attacks, return its damage
-        return damages
-    }
-
-    const hitData2 = {}
-    const critChance2 = BASE_CRIT_CHANCE * (1 + move2.critRatio);
-    hitData2.isCritical = Math.random() < critChance2
-    const criticalMultiplier2 = hitData2.isCritical ? CRIT_MULTIPLIER : 1;
-    hitData2.randomModifier = Math.random() * 0.15 + 0.85;
-    hitData2.damageCount = calculateBaseDamage(pokemon2, move2);
-
-    if (hitData2.damageCount !== null) {
-        hitData2.damageCount = (
-              hitData2.damageCount
-            * hitData2.randomModifier
-            * criticalMultiplier2
-        )
-    }
-    
-    const hit2 = new Hit(hitData2)
-    damage2.hits.push(hit2)
-
-    return damages
-}
 
 function getRandomHits(move) {
   if (!Array.isArray(move.multihit)) {
@@ -208,3 +167,5 @@ function weightedRandom(values, weights) {
 
   return values[values.length - 1]; // Fallback
 }
+
+

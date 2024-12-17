@@ -1,7 +1,6 @@
-import { fixFloat } from "./utils/helpers.js"
 import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
-import { calculateBaseDamage } from "./utils/damage.js"
+import { Damage } from "./utils/damage.js"
 import { calculateWinXP } from "./utils/battle.js"
 import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 
@@ -254,7 +253,7 @@ function loadMoves(playerTag) {
     moveCardsContainer.innerHTML = ''
   for (const move of pokemon.state.moves) {
       const effectiveness = oponentPokemon.effectiveness(move.type)
-      const damage = fixFloat(calculateBaseDamage(pokemon, move))
+      const damage = new Damage(pokemon, move)
      const cardHtml = ` <div class="card ${pokemon.state.canUseMove(move.id) ? "" : "disabled"}"  data-move-id="${move.id}" onclick="moveCardClickHandler(event, '${playerTag}')">
     <div class="card-header" style="background-color:var(--${move.type || "Normal"}-type-color)">
     <h3>${move.name}</h3>
@@ -275,7 +274,7 @@ ${
 }
 
         <p>
-    ${damage !== null ? "Damage: " + damage : ""}
+    ${damage.count !== null ? "Damage: " + damage.count : ""}
     </p>
     <p>
     PP: ${move.pp ? `${move.pp}/${move._move.pp}` : "∞"}

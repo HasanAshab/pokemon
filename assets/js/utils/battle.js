@@ -1,10 +1,8 @@
 import { EventEmitter, Observable } from "./event.js";
 import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
-import { calculateDamage } from "./damage.js"
+import { Damage } from "./damage.js"
 import { fixFloat } from "./helpers.js"
-import move from "../../../data/processors/move.js";
-import pokemons from "../../../data/pokemons.js";
 
 
 export class BattleField extends EventEmitter {
@@ -56,7 +54,7 @@ export class BattleField extends EventEmitter {
         return this._states.get(pokemon);
     }
 
-    async turn(senario) {
+    async turn_Old(senario) {
         this.emit("turn", this, senario)
 
         const senarioMap = new Map(senario)
@@ -93,7 +91,7 @@ export class BattleField extends EventEmitter {
             this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
             this.state(this.pokemon2).effects.apply(move1)
         }
-        if ((move1.makes_contact && !dodged2) || !move1.makes_contact || !canMove2) {
+        if ((move1.flags.contact && !dodged2) || !move1.flags.contact || !canMove2) {
             this.pokemon1.state.stats.apply(move1)
         }
         if ((move2.flags.contact && !dodged1) || !move2.flags.contact || !canMove1) {
@@ -102,6 +100,73 @@ export class BattleField extends EventEmitter {
         
         this.pokemon1.state.isFlinched = false
         this.pokemon2.state.isFlinched = false
+
+        canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
+        canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
+        this.emit("turn-end", this, senario)
+    }
+    async turn(senario) {
+        this.emit("turn", this, senario)
+
+        const senarioMap = new Map(senario)
+
+        const move1 = senarioMap.get(this.pokemon1)
+        const move2 = senarioMap.get(this.pokemon2)
+
+        const canMove1 = this.pokemon1.state.canMove()
+        const canMove2 = this.pokemon2.state.canMove()
+
+        const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
+        const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
+
+
+        const damage1 = new Damage(this.pokemon1, move1, this.pokemon2)
+        const damage2 = new Damage(this.pokemon2, move2, this.pokemon1)
+        
+        const pokeEffect1 = this.pokemon2.effectiveness(move1.type);
+        const pokeEffect2 = this.pokemon1.effectiveness(move2.type);
+            
+        const moveEffect1 = move1.effectiveness(move2.type)
+        const moveEffect2 = move2.effectiveness(move1.type)
+            
+        let damage
+        if (!canMove1) {
+            damage = damage1.count * pokeEffect2
+        }
+        else if (!canMove2) {
+            damage = -(damage1.count * pokeEffect1)
+        }
+        else if (
+            !["None", "Status"].includes(move1.category)
+            && !["None", "Status"].includes(move1.category)
+            && move1.flags.contact !== move2.flags.contact
+        ) {
+            damage = move1.flags.contact === 1 ? damage2.count * pokeEffect2 : -damage1.count * pokeEffect1
+        }
+        else {
+            damage = (damage2.count * moveEffect2) - (damage1.count * moveEffect1)
+            const pokeEffect = damage > 0 ? pokeEffect2 : pokeEffect1
+            damage = damage * pokeEffect
+        }
+        
+        const hittee = damage > 0 ? this.pokemon1 : this.pokemon2
+        damage = Math.abs(damage)
+        
+
+        if (hittee === this.pokemon1 && !dodged1) {
+            this.pokemon1.state.decreaseHealth(damage)
+            this.pokemon1.state.effects.apply(move2)
+        }
+        if (hittee === this.pokemon2 && !dodged2) {
+            this.pokemon2.state.decreaseHealth(damage)
+            this.pokemon2.state.effects.apply(move1)
+        }
+        if ((move1.flags.contact && !dodged2) || !move1.flags.contact || !canMove2) {
+            this.pokemon1.state.stats.apply(move1)
+        }
+        if ((move2.flags.contact && !dodged1) || !move2.flags.contact || !canMove1) {
+            this.pokemon2.state.stats.apply(move2)
+        }
 
         canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
         canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
@@ -117,7 +182,7 @@ export class BattleField extends EventEmitter {
         // Get speed stats
         const attackerSpd = this.state(attacker).stats.get("speed");
         const targetSpd = this.state(target).stats.get("speed");
-        const isPhysical = move.damage_class === "physical";
+        const isPhysical = move.category === "Physical";
     
         // Simulate hit/miss based on final accuracy
         const maxHitChance = isPhysical ? 10 : 7

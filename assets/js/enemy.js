@@ -1,4 +1,3 @@
-import db from "./utils/db.js";
 import { Pokemon } from "./utils/models.js";
 import { getParam } from "./utils/helpers.js"
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
@@ -51,4 +50,8 @@ globalThis.showStats = async function() {
 globalThis.startBattle = function() {
     const enemyBase64 = makePokemon().toBase64();
     window.location = `battle.html?you=${getParam("name")}&enemy=${enemyBase64}`;
+}
+
+globalThis.randomBattle = function() {
+    window.location = `battle.html?you=${getParam("name")}&enemy=eyJpZCI6ImJ1bGJhc2F1ciIsIm1ldGEiOnsieHAiOjUwMCwibmF0dXJlIjoiY2FsbSIsInJldHJlYXQiOjIsIm1vdmVzIjpbeyJpZCI6ImFjaWQiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiYWJzb3JiIiwiaXNTZWxlY3RlZCI6dHJ1ZX1dLCJ0b2tlbl91c2VkIjp7fX19`
 }

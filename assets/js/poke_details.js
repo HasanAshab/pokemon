@@ -1,8 +1,7 @@
 import { loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
 import { Pokemon, Move } from "./utils/models.js"
-import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta, fixFloat } from "./utils/helpers.js"
-import { calculateBaseDamage } from "./utils/damage.js"
-import db from "./utils/db.js"
+import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+import { Damage } from "./utils/damage.js"
 
 
 const name = getParam("name")
@@ -189,7 +188,7 @@ function loadMoves() {
     movesContainer.innerHTML = ""
     for (const moveMeta of pokemon.meta.moves) {
         const move = new Move(moveMeta.id)
-        const damage = fixFloat(calculateBaseDamage(pokemon, move))
+        const damage = new Damage(pokemon, move)
         movesContainer.innerHTML += `
     <div class="move ${moveMeta.isSelected ? "selected" : ""}">
     <div class="move-header" style="background-color: var(--${move.type}-type-color);">
@@ -201,7 +200,7 @@ function loadMoves() {
     </div>
     <div class="move-body">
       <p>
-        ${damage !== null ? "Damage: " + damage : ""}
+        ${damage.count !== null ? "Damage: " + damage.count : ""}
       </p>
       <p>
         ${move.basePower !== null ? "Power: " + move.basePower : ""}
