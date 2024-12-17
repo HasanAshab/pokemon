@@ -27,7 +27,7 @@ function setBattleStateChangeListener(playerTag) {
     pokemon.state.on("change", (state) => {
         const hp = state.stats.get("hp")
         setCurrentRetreat(state.retreat, playerTag)
-        setStateChanges(state._statChanges, playerTag)
+        setStateChanges(state.stats._statChanges, playerTag)
         setEffects(state.effects.names(), playerTag)
         setCurrentHealth(hp, playerTag)
         loadMoves(playerTag)
@@ -293,22 +293,16 @@ ${
   }
 }
 
-async function handleMoveCardSelect(card, playerTag) {
+function handleMoveCardSelect(card, playerTag) {
   if (card.classList.contains("disabled")) return
   const oponentPlayerTag = playerTag === "you" ? "enemy": "you"
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
   if (oponentSelectedMoveCard){
     oponentSelectedMoveCard.classList.remove("selected")
-    const moveNames = {
+    battle({
         [playerTag]: card.dataset.moveId,
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
-    }
-    try {
-        await battle(moveNames)
-    }
-    catch(e) {
-        console.log(e)
-    }
+    })
   }else{
     card.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
@@ -322,12 +316,12 @@ globalThis.moveCardClickHandler = function( {
 }
 
 
-async function battle(moveIds) {
+function battle(moveIds) {
     const {you: moveId, enemy: enemyMoveId} = moveIds
     const move1 = new Move(moveId)
     const move2 = new Move(enemyMoveId)
     
-    await battleField.turn([
+    battleField.turn([
         [pokemon, move1],
         [enemyPokemon, move2],
     ])

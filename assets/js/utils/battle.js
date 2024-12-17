@@ -105,7 +105,8 @@ export class BattleField extends EventEmitter {
         canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
         this.emit("turn-end", this, senario)
     }
-    async turn(senario) {
+    
+    turn(senario) {
         this.emit("turn", this, senario)
 
         const senarioMap = new Map(senario)
@@ -161,11 +162,11 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.decreaseHealth(damage)
             this.pokemon2.state.effects.apply(move1)
         }
-        if ((move1.flags.contact && !dodged2) || !move1.flags.contact || !canMove2) {
-            this.pokemon1.state.stats.apply(move1)
+        if (move1.category === "Status" || !dodged2 || !canMove2 || hittee o dekh) {
+            this.pokemon1.state.stats.apply("target" move1)
         }
         if ((move2.flags.contact && !dodged1) || !move2.flags.contact || !canMove1) {
-            this.pokemon2.state.stats.apply(move2)
+            this.pokemon2.state.stats.apply("target", move2)
         }
 
         canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
@@ -299,9 +300,7 @@ class StatsManager {
 
     apply(move) {
         const target = this.state.field.opponentOf(this.state.pokemon);
-        console.log(move.statChanges)
         const statChanged = Math.random() < (move.statChanges.chance / 100)
-
         if (!statChanged) return
 
         // Apply changes to target's stat stages
