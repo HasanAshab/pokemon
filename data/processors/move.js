@@ -13,45 +13,55 @@ function setOffensiveness(move) {
 }
 
 function setEffects(move) {
-    move.effects = []
-    if (move.category === "Status") {
-        move.status && move.effects.push({
-            name: move.status,
-            chance: 100,
+    move.effects = {
+        self: [],
+        target: []
+    }
+    
+    move.self?.status && move.effects.self.push({
+        name: move.self.status,
+        chance: move.self.chance ?? 100,
+        isVolatile: false
+    })
+    move.self?.volatileStatus && move.effects.self.push({
+        name: move.self.volatileStatus,
+        chance: move.self.chance ?? 100,
+        isVolatile: true
+    })
+
+    move.status && move.effects.target.push({
+        name: move.status,
+        chance: 100,
+        isVolatile: false
+    })
+    move.volatileStatus && move.effects.target.push({
+        name: move.volatileStatus,
+        chance: 100,
+        isVolatile: true
+    })
+
+    move.secondary?.status && move.effects.target.push({
+        name: move.secondary.status,
+        chance: move.secondary.chance ?? 100,
+        isVolatile: false
+    })
+    move.secondary?.volatileStatus && move.effects.target.push({
+        name: move.secondary.volatileStatus,
+        chance: move.secondary.chance ?? 100,
+        isVolatile: true
+    })
+    move.secondaries?.forEach(secondary => {
+        secondary.status && move.effects.target.push({
+            name: secondary.status,
+            chance: secondary.chance ?? 100,
             isVolatile: false
         })
-        move.volatileStatus && move.effects.push({
-            name: move.volatileStatus,
-            chance: 100,
+        secondary.volatileStatus && move.effects.target.push({
+            name: secondary.volatileStatus,
+            chance: secondary.chance ?? 100,
             isVolatile: true
         })
-    }
-    if(move.secondary) {
-        move.secondary.status && move.effects.push({
-            name: move.secondary.status,
-            chance: move.secondary.chance ?? 100,
-            isVolatile: false
-        })
-        move.secondary.volatileStatus && move.effects.push({
-            name: move.secondary.volatileStatus,
-            chance: move.secondary.chance ?? 100,
-            isVolatile: true
-        })
-    }
-    if(move.secondaries) {
-        move.secondaries.forEach(secondary => {
-            secondary.status && move.effects.push({
-                name: secondary.status,
-                chance: secondary.chance ?? 100,
-                isVolatile: false
-            })
-            secondary.volatileStatus && move.effects.push({
-                name: secondary.volatileStatus,
-                chance: secondary.chance ?? 100,
-                isVolatile: true
-            })
-        })
-    }
+    })
 }
 
 function setStatChanges(move) {
@@ -65,6 +75,9 @@ function setStatChanges(move) {
             move.statChanges.self = move.boosts
         else
             move.statChanges.target = move.boosts
+    }
+    else if (move.self) {
+        move.statChanges.self = move.self.boosts
     }
     else if(move.secondary?.boosts) {
         move.statChanges.chance = move.secondary.chance ?? 100
