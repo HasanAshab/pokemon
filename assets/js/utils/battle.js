@@ -207,9 +207,9 @@ class BattleState extends Observable {
 
     _canMove = true
 
-    constructor(battleField, pokemon) {
+    constructor(field, pokemon) {
         super()
-        this.battleField = battleField;
+        this.field = field;
         this.pokemon = pokemon;
 
         this.retreat = pokemon.meta.retreat;
@@ -298,7 +298,7 @@ class StatsManager {
     }
 
     apply(move) {
-        const target = this.state.battleField.opponentOf(this.state.pokemon);
+        const target = this.state.field.opponentOf(this.state.pokemon);
         console.log(move.statChanges)
         const statChanged = Math.random() < (move.statChanges.chance / 100)
 
