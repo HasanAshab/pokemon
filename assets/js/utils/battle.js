@@ -47,7 +47,7 @@ export class BattleField extends EventEmitter {
     }
 
     opponentOf(pokemon) {
-        return pokemon === this.pokemon1 ? this.pokemon2 : this.pokemon1;
+        return pokemon.id === this.pokemon1.id ? this.pokemon2 : this.pokemon1;
     }
 
     state(pokemon) {
@@ -69,7 +69,7 @@ export class BattleField extends EventEmitter {
         this.pokemon1.state.stats.apply("self", move2)
         this.pokemon2.state.stats.apply("self", move1)
 
-        
+
         const canMove1 = this.pokemon1.state.canMove()
         const canMove2 = this.pokemon2.state.canMove()
 
@@ -119,11 +119,11 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.effects.apply("target", move1)
         }
         
-        //todo hittee o dekh
-        if (move1.category === "Status" || !dodged2 || !canMove2) {
+        //todo hittee o dekh BUG
+        if (move1.flags.contact === move2.flags.contact || move1.category === "Status" || !canMove2 || !dodged2) {
             this.pokemon1.state.stats.apply("target", move2)
         }
-        if (move2.category === "Status" || !dodged1 || !canMove1) {
+        if (move2.flags.contact === move1.flags.contact || move2.category === "Status" || !canMove2 || !dodged1) {
             this.pokemon2.state.stats.apply("target", move1)
         }
 
@@ -258,8 +258,8 @@ class StatsManager {
 
     apply(on, move) {
         const statChanged = Math.random() < (move.statChanges.chance / 100)
-        if (!statChanged) return
-        
+        //if (!statChanged) return
+
         if(on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon);
             for (const [stat, change] of Object.entries(move.statChanges.self)) {

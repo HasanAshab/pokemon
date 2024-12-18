@@ -277,7 +277,7 @@ ${
     ${damage.count !== null ? "Damage: " + damage.count : ""}
     </p>
     <p>
-    PP: ${move.pp ? `${move.pp}/${move._move.pp}` : "∞"}
+    PP: ${move.pp !== null ? `${move.pp}/${move._move.pp}` : "∞"}
     </p>
     <small class="description">${move.description}</small>
     </div>    

@@ -234,16 +234,16 @@ export class EffectManager {
     apply(on, move) {
         if (on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon)
-            move.effects.target.forEach(effect => {
-                if (true || Math.random() < (effect.chance / 100)) {
-                    this.add(effect.name)
+            move.effects.self.forEach(effect => {
+                if (Math.random() < (effect.chance / 100)) {
+                    attacker.state.effects.add(effect.name)
                 }
             })
         }
         else if(on === "target") {
-            move.effects.self.forEach(effect => {
+            move.effects.target.forEach(effect => {
                 if (Math.random() < (effect.chance / 100)) {
-                    attacker.state.effects.add(effect.name)
+                    this.add(effect.name)
                 }
             })
         }
