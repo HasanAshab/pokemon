@@ -2,6 +2,7 @@ import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
 import typeChart from "../../../data/types.js"
 import natures from "../../../data/natures.js"
+import movesText from "../../../data/moves_text.js"
 
 
 export class Pokemon {
@@ -148,5 +149,11 @@ export class Move {
     effectiveness(type) {
         if (!this.type) return 1
         return typeChart[this.type][type] || 1
+    }
+    
+    description(short = false) {
+        const desc = movesText[this.id]
+        const key = short ? "shortDesc" : "desc"
+        return desc[key] ?? desc.shortDesc
     }
 }

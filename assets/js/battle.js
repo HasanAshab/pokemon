@@ -279,7 +279,7 @@ ${
     <p>
     PP: ${move.pp !== null ? `${move.pp}/${move._move.pp}` : "∞"}
     </p>
-    <small class="description">${move.description}</small>
+    <small class="description">${move.description()}</small>
     </div>    
    
     ${

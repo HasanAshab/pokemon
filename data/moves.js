@@ -1,7 +1,7 @@
 import process from './processors/move.js'
 
 const MOVES = {
-    "stay-there": {
+    staythere: {
       num: 100001,
       accuracy: true,
       basePower: 0,
@@ -17,7 +17,7 @@ const MOVES = {
       isOffensive: false,
       retreat: 0,
     },
-    "dodge": {
+    dodge: {
       num: 100002,
       accuracy: true,
       basePower: 0,

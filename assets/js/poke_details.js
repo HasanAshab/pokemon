@@ -203,7 +203,7 @@ function loadMoves() {
         ${damage.count !== null ? "Damage: " + damage.count : ""}
       </p>
       <p>
-        ${move.basePower !== null ? "Power: " + move.basePower : ""}
+        ${move.basePower ? "Power: " + move.basePower : ""}
       </p>
       <p>
         Retreat: ${move.retreat}
@@ -211,7 +211,7 @@ function loadMoves() {
       <p>
         PP: ${move.pp}
       </p>
-      <small class="desc">${move.description}</small>
+      <small class="desc">${move.description()}</small>
       <div class="btn-cont">
         <button class="unselect-move" onclick="unselectMove('${move.id}')">Unselect</button>
         <button class="select-move" onclick="selectMove('${move.id}')">Select</button>

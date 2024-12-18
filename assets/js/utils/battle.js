@@ -160,7 +160,7 @@ export class BattleField extends EventEmitter {
 
 class BattleState extends Observable {
     moves = [
-        new Move("stay-there"),
+        new Move("staythere"),
         new Move("dodge")
     ]
 
