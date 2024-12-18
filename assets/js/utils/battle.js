@@ -54,58 +54,7 @@ export class BattleField extends EventEmitter {
         return this._states.get(pokemon);
     }
 
-    async turn_Old(senario) {
-        this.emit("turn", this, senario)
 
-        const senarioMap = new Map(senario)
-
-        const move1 = senarioMap.get(this.pokemon1)
-        const move2 = senarioMap.get(this.pokemon2)
-
-        
-        const isFlinched1 = this._isFlinched(this.pokemon2, this.pokemon1, move2)
-        const isFlinched2 = this._isFlinched(this.pokemon1, this.pokemon2, move1)
-
-        this.pokemon1.state.isFlinched = isFlinched1
-        this.pokemon2.state.isFlinched = isFlinched2
-        
-        const canMove1 = this.state(this.pokemon1).canMove()
-        const canMove2 = this.state(this.pokemon2).canMove()
-
-        const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
-        const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
-
-        const damages = await calculateDamage(this.pokemon1, move1, this.pokemon2, move2)
-
-        if (move1.category === "Status") {
-            this.state(this.pokemon2).effects.apply(move1)
-        }
-        if (move2.category === "Status") {
-            this.state(this.pokemon1).effects.apply(move2)
-        }
-        if (await damages.isHittee(this.pokemon1) && !dodged1) {
-            this.state(this.pokemon1).decreaseHealth(await damages.on(this.pokemon1))
-            this.state(this.pokemon1).effects.apply(move2)
-        }
-        if (await damages.isHittee(this.pokemon2) && !dodged2) {
-            this.state(this.pokemon2).decreaseHealth(await damages.on(this.pokemon2))
-            this.state(this.pokemon2).effects.apply(move1)
-        }
-        if ((move1.flags.contact && !dodged2) || !move1.flags.contact || !canMove2) {
-            this.pokemon1.state.stats.apply(move1)
-        }
-        if ((move2.flags.contact && !dodged1) || !move2.flags.contact || !canMove1) {
-            this.pokemon2.state.stats.apply(move2)
-        }
-        
-        this.pokemon1.state.isFlinched = false
-        this.pokemon2.state.isFlinched = false
-
-        canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
-        canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
-        this.emit("turn-end", this, senario)
-    }
-    
     turn(senario) {
         this.emit("turn", this, senario)
 
@@ -113,7 +62,14 @@ export class BattleField extends EventEmitter {
 
         const move1 = senarioMap.get(this.pokemon1)
         const move2 = senarioMap.get(this.pokemon2)
+        
+        this.pokemon1.state.effects.apply("self", move2)
+        this.pokemon2.state.effects.apply("self", move1)
+        
+        this.pokemon1.state.stats.apply("self", move2)
+        this.pokemon2.state.stats.apply("self", move1)
 
+        
         const canMove1 = this.pokemon1.state.canMove()
         const canMove2 = this.pokemon2.state.canMove()
 
@@ -156,17 +112,19 @@ export class BattleField extends EventEmitter {
 
         if (hittee === this.pokemon1 && !dodged1) {
             this.pokemon1.state.decreaseHealth(damage)
-            this.pokemon1.state.effects.apply(move2)
+            this.pokemon1.state.effects.apply("target", move2)
         }
         if (hittee === this.pokemon2 && !dodged2) {
             this.pokemon2.state.decreaseHealth(damage)
-            this.pokemon2.state.effects.apply(move1)
+            this.pokemon2.state.effects.apply("target", move1)
         }
-        if (move1.category === "Status" || !dodged2 || !canMove2 || hittee o dekh) {
-            this.pokemon1.state.stats.apply("target" move1)
+        
+        //todo hittee o dekh
+        if (move1.category === "Status" || !dodged2 || !canMove2) {
+            this.pokemon1.state.stats.apply("target", move2)
         }
-        if ((move2.flags.contact && !dodged1) || !move2.flags.contact || !canMove1) {
-            this.pokemon2.state.stats.apply("target", move2)
+        if (move2.category === "Status" || !dodged1 || !canMove1) {
+            this.pokemon2.state.stats.apply("target", move1)
         }
 
         canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
@@ -298,19 +256,20 @@ class StatsManager {
         return Object.keys(this._stats).map(stat => this.get(stat));
     }
 
-    apply(move) {
-        const target = this.state.field.opponentOf(this.state.pokemon);
+    apply(on, move) {
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return
-
-        // Apply changes to target's stat stages
-        for (const [stat, change] of Object.entries(move.statChanges.target)) {
-            target.state.stats.applyStatChange(stat, change)
+        
+        if(on === "self") {
+            const attacker = this.state.field.opponentOf(this.state.pokemon);
+            for (const [stat, change] of Object.entries(move.statChanges.self)) {
+                attacker.state.stats.applyStatChange(stat, change)
+            }
         }
-
-        // Apply changes to own stat stages
-        for (const [stat, change] of Object.entries(move.statChanges.self)) {
-            this.applyStatChange(stat, change)
+        else if (on === "target") {
+            for (const [stat, change] of Object.entries(move.statChanges.target)) {
+                this.applyStatChange(stat, change)
+            }
         }
     }
 
