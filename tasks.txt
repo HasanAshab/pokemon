@@ -1,5 +1,4 @@
 remove self effect
-description
 dont reduce pp and retreat when not touched
 stat effects like hammerarm will always affect (even dodge) as self boosts
 speed - weight + accuracy = dodge

@@ -76,7 +76,7 @@ function setStatChanges(move) {
         else
             move.statChanges.target = move.boosts
     }
-    else if (move.self) {
+    else if (move.self?.boosts) {
         move.statChanges.self = move.self.boosts
     }
     else if(move.secondary?.boosts) {
@@ -99,38 +99,51 @@ function setStatChanges(move) {
 
 function setRetreat(move) {
   if("retreat" in move) return
-  const categoryBonus = {
-    Special: 0,
-    Physical: 0,
-    Status: -0.5,
-    None: 0, 
-  };
-
-  const retreats = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6];
-  const thresholds = [20, 50, 70, 110, 130, 150, 170, 190, 210, 230, 250, 250];
-  
-  let power = move.basePower;
+  const retreats = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6];
+  const thresholds = [0, 10, 20, 30, 50, 60, 70, 80, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250];
   let retreat;
+  
+  const adjustToClosestRetreat = num => {
+    return retreats.reduce((prev, curr) => 
+        Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev
+    )
+  }
 
-  if ([undefined, null].includes(power)) {
-    retreat = retreats[2];
-  } else {
-    for (let i = 0; i < thresholds.length; i++) {
-      if (power <= thresholds[i]) {
+  for (let i = 0; i < thresholds.length; i++) {
+      if (move.basePower <= thresholds[i]) {
         retreat = retreats[i];
         break;
       }
-    }
   }
-  retreat = retreat + categoryBonus[move.category];
   
-  if (move.secondary)
-    retreat += 0.5
+  if(move.category === "Status") {
+      retreat = 0.25
+  }
+
+  const selfStatEffectBonus = Object.keys(move.statChanges.target).reduce((acc, stat) => {
+      return acc - move.statChanges.target[stat]
+  }, 0)
+
+  const targetStatEffectBonus = Object.keys(move.statChanges.self).reduce((acc, stat) => {
+      return acc + move.statChanges.self[stat]
+  }, 0)
+
+  const multiplier = (
+      move.effects.target.length
+      - move.effects.self.length
+      + selfStatEffectBonus
+      + targetStatEffectBonus
+  )
+  retreat += 0.25 * multiplier
   
-  if (move.secondaries)
-    retreat += 0.5 * move.secondaries.length    
+  if("multihit" in move) {
+      const avgHits = Array.isArray(move.multihit)
+        ? (move.multihit[0] + move.multihit[1]) / 2
+        : move.multihit
+      retreat += 0.25 * avgHits
+  }
   
-  move.retreat = Math.max(retreat, 0.5)
+  move.retreat = adjustToClosestRetreat(retreat)
 }
 
 
