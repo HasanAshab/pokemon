@@ -7,26 +7,28 @@ body {
     color: #333;
 }
 :root {
-    --Normal-type-color: #A8A77A;
-    --Fire-type-color: #F08030;
-    --Water-type-color: #6390F0;
-    --Electric-type-color: #F7D02C;
-    --Grass-type-color: #7AC74C;
-    --Ice-type-color: #96D9D6;
-    --Fighting-type-color: #C22E28;
-    --Poison-type-color: #A33EA1;
-    --Ground-type-color: #E2BF65;
-    --Flying-type-color: #A98FF3;
-    --Psychic-type-color: #F95587;
-    --Bug-type-color: #A6B91A;
-    --Rock-type-color: #B6A136;
-    --Ghost-type-color: #735797;
-    --Dragon-type-color: #6F35FC;
-    --Dark-type-color: #705746;
-    --Steel-type-color: #B7B7CE;
-    --Fairy-type-color: #D685AD;
+    --Normal-type-color: #9FA19F;
+    --Fire-type-color: #E62829;
+    --Water-type-color: #2980EF;
+    --Electric-type-color: #FAC000;
+    --Grass-type-color: #3FA129;
+    --Ice-type-color: #3CCDF2;
+    --Fighting-type-color: #FF8002;
+    --Poison-type-color: #9141CB;
+    --Ground-type-color: #925221;
+    --Flying-type-color: #81B9F0;
+    --Psychic-type-color: #EF4179;
+    --Bug-type-color: #91A11A;
+    --Rock-type-color: #AFA981;
+    --Ghost-type-color: #704170;
+    --Dragon-type-color: #5060E0;
+    --Dark-type-color: #634E4F;
+    --Steel-type-color: #60A1B7;
+    --Fairy-type-color: #EE6FEE;
+    --Stellar-type-color: #40B5A5;
+    --Unknown-type-color: #68A090;
 }
-.scroller {
+}.scroller {
     width: 100vw;
     overflow-x: scroll;
 }
