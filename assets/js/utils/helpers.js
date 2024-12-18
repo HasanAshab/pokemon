@@ -33,3 +33,17 @@ export function fixFloat(damage) {
         ? null
         : parseFloat(damage.toFixed(2));
 }
+
+export function weightedRandom(values, weights) {
+  const random = Math.random();
+  let cumulativeWeight = 0;
+
+  for (let i = 0; i < values.length; i++) {
+    cumulativeWeight += weights[i];
+    if (random < cumulativeWeight) {
+      return values[i];
+    }
+  }
+
+  return values[values.length - 1]; // Fallback
+}

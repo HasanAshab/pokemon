@@ -2,12 +2,19 @@ import { EventEmitter, Observable } from "./event.js";
 import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { Damage } from "./damage.js"
-import { fixFloat } from "./helpers.js"
+import { fixFloat, weightedRandom } from "./helpers.js"
 
 
 export class BattleField extends EventEmitter {
-    turnNo = 1
-    waveNo = 1
+    //Possible turns per wave with their weight
+    static TURNS_PER_WAVE = [
+        [2, 0.3],
+        [4, 0.5],
+        [6, 0.2],
+    ]
+
+    turnNo = 0
+    waveNo = 0
 
     constructor(pokemon1, pokemon2) {
         super()
@@ -24,15 +31,21 @@ export class BattleField extends EventEmitter {
         ]);
 
         this.on("turn", (...args) => {
+            if(!this._waveAfterTurns) {
+                this._setWaveTurns()
+            }
+            this._waveAfterTurns--
+            this.turnNo++
+
             this.pokemon1.state.emit("turn", ...args)
             this.pokemon2.state.emit("turn", ...args)
         })
         
         this.on("turn-end", (...args) => {
-            this.turnNo++
+            !this._waveAfterTurns && this.emit("wave")
+
             this.pokemon1.state.emit("turn-end", ...args)
             this.pokemon2.state.emit("turn-end", ...args)
-            
             !this.pokemon1.state.usableOffensiveMoves().length
             && !this.pokemon2.state.usableOffensiveMoves().length
             && this.emit("wave")
@@ -154,6 +167,12 @@ export class BattleField extends EventEmitter {
     _isFlinched(attacker, target, move) {
         if(!move?.meta?.flinch_chance) return false
         return Math.random() < (move.meta.flinch_chance / 100)
+    }
+    
+    _setWaveTurns() {
+        const turns = BattleField.TURNS_PER_WAVE.map(tpw => tpw[0])
+        const weights = BattleField.TURNS_PER_WAVE.map(tpw => tpw[1])
+        return this._waveAfterTurns = weightedRandom(turns, weights)
     }
 }
 

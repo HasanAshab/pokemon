@@ -154,18 +154,3 @@ function getRandomHits(move) {
   return Math.floor(Math.random() * (move.multihit[1] - move.multihit[0] + 1)) + move.multihit[0];
 }
 
-function weightedRandom(values, weights) {
-  const random = Math.random();
-  let cumulativeWeight = 0;
-
-  for (let i = 0; i < values.length; i++) {
-    cumulativeWeight += weights[i];
-    if (random < cumulativeWeight) {
-      return values[i];
-    }
-  }
-
-  return values[values.length - 1]; // Fallback
-}
-
-
