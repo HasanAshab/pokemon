@@ -8,9 +8,10 @@ import { fixFloat, weightedRandom } from "./helpers.js"
 export class BattleField extends EventEmitter {
     //Possible turns per wave with their weight
     static TURNS_PER_WAVE = [
-        [2, 0.3],
-        [4, 0.5],
-        [6, 0.2],
+        [2, 0.2],
+        [3, 0.4],
+        [4, 0.3],
+        [6, 0.1],
     ]
 
     turnNo = 0
@@ -50,13 +51,13 @@ export class BattleField extends EventEmitter {
             && !this.pokemon2.state.usableOffensiveMoves().length
             && this.emit("wave")
         })
-        
+
         this.on("wave", (...args) => {
             this.waveNo++
+            this._waveAfterTurns = 0
             this.pokemon1.state.emit("wave", ...args)
             this.pokemon2.state.emit("wave", ...args)
         })
-
     }
 
     opponentOf(pokemon) {
@@ -209,6 +210,13 @@ class BattleState extends Observable {
         this.on("move-used", move => {
             this.retreat -= move.retreat
             this.reducePP(move.id)
+        })
+        
+        this.on("turn", () => {
+            this.tempState = {
+                touched: false,
+                canMove: true,
+            }
         })
     }
 
