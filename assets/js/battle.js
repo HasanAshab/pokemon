@@ -136,51 +136,51 @@ function setEffects(effects, playerTag) {
   const effectsMap = {
     "brn": {
         "name": "Burn",
-        "color": "fire" 
+        "color": "Fire" 
     },
     "psn": {
       "name": "Poison",
-      "color": "poison"
+      "color": "Poison"
     },
     "par": {
       "name": "Paralyze",
-      "color": "electric"
+      "color": "Electric"
     },
     "frz": {
       "name": "Freeze",
-      "color": "ice"
+      "color": "Ice"
     },
     "slp": {
       "name": "Sleep",
-      "color": "psychic"
+      "color": "Psychic"
     },
     "cnf": {
       "name": "Confusion",
-      "color": "psychic"
+      "color": "Psychic"
     },
     "cur": {
       "name": "Curse",
-      "color": "ghost"
+      "color": "Ghost"
     },
     "fln": {
       "name": "Flinch",
-      "color": "dark"
+      "color": "Dark"
     },
     "inf": {
       "name": "Infatuation",
-      "color": "fairy"
+      "color": "Fairy"
     },
     "trp": {
       "name": "Trap",
-      "color": "ground"
+      "color": "Ground"
     },
     "lch": {
       "name": "Leech",
-      "color": "grass"
+      "color": "Grass"
     },
     "dws": {
       "name": "Drowsy",
-      "color": "psychic"
+      "color": "Psychic"
     },
 };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)

@@ -235,7 +235,7 @@ export class EffectManager {
         if (on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon)
             move.effects.target.forEach(effect => {
-                if (Math.random() < (effect.chance / 100)) {
+                if (true || Math.random() < (effect.chance / 100)) {
                     this.add(effect.name)
                 }
             })
