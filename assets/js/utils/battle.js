@@ -91,8 +91,8 @@ export class BattleField extends EventEmitter {
         this.pokemon1.state.stats.apply("self", move2)
         this.pokemon2.state.stats.apply("self", move1)
 
-        const canMove1 = this.pokemon1.state.canMove()
-        const canMove2 = this.pokemon2.state.canMove()
+        const canMove1 = this.pokemon1.state.effects.canMove()
+        const canMove2 = this.pokemon2.state.effects.canMove()
 
         const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
@@ -198,11 +198,6 @@ class BattleState extends Observable {
         new Move("dodge")
     ]
 
-    status = {
-        canMove: true,
-        attackSelf: false
-    }
-
     constructor(field, pokemon) {
         super()
         this.field = field;
@@ -269,10 +264,6 @@ class BattleState extends Observable {
         const move = this.moves.find(m => m.id === moveId)
         if (move.pp !== null) move.pp--
         return move
-    }
-
-    canMove() {
-        return this.status.canMove
     }
 }
 

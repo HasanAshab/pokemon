@@ -11,6 +11,11 @@ class Effect {
         return false
     }
     
+    status = {
+        canMove: true,
+        attackSelf: false,
+    }
+    
     events = [
         "turn",
         "turn-end",
@@ -43,7 +48,15 @@ class Effect {
     remove() {
         return this.state.effects.remove(this.constructor.effectName)
     }
-
+    
+    canMove() {
+        return this.status.canMove
+    }
+    
+    attackSelf() {
+        return this.status.attackSelf
+    }
+    
     _subscribeTo(event) {
         const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
@@ -158,12 +171,12 @@ class SleepEffect extends ExpirableEffect {
         super.setup()
         const sleepingTurns = weightedRandom([1, 2, 3, 4], [0.10, 0.30, 0.50, 0.10])
         this.lifetime.turns = sleepingTurns
-        this.state.status.canMove = false
+        this.status.canMove = false
     }
 
     teardown() {
         super.teardown()
-        this.state.status.canMove = true
+        this.status.canMove = true
     }
 }
 
@@ -175,12 +188,12 @@ class FreezeEffect extends ExpirableEffect {
     
     setup() {
         super.setup()
-        this.state.status.canMove = false
+        this.status.canMove = false
     }
 
     teardown() {
         super.teardown()
-        this.state.status.canMove = true
+        this.status.canMove = true
     }
     
     onTurnEnd() {
@@ -211,12 +224,12 @@ class FlinchEffect extends ExpirableEffect {
 
     setup() {
         super.setup()
-        this.state.status.canMove = false
+        this.status.canMove = false
     }
 
     teardown() {
         super.teardown()
-        this.state.status.canMove = true
+        this.status.canMove = true
     }
 }
 
@@ -240,12 +253,12 @@ class ParalyzeEffect extends Effect {
     onTurn() {
         const canNotMove = Math.random() < 0.25;
         if (canNotMove) {
-            this.state.status.canMove = false
+            this.status.canMove = false
         }
     }
 
     onTurnEnd() {
-        this.state.status.canMove = true
+        this.status.canMove = true
     }
 }
 
@@ -255,12 +268,12 @@ class ConfusionEffect extends Effect {
     onTurn() {
         const attackSelf = Math.random() < 0.5;
         if (attackSelf) {
-            this.state.status.attackSelf = true
+            this.status.attackSelf = true
         }
     }
 
     onTurnEnd() {
-        this.state.status.attackSelf = false
+        this.status.attackSelf = false
     }
 }
 
@@ -271,7 +284,7 @@ export const EFFECTS = makeEffectsMap([
     FreezeEffect,
     FlinchEffect,
     ParalyzeEffect,
-    ConfusionEffect
+    ConfusionEffect,
 ])
 
 
@@ -318,11 +331,6 @@ export class EffectManager {
         })
     }
 
-    removeExpired() {
-        const expiredEffects = this.expired().map(effect => effect.constructor.effectName)
-        this.remove(...expiredEffects)
-    }
-
     apply(move, { on, pre = false }) {
         if (on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon)
@@ -345,6 +353,14 @@ export class EffectManager {
         }
     }
     
+    canMove() {
+        return this._effects.every(e => e.canMove())
+    }
+    
+    attackSelf() {
+        return this._effects.every(e => e.attackSelf())
+    }
+
     _removeEffectObj(effectName) {
         let index = -1
         for (let i = 0; i < this._effects.length; i++) {
