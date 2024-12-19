@@ -15,8 +15,12 @@ class Effect {
         "turn",
         "turn-end",
         "wave",
+        "used-move"
     ]
-    _listeners = {}
+    _listeners = {
+        self: {},
+        opponent: {},
+    }
 
     constructor(state) {
         this.state = state;
@@ -25,15 +29,17 @@ class Effect {
     setup() {
         this.events.forEach(event => {
             this._subscribeTo(event)
+            this._subscribeToOpponent(event)
         })
     }
 
     teardown() {
         this.events.forEach(event => {
             this._unsubscribeTo(event)
+            this._unsubscribeToOpponent(event)
         })
     }
-    
+
     remove() {
         return this.state.effects.remove(this.constructor.effectName)
     }
@@ -41,16 +47,29 @@ class Effect {
     _subscribeTo(event) {
         const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
-            this._listeners[event] = listener.bind(this)
-            this.state.on(event, this._listeners[event])
+            this._listeners.self[event] = listener.bind(this)
+            this.state.on(event, this._listeners.self[event])
         }
     }
     
     _unsubscribeTo(event) {
-        const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
+        const listener = this._listeners.self[event]
+        listener && this.state.removeListener(event, listener)
+    }
+    
+    _subscribeToOpponent(event) {
+        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const listener = this[`onOpponent${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
-            this.state.removeListener(event, this._listeners[event])
+            this._listeners.opponent[event] = listener.bind(this)
+            opponent.state.on(event, this._listeners.opponent[event])
         }
+    }
+    
+    _unsubscribeToOpponent(event) {
+        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const listener = this._listeners.opponent[event]
+        listener && opponent.state.removeListener(event, listener)
     }
 }
 
@@ -148,6 +167,37 @@ class SleepEffect extends ExpirableEffect {
     }
 }
 
+class FreezeEffect extends ExpirableEffect {
+    static effectName = "frz"
+    static THAW_CHANCE = 0.10
+    
+    _thawChance = FreezeEffect.THAW_CHANCE
+    
+    setup() {
+        super.setup()
+        this.state.status.canMove = false
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.status.canMove = true
+    }
+    
+    onTurnEnd() {
+        this._thawChance += FreezeEffect.THAW_CHANCE
+    }
+    
+    onOpponentUsedMove(move) {
+        if (move.type === "Fire") {
+            this._thawChance = 1
+        }
+    }
+    
+    isExpired() {
+        return Math.random() < this._thawChance
+    }
+}
+
 class FlinchEffect extends ExpirableEffect {
     static effectName = "flinch"
     
@@ -218,6 +268,7 @@ export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
     SleepEffect,
+    FreezeEffect,
     FlinchEffect,
     ParalyzeEffect,
     ConfusionEffect

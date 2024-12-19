@@ -147,8 +147,8 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.stats.apply("target", move1)
         }
 
-        canMove1 && this.state(this.pokemon1).emit("move-used", move1) 
-        canMove2 && this.state(this.pokemon2).emit("move-used", move2) 
+        canMove1 && this.state(this.pokemon1).emit("used-move", move1) 
+        canMove2 && this.state(this.pokemon2).emit("used-move", move2) 
         this.emit("turn-end", this, senario)
     }
 
@@ -199,7 +199,8 @@ class BattleState extends Observable {
     ]
 
     status = {
-        canMove: true
+        canMove: true,
+        attackSelf: false
     }
 
     constructor(field, pokemon) {
@@ -223,7 +224,7 @@ class BattleState extends Observable {
         this.on("wave", () => {
             this.addWaveRetreat()
         })
-        this.on("move-used", move => {
+        this.on("used-move", move => {
             this.retreat -= move.retreat
             this.reducePP(move.id)
         })
