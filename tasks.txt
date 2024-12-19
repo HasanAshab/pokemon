@@ -1,3 +1,4 @@
+proxy data process on the fly
 remove self effect
 dont reduce pp and retreat when not touched
 speed - weight + accuracy = dodge

@@ -148,8 +148,7 @@ export class BattleField extends EventEmitter {
 
     _canDodge(attacker, target, move) {
         if (move.accuracy === null || !target.state.canMove()) {
-            // Moves with null accuracy always hit
-            return false;
+            return false; // Moves with null accuracy (e.g., Swift) or immobile targets always hit
         }
     
         // Get speed stats
@@ -157,12 +156,26 @@ export class BattleField extends EventEmitter {
         const targetSpd = this.state(target).stats.get("speed");
         const isPhysical = move.category === "Physical";
     
-        // Simulate hit/miss based on final accuracy
-        const maxHitChance = isPhysical ? 10 : 7
-        const minHitChance = isPhysical ? 2.5 : 3.5
-        const hitChance = (Math.random() * maxHitChance) - minHitChance; 
-        const dodgeChance = (targetSpd / attackerSpd);
-        return dodgeChance > hitChance;
+        // Get accuracy and evasion stats
+        const attackerAccuracy = this.state(attacker).stats.get("accuracy") || 1; // Default to 1 if not defined
+        const targetEvasion = this.state(target).stats.get("evasion") || 1; // Default to 1 if not defined
+    
+        // Base dodge chance using speed ratio
+        const dodgeChance = targetSpd / attackerSpd;
+    
+        // Accuracy and evasion modifiers
+        const accuracyModifier = attackerAccuracy / targetEvasion;
+    
+        // Simulate hit/miss based on final accuracy and dodge chance
+        const maxHitChance = isPhysical ? 10 : 7;
+        const minHitChance = isPhysical ? 2.5 : 3.5;
+        const randomFactor = (Math.random() * maxHitChance) - minHitChance;
+    
+        // Calculate final hit chance
+        const finalHitChance = move.accuracy * accuracyModifier - randomFactor;
+    
+        // Return true if target dodges, false if the move hits
+        return dodgeChance > finalHitChance;
     }
     
     _isFlinched(attacker, target, move) {
