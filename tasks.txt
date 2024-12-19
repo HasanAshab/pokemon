@@ -1,4 +1,3 @@
-pre effect isPre()
 dont reduce pp and retreat when not touched
 fix dodge
 try dodge
@@ -15,7 +14,12 @@ abilities effects (eg guts)
 effect remove
 
 
-*Pending
-1. using stay there gives +0.5 prio and dodge gives +0.25, using a offensive move turns it to 0
-2. retreat under 30% cause -0.5 prio
-3. prio diff less than 0.5 cause no effect, less than 1 cause both hit
+* Scenario
+phy 1 -> phy 1 = x - y | d 
+phy 1 -> phy 0 = x(10%) dx 
+phy 1 -> sp = x 100% dx
+phy 0 -> sp = x - y d
+
+* Bugs
+sleep pokemon cant use hammerarm
+hammerarm vs paralyzed not works

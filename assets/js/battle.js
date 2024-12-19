@@ -154,7 +154,7 @@ function setEffects(effects, playerTag) {
       "name": "Sleep",
       "color": "Psychic"
     },
-    "cnf": {
+    "confusion": {
       "name": "Confusion",
       "color": "Psychic"
     },
@@ -162,7 +162,7 @@ function setEffects(effects, playerTag) {
       "name": "Curse",
       "color": "Ghost"
     },
-    "fln": {
+    "flinch": {
       "name": "Flinch",
       "color": "Dark"
     },

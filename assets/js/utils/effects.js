@@ -1,16 +1,16 @@
-import { capitalizeFirstLetter, camelize } from "./helpers.js"
+import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
 
 
-function applyConfusionEffect(pokemon) {
-  const isConfused = Math.random() < 0.5; // 50% chance to hurt itself
-  return isConfused;
-}
 
 function isFrozenThisTurn() {
   return Math.random() < 0.8; // 80% chance to stay frozen
 }
 
 class Effect {
+    static isPre() {
+        return false
+    }
+    
     events = [
         "turn",
         "turn-end",
@@ -61,18 +61,19 @@ class ExpirableEffect extends Effect {
         super.setup()
         this.lifetime.turns && this.lifetime.turns--
     }
-
-    onTurnEnd() {
-        this.lifetime.turns && this.lifetime.turns--
-        
+    
+    onTurn() {
         if(this.isExpired()) {
             this.remove()
         }
     }
 
+    onTurnEnd() {
+        this.lifetime.turns && this.lifetime.turns--
+    }
+
     onWave() {
         this.lifetime.waves && this.lifetime.waves--
-        
         if(this.isExpired()) {
             this.remove()
         }
@@ -128,19 +129,44 @@ class PoisonEffect extends Effect {
 
 class SleepEffect extends ExpirableEffect {
     static effectName = "slp"
+    static PRE_CHANCE = 0.30
+
+    static isPre() {
+        return Math.random() < SleepEffect.PRE_CHANCE
+    }
 
     setup() {
         super.setup()
-        
-        const sleepingTurns = Math.floor(Math.random() * 4) + 1
-        console.log(sleepingTurns)
+        const sleepingTurns = weightedRandom([1, 2, 3, 4], [0.10, 0.30, 0.50, 0.10])
         this.lifetime.turns = sleepingTurns
-        this.state._canMove = false
+        this.state.status.canMove = false
     }
 
     teardown() {
         super.teardown()
-        this.state._canMove = true
+        this.state.status.canMove = true
+    }
+}
+
+class FlinchEffect extends ExpirableEffect {
+    static effectName = "flinch"
+    
+    static isPre() {
+        return true
+    }
+
+    lifetime = {
+        turns: 1
+    }
+
+    setup() {
+        super.setup()
+        this.state.status.canMove = false
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.status.canMove = true
     }
 }
 
@@ -164,21 +190,38 @@ class ParalyzeEffect extends Effect {
     onTurn() {
         const canNotMove = Math.random() < 0.25;
         if (canNotMove) {
-            this.state._canMove = false
+            this.state.status.canMove = false
         }
     }
-    
+
     onTurnEnd() {
-        this.state._canMove = true
+        this.state.status.canMove = true
     }
 }
 
-export const EFFECTS = [
+class ConfusionEffect extends Effect {
+    static effectName = "confusion"
+
+    onTurn() {
+        const attackSelf = Math.random() < 0.5;
+        if (attackSelf) {
+            this.state.status.attackSelf = true
+        }
+    }
+
+    onTurnEnd() {
+        this.state.status.attackSelf = false
+    }
+}
+
+export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
     SleepEffect,
+    FlinchEffect,
     ParalyzeEffect,
-]
+    ConfusionEffect
+])
 
 
 export class EffectManager {
@@ -186,9 +229,6 @@ export class EffectManager {
 
     constructor(state) {
         this.state = state;
-
-        //this.state.on("turn-end", this.removeExpired.bind(this))
-        //this.state.on("wave", this.removeExpired.bind(this))
     }
     
     names() {
@@ -211,7 +251,8 @@ export class EffectManager {
     
     add(...effects) {
         effects.filter(effectName => !this.includes(effectName)).forEach(effectName => {
-            const EffectClass = EFFECTS.find(Effect => Effect.effectName === effectName)
+            const EffectClass = EFFECTS[effectName]
+            if(!EffectClass) return // Effect not implemented yet
             const effect = new EffectClass(this.state)
             effect.setup()
             this._effects.push(effect)
@@ -222,7 +263,7 @@ export class EffectManager {
         effects.forEach(effectName => {
             const effect = this.get(effectName)
             effect.teardown()
-            this._effects.splice(this._effects.indexOf(effect), 1)
+            this._removeEffectObj(effectName)
         })
     }
 
@@ -231,22 +272,43 @@ export class EffectManager {
         this.remove(...expiredEffects)
     }
 
-    apply(on, move) {
+    apply(move, { on, pre = false }) {
         if (on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon)
-            move.effects.self.forEach(effect => {
-                if (Math.random() < (effect.chance / 100)) {
-                    attacker.state.effects.add(effect.name)
-                }
-            })
+            move.effects.self
+                .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
+                .forEach(effect => {
+                    if (Math.random() < (effect.chance / 100)) {
+                        attacker.state.effects.add(effect.name)
+                    }
+                })
         }
         else if(on === "target") {
-            move.effects.target.forEach(effect => {
-                if (Math.random() < (effect.chance / 100)) {
-                    this.add(effect.name)
-                }
-            })
+            move.effects.target
+                .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
+                .forEach(effect => {
+                    if (true || Math.random() < (effect.chance / 100)) {
+                        this.add(effect.name)
+                    }
+                })
         }
+    }
+    
+    _removeEffectObj(effectName) {
+        let index = -1
+        for (let i = 0; i < this._effects.length; i++) {
+            if (this._effects[i].constructor.effectName === effectName) {
+                index = i;
+                break;
+            }
+        }
+        this._effects.splice(index, 1)
     }
 }
 
+function makeEffectsMap(effectsClass) {
+    return effectsClass.reduce((map, e) => {
+        map[e.effectName] = e
+        return map
+    }, {})
+}

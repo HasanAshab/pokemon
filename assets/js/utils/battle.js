@@ -35,8 +35,8 @@ export class BattleField extends EventEmitter {
             if(!this._waveAfterTurns) {
                 this._setWaveTurns()
             }
-            this._waveAfterTurns--
             this.turnNo++
+            this._waveAfterTurns--
 
             this.pokemon1.state.emit("turn", ...args)
             this.pokemon2.state.emit("turn", ...args)
@@ -68,7 +68,6 @@ export class BattleField extends EventEmitter {
         return this._states.get(pokemon);
     }
 
-
     turn(senario) {
         this.emit("turn", this, senario)
 
@@ -77,19 +76,26 @@ export class BattleField extends EventEmitter {
         const move1 = senarioMap.get(this.pokemon1)
         const move2 = senarioMap.get(this.pokemon2)
         
-        this.pokemon1.state.effects.apply("self", move2)
-        this.pokemon2.state.effects.apply("self", move1)
+        this.pokemon1.state.effects.apply(move2, { on: "self" })
+        this.pokemon2.state.effects.apply(move1, { on: "self" })
+        
+        this.pokemon1.state.effects.apply(move2, {
+            on: "target",
+            pre: true,
+        })
+        this.pokemon2.state.effects.apply(move1, {
+            on: "target",
+            pre: true,
+        })
         
         this.pokemon1.state.stats.apply("self", move2)
         this.pokemon2.state.stats.apply("self", move1)
-
 
         const canMove1 = this.pokemon1.state.canMove()
         const canMove2 = this.pokemon2.state.canMove()
 
         const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
-
 
         const damage1 = new Damage(this.pokemon1, move1, this.pokemon2)
         const damage2 = new Damage(this.pokemon2, move2, this.pokemon1)
@@ -126,18 +132,18 @@ export class BattleField extends EventEmitter {
 
         if (hittee === this.pokemon1 && !dodged1) {
             this.pokemon1.state.decreaseHealth(damage)
-            this.pokemon1.state.effects.apply("target", move2)
         }
         if (hittee === this.pokemon2 && !dodged2) {
             this.pokemon2.state.decreaseHealth(damage)
-            this.pokemon2.state.effects.apply("target", move1)
         }
         
         //todo hittee o dekh BUG
-        if (move1.flags.contact === move2.flags.contact || move1.category === "Status" || !canMove2 || !dodged2) {
+        if ((hittee === this.pokemon1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1) {
+            this.pokemon1.state.effects.apply(move2, { on: "target" })
             this.pokemon1.state.stats.apply("target", move2)
         }
-        if (move2.flags.contact === move1.flags.contact || move2.category === "Status" || !canMove2 || !dodged1) {
+        if ((hittee === this.pokemon2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2) {
+            this.pokemon2.state.effects.apply(move1, { on: "target" })
             this.pokemon2.state.stats.apply("target", move1)
         }
 
@@ -177,12 +183,7 @@ export class BattleField extends EventEmitter {
         // Return true if target dodges, false if the move hits
         return dodgeChance > finalHitChance;
     }
-    
-    _isFlinched(attacker, target, move) {
-        if(!move?.meta?.flinch_chance) return false
-        return Math.random() < (move.meta.flinch_chance / 100)
-    }
-    
+
     _setWaveTurns() {
         const turns = BattleField.TURNS_PER_WAVE.map(tpw => tpw[0])
         const weights = BattleField.TURNS_PER_WAVE.map(tpw => tpw[1])
@@ -197,7 +198,9 @@ class BattleState extends Observable {
         new Move("dodge")
     ]
 
-    _canMove = true
+    status = {
+        canMove: true
+    }
 
     constructor(field, pokemon) {
         super()
@@ -225,12 +228,12 @@ class BattleState extends Observable {
             this.reducePP(move.id)
         })
         
-        this.on("turn", () => {
-            this.tempState = {
-                touched: false,
-                canMove: true,
-            }
-        })
+        // this.on("turn", () => {
+//             this.tempState = {
+//                 touched: false,
+//                 canMove: true,
+//             }
+//         })
     }
 
     addWaveRetreat() {
@@ -268,7 +271,7 @@ class BattleState extends Observable {
     }
 
     canMove() {
-        return !this.isFlinched && this._canMove
+        return this.status.canMove
     }
 }
 

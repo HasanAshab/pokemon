@@ -1,5 +1,5 @@
 export const camelize = s => s.replace(/-./g, x=>x[1].toUpperCase())
-
+export const sleep = ms => new Promise(r => setTimeout(r, ms))
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
