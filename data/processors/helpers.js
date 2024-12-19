@@ -1,9 +1,12 @@
 export function processor(pipeline) {
     return data => {
-        for (const key in data) {
-            const obj = data[key]
-            pipeline.forEach(p => p(obj, key))
-        }
-        return data
+        return new Proxy(data, {
+            get(target, key) {
+                const value = target[key]
+                !value._isProcessed && pipeline.forEach(p => p(value, key))
+                value._isProcessed = true
+                return value;
+            }
+        })
     }
 }
