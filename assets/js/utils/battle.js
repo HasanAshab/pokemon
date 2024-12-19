@@ -109,10 +109,10 @@ export class BattleField extends EventEmitter {
         }
         else if (
             !["None", "Status"].includes(move1.category)
-            && !["None", "Status"].includes(move1.category)
+            && !["None", "Status"].includes(move2.category)
             && move1.flags.contact !== move2.flags.contact
         ) {
-            damage = move1.flags.contact === 1 ? damage2.count * pokeEffect2 : -damage1.count * pokeEffect1
+            damage = move2.flags.contact === 1 ? -damage1.count * pokeEffect1 : damage2.count * pokeEffect2
         }
         else {
             damage = (damage2.count * moveEffect2) - (damage1.count * moveEffect1)

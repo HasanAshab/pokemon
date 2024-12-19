@@ -1,14 +1,12 @@
-proxy data process on the fly
-remove self effect
+pre effect isPre()
 dont reduce pp and retreat when not touched
-speed - weight + accuracy = dodge
+fix dodge
 try dodge
 commentary
 win
 paralyzed and sleep bug
 priority
 ev
-accuracy
 multi hit move
 
 
@@ -16,3 +14,8 @@ xp using cp and xp reduce on loose
 abilities effects (eg guts)
 effect remove
 
+
+*Pending
+1. using stay there gives +0.5 prio and dodge gives +0.25, using a offensive move turns it to 0
+2. retreat under 30% cause -0.5 prio
+3. prio diff less than 0.5 cause no effect, less than 1 cause both hit
