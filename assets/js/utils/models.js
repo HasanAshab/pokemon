@@ -89,7 +89,13 @@ export class Pokemon {
             stats[statName] = Math.floor(
               ((20 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
             );
-          } else {
+          }
+          else if (statName === "spe") {
+              //todo
+              stats[statName] = 0
+            //stats[statName] = this.level * 2
+          }
+          else {
             // Other stat calculations
             stats[statName] = Math.floor(
               ((2 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + 5

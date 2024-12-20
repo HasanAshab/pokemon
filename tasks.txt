@@ -3,7 +3,6 @@ try dodge
 commentary
 win
 priority
-ev
 
 
 xp using cp and xp reduce on loose
@@ -18,5 +17,3 @@ effect remove
 -- phy 0 -> sp = x - y d
 
 * Bugs
-sleep pokemon cant use hammerarm
-hammerarm vs paralyzed not works

@@ -94,9 +94,13 @@ export class BattleField extends EventEmitter {
         const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
-        const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
-        const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
-
+        const dodged1 = move1.id === "dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
+        const dodged2 = move2.id === "dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
+        
+        console.log(dodged1, dodged2)
+    
+        dodged1 && console.log(`${this.pokemon1.id} dodged!`)
+        dodged2 && console.log(`${this.pokemon2.id} dodged!`)
         const hit1 = new Hit(this.pokemon1, move1, this.pokemon2)
         const hit2 = new Hit(this.pokemon2, move2, this.pokemon1)
         
@@ -176,11 +180,11 @@ export class BattleField extends EventEmitter {
         if (damages.get(this.pokemon2) && !dodged2) {
             this.pokemon2.state.decreaseHealth(damages.get(this.pokemon2))
         }
-        if (!attackSelf2 && ((damages.get(this.pokemon1) && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
+        if (!attackSelf2 && canMove2 && ((damages.get(this.pokemon1) && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
             this.pokemon1.state.effects.apply(move2, { on: "target" })
             this.pokemon1.state.stats.apply("target", move2)
         }
-        if (!attackSelf1 && ((damages.get(this.pokemon2) && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
+        if (!attackSelf1 && canMove1 && ((damages.get(this.pokemon2) && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
             this.pokemon2.state.effects.apply(move1, { on: "target" })
             this.pokemon2.state.stats.apply("target", move1)
         }
@@ -203,25 +207,26 @@ export class BattleField extends EventEmitter {
     }
 
     _canDodge(attacker, target, move) {
-        if (move.accuracy === null || !target.state.canMove()) {
-            return false; // Moves with null accuracy (e.g., Swift) or immobile targets always hit
+        if (move.accuracy === true || !target.state.effects.canMove()) {
+            return false;
         }
-    
+
         // Get speed stats
-        const attackerSpd = this.state(attacker).stats.get("speed");
-        const targetSpd = this.state(target).stats.get("speed");
+        const attackerSpd = attacker.state.stats.get("spe");
+        const targetSpd = target.state.stats.get("spe");
         const isPhysical = move.category === "Physical";
     
         // Get accuracy and evasion stats
-        const attackerAccuracy = this.state(attacker).stats.get("accuracy") || 1; // Default to 1 if not defined
-        const targetEvasion = this.state(target).stats.get("evasion") || 1; // Default to 1 if not defined
-    
+        const attackerAccuracy = attacker.state.stats.get("accuracy") || 1; // Default to 1 if not defined
+        const targetEvasion = target.state.stats.get("evasion") || 1; // Default to 1 if not defined
+
         // Base dodge chance using speed ratio
-        const dodgeChance = targetSpd / attackerSpd;
+        const dodgeChance = (targetSpd / attackerSpd) ;
     
         // Accuracy and evasion modifiers
         const accuracyModifier = attackerAccuracy / targetEvasion;
-    
+        console.log(targetSpd, attackerSpd, dodgeChance)
+
         // Simulate hit/miss based on final accuracy and dodge chance
         const maxHitChance = isPhysical ? 10 : 7;
         const minHitChance = isPhysical ? 2.5 : 3.5;

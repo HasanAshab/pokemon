@@ -1,7 +1,7 @@
 export default {
     staythere: {
       num: 100001,
-      accuracy: true,
+      accuracy: null,
       basePower: 0,
       category: "None",
       name: "Stay There",
@@ -16,9 +16,9 @@ export default {
     },
     dodge: {
       num: 100002,
-      accuracy: true,
+      accuracy: null,
       basePower: 0,
-      category: "System",
+      category: "None",
       name: "Dodge",
       pp: null,
       priority: 0,

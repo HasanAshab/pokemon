@@ -89,7 +89,7 @@ globalThis.statClickHandler = function( {
 
   saveBtn.onclick = ()=> {
    if (attributeName === "data-value")
-    setStat(statSlug, statValueInp.value)
+    setStat(statSlug, Number(statValueInp.value) || statValueInp.value)
    else 
     setStatToken(statSlug,statValueInp.value)
    statUpdateForm.parentNode.classList.remove("active")
