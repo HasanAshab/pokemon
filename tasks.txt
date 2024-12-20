@@ -3,7 +3,6 @@ fix dodge
 try dodge
 commentary
 win
-paralyzed and sleep bug
 priority
 ev
 multi hit move

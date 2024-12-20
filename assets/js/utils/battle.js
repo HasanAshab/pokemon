@@ -87,12 +87,12 @@ export class BattleField extends EventEmitter {
             on: "target",
             pre: true,
         })
-        
-        this.pokemon1.state.stats.apply("self", move2)
-        this.pokemon2.state.stats.apply("self", move1)
 
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
+        
+        const attackSelf1 = true || this.pokemon1.state.effects.attackSelf()
+        const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
         const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
@@ -100,55 +100,83 @@ export class BattleField extends EventEmitter {
         const damage1 = new Damage(this.pokemon1, move1, this.pokemon2)
         const damage2 = new Damage(this.pokemon2, move2, this.pokemon1)
         
+        canMove2 && this.pokemon1.state.stats.apply("self", move2)
+        canMove1 && this.pokemon2.state.stats.apply("self", move1)
+        
         const pokeEffect1 = this.pokemon2.effectiveness(move1.type);
         const pokeEffect2 = this.pokemon1.effectiveness(move2.type);
-            
+
         const moveEffect1 = move1.effectiveness(move2.type)
         const moveEffect2 = move2.effectiveness(move1.type)
-            
-        let damage
+        
+        const damages = new Map([
+            [this.pokemon1, 0],
+            [this.pokemon2, 0]
+        ])
+
         if (!canMove1) {
-            damage = damage1.count * pokeEffect2
+            damages.set(this.pokemon1, damage2.count * pokeEffect2)
         }
         else if (!canMove2) {
-            damage = -(damage1.count * pokeEffect1)
+            damages.set(this.pokemon2, damage1.count * pokeEffect1)
+        }
+        else if(!attackSelf1 && attackSelf2) {
+            const selfHitDamage = damage2.count * this.pokemon2.effectiveness(move2)
+            const damage = damage1.count * pokeEffect1
+            damages.set(this.pokemon2, damage + selfHitDamage)
+        }
+        else if(attackSelf1 && !attackSelf2) {
+            const selfHitDamage = damage1.count * this.pokemon1.effectiveness(move1)
+            const damage = damage2.count * pokeEffect2
+            damages.set(this.pokemon1, damage + selfHitDamage)
+        }
+        else if(attackSelf1 && attackSelf2) {
+            const selfHitDamage1 = damage1.count * this.pokemon1.effectiveness(move1)
+            const selfHitDamage2 = damage2.count * this.pokemon2.effectiveness(move2)
+            damages.set(this.pokemon1, selfHitDamage1)
+            damages.set(this.pokemon2, selfHitDamage2)
         }
         else if (
             !["None", "Status"].includes(move1.category)
             && !["None", "Status"].includes(move2.category)
             && move1.flags.contact !== move2.flags.contact
         ) {
-            damage = move2.flags.contact === 1 ? -damage1.count * pokeEffect1 : damage2.count * pokeEffect2
+            move2.flags.contact === 1
+                ? damages.set(this.pokemon2, damage1.count * pokeEffect1)
+                : damages.set(this.pokemon1, damage2.count * pokeEffect2)
         }
         else {
-            damage = (damage2.count * moveEffect2) - (damage1.count * moveEffect1)
-            const pokeEffect = damage > 0 ? pokeEffect2 : pokeEffect1
-            damage = damage * pokeEffect
+            const damage = (damage2.count * moveEffect2) - (damage1.count * moveEffect1)
+            damage > 0
+                ? damages.set(this.pokemon1, damage * pokeEffect1)
+                : damages.set(this.pokemon2, -damage * pokeEffect2);
         }
-        
-        const hittee = damage > 0 ? this.pokemon1 : this.pokemon2
-        damage = Math.abs(damage)
-        
 
-        if (hittee === this.pokemon1 && !dodged1) {
-            this.pokemon1.state.decreaseHealth(damage)
+        if (damages.get(this.pokemon1) && !dodged1) {
+            this.pokemon1.state.decreaseHealth(damages.get(this.pokemon1))
         }
-        if (hittee === this.pokemon2 && !dodged2) {
-            this.pokemon2.state.decreaseHealth(damage)
+        if (damages.get(this.pokemon2) && !dodged2) {
+            this.pokemon2.state.decreaseHealth(damages.get(this.pokemon2))
         }
-        
-        //todo hittee o dekh BUG
-        if ((hittee === this.pokemon1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1) {
+        if (!attackSelf2 && ((damages.get(this.pokemon1) && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
             this.pokemon1.state.effects.apply(move2, { on: "target" })
             this.pokemon1.state.stats.apply("target", move2)
         }
-        if ((hittee === this.pokemon2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2) {
+        if (!attackSelf1 && ((damages.get(this.pokemon2) && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
             this.pokemon2.state.effects.apply(move1, { on: "target" })
             this.pokemon2.state.stats.apply("target", move1)
         }
+        if (attackSelf1) {
+            this.pokemon1.state.effects.apply(move1, { on: "target" })
+            this.pokemon1.state.stats.apply("target", move1)
+        }
+        if (attackSelf2) {
+            this.pokemon2.state.effects.apply(move2, { on: "target" })
+            this.pokemon2.state.stats.apply("target", move2)
+        }
 
-        canMove1 && this.state(this.pokemon1).emit("used-move", move1) 
-        canMove2 && this.state(this.pokemon2).emit("used-move", move2) 
+        canMove1 && this.pokemon1.state.emit("used-move", move1) 
+        canMove2 && this.pokemon2.state.emit("used-move", move2) 
         this.emit("turn-end", this, senario)
     }
 

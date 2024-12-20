@@ -1,11 +1,6 @@
 import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
 
 
-
-function isFrozenThisTurn() {
-  return Math.random() < 0.8; // 80% chance to stay frozen
-}
-
 class Effect {
     static isPre() {
         return false
@@ -252,9 +247,7 @@ class ParalyzeEffect extends Effect {
 
     onTurn() {
         const canNotMove = Math.random() < 0.25;
-        if (canNotMove) {
-            this.status.canMove = false
-        }
+        this.status.canMove = !canNotMove
     }
 
     onTurnEnd() {
@@ -264,12 +257,10 @@ class ParalyzeEffect extends Effect {
 
 class ConfusionEffect extends Effect {
     static effectName = "confusion"
+    static ATK_SELF_CHANCE = 0.5
 
     onTurn() {
-        const attackSelf = Math.random() < 0.5;
-        if (attackSelf) {
-            this.status.attackSelf = true
-        }
+        this.status.attackSelf = Math.random() < ConfusionEffect.ATK_SELF_CHANCE
     }
 
     onTurnEnd() {
@@ -358,7 +349,7 @@ export class EffectManager {
     }
     
     attackSelf() {
-        return this._effects.every(e => e.attackSelf())
+        return this._effects.some(e => e.attackSelf())
     }
 
     _removeEffectObj(effectName) {
