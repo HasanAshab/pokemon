@@ -1,7 +1,7 @@
 import { EventEmitter, Observable } from "./event.js";
 import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
-import { Damage } from "./damage.js"
+import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom } from "./helpers.js"
 
 
@@ -97,48 +97,48 @@ export class BattleField extends EventEmitter {
         const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
         const dodged2 = move2.name === "$dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
 
-        const damage1 = new Damage(this.pokemon1, move1, this.pokemon2)
-        const damage2 = new Damage(this.pokemon2, move2, this.pokemon1)
+        const hit1 = new Hit(this.pokemon1, move1, this.pokemon2)
+        const hit2 = new Hit(this.pokemon2, move2, this.pokemon1)
         
         canMove2 && this.pokemon1.state.stats.apply("self", move2)
         canMove1 && this.pokemon2.state.stats.apply("self", move1)
-        
+
         const pokeEffect1 = this.pokemon2.effectiveness(move1.type);
         const pokeEffect2 = this.pokemon1.effectiveness(move2.type);
 
         const moveEffect1 = move1.effectiveness(move2.type)
         const moveEffect2 = move2.effectiveness(move1.type)
-        
+
         const damages = new Map([
             [this.pokemon1, 0],
             [this.pokemon2, 0]
         ])
 
         if (!canMove1) {
-            damages.set(this.pokemon1, damage2.count * pokeEffect2)
+            damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
         }
         else if (!canMove2) {
-            damages.set(this.pokemon2, damage1.count * pokeEffect1)
+            damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
         }
         else if(!attackSelf1 && attackSelf2) {
-            const selfHitDamage = damage2.count * this.pokemon2.effectiveness(move2)
-            const damage = damage1.count * pokeEffect1
+            const selfHitDamage = hit2.damage() * this.pokemon2.effectiveness(move2)
+            const damage = hit1.damage() * pokeEffect1
             damages.set(this.pokemon2, damage + selfHitDamage)
         }
         else if(attackSelf1 && !attackSelf2) {
-            const selfHitDamage = damage1.count * this.pokemon1.effectiveness(move1)
-            const damage = damage2.count * pokeEffect2
+            const selfHitDamage = hit1.damage() * this.pokemon1.effectiveness(move1)
+            const damage = hit2.damage() * pokeEffect2
             damages.set(this.pokemon1, damage + selfHitDamage)
         }
         else if(attackSelf1 && attackSelf2) {
-            const selfHitDamage1 = damage1.count * this.pokemon1.effectiveness(move1)
-            const selfHitDamage2 = damage2.count * this.pokemon2.effectiveness(move2)
+            const selfHitDamage1 = hit1.damage() * this.pokemon1.effectiveness(move1)
+            const selfHitDamage2 = hit2.damage() * this.pokemon2.effectiveness(move2)
             damages.set(this.pokemon1, selfHitDamage1)
             damages.set(this.pokemon2, selfHitDamage2)
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {
-            const recoil = damage2.count * 0.10
-            const damage = (damage1.count * moveEffect1) - ((damage2.count - recoil) * moveEffect2)
+            const recoil = hit2.damage() * 0.10
+            const damage = (hit1.damage() * moveEffect1) - ((hit2.damage() - recoil) * moveEffect2)
             
             damages.set(this.pokemon1, recoil * pokeEffect1)
             damage > 0
@@ -146,8 +146,8 @@ export class BattleField extends EventEmitter {
                 : damages.set(this.pokemon2, -damage * pokeEffect1);
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move2.flags.contact && !move1.flags.contact) {
-            const recoil = damage1.count * 0.10
-            const damage = (damage2.count * moveEffect2) - ((damage1.count - recoil) * moveEffect1)
+            const recoil = hit1.damage() * 0.10
+            const damage = (hit2.damage() * moveEffect2) - ((hit1.damage() - recoil) * moveEffect1)
             
             damages.set(this.pokemon2, recoil * pokeEffect2)
             damage > 0
@@ -160,11 +160,11 @@ export class BattleField extends EventEmitter {
             && move1.flags.contact !== move2.flags.contact
         ) {
             move2.flags.contact === 1
-                ? damages.set(this.pokemon2, damage1.count * pokeEffect1)
-                : damages.set(this.pokemon1, damage2.count * pokeEffect2)
+                ? damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+                : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
         }
         else {
-            const damage = (damage2.count * moveEffect2) - (damage1.count * moveEffect1)
+            const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             damage > 0
                 ? damages.set(this.pokemon1, damage * pokeEffect1)
                 : damages.set(this.pokemon2, -damage * pokeEffect2);
@@ -192,7 +192,7 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
-        
+
         if(canMove1 && (move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !move1.flags.contact)) {
             this.pokemon1.state.emit("used-move", move1) 
         }

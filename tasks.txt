@@ -4,7 +4,6 @@ commentary
 win
 priority
 ev
-multi hit move
 
 
 xp using cp and xp reduce on loose
@@ -13,10 +12,10 @@ effect remove
 
 
 * Scenario
--- phy 1 -> phy 1 = x - y | d 
-phy 1 -> phy 0 = x(10%) dx 
-phy 1 -> sp = x 100% dx
-phy 0 -> sp = x - y d
+-- phy 1 -> phy 1 = x - y d 
+-- phy 1 -> phy 0 = x(10%) dx 
+-- phy 1 -> sp = x 100% dx
+-- phy 0 -> sp = x - y d
 
 * Bugs
 sleep pokemon cant use hammerarm
