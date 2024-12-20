@@ -1,4 +1,4 @@
-import { Pokemon } from "./utils/models.js";
+import { Pokemon,Move } from "./utils/models.js";
 import { getParam } from "./utils/helpers.js"
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
 
@@ -46,6 +46,15 @@ globalThis.showStats = async function() {
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
+globalThis.showMoveDetails = function({currentTarget}){
+  const move = new Move(currentTarget.value)
+  if (move){
+    const moveDetails = document.getElementById("move-details")
+    moveDetails.querySelector(".move-name").textContent = move.name
+    moveDetails.querySelector(".desc").textContent = move.description()
+  
+ }
+}
 
 globalThis.startBattle = function() {
     const enemyBase64 = makePokemon().toBase64();
