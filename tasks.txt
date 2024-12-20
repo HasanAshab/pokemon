@@ -1,4 +1,3 @@
-dont reduce pp and retreat when not touched
 fix dodge
 try dodge
 commentary

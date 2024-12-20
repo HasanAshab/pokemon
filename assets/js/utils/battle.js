@@ -91,7 +91,7 @@ export class BattleField extends EventEmitter {
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
         
-        const attackSelf1 = true || this.pokemon1.state.effects.attackSelf()
+        const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
         const dodged1 = move1.name === "$dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
@@ -174,9 +174,13 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
-
-        canMove1 && this.pokemon1.state.emit("used-move", move1) 
-        canMove2 && this.pokemon2.state.emit("used-move", move2) 
+        
+        if(canMove1 && (move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !move1.flags.contact)) {
+            this.pokemon1.state.emit("used-move", move1) 
+        }
+        if(canMove2 && (move2.category === "Status" || (move2.flags.contact && move1.flags.contact) || !move2.flags.contact)) {
+            this.pokemon2.state.emit("used-move", move2) 
+        }
         this.emit("turn-end", this, senario)
     }
 
