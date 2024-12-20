@@ -136,6 +136,24 @@ export class BattleField extends EventEmitter {
             damages.set(this.pokemon1, selfHitDamage1)
             damages.set(this.pokemon2, selfHitDamage2)
         }
+        else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {
+            const recoil = damage2.count * 0.10
+            const damage = (damage1.count * moveEffect1) - ((damage2.count - recoil) * moveEffect2)
+            
+            damages.set(this.pokemon1, recoil * pokeEffect1)
+            damage > 0
+                ? damages.set(this.pokemon1, damages.get(this.pokemon1) + (damage * pokeEffect1))
+                : damages.set(this.pokemon2, -damage * pokeEffect1);
+        }
+        else if(move1.category === "Physical" && move2.category === "Physical" && move2.flags.contact && !move1.flags.contact) {
+            const recoil = damage1.count * 0.10
+            const damage = (damage2.count * moveEffect2) - ((damage1.count - recoil) * moveEffect1)
+            
+            damages.set(this.pokemon2, recoil * pokeEffect2)
+            damage > 0
+                ? damages.set(this.pokemon1, damage * pokeEffect1)
+                : damages.set(this.pokemon2, damages.get(this.pokemon2) + (-damage * pokeEffect2));
+        }
         else if (
             !["None", "Status"].includes(move1.category)
             && !["None", "Status"].includes(move2.category)
