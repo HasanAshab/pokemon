@@ -20,35 +20,69 @@
         Food Cost: <span id="food-cost">0</span>$
       </p>
       <p>
-        Total Badges: <span id="total-badges">0</span> / 9
+        Total Badges: <span id="total-badges">0</span> / 20
       </p>
       <div class="badges-cont">
-        <div data-index="0" onclick="badgeClickHandler(event)" class="badge fire">
+        <div style="background-color:var(--Fire-type-color)" data-index="0" onclick="badgeClickHandler(event)" class="badge fire">
           Fire
         </div>
-        <div data-index="1" onclick="badgeClickHandler(event)" class="badge water">
+        <div style="background-color:var(--Water-type-color)" data-index="1" onclick="badgeClickHandler(event)" class="badge water">
           Water
         </div>
-        <div data-index="2" onclick="badgeClickHandler(event)" class="badge grass">
+        <div style="background-color:var(--Electric-type-color)" data-index="2" onclick="badgeClickHandler(event)" class="badge electric">
+          Electric
+        </div>
+        <div style="background-color:var(--Grass-type-color)" data-index="3" onclick="badgeClickHandler(event)" class="badge grass">
           Grass
         </div>
-        <div data-index="3" onclick="badgeClickHandler(event)" class="badge steel">
-          Steel
+        <div style="background-color:var(--Ice-type-color)" data-index="4" onclick="badgeClickHandler(event)" class="badge ice">
+          Ice
         </div>
-        <div data-index="4" onclick="badgeClickHandler(event)" class="badge fighting">
+        <div style="background-color:var(--Fighting-type-color)" data-index="5" onclick="badgeClickHandler(event)" class="badge fighting">
           Fighting
         </div>
-        <div data-index="5" onclick="badgeClickHandler(event)" class="badge psy">
-          PSY
+        <div style="background-color:var(--Poison-type-color)" data-index="6" onclick="badgeClickHandler(event)" class="badge poison">
+          Poison
         </div>
-        <div data-index="6" onclick="badgeClickHandler(event)" class="badge dragon">
+        <div style="background-color:var(--Ground-type-color)" data-index="7" onclick="badgeClickHandler(event)" class="badge ground">
+          Ground
+        </div>
+        <div style="background-color:var(--Flying-type-color)" data-index="8" onclick="badgeClickHandler(event)" class="badge flying">
+          Flying
+        </div>
+        <div style="background-color:var(--Psychic-type-color)" data-index="9" onclick="badgeClickHandler(event)" class="badge psychic">
+          Psychic
+        </div>
+        <div style="background-color:var(--Bug-type-color)" data-index="10" onclick="badgeClickHandler(event)" class="badge bug">
+          Bug
+        </div>
+        <div style="background-color:var(--Rock-type-color)" data-index="11" onclick="badgeClickHandler(event)" class="badge rock">
+          Rock
+        </div>
+        <div style="background-color:var(--Ghost-type-color)" data-index="12" onclick="badgeClickHandler(event)" class="badge ghost">
+          Ghost
+        </div>
+        <div style="background-color:var(--Dragon-type-color)" data-index="13" onclick="badgeClickHandler(event)" class="badge dragon">
           Dragon
         </div>
-        <div data-index="7" onclick="badgeClickHandler(event)" class="badge dark">
+        <div style="background-color:var(--Dark-type-color)" data-index="14" onclick="badgeClickHandler(event)" class="badge dark">
           Dark
         </div>
-        <div data-index="8" onclick="badgeClickHandler(event)" class="badge electric">
-          Electric
+        <div style="background-color:var(--Steel-type-color)" data-index="15" onclick="badgeClickHandler(event)" class="badge steel">
+          Steel
+        </div>
+        <div style="background-color:var(--Fairy-type-color)" data-index="16" onclick="badgeClickHandler(event)" class="badge fairy">
+          Fairy
+        </div>
+        <div style="background-color:var(--Normal-type-color)" data-index="17" onclick="badgeClickHandler(event)" class="badge normal">
+          Normal
+        </div>
+        <div style="background-color:var(--Unknown-type-color)" data-index="18" onclick="badgeClickHandler(event)" class="badge unknown">
+          Unknown
+        </div>
+
+        <div style="background-color:var(--Stellar-type-color)" data-index="20" onclick="badgeClickHandler(event)" class="badge stellar">
+          Stellar
         </div>
 
       </div>
@@ -63,7 +97,7 @@
         <input type="number" value="1" class="level" name="level" placeholder="Enter Level value">
         <label for="nature">Nature:</label>
         <input id="nature-inp" list="natures-data-list" type="text" value="calm" class="nature" name="nature" placeholder="Enter nature">
-         <datalist id="natures-data-list"></datalist>
+        <datalist id="natures-data-list"></datalist>
         <label for="retreat">Retreat:</label>
         <input type="number" class="retreat" name="retreat" placeholder="Enter Retreat value">
 
