@@ -7,31 +7,28 @@
 </head>
 <body>
   <label for="enemy">Choose Enemy</label>
-  <input list="enemy-data-list" id="enemy" onblur="showStats()">
-  <datalist id="enemy-data-list"></datalist>
+  <input list="enemy-data-list" class="enemy" onblur="showStats()">
   <br>
   <label for="level-inp">Level</label>
-  <input type="number" id="level-inp" value="1" onchange="showStats()">
+  <input name="level-inp" type="number" class="level-inp" value="1" onchange="showStats()">
   <br>
   <label for="retreat-inp">Retreat</label>
-  <input type="number" id="retreat-inp" value="2">
+  <input name="retreat-inp" type="number" class="retreat-inp" value="2">
   <br>
   <label for="nature-inp">Nature</label>
-  <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats()" id="nature-inp">
-  <datalist id="natures-data-list"></datalist>
+  <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats()" class="nature-inp">
   <br>
   <label for="token-inp">Token Used</label>
-  <textarea name="token-inp" onblur="showStats()" id="token-inp"></textarea>
+  <textarea name="token-inp" onblur="showStats()" class="token-inp"></textarea>
   <br>
-  <pre id="enemy-stats"></pre>
+  <pre class="enemy-stats"></pre>
   <br>
   <h3>Moves</h3>
-  <input onkeyup="showMoveDetails(event)" type="text" list="moves-data-list" id="move-input-1">
-  <input onkeyup="showMoveDetails(event)" type="text" list="moves-data-list" id="move-input-2">
-  <input onkeyup="showMoveDetails(event)" type="text" list="moves-data-list" id="move-input-3">
-  <input onkeyup="showMoveDetails(event)" type="text" list="moves-data-list" id="move-input-4">
-  <input onkeyup="showMoveDetails(event)" type="text" list="moves-data-list" id="move-input-5">
-  <datalist id="moves-data-list"></datalist>
+  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-1">
+  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-2">
+  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-3">
+  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-4">
+  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-5">
   <br>
   <div id="move-details">
     <strong class="move-name">name</strong>
@@ -40,6 +37,12 @@
   <button onclick="startBattle()">Start Battle</button>
   <br><br><br><br></br>
   <button onclick="randomBattle()">Random Battle</button>
+
+  <datalist id="enemy-data-list"></datalist>
+  <datalist id="moves-data-list"></datalist>
+
+  <datalist id="natures-data-list"></datalist>
+
 </body>
 <script type="module" src="./assets/js/enemy.js"></script>
 </html>
