@@ -32,7 +32,12 @@ export class Damage {
     
     _calculateBase() {
         if (!this.move.basePower) {
-            return null
+            if (!this.move.damage)
+                return null
+            if (typeof this.move.damage === "number") 
+                return this.move.damage
+            if (this.move.damage === "level")
+                return this.attacker.level * 2
         }
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1;
         const isSpecial = this.move.category === "Special";
@@ -48,7 +53,7 @@ export class Damage {
 
     _calculate() {
         this.count = this._calculateBase();
-        if (!this.target) {
+        if (!this.target || this.move.damage) {
             return this.count
         }
 

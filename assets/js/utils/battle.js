@@ -97,24 +97,23 @@ export class BattleField extends EventEmitter {
         const dodged1 = move1.id === "dodge" && this._canDodge(this.pokemon2, this.pokemon1, move2)
         const dodged2 = move2.id === "dodge" && this._canDodge(this.pokemon1, this.pokemon2, move1)
 
-        dodged1 && console.log(`${this.pokemon1.id} dodged!`)
-        dodged2 && console.log(`${this.pokemon2.id} dodged!`)
         const hit1 = new Hit(this.pokemon1, move1, this.pokemon2)
         const hit2 = new Hit(this.pokemon2, move2, this.pokemon1)
         
         canMove2 && this.pokemon1.state.stats.apply("self", move2)
         canMove1 && this.pokemon2.state.stats.apply("self", move1)
 
-        const pokeEffect1 = this.pokemon2.effectiveness(move1.type);
-        const pokeEffect2 = this.pokemon1.effectiveness(move2.type);
+        const pokeEffect1 = this.pokemon2.effectiveness(move1);
+        const pokeEffect2 = this.pokemon1.effectiveness(move2);
 
-        const moveEffect1 = move1.effectiveness(move2.type)
-        const moveEffect2 = move2.effectiveness(move1.type)
+        const moveEffect1 = move1.effectiveness(move2)
+        const moveEffect2 = move2.effectiveness(move1)
 
         const damages = new Map([
             [this.pokemon1, 0],
             [this.pokemon2, 0]
         ])
+        
 
         if (!canMove1) {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
@@ -172,8 +171,8 @@ export class BattleField extends EventEmitter {
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             damage > 0
-                ? damages.set(this.pokemon1, damage * pokeEffect1)
-                : damages.set(this.pokemon2, -damage * pokeEffect2);
+                ? damages.set(this.pokemon1, damage * pokeEffect2)
+                : damages.set(this.pokemon2, -damage * pokeEffect1);
         }
         
         const d1 = damages.get(this.pokemon1)

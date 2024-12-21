@@ -52,6 +52,11 @@ export class Pokemon {
     }
 
     effectiveness(type) {
+        if (type instanceof Move) {
+            if(type.damage) return 1
+            type = type.type
+        }
+
         if (!type) return 1
         let effectiveness = 1;
         this.types.forEach(tType => {
@@ -151,6 +156,10 @@ export class Move {
     }
 
     effectiveness(type) {
+        if (type instanceof Move) {
+            if(type.damage) return 1
+            type = type.type
+        }
         if (!this.type) return 1
         return typeChart[this.type][type] || 1
     }
