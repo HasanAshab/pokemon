@@ -8,7 +8,7 @@ import movesText from "../../../data/moves_text.js"
 export class Pokemon {
     static XP_PER_LEVEL = 100;
     static TOKEN_PER_LEVEL = 2
-    static TOKEN_MODIFIER = 1.05
+    static TOKEN_MODIFIER = 1.01
 
     static calculateLevel(xp) {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
@@ -91,9 +91,7 @@ export class Pokemon {
             );
           }
           else if (statName === "spe") {
-              //todo
-              stats[statName] = 0
-            //stats[statName] = this.level * 2
+              stats[statName] = this.level * 0.25
           }
           else {
             // Other stat calculations
@@ -105,7 +103,7 @@ export class Pokemon {
         return stats;
       }
       
-      _calculateNatureStat() {
+    _calculateNatureStat() {
         const natureStats = {};
       
         Object.keys(this._pokemon.baseStats).forEach(statName => {
@@ -116,9 +114,9 @@ export class Pokemon {
         });
       
         return natureStats;
-      }
+    }
 
-      _calculateTokenStat() {
+     _calculateTokenStat() {
         const tokenStats = {};
       
         Object.keys(this._pokemon.baseStats).forEach(statName => {

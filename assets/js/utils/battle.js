@@ -94,11 +94,9 @@ export class BattleField extends EventEmitter {
         const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
-        const dodged1 = move1.id === "dodge" && this._canDodge(this.pokemon1, this.pokemon2, move2)
-        const dodged2 = move2.id === "dodge" && this._canDodge(this.pokemon2, this.pokemon1, move1)
-        
-        console.log(dodged1, dodged2)
-    
+        const dodged1 = move1.id === "dodge" && this._canDodge(this.pokemon2, this.pokemon1, move2)
+        const dodged2 = move2.id === "dodge" && this._canDodge(this.pokemon1, this.pokemon2, move1)
+
         dodged1 && console.log(`${this.pokemon1.id} dodged!`)
         dodged2 && console.log(`${this.pokemon2.id} dodged!`)
         const hit1 = new Hit(this.pokemon1, move1, this.pokemon2)
@@ -210,33 +208,29 @@ export class BattleField extends EventEmitter {
         if (move.accuracy === true || !target.state.effects.canMove()) {
             return false;
         }
-
-        // Get speed stats
+    
+        // Get stats
         const attackerSpd = attacker.state.stats.get("spe");
         const targetSpd = target.state.stats.get("spe");
-        const isPhysical = move.category === "Physical";
+        const attackerAccuracy = attacker.state.stats.get("accuracy");
+        const targetEvasion = target.state.stats.get("evasion");
     
-        // Get accuracy and evasion stats
-        const attackerAccuracy = attacker.state.stats.get("accuracy") || 1; // Default to 1 if not defined
-        const targetEvasion = target.state.stats.get("evasion") || 1; // Default to 1 if not defined
-
-        // Base dodge chance using speed ratio
-        const dodgeChance = (targetSpd / attackerSpd) ;
+        // Speed ratio
+        const speedRatio = targetSpd / attackerSpd;
     
-        // Accuracy and evasion modifiers
-        const accuracyModifier = attackerAccuracy / targetEvasion;
-        console.log(targetSpd, attackerSpd, dodgeChance)
-
-        // Simulate hit/miss based on final accuracy and dodge chance
-        const maxHitChance = isPhysical ? 10 : 7;
-        const minHitChance = isPhysical ? 2.5 : 3.5;
-        const randomFactor = (Math.random() * maxHitChance) - minHitChance;
+        // Accuracy and evasion modifier (minor effect)
+        const accuracyModifier = (attackerAccuracy / targetEvasion) * 0.1; // Reduced weight on this factor
     
-        // Calculate final hit chance
-        const finalHitChance = move.accuracy * accuracyModifier - randomFactor;
+        // Calculate dodge chance
+        const dodgeChance = Math.min(0.05 + speedRatio * 0.6 + accuracyModifier, 0.95); // Clamp max at 95%
     
-        // Return true if target dodges, false if the move hits
-        return dodgeChance > finalHitChance;
+        // Simulate hit/miss based on move accuracy
+        const randomRoll = Math.random(); // Random value between 0 and 1
+        const hitChance = move.accuracy / 100; // Normalize move accuracy (e.g., 85% becomes 0.85)
+        
+        console.log(randomRoll, hitChance * (1 - dodgeChance))
+        // Check if dodge occurs
+        return randomRoll > hitChance * (1 - dodgeChance);
     }
 
     _setWaveTurns() {
@@ -324,11 +318,16 @@ class BattleState extends Observable {
 
 
 class StatsManager {
+    static BATTLE_STATS = {
+        "accuracy": 1,
+        "evasion": 1
+    }
+    
     _statChanges = {};
 
     constructor(state) {
         this.state = state;
-        this._stats = Object.assign({}, state.pokemon.stats, state.pokemon.meta.stats);
+        this._stats = Object.assign({}, StatsManager.BATTLE_STATS, state.pokemon.stats, state.pokemon.meta.stats);
     }
 
     get(name) {
