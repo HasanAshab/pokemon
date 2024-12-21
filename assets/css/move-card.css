@@ -1,0 +1,149 @@
+.single-card-wrapper {
+  position: relative;
+}
+.single-card-wrapper > .info-btn {
+  position: absolute;
+  bottom: 0;
+  right: -7px;
+  background-color: transparent;
+  border: none;
+}
+.single-card-wrapper > .info-wrapper {
+  position: absolute;
+  bottom: 0;
+  background-color: black;
+  z-index: 100;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  overflow-y: scroll;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+  gap: 5px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+
+}
+.single-card-wrapper > .info-wrapper.active {
+  display: flex;
+}
+.single-card-wrapper > .info-wrapper > .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.card {
+  background-color: white;
+  width: 170px;
+  height: 110px;
+  border-radius: 7px;
+  padding-bottom: 7px;
+  position: relative;
+  user-select: none;
+}
+
+.card.disabled {
+  filter: brightness(40%);
+}
+.card.selected {
+  border: 5px solid gold;
+
+}
+.card:not(.disabled):active {
+  filter: invert(20%);
+
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  border-radius: 7px 7px 0 0;
+  overflow: hidden;
+}
+.card-header .category-side {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  border-radius: 7px 0 0 0;
+  padding: 3px;
+}
+.card-header .category-side .category-bg {
+  background-color: inherit;
+  filter: brightness(70%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 7px 0 0 0;
+
+}
+.card-header .category-side .category-bg-triangle {
+  background-color: inherit;
+  filter: brightness(70%);
+  width: 160%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 40%;
+  transform: rotate(40deg);
+}
+.card-header .category-side > img {
+  z-index: 1;
+  position: relative;
+}
+.card-header .right-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+.card-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.card-body > .primary {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  font-size: small;
+}
+.card-body > .primary > .move-name {
+  font-weight: bold;
+}
+.card-body > .secondary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  font-size: small;
+
+}
+.card-body > .secondary .power-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card[data-makes-contact="false"] .card-body > .secondary .sword-icon {
+  display: none;
+}
+.card[data-makes-contact="true"] .card-body > .secondary .bow-icon {
+  display: none;
+}
+.card-body > .secondary .retreat-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
