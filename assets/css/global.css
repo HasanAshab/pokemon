@@ -1,54 +1,55 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
 }
 :root {
-    --Normal-type-color: #9FA19F;
-    --Fire-type-color: #E62829;
-    --Water-type-color: #2980EF;
-    --Electric-type-color: #FAC000;
-    --Grass-type-color: #3FA129;
-    --Ice-type-color: #3CCDF2;
-    --Fighting-type-color: #FF8002;
-    --Poison-type-color: #9141CB;
-    --Ground-type-color: #925221;
-    --Flying-type-color: #81B9F0;
-    --Psychic-type-color: #EF4179;
-    --Bug-type-color: #91A11A;
-    --Rock-type-color: #AFA981;
-    --Ghost-type-color: #704170;
-    --Dragon-type-color: #5060E0;
-    --Dark-type-color: #634E4F;
-    --Steel-type-color: #60A1B7;
-    --Fairy-type-color: #EE6FEE;
-    --Stellar-type-color: #40B5A5;
-    --Unknown-type-color: #68A090;
+  --Normal-type-color: #9FA19F;
+  --Fire-type-color: #E62829;
+  --Water-type-color: #2980EF;
+  --Electric-type-color: #FAC000;
+  --Grass-type-color: #3FA129;
+  --Ice-type-color: #3CCDF2;
+  --Fighting-type-color: #FF8002;
+  --Poison-type-color: #9141CB;
+  --Ground-type-color: #925221;
+  --Flying-type-color: #81B9F0;
+  --Psychic-type-color: #EF4179;
+  --Bug-type-color: #91A11A;
+  --Rock-type-color: #AFA981;
+  --Ghost-type-color: #704170;
+  --Dragon-type-color: #5060E0;
+  --Dark-type-color: #634E4F;
+  --Steel-type-color: #60A1B7;
+  --Fairy-type-color: #EE6FEE;
+  --Stellar-type-color: #40B5A5;
+  --Unknown-type-color: #68A090;
 }
-}.scroller {
-    width: 100vw;
-    overflow-x: scroll;
+.scroller {
+  width: 100vw;
+  overflow-x: scroll;
 }
 .vertical.scroller {
-    height: 30%;
-    overflow-y: scroll;
-    overflow-x:hidden ;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
 }
-.blur-bg.active{
- display: flex;
+.blur-bg.active {
+  display: flex;
 }
-.blur-bg{
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-     position: fixed;
-     left: 0;
-     top: 0;
-     display: none;
-     justify-content: center;
-     align-items: center;
-    z-index: 1000;
+.blur-bg {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }

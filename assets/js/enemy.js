@@ -1,4 +1,4 @@
-import { Pokemon } from "./utils/models.js";
+import { Pokemon,Move } from "./utils/models.js";
 import { getParam } from "./utils/helpers.js"
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
 
@@ -10,12 +10,12 @@ window.onload = () => {
     loadMovesDatalist("moves-data-list")
 }
 
-const enemy = document.getElementById("enemy");
-const levelInp = document.getElementById("level-inp");
-const retreatInp = document.getElementById("retreat-inp");
-const natureInp = document.getElementById("nature-inp");
-const tokenInp = document.getElementById("token-inp");
-const enemyStats = document.getElementById("enemy-stats");
+const enemy = document.querySelector(".enemy");
+const levelInp = document.querySelector(".level-inp");
+const retreatInp = document.querySelector(".retreat-inp");
+const natureInp = document.querySelector(".nature-inp");
+const tokenInp = document.querySelector(".token-inp");
+const enemyStats = document.querySelector(".enemy-stats");
 
 function makePokemon() {
     const level = parseInt(levelInp.value);
@@ -23,11 +23,11 @@ function makePokemon() {
     const nature = natureInp.value;
     const tokens = tokenInp.value ? JSON.parse(tokenInp.value) : {};
     const moves = [
-        document.getElementById("move-input-1").value,
-        document.getElementById("move-input-2").value,
-        document.getElementById("move-input-3").value,
-        document.getElementById("move-input-4").value,
-        document.getElementById("move-input-5").value,
+        document.querySelector(".move-input-1").value,
+        document.querySelector(".move-input-2").value,
+        document.querySelector(".move-input-3").value,
+        document.querySelector(".move-input-4").value,
+        document.querySelector(".move-input-5").value,
     ].filter(Boolean).map(id => ({
         id,
         isSelected: true
@@ -46,6 +46,15 @@ globalThis.showStats = async function() {
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
+globalThis.showMoveDetails = function({currentTarget}){
+  const move = new Move(currentTarget.value)
+  if (move){
+    const moveDetails = document.getElementById("move-details")
+    moveDetails.querySelector(".move-name").textContent = move.name
+    moveDetails.querySelector(".desc").textContent = move.description()
+  
+ }
+}
 
 globalThis.startBattle = function() {
     const enemyBase64 = makePokemon().toBase64();

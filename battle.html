@@ -7,33 +7,27 @@
   <title>battle</title>
   <link rel="stylesheet" href="./assets/css/global.css">
   <link rel="stylesheet" href="./assets/css/battle.css">
+  <link rel="stylesheet" href="./assets/css/move-card.css">
 </head>
 <body>
   <div class="container">
-     <div class="blur-bg">
-         <div class="choose-pokemon-cont">
 
-         </div>
-      
-     </div>
-      <div class="battle-prompt-popup">
+    <div class="battle-prompt-popup">
       <p class="msg">
         Lorem ipsum dolor.
       </p>
       <div class="btns-cont">
         <button class="dodge-btn">Dodge</button>
-        <button class="block-btn">Block</button>
-        <button class="nothing-btn">Nothing</button>
+        <button class="counter-btn">counter</button>
+        <button class="nothing-btn">nothing</button>
 
       </div>
     </div>
-      <div id="popup-msg-cont">
-          <b class="msg">msg..</b>
-      </div>
+    <div id="popup-msg-cont">
+      <b class="msg">msg..</b>
+    </div>
     <div class="enemy-controle-cont">
-      <div class="scroller">
-        <div class="card-container"></div>
-      </div>
+      <div class="card-container"></div>
       <div class="primary-data-nav">
         <p class="retreat">
           Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="enemy-current-retreat">6</span>
@@ -51,60 +45,51 @@
         <div class="attributes-data-row"></div>
 
       </div>
-      <div class="scroller vertical">
-        <div class="effects-data-column">
-
+      <div class="top-items-wrapper">
+        <div class="pokemon-switch-controler">
+        </div>
+        <div class="scroller vertical">
+          <div class="effects-data-column">
+          </div>
         </div>
       </div>
-      <div class="move-damage-inject-form">
-        <h3 class="move-name">Flamethrower</h3>
-        <input class="damage-input" type="number" value="300" />
-      <button class="inject-btn">inject</button>
-      <button class="no-btn">no</button>
-      <button class="target-dodge-btn">target want to dodge</button>
 
     </div>
-  </div>
-  <div class="center">
-      <button id="very-close-btn" onclick="veryCloseBtnClickHandler(event)" >Too close</button>
-    <button id="new-wave-btn" onclick="battleField.emit('wave')">Wave</button>
-  </div>
-  <div class="you-controle-cont">
-    <div class="move-damage-inject-form">
-      <h3 class="move-name">Flamethrower</h3>
-      <input class="damage-input" type="number" value="300" />
-    <button class="inject-btn">inject</button>
-    <button class="no-btn">no</button>
-    <button class="target-dodge-btn">target want to dodge</button>
+    <div class="center">
+      <button id="very-close-btn" onclick="veryCloseBtnClickHandler(event)">Very close</button>
+      <button id="new-wave-btn" onclick="battleField.emit('wave')">Wave</button>
+    </div>
+    <div class="you-controle-cont">
+      <div class="top-items-wrapper">
+        <div class="pokemon-switch-controler">
+        </div>
+        <div class="scroller vertical">
+          <div class="effects-data-column">
+          </div>
+        </div>
 
-  </div>
-  <div class="scroller vertical">
-    <div class="effects-data-column">
-   </div>
-  </div>
-  <div class="scroller">
-    <div class="attributes-data-row"></div>
-
-  </div>
-  <div class="primary-data-nav">
-    <p class="retreat">
-      Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="you-current-retreat">6</span>
-    </p>
-    <div  onclick="healthProgressbarClickHandler(event, 'you')" class="health-progress-bar" data-total-hp="40" data-current-hp="40">
-      <span class="health-data"><span class="current-hp">40</span> / <span class="total-hp">40</span>
-      </span>
-      <div class="inner">
-        &nbsp;
       </div>
+
+      <div class="scroller">
+        <div class="attributes-data-row"></div>
+
+      </div>
+      <div class="primary-data-nav">
+        <p class="retreat">
+          Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="you-current-retreat">6</span>
+        </p>
+        <div onclick="healthProgressbarClickHandler(event, 'you')" class="health-progress-bar" data-total-hp="40" data-current-hp="40">
+          <span class="health-data"><span class="current-hp">40</span> / <span class="total-hp">40</span>
+          </span>
+          <div class="inner">
+            &nbsp;
+          </div>
+        </div>
+
+      </div>
+      <div class="card-container"></div>
     </div>
-
   </div>
-  <div class="scroller">
-    <div class="card-container"></div>
-  </div>
-
-</div>
-</div>
 </body>
 <script src="./assets/js/battle.js" type="module"></script>
 </html>

@@ -1,105 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Pokémon Stats</title>
-      <link rel="stylesheet" href="./assets/css/global.css">
-      <link rel="stylesheet" href="./assets/css/poke_details.css">
-   </head>
-   <body>
-      <div class="container">
-         <div class="blur-bg ">
-            <div class="move-choose-interface">
-               <div class="toolbar">
-                  <input  list="move-data-list" class="move-search-inp" id="move-search-inp" />
-                  <datalist id="move-data-list"></datalist>
-                  <button class="move-learn-btn" onclick="learnMove()">learn</button>
-                  <button class="cancel-btn" onclick="closeMoveChooseInterface()">close</button>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="blur-bg">
-         <div class="stat-update-form" style="background-color:white; padding:40px">
-            <h3 class="stat-name">Stat name</h3>
-            <input class="stat-value-inp" type="text" />
-             <datalist id="natures-data-list"></datalist>
-             <br>
-             <small>Tokens: <span id="remaining-token">0</span></small>
-             <br>
-            <button class="save-btn">save</button>
-            <button class="cancel-btn">cancel</button>
-         </div>
-      </div>
-      <!-- Header -->
-      <div class="header">
-         <button class="back-btn" onclick="history.back()">←</button>
-         <h1 class="pokemon-name" id="pokemon-name">Pokemon_name</h1>
-         <button class="fight-btn" onclick="openEnemyChooseInterface()">
-            <img src="./assets/svg/sword.svg" >
-         </button>
-      </div>
-      <!-- Stats Section -->
-      <div class="stats-header">
-         <div onclick="healthProgressBarClickHandler(event)" class="health-progress-bar" data-total-hp="0" data-current-hp="0">
-            <span class="health-data"><span class="current-hp">0</span> / <span class="total-hp">0</span>
-            </span>
-            <div class="inner">
-               &nbsp;
-            </div>
-         </div>
-         <span class="pokemon-cp" data-token-used="+0" data-value="0">Cp:</span>
-      </div>
-      <div class="stats">
-         <div class="stats-row">
-            <div  data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat hp" >
-               <strong>HP:</strong>
-            </div>
-            <div  data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat atk">
-               <strong>ATK:</strong>
-            </div>
-            <div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat def">
-               <strong>DEF:</strong>
-            </div>
-            <div data-value="0" onclick="statClickHandler(event)" class="stat retreat">
-               <strong>Retreat:</strong>
-            </div>
-            <div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat spe">
-               <strong>SPEED:</strong>
-            </div>
-            <div  data-value="0kg" onclick="statClickHandler(event)" class="stat weight">
-               <strong>Weight:</strong>
-            </div>
-         </div>
-         <div class="stats-row">
-            <div  data-value="0" onclick="statClickHandler(event)" class="stat level">
-               <strong>LVL:</strong>
-            </div>
-            <div  data-value="0" onclick="statClickHandler(event)" class="stat xp">
-               <strong>XP:</strong>
-            </div>
-            <div  data-value="none" onclick="statClickHandler(event)" class="stat nature">
-               <strong>Nature:</strong>
-            </div>
-            <div  data-value="none" onclick="statClickHandler(event)" class="stat ability">
-                <strong>Ability:</strong>
-            </div>
-            <div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat spa">
-               <strong>SP. ATK:</strong>
-            </div>
-            <div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat spd">
-               <strong>SP. DEF:</strong>
-            </div>
-         </div>
-      </div>
-      <!-- Moves Section -->
-      <div class="moves-header">
-         <h2>Moves - 10</h2>
-      </div>
-      <button id="add-move-btn" onclick="showMoveChooseInterface()">add move</button>
-      <div id="moves-container"></div>
-      </div>
-   </body>
-   <script src="./assets/js/poke_details.js" type="module"></script>
+  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Stats</title>
+  <link rel="stylesheet" href="./assets/css/global.css">
+  <link rel="stylesheet" href="./assets/css/move-card.css">
+  <link rel="stylesheet" href="./assets/css/poke_details.css">
+</head>
+<body>
+  <div class="container">
+    <div class="blur-bg ">
+      <div class="pokemon-choose-form">
+        <input list="pokemon-data-list" class="pokemon-inp" id="pokemon-inp" />
+      <datalist id="pokemon-data-list"></datalist>
+      <button class="submit-btn" onclick="changePokemon()">submit</button>
+      <button class="cancel-btn" onclick="closePokemonChooseForm()">close</button>
+    </div>
+  </div>
+  <div class="blur-bg ">
+    <div class="move-choose-interface">
+      <div class="toolbar">
+        <input onchange="showChoosedMoveDesc()" list="move-data-list" class="move-search-inp" id="move-search-inp" />
+      <datalist id="move-data-list"></datalist>
+      <button class="move-learn-btn" onclick="learnMove()">learn</button>
+      <button class="cancel-btn" onclick="closeMoveChooseInterface()">close</button>
+    </div>
+    <p class="desc"></p>
+
+  </div>
+</div>
+</div>
+<div class="blur-bg">
+<div class="stat-update-form" style="background-color:white; padding:40px">
+<h3 class="stat-name">Stat name</h3>
+<input class="stat-value-inp" type="text" />
+<datalist id="natures-data-list"></datalist>
+<br>
+<small>Tokens: <span id="remaining-token">0</span></small>
+<br>
+<button class="save-btn">save</button>
+<button class="cancel-btn">cancel</button>
+</div>
+</div>
+<!-- Header -->
+<div class="header">
+<button class="back-btn" onclick="history.back()">←</button>
+<h1 class="pokemon-name" id="pokemon-name">Pokemon_name</h1>
+<button onclick="showPokemonChooseForm()" class="pokemon-change-btn">&#9999;</button>
+<button class="fight-btn" onclick="openEnemyChooseInterface()">
+<img src="./assets/svg/sword.svg">
+</button>
+</div>
+<!-- Stats Section -->
+<div class="stats-header">
+<div onclick="healthProgressBarClickHandler(event)" class="health-progress-bar" data-total-hp="0" data-current-hp="0">
+<span class="health-data"><span class="current-hp">0</span> / <span class="total-hp">0</span>
+</span>
+<div class="inner">
+&nbsp;
+</div>
+</div>
+<span class="pokemon-cp" data-token-used="+0" data-value="0">Cp:</span>
+</div>
+<div class="stats-header-secondary">
+<div data-value="none" onclick="statClickHandler(event)" class="stat ability">
+<strong>Ability:</strong>
+</div>
+
+  <div data-value="none" onclick="statClickHandler(event)" class="stat nature">
+<strong>Nature:</strong>
+</div>
+</div>
+<div class="stats">
+<div class="stats-row">
+<div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat hp">
+<strong>HP:</strong>
+</div>
+<div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat atk">
+<strong>ATK:</strong>
+</div>
+<div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat def">
+<strong>DEF:</strong>
+</div>
+
+<div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat spe">
+<strong>SPEED:</strong>
+</div>
+<div data-value="0kg" onclick="statClickHandler(event)" class="stat weight">
+<strong>Weight:</strong>
+</div>
+</div>
+<div class="stats-row">
+<div data-value="0" onclick="statClickHandler(event)" class="stat level">
+<strong>LVL:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat xp">
+<strong>XP:</strong>
+</div>
+<div data-value="0" onclick="statClickHandler(event)" class="stat retreat">
+<strong>Retreat:</strong>
+</div>
+<div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat spa">
+<strong>SP. ATK:</strong>
+</div>
+<div data-token-used="0" data-value="0" onclick="statClickHandler(event)" class="stat spd">
+<strong>SP. DEF:</strong>
+</div>
+</div>
+</div>
+<!-- Moves Section -->
+<div class="moves-header">
+<h2>Moves - 10</h2>
+</div>
+<button id="add-move-btn" onclick="showMoveChooseInterface()">add move</button>
+<div id="moves-container"></div>
+</div>
+</body>
+<script src="./assets/js/poke_details.js" type="module">
+</script>
 </html>

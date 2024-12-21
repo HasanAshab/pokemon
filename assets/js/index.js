@@ -3,21 +3,23 @@ import { getPokemonsMeta } from "./utils/helpers.js";
 import { loadPokemonsDatalist, loadNaturesDataList } from "./utils/dom.js";
 
 
-var totalBadgesCount = localStorage.getItem("total-badges-count") || 0
+var totalBadgesCount =  0
 const badgesDataStr = localStorage.getItem("badges-data")
-const badgesData = JSON.parse(badgesDataStr) || [0, 0, 0, 0, 0, 0, 0, 0, 0]
+const badgesData = JSON.parse(badgesDataStr) || [0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0]
 const totalBadges = document.getElementById("total-badges")
 function loadTotalBadges() {
   totalBadges.textContent = totalBadgesCount
-  localStorage.setItem("total-badges-count", totalBadgesCount)
 }
 
 function loadActiveBadges() {
   const badges = document.querySelectorAll(".badges-cont >.badge")
   badges.forEach((badge, index)=> {
-    if (badgesData[index])
+    if (badgesData[index]){
       badge.classList.add("active")
+      totalBadgesCount++
+    }
   })
+  loadTotalBadges()
 }
 
 globalThis.badgeClickHandler = function badgeClickHandler( {
@@ -115,7 +117,7 @@ function loadFoodCost() {
 }
 
 function loadAll() {
-  loadTotalBadges()
+  
   loadActiveBadges()
   loadAllPokemons()
   //loadFoodCost()
@@ -123,7 +125,7 @@ function loadAll() {
   loadNaturesDataList("natures-data-list")
 }
 document.body.onload = loadAll
-
+//window.location = "/battle.html?you=charmander&enemy=eyJpZCI6ImJ1bGJhc2F1ciIsIm1ldGEiOnsieHAiOjUwMCwibmF0dXJlIjoiY2FsbSIsInJldHJlYXQiOjIsIm1vdmVzIjpbeyJpZCI6ImFjaWQiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiYWJzb3JiIiwiaXNTZWxlY3RlZCI6dHJ1ZX1dLCJ0b2tlbl91c2VkIjp7fX19"
 //window.location = "/battle.html?you=charmander&enemy=riolu&xp=500&retreat=3&nature=calm&moves=scratch,forcepalm,sleeppowder,crunch,firefang"
 //window.location = "/battle.html?you=charmander&enemy=charmander&xp=500&retreat=3&nature=calm&moves=growl,scratch,ember"
 //window.location = "/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,rage,crunch,razor-leaf,leer"
