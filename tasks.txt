@@ -1,9 +1,7 @@
-fix dodge
 try dodge
-steel beam, absorb
+steel beam (recoil), heal
 commentary
 win
-priority
 
 
 xp using cp and xp reduce on loose

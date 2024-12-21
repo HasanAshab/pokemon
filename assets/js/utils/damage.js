@@ -43,7 +43,7 @@ export class Damage {
         const defenseStat = this.target
             ? this.target.state.stats.get(isSpecial ? "spd" : "def")
             : 70; // Neutral defense if no target
-        return stab * ((((((2 * this.attacker.level) / 7) + 2) * this.move.basePower * ((attackStat * 0.6) / defenseStat)) / 10) + 2);
+        return stab * ((((((2 * this.attacker.level) / 7) + 2) * (this.move.basePower * 1.5) * (attackStat / defenseStat)) / 10) + 2);
     }
 
     _calculate() {

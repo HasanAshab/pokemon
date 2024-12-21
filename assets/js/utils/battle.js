@@ -9,9 +9,9 @@ export class BattleField extends EventEmitter {
     //Possible turns per wave with their weight
     static TURNS_PER_WAVE = [
         [2, 0.2],
-        [3, 0.4],
+        [3, 0.45],
         [4, 0.3],
-        [6, 0.1],
+        [6, 0.05],
     ]
 
     turnNo = 0
@@ -138,6 +138,10 @@ export class BattleField extends EventEmitter {
             damages.set(this.pokemon1, selfHitDamage1)
             damages.set(this.pokemon2, selfHitDamage2)
         }
+        else if(move1.priority !== move2.priority) {
+            damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+            damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+        }
         else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {
             const recoil = hit2.damage() * 0.10
             const damage = (hit1.damage() * moveEffect1) - ((hit2.damage() - recoil) * moveEffect2)
@@ -171,18 +175,36 @@ export class BattleField extends EventEmitter {
                 ? damages.set(this.pokemon1, damage * pokeEffect1)
                 : damages.set(this.pokemon2, -damage * pokeEffect2);
         }
+        
+        const d1 = damages.get(this.pokemon1)
+        const d2 = damages.get(this.pokemon2)
+        
+        if(move2.priority > move1.priority) {
+            if (d1 && !dodged1) {
+                this.pokemon1.state.decreaseHealth(d1)
+                move2.drain && this.pokemon2.state.increaseHealth(d1 * move2.drainRate())
+            }
+            if (d2 && !dodged2) {
+                this.pokemon2.state.decreaseHealth(d2)
+                move1.drain && this.pokemon1.state.increaseHealth(d2 * move1.drainRate())
+            }
+        }
+        else {
+            if (d2 && !dodged2) {
+                this.pokemon2.state.decreaseHealth(d2)
+                move1.drain && this.pokemon1.state.increaseHealth(d2 * move1.drainRate())
+            }
+            if (d1 && !dodged1) {
+                this.pokemon1.state.decreaseHealth(d1)
+                move2.drain && this.pokemon2.state.increaseHealth(d1 * move2.drainRate())
+            }
+        }
 
-        if (damages.get(this.pokemon1) && !dodged1) {
-            this.pokemon1.state.decreaseHealth(damages.get(this.pokemon1))
-        }
-        if (damages.get(this.pokemon2) && !dodged2) {
-            this.pokemon2.state.decreaseHealth(damages.get(this.pokemon2))
-        }
-        if (!attackSelf2 && canMove2 && ((damages.get(this.pokemon1) && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
+        if (!attackSelf2 && canMove2 && ((d1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
             this.pokemon1.state.effects.apply(move2, { on: "target" })
             this.pokemon1.state.stats.apply("target", move2)
         }
-        if (!attackSelf1 && canMove1 && ((damages.get(this.pokemon2) && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
+        if (!attackSelf1 && canMove1 && ((d2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
             this.pokemon2.state.effects.apply(move1, { on: "target" })
             this.pokemon2.state.stats.apply("target", move1)
         }
@@ -288,8 +310,9 @@ class BattleState extends Observable {
 
     // Health Management
     increaseHealth(amount) {
-        const maxHealth = this.stats.get("hp"); // Use calculated HP stat
+        const maxHealth = this.pokemon.stats.hp; // Use calculated HP stat
         const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
+        console.log(maxHealth)
         return this.stats.set("hp", newHp);
     }
 

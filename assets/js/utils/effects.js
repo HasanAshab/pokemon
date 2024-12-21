@@ -2,10 +2,17 @@ import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
 
 
 class Effect {
+    static immuneTo = []
+    
+    static isImmune(pokemon) {
+        return pokemon.types.some(t => this.immuneTo.includes(t))
+    }
+    
     static isPre() {
         return false
     }
-    
+
+
     status = {
         canMove: true,
         attackSelf: false,
@@ -47,11 +54,11 @@ class Effect {
     canMove() {
         return this.status.canMove
     }
-    
+
     attackSelf() {
         return this.status.attackSelf
     }
-    
+
     _subscribeTo(event) {
         const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
@@ -113,6 +120,7 @@ class ExpirableEffect extends Effect {
 }
 
 class BurnEffect extends Effect {
+    static immuneTo = ["Fire"]
     static effectName = "brn"
     
     setup() {
@@ -141,6 +149,7 @@ class BurnEffect extends Effect {
 }
 
 class PoisonEffect extends Effect {
+    static immuneTo = ["Poison", "Steel"]
     static effectName = "psn"
 
     onWave() {
@@ -176,6 +185,7 @@ class SleepEffect extends ExpirableEffect {
 }
 
 class FreezeEffect extends ExpirableEffect {
+    static immuneTo = ["Ice"]
     static effectName = "frz"
     static THAW_CHANCE = 0.10
     
@@ -196,7 +206,8 @@ class FreezeEffect extends ExpirableEffect {
     }
     
     onOpponentUsedMove(move) {
-        if (move.type === "Fire") {
+        const thawsTarget = move.thawsTarget || move.type === "Fire"
+        if (thawsTarget) {
             this._thawChance = 1
         }
     }
@@ -229,6 +240,7 @@ class FlinchEffect extends ExpirableEffect {
 }
 
 class ParalyzeEffect extends Effect {
+    static immuneTo = ["Electric", "Ground"]
     static effectName = "par"
 
     setup() {
@@ -268,6 +280,20 @@ class ConfusionEffect extends Effect {
     }
 }
 
+class LeechSeedEffect extends Effect {
+    static immuneTo = ["Grass"]
+    static effectName = "leechseed"
+
+    onWave() {
+        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const loosedHp = opponent.stats.hp / 8
+
+        this.state.decreaseHealth(loosedHp)
+        opponent.state.increaseHealth(loosedHp)
+    }
+}
+
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -276,6 +302,7 @@ export const EFFECTS = makeEffectsMap([
     FlinchEffect,
     ParalyzeEffect,
     ConfusionEffect,
+    LeechSeedEffect,
 ])
 
 
@@ -307,10 +334,12 @@ export class EffectManager {
     add(...effects) {
         effects.filter(effectName => !this.includes(effectName)).forEach(effectName => {
             const EffectClass = EFFECTS[effectName]
-            if(!EffectClass) return // Effect not implemented yet
-            const effect = new EffectClass(this.state)
-            effect.setup()
-            this._effects.push(effect)
+            const isImmune = EffectClass?.isImmune(this.state.pokemon)
+            if (!isImmune) {
+                const effect = new EffectClass(this.state)
+                effect.setup()
+                this._effects.push(effect)
+            }
         })
     }
     
@@ -337,7 +366,7 @@ export class EffectManager {
             move.effects.target
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
                 .forEach(effect => {
-                    if (Math.random() < (effect.chance / 100)) {
+                    if (true || Math.random() < (effect.chance / 100)) {
                         this.add(effect.name)
                     }
                 })

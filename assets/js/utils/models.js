@@ -87,7 +87,7 @@ export class Pokemon {
           if (statName === "hp") {
             // HP calculation
             stats[statName] = Math.floor(
-              ((20 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
+              ((8 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
             );
           }
           else if (statName === "spe") {
@@ -159,5 +159,9 @@ export class Move {
         const desc = movesText[this.id]
         const key = short ? "shortDesc" : "desc"
         return desc[key] ?? desc.shortDesc
+    }
+    
+    drainRate() {
+        return this.drain[0] / this.drain[1]
     }
 }

@@ -159,7 +159,7 @@ function showPopupMsg(msg,playerTag, cb = (() => null)){
     popupMsgCont.classList.remove("active")
       popupMsgCont.classList.remove("enemy-side")
       cb()
-   },2000)
+   }, 2000)
     
 }
 
@@ -194,7 +194,7 @@ function setEffects(effects, playerTag) {
       "name": "Curse",
       "color": "Ghost"
     },
-    "fln": {
+    "flinch": {
       "name": "Flinch",
       "color": "Dark"
     },
@@ -206,7 +206,7 @@ function setEffects(effects, playerTag) {
       "name": "Trap",
       "color": "Ground"
     },
-    "lch": {
+    "leechseed": {
       "name": "Leech",
       "color": "Grass"
     },
