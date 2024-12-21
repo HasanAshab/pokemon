@@ -209,28 +209,29 @@ export class BattleField extends EventEmitter {
             return false;
         }
     
-        // Get stats
+        // Get speed stats
         const attackerSpd = attacker.state.stats.get("spe");
         const targetSpd = target.state.stats.get("spe");
-        const attackerAccuracy = attacker.state.stats.get("accuracy");
-        const targetEvasion = target.state.stats.get("evasion");
-    
-        // Speed ratio
+
+        // Get accuracy and evasion stats
+        const attackerAccuracy = attacker.state.stats.get("accuracy")
+        const targetEvasion = target.state.stats.get("evasion")
+
+        // Base dodge chance using a modified speed ratio
         const speedRatio = targetSpd / attackerSpd;
+        const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.5)); // Clamp between 5% and 50%
     
-        // Accuracy and evasion modifier (minor effect)
-        const accuracyModifier = (attackerAccuracy / targetEvasion) * 0.1; // Reduced weight on this factor
+        // Accuracy and evasion modifiers
+        const accuracyModifier = attackerAccuracy / targetEvasion;
     
-        // Calculate dodge chance
-        const dodgeChance = Math.min(0.05 + speedRatio * 0.6 + accuracyModifier, 0.95); // Clamp max at 95%
+        // Calculate final hit chance
+        const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance);
     
-        // Simulate hit/miss based on move accuracy
-        const randomRoll = Math.random(); // Random value between 0 and 1
-        const hitChance = move.accuracy / 100; // Normalize move accuracy (e.g., 85% becomes 0.85)
-        
-        console.log(randomRoll, hitChance * (1 - dodgeChance))
-        // Check if dodge occurs
-        return randomRoll > hitChance * (1 - dodgeChance);
+        // Simulate random factor for dodge mechanics
+        const randomFactor = Math.random() * 100;
+
+        // Return true if target dodges, false if the move hits
+        return randomFactor > finalHitChance;
     }
 
     _setWaveTurns() {
