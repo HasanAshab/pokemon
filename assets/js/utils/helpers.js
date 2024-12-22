@@ -1,5 +1,5 @@
 export const camelize = s => s.replace(/-./g, x=>x[1].toUpperCase())
-export const sleep = ms => new Promise(r => setTimeout(r, ms))
+
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -26,6 +26,10 @@ export function setPokemonMeta(name, value) {
     const pokemonsMeta = getPokemonsMeta()
     pokemonsMeta[name] = value
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta))
+}
+
+export function delayedFunc(func, delay) {
+    return (...args) => setTimeout(() => func(...args), delay)
 }
 
 export function fixFloat(damage) {

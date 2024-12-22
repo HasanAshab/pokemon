@@ -42,6 +42,8 @@ export class Pokemon extends PSCompatable {
     }
 
     constructor(id, meta) {
+        super()
+
         this.id = id;
         this.meta = meta;
         this._pokemon = pokemons[id];

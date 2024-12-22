@@ -1,5 +1,5 @@
 try dodge
-steel beam (recoil), heal, protect, ditect,
+steel beam (recoil), heal, protect, ditect
 furycutter
 commentary
 switch pokemon

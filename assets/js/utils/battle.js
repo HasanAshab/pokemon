@@ -252,7 +252,10 @@ export class BattleField extends EventEmitter {
         const randomFactor = Math.random() * 100;
 
         // Return true if target dodges, false if the move hits
-        return randomFactor > finalHitChance;
+        const dodged = randomFactor > finalHitChance;
+        dodged && target.state.emit("dodged", move)
+        
+        return dodged 
     }
 
     _setWaveTurns() {
@@ -294,13 +297,6 @@ class BattleState extends Observable {
             this.retreat -= move.retreat
             this.reducePP(move.id)
         })
-        
-        // this.on("turn", () => {
-//             this.tempState = {
-//                 touched: false,
-//                 canMove: true,
-//             }
-//         })
     }
 
     addWaveRetreat() {

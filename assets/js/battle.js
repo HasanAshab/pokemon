@@ -2,7 +2,7 @@ import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
 import { calculateWinXP } from "./utils/battle.js"
-import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+import { getParam, getPokemonsMeta, setPokemonMeta, delayedFunc } from "./utils/helpers.js"
 
 
 globalThis.isVeryClose = false
@@ -30,9 +30,12 @@ globalThis.switchPokemonClickHandler = function({currentTarget}){
     currentTarget.classList.add("active")
   }
 }
-function setBattleStateChangeListener(playerTag) {
+
+
+function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    pokemon.state.on("change", (state) => {
+
+    pokemon.state.on("change", delayedFunc((state) => {
         const hp = state.stats.get("hp")
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state.stats._statChanges, playerTag)
@@ -46,8 +49,11 @@ function setBattleStateChangeListener(playerTag) {
                 : "you"
             handleWin(winnerTag, playerTag)
         }
-    })
+    }, 1000))
     
+    pokemon.state.on("dodged", delayedFunc(() => {
+        showPopupMsg("dodged!", playerTag)
+    }, 1000))
 }
 
 async function handleWin(winnerTag, looserTag) {
@@ -475,9 +481,10 @@ function loadAll() {
     loadHealth("enemy")
 
     loadChoosePokemon("you") 
-      loadChoosePokemon("enemy") 
-  setBattleStateChangeListener("you")
-    setBattleStateChangeListener("enemy")
+    loadChoosePokemon("enemy") 
+    
+    setBattleStateListeners("you")
+    setBattleStateListeners("enemy")
 }
 
 
