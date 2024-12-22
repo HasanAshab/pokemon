@@ -125,9 +125,6 @@ function loadAll() {
   loadNaturesDataList("natures-data-list")
 }
 document.body.onload = loadAll
-//window.location = "/battle.html?you=charmander&enemy=eyJpZCI6ImJ1bGJhc2F1ciIsIm1ldGEiOnsieHAiOjUwMCwibmF0dXJlIjoiY2FsbSIsInJldHJlYXQiOjIsIm1vdmVzIjpbeyJpZCI6ImFjaWQiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiYWJzb3JiIiwiaXNTZWxlY3RlZCI6dHJ1ZX1dLCJ0b2tlbl91c2VkIjp7fX19"
-//window.location = "/battle.html?you=charmander&enemy=riolu&xp=500&retreat=3&nature=calm&moves=scratch,forcepalm,sleeppowder,crunch,firefang"
-//window.location = "/battle.html?you=charmander&enemy=charmander&xp=500&retreat=3&nature=calm&moves=growl,scratch,ember"
-//window.location = "/battle.html?you=charmander&enemy=bulbasaur&xp=400&retreat=4&nature=adamant&moves=pound,rage,crunch,razor-leaf,leer"
-//window.location = "http://localhost:8888/battle.html?you=haxorus&enemy=charizard-mega-x&xp=3500&retreat=6&nature=adamant&moves=dragon-claw,dragon-dance,earthquake,dragon-pulse,sandsear-storm"
-//window.location = "http://localhost:8888/battle.html?you=lucario&enemy=hitmonchan&xp=3600&retreat=6&nature=adamant&moves=karate-chop,vacuum-wave,swords-dance,mega-punch,fire-punch")
+
+
+window.location = "/battle.html?you=mewtwomegax&enemy=eyJpZCI6InNsYWtpbmciLCJtZXRhIjp7InhwIjo0MDAwLCJuYXR1cmUiOiJzZXJpb3VzIiwicmV0cmVhdCI6MywibW92ZXMiOlt7ImlkIjoic2xhc2giLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoibWVnYXB1bmNoIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6ImRvdWJsZXNsYXAiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoic2t1bGxiYXNoIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6Imh5cGVyYmVhbSIsImlzU2VsZWN0ZWQiOnRydWV9XSwidG9rZW5fdXNlZCI6e319fQ=="
