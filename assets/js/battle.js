@@ -316,7 +316,7 @@ function loadMoves(playerTag) {
               </span>
             </div>
             <div class="secondary">
-            ${!["None", "Status"].includes(move.category) 
+            ${move.basePower && !["None", "Status"].includes(move.category) 
             ? `  <div class="power-data">
                 ${
                 move.flags.contact !== 1 

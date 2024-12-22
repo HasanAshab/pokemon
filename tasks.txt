@@ -1,13 +1,16 @@
 try dodge
-steel beam (recoil), heal
+steel beam (recoil), heal, protect, ditect,
+furycutter
 commentary
-win
+switch pokemon
 
 
 xp using cp and xp reduce on loose
 abilities effects (eg guts)
 effect remove
 
+* Proposal
+increase damage for switch lock moves
 
 * Scenario
 -- phy 1 -> phy 1 = x - y d 

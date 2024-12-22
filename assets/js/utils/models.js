@@ -5,7 +5,21 @@ import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
 
 
-export class Pokemon {
+class PSCompatable {
+    get maxhp() {
+        this.stats.hp
+    }
+    
+    get hp() {
+        return this.state?.stats.get("hp") ?? null
+    }
+
+    getWeight() {
+        return this._pokemon.weightkg * 10;
+    }
+}
+
+export class Pokemon extends PSCompatable {
     static XP_PER_LEVEL = 100;
     static TOKEN_PER_LEVEL = 2
     static TOKEN_MODIFIER = 1.01
@@ -31,7 +45,7 @@ export class Pokemon {
         this.id = id;
         this.meta = meta;
         this._pokemon = pokemons[id];
-        this.stats = this._calculateTotalStat(); 
+        this.stats = this._calculateTotalStat();
     }
 
     get types() {
@@ -45,10 +59,6 @@ export class Pokemon {
 
     isTypeOf(type) {
         return this.types.includes(type);
-    }
-
-    getWeight() {
-        return this._pokemon.weightkg * 10;
     }
 
     effectiveness(type) {
@@ -70,7 +80,6 @@ export class Pokemon {
     toBase64() {
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
-
 
     tokensUsed() {
         return Object.keys(this.meta.token_used)

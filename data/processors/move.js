@@ -1,6 +1,11 @@
 import { processor } from "./helpers.js"
 
 
+const MOVE_CTX = {
+    debug: () => null
+}
+
+
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
       move.pp = Math.round(move.pp / 3) || 1;
@@ -146,6 +151,13 @@ function setRetreat(move) {
   move.retreat = adjustToClosestRetreat(retreat)
 }
 
+function setCustomCTX(move) {
+  for (const key of Object.keys(move)) {
+    if (typeof move[key] === 'function') {
+      move[key] = move[key].bind(MOVE_CTX);
+    }
+  }
+}
 
 export default processor([
     modifyPP,
@@ -153,4 +165,5 @@ export default processor([
     setEffects,
     setStatChanges,
     setRetreat,
+    setCustomCTX,
 ])

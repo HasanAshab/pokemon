@@ -248,7 +248,7 @@ function loadMoves() {
               </span>
             </div>
             <div class="secondary">
-             ${move.category !== "Status" ?
+             ${move.basePower && move.category !== "Status" ?
              
              ` <div class="power-data">
              ${

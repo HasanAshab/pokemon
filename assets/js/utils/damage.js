@@ -31,14 +31,21 @@ export class Damage {
     }
     
     _calculateBase() {
-        if (!this.move.basePower) {
-            if (!this.move.damage)
-                return null
+        if (this.move.damage) {
             if (typeof this.move.damage === "number") 
                 return this.move.damage
             if (this.move.damage === "level")
                 return this.attacker.level * 2
         }
+        
+        let bp = this.move.basePower
+        if (this.move.basePowerCallback) {
+            if(this.target || this.move.basePowerCallback.length === 1)
+                bp = this.move.basePowerCallback(this.attacker, this.target, this.move)
+        }
+        
+        if (!bp) return null
+
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1;
         const isSpecial = this.move.category === "Special";
         const attackStat = "state" in this.attacker 
@@ -48,7 +55,7 @@ export class Damage {
         const defenseStat = this.target
             ? this.target.state.stats.get(isSpecial ? "spd" : "def")
             : 70; // Neutral defense if no target
-        return stab * ((((((2 * this.attacker.level) / 7) + 2) * (this.move.basePower * 1.05) * (attackStat / defenseStat)) / 10) + 2);
+        return stab * ((((((2 * this.attacker.level) / 7) + 2) * (bp * 1.05) * (attackStat / defenseStat)) / 10) + 2);
     }
 
     _calculate() {
@@ -56,6 +63,7 @@ export class Damage {
         if (!this.target || this.move.damage) {
             return this.count
         }
+        console.log(this.count)
 
         this._setCriticalMultiplier()
         this._setRandomModifier()
@@ -76,7 +84,9 @@ export class Hit {
         this.attacker = attacker
         this.target = target
         this.move = move
+        this.move.hit = 0
         this.damages = Array.from({ length: this._randomHits() }, (_, i) => {
+            this.move.hit++
             return new Damage(attacker, move, target)
         })
     }
