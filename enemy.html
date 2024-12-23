@@ -6,34 +6,135 @@
   <title>Enemy Selection</title>
 </head>
 <body>
-  <label for="enemy">Choose Enemy</label>
-  <input list="enemy-data-list" class="enemy" onblur="showStats()">
-  <br>
-  <label for="level-inp">Level</label>
-  <input name="level-inp" type="number" class="level-inp" value="1" onchange="showStats()">
-  <br>
-  <label for="retreat-inp">Retreat</label>
-  <input name="retreat-inp" type="number" class="retreat-inp" value="2">
-  <br>
-  <label for="nature-inp">Nature</label>
-  <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats()" class="nature-inp">
-  <br>
-  <label for="token-inp">Token Used</label>
-  <textarea name="token-inp" onblur="showStats()" class="token-inp"></textarea>
-  <br>
-  <pre class="enemy-stats"></pre>
-  <br>
-  <h3>Moves</h3>
-  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-1">
-  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-2">
-  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-3">
-  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-4">
-  <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-5">
-  <br>
-  <div id="move-details">
-    <strong class="move-name">name</strong>
-    <span class="desc">Lorem ipsum dolor.</span>
+  <div class="pokemon-form">
+    <label for="enemy">Choose Enemy</label>
+    <input list="enemy-data-list" class="enemy" onblur="showStats(0)">
+    <br>
+    <label for="level-inp">Level</label>
+    <input name="level-inp" type="number" class="level-inp" value="1" onchange="showStats(0)">
+    <br>
+    <label for="retreat-inp">Retreat</label>
+    <input name="retreat-inp" type="number" class="retreat-inp" value="2">
+    <br>
+    <label for="nature-inp">Nature</label>
+    <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(0)" class="nature-inp">
+    <br>
+    <label for="token-inp">Token Used</label>
+    <textarea name="token-inp" onblur="showStats(0)" class="token-inp"></textarea>
+    <br>
+    <pre class="enemy-stats"></pre>
+    <br>
+    <h3>Moves</h3>
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-1">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-2">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-3">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-4">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-5">
+    <br>
+
+    <div class="move-details">
+      <strong class="move-name">name</strong>
+      <span class="desc">Lorem ipsum dolor.</span>
+    </div>
   </div>
+ <br> <hr><br>
+  <div class="pokemon-form">
+    <label for="enemy">Choose Enemy</label>
+    <input list="enemy-data-list" class="enemy" onblur="showStats(1)">
+    <br>
+    <label for="level-inp">Level</label>
+    <input name="level-inp" type="number" class="level-inp" value="1" onchange="showStats(1)">
+    <br>
+    <label for="retreat-inp">Retreat</label>
+    <input name="retreat-inp" type="number" class="retreat-inp" value="2">
+    <br>
+    <label for="nature-inp">Nature</label>
+    <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(1)" class="nature-inp">
+    <br>
+    <label for="token-inp">Token Used</label>
+    <textarea name="token-inp" onblur="showStats(1)" class="token-inp"></textarea>
+    <br>
+    <pre class="enemy-stats"></pre>
+    <br>
+    <h3>Moves</h3>
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-1">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-2">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-3">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-4">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-5">
+    <br>
+
+    <div class="move-details">
+      <strong class="move-name">name</strong>
+      <span class="desc">Lorem ipsum dolor.</span>
+    </div>
+  </div>
+  <br> <hr><br>
+ <div class="pokemon-form">
+    <label for="enemy">Choose Enemy</label>
+    <input list="enemy-data-list" class="enemy" onblur="showStats(2)">
+    <br>
+    <label for="level-inp">Level</label>
+    <input name="level-inp" type="number" class="level-inp" value="1" onchange="showStats(2)">
+    <br>
+    <label for="retreat-inp">Retreat</label>
+    <input name="retreat-inp" type="number" class="retreat-inp" value="2">
+    <br>
+    <label for="nature-inp">Nature</label>
+    <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(2)" class="nature-inp">
+    <br>
+    <label for="token-inp">Token Used</label>
+    <textarea name="token-inp" onblur="showStats(2)" class="token-inp"></textarea>
+    <br>
+    <pre class="enemy-stats"></pre>
+    <br>
+    <h3>Moves</h3>
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-1">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-2">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-3">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-4">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-5">
+    <br>
+
+    <div class="move-details">
+      <strong class="move-name">name</strong>
+      <span class="desc">Lorem ipsum dolor.</span>
+    </div>
+  </div>
+ <br> <hr><br>
+  <div class="pokemon-form">
+    <label for="enemy">Choose Enemy</label>
+    <input list="enemy-data-list" class="enemy" onblur="showStats(3)">
+    <br>
+    <label for="level-inp">Level</label>
+    <input name="level-inp" type="number" class="level-inp" value="1" onchange="showStats(3)">
+    <br>
+    <label for="retreat-inp">Retreat</label>
+    <input name="retreat-inp" type="number" class="retreat-inp" value="2">
+    <br>
+    <label for="nature-inp">Nature</label>
+    <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(3)" class="nature-inp">
+    <br>
+    <label for="token-inp">Token Used</label>
+    <textarea name="token-inp" onblur="showStats(3)" class="token-inp"></textarea>
+    <br>
+    <pre class="enemy-stats"></pre>
+    <br>
+    <h3>Moves</h3>
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-1">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-2">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-3">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-4">
+    <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input-5">
+    <br>
+
+    <div class="move-details">
+      <strong class="move-name">name</strong>
+      <span class="desc">Lorem ipsum dolor.</span>
+    </div>
+  </div>
+ <br> <hr><br>
+
   <button onclick="startBattle()">Start Battle</button>
   <br><br><br><br></br>
   <button onclick="randomBattle()">Random Battle</button>
