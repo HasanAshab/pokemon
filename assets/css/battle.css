@@ -37,7 +37,7 @@
 .battle-prompt-popup > .btns-cont > .block-btn {
   display: none;
 }
-#popup-msg-cont {
+#you-popup-msg-cont {
 
   position: fixed;
   width: 100vw;
@@ -46,15 +46,25 @@
   justify-content: center;
   align-items: center;
 }
-#popup-msg-cont.active {
+#you-popup-msg-cont.active {
   display: flex;
-
 }
-#popup-msg-cont.enemy-side {
+
+#enemy-popup-msg-cont {
+  position: fixed;
+  width: 100vw;
+  bottom: 40vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
   transform: rotate(180deg);
   top: 40vh;
   bottom: unset;
 }
+#enemy-popup-msg-cont.active {
+  display: flex;
+}
+
 .enemy-controle-cont {
   height: 47.50%;
 }

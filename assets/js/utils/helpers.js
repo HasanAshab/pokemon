@@ -51,3 +51,24 @@ export function weightedRandom(values, weights) {
 
   return values[values.length - 1]; // Fallback
 }
+
+
+export function getDamageDangerLevel(pokemon, damage) {
+    const maxHP = pokemon.maxhp
+
+    const damagePercentage = (damage / maxHP) * 100;
+
+    if (damagePercentage < 10) {
+        return "Very Low";
+    } else if (damagePercentage < 20) {
+        return "Low";
+    } else if (damagePercentage < 30) {
+        return "Medium";
+    } else if (damagePercentage < 60) {
+        return "High";
+    } else if (damagePercentage <= 75) {
+        return "Very High";
+    } else {
+        return "Overkill";
+    }
+}

@@ -7,7 +7,7 @@ import movesText from "../../../data/moves_text.js"
 
 class PSCompatable {
     get maxhp() {
-        this.stats.hp
+        return this.stats.hp
     }
     
     get hp() {
@@ -162,6 +162,7 @@ export class Pokemon extends PSCompatable {
 export class Move {
     constructor(id) {
         this.id = id;
+        this.hit = 0
         this._move = moves[id];
         Object.assign(this, this._move)
     }

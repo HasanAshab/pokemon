@@ -42,11 +42,8 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.emit("turn", ...args)
         })
         
-        this.on("turn-end", (...args) => {
+        this.on("turn-end", () => {
             !this._waveAfterTurns && this.emit("wave")
-
-            this.pokemon1.state.emit("turn-end", ...args)
-            this.pokemon2.state.emit("turn-end", ...args)
             !this.pokemon1.state.usableOffensiveMoves().length
             && !this.pokemon2.state.usableOffensiveMoves().length
             && this.emit("wave")
@@ -222,7 +219,10 @@ export class BattleField extends EventEmitter {
         if(canMove2 && (move2.category === "Status" || (move2.flags.contact && move1.flags.contact) || !move2.flags.contact)) {
             this.pokemon2.state.emit("used-move", move2) 
         }
-        this.emit("turn-end", this, senario)
+        
+        this.emit("turn-end", this, hit1, hit2)
+        this.pokemon1.state.emit("turn-end", this, hit1)
+        this.pokemon1.state.emit("turn-end", this, hit2)
     }
 
     _canDodge(attacker, target, move) {
@@ -294,6 +294,9 @@ class BattleState extends Observable {
             this.addWaveRetreat()
         })
         this.on("used-move", move => {
+            const opponent = this.field.opponentOf(this.pokemon)
+            move.onAfterMove?.(this.pokemon, opponent, move)
+
             this.retreat -= move.retreat
             this.reducePP(move.id)
         })
@@ -305,9 +308,8 @@ class BattleState extends Observable {
 
     // Health Management
     increaseHealth(amount) {
-        const maxHealth = this.pokemon.stats.hp; // Use calculated HP stat
+        const maxHealth = this.pokemon.maxhp; // Use calculated HP stat
         const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
-        console.log(maxHealth)
         return this.stats.set("hp", newHp);
     }
 
@@ -345,10 +347,11 @@ class StatsManager {
     _statChanges = {};
 
     constructor(state) {
-        this.state = state;
-        this._stats = Object.assign({}, StatsManager.BATTLE_STATS, state.pokemon.stats, state.pokemon.meta.stats);
+        this.state = state
+        this._stats = Object.assign({}, StatsManager.BATTLE_STATS, this.state.pokemon.stats, this.state.pokemon.meta.stats);
+        this.prev = new PrevStatsManager(state, this)
     }
-
+    
     get(name) {
         const baseStat = this._stats[name];
         const stage = this._statChanges[name] || 0;
@@ -357,11 +360,15 @@ class StatsManager {
     }
 
     set(name, value) {
+        this.prev.remember(name)
         return this._stats[name] = value;
     }
 
     all() {
-        return Object.keys(this._stats).map(stat => this.get(stat));
+        return Object.keys(this._stats).reduce((acc, stat) => {
+            acc[stat] = this.get(stat)
+            return acc
+        }, {});
     }
 
     apply(on, move) {
@@ -399,6 +406,34 @@ class StatsManager {
         } else {
             return 1; // Neutral stage
         }
+    }
+}
+
+class PrevStatsManager {
+    constructor(state, statsManager) {
+        this.state = state
+        this.stats = statsManager
+        this.refresh()
+
+        this.state.on("turn", () => {
+            this.refresh()
+        })
+    }
+    
+    refresh() {
+        this._stats = Object.assign({}, this.stats.all());
+    }
+
+    get(name) {
+        return this._stats[name];
+    }
+
+    remember(name) {
+        this._stats[name] = this.stats.get(name)
+    }
+
+    all() {
+        return this._stats;
     }
 }
 

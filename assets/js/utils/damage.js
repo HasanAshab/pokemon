@@ -63,7 +63,6 @@ export class Damage {
         if (!this.target || this.move.damage) {
             return this.count
         }
-        console.log(this.count)
 
         this._setCriticalMultiplier()
         this._setRandomModifier()
@@ -84,9 +83,8 @@ export class Hit {
         this.attacker = attacker
         this.target = target
         this.move = move
-        this.move.hit = 0
         this.damages = Array.from({ length: this._randomHits() }, (_, i) => {
-            this.move.hit++
+            move.hit++
             return new Damage(attacker, move, target)
         })
     }

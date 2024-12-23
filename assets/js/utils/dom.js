@@ -26,3 +26,45 @@ export function loadNaturesDataList(id){
     .join("")
   dataList.innerHTML =  html
 }
+
+
+export class PopupMsgQueue {
+    constructor(elemIdSuffix) {
+        this.elemIdSuffix = "popup-msg-cont"
+        this.queue = [];
+        this.isRunning = false;
+    }
+
+    add(msg, playerTag, cb = (() => null)) {
+        this.queue.push({ msg, playerTag, cb });
+        this.runQueue();
+    }
+
+    async runQueue() {
+        if (this.isRunning || this.queue.length === 0) return;
+
+        this.isRunning = true;
+
+        while (this.queue.length > 0) {
+            const { msg, playerTag, cb } = this.queue.shift();
+            await this.showPopupMsg(msg, playerTag, cb);
+        }
+
+        this.isRunning = false;
+    }
+
+    showPopupMsg(msg, playerTag, cb) {
+        return new Promise(resolve => {
+            const popupMsgCont = document.getElementById(playerTag + "-" + this.elemIdSuffix);
+            popupMsgCont.classList.add("active");
+            popupMsgCont.querySelector(".msg").textContent = msg;
+
+            setTimeout(() => {
+                popupMsgCont.classList.remove("active");
+                popupMsgCont.classList.remove("enemy-side");
+                cb();
+                resolve();
+            }, 1500); // Adjust duration if needed
+        });
+    }
+}

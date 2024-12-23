@@ -1,6 +1,7 @@
 export class EventEmitter {
     constructor() {
         this._events = {};
+        this._debouncedEmitters = {};
     }
 
     on(event, listener) {
@@ -16,27 +17,35 @@ export class EventEmitter {
         }
     }
 
+    debounceEmit(event, delay, ...args) {
+        if (this._debouncedEmitters[event]) {
+            clearTimeout(this._debouncedEmitters[event]);
+        }
+
+        this._debouncedEmitters[event] = setTimeout(() => {
+            this.emit(event, ...args);
+            delete this._debouncedEmitters[event];
+        }, delay);
+    }
+
     removeListener(event, listener) {
         if (this._events[event]) {
-            this._events[event].splice(this._events[event].indexOf(listener), 1);
+            this._events[event] = this._events[event].filter(fn => fn !== listener);
         }
     }
 }
 
-
 export class Observable extends EventEmitter {
     constructor() {
         super();
-        // Wrap the instance in a Proxy
         return this._createProxy(this);
     }
 
     _createProxy(obj) {
-        const self = this; // Preserve context for event emission
+        const self = this;
         return new Proxy(obj, {
             get(target, key) {
                 const value = target[key];
-                // Recursively wrap nested objects
                 if (typeof value === "object" && value !== null && !(value instanceof EventEmitter)) {
                     return self._createProxy(value);
                 }
@@ -46,8 +55,8 @@ export class Observable extends EventEmitter {
                 const oldValue = target[key];
                 if (oldValue !== value) {
                     target[key] = value;
-                    // Emit a "change" event with details
-                    self.emit("change", self);
+                    // Use the debounced emit instead of immediate emit
+                    self.debounceEmit("change", 200, self);
                 }
                 return true;
             },

@@ -2,9 +2,11 @@ import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
 import { calculateWinXP } from "./utils/battle.js"
-import { getParam, getPokemonsMeta, setPokemonMeta, delayedFunc } from "./utils/helpers.js"
+import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel } from "./utils/helpers.js"
+import { PopupMsgQueue } from "./utils/dom.js"
 
 
+globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.isVeryClose = false
 globalThis.toggleMoveInfo = function(info){
 info.classList.toggle("active")
@@ -31,28 +33,41 @@ globalThis.switchPokemonClickHandler = function({currentTarget}){
   }
 }
 
+const oponentTag = tag => (tag === "you" ? "enemy" : "you")
 
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
 
     pokemon.state.on("change", delayedFunc((state) => {
         const hp = state.stats.get("hp")
+        const oldHp = state.stats.prev.get("hp")
+
         setCurrentRetreat(state.retreat, playerTag)
         setStateChanges(state.stats._statChanges, playerTag)
         setEffects(state.effects.names(), playerTag)
         setCurrentHealth(hp, playerTag)
         loadMoves(playerTag)
 
-        if (hp === 0) {
-            const winnerTag = playerTag === "you"
-                ? "enemy"
-                : "you"
-            handleWin(winnerTag, playerTag)
+        if(hp !== oldHp) {
+            const hpDist = fixFloat(hp - oldHp) 
+            const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
+            popupQueue.add(msg, playerTag)
         }
+        
+        if (hp === 0) {
+            const winnerTag = oponentTag(playerTag)
+            //handleWin(winnerTag, playerTag)
+        }
+        
     }, 1000))
     
     pokemon.state.on("dodged", delayedFunc(() => {
-        showPopupMsg("dodged!", playerTag)
+        popupQueue.add("dodged!", playerTag)
+    }, 1000))
+    
+    pokemon.state.on("turn-end", delayedFunc((_, hit) => {
+        const msg = `${hit.hitCount()} Hits, ${hit.criticalCount()} Criticals!`
+        hit.hitCount() > 1 && popupQueue.add(msg, oponentTag(playerTag))
     }, 1000))
 }
 
@@ -155,18 +170,14 @@ nothingBtn.onclick = ()=>{
 }
 
 function showPopupMsg(msg,playerTag, cb = (() => null)){
-    const popupMsgCont = document.getElementById("popup-msg-cont")
+    const popupMsgCont = document.getElementById(playerTag + "-popup-msg-cont")
     popupMsgCont.classList.add("active")
     popupMsgCont.querySelector(".msg").textContent = msg
-    if (playerTag === "enemy"){
-     popupMsgCont.classList.add("enemy-side")
-    }
     setTimeout(()=>{
     popupMsgCont.classList.remove("active")
       popupMsgCont.classList.remove("enemy-side")
       cb()
    }, 2000)
-    
 }
 
 

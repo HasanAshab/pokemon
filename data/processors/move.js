@@ -1,10 +1,5 @@
 import { processor } from "./helpers.js"
-
-
-const MOVE_CTX = {
-    debug: () => null
-}
-
+import { MOVE_CTX } from "../../assets/js/utils/ctx.js"
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
