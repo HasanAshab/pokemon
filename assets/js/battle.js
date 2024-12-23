@@ -66,7 +66,7 @@ function setBattleStateListeners(playerTag) {
     }, 1000))
     
     pokemon.state.on("turn-end", delayedFunc((_, hit) => {
-        const msg = `${hit.hitCount()} Hits, ${hit.criticalCount()} Criticals!`
+        const msg = `${hit.hitCount()} Hits ${hit.criticalCount() ? `, (${hit.criticalCount()} Crit)` : ''} !`
         hit.hitCount() > 1 && popupQueue.add(msg, oponentTag(playerTag))
     }, 1000))
 }

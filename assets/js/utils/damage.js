@@ -20,7 +20,7 @@ export class Damage {
     }
 
     _setCriticalMultiplier() {
-        const critChance = Damage.BASE_CRIT_CHANCE * (1 + this.move.critRatio);
+        const critChance = Damage.BASE_CRIT_CHANCE * (1 + (this.move.critRatio ?? 1));
         const isCritical = Math.random() < critChance
         return this.criticalMultiplier = isCritical ? Damage.CRIT_MULTIPLIER : 1
     }

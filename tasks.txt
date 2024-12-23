@@ -3,7 +3,7 @@ recoil, heal, protect, ditect
 furycutter
 commentary
 switch pokemon
-
+increase crit ratio
 
 xp using cp and xp reduce on loose
 abilities effects (eg guts)
