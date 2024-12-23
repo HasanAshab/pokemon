@@ -76,9 +76,6 @@ function setBattleStateListeners(playerTag) {
 }
 
 
-
-
-
 async function handleWin(winnerTag, looserTag) {
     const winner = pokemonMap[winnerTag]
     const looser = pokemonMap[looserTag]

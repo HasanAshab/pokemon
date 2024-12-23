@@ -157,9 +157,9 @@ export class BattleField extends EventEmitter {
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {
             const thornsDamage = hit2.damage() * 0.10
-            const damage = (hit1.damage() * moveEffect1) - ((hit2.damage() - thornsDamage) * moveEffect2)
-
+            const damage = ((hit2.damage() - thornsDamage) * moveEffect2) - (hit1.damage() * moveEffect1)
             instantDamages.set(this.pokemon1, thornsDamage * pokeEffect1)
+
             if (damage > 0) {
                 const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
                 if (wantDodge) {
@@ -174,14 +174,14 @@ export class BattleField extends EventEmitter {
                     dodged2 = this._canDodge(this.pokemon1, this.pokemon2, move1)
                     this.pokemon2.state.emit("used-move", new Move("dodge"))
                 }
-                damages.set(this.pokemon2, -damage * pokeEffect1);
+                damages.set(this.pokemon2, -damage * pokeEffect2);
             }
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move2.flags.contact && !move1.flags.contact) {
             const thornsDamage = hit1.damage() * 0.10
             const damage = (hit2.damage() * moveEffect2) - ((hit1.damage() - thornsDamage) * moveEffect1)
-
             instantDamages.set(this.pokemon2, thornsDamage * pokeEffect2)
+            
             if (damage > 0) {
                 const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
                 if (wantDodge) {
@@ -211,7 +211,7 @@ export class BattleField extends EventEmitter {
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             if (damage > 0 ) {
-                const wantDodge = !usedDodge1 && await this.prompt(this.pokemon1).ask("dodge")
+                const wantDodge = !usedDodge1 && move1.id !== "staythere" && await this.prompt(this.pokemon1).ask("dodge")
                 if (wantDodge) {
                     dodged1 = this._canDodge(this.pokemon2, this.pokemon1, move2)
                     this.pokemon1.state.emit("used-move", new Move("dodge"))
@@ -219,7 +219,7 @@ export class BattleField extends EventEmitter {
                 damages.set(this.pokemon1, damage * pokeEffect2)
             }
             else {
-                const wantDodge = !usedDodge2 && await this.prompt(this.pokemon2).ask("dodge")
+                const wantDodge = !usedDodge2 && move2.id !== "staythere" && await this.prompt(this.pokemon2).ask("dodge")
                 if (wantDodge) {
                     dodged2 = this._canDodge(this.pokemon1, this.pokemon2, move1)
                     this.pokemon2.state.emit("used-move", new Move("dodge"))
