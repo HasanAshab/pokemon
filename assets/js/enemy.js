@@ -10,55 +10,64 @@ window.onload = () => {
     loadMovesDatalist("moves-data-list")
 }
 
-const enemy = document.querySelector(".enemy");
-const levelInp = document.querySelector(".level-inp");
-const retreatInp = document.querySelector(".retreat-inp");
-const natureInp = document.querySelector(".nature-inp");
-const tokenInp = document.querySelector(".token-inp");
-const enemyStats = document.querySelector(".enemy-stats");
-
 function makePokemon() {
+  const pokemonForms = document.querySelectorAll(".pokemon-form")
+  const enemyPokemonList = []
+  pokemonForms.forEach((form,index)=>{
+    const enemy = form.querySelector(".enemy");
+    if (enemy.value) {
+    const levelInp = form.querySelector(".level-inp");
+    const retreatInp = form.querySelector(".retreat-inp");
+    const natureInp = form.querySelector(".nature-inp");
+    const tokenInp = form.querySelector(".token-inp");
+     const enemyStats = form.querySelector(".enemy-stats");
+
     const level = parseInt(levelInp.value);
     const retreat = parseInt(retreatInp.value);
     const nature = natureInp.value;
     const tokens = tokenInp.value ? JSON.parse(tokenInp.value) : {};
     const moves = [
-        document.querySelector(".move-input-1").value,
-        document.querySelector(".move-input-2").value,
-        document.querySelector(".move-input-3").value,
-        document.querySelector(".move-input-4").value,
-        document.querySelector(".move-input-5").value,
+        form.querySelector(".move-input-1").value,
+        form.querySelector(".move-input-2").value,
+        form.querySelector(".move-input-3").value,
+        form.querySelector(".move-input-4").value,
+        form.querySelector(".move-input-5").value,
     ].filter(Boolean).map(id => ({
         id,
         isSelected: true
     }))
     
-    return new Pokemon(enemy.value, {
+    const enemyPokemon = new Pokemon(enemy.value, {
         xp: level * 100,
         nature,
         retreat,
         moves,
         token_used: tokens
     });
+    enemyPokemonList.push(enemyPokemon)
+    }
+  })
+ return enemyPokemonList
 }
-globalThis.showStats = async function() {
-    const enemyPokemon = makePokemon()
+globalThis.showStats = async function(formId) {
+    const enemyStats = document.querySelectorAll(".pokemon-form")[formId].querySelector(".enemy-stats")
+    const enemyPokemon = makePokemon()[formId]
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
 globalThis.showMoveDetails = function({currentTarget}){
+  const form = currentTarget.parentElement
   const move = new Move(currentTarget.value)
   if (move){
-    const moveDetails = document.getElementById("move-details")
+    const moveDetails = form.querySelector(".move-details")
     moveDetails.querySelector(".move-name").textContent = move.name
     moveDetails.querySelector(".desc").textContent = move.description()
-  
  }
 }
 
 globalThis.startBattle = function() {
-    const enemyBase64 = makePokemon().toBase64();
-    window.location = `battle.html?you=${getParam("name")}&enemy=${enemyBase64}`;
+  const enemiesBase64List = makePokemon().map((poke)=> poke.toBase64())
+  window.location = `battle.html?you=${getParam("name")}&enemy=${enemiesBase64List.join(",")}`;
 }
 
 globalThis.randomBattle = function() {
