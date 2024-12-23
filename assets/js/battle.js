@@ -53,7 +53,7 @@ function setBattleStateListeners(playerTag) {
             const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
             popupQueue.add(msg, playerTag)
         }
-        
+
         if (hp === 0) {
             const winnerTag = oponentTag(playerTag)
             //handleWin(winnerTag, playerTag)
@@ -69,7 +69,15 @@ function setBattleStateListeners(playerTag) {
         const msg = `${hit.hitCount()} Hits ${hit.criticalCount() ? `, (${hit.criticalCount()} Crit)` : ''} !`
         hit.hitCount() > 1 && popupQueue.add(msg, oponentTag(playerTag))
     }, 1000))
+
+    battleField.prompt(pokemon).reply("dodge", () => {
+        return showDodgeBattlePrompt("Want to Dodge?", playerTag)
+    })
 }
+
+
+
+
 
 async function handleWin(winnerTag, looserTag) {
     const winner = pokemonMap[winnerTag]
@@ -137,8 +145,8 @@ function loadGlobal() {
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
 }
 
+//todo
 function showBattlePromptPopup(msg, playerTag) {
-  
   const battlePromptPopup = document.querySelector(".battle-prompt-popup")
   const counterBtn = battlePromptPopup.querySelector(".btns-cont > .counter-btn")
   const dodgeBtn = battlePromptPopup.querySelector(".btns-cont > .dodge-btn")
@@ -165,6 +173,31 @@ nothingBtn.onclick = ()=>{
    hideShowToggle()
  }
  
+})
+  
+}
+
+function showDodgeBattlePrompt(msg, playerTag) {
+  const battlePromptPopup = document.querySelector(".battle-prompt-popup")
+  const dodgeBtn = battlePromptPopup.querySelector(".btns-cont > .dodge-btn")
+  const nothingBtn = battlePromptPopup.querySelector(".btns-cont > .nothing-btn")
+  function hideShowToggle(){
+    battlePromptPopup.classList.toggle("active")
+  if (playerTag === "enemy") {
+    battlePromptPopup.classList.toggle("enemy")
+  }
+  }
+  hideShowToggle()
+  battlePromptPopup.querySelector(".msg").textContent = msg
+return new Promise((res, rej) => {
+ dodgeBtn.onclick = ()=>{
+   res(true)
+   hideShowToggle()
+ }
+nothingBtn.onclick = ()=>{
+    res(false)
+   hideShowToggle()
+ }
 })
   
 }

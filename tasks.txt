@@ -11,11 +11,14 @@ effect remove
 
 * Proposal
 increase damage for switch lock moves
+Try DODGE when counter is used
 
 * Scenario
--- phy 1 -> phy 1 = x - y d 
--- phy 1 -> phy 0 = x(10%) dx 
+phy 1 -> phy 1 = x - y d 
+phy 1 -> phy 0 = x(10%) dx 
 -- phy 1 -> sp = x 100% dx
 -- phy 0 -> sp = x - y d
 
 * Bugs
+recoil 10% vanish (use instant damage)
+scratch vs rock throw the more lvl bubba are the more it got dam

@@ -31,6 +31,11 @@ export class BattleField extends EventEmitter {
             [pokemon2, pokemon2.state]
         ]);
 
+        this._prompts = new Map([
+            [pokemon1, new BattlePrompt()],
+            [pokemon2, new BattlePrompt()]
+        ]);
+
         this.on("turn", (...args) => {
             if(!this._waveAfterTurns) {
                 this._setWaveTurns()
@@ -65,7 +70,11 @@ export class BattleField extends EventEmitter {
         return this._states.get(pokemon);
     }
 
-    turn(senario) {
+    prompt(pokemon) {
+        return this._prompts.get(pokemon);
+    }
+
+    async turn(senario) {
         this.emit("turn", this, senario)
 
         const senarioMap = new Map(senario)
@@ -91,8 +100,11 @@ export class BattleField extends EventEmitter {
         const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
-        const dodged1 = move1.id === "dodge" && this._canDodge(this.pokemon2, this.pokemon1, move2)
-        const dodged2 = move2.id === "dodge" && this._canDodge(this.pokemon1, this.pokemon2, move1)
+
+        const usedDodge1 = move1.id === "dodge"
+        const usedDodge2 = move2.id === "dodge"
+        let dodged1 = usedDodge1 && this._canDodge(this.pokemon2, this.pokemon1, move2)
+        let dodged2 = usedDodge2 && this._canDodge(this.pokemon1, this.pokemon2, move1)
 
         const hit1 = new Hit(this.pokemon1, move1, this.pokemon2)
         const hit2 = new Hit(this.pokemon2, move2, this.pokemon1)
@@ -107,6 +119,11 @@ export class BattleField extends EventEmitter {
         const moveEffect2 = move2.effectiveness(move1)
 
         const damages = new Map([
+            [this.pokemon1, 0],
+            [this.pokemon2, 0]
+        ])
+        
+        const instantDamages = new Map([
             [this.pokemon1, 0],
             [this.pokemon2, 0]
         ])
@@ -139,22 +156,48 @@ export class BattleField extends EventEmitter {
             damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {
-            const recoil = hit2.damage() * 0.10
-            const damage = (hit1.damage() * moveEffect1) - ((hit2.damage() - recoil) * moveEffect2)
-            
-            damages.set(this.pokemon1, recoil * pokeEffect1)
-            damage > 0
-                ? damages.set(this.pokemon1, damages.get(this.pokemon1) + (damage * pokeEffect1))
-                : damages.set(this.pokemon2, -damage * pokeEffect1);
+            const thornsDamage = hit2.damage() * 0.10
+            const damage = (hit1.damage() * moveEffect1) - ((hit2.damage() - thornsDamage) * moveEffect2)
+
+            instantDamages.set(this.pokemon1, thornsDamage * pokeEffect1)
+            if (damage > 0) {
+                const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
+                if (wantDodge) {
+                    dodged1 = this._canDodge(this.pokemon2, this.pokemon1, move2)
+                    this.pokemon1.state.emit("used-move", new Move("dodge"))
+                }
+                damages.set(this.pokemon1, damage * pokeEffect1)
+            }
+            else {
+                const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
+                if (wantDodge) {
+                    dodged2 = this._canDodge(this.pokemon1, this.pokemon2, move1)
+                    this.pokemon2.state.emit("used-move", new Move("dodge"))
+                }
+                damages.set(this.pokemon2, -damage * pokeEffect1);
+            }
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move2.flags.contact && !move1.flags.contact) {
-            const recoil = hit1.damage() * 0.10
-            const damage = (hit2.damage() * moveEffect2) - ((hit1.damage() - recoil) * moveEffect1)
-            
-            damages.set(this.pokemon2, recoil * pokeEffect2)
-            damage > 0
-                ? damages.set(this.pokemon1, damage * pokeEffect1)
-                : damages.set(this.pokemon2, damages.get(this.pokemon2) + (-damage * pokeEffect2));
+            const thornsDamage = hit1.damage() * 0.10
+            const damage = (hit2.damage() * moveEffect2) - ((hit1.damage() - thornsDamage) * moveEffect1)
+
+            instantDamages.set(this.pokemon2, thornsDamage * pokeEffect2)
+            if (damage > 0) {
+                const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
+                if (wantDodge) {
+                    dodged1 = this._canDodge(this.pokemon2, this.pokemon1, move2)
+                    this.pokemon1.state.emit("used-move", new Move("dodge"))
+                }
+                damages.set(this.pokemon1, damage * pokeEffect1)
+            }
+            else {
+                const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
+                if (wantDodge) {
+                    dodged2 = this._canDodge(this.pokemon1, this.pokemon2, move1)
+                    this.pokemon2.state.emit("used-move", new Move("dodge"))
+                }
+                damages.set(this.pokemon2, -damage * pokeEffect2);
+            }
         }
         else if (
             !["None", "Status"].includes(move1.category)
@@ -167,13 +210,29 @@ export class BattleField extends EventEmitter {
         }
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
-            damage > 0
-                ? damages.set(this.pokemon1, damage * pokeEffect2)
-                : damages.set(this.pokemon2, -damage * pokeEffect1);
+            if (damage > 0 ) {
+                const wantDodge = !usedDodge1 && await this.prompt(this.pokemon1).ask("dodge")
+                if (wantDodge) {
+                    dodged1 = this._canDodge(this.pokemon2, this.pokemon1, move2)
+                    this.pokemon1.state.emit("used-move", new Move("dodge"))
+                }
+                damages.set(this.pokemon1, damage * pokeEffect2)
+            }
+            else {
+                const wantDodge = !usedDodge2 && await this.prompt(this.pokemon2).ask("dodge")
+                if (wantDodge) {
+                    dodged2 = this._canDodge(this.pokemon1, this.pokemon2, move1)
+                    this.pokemon2.state.emit("used-move", new Move("dodge"))
+                }
+                damages.set(this.pokemon2, -damage * pokeEffect1)
+            }
         }
         
         const d1 = damages.get(this.pokemon1)
         const d2 = damages.get(this.pokemon2)
+
+        this.pokemon1.state.decreaseHealth(instantDamages.get(this.pokemon1))
+        this.pokemon2.state.decreaseHealth(instantDamages.get(this.pokemon2))
         
         if(move2.priority > move1.priority) {
             if (d1 && !dodged1) {
@@ -437,6 +496,21 @@ class PrevStatsManager {
     }
 }
 
+
+class BattlePrompt {
+    _repliers = {};
+
+    async ask(tag) {
+        const replier = this._repliers[tag]
+        if (!replier) throw new Error(`No replier for tag ${tag}`)
+        return await replier()
+    }
+
+    reply(tag, cb) {
+        this._repliers[tag] = cb
+        return this
+    }
+}
 
 export async function calculateWinXP(poke1, poke2) {
     const levelMultiplier = (poke2.level / poke1.level) * 5;
