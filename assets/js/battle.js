@@ -49,6 +49,9 @@ function setBattleStateListeners(playerTag) {
         loadMoves(playerTag)
 
         if(hp !== oldHp) {
+            pokemon.meta.stats.hp = hp
+            setPokemonMeta(pokemon.name, pokemon.meta)
+
             const hpDist = fixFloat(hp - oldHp) 
             const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
             popupQueue.add(msg, playerTag)
@@ -70,6 +73,11 @@ function setBattleStateListeners(playerTag) {
         hit.hitCount() > 1 && popupQueue.add(msg, oponentTag(playerTag))
     }, 1000))
 
+    pokemon.state.on("fainted", () => {
+        loadChoosePokemon(playerTag)
+    })
+
+
     battleField.prompt(pokemon).reply("dodge", () => {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
     })
@@ -87,31 +95,15 @@ async function handleWin(winnerTag, looserTag) {
     setPokemonMeta(pokemon.name, meta)
      
     
-    showPopupMsg("Winner! +" + xp, winnerTag, () => {
-        //window.location = `poke_details.html?name=${pokemon.name}`
+    popupQueue.add("Winner! +" + xp, winnerTag, () => {
+        window.location = `poke_details.html?name=${pokemon.name}`
     })
 }
 
-
-
 function loadChoosePokemon(playerTag){
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
-  const pokemons = [
-       {
-        name:"frokie",
-        isFainted:false
-      },
-      {
-        name:"Charmander",
-        isFainted:false
-      },
-         {
-        name:"Aron",
-        isFainted:true
-      }
-    ]
    pokemonSwitchControler.innerHTML = ""
-   for (const pokemon of pokemons){
+   for (const pokemon of teams[playerTag]) {
     pokemonSwitchControler.innerHTML += `
           <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event)">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
@@ -125,16 +117,34 @@ function loadChoosePokemon(playerTag){
 
             <span class="name">${pokemon.name}</span>
           </div>
-
     `
    }
+}
 
- }
+function makeMyPokemons() {
+    const pokemonsMeta = getPokemonsMeta()
+    return Object.keys(pokemonsMeta).map(id => new Pokemon(id, pokemonsMeta[id]))
+}
 
-function loadGlobal() {
-    const pokemonName = getParam("you")
-    globalThis.pokemon = new Pokemon(pokemonName, getPokemonsMeta(pokemonName))
-    globalThis.enemyPokemon = Pokemon.fromBase64(getParam("enemy"))
+function makeEnemyPokemons() {
+    return getParam("enemy").split(",").map(base64 => Pokemon.fromBase64(base64))
+}
+
+function loadTeams() {
+    globalThis.teams = {
+        "you": makeMyPokemons(),
+        "enemy": makeEnemyPokemons()
+    }
+}
+
+function findClosestAwokePokemon(pokemons) {
+    return pokemons.find(pokemon => !pokemon.isFainted)
+}
+
+function setupCurrentBattle() {
+    globalThis.pokemon = findClosestAwokePokemon(teams.you)
+    globalThis.enemyPokemon = findClosestAwokePokemon(teams.enemy)
+
     globalThis.pokemonMap = {
         "you": pokemon,
         "enemy": enemyPokemon
@@ -197,17 +207,6 @@ nothingBtn.onclick = ()=>{
  }
 })
   
-}
-
-function showPopupMsg(msg,playerTag, cb = (() => null)){
-    const popupMsgCont = document.getElementById(playerTag + "-popup-msg-cont")
-    popupMsgCont.classList.add("active")
-    popupMsgCont.querySelector(".msg").textContent = msg
-    setTimeout(()=>{
-    popupMsgCont.classList.remove("active")
-      popupMsgCont.classList.remove("enemy-side")
-      cb()
-   }, 2000)
 }
 
 
@@ -303,25 +302,6 @@ function setCurrentHealth(hp, playerTag) {
   healthProgressBar.querySelector(".current-hp").textContent = hp
   const progress = (hp / totalHp) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
-}
-
-
-function showMoveDamageInjectForm(moveName, damage, playerTag) {
-  const moveDamageInjectForm = document.querySelector(`.${playerTag}-controle-cont .move-damage-inject-form`)
-  moveDamageInjectForm.classList.add("active")
-  const moveNameHeading = moveDamageInjectForm.querySelector(".move-name")
-  const damageInp = moveDamageInjectForm.querySelector(".damage-input")
-  const injectBtn = moveDamageInjectForm.querySelector(".inject-btn")
-  const noBtn = moveDamageInjectForm.querySelector(".no-btn")
-  moveNameHeading.textContent = moveName || "name"
-  damageInp.value = damage || 0
-  injectBtn.onclick = ()=> {
-    moveDamageInjectForm.classList.remove("active")
-    injectDamage(damageInp.value || 0, playerTag === "you" ? "enemy": "you")
-  }
-  noBtn.onclick = ()=> moveDamageInjectForm.classList.remove("active")
-
-
 }
 
 
@@ -490,7 +470,7 @@ function battle(moveIds) {
     const move1 = new Move(moveId)
     const move2 = new Move(enemyMoveId)
     
-    battleField.turn([
+    return battleField.turn([
         [pokemon, move1],
         [enemyPokemon, move2],
     ])
@@ -510,7 +490,8 @@ function loadHealth(playerTag) {
 
 
 function loadAll() {
-    loadGlobal()
+    loadTeams()
+    setupCurrentBattle()
 
     loadMoves("you")
     loadMoves("enemy")

@@ -437,6 +437,9 @@ class StatsManager {
 
     set(name, value) {
         this.prev.remember(name)
+        if (name === "hp" && value === 0) {
+            this.state.emit("fainted")
+        }
         return this._stats[name] = value;
     }
 

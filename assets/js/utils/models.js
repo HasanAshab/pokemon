@@ -5,7 +5,7 @@ import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
 
 
-class PSCompatable {
+class PSPokemon {
     get maxhp() {
         return this.stats.hp
     }
@@ -19,7 +19,7 @@ class PSCompatable {
     }
 }
 
-export class Pokemon extends PSCompatable {
+export class Pokemon extends PSPokemon {
     static XP_PER_LEVEL = 100;
     static TOKEN_PER_LEVEL = 2
     static TOKEN_MODIFIER = 1.01
@@ -50,6 +50,10 @@ export class Pokemon extends PSCompatable {
         this.stats = this._calculateTotalStat();
     }
 
+    get name() {
+        return this._pokemon.name
+    }
+
     get types() {
         return this._pokemon.types
     }
@@ -57,6 +61,13 @@ export class Pokemon extends PSCompatable {
     get level() {
         const xp = this.meta.xp;
         return Pokemon.calculateLevel(xp); // Level starts at 1
+    }
+
+    get isFainted() {        
+        const hp = "state" in this
+            ? this.state.stats.get("hp")
+            : this.meta.stats.hp;
+        return hp === 0
     }
 
     isTypeOf(type) {

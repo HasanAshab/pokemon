@@ -1,12 +1,12 @@
 cb bp retreat process
 increase spe slowly for token
 auto too close make contact dam
-try dodge
 recoil, heal, protect, ditect
 furycutter
 commentary
 switch pokemon
 increase crit ratio (lazor foc, foc energy)
+
 
 
 xp using cp and xp reduce on loose
@@ -20,7 +20,7 @@ Try DODGE when counter is used
 * Scenario
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 
--- phy 1 -> sp = x 100% dx
+phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 * Bugs

@@ -42,6 +42,7 @@ function makePokemon() {
         nature,
         retreat,
         moves,
+        stats: {},
         token_used: tokens
     });
     enemyPokemonList.push(enemyPokemon)
