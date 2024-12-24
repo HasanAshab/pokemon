@@ -1,3 +1,5 @@
+cb bp retreat process
+increase spe slowly for token
 auto too close make contact dam
 try dodge
 recoil, heal, protect, ditect
@@ -19,6 +21,7 @@ Try DODGE when counter is used
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 
 -- phy 1 -> sp = x 100% dx
--- phy 0 -> sp = x - y d
+phy 0 -> sp = x - y d
 
 * Bugs
+damage increased razorleaf vs ember

@@ -204,9 +204,26 @@ export class BattleField extends EventEmitter {
             && !["None", "Status"].includes(move2.category)
             && move1.flags.contact !== move2.flags.contact
         ) {
-            move2.flags.contact === 1
-                ? damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
-                : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+            if (move2.flags.contact) {
+                const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
+                if (wantDodge) {
+                    dodged2 = this._canDodge(this.pokemon1, this.pokemon2, move1)
+                    this.pokemon2.state.emit("used-move", new Move("dodge"))
+                }
+                dodged2 
+                    ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+                    : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+            }
+            else {
+                const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
+                if (wantDodge) {
+                    dodged1 = this._canDodge(this.pokemon2, this.pokemon1, move2)
+                    this.pokemon1.state.emit("used-move", new Move("dodge"))
+                }
+                dodged1
+                    ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+                    : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+            }
         }
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)

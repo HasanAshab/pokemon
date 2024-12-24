@@ -68,7 +68,7 @@ export function getDamageDangerLevel(pokemon, damage) {
         return "High";
     } else if (damagePercentage <= 75) {
         return "Very High";
-    } else {
+    } else if (damagePercentage > 95){
         return "Overkill";
     }
 }
