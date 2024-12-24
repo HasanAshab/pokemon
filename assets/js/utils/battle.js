@@ -16,6 +16,10 @@ export class BattleField extends EventEmitter {
 
     turnNo = 0
     waveNo = 0
+    
+    context = new BattleContext({
+        veryClose: false
+    })
 
     constructor(pokemon1, pokemon2) {
         super()
@@ -75,12 +79,17 @@ export class BattleField extends EventEmitter {
     }
 
     async turn(senario) {
+        if(this.context.get("veryClose")) {
+            senario.forEach((move, p) => {
+                console.log(move)
+                !move.flags.contact && senario.set(p, new Move("staythere"))
+            })
+        }
+
         this.emit("turn", this, senario)
 
-        const senarioMap = new Map(senario)
-
-        const move1 = senarioMap.get(this.pokemon1)
-        const move2 = senarioMap.get(this.pokemon2)
+        const move1 = senario.get(this.pokemon1)
+        const move2 = senario.get(this.pokemon2)
         
         this.pokemon1.state.effects.apply(move2, { on: "self" })
         this.pokemon2.state.effects.apply(move1, { on: "self" })
@@ -245,11 +254,13 @@ export class BattleField extends EventEmitter {
             }
         }
         
+        const instD1 = instantDamages.get(this.pokemon1)
+        const instD2 = instantDamages.get(this.pokemon2)
         const d1 = damages.get(this.pokemon1)
         const d2 = damages.get(this.pokemon2)
 
-        this.pokemon1.state.decreaseHealth(instantDamages.get(this.pokemon1))
-        this.pokemon2.state.decreaseHealth(instantDamages.get(this.pokemon2))
+        this.pokemon1.state.decreaseHealth(instD1)
+        this.pokemon2.state.decreaseHealth(instD2)
         
         if(move2.priority > move1.priority) {
             if (d1 && !dodged1) {
@@ -296,6 +307,9 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.emit("used-move", move2) 
         }
         
+        const veryClose = (move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))
+        this.context.set("veryClose", veryClose)
+        
         this.emit("turn-end", this, hit1, hit2)
         this.pokemon1.state.emit("turn-end", this, hit1)
         this.pokemon1.state.emit("turn-end", this, hit2)
@@ -341,6 +355,20 @@ export class BattleField extends EventEmitter {
     }
 }
 
+class BattleContext extends Observable {
+    constructor(context) {
+        super()
+        this._context = context
+    }
+
+    get(key) {
+        return this._context[key]
+    }
+
+    set(key, value) {
+        this._context[key] = value
+    }
+}
 
 class BattleState extends Observable {
     moves = [
@@ -437,9 +465,6 @@ class StatsManager {
 
     set(name, value) {
         this.prev.remember(name)
-        if (name === "hp" && value === 0) {
-            this.state.emit("fainted")
-        }
         return this._stats[name] = value;
     }
 

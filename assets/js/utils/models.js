@@ -66,7 +66,7 @@ export class Pokemon extends PSPokemon {
     get isFainted() {        
         const hp = "state" in this
             ? this.state.stats.get("hp")
-            : this.meta.stats.hp;
+            : this.meta.stats?.hp;
         return hp === 0
     }
 

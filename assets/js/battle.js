@@ -7,13 +7,20 @@ import { PopupMsgQueue } from "./utils/dom.js"
 
 
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
-globalThis.isVeryClose = false
 globalThis.toggleMoveInfo = function(info){
 info.classList.toggle("active")
 }
+
+function loadVeryCloseBtn() {
+    const btn = document.getElementById("very-close-btn")
+    battleField.context.get("veryClose")
+        ? btn.classList.add("active")
+        : btn.classList.remove("active")
+}
+
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
-  globalThis.isVeryClose = !isVeryClose
+  battleField.context.set("veryClose", !battleField.context.get("veryClose"))
 }
 
 globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
@@ -150,6 +157,10 @@ function setupCurrentBattle() {
         "enemy": enemyPokemon
     }
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
+    
+    battleField.context.on("change", ctx => {
+        loadVeryCloseBtn()
+    })
 }
 
 //todo
@@ -469,11 +480,11 @@ function battle(moveIds) {
     const {you: moveId, enemy: enemyMoveId} = moveIds
     const move1 = new Move(moveId)
     const move2 = new Move(enemyMoveId)
-    
-    return battleField.turn([
+    const senario = new Map([
         [pokemon, move1],
         [enemyPokemon, move2],
     ])
+    return battleField.turn(senario)
 }
 
 

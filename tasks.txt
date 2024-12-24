@@ -1,12 +1,11 @@
 cb bp retreat process
 increase spe slowly for token
-auto too close make contact dam
-recoil, heal, protect, ditect
+recoil, heal, protect, ditect, disable
 furycutter
 commentary
 switch pokemon
 increase crit ratio (lazor foc, foc energy)
-
+Observable on smaller parts
 
 
 xp using cp and xp reduce on loose

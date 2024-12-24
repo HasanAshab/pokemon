@@ -56,7 +56,7 @@ export class Observable extends EventEmitter {
                 if (oldValue !== value) {
                     target[key] = value;
                     // Use the debounced emit instead of immediate emit
-                    self.debounceEmit("change", 200, self);
+                    self.emit("change", self);
                 }
                 return true;
             },
