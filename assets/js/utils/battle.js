@@ -27,8 +27,12 @@ export class BattleField extends EventEmitter {
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
 
-        this.pokemon1.state = new BattleState(this, pokemon1)
-        this.pokemon2.state = new BattleState(this, pokemon2)
+        if(!this.pokemon1.state) {
+            this.pokemon1.state = new BattleState(this, pokemon1)
+        }
+        if(!this.pokemon2.state) {
+            this.pokemon2.state = new BattleState(this, pokemon2)
+        }
 
         this._states = new Map([
             [pokemon1, pokemon1.state],

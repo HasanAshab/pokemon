@@ -32,15 +32,16 @@ globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
     setCurrentHealth(Math.min(newHp, totalHp))
   }
 }
-globalThis.switchPokemonClickHandler = function({currentTarget}){
+globalThis.switchPokemonClickHandler = function({currentTarget}, playerTag){
   if (!currentTarget.classList.contains("disabled")) {
    const parent = currentTarget.parentElement
     parent.querySelector(".pokemon.active")?.classList.remove("active")
     currentTarget.classList.add("active")
+    switchPokemon(playerTag, currentTarget.dataset.pokemonId)
   }
 }
 
-const oponentTag = tag => (tag === "you" ? "enemy" : "you")
+const opponentTag = tag => (tag === "you" ? "enemy" : "you")
 
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
@@ -67,7 +68,7 @@ function setBattleStateListeners(playerTag) {
         }
 
         if (hp === 0) {
-            const winnerTag = oponentTag(playerTag)
+            const winnerTag = opponentTag(playerTag)
             //handleWin(winnerTag, playerTag)
         }
         
@@ -79,7 +80,7 @@ function setBattleStateListeners(playerTag) {
     
     pokemon.state.on("turn-end", delayedFunc((_, hit) => {
         const msg = `${hit.hitCount()} Hits ${hit.criticalCount() ? `, (${hit.criticalCount()} Crit)` : ''} !`
-        hit.hitCount() > 1 && popupQueue.add(msg, oponentTag(playerTag))
+        hit.hitCount() > 1 && popupQueue.add(msg, opponentTag(playerTag))
     }, 1000))
 
     pokemon.state.on("fainted", () => {
@@ -114,7 +115,7 @@ function loadChoosePokemon(playerTag){
    pokemonSwitchControler.innerHTML = ""
    for (const pokemon of teams[playerTag]) {
     pokemonSwitchControler.innerHTML += `
-          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event)">
+          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-pokemon-id="${pokemon.id}">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -146,23 +147,38 @@ function loadTeams() {
     }
 }
 
-function findClosestAwokePokemon(pokemons) {
-    return pokemons.find(pokemon => !pokemon.isFainted)
+
+function switchPokemon(playerTag, pokemonId) {
+    if(playerTag === "you") {
+        globalThis.pokemon = teams.you.find(p => p.id === pokemonId)
+        globalThis.pokemonMap["you"] = pokemon
+    }
+    else {
+        globalThis.enemyPokemon = teams.enemy.find(p => p.id === pokemonId)
+        globalThis.pokemonMap["enemy"] = enemyPokemon
+    }
+    
+    if(globalThis.pokemon && globalThis.enemyPokemon) {
+        setupCurrentBattle()
+    }
 }
 
 function setupCurrentBattle() {
-    globalThis.pokemon = findClosestAwokePokemon(teams.you)
-    globalThis.enemyPokemon = findClosestAwokePokemon(teams.enemy)
-
-    globalThis.pokemonMap = {
-        "you": pokemon,
-        "enemy": enemyPokemon
-    }
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
-    
+
     battleField.context.on("change", ctx => {
         loadVeryCloseBtn()
     })
+    
+    loadDomFor("you")
+    loadDomFor("enemy")
+}
+
+function loadDomFor(playerTag) {
+    setBattleStateListeners(playerTag)
+    loadRetreat(playerTag)
+    loadHealth(playerTag)
+    loadMoves(playerTag)
 }
 
 //todo
@@ -320,11 +336,11 @@ function setCurrentHealth(hp, playerTag) {
 
 function loadMoves(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    const oponentPokemon = battleField.opponentOf(pokemon)
+    const opponentPokemon = pokemonMap[opponentTag(playerTag)]
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
     moveCardsContainer.innerHTML = ''
   for (const move of pokemon.state.moves) {
-      const effectiveness = oponentPokemon.effectiveness(move.type)
+      const effectiveness = opponentPokemon.effectiveness(move.type)
       const damage = new Damage(pokemon, move)
     const cardHtml = `
     <div class="single-card-wrapper">
@@ -502,25 +518,9 @@ function loadHealth(playerTag) {
 }
 
 
-function loadAll() {
+window.onload = () => {
+    globalThis.pokemonMap = {}
     loadTeams()
-    setupCurrentBattle()
-
-    loadMoves("you")
-    loadMoves("enemy")
-
-    loadRetreat("you")
-    loadRetreat("enemy")
-
-    loadHealth("you")
-    loadHealth("enemy")
-
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
-    
-    setBattleStateListeners("you")
-    setBattleStateListeners("enemy")
 }
-
-
-loadAll()
