@@ -1,5 +1,5 @@
-increase crit ratio (lazor foc, foc energy)
 protect, ditect, disable, furycutter
+increase crit ratio (lazor foc, foc energy)
 
 
 commentary

@@ -293,6 +293,20 @@ class LeechSeedEffect extends Effect {
     }
 }
 
+class StallEffect extends Effect {
+    static effectName = "stall"
+
+    static isPre() {
+        return true
+    }
+
+
+    lifetime = { turns: 1 }
+    
+    onTurn() {
+        
+    }
+}
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
@@ -303,6 +317,7 @@ export const EFFECTS = makeEffectsMap([
     ParalyzeEffect,
     ConfusionEffect,
     LeechSeedEffect,
+    StallEffect,
 ])
 
 
@@ -352,6 +367,7 @@ export class EffectManager {
     }
 
     apply(move, { on, pre = false }) {
+        console.log(move.effects)
         if (on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon)
             move.effects.self

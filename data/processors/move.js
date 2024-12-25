@@ -130,6 +130,10 @@ function setRetreat(move) {
       retreat = 0.25
   }
 
+  if (move.stallingMove) {
+      retreat += 0.25
+  }
+
   const selfStatEffectBonus = Object.keys(move.statChanges.target).reduce((acc, stat) => {
       return acc - move.statChanges.target[stat]
   }, 0)

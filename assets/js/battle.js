@@ -117,8 +117,6 @@ function loadChoosePokemon(playerTag){
    pokemonSwitchControler.innerHTML = ""
 
    for (const pokemon of teams[playerTag]) {
-    console.log(pokemon.isFainted)
-
     pokemonSwitchControler.innerHTML += `
           <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-pokemon-id="${pokemon.id}">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
