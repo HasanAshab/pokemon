@@ -30,7 +30,7 @@ export function loadNaturesDataList(id){
 
 export class PopupMsgQueue {
     constructor(elemIdSuffix) {
-        this.elemIdSuffix = "popup-msg-cont"
+        this.elemIdSuffix = "popup-msg-cont";
         this.queue = [];
         this.isRunning = false;
     }
@@ -56,11 +56,15 @@ export class PopupMsgQueue {
     showPopupMsg(msg, playerTag, cb) {
         return new Promise(resolve => {
             const popupMsgCont = document.getElementById(playerTag + "-" + this.elemIdSuffix);
-            popupMsgCont.classList.add("active");
+
+            // Add random tilt
+            const tiltClass = Math.random() > 0.5 ? "tilt-left" : "tilt-right";
+            popupMsgCont.classList.add("active", tiltClass);
+
             popupMsgCont.querySelector(".msg").innerHTML = msg;
 
             setTimeout(() => {
-                popupMsgCont.classList.remove("active");
+                popupMsgCont.classList.remove("active", tiltClass);
                 popupMsgCont.classList.remove("enemy-side");
                 cb();
                 resolve();

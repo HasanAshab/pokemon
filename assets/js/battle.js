@@ -24,13 +24,10 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
 }
 
 globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
-  const totalHp = pokemonMap[playerTag].stats["hp"] // give here total hp data
-  const currentHp = pokemonMap[playerTag].state.stats.get("hp") //give the hp data here
-  const newHp = prompt(playerTag, currentHp)
-  if (currentHp !== newHp){
-    pokemonMap[playerTag].state.stats.set("hp", newHp)
-    setCurrentHealth(Math.min(newHp, totalHp))
-  }
+  const pokemon = pokemonMap[playerTag]
+  let newHp = prompt(playerTag, pokemon.hp)
+  newHp = pokemon.state.stats.set("hp", newHp)
+  setCurrentHealth(newHp, playerTag)
 }
 
 
@@ -342,13 +339,11 @@ function setTotalHealth(hp, playerTag) {
 
 function setCurrentHealth(hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
-  const totalHp = Number(healthProgressBar.getAttribute("data-total-hp"))
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".current-hp").textContent = hp
-  const progress = (hp / totalHp) * 100
+  const progress = (hp / pokemonMap[playerTag].maxhp) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
 }
-
 
 function loadMoves(playerTag) {
     const pokemon = pokemonMap[playerTag]

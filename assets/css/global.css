@@ -53,3 +53,12 @@ body {
   align-items: center;
   z-index: 1000;
 }
+
+/* Tilt effects */
+.tilt-left {
+    transform: rotate(-10deg);
+}
+
+.tilt-right {
+    transform: rotate(10deg);
+}

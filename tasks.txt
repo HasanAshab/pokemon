@@ -2,10 +2,10 @@ increase crit ratio (lazor foc, foc energy)
 disable, furycutter
 
 
+damage modifiers
 semi-invuln
 commentary
 cb bp retreat process
-Observable on smaller parts retreat in stats
 protect, ditect advanced
 
 
@@ -23,4 +23,7 @@ phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 * Bugs
-effect event multiple
+
+
+* Performance
+make chunkable data
