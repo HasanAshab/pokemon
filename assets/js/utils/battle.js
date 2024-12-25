@@ -71,7 +71,7 @@ export class BattleField extends EventEmitter {
     }
 
     opponentOf(pokemon) {
-        return pokemon.id === this.pokemon1.id ? this.pokemon2 : this.pokemon1;
+        return pokemon._tag === this.pokemon1._tag  ? this.pokemon2 : this.pokemon1;
     }
 
     state(pokemon) {
@@ -85,7 +85,6 @@ export class BattleField extends EventEmitter {
     async turn(senario) {
         if(this.context.get("veryClose")) {
             senario.forEach((move, p) => {
-                console.log(move)
                 !move.flags.contact && senario.set(p, new Move("staythere"))
             })
         }
@@ -269,11 +268,13 @@ export class BattleField extends EventEmitter {
         if(move2.priority > move1.priority) {
             if (d1 && !dodged1) {
                 this.pokemon1.state.decreaseHealth(d1)
-                move2.drain && this.pokemon2.state.increaseHealth(d1 * move2.drainRate())
+                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1))
+                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1))
             }
             if (d2 && !dodged2) {
                 this.pokemon2.state.decreaseHealth(d2)
-                move1.drain && this.pokemon1.state.increaseHealth(d2 * move1.drainRate())
+                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
+                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2))
             }
         }
         else {
@@ -284,7 +285,8 @@ export class BattleField extends EventEmitter {
             }
             if (d1 && !dodged1) {
                 this.pokemon1.state.decreaseHealth(d1)
-                move2.drain && this.pokemon2.state.increaseHealth(d1 * move2.drainRate())
+                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1))
+                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1))
             }
         }
 
@@ -311,9 +313,9 @@ export class BattleField extends EventEmitter {
         if(canMove2 && (move2.category === "Status" || (move2.flags.contact && move1.flags.contact) || !move2.flags.contact)) {
             this.pokemon2.state.emit("used-move", move2) 
         }
-        
+
         const veryClose = (move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))
-        this.context.set("veryClose", veryClose)
+        veryClose && this.context.set("veryClose", veryClose)
         
         this.emit("turn-end", this, hit1, hit2)
         this.pokemon1.state.emit("turn-end", this, hit1)
@@ -470,7 +472,11 @@ class StatsManager {
 
     set(name, value) {
         this.prev.remember(name)
-        return this._stats[name] = value;
+        this._stats[name] = value;
+        if (name === "hp" && value === 0) {
+            this.state.emit("fainted")
+        }
+        return value
     }
 
     all() {
@@ -482,7 +488,7 @@ class StatsManager {
 
     apply(on, move) {
         const statChanged = Math.random() < (move.statChanges.chance / 100)
-        //if (!statChanged) return
+        if (!statChanged) return
 
         if(on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon);

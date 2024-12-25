@@ -366,7 +366,7 @@ export class EffectManager {
             move.effects.target
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
                 .forEach(effect => {
-                    if (true || Math.random() < (effect.chance / 100)) {
+                    if (Math.random() < (effect.chance / 100)) {
                         this.add(effect.name)
                     }
                 })
