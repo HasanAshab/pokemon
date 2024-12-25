@@ -11,11 +11,15 @@ class PSPokemon {
     }
     
     get hp() {
-        return this.state?.stats.get("hp") ?? null
+        return this.state.stats.get("hp") ?? null
     }
 
     getWeight() {
         return this._pokemon.weightkg * 10;
+    }
+
+    addVolatile(name) {
+        this.state.effects.add(name)
     }
 }
 

@@ -23,7 +23,7 @@ export class BattleField extends EventEmitter {
 
     constructor(pokemon1, pokemon2) {
         super()
-        
+
         this.pokemon1 = pokemon1;
         this.pokemon2 = pokemon2;
 
@@ -319,7 +319,7 @@ export class BattleField extends EventEmitter {
         
         this.emit("turn-end", this, hit1, hit2)
         this.pokemon1.state.emit("turn-end", this, hit1)
-        this.pokemon1.state.emit("turn-end", this, hit2)
+        this.pokemon2.state.emit("turn-end", this, hit2)
     }
 
     _canDodge(attacker, target, move) {
@@ -406,8 +406,10 @@ class BattleState extends Observable {
         })
         this.on("used-move", move => {
             const opponent = this.field.opponentOf(this.pokemon)
+            
+            //move.onHit?.(this.pokemon)
             move.onAfterMove(this.pokemon, opponent, move)
-
+            
             this.retreat -= move.retreat
             this.reducePP(move.id)
         })

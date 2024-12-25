@@ -297,6 +297,10 @@ function setEffects(effects, playerTag) {
       "name": "Drowsy",
       "color": "Psychic"
     },
+    "stall": {
+        "name": "Stall",
+        "color": "Normal"
+    }
 };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   effectsDataColumn.innerHTML = ""

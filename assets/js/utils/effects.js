@@ -293,18 +293,24 @@ class LeechSeedEffect extends Effect {
     }
 }
 
-class StallEffect extends Effect {
+class StallEffect extends ExpirableEffect {
     static effectName = "stall"
 
     static isPre() {
         return true
     }
 
-
     lifetime = { turns: 1 }
     
-    onTurn() {
-        
+    setup() {
+        super.setup()
+        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        this._hp = opponent.state.stats.get("hp")
+    }
+    
+    onTurnEnd() {
+        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        opponent.state.stats.set("hp", this._hp)
     }
 }
 
@@ -367,11 +373,9 @@ export class EffectManager {
     }
 
     apply(move, { on, pre = false }) {
-        console.log(move.effects)
         if (on === "self") {
             const attacker = this.state.field.opponentOf(this.state.pokemon)
             move.effects.self
-                .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
                 .forEach(effect => {
                     if (Math.random() < (effect.chance / 100)) {
                         attacker.state.effects.add(effect.name)
