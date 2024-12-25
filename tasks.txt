@@ -1,5 +1,5 @@
-disable, furycutter
 increase crit ratio (lazor foc, foc energy)
+disable, furycutter
 
 
 semi-invuln

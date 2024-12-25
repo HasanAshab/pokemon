@@ -32,6 +32,8 @@ globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
     setCurrentHealth(Math.min(newHp, totalHp))
   }
 }
+
+
 globalThis.switchPokemonClickHandler = function({currentTarget}, playerTag){
   if (!currentTarget.classList.contains("disabled")) {
    const parent = currentTarget.parentElement
@@ -43,36 +45,41 @@ globalThis.switchPokemonClickHandler = function({currentTarget}, playerTag){
 
 const opponentTag = tag => (tag === "you" ? "enemy" : "you")
 
+function loadPokemonData(playerTag) {
+    const pokemon = pokemonMap[playerTag]
+    const hp = pokemon.state.stats.get("hp")
+    const oldHp = pokemon.state.stats.prev.get("hp")
+
+    loadVeryCloseBtn()
+    setCurrentRetreat(pokemon.state.retreat, playerTag)
+    setStateChanges(pokemon.state.stats._statChanges, playerTag)
+    setEffects(pokemon.state.effects.names(), playerTag)
+    setCurrentHealth(hp, playerTag)
+    loadMoves(playerTag)
+
+    if(hp !== oldHp) {
+        if(playerTag === "you") {
+            pokemon.meta.stats.hp = hp
+            setPokemonMeta(pokemon.id, pokemon.meta)
+        }
+
+        const hpDist = fixFloat(hp - oldHp) 
+        const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
+        popupQueue.add(msg, playerTag)
+    }
+
+    if (hp === 0) {
+        const winnerTag = opponentTag(playerTag)
+        //handleWin(winnerTag, playerTag)
+    }
+}
+
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
-
-    pokemon.state.on("change", delayedFunc((state) => {
-        const hp = state.stats.get("hp")
-        const oldHp = state.stats.prev.get("hp")
-
-        setCurrentRetreat(state.retreat, playerTag)
-        setStateChanges(state.stats._statChanges, playerTag)
-        setEffects(state.effects.names(), playerTag)
-        setCurrentHealth(hp, playerTag)
-        loadMoves(playerTag)
-
-        if(hp !== oldHp) {
-            if(playerTag === "you") {
-                pokemon.meta.stats.hp = hp
-                setPokemonMeta(pokemon.id, pokemon.meta)
-            }
-
-            const hpDist = fixFloat(hp - oldHp) 
-            const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
-            popupQueue.add(msg, playerTag)
-        }
-
-        if (hp === 0) {
-            const winnerTag = opponentTag(playerTag)
-            //handleWin(winnerTag, playerTag)
-        }
-        
-    }, 1000))
+    pokemon.state.on(
+        ["turn", "wave"], 
+        delayedFunc(() => loadPokemonData(playerTag), 1000)
+    )
     
     pokemon.state.on("dodged", delayedFunc(() => {
         popupQueue.add("dodged!", playerTag)
@@ -171,22 +178,18 @@ function setupCurrentBattle(switcher) {
 
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
 
-    battleField.context.on("change", ctx => {
-        loadVeryCloseBtn()
-    })
-    
     if (firstTurn) {
-        loadDomFor("you")
-        loadDomFor("enemy")
+        setupPokemonForDom("you")
+        setupPokemonForDom("enemy")
     }
-    else loadDomFor(switcher)
+    else setupPokemonForDom(switcher)
 }
 
-function loadDomFor(playerTag) {
+function setupPokemonForDom(playerTag) {
     setBattleStateListeners(playerTag)
-    loadRetreat(playerTag)
     loadHealth(playerTag)
-    loadMoves(playerTag)
+    loadRetreat(playerTag)
+    loadPokemonData(playerTag)
 }
 
 //todo
@@ -327,6 +330,7 @@ function setCurrentRetreat(retreat, playerTag) {
   currentRetreat.innerText = retreat
 }
 
+
 function setTotalHealth(hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
   healthProgressBar.setAttribute("data-total-hp", hp)
@@ -334,8 +338,8 @@ function setTotalHealth(hp, playerTag) {
   healthProgressBar.querySelector(".inner").style.width = '100%'
   healthProgressBar.querySelector(".current-hp").textContent = hp
   healthProgressBar.querySelector(".total-hp").textContent = hp
-
 }
+
 function setCurrentHealth(hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
   const totalHp = Number(healthProgressBar.getAttribute("data-total-hp"))
@@ -521,7 +525,6 @@ function battle(moveIds) {
 function loadRetreat(playerTag) {
     const retreat = pokemonMap[playerTag].state.retreat
     setRetreatPerWave(retreat, playerTag)
-    setCurrentRetreat(retreat, playerTag)
 }
 
 function loadHealth(playerTag) {

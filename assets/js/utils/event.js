@@ -4,11 +4,17 @@ export class EventEmitter {
         this._debouncedEmitters = {};
     }
 
-    on(event, listener) {
-        if (!this._events[event]) {
-            this._events[event] = [];
+    on(events, listener) {
+        if (!Array.isArray(events)) {
+            events = [events]; // Convert single event to an array
         }
-        this._events[event].push(listener);
+
+        events.forEach(event => {
+            if (!this._events[event]) {
+                this._events[event] = [];
+            }
+            this._events[event].push(listener);
+        });
     }
 
     emit(event, ...args) {
@@ -28,10 +34,16 @@ export class EventEmitter {
         }, delay);
     }
 
-    removeListener(event, listener) {
-        if (this._events[event]) {
-            this._events[event] = this._events[event].filter(fn => fn !== listener);
+    removeListener(events, listener) {
+        if (!Array.isArray(events)) {
+            events = [events]; // Convert single event to an array
         }
+
+        events.forEach(event => {
+            if (this._events[event]) {
+                this._events[event] = this._events[event].filter(fn => fn !== listener);
+            }
+        });
     }
 }
 

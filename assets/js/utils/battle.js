@@ -1,4 +1,4 @@
-import { EventEmitter, Observable } from "./event.js";
+import { EventEmitter } from "./event.js";
 import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { Hit } from "./damage.js"
@@ -45,9 +45,10 @@ export class BattleField extends EventEmitter {
         ]);
 
         this.on("turn", (...args) => {
-            if(!this._waveAfterTurns) {
+            if (!this._waveAfterTurns) {
                 this._setWaveTurns()
             }
+
             this.turnNo++
             this._waveAfterTurns--
 
@@ -83,17 +84,22 @@ export class BattleField extends EventEmitter {
     }
 
     async turn(senario) {
-        if(this.context.get("veryClose")) {
-            senario.forEach((move, p) => {
-                !move.flags.contact && senario.set(p, new Move("staythere"))
-            })
+        let move1 = senario.get(this.pokemon1)
+        let move2 = senario.get(this.pokemon2)
+        
+        if(this.context.get("veryClose") && move1.flags.contact !== move2.flags.contact) {
+            if(move1.flags.contact) {
+                move2 = new Move("staythere")
+                senario.set(this.pokemon2, move2)
+            }
+            else {
+                move1 = new Move("staythere")
+                senario.set(this.pokemon1, move1)
+            }
         }
 
         this.emit("turn", this, senario)
 
-        const move1 = senario.get(this.pokemon1)
-        const move2 = senario.get(this.pokemon2)
-        
         this.pokemon1.state.effects.apply(move2, { on: "self" })
         this.pokemon2.state.effects.apply(move1, { on: "self" })
         
@@ -362,9 +368,8 @@ export class BattleField extends EventEmitter {
     }
 }
 
-class BattleContext extends Observable {
+class BattleContext {
     constructor(context) {
-        super()
         this._context = context
     }
 
@@ -377,7 +382,7 @@ class BattleContext extends Observable {
     }
 }
 
-class BattleState extends Observable {
+class BattleState extends EventEmitter {
     moves = [
         new Move("staythere"),
         new Move("dodge")
@@ -385,6 +390,7 @@ class BattleState extends Observable {
 
     constructor(field, pokemon) {
         super()
+
         this.field = field;
         this.pokemon = pokemon;
 
