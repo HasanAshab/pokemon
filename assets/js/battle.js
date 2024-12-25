@@ -56,8 +56,10 @@ function setBattleStateListeners(playerTag) {
         loadMoves(playerTag)
 
         if(hp !== oldHp) {
-            pokemon.meta.stats.hp = hp
-            setPokemonMeta(pokemon.name, pokemon.meta)
+            if(playerTag === "you") {
+                pokemon.meta.stats.hp = hp
+                setPokemonMeta(pokemon.id, pokemon.meta)
+            }
 
             const hpDist = fixFloat(hp - oldHp) 
             const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`

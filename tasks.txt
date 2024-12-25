@@ -1,11 +1,11 @@
-cb bp retreat process
-increase spe slowly for token
-recoil, heal, protect, ditect, disable
-furycutter
-commentary
-switch pokemon
 increase crit ratio (lazor foc, foc energy)
-Observable on smaller parts
+protect, ditect, disable, furycutter
+switch pokemon
+
+
+commentary
+cb bp retreat process
+Observable on smaller parts retreat in stats
 
 
 xp using cp and xp reduce on loose
@@ -13,7 +13,6 @@ abilities effects (eg guts)
 effect remove
 
 * Proposal
-increase damage for switch lock moves
 Try DODGE when counter is used
 
 * Scenario
@@ -23,4 +22,3 @@ phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 * Bugs
-damage increased razorleaf vs ember

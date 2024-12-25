@@ -54,21 +54,20 @@ export function weightedRandom(values, weights) {
 
 
 export function getDamageDangerLevel(pokemon, damage) {
-    const maxHP = pokemon.maxhp
-
+    const maxHP = pokemon.maxhp;
     const damagePercentage = (damage / maxHP) * 100;
 
     if (damagePercentage < 10) {
-        return "Very Low";
+        return `<span style="color: #00FF00;">Very Low</span>`; // Green
     } else if (damagePercentage < 20) {
-        return "Low";
+        return `<span style="color: #7FFF00;">Low</span>`; // Lime Green
     } else if (damagePercentage < 30) {
-        return "Medium";
+        return `<span style="color: #FFD700;">Medium</span>`; // Gold
     } else if (damagePercentage < 60) {
-        return "High";
+        return `<span style="color: #FFA500;">High</span>`; // Orange
     } else if (damagePercentage <= 75) {
-        return "Very High";
-    } else if (damagePercentage > 95){
-        return "Overkill";
+        return `<span style="color: #FF4500;">Very High</span>`; // Orange Red
+    } else if (damagePercentage > 95) {
+        return `<span style="color: #FF0000;">Overkill</span>`; // Red
     }
 }

@@ -9,6 +9,10 @@ export const MOVE_CTX = {
     runEvent: () => null,
     dex: MOVE_DEX,
     
+    heal(hp, pokemon) {
+        pokemon.state.increaseHealth(hp)
+    },
+
     damage(damage, pokemon) {
         pokemon.state.decreaseHealth(damage)
     }

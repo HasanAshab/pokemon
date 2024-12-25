@@ -275,7 +275,8 @@ export class BattleField extends EventEmitter {
         else {
             if (d2 && !dodged2) {
                 this.pokemon2.state.decreaseHealth(d2)
-                move1.drain && this.pokemon1.state.increaseHealth(d2 * move1.drainRate())
+                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
+                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2))
             }
             if (d1 && !dodged1) {
                 this.pokemon1.state.decreaseHealth(d1)
@@ -399,7 +400,7 @@ class BattleState extends Observable {
         })
         this.on("used-move", move => {
             const opponent = this.field.opponentOf(this.pokemon)
-            move.onAfterMove?.(this.pokemon, opponent, move)
+            move.onAfterMove(this.pokemon, opponent, move)
 
             this.retreat -= move.retreat
             this.reducePP(move.id)
@@ -520,6 +521,9 @@ class PrevStatsManager {
         this.refresh()
 
         this.state.on("turn", () => {
+            this.refresh()
+        })
+        this.state.on("wave", () => {
             this.refresh()
         })
     }

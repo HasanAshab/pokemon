@@ -1,6 +1,16 @@
 import { processor } from "./helpers.js"
 import { MOVE_CTX } from "../../assets/js/utils/ctx.js"
 
+
+function mergeDefault(move) {
+    const defaultProps = {
+        onAfterMove(pokemon, target, move) {
+            move.heal && this.heal(pokemon.maxhp * move.healRate(), pokemon)
+        }
+    }
+    Object.assign(move, defaultProps, move)
+}
+
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
       move.pp = Math.round(move.pp / 3) || 1;
@@ -99,7 +109,7 @@ function setStatChanges(move) {
 
 function setRetreat(move) {
   if("retreat" in move) return
-  const retreats = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6];
+  const retreats = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6];
   const thresholds = [0, 10, 20, 30, 50, 60, 70, 80, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250];
   let retreat;
   
@@ -143,7 +153,26 @@ function setRetreat(move) {
       retreat += 0.25 * avgHits
   }
   
-  move.retreat = adjustToClosestRetreat(retreat)
+  if ("heal" in move) {
+      retreat += 3 * (move.heal[0] / move.heal[1])
+  }
+
+  if ("drain" in move) {
+      retreat += 1.05 * (move.drain[0] / move.drain[1])
+  }
+
+  if ("recoil" in move) {
+      retreat -= 2 * (move.recoil[0] / move.recoil[1])
+  }
+  
+  retreat = adjustToClosestRetreat(retreat)
+  
+  if (retreat <= 0.50 && move.category !== "Status") {
+      // we failed to detect its speciality
+      retreat = retreats[3]
+  }
+  
+  move.retreat = retreat
 }
 
 function setCustomCTX(move) {
@@ -155,6 +184,7 @@ function setCustomCTX(move) {
 }
 
 export default processor([
+    mergeDefault,
     modifyPP,
     setOffensiveness,
     setEffects,

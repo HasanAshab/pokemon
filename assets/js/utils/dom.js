@@ -57,7 +57,7 @@ export class PopupMsgQueue {
         return new Promise(resolve => {
             const popupMsgCont = document.getElementById(playerTag + "-" + this.elemIdSuffix);
             popupMsgCont.classList.add("active");
-            popupMsgCont.querySelector(".msg").textContent = msg;
+            popupMsgCont.querySelector(".msg").innerHTML = msg;
 
             setTimeout(() => {
                 popupMsgCont.classList.remove("active");

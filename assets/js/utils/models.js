@@ -22,7 +22,11 @@ class PSPokemon {
 export class Pokemon extends PSPokemon {
     static XP_PER_LEVEL = 100;
     static TOKEN_PER_LEVEL = 2
-    static TOKEN_MODIFIER = 1.01
+    static TOKEN_MODIFIERS = {
+        hp: 1.06,
+        spe: 1.009, 
+        default: 1.05 // Default modifier for all other stats
+    };
 
     static calculateLevel(xp) {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
@@ -143,18 +147,24 @@ export class Pokemon extends PSPokemon {
         return natureStats;
     }
 
-     _calculateTokenStat() {
+    _calculateTokenStat() {
         const tokenStats = {};
-      
+
         Object.keys(this._pokemon.baseStats).forEach(statName => {
-          const baseStat = this._pokemon.baseStats[statName];
-          const tokenModifier = Math.pow(Pokemon.TOKEN_MODIFIER, this.meta.token_used[statName] ?? 0);
-          // Apply token modifier
-          tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
+            const baseStat = this._pokemon.baseStats[statName];
+
+            // Use the dynamic token modifier, fallback to default if not specified
+            const tokenModifier = Math.pow(
+                Pokemon.TOKEN_MODIFIERS[statName] || Pokemon.TOKEN_MODIFIERS.default,
+                this.meta.token_used[statName] ?? 0
+            );
+
+            // Apply token modifier
+            tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
         });
+
         return tokenStats;
-      }
-      
+    }      
       _calculateTotalStat() {
         const baseStats = this._pokemon.baseStats;
         const levelStats = this._calculateLevelStat();
@@ -193,7 +203,23 @@ export class Move {
         return desc[key] ?? desc.shortDesc
     }
     
+    healRate() {
+        return this.heal[0] / this.heal[1]
+    }
+
     drainRate() {
         return this.drain[0] / this.drain[1]
+    }
+    
+    recoilRate() {
+        return this.recoil[0] / this.recoil[1]
+    }
+
+    drainDamage(damage) {
+        return Math.max(1, damage * this.drainRate())
+    }
+
+    recoilDamage(damage) {
+        return Math.max(1, damage * this.recoilRate())
     }
 }
