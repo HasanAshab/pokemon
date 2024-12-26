@@ -111,8 +111,6 @@
 }
 .enemy-controle-cont .top-items-wrapper {
   transform: rotate(180deg);
-
-
 }
 .pokemon-switch-controler {
   display: flex;

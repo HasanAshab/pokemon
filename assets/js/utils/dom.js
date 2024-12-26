@@ -58,8 +58,8 @@ export class PopupMsgQueue {
             const popupMsgCont = document.getElementById(playerTag + "-" + this.elemIdSuffix);
 
             // Add random tilt
-            const tiltClass = Math.random() > 0.5 ? "tilt-left" : "tilt-right";
-            popupMsgCont.classList.add("active", tiltClass);
+            //const tiltClass = Math.random() > 0.5 ? "tilt-left" : "tilt-right";
+            popupMsgCont.classList.add("active");
 
             popupMsgCont.querySelector(".msg").innerHTML = msg;
 

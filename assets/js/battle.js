@@ -18,6 +18,11 @@ function loadVeryCloseBtn() {
         : btn.classList.remove("active")
 }
 
+function syncStatsMeta(pokemon) {
+    pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
+    setPokemonMeta(pokemon.id, pokemon.meta)
+}
+
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
   battleField.context.set("veryClose", !battleField.context.get("veryClose"))
@@ -55,11 +60,6 @@ function loadPokemonData(playerTag) {
     loadMoves(playerTag)
 
     if(hp !== oldHp) {
-        if(playerTag === "you") {
-            pokemon.meta.stats.hp = hp
-            setPokemonMeta(pokemon.id, pokemon.meta)
-        }
-
         const hpDist = fixFloat(hp - oldHp) 
         const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
         popupQueue.add(msg, playerTag)
@@ -74,7 +74,7 @@ function loadPokemonData(playerTag) {
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
     pokemon.state.on(
-        ["turn", "wave"], 
+        ["turn-end", "wave"], 
         delayedFunc(() => loadPokemonData(playerTag), 1000)
     )
     
@@ -88,11 +88,8 @@ function setBattleStateListeners(playerTag) {
     }, 1000))
 
     pokemon.state.on("fainted", () => {
-        console.log(playerTag);
-        
         loadChoosePokemon(playerTag)
     })
-
 
     battleField.prompt(pokemon).reply("dodge", () => {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
@@ -338,11 +335,13 @@ function setTotalHealth(hp, playerTag) {
 }
 
 function setCurrentHealth(hp, playerTag) {
+  const pokemon = pokemonMap[playerTag]
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".current-hp").textContent = hp
-  const progress = (hp / pokemonMap[playerTag].maxhp) * 100
+  const progress = (hp / pokemon.maxhp) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
+  playerTag === "you" && syncStatsMeta(pokemon)
 }
 
 function loadMoves(playerTag) {
