@@ -98,6 +98,10 @@ export class Pokemon extends PSPokemon {
         });
         return effectiveness;
     }
+    
+    getSTAB(move) {
+        return this.isTypeOf(move.type) ? 2 : 1;
+    }
 
     toBase64() {
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));

@@ -54,7 +54,7 @@ function loadPokemonData(playerTag) {
 
     loadVeryCloseBtn()
     setCurrentRetreat(pokemon.state.retreat, playerTag)
-    setStateChanges(pokemon.state.stats._statChanges, playerTag)
+    setStatChanges(pokemon.state.stats._statChanges, playerTag)
     setEffects(pokemon.state.effects.names(), playerTag)
     setCurrentHealth(hp, playerTag)
     loadMoves(playerTag)
@@ -307,11 +307,12 @@ function setEffects(effects, playerTag) {
   })
 }
 
-function setStateChanges(data, playerTag) {
+function setStatChanges(data, playerTag) {
   const attributesDataRow = document.querySelector(`.${playerTag}-controle-cont .attributes-data-row`)
   attributesDataRow.innerHTML = ""
-  for (const stat in data) {
-    attributesDataRow.innerHTML += `<span class>${stat}${data[stat]}</span>`
+  for (const [stat, value] of Object.entries(data)) {
+      const change = value > 0 ? '+' + value : value
+    attributesDataRow.innerHTML += `<span class>${stat}${change}</span>`
   }
 }
 

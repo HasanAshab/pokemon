@@ -64,7 +64,7 @@ export class PopupMsgQueue {
             popupMsgCont.querySelector(".msg").innerHTML = msg;
 
             setTimeout(() => {
-                popupMsgCont.classList.remove("active", tiltClass);
+                popupMsgCont.classList.remove("active");
                 popupMsgCont.classList.remove("enemy-side");
                 cb();
                 resolve();

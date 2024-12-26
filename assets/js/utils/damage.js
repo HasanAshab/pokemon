@@ -2,7 +2,7 @@ import { fixFloat, weightedRandom } from "./helpers.js";
 
 
 export class Damage {
-    static STAB_MODIFIER = 1.3;
+    static STAB_MODIFIER = 0.70;
     static CRIT_MULTIPLIER = 1.5;
     static BASE_CRIT_CHANCE = 1 / 24;
     static RAND_MODIFIER_RANGE = [0.85, 0.15]
@@ -46,7 +46,7 @@ export class Damage {
         
         if (!bp) return null
 
-        const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1;
+        const stab = this.attacker.getSTAB(this.move) * Damage.STAB_MODIFIER
         const isSpecial = this.move.category === "Special";
         const attackStat = "state" in this.attacker 
             ? this.attacker.state.stats.get(isSpecial ? "spa" : "atk")
