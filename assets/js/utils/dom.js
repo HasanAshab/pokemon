@@ -1,7 +1,7 @@
 import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
 import natures from "../../../data/natures.js"
-
+import { Pokemon } from "./models.js";
 
 export function loadPokemonsDatalist(id) {
   const dataList = document.getElementById(id);
@@ -71,4 +71,21 @@ export class PopupMsgQueue {
             }, 1500); // Adjust duration if needed
         });
     }
+}
+
+
+export function startBattle(enemiesMeta) {
+    const enemiesBase64List = Object.entries(enemiesMeta).map(([id, meta]) => {
+        return new Pokemon(id, meta).toBase64()
+    })
+    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}`;
+}
+
+export async function startUserBattle(name) {
+   const prom = await fetch(`./users/${name}.json`)
+   const enemiesMeta = await prom.json()
+   const enemiesBase64List = Object.entries(enemiesMeta).map(([id, meta]) => {
+        return new Pokemon(id, meta).toBase64()
+    })
+    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}`;
 }

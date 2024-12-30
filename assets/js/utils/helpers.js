@@ -52,7 +52,6 @@ export function weightedRandom(values, weights) {
   return values[values.length - 1]; // Fallback
 }
 
-
 export function getDamageDangerLevel(pokemon, damage) {
     const maxHP = pokemon.maxhp;
     const damagePercentage = (damage / maxHP) * 100;

@@ -11,7 +11,7 @@
 </head>
 <body>
   <div class="container">
-
+    
     <div class="battle-prompt-popup">
       <p class="msg">
         Lorem ipsum dolor.
@@ -20,9 +20,9 @@
         <button class="dodge-btn">Dodge</button>
         <button class="counter-btn">counter</button>
         <button class="nothing-btn">nothing</button>
-
       </div>
     </div>
+
     <div id="you-popup-msg-cont">
       <b class="msg">msg..</b>
     </div>    
@@ -32,7 +32,7 @@
     <div class="enemy-controle-cont">
       <div class="card-container"></div>
       <div class="primary-data-nav">
-        <p class="retreat">
+        <p class="retreat" onclick="retreatBtnClickHandler('enemy')">
           Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="enemy-current-retreat">6</span>
         </p>
         <div onclick="healthProgressbarClickHandler(event, 'enemy')" class="health-progress-bar" data-total-hp="40" data-current-hp="40">
@@ -45,7 +45,9 @@
       </div>
 
       <div class="scroller">
-        <div class="attributes-data-row"></div>
+        <div class="attributes-data-row">
+            <button onclick="showStatEditForm('enemy')" class="edit-btn">Edit stats</button>
+        </div>
 
       </div>
       <div class="top-items-wrapper">
@@ -53,6 +55,8 @@
         </div>
         <div class="scroller vertical">
           <div class="effects-data-column">
+                                      <button onclick="showEffectsEditForm('enemy')" class="edit-btn">Edit effects</button>
+
           </div>
         </div>
       </div>
@@ -68,25 +72,27 @@
         </div>
         <div class="scroller vertical">
           <div class="effects-data-column">
+                                <button onclick="showEffectsEditForm('you')" class="edit-btn">Edit effects</button>
+
           </div>
         </div>
 
       </div>
 
       <div class="scroller">
-        <div class="attributes-data-row"></div>
+        <div class="attributes-data-row">
+                        <button onclick="showStatEditForm('you')" class="edit-btn">Edit stats</button>
+        </div>
 
       </div>
       <div class="primary-data-nav">
-        <p class="retreat">
+        <p class="retreat" onclick="retreatBtnClickHandler('you')">
           Retreat(<span class="retreat-per-wave">4</span>):<span class="current-retreat" id="you-current-retreat">6</span>
         </p>
         <div onclick="healthProgressbarClickHandler(event, 'you')" class="health-progress-bar" data-total-hp="40" data-current-hp="40">
           <span class="health-data"><span class="current-hp">40</span> / <span class="total-hp">40</span>
           </span>
-          <div class="inner">
-            &nbsp;
-          </div>
+          <div class="inner">&nbsp;</div>
         </div>
 
       </div>

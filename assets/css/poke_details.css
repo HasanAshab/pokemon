@@ -109,7 +109,7 @@ h1 {
   width: 100%;
   position: relative;
 }
-.stat:is(.ability,.nature) {
+.stat:is(.abilities,.nature) {
   background-color: inherit;
   padding-left: 14px;
   padding-right: 14px;

@@ -1,7 +1,5 @@
-import { Pokemon,Move } from "./utils/models.js";
-import { getParam } from "./utils/helpers.js"
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist } from "./utils/dom.js";
-
+import { Pokemon, Move } from "./utils/models.js";
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
 
 
 window.onload = () => {
@@ -10,12 +8,8 @@ window.onload = () => {
     loadMovesDatalist("moves-data-list")
 }
 
-function makePokemon() {
-  const pokemonForms = document.querySelectorAll(".pokemon-form")
-  const enemyPokemonList = []
-  pokemonForms.forEach((form,index)=>{
-    const enemy = form.querySelector(".enemy");
-    if (enemy.value) {
+
+function makeEnemyMeta(form, index) {
     const levelInp = form.querySelector(".level-inp");
     const retreatInp = form.querySelector(".retreat-inp");
     const natureInp = form.querySelector(".nature-inp");
@@ -23,7 +17,8 @@ function makePokemon() {
      const enemyStats = form.querySelector(".enemy-stats");
 
     const level = parseInt(levelInp.value);
-    const retreat = parseInt(retreatInp.value);
+    const retreat = Number(retreatInp.value);
+
     const nature = natureInp.value;
     const tokens = tokenInp.value ? JSON.parse(tokenInp.value) : {};
     const moves = [
@@ -37,23 +32,38 @@ function makePokemon() {
         isSelected: true
     }))
     
-    const enemyPokemon = new Pokemon(enemy.value, {
+    return {
         xp: level * 100,
         nature,
         retreat,
         moves,
         stats: {},
         token_used: tokens
-    });
-    enemyPokemonList.push(enemyPokemon)
     }
-  })
- return enemyPokemonList
 }
-globalThis.showStats = async function(formId) {
+
+function makeEnemiesMeta() {
+  const pokemonForms = document.querySelectorAll(".pokemon-form")
+  const enemiesMeta = {}
+  pokemonForms.forEach((form, index) => {
+      const enemy = form.querySelector(".enemy");
+      if (!enemy.value) return
+      enemiesMeta[enemy.value] = makeEnemyMeta(form, index)
+  })
+ return enemiesMeta
+}
+
+globalThis.showStats = function(formId) {
     const enemyStats = document.querySelectorAll(".pokemon-form")[formId].querySelector(".enemy-stats")
-    const enemyPokemon = makePokemon()[formId]
+    const metas = makeEnemiesMeta()
+    formId = Object.keys(metas)[formId]
+    const enemyPokemon = new Pokemon(formId, metas[formId])
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
+}
+
+globalThis.showStartBattleCode = function() {
+    const cont = document.getElementById("battle-code-cont")
+    cont.innerHTML = "startBattle(" + JSON.stringify(makeEnemiesMeta(), null, 2) + ')';
 }
 
 globalThis.showMoveDetails = function({currentTarget}){
@@ -66,11 +76,7 @@ globalThis.showMoveDetails = function({currentTarget}){
  }
 }
 
-globalThis.startBattle = function() {
-  const enemiesBase64List = makePokemon().map((poke)=> poke.toBase64())
-  window.location = `battle.html?you=${getParam("name")}&enemy=${enemiesBase64List.join(",")}`;
+globalThis.startBattleBtnHandler = function() {
+  startBattle(makeEnemiesMeta())
 }
 
-globalThis.randomBattle = function() {
-    window.location = `battle.html?you=${getParam("name")}&enemy=eyJpZCI6ImJ1bGJhc2F1ciIsIm1ldGEiOnsieHAiOjUwMCwibmF0dXJlIjoiY2FsbSIsInJldHJlYXQiOjIsIm1vdmVzIjpbeyJpZCI6ImFjaWQiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiYWJzb3JiIiwiaXNTZWxlY3RlZCI6dHJ1ZX1dLCJ0b2tlbl91c2VkIjp7fX19`
-}

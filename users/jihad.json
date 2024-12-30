@@ -1,0 +1,27 @@
+{
+"frogadier": {
+    "xp": 700,
+    "nature": "jolly",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "pound",
+        "isSelected": true
+      },
+      {
+        "id": "waterpulse",
+        "isSelected": true
+      },
+      {
+        "id": "bubble",
+        "isSelected": true
+      },
+      {
+        "id": "leer",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+}

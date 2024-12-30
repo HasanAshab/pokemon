@@ -1,3 +1,6 @@
+startBattle
+fix retreat for scratch
+
 increase crit ratio (lazor foc, foc energy)
 disable, furycutter
 
@@ -14,7 +17,6 @@ abilities effects (eg guts)
 effect remove
 
 * Proposal
-Try DODGE when counter is used
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
@@ -23,6 +25,13 @@ phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 * Bugs
+stall
+counter
+body slam, magnitude
+
+
+harden not works
+iron defence vs dodge (ss saved)
 
 * Performance
 make chunkable data

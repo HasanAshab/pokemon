@@ -1,0 +1,100 @@
+"bellsprout": {
+    "xp": 1000,
+    "nature": "careful",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "absorb",
+        "isSelected": true
+      },
+      {
+        "id": "razorleaf",
+        "isSelected": true
+      },
+      {
+        "id": "vinewhip",
+        "isSelected": true
+      },
+      {
+        "id": "poisonpowder",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "cubone": {
+    "xp": 1200,
+    "nature": "brave",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "boneclub",
+        "isSelected": true
+      },
+      {
+        "id": "doublehit",
+        "isSelected": true
+      },
+      {
+        "id": "mudslap",
+        "isSelected": true
+      },
+      {
+        "id": "growl",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "mareep": {
+    "xp": 1100,
+    "nature": "mild",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "thundershock",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
+        "isSelected": true
+      },
+      {
+        "id": "nuzzle",
+        "isSelected": true
+      },
+      {
+        "id": "volttackle",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "taurospaldeablaze": {
+    "xp": 700,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      },
+      {
+        "id": "hornattack",
+        "isSelected": true
+      },
+      {
+        "id": "bulkup",
+        "isSelected": true
+      },
+      {
+        "id": "megakick",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }

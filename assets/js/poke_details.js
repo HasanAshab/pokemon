@@ -127,7 +127,6 @@ globalThis.statClickHandler = function( {
 }
 
 
-
 globalThis.showMoveChooseInterface = function() {
     const moveChooseInterface = document.querySelector(".move-choose-interface");
     moveChooseInterface.parentNode.classList.add("active");
@@ -196,13 +195,13 @@ function loadName() {
 
 
 function loadStats() {
-   setCurrentHealth(pokemon.meta.stats.hp ?? pokemon.stats.hp)
+   setCurrentHealth(pokemon.meta.stats.hp ?? pokemon.maxhp)
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)
     setStat("xp", pokemon.meta.xp)
     setStat("retreat", pokemon.meta.retreat)
-    
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
+    setStat("abilities", pokemon.abilities.join(', '))
 
     for (const stat in pokemon.stats) {
      const statValue = pokemon.stats[stat]
@@ -248,7 +247,7 @@ function loadMoves() {
               </span>
             </div>
             <div class="secondary">
-             ${move.basePower && move.category !== "Status" ?
+             ${move.category !== "Status" ?
              
              ` <div class="power-data">
              ${

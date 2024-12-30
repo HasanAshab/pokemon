@@ -4,11 +4,24 @@ import { Damage } from "./utils/damage.js"
 import { calculateWinXP } from "./utils/battle.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
-
+ 
 
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.toggleMoveInfo = function(info){
 info.classList.toggle("active")
+}
+globalThis.retreatBtnClickHandler = function(playerTag){
+    const selectedCard = document.querySelector(`.${playerTag}-controle-cont .card-container .card.selected`)
+    const oldRetreat = 2
+    if (selectedCard) {
+        const move = new Move(selectedCard.dataset.moveId)
+        pokemonMap[playerTag].state.emit("used-move", move)
+        loadPokemonData(playerTag)
+    }
+    else{
+      const newRetreat = Number(window.prompt("retreat",oldRetreat))
+      
+    }
 }
 
 function loadVeryCloseBtn() {
@@ -44,6 +57,27 @@ globalThis.switchPokemonClickHandler = function({currentTarget}, playerTag){
     switchPokemon(playerTag, currentTarget.dataset.pokemonId)
   }
 }
+globalThis.showStatEditForm = function(playerTag){
+    const pokemon = pokemonMap[playerTag]
+    const oldStatChanges = JSON.stringify(pokemon.state.stats._statChanges)
+    const newStatChanges = JSON.parse(
+        window.prompt(`edit stat changes of "${playerTag}"`,oldStatChanges)
+    )
+    pokemon.state.stats._statChanges = newStatChanges
+    
+    setStatChanges(pokemon.state.stats._statChanges, playerTag)
+}
+globalThis.showEffectsEditForm = function(playerTag){
+  const pokemon = pokemonMap[playerTag]
+  const oldEffects = pokemon.state.effects.names().join(', ')
+  const newEffects = window
+    .prompt(`edit stat changes of "${playerTag}"`, oldEffects)
+    .split(', ')
+    .map(e => e.trim())
+  pokemon.state.effects.add(...newEffects)
+  setEffects(pokemon.state.effects.names(), playerTag)
+}
+
 
 const opponentTag = tag => (tag === "you" ? "enemy" : "you")
 
@@ -75,17 +109,23 @@ function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
     pokemon.state.on(
         ["turn-end", "wave"], 
-        delayedFunc(() => loadPokemonData(playerTag), 1000)
+        () => loadPokemonData(playerTag)
     )
     
-    pokemon.state.on("dodged", delayedFunc(() => {
+    pokemon.state.on("dodged", () => {
         popupQueue.add("dodged!", playerTag)
-    }, 1000))
+    })
     
-    pokemon.state.on("turn-end", delayedFunc((_, hit) => {
-        const msg = `${hit.hitCount()} Hits ${hit.criticalCount() ? `, (${hit.criticalCount()} Crit)` : ''} !`
-        hit.hitCount() > 1 && popupQueue.add(msg, opponentTag(playerTag))
-    }, 1000))
+    pokemon.state.on("turn-end", (_, hit) => {
+        let msg = null
+        if(hit.hitCount() === 1 && hit.criticalCount() === 1) {
+            msg =  'Critical Hit!'
+        }
+        else if(hit.hitCount() > 1) {
+            msg = `${hit.hitCount()} Hits ${hit.criticalCount() ? `, (${hit.criticalCount()} Crit)` : ''} !`
+        }
+        msg && popupQueue.add(msg, opponentTag(playerTag))
+    })
 
     pokemon.state.on("fainted", () => {
         loadChoosePokemon(playerTag)
@@ -105,7 +145,7 @@ async function handleWin(winnerTag, looserTag) {
  
     const meta = getPokemonsMeta(pokemon.name)
     meta.xp += xp
-    setPokemonMeta(pokemon.name, meta)
+    setPokemonMeta(pokemon.id, meta)
      
     
     popupQueue.add("Winner! +" + xp, winnerTag, () => {
@@ -168,15 +208,9 @@ function switchPokemon(playerTag, pokemonId) {
 }
 
 function setupCurrentBattle(switcher) {
-    const firstTurn = !("battleField" in globalThis)
-
     globalThis.battleField = new BattleField(pokemon, enemyPokemon)
-
-    if (firstTurn) {
-        setupPokemonForDom("you")
-        setupPokemonForDom("enemy")
-    }
-    else setupPokemonForDom(switcher)
+    setupPokemonForDom("you")
+    setupPokemonForDom("enemy")
 }
 
 function setupPokemonForDom(playerTag) {
@@ -266,7 +300,7 @@ function setEffects(effects, playerTag) {
       "name": "Sleep",
       "color": "Psychic"
     },
-    "cnf": {
+    "confusion": {
       "name": "Confusion",
       "color": "Psychic"
     },
@@ -300,19 +334,28 @@ function setEffects(effects, playerTag) {
     }
 };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
-  effectsDataColumn.innerHTML = ""
+  const effectElements = effectsDataColumn.querySelectorAll(".effect")
+  effectElements.forEach((elm)=>effectsDataColumn.removeChild(elm))
   effects.forEach(effect => {
-    const html = ` <span class="effect" style="background-color:var(--${effectsMap[effect].color}-type-color)">${effectsMap[effect].name}</span>`
-    effectsDataColumn.innerHTML += html
+    const span = document.createElement("span")
+    span.classList.add("effect")
+    span.style.backgroundColor = `var(--${effectsMap[effect].color}-type-color)`
+    span.textContent = `${effectsMap[effect].name}`
+    effectsDataColumn.insertBefore(span,effectsDataColumn.firstElementChild) 
   })
 }
 
 function setStatChanges(data, playerTag) {
   const attributesDataRow = document.querySelector(`.${playerTag}-controle-cont .attributes-data-row`)
-  attributesDataRow.innerHTML = ""
+  const statElements = attributesDataRow.querySelectorAll(".stat")
+  statElements.forEach((elm)=>attributesDataRow.removeChild(elm))
+  
   for (const [stat, value] of Object.entries(data)) {
       const change = value > 0 ? '+' + value : value
-    attributesDataRow.innerHTML += `<span class>${stat}${change}</span>`
+      const span = document.createElement("span")
+      span.classList.add("stat")
+      span.textContent = `${stat}${change}`
+      attributesDataRow.insertBefore(span,attributesDataRow.firstElementChild) 
   }
 }
 
@@ -493,7 +536,7 @@ function handleMoveCardSelect(card, playerTag) {
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
     })
   }else{
-    card.parentElement.querySelector(".card.selected")?.classList.remove("selected")
+    card.parentElement.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
   }
   }
@@ -503,7 +546,6 @@ globalThis.moveCardClickHandler = function( {
 }, playerTag) {
   handleMoveCardSelect(currentTarget, playerTag)
 }
-
 
 function battle(moveIds) {
     const {you: moveId, enemy: enemyMoveId} = moveIds
@@ -533,4 +575,5 @@ window.onload = () => {
     loadTeams()
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
+    
 }

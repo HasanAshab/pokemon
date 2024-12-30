@@ -2,10 +2,12 @@ import { fixFloat, weightedRandom } from "./helpers.js";
 
 
 export class Damage {
-    static STAB_MODIFIER = 0.70;
+    static STAB_MODIFIER = 1.3;
     static CRIT_MULTIPLIER = 1.5;
     static BASE_CRIT_CHANCE = 1 / 24;
     static RAND_MODIFIER_RANGE = [0.85, 0.15]
+    
+    criticalMultiplier = 1
 
     constructor(attacker, move, target = null) {
         this.attacker = attacker
@@ -21,8 +23,10 @@ export class Damage {
 
     _setCriticalMultiplier() {
         const critChance = Damage.BASE_CRIT_CHANCE * (1 + (this.move.critRatio ?? 1));
-        const isCritical = Math.random() < critChance
-        return this.criticalMultiplier = isCritical ? Damage.CRIT_MULTIPLIER : 1
+        if (Math.random() < critChance) {
+            this.criticalMultiplier = Damage.CRIT_MULTIPLIER
+        }
+        return this.criticalMultiplier
     }
 
     _setRandomModifier() {
@@ -46,7 +50,7 @@ export class Damage {
         
         if (!bp) return null
 
-        const stab = this.attacker.getSTAB(this.move) * Damage.STAB_MODIFIER
+        const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
         const isSpecial = this.move.category === "Special";
         const attackStat = "state" in this.attacker 
             ? this.attacker.state.stats.get(isSpecial ? "spa" : "atk")
@@ -55,7 +59,7 @@ export class Damage {
         const defenseStat = this.target
             ? this.target.state.stats.get(isSpecial ? "spd" : "def")
             : 70; // Neutral defense if no target
-        return stab * (((5.5 * bp * (attackStat / defenseStat)) / 10) + 2);
+        return stab * (((5.2 * (bp * 0.8) * (attackStat / defenseStat)) / 10) + 2);
     }
 
     _calculate() {

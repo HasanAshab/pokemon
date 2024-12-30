@@ -1,0 +1,36 @@
+ {
+  "drilbur": {
+    "xp": 1100,
+    "nature": "calm",
+    "retreat": 2,
+    "moves": [
+      {
+        "id": "scratch",
+        "isSelected": true
+      },
+      {
+        "id": "dig",
+        "isSelected": true
+      },
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "rookidee": {
+    "xp": 1000,
+    "nature": "brave",
+    "retreat": 2,
+    "moves": [
+      {
+        "id": "peck",
+        "isSelected": true
+      },
+      {
+        "id": "gust",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+ }

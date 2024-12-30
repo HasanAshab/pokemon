@@ -1,5 +1,5 @@
 import { Pokemon } from "./utils/models.js";
-import { getPokemonsMeta } from "./utils/helpers.js";
+import { getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js";
 import { loadPokemonsDatalist, loadNaturesDataList } from "./utils/dom.js";
 
 
@@ -86,6 +86,19 @@ globalThis.deletePokemon = function deletePokemon(name) {
 globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
   window.location = `poke_details.html?name=${slug}`
 }
+
+globalThis.healPokemon = function (id) {
+    const meta = getPokemonsMeta(id)
+    const pokemon = new Pokemon(id, meta)
+    meta.stats.hp = pokemon.maxhp
+    setPokemonMeta(id, meta)
+}
+
+
+globalThis.healAllBtnHandler = function () {
+    Object.keys(getPokemonsMeta()).forEach(healPokemon)
+}
+
 function loadAllPokemons() {
   const pokemonList = document.querySelector(".pokemon-list")
   const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
@@ -99,6 +112,7 @@ function loadAllPokemons() {
     <i class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</i>
     </div>
     <div class="right-controle-btns-cont">
+    <button onclick="healPokemon('${pokemon}')">Heal</button>
     <button class="del-btn" onclick="deletePokemon('${pokemon}')">Delete</button>
     </div>
     </li>
@@ -116,6 +130,7 @@ function loadFoodCost() {
   foodCost.textContent = cost
 }
 
+
 function loadAll() {
   
   loadActiveBadges()
@@ -125,4 +140,20 @@ function loadAll() {
   loadNaturesDataList("natures-data-list")
 }
 document.body.onload = loadAll
+//window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6InBpa2FjaHUiLCJtZXRhIjp7InhwIjo4MDAsIm5hdHVyZSI6ImNhbG0iLCJyZXRyZWF0IjoyLCJtb3ZlcyI6W3siaWQiOiJ0aHVuZGVyc2hvY2siLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoicXVpY2thdHRhY2siLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoidGFpbHdoaXAiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiaXJvbnRhaWwiLCJpc1NlbGVjdGVkIjp0cnVlfV0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==,eyJpZCI6ImVsZWtpZCIsIm1ldGEiOnsieHAiOjEyMDAsIm5hdHVyZSI6ImpvbGx5IiwicmV0cmVhdCI6Mi41LCJtb3ZlcyI6W3siaWQiOiJ0aHVuZGVyc2hvY2siLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoicG91bmQiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoibnV6emxlIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6InRodW5kZXJwdW5jaCIsImlzU2VsZWN0ZWQiOnRydWV9XSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19"
+//window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6InBhd25pYXJkIiwibWV0YSI6eyJ4cCI6MTAwMCwibmF0dXJlIjoiYWRhbWFudCIsInJldHJlYXQiOjIuNSwibW92ZXMiOlt7ImlkIjoibWV0YWxjbGF3IiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6Imlyb25oZWFkIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6ImJydXRhbHN3aW5nIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6Imlyb25kZWZlbnNlIiwiaXNTZWxlY3RlZCI6dHJ1ZX1dLCJzdGF0cyI6e30sInRva2VuX3VzZWQiOnt9fX0="
+// const originalSetItem = localStorage.setItem;
+
+// localStorage.setItem = function(key, value) {
+//     console.log(key, value);
+//     originalSetItem.call(this, key, value); // Call the original setItem
+// };
+
+
+import { startUserBattle } from "./utils/dom.js";
+
+
+
+//sstartUserBattle("jihad")
+
 

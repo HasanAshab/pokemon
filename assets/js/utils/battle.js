@@ -312,11 +312,20 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
-
+/*
         if(canMove1 && (move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !move1.flags.contact)) {
+            console.log(move1)
             this.pokemon1.state.emit("used-move", move1) 
         }
         if(canMove2 && (move2.category === "Status" || (move2.flags.contact && move1.flags.contact) || !move2.flags.contact)) {
+            console.log(move2)
+            this.pokemon2.state.emit("used-move", move2) 
+        }
+*/        
+        if(move1.category === "Status" || d2 || instD2) {
+            this.pokemon1.state.emit("used-move", move1) 
+        }
+        if(move2.category === "Status" || d1 || instD1) {
             this.pokemon2.state.emit("used-move", move2) 
         }
 

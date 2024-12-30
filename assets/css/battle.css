@@ -83,9 +83,14 @@
   color: white;
   border-radius: 5px;
   border: none;
+  position: absolute;
+}
+#new-wave-btn:active {
+  background-color: gray;
+
 }
 #very-close-btn {
-  padding: 4px 8px;
+  padding: 4px 17px;
   background-color: red;
   color: white;
   border-radius: 5px;
@@ -166,6 +171,7 @@
   gap: 8px;
   width: calc(100% - 14px);
   padding: 3px 7px;
+ 
 }
 .enemy-controle-cont .attributes-data-row {
   transform: rotate(180deg);

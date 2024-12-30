@@ -13,6 +13,16 @@ class PSPokemon {
     get hp() {
         return this.state.stats.get("hp") ?? null
     }
+    
+    get abilities() {
+        return Object.keys(this._pokemon.abilities)
+            .filter(key => key !== "H") // Exclude hidden abilities
+            .map(key => this._pokemon.abilities[key])
+    }
+    
+    hasAbility(ability) {
+        return this.abilities.includes(ability)
+    }
 
     getWeight() {
         return this._pokemon.weightkg * 10;
@@ -21,6 +31,8 @@ class PSPokemon {
     addVolatile(name) {
         this.state.effects.add(name)
     }
+    
+    
 }
 
 export class Pokemon extends PSPokemon {
