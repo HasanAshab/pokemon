@@ -1,5 +1,6 @@
+{
 "bellsprout": {
-    "xp": 1000,
+    "xp": 1100,
     "nature": "careful",
     "retreat": 3,
     "moves": [
@@ -98,3 +99,4 @@
     "stats": {},
     "token_used": {}
   }
+}

@@ -27,11 +27,7 @@ phy 0 -> sp = x - y d
 * Bugs
 stall
 counter
-body slam, magnitude
-
-
-harden not works
-iron defence vs dodge (ss saved)
+magnitude
 
 * Performance
 make chunkable data

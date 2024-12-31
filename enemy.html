@@ -3,11 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./assets/css/global.css">
+  <style>
+      .feilds-cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px 0;
+}
+.feild {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    filter: brightness(30%);
+}
+.feild.active {
+        filter: brightness(100%);
+
+}
+  </style> 
   <title>Enemy Selection</title>
 </head>
 <body>
+       <div class="feilds-cont">
+        <div style="background-color:var(--Fire-type-color)"  onclick="feildClickHandler(event)" class="feild fire">
+          Fire
+        </div>
+        <div style="background-color:var(--Water-type-color)"  onclick="feildClickHandler(event)" class="feild water">
+          Water
+        </div>
+        <div style="background-color:var(--Electric-type-color)"  onclick="feildClickHandler(event)" class="feild electric">
+          Electric
+        </div>
+        <div style="background-color:var(--Grass-type-color)"  onclick="feildClickHandler(event)" class="feild grass">
+          Grass
+        </div>
+        <div style="background-color:var(--Ice-type-color)"  onclick="feildClickHandler(event)" class="feild ice">
+          Ice
+        </div>
+        <div style="background-color:var(--Fighting-type-color)"  onclick="feildClickHandler(event)" class="feild fighting">
+          Fighting
+        </div>
+        <div style="background-color:var(--Poison-type-color)"  onclick="feildClickHandler(event)" class="feild poison">
+          Poison
+        </div>
+        <div style="background-color:var(--Ground-type-color)"  onclick="feildClickHandler(event)" class="feild ground">
+          Ground
+        </div>
+        <div style="background-color:var(--Flying-type-color)"  onclick="feildClickHandler(event)" class="feild flying">
+          Flying
+        </div>
+        <div style="background-color:var(--Psychic-type-color)"  onclick="feildClickHandler(event)" class="feild psychic">
+          Psychic
+        </div>
+        <div style="background-color:var(--Bug-type-color)" data-index="10" onclick="feildClickHandler(event)" class="feild bug">
+          Bug
+        </div>
+        <div style="background-color:var(--Rock-type-color)" data-index="11" onclick="feildClickHandler(event)" class="feild rock">
+          Rock
+        </div>
+        <div style="background-color:var(--Ghost-type-color)" data-index="12" onclick="feildClickHandler(event)" class="feild ghost">
+          Ghost
+        </div>
+        <div style="background-color:var(--Dragon-type-color)" data-index="13" onclick="feildClickHandler(event)" class="feild dragon">
+          Dragon
+        </div>
+        <div style="background-color:var(--Dark-type-color)" data-index="14" onclick="feildClickHandler(event)" class="feild dark">
+          Dark
+        </div>
+        <div style="background-color:var(--Steel-type-color)" data-index="15" onclick="feildClickHandler(event)" class="feild steel">
+          Steel
+        </div>
+        <div style="background-color:var(--Fairy-type-color)" data-index="16" onclick="feildClickHandler(event)" class="feild fairy">
+          Fairy
+        </div>
+        <div style="background-color:var(--Normal-type-color)" data-index="17" onclick="feildClickHandler(event)" class="feild normal">
+          Normal
+        </div>
+        <div style="background-color:var(--Unknown-type-color)" data-index="18" onclick="feildClickHandler(event)" class="feild unknown">
+          Unknown
+        </div>
+
+        <div style="background-color:var(--Stellar-type-color)" data-index="20" onclick="feildClickHandler(event)" class="feild stellar">
+          Stellar
+        </div>
+
+      </div>
+
   <div class="pokemon-form">
-    <label for="enemy">Choose Enemy</label>
+    <label for="enemy">Choose Enemy 1</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(0)">
     <br>
     <label for="level-inp">Level</label>
@@ -39,7 +126,7 @@
   </div>
  <br> <hr><br>
   <div class="pokemon-form">
-    <label for="enemy">Choose Enemy</label>
+    <label for="enemy">Choose Enemy 2</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(1)">
     <br>
     <label for="level-inp">Level</label>
@@ -71,7 +158,7 @@
   </div>
   <br> <hr><br>
  <div class="pokemon-form">
-    <label for="enemy">Choose Enemy</label>
+    <label for="enemy">Choose Enemy 3</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(2)">
     <br>
     <label for="level-inp">Level</label>
@@ -103,7 +190,7 @@
   </div>
  <br> <hr><br>
   <div class="pokemon-form">
-    <label for="enemy">Choose Enemy</label>
+    <label for="enemy">Choose Enemy 4</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(3)">
     <br>
     <label for="level-inp">Level</label>

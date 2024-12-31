@@ -74,18 +74,20 @@ export class PopupMsgQueue {
 }
 
 
-export function startBattle(enemiesMeta) {
+export function startBattle(enemiesMeta, fields = []) {
     const enemiesBase64List = Object.entries(enemiesMeta).map(([id, meta]) => {
         return new Pokemon(id, meta).toBase64()
     })
-    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}`;
+    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}&fields=${fields.join(',')}`;
 }
 
-export async function startUserBattle(name) {
-   const prom = await fetch(`./users/${name}.json`)
-   const enemiesMeta = await prom.json()
-   const enemiesBase64List = Object.entries(enemiesMeta).map(([id, meta]) => {
-        return new Pokemon(id, meta).toBase64()
-    })
-    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}`;
+export async function startUserBattle(name, fields = []) {
+   try {
+       const prom = await fetch(`./users/${name}.json`)
+       const enemiesMeta = await prom.json()
+        startBattle(enemiesMeta)
+   }
+   catch(e) {
+       console.error(e)
+   }
 }
