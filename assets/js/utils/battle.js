@@ -1,6 +1,7 @@
 import { EventEmitter } from "./event.js";
 import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
+import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom } from "./helpers.js"
 
@@ -17,11 +18,11 @@ export class BattleField extends EventEmitter {
     turnNo = 0
     waveNo = 0
     
-    context = new BattleContext({
+    ctx = {
         veryClose: false
-    })
+    }
 
-    constructor(pokemon1, pokemon2) {
+    constructor(pokemon1, pokemon2, fieldTypes = []) {
         super()
 
         this.pokemon1 = pokemon1;
@@ -43,6 +44,8 @@ export class BattleField extends EventEmitter {
             [pokemon1, new BattlePrompt()],
             [pokemon2, new BattlePrompt()]
         ]);
+        
+        this.fields = fieldTypes.map(f => makeField(this, f))
 
         this.on("turn", (...args) => {
             if (!this._waveAfterTurns) {
@@ -87,7 +90,7 @@ export class BattleField extends EventEmitter {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
         
-        if(this.context.get("veryClose") && move1.flags.contact !== move2.flags.contact) {
+        if(this.ctx.veryClose && move1.flags.contact !== move2.flags.contact) {
             if(move1.flags.contact) {
                 move2 = new Move("staythere")
                 senario.set(this.pokemon2, move2)
@@ -329,8 +332,9 @@ export class BattleField extends EventEmitter {
             this.pokemon2.state.emit("used-move", move2) 
         }
 
-        const veryClose = (move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))
-        veryClose && this.context.set("veryClose", veryClose)
+        if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
+            this.ctx.veryClose = true
+        }
         
         this.emit("turn-end", this, hit1, hit2)
         this.pokemon1.state.emit("turn-end", this, hit1)
@@ -377,19 +381,6 @@ export class BattleField extends EventEmitter {
     }
 }
 
-class BattleContext {
-    constructor(context) {
-        this._context = context
-    }
-
-    get(key) {
-        return this._context[key]
-    }
-
-    set(key, value) {
-        this._context[key] = value
-    }
-}
 
 class BattleState extends EventEmitter {
     moves = [
@@ -406,6 +397,7 @@ class BattleState extends EventEmitter {
         this.retreat = pokemon.meta.retreat;
         this.stats = new StatsManager(this);
         this.effects = new EffectManager(this);
+        this.damage = new DamageManager(this);
         
         if(pokemon.meta.moves) {
             pokemon.meta.moves.forEach(moveMeta => {
@@ -473,18 +465,28 @@ class StatsManager {
     }
     
     _statChanges = {};
+    _modifiers = {}
 
     constructor(state) {
         this.state = state
         this._stats = Object.assign({}, StatsManager.BATTLE_STATS, this.state.pokemon.stats, this.state.pokemon.meta.stats);
         this.prev = new PrevStatsManager(state, this)
+        
+        this.state.on("turn", () => {
+            this._modifiers = {}
+        })
+        this.state.on("wave", () => {
+            this._modifiers = {}
+        })
     }
     
     get(name) {
         const baseStat = this._stats[name];
         const stage = this._statChanges[name] || 0;
-        const multiplier = this._statStageMultiplier(stage);
-        return fixFloat(baseStat * multiplier);
+        const finalStat = baseStat
+            * this._statStageMultiplier(stage)
+            * this.modifier(name)
+        return fixFloat(finalStat);
     }
 
     set(name, value) {
@@ -494,6 +496,12 @@ class StatsManager {
             this.state.emit("fainted")
         }
         return value
+    }
+    
+    chainModify(name, modifier) {
+        if (!this._modifiers[name]) 
+            this._modifiers[name] = []
+        this._modifiers[name].push(modifier)
     }
 
     all() {
@@ -528,6 +536,10 @@ class StatsManager {
         // Stat stage clamping (-6 to +6)
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
         this._statChanges[stat] = newStage;
+    }
+    
+    modifier(name) {
+        return this._modifiers[name]?.reduce((acc, m) => acc * m, 1) ?? 1
     }
 
     _statStageMultiplier(stage) {
@@ -605,4 +617,40 @@ export async function calculateWinXP(poke1, poke2) {
 
     const xp = Math.floor(baseXp * levelMultiplier * typeEffectiveness);
     return xp;
+}
+
+
+class DamageManager {
+    _modifiers = []
+    _critModifiers = []
+    
+    constructor(state) {
+        this.state = state
+        
+        this.state.on("turn", () => {
+            this._modifiers = []
+            this._critModifiers = []
+            
+        })
+        this.state.on("wave", () => {
+            this._modifiers = []
+            this._critModifiers = []
+        })
+    }
+    
+    modifier() {
+        return this._modifiers.reduce((acc, m) => acc * m, 1)
+    }
+    
+    critModifier() {
+        return this._critModifiers.reduce((acc, m) => acc * m, 1)
+    }
+    
+    chainModify(modifier) {
+        this._modifiers.push(modifier)
+    }
+
+    chainModifyCrit(modifier) {
+        this._critModifiers.push(modifier)
+    }
 }

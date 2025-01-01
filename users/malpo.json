@@ -1,61 +1,90 @@
 {
-  "pawniard": {
-    "xp": 1300,
-    "nature": "bold",
+  "treecko": {
+    "xp": 1200,
+    "nature": "adamant",
     "retreat": 3,
     "moves": [
       {
-        "id": "metalclaw",
+        "id": "pound",
         "isSelected": true
       },
       {
-        "id": "brutalswing",
+        "id": "quickattack",
         "isSelected": true
       },
       {
-        "id": "ironhead",
+        "id": "leafage",
         "isSelected": true
       },
       {
-        "id": "furyattack",
+        "id": "leer",
+        "isSelected": true
+      },
+      {
+        "id": "bulletseed",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-  "bulbasaur": {
-    "xp": 1200,
+  "hoothoot": {
+    "xp": 1100,
+    "nature": "hardy",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "gust",
+        "isSelected": true
+      },
+      {
+        "id": "featherdance",
+        "isSelected": true
+      },
+      {
+        "id": "peck",
+        "isSelected": true
+      },
+      {
+        "id": "confusion",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "mankey": {
+    "xp": 1300,
     "nature": "calm",
     "retreat": 3,
     "moves": [
       {
-        "id": "vinewhip",
+        "id": "furyswipes",
         "isSelected": true
       },
       {
-        "id": "poisongas",
+        "id": "doubleslap",
         "isSelected": true
       },
       {
-        "id": "razorleaf",
+        "id": "leer",
         "isSelected": true
       },
       {
-        "id": "leechseed",
+        "id": "covet",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-  "axew": {
-    "xp": 800,
+  "shinx": {
+    "xp": 1200,
     "nature": "jolly",
     "retreat": 3,
     "moves": [
       {
-        "id": "headbutt",
+        "id": "nuzzle",
         "isSelected": true
       },
       {
@@ -63,40 +92,14 @@
         "isSelected": true
       },
       {
-        "id": "quickattack",
+        "id": "growl",
         "isSelected": true
       },
       {
-        "id": "sharpen",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  "pidgeotto": {
-    "xp": 1200,
-    "nature": "serious",
-    "retreat": 2,
-    "moves": [
-      {
-        "id": "peck",
-        "isSelected": true
-      },
-      {
-        "id": "furyattack",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "gust",
+        "id": "thundershock",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   }
-}

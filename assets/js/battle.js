@@ -26,7 +26,7 @@ globalThis.retreatBtnClickHandler = function(playerTag){
 
 function loadVeryCloseBtn() {
     const btn = document.getElementById("very-close-btn")
-    battleField.context.get("veryClose")
+    battleField.ctx.veryClose
         ? btn.classList.add("active")
         : btn.classList.remove("active")
 }
@@ -38,7 +38,7 @@ function syncStatsMeta(pokemon) {
 
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
-  battleField.context.set("veryClose", !battleField.context.get("veryClose"))
+  battleField.ctx.veryClose = !battleField.ctx.veryClose
 }
 
 globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
@@ -208,7 +208,8 @@ function switchPokemon(playerTag, pokemonId) {
 }
 
 function setupCurrentBattle(switcher) {
-    globalThis.battleField = new BattleField(pokemon, enemyPokemon)
+    const fields = getParam("fields")?.split(',') ?? []
+    globalThis.battleField = new BattleField(pokemon, enemyPokemon, fields)
     setupPokemonForDom("you")
     setupPokemonForDom("enemy")
 }

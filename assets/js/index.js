@@ -148,9 +148,24 @@ document.body.onload = loadAll
 // };
 
 
-import { startUserBattle } from "./utils/dom.js";
+import { startBattle, startUserBattle } from "./utils/dom.js";
+//startUserBattle("rocky", ["normal"])
 
+//window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6ImJhcmJvYWNoIiwibWV0YSI6eyJ4cCI6MTYwMCwibmF0dXJlIjoiYnJhdmUiLCJyZXRyZWF0IjozLCJtb3ZlcyI6W3siaWQiOiJ3YXRlcmd1biIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJhcXVhamV0IiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6InRhaWxzbGFwIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6Im11ZHNsYXAiLCJpc1NlbGVjdGVkIjp0cnVlfV0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==&fields="
 
-//startUserBattle("rible")
-
+startBattle({
+  "bulbasaur": {
+    "xp": 100,
+    "nature": "calm",
+    "retreat": 2,
+    "moves": [
+        {
+            id: "razorleaf",
+            isSelected: true
+        }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+}, ["Grass"])
 

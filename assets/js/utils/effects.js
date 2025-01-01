@@ -304,13 +304,7 @@ class StallEffect extends ExpirableEffect {
     
     setup() {
         super.setup()
-        const opponent = this.state.field.opponentOf(this.state.pokemon)
-        this._hp = opponent.state.stats.get("hp")
-    }
-    
-    onTurnEnd() {
-        const opponent = this.state.field.opponentOf(this.state.pokemon)
-        opponent.state.stats.set("hp", this._hp)
+        this.state.damage.chainModify(0.01)
     }
 }
 
