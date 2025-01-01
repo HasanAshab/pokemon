@@ -1,6 +1,6 @@
- {
+{
   "drilbur": {
-    "xp": 1100,
+    "xp": 1200,
     "nature": "calm",
     "retreat": 2,
     "moves": [
@@ -11,13 +11,13 @@
       {
         "id": "dig",
         "isSelected": true
-      },
+      }
     ],
     "stats": {},
     "token_used": {}
   },
   "rookidee": {
-    "xp": 1000,
+    "xp": 1200,
     "nature": "brave",
     "retreat": 2,
     "moves": [
@@ -33,4 +33,4 @@
     "stats": {},
     "token_used": {}
   }
- }
+}

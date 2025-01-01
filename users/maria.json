@@ -1,0 +1,56 @@
+{
+  "combusken": {
+    "xp": 1600,
+    "nature": "jolly",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "doublekick",
+        "isSelected": true
+      },
+      {
+        "id": "flamecharge",
+        "isSelected": true
+      },
+      {
+        "id": "ember",
+        "isSelected": true
+      },
+      {
+        "id": "detect",
+        "isSelected": true
+      },
+      {
+        "id": "slash",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "dratini": {
+    "xp": 1200,
+    "nature": "serious",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "wrap",
+        "isSelected": true
+      },
+      {
+        "id": "tailslap",
+        "isSelected": true
+      },
+      {
+        "id": "dragontail",
+        "isSelected": true
+      },
+      {
+        "id": "dragonrage",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+}

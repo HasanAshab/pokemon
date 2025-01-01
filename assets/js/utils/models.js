@@ -39,9 +39,9 @@ export class Pokemon extends PSPokemon {
     static XP_PER_LEVEL = 100;
     static TOKEN_PER_LEVEL = 2
     static TOKEN_MODIFIERS = {
-        hp: 1.06,
+        hp: 1.03,
         spe: 1.009, 
-        default: 1.05 // Default modifier for all other stats
+        default: 1.025 // Default modifier for all other stats
     };
 
     static calculateLevel(xp) {
