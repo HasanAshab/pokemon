@@ -1,13 +1,10 @@
-startBattle
 fix retreat for scratch
+magnitude
 
 increase crit ratio (lazor foc, foc energy)
 disable, furycutter
 
-
-damage modifiers
 semi-invuln
-commentary
 cb bp retreat process
 protect, ditect advanced
 
@@ -27,7 +24,7 @@ phy 0 -> sp = x - y d
 * Bugs
 stall
 counter
-magnitude
+priority
 
 * Performance
 make chunkable data
