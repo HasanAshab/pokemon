@@ -1,4 +1,4 @@
-//import { calculateDTManCount } from "../processor/"
+import { calculateDTManCount } from "../../../assets/js/utils/helpers.js"
 
 export default {
     staythere: {

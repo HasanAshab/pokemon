@@ -1,8 +1,11 @@
 import { Pokemon, Move } from "./utils/models.js";
-import { capitalizeFirstLetter } from "./utils/helpers.js"
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
+import { capitalizeFirstLetter,getMoveLearnset } from "./utils/helpers.js"
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle} from "./utils/dom.js";
+//import learnset from "../../data/learnsets/charmander.js"
 
 
+
+//console.log(learnset)
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
     loadNaturesDataList("natures-data-list")
@@ -53,6 +56,7 @@ function makeEnemiesMeta() {
   })
  return enemiesMeta
 }
+
 function getBattleFields(){
     const battleFields = []
     const activeFields = document.querySelectorAll(".feilds-cont > .feild.active")
@@ -61,9 +65,9 @@ function getBattleFields(){
     }
     return battleFields
 }
+
 globalThis.feildClickHandler = function({currentTarget}){
     currentTarget.classList.toggle("active")
-    console.log(getBattleFields())
 
     
 }
@@ -74,6 +78,23 @@ globalThis.showStats = function(formId) {
     formId = Object.keys(metas)[formId]
     const enemyPokemon = new Pokemon(formId, metas[formId])
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
+}
+
+globalThis.setDefaultMoves = async ({currentTarget})=>{
+   const form = currentTarget.parentElement
+   const pokemonName = form.querySelector(".enemy").value
+   const level = form.querySelector(".level-inp").value
+ 
+  if (pokemonName) {
+   const moveInputs = form.querySelectorAll(".move-input")
+   const moveLearnset =  await getMoveLearnset(pokemonName,level)
+   let i = 0;
+   for (const moveInput of moveInputs) {
+     if (moveInput.value === ""){
+     moveInput.value = moveLearnset[i++].name
+     }
+   }
+  }
 }
 
 globalThis.showStartBattleCode = function() {
@@ -95,4 +116,3 @@ globalThis.showMoveDetails = function({currentTarget}){
 globalThis.startBattleBtnHandler = function() {
   startBattle(makeEnemiesMeta(), getBattleFields())
 }
-

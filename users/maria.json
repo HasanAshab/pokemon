@@ -52,5 +52,56 @@
     ],
     "stats": {},
     "token_used": {}
+  },
+  {
+  "ponytagalar": {
+    "xp": 1200,
+    "nature": "jolly",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "agility",
+        "isSelected": true
+      },
+      {
+        "id": "confusion",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
+        "isSelected": true
+      },
+      {
+        "id": "aerialace",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "beedrill": {
+    "xp": 1200,
+    "nature": "hardy",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "furyattack",
+        "isSelected": true
+      },
+      {
+        "id": "leechlife",
+        "isSelected": true
+      },
+      {
+        "id": "poisongas",
+        "isSelected": true
+      },
+      {
+        "id": "xscissor",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
   }
 }

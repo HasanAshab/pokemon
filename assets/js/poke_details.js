@@ -16,7 +16,6 @@ function setTotalHealth(totalHp) {
  healthProgressBar.setAttribute("data-total-hp", totalHp)
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
   healthProgressBar.querySelector(".total-hp").textContent = totalHp
-
 }
 function setCurrentHealth(hp) {
    const healthProgressBar = document.querySelector(".health-progress-bar")
@@ -74,9 +73,7 @@ globalThis.closePokemonChooseForm = function(){
   pokemonChooseForm.parentElement.classList.remove('active')
   
 }
-globalThis.openEnemyChooseInterface = function() {
-  window.location = `enemy.html?name=${name}`
-}
+
 globalThis.healthProgressBarClickHandler = function ({currentTarget}){
 const oldCurrentHp = currentTarget.getAttribute('data-current-hp')
 let newHp = prompt("Set current HP:",oldCurrentHp)

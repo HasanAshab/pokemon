@@ -102,6 +102,9 @@ export class BattleField extends EventEmitter {
         }
 
         this.emit("turn", this, senario)
+        
+        console.log(this.pokemon1.id, this.pokemon1.state.manCount)
+        console.log(this.pokemon2.id, this.pokemon2.state.manCount)
 
         this.pokemon1.state.effects.apply(move2, { on: "self" })
         this.pokemon2.state.effects.apply(move1, { on: "self" })
@@ -414,7 +417,7 @@ class BattleState extends EventEmitter {
         this.on("used-move", move => {
             const opponent = this.field.opponentOf(this.pokemon)
             
-            //move.onHit?.(this.pokemon)
+            move.onHit?.(this.pokemon)
             move.onAfterMove(this.pokemon, opponent, move)
             
             this.retreat -= move.retreat

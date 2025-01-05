@@ -70,3 +70,39 @@ export function getDamageDangerLevel(pokemon, damage) {
         return `<span style="color: #FF0000;">Overkill</span>`; // Red
     }
 }
+
+
+export function calculateDTManCount(pokemon) {
+    return Math.round(
+        pokemon.state.stats.get("spe") * pokemon.level * (0.06 * 0.1)
+    )
+}
+
+export function logUniqueMethodKeys(obj) {
+  const uniqueMethodKeys = new Set();
+
+  for (const key in obj) {
+    const innerObj = obj[key];
+    for (const prop in innerObj) {
+      if (typeof innerObj[prop] === 'function') {
+        uniqueMethodKeys.add(prop);
+      }
+    }
+  }
+
+  console.log([...uniqueMethodKeys]);
+}
+
+
+export async function getMoveLearnset(pokemon, level, limit = 5) {
+    const { default: moveLearnset } = await import(`../../../data/learnsets/${pokemon}.js`);
+    return moveLearnset
+        .filter(ml => ml.required_level <= level)
+        .toSorted((a, b) => {
+            if (a.source === "level" && b.source !== "level") return -1; // "level" comes first
+            if (a.source !== "level" && b.source === "level") return 1;  // "tm" goes below "level"
+            return a.required_level - b.required_level;                  // Sort by level otherwise
+        })
+        .slice(0, limit);
+}
+
