@@ -32,7 +32,9 @@ class PSPokemon {
         this.state.effects.add(name)
     }
     
-    
+    hasType(...args) {
+        return this.isTypeOf(...args)
+    }
 }
 
 export class Pokemon extends PSPokemon {

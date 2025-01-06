@@ -2,6 +2,23 @@ import { processor } from "./helpers.js"
 import { MOVE_CTX } from "../../assets/js/utils/ctx.js"
 
 
+function isTwoTurnMove(move) {
+    let isTwoTurn = false
+    const attacker = {
+        removeVolatile() {
+            return false
+        },
+        addVolatile(name) {
+            isTwoTurn = name === "twoturnmove"
+        },
+        hasType() {}
+    }
+   try {
+   move.onTryMove?.(attacker, null, {})
+   } catch (e){console.log(e)}
+   return isTwoTurn
+}
+
 function mergeDefault(move) {
     const defaultProps = {
         onAfterMove(pokemon, target, move) {
@@ -193,6 +210,12 @@ function setCustomCTX(move) {
   }
 }
 
+function modifyAccuracy(move) {
+    if (isTwoTurnMove(move) && move.accuracy !== true) {
+        move.accuracy -= 50
+    }
+}
+
 export default processor([
     mergeDefault,
     modifyPP,
@@ -201,4 +224,5 @@ export default processor([
     setStatChanges,
     setRetreat,
     setCustomCTX,
+    modifyAccuracy,
 ])

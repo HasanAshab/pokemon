@@ -1,4 +1,19 @@
 export default {
+      charizardmegay: {
+      num: 6,
+      name: "Charizard-Mega-Y",
+      baseSpecies: "Charizard",
+      forme: "Mega-Y",
+      types: ["Fire", "Flying"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 78, atk: 104, def: 78, spa: 104, spd: 115, spe: 155 },
+      abilities: { 0: "Drought" },
+      heightm: 1.6,
+      weightkg: 90,
+      color: "Red",
+      eggGroups: ["Monster", "Dragon"],
+      requiredItem: "Charizardite Y"
+    },
     charizardmegaz: {
       num: 6,
       name: "Charizard-Mega-Z",
@@ -14,5 +29,71 @@ export default {
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Charizardite Z"
     },
-
+     magtauros: {
+      num: 10002,
+      name: "Magtauros",
+      baseSpecies: "Tauros",
+      types: ["Fighting", "Fire"],
+      gender: "M",
+      baseStats: { hp: 100, atk: 160, def: 120, spa: 50, spd: 90, spe: 150 },
+      abilities: { 0: "Intimidate", 1: "Anger Point", H: "Cud Chew" },
+      heightm: 1.8,
+      weightkg: 130,
+      color: "Black",
+      prevo: "Tauros-Paldea-Blaze"
+       evoLevel: 36,
+     eggGroups: ["Field"]
+    },
+    terrachomp: {
+      num: 10001,
+      name: "Terrachomp",
+      types: ["Dragon", "fire"],
+      baseStats: { hp: 120,
+    atk: 200,
+    def: 110,
+    spa: 130, 
+    spd: 100,
+    spe: 120 },
+      abilities: { 0: "Molten Blade", 1: "Eruption Core" },
+      heightm: 1.9,
+      weightkg: 140,
+      color: "Black",
+      prevo: "Garchomp",
+      evoLevel: 50,
+      eggGroups: ["Monster", "Dragon"],
+      otherFormes: [],
+      formeOrder: ["Terrachomp"]
+    },
+    lucario: {
+      num: 10003,
+      name: "Noctario",
+      types: ["Fighting", "Steel","Dark"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 70, atk: 110, def: 70, spa: 115, spd: 70, spe: 90 },
+      abilities: { 0: "Steadfast", 1: "Inner Focus", H: "Justified" },
+      heightm: 1.2,
+      weightkg: 54,
+      color: "Blue",
+      prevo: "Lucario",
+      evoType: "levelFriendship",
+      evoCondition: "during the day",
+      eggGroups: ["Field", "Human-Like"],
+      otherFormes: ["Lucario-Mega"],
+      formeOrder: ["Lucario", "Lucario-Mega"]
+    },
+    lucariomega: {
+      num: 1000,
+      name: "Lucario-Mega",
+      baseSpecies: "Lucario",
+      forme: "Mega",
+      types: ["Fighting", "Steel"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 70, atk: 145, def: 88, spa: 140, spd: 70, spe: 112 },
+      abilities: { 0: "Adaptability" },
+      heightm: 1.3,
+      weightkg: 57.5,
+      color: "Blue",
+      eggGroups: ["Field", "Human-Like"],
+      requiredItem: "Lucarionite"
+    },
 }

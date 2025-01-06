@@ -5,8 +5,9 @@ const MOVE_DEX = {
 }
 
 export const MOVE_CTX = {
+    add: (...args) => null, // todo
     debug: () => null,
-    runEvent: () => null,
+    runEvent: () => true, //todo
     dex: MOVE_DEX,
     
     heal(hp, pokemon) {
@@ -15,5 +16,5 @@ export const MOVE_CTX = {
 
     damage(damage, pokemon) {
         pokemon.state.decreaseHealth(damage)
-    }
+    },
 }
