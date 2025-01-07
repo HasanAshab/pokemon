@@ -188,7 +188,7 @@ export class Pokemon extends PSPokemon {
 
         return tokenStats;
     }      
-      _calculateTotalStat() {
+    _calculateTotalStat() {
         const baseStats = this._pokemon.baseStats;
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();

@@ -11,3 +11,9 @@ export function processor(pipeline) {
         })
     }
 }
+
+export function setKeyIfNotExists(obj, key, value) {
+  if (!obj.hasOwnProperty(key)) {
+    obj[key] = value;
+  }
+}

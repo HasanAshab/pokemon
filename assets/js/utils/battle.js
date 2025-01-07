@@ -450,7 +450,7 @@ class BattleState extends EventEmitter {
     }
     
     usableOffensiveMoves() {
-        return this.usableMoves().filter(m => m.isOffensive)
+        return this.usableMoves().filter(m => m.flags.offensive)
     }
 
     reducePP(moveId) {

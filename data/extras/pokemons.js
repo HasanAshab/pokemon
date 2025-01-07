@@ -40,7 +40,7 @@ export default {
       heightm: 1.8,
       weightkg: 130,
       color: "Black",
-      prevo: "Tauros-Paldea-Blaze"
+      prevo: "Tauros-Paldea-Blaze",
        evoLevel: 36,
      eggGroups: ["Field"]
     },

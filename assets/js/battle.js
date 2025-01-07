@@ -35,7 +35,16 @@ function syncStatsMeta(pokemon) {
     pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
     setPokemonMeta(pokemon.id, pokemon.meta)
 }
-
+ globalThis.getEnemiesMetaBtnClickHandler = function() {
+  const meta = teams.enemy.reduce((obj, p) => {
+      obj[p.id] = p.meta
+      return obj
+  }, {})
+  const fieldsStr = fields.map(f => `"${f}"`).join(', ')
+  const code = `startBattle(${JSON.stringify(meta, null, 2)}, [${fieldsStr}])`
+   navigator.clipboard.writeText(code)
+   alert(code)
+}
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
   battleField.ctx.veryClose = !battleField.ctx.veryClose
@@ -212,7 +221,6 @@ function switchPokemon(playerTag, pokemonId) {
 }
 
 function setupCurrentBattle(switcher) {
-    const fields = getParam("fields")?.split(',') ?? []
     globalThis.battleField = new BattleField(pokemon, enemyPokemon, fields)
     setupPokemonForDom("you")
     setupPokemonForDom("enemy")
@@ -405,6 +413,7 @@ function loadMoves(playerTag) {
   for (const move of pokemon.state.moves) {
       const effectiveness = opponentPokemon.effectiveness(move.type)
       const damage = new Damage(pokemon, move)
+      console.log(move)
     const cardHtml = `
     <div class="single-card-wrapper">
       <div class="card ${pokemon.state.canUseMove(move.id) ? "" : "disabled"}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" onclick="moveCardClickHandler(event, '${playerTag}')" data-makes-contact="${!!move.flags.contact}">
@@ -581,6 +590,7 @@ function loadHealth(playerTag) {
 
 window.onload = () => {
     globalThis.pokemonMap = {}
+    globalThis.fields = getParam("fields")?.split(',') ?? []
     loadTeams()
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 

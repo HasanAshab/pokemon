@@ -97,11 +97,13 @@ globalThis.setDefaultMoves = async ({currentTarget})=>{
   }
 }
 
-globalThis.showStartBattleCode = function() {
+globalThis.copyStartBattleCode = function() {
     const fields = getBattleFields().map(f => `"${f}"`).join(', ')
-    const cont = document.getElementById("battle-code-cont")
-    cont.innerHTML = `startBattle(${JSON.stringify(makeEnemiesMeta(), null, 2)}, [${fields}])`;
+    const code = `startBattle(${JSON.stringify(makeEnemiesMeta(), null, 2)}, [${fields}])`;
+    navigator.clipboard.writeText(code)
+    alert(code)
 }
+
 
 globalThis.showMoveDetails = function({currentTarget}){
   const form = currentTarget.parentElement

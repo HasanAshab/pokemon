@@ -1,4 +1,4 @@
-import { processor } from "./helpers.js"
+import { processor, setKeyIfNotExists } from "./helpers.js"
 import { MOVE_CTX } from "../../assets/js/utils/ctx.js"
 
 
@@ -28,15 +28,17 @@ function mergeDefault(move) {
     Object.assign(move, defaultProps, move)
 }
 
+function addFlags(move) {
+    const flags = move.flags
+    
+    setKeyIfNotExists(flags, "offensive", 1)
+    isTwoTurnMove(move) && setKeyIfNotExists(flags, "twoturn", 1)
+}
+
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
       move.pp = Math.round(move.pp / 3) || 1;
     }
-}
-
-function setOffensiveness(move) {
-    if ("isOffensive" in move) return
-    move.isOffensive = true
 }
 
 function setEffects(move) {
@@ -211,15 +213,15 @@ function setCustomCTX(move) {
 }
 
 function modifyAccuracy(move) {
-    if (isTwoTurnMove(move) && move.accuracy !== true) {
+    if (move.flags.twoturn && move.accuracy !== true) {
         move.accuracy -= 50
     }
 }
 
 export default processor([
     mergeDefault,
+    addFlags,
     modifyPP,
-    setOffensiveness,
     setEffects,
     setStatChanges,
     setRetreat,
