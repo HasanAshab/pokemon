@@ -29,7 +29,7 @@
     "token_used": {}
   },
   "dratini": {
-    "xp": 1200,
+    "xp": 1300,
     "nature": "serious",
     "retreat": 3,
     "moves": [
@@ -42,7 +42,7 @@
         "isSelected": true
       },
       {
-        "id": "dragontail",
+        "id": "aquatail",
         "isSelected": true
       },
       {
@@ -53,7 +53,7 @@
     "stats": {},
     "token_used": {}
   },
-  {
+  
   "ponytagalar": {
     "xp": 1200,
     "nature": "jolly",

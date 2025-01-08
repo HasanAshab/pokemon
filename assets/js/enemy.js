@@ -57,19 +57,39 @@ function makeEnemiesMeta() {
  return enemiesMeta
 }
 
-function getBattleFields(){
+function getActiveBattleFields(){
     const battleFields = []
-    const activeFields = document.querySelectorAll(".feilds-cont > .feild.active")
-    for (const feild of activeFields){
-       battleFields.push(capitalizeFirstLetter(feild.classList[1]))
+    const activeFields = document.querySelectorAll(".fields-cont > .field.active")
+    for (const field of activeFields){
+       battleFields.push(capitalizeFirstLetter(field.classList[1]))
     }
     return battleFields
 }
 
-globalThis.feildClickHandler = function({currentTarget}){
+globalThis.fieldClickHandler = function({currentTarget}){
     currentTarget.classList.toggle("active")
-
-    
+}
+globalThis.selectRandomFields = function(){
+ const fields = document.querySelectorAll(".fields-cont > .field")
+ const startIndex = Math.floor(Math.random() * fields.length)
+ const totalFeildsToSelect = Math.floor(Math.random() * 6) + 1
+ let fieldsSelected = 0
+ while (fieldsSelected !== totalFeildsToSelect){
+  for (let i = startIndex; i < fields.length; i++){
+      const isSelected = (Math.floor(Math.random() * 11) + 1) <= 3 ? true : false
+      if (isSelected){
+          fields[i].classList.add("active")
+          fieldsSelected++
+      }
+      if (fieldsSelected === totalFeildsToSelect)
+         break;
+  }
+ }
+}
+globalThis.copyFields = function(){
+    const fields = `[${getActiveBattleFields().map(f => `"${f}"`).join(', ')}]`
+ navigator.clipboard.writeText(fields)
+    alert(fields)
 }
 
 globalThis.showStats = function(formId) {
@@ -98,7 +118,7 @@ globalThis.setDefaultMoves = async ({currentTarget})=>{
 }
 
 globalThis.copyStartBattleCode = function() {
-    const fields = getBattleFields().map(f => `"${f}"`).join(', ')
+    const fields = getActiveBattleFields().map(f => `"${f}"`).join(', ')
     const code = `startBattle(${JSON.stringify(makeEnemiesMeta(), null, 2)}, [${fields}])`;
     navigator.clipboard.writeText(code)
     alert(code)
@@ -116,5 +136,5 @@ globalThis.showMoveDetails = function({currentTarget}){
 }
 
 globalThis.startBattleBtnHandler = function() {
-  startBattle(makeEnemiesMeta(), getBattleFields())
+  startBattle(makeEnemiesMeta(), getActiveBattleFields())
 }

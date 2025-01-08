@@ -1,6 +1,4 @@
 dodge
-field
-battle time editor
 fix retreat for scratch
 magnitude
 
@@ -29,3 +27,5 @@ stall
 counter
 priority
 vicegrip
+type up down
+night shade dam not fixed

@@ -413,7 +413,6 @@ function loadMoves(playerTag) {
   for (const move of pokemon.state.moves) {
       const effectiveness = opponentPokemon.effectiveness(move.type)
       const damage = new Damage(pokemon, move)
-      console.log(move)
     const cardHtml = `
     <div class="single-card-wrapper">
       <div class="card ${pokemon.state.canUseMove(move.id) ? "" : "disabled"}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" onclick="moveCardClickHandler(event, '${playerTag}')" data-makes-contact="${!!move.flags.contact}">

@@ -102,9 +102,6 @@ export class BattleField extends EventEmitter {
         }
 
         this.emit("turn", this, senario)
-        
-        console.log(this.pokemon1.id, this.pokemon1.state.manCount)
-        console.log(this.pokemon2.id, this.pokemon2.state.manCount)
 
         this.pokemon1.state.effects.apply(move2, { on: "self" })
         this.pokemon2.state.effects.apply(move1, { on: "self" })
@@ -152,7 +149,6 @@ export class BattleField extends EventEmitter {
             [this.pokemon2, 0]
         ])
         
-
         if (!canMove1) {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
         }
@@ -348,7 +344,7 @@ export class BattleField extends EventEmitter {
         if (move.accuracy === true || !target.state.effects.canMove()) {
             return false;
         }
-    
+
         // Get speed stats
         const attackerSpd = attacker.state.stats.get("spe");
         const targetSpd = target.state.stats.get("spe");

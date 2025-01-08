@@ -1,6 +1,6 @@
 {
-  "treecko": {
-    "xp": 1200,
+  "grovyle": {
+    "xp": 1500,
     "nature": "adamant",
     "retreat": 3,
     "moves": [
@@ -9,15 +9,15 @@
         "isSelected": true
       },
       {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "leafage",
-        "isSelected": true
-      },
-      {
         "id": "leer",
+        "isSelected": true
+      },
+      {
+        "id": "megadrain",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
         "isSelected": true
       },
       {

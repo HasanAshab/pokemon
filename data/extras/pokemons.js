@@ -1,4 +1,19 @@
 export default {
+      charizardmegax: {
+      num: 6,
+      name: "Charizard-Mega-X",
+      baseSpecies: "Charizard",
+      forme: "Mega-X",
+      types: ["Fire", "Dragon"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 78, atk: 120, def: 111, spa: 140, spd: 85, spe: 100 },
+      abilities: { 0: "Tough Claws" },
+      heightm: 1.7,
+      weightkg: 110.5,
+      color: "Black",
+      eggGroups: ["Monster", "Dragon"],
+      requiredItem: "Charizardite X"
+    },
       charizardmegay: {
       num: 6,
       name: "Charizard-Mega-Y",
@@ -47,14 +62,15 @@ export default {
     terrachomp: {
       num: 10001,
       name: "Terrachomp",
-      types: ["Dragon", "fire"],
-      baseStats: { hp: 120,
-    atk: 200,
-    def: 110,
-    spa: 130, 
+      types: ["Dragon", "Fire","Ground","Flying"],
+      baseStats: {
+    hp: 100,
+    atk: 150,
+    def: 100,
+    spa: 150, 
     spd: 100,
-    spe: 120 },
-      abilities: { 0: "Molten Blade", 1: "Eruption Core" },
+    spe: 180 },
+      abilities: { 0: "Tough Claws", 1: "Eruption Core" },
       heightm: 1.9,
       weightkg: 140,
       color: "Black",

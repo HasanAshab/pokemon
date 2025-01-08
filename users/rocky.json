@@ -1,6 +1,6 @@
 {
   "pawniard": {
-    "xp": 1300,
+    "xp": 1600,
     "nature": "bold",
     "retreat": 3,
     "moves": [
@@ -25,20 +25,24 @@
     "token_used": {}
   },
   "bulbasaur": {
-    "xp": 1200,
-    "nature": "calm",
-    "retreat": 3,
+    "xp": 1500,
+    "nature": "serious",
+    "retreat": 3.5,
     "moves": [
+      {
+        "id": "tackle",
+        "isSelected": true
+      },
+      {
+        "id": "razorleaf",
+        "isSelected": true
+      },
       {
         "id": "vinewhip",
         "isSelected": true
       },
       {
-        "id": "poisongas",
-        "isSelected": true
-      },
-      {
-        "id": "razorleaf",
+        "id": "growth",
         "isSelected": true
       },
       {
@@ -49,31 +53,35 @@
     "stats": {},
     "token_used": {}
   },
-  "axew": {
-    "xp": 800,
-    "nature": "jolly",
+  "fraxure": {
+    "xp": 1600,
+    "nature": "calm",
     "retreat": 3,
     "moves": [
-      {
-        "id": "headbutt",
-        "isSelected": true
-      },
       {
         "id": "scratch",
         "isSelected": true
       },
       {
-        "id": "quickattack",
+        "id": "leer",
         "isSelected": true
       },
       {
-        "id": "sharpen",
+        "id": "bite",
+        "isSelected": true
+      },
+      {
+        "id": "dragonrage",
+        "isSelected": true
+      },
+      {
+        "id": "breakingswipe",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
-  },
+  }
   "pidgeotto": {
     "xp": 1200,
     "nature": "serious",

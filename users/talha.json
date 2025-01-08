@@ -1,11 +1,44 @@
 {
-"bellsprout": {
-    "xp": 1100,
-    "nature": "careful",
+  "flaaffy": {
+    "xp": 1600,
+    "nature": "mild",
     "retreat": 3,
     "moves": [
       {
-        "id": "absorb",
+        "id": "tackle",
+        "isSelected": true
+      },
+      {
+        "id": "growl",
+        "isSelected": true
+      },
+      {
+        "id": "thundershock",
+        "isSelected": true
+      },
+      {
+        "id": "thunderwave",
+        "isSelected": true
+      },
+      {
+        "id": "cottonspore",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  "bellsprout": {
+    "xp": 1300,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "vinewhip",
+        "isSelected": true
+      },
+      {
+        "id": "growth",
         "isSelected": true
       },
       {
@@ -13,18 +46,18 @@
         "isSelected": true
       },
       {
-        "id": "vinewhip",
+        "id": "acid",
         "isSelected": true
       },
       {
-        "id": "poisonpowder",
+        "id": "sleeppowder",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-  "cubone": {
+"cubone": {
     "xp": 1200,
     "nature": "brave",
     "retreat": 3,
@@ -49,33 +82,8 @@
     "stats": {},
     "token_used": {}
   },
-  "mareep": {
-    "xp": 1100,
-    "nature": "mild",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "thundershock",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "nuzzle",
-        "isSelected": true
-      },
-      {
-        "id": "volttackle",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
   "taurospaldeablaze": {
-    "xp": 700,
+    "xp": 900,
     "nature": "calm",
     "retreat": 3,
     "moves": [
