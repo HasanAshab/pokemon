@@ -247,7 +247,7 @@ export class BattleField extends EventEmitter {
         }
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
-            if (damage > 0 ) {
+            if (damage > 0) {
                 const wantDodge = !usedDodge1 && move1.id !== "staythere" && await this.prompt(this.pokemon1).ask("dodge")
                 if (wantDodge) {
                     dodged1 = this._canDodge(this.pokemon2, this.pokemon1, move2)

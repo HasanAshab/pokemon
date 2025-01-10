@@ -106,3 +106,19 @@ export async function getMoveLearnset(pokemon, level, limit = 5) {
         .slice(0, limit);
 }
 
+
+
+export function rankStats(pokemon) {
+    const statsArray = Object.entries(pokemon.stats); // Convert stats object to array of [statName, statValue]
+    
+    // Sort the array in descending order of stat values
+    statsArray.sort((a, b) => b[1] - a[1]);
+
+    // Create a ranked object
+    const result = {};
+    statsArray.forEach(([statName], index) => {
+        result[statName] = index + 1; // Assign rank starting from 1
+    });
+
+    return result;
+}

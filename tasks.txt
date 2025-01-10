@@ -28,4 +28,6 @@ counter
 priority
 vicegrip
 type up down
-night shade dam not fixed
+night shade dam not fixed (for defence)
+defence not considered when used on move
+detect bug on sleep
