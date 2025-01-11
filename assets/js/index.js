@@ -149,7 +149,7 @@ document.body.onload = loadAll
 //     originalSetItem.call(this, key, value); // Call the original setItem
 // };
 import { startBattle, startUserBattle } from "./utils/dom.js";
-//startUserBattle("rocky",["Flying", "Psychic", "Dark"])
+//startUserBattle("jihad",["Water"])
 
 /*
 startBattle({
