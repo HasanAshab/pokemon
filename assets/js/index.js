@@ -142,6 +142,7 @@ function loadAll() {
   loadNaturesDataList("natures-data-list")
 }
 document.body.onload = loadAll
+
 // const originalSetItem = localStorage.setItem;
 
 // localStorage.setItem = function(key, value) {

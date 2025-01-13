@@ -265,10 +265,11 @@ export class BattleField extends EventEmitter {
             }
         }
         
-        const instD1 = instantDamages.get(this.pokemon1)
-        const instD2 = instantDamages.get(this.pokemon2)
-        const d1 = damages.get(this.pokemon1)
-        const d2 = damages.get(this.pokemon2)
+
+        const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
+        const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
+        const d1 = hit2.toContactDamage(damages.get(this.pokemon1))
+        const d2 = hit1.toContactDamage(damages.get(this.pokemon2))
 
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)

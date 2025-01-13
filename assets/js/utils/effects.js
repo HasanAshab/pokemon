@@ -137,7 +137,7 @@ class BurnEffect extends Effect {
         this.state.stats.set("attack", Math.floor(attackStat * 2));
     }
 
-    onWave() {
+    onTurn() {
         this.state.decreaseHealth(this._calculateEffectDamage())
     }
     
@@ -152,7 +152,7 @@ class PoisonEffect extends Effect {
     static immuneTo = ["Poison", "Steel"]
     static effectName = "psn"
 
-    onWave() {
+    onTurn() {
         this.state.decreaseHealth(this._calculateEffectDamage())
     }
     
@@ -267,15 +267,26 @@ class ParalyzeEffect extends Effect {
     }
 }
 
-class ConfusionEffect extends Effect {
+class ConfusionEffect extends ExpirableEffect {
     static effectName = "confusion"
-    static ATK_SELF_CHANCE = 0.5
+    static ATK_SELF_CHANCE = 0.33
+    
+    setup() {
+        super.setup()
+        const lifetime = weightedRandom([2, 3, 4, 5], [0.30, 0.50, 0.20, 0.05])
+        this.lifetime.turns = lifetime
+    }
 
     onTurn() {
         this.status.attackSelf = Math.random() < ConfusionEffect.ATK_SELF_CHANCE
     }
 
     onTurnEnd() {
+        this.status.attackSelf = false
+    }
+    
+    teardown() {
+        super.teardown()
         this.status.attackSelf = false
     }
 }
@@ -308,6 +319,26 @@ class StallEffect extends ExpirableEffect {
     }
 }
 
+class PartiallyTrappedEffect extends ExpirableEffect {
+    static effectName = "partiallytrapped"
+
+    setup() {
+        super.setup()
+        const lifetime = weightedRandom([2, 3, 4, 5], [0.30, 0.50, 0.20, 0.05])
+        this.lifetime.turns = lifetime
+    }
+    
+    onTurn() {
+        this.state.decreaseHealth(this._calculateEffectDamage())
+    }
+    
+    _calculateEffectDamage() {
+        const maxHP = this.state.pokemon.stats.hp;
+        const trappedDamage = Math.floor(maxHP / 8); // 1/8th HP loss
+        return trappedDamage;
+    }
+}
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -318,6 +349,7 @@ export const EFFECTS = makeEffectsMap([
     ConfusionEffect,
     LeechSeedEffect,
     StallEffect,
+    PartiallyTrappedEffect,
 ])
 
 

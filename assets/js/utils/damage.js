@@ -37,7 +37,7 @@ export class Damage {
         return this.randomModifier = Math.random() * max + min;
     }
     
-    _calculateBase() {
+    _calculateBase_old() {
         if (this.move.damage) {
             if (typeof this.move.damage === "number") 
                 return this.move.damage
@@ -63,6 +63,31 @@ export class Damage {
             ? this.target.state.stats.get(isSpecial ? "spd" : "def")
             : 70; // Neutral defense if no target
         return stab * (((5.2 * (bp * 0.8) * (attackStat / defenseStat)) / 10) + 2);
+    }
+    
+    _calculateBase() {
+        if (this.move.damage) {
+            if (typeof this.move.damage === "number") 
+                return this.move.damage
+            if (this.move.damage === "level")
+                return this.attacker.level * 2
+        }
+        
+        let bp = this.move.basePower
+        if (this.move.basePowerCallback) {
+            if(this.target || this.move.basePowerCallback.length === 1)
+                bp = this.move.basePowerCallback(this.attacker, this.target, this.move)
+        }
+        
+        if (!bp) return null
+
+        const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
+        const isSpecial = this.move.category === "Special";
+        const attackStat = "state" in this.attacker 
+            ? this.attacker.state.stats.get(isSpecial ? "spa" : "atk")
+            : this.attacker.stats[isSpecial ? "spa" : "atk"];
+
+        return stab * bp * attackStat * 0.416;
     }
 
     _calculate() {
@@ -116,6 +141,20 @@ export class Hit {
     isMultiHit() {
         return this.hitCount() > 1
     }
+    
+    toContactDamage(damage) {
+        if (!damage) return damage
+        const statMap = {
+            "Physical": "def",
+            "Special": "spd",
+        }
+        const defStat = this.target.state.stats.get(
+            statMap[this.move.category]
+        )
+        const defModifier = 1 / defStat
+        return damage * defModifier
+    }
+
 
     _randomHits() {
         if(!this.move.multihit)

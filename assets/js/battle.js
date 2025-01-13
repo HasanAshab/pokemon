@@ -295,7 +295,7 @@ function setEffects(effects, playerTag) {
   const effectsMap = {
     "brn": {
         "name": "Burn",
-        "color": "Fire" 
+        "color": "Fire"
     },
     "psn": {
       "name": "Poison",
@@ -343,6 +343,10 @@ function setEffects(effects, playerTag) {
     },
     "stall": {
         "name": "Stall",
+        "color": "Normal"
+    },
+    "partiallytrapped": {
+        "name": "Par. Trapped",
         "color": "Normal"
     }
 };
