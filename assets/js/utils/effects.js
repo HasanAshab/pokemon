@@ -1,4 +1,5 @@
 import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
+import { Move } from "./models.js"
 
 
 class Effect {
@@ -29,10 +30,11 @@ class Effect {
         opponent: {},
     }
 
-    constructor(state) {
+    constructor(state, source) {
         this.state = state;
+        this.source = source;
     }
-    
+
     setup() {
         this.events.forEach(event => {
             this._subscribeTo(event)
@@ -328,8 +330,21 @@ class PartiallyTrappedEffect extends ExpirableEffect {
         this.lifetime.turns = lifetime
     }
     
-    onTurn() {
+    onTurn(_, senario) {
         this.state.decreaseHealth(this._calculateEffectDamage())
+        
+        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const move = senario.get(this.state.pokemon)
+        const opponentMove = senario.get(opponent)
+
+        if (this.source.flags.contact) {
+            move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
+            !opponentMove.flags.contact && senario.set(opponent, new Move("staythere"))
+        }
+        else {
+            move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
+            opponentMove.flags.contact && senario.set(opponent, new Move("staythere"))
+        }
     }
     
     _calculateEffectDamage() {
@@ -378,16 +393,16 @@ export class EffectManager {
         return this._effects.filter(effect => effect instanceof ExpirableEffect && effect.isExpired())
     }
     
-    add(...effects) {
-        effects.filter(effectName => !this.includes(effectName)).forEach(effectName => {
-            const EffectClass = EFFECTS[effectName]
-            const isImmune = EffectClass?.isImmune(this.state.pokemon)
-            if (!isImmune) {
-                const effect = new EffectClass(this.state)
-                effect.setup()
-                this._effects.push(effect)
-            }
-        })
+    add(source, effectName) {
+        const EffectClass = EFFECTS[effectName]
+        const isImmune = EffectClass?.isImmune(this.state.pokemon)
+        if (EffectClass && !isImmune && !this.includes(effectName)) {
+            const effect = new EffectClass(this.state, source)
+            effect.setup()
+            this._effects.push(effect)
+            return effect
+        }
+        return null
     }
     
     remove(...effects) {
@@ -404,7 +419,7 @@ export class EffectManager {
             move.effects.self
                 .forEach(effect => {
                     if (Math.random() < (effect.chance / 100)) {
-                        attacker.state.effects.add(effect.name)
+                        attacker.state.effects.add(move, effect.name)
                     }
                 })
         }
@@ -413,7 +428,7 @@ export class EffectManager {
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
                 .forEach(effect => {
                     if (Math.random() < (effect.chance / 100)) {
-                        this.add(effect.name)
+                        this.add(move, effect.name)
                     }
                 })
         }

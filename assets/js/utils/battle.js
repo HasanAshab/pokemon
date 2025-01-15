@@ -103,6 +103,10 @@ export class BattleField extends EventEmitter {
 
         this.emit("turn", this, senario)
 
+        move1 = senario.get(this.pokemon1)
+        move2 = senario.get(this.pokemon2)
+    
+
         this.pokemon1.state.effects.apply(move2, { on: "self" })
         this.pokemon2.state.effects.apply(move1, { on: "self" })
         

@@ -87,7 +87,8 @@ globalThis.showEffectsEditForm = function(playerTag){
     .prompt(`edit stat changes of "${playerTag}"`, oldEffects)
     .split(', ')
     .map(e => e.trim())
-  pokemon.state.effects.add(...newEffects)
+  pokemon.state.effects._effects = []
+  newEffects.forEach(e => pokemon.state.effects.add(new Move("staythere"), e))
   setEffects(pokemon.state.effects.names(), playerTag)
 }
 

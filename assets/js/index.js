@@ -150,21 +150,16 @@ document.body.onload = loadAll
 //     originalSetItem.call(this, key, value); // Call the original setItem
 // };
 import { startBattle, startUserBattle } from "./utils/dom.js";
-//startUserBattle("jihad",["Water"])
-
+//startUserBattle("malpo",["normal"])
 /*
 startBattle({
-  "charmeleon": {
-    "xp": 1600,
-    "nature": "brave",
-    "retreat": 3,
+  "magby": {
+    "xp": 1200,
+    "nature": "calm",
+    "retreat": 4,
     "moves": [
       {
-        "id": "scratch",
-        "isSelected": true
-      },
-      {
-        "id": "growl",
+        "id": "leer",
         "isSelected": true
       },
       {
@@ -172,47 +167,51 @@ startBattle({
         "isSelected": true
       },
       {
-        "id": "smokescreen",
+        "id": "smog",
         "isSelected": true
       },
       {
-        "id": "metalclaw",
+        "id": "tackle",
+        "isSelected": true
+      },
+      {
+        "id": "smokescreen",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-  "hitmonlee": {
-    "xp": 900,
+  "vulpix": {
+    "xp": 1600,
     "nature": "calm",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
-        "id": "doublekick",
-        "isSelected": true
-      },
-      {
-        "id": "megakick",
-        "isSelected": true
-      },
-      {
-        "id": "jumpkick",
-        "isSelected": true
-      },
-      {
-        "id": "rollingkick",
-        "isSelected": true
-      },
-      {
         "id": "tackle",
+        "isSelected": true
+      },
+      {
+        "id": "tailwhip",
+        "isSelected": true
+      },
+      {
+        "id": "ember",
+        "isSelected": true
+      },
+      {
+        "id": "firefang",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   }
-}, ["Normal"])
+}, ["Fire"])
 */
 //window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6ImR1cmFudCIsIm1ldGEiOnsieHAiOjEwMDAsIm5hdHVyZSI6InNlcmlvdXMiLCJyZXRyZWF0IjozLjUsIm1vdmVzIjpbeyJpZCI6InZpY2VncmlwIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6ImxlZWNobGlmZSIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJzYW5kYXR0YWNrIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6ImJpdGUiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoibWV0YWxzb3VuZCIsImlzU2VsZWN0ZWQiOnRydWV9XSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19,eyJpZCI6InBlcnJzZXJrZXIiLCJtZXRhIjp7InhwIjoxNjAwLCJuYXR1cmUiOiJhZGFtYW50IiwicmV0cmVhdCI6MywibW92ZXMiOlt7ImlkIjoic2NyYXRjaCIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJncm93bCIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJtZXRhbGNsYXciLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiaXJvbmRlZmVuc2UiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiaXJvbmhlYWQiLCJpc1NlbGVjdGVkIjp0cnVlfV0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==&fields=Grass,Bug,Rock"
 //window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6ImJhcmJvYWNoIiwibWV0YSI6eyJ4cCI6MTYwMCwibmF0dXJlIjoiYnJhdmUiLCJyZXRyZWF0IjozLCJtb3ZlcyI6W3siaWQiOiJ3YXRlcmd1biIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJhcXVhamV0IiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6InRhaWxzbGFwIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6Im11ZHNsYXAiLCJpc1NlbGVjdGVkIjp0cnVlfV0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==&fields="
