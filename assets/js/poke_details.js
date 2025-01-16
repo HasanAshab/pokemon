@@ -71,7 +71,6 @@ globalThis.changePokemon =  function (){
 globalThis.closePokemonChooseForm = function(){
   const pokemonChooseForm = document.querySelector(".pokemon-choose-form")
   pokemonChooseForm.parentElement.classList.remove('active')
-  
 }
 
 globalThis.healthProgressBarClickHandler = function ({currentTarget}){

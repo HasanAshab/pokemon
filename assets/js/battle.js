@@ -2,7 +2,7 @@ import { Pokemon, Move } from "./utils/models.js"
 import { BattleField } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
 import { calculateWinXP } from "./utils/battle.js"
-import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel } from "./utils/helpers.js"
+import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
  
 
@@ -70,10 +70,11 @@ globalThis.switchPokemonClickHandler = function({currentTarget}, playerTag){
     switchPokemon(playerTag, currentTarget.dataset.pokemonId)
   }
 }
+
 globalThis.showStatEditForm = function(playerTag){
     const pokemon = pokemonMap[playerTag]
-    const oldStatChanges = JSON.stringify(pokemon.state.stats._statChanges)
-    const newStatChanges = JSON.parse(
+    const oldStatChanges = objToFlags(pokemon.state.stats._statChanges)
+    const newStatChanges = flagsToObj(
         window.prompt(`edit stat changes of "${playerTag}"`,oldStatChanges)
     )
     pokemon.state.stats._statChanges = newStatChanges

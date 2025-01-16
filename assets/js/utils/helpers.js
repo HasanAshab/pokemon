@@ -122,3 +122,21 @@ export function rankStats(pokemon) {
 
     return result;
 }
+
+export function flagsToObj(flags) {
+    const obj = {};
+    flags.split(' ').forEach(pair => {
+        const [key, value] = pair.split('=');
+        if (value === undefined) return; // Skip malformed entries
+        obj[key] = isNaN(value) ? value : Number(value); // Auto-detect numbers
+    });
+    console.log(obj)
+    return obj;
+}
+
+// Converts object to simplified string
+export function objToFlags(obj) {
+    return Object.entries(obj)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(' ');
+}

@@ -1,7 +1,8 @@
 import { Pokemon, Move } from "./utils/models.js";
-import { capitalizeFirstLetter,getMoveLearnset } from "./utils/helpers.js"
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle} from "./utils/dom.js";
+import { capitalizeFirstLetter, getMoveLearnset, flagsToObj } from "./utils/helpers.js"
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
 //import learnset from "../../data/learnsets/charmander.js"
+
 
 
 
@@ -24,7 +25,7 @@ function makeEnemyMeta(form, index) {
     const retreat = Number(retreatInp.value);
 
     const nature = natureInp.value;
-    const tokens = tokenInp.value ? JSON.parse(tokenInp.value) : {};
+    const tokens = flagsToObj(tokenInp.value);
     const moves = [
         form.querySelector(".move-input-1").value,
         form.querySelector(".move-input-2").value,
