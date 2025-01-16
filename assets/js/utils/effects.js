@@ -385,7 +385,7 @@ export class EffectManager {
         })
     }
 
-    includes(effectName) {
+    has(effectName) {
         return !!this.get(effectName)
     }
 
@@ -396,7 +396,7 @@ export class EffectManager {
     add(source, effectName) {
         const EffectClass = EFFECTS[effectName]
         const isImmune = EffectClass?.isImmune(this.state.pokemon)
-        if (EffectClass && !isImmune && !this.includes(effectName)) {
+        if (EffectClass && !isImmune && !this.has(effectName)) {
             const effect = new EffectClass(this.state, source)
             effect.setup()
             this._effects.push(effect)
@@ -405,12 +405,15 @@ export class EffectManager {
         return null
     }
     
-    remove(...effects) {
-        effects.forEach(effectName => {
-            const effect = this.get(effectName)
-            effect.teardown()
-            this._removeEffectObj(effectName)
-        })
+    remove(effectName) {
+        const effect = this.get(effectName)
+        effect.teardown()
+        this._removeEffectObj(effectName)
+        return effect
+    }
+    
+    sync(...effectNames) {
+        effectNames.forEach()
     }
 
     apply(move, { on, pre = false }) {

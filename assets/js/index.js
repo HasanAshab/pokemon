@@ -35,12 +35,43 @@ globalThis.badgeClickHandler = function badgeClickHandler( {
     classList.add("active")
     totalBadgesCount++
     badgesData[index] = 1
-
   }
   localStorage.setItem("badges-data", JSON.stringify(badgesData))
   loadTotalBadges()
 }
+function updateTotalBattlesCount(){
+   const winsCount = 10
+   const losesCount = 10
+   const totalBattlesCountElm = document.querySelector(".total-battles-count")
+    totalBattlesCountElm.textContent = winsCount + losesCount
+}
+function setWinsCount(val){
+   const oldVal = 10
+   const winsCountElm = document.querySelector(".wins-count")
+    winsCountElm.textContent = val || oldVal
+    updateTotalBattlesCount()
+}
+function setLosesCount(val){
+   const oldVal = 10
+   const losesCountElm = document.querySelector(".loses-count")
+    losesCountElm.textContent = val || oldVal
+    updateTotalBattlesCount()
+}
 
+globalThis.winsCountClickHandler = function({currentTarget}){
+   const newVal = Number(window.prompt("Wins count:",currentTarget.textContent))
+  setWinsCount(newVal) 
+}
+globalThis.losesCountClickHandler = function({currentTarget}){
+   const newVal = Number(window.prompt("loses count:",currentTarget.textContent))
+  setLosesCount(newVal) 
+}
+globalThis.increasePokemonWinCount = function(id){
+    
+}
+globalThis.decreasePokemonWinCount = function(id){
+    
+}
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   const addPokemonForm = document.querySelector(".add-pokemon-form")
   const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name")
@@ -75,6 +106,7 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
     addPokemonForm.parentNode.classList.remove("active")
   }
 }
+
 globalThis.deletePokemon = function deletePokemon(name) {
   const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
   const totalPokemonsCount =  Number(localStorage.getItem("total-pokemons-count")) || 0
@@ -94,7 +126,6 @@ globalThis.healPokemon = function (id) {
     setPokemonMeta(id, meta)
 }
 
-
 globalThis.healAllBtnHandler = function () {
     Object.keys(getPokemonsMeta()).forEach(healPokemon)
 }
@@ -102,15 +133,20 @@ globalThis.healAllBtnHandler = function () {
 function loadAllPokemons() {
   const pokemonList = document.querySelector(".pokemon-list")
   const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
-    pokemonList.innerHTML = ""
+   // pokemonList.innerHTML = ""
   for (const pokemon in pokemons_meta) {
     const meta = pokemons_meta[pokemon]
     pokemonList.innerHTML += `
     <li class="pokemon" >
+     <div class="center-controle-btns-cont">
+  <svg onclick="increasePokemonWinCount('${pokemon}')" class="win-btn" width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#009c1a"></path> </g></svg>
+   <svg onclick="decreasePokemonWinCount('${pokemon}')"  class="lose-btn"width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ff1212"></path> </g></svg>
+    </div>
     <div class="primary" onclick="pokemonClickHandler('${pokemon}')">
     <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
     <i class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</i>
     </div>
+    
     <div class="right-controle-btns-cont">
     <button onclick="healPokemon('${pokemon}')">Heal</button>
     <button class="del-btn" onclick="deletePokemon('${pokemon}')">Delete</button>
@@ -152,66 +188,6 @@ document.body.onload = loadAll
 import { startBattle, startUserBattle } from "./utils/dom.js";
 //startUserBattle("malpo",["normal"])
 /*
-startBattle({
-  "magby": {
-    "xp": 1200,
-    "nature": "calm",
-    "retreat": 4,
-    "moves": [
-      {
-        "id": "leer",
-        "isSelected": true
-      },
-      {
-        "id": "ember",
-        "isSelected": true
-      },
-      {
-        "id": "smog",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "smokescreen",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  "vulpix": {
-    "xp": 1600,
-    "nature": "calm",
-    "retreat": 4,
-    "moves": [
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "tailwhip",
-        "isSelected": true
-      },
-      {
-        "id": "ember",
-        "isSelected": true
-      },
-      {
-        "id": "firefang",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  }
-}, ["Fire"])
 */
 //window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6ImR1cmFudCIsIm1ldGEiOnsieHAiOjEwMDAsIm5hdHVyZSI6InNlcmlvdXMiLCJyZXRyZWF0IjozLjUsIm1vdmVzIjpbeyJpZCI6InZpY2VncmlwIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6ImxlZWNobGlmZSIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJzYW5kYXR0YWNrIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6ImJpdGUiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoibWV0YWxzb3VuZCIsImlzU2VsZWN0ZWQiOnRydWV9XSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19,eyJpZCI6InBlcnJzZXJrZXIiLCJtZXRhIjp7InhwIjoxNjAwLCJuYXR1cmUiOiJhZGFtYW50IiwicmV0cmVhdCI6MywibW92ZXMiOlt7ImlkIjoic2NyYXRjaCIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJncm93bCIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJtZXRhbGNsYXciLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiaXJvbmRlZmVuc2UiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoiaXJvbmhlYWQiLCJpc1NlbGVjdGVkIjp0cnVlfV0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==&fields=Grass,Bug,Rock"
 //window.location = "http://localhost:8888/battle.html?enemy=eyJpZCI6ImJhcmJvYWNoIiwibWV0YSI6eyJ4cCI6MTYwMCwibmF0dXJlIjoiYnJhdmUiLCJyZXRyZWF0IjozLCJtb3ZlcyI6W3siaWQiOiJ3YXRlcmd1biIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJhcXVhamV0IiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6InRhaWxzbGFwIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6Im11ZHNsYXAiLCJpc1NlbGVjdGVkIjp0cnVlfV0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==&fields="

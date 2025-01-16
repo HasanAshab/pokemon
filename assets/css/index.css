@@ -36,6 +36,18 @@
     margin: 5px 0;
     font-size: 16px;
 }
+.total-battles-count{
+    color: black;
+    font-weight: bold;
+}
+.wins-count{
+    color: green;
+    font-weight: bold;
+}
+.loses-count{
+    color: darkred;
+    font-weight: bold;
+}
 .badges-cont {
     display: flex;
     flex-wrap: wrap;
@@ -71,6 +83,7 @@
  margin:0 ;
     padding: 0;
     list-style: none;
+    overflow-x: scroll;
 }
 .pokemon {
     display: flex;
@@ -79,6 +92,10 @@
     padding: 10px;
     border-bottom: 1px solid #ddd;
     background-color: white;
+    width: max-content;
+    min-width: 100%;
+    user-select: none;
+    transition:background-color .4s;
 }
 .pokemon > .primary{
 background-color: inherit;
@@ -97,9 +114,23 @@ background-color: inherit;
     font-size: 14px;
     
 }
+.pokemon > .center-controle-btns-cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 0 10px;
+}
+.pokemon:has(.win-btn:active) {
+    background-color: #9cff91;
+}
+.pokemon:has(.lose-btn:active) {
+    background-color: #ff9999;
+
+}
 .pokemon > .right-controle-btns-cont{
  z-index: 1;
- 
+ margin-left: 20px;
 }
 
 

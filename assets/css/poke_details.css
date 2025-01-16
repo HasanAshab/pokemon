@@ -102,7 +102,7 @@ h1 {
   width: 100%;
   position: relative;
 }
-.stat:is(.abilities,.nature) {
+.stat:is(.abilities,.nature,.wins-count,.loses-count) {
   background-color: inherit;
   padding-left: 14px;
   padding-right: 14px;
