@@ -89,17 +89,20 @@ export class BattleField extends EventEmitter {
     async turn(senario) {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
-        
+    
+        // ctx effects
         if(this.ctx.veryClose && move1.flags.contact !== move2.flags.contact) {
             if(move1.flags.contact) {
-                move2 = new Move("staythere")
-                senario.set(this.pokemon2, move2)
+                senario.set(this.pokemon2, new Move("staythere"))
             }
             else {
-                move1 = new Move("staythere")
-                senario.set(this.pokemon1, move1)
+                senario.set(this.pokemon1, new Move("staythere"))
             }
         }
+        
+        // move failure
+        !move1.try(this.pokemon1) && senario.set(this.pokemon1, new Move("staythere"))
+        !move2.try(this.pokemon2) && senario.set(this.pokemon2, new Move("staythere"))
 
         this.emit("turn", this, senario)
 
@@ -463,17 +466,44 @@ class BattleState extends EventEmitter {
 
 
 class StatsManager {
+    //bug must be in _statChanges
     static BATTLE_STATS = {
-        "accuracy": 1,
-        "evasion": 1
+        "Bug": {
+            "accuracy": 3,
+            "evasion": 1,
+        },
+        "__default__": {
+            "accuracy": 1,
+            "evasion": 1,
+        }
     }
-    
     _statChanges = {};
     _modifiers = {}
+    
+    static getBattleStats(pokemon) {
+        let btStats = pokemon.types.reduce((stats, type) => {
+            const typeStats = StatsManager.BATTLE_STATS[type] ?? {}
+            Object.entries(typeStats).forEach(([name, value]) => {
+                if (name in stats) 
+                    stats[name] += typeStats[name]
+                else
+                    stats[name] = typeStats[name]
+            })
+            return stats
+        }, {})
+        
+        if (!Object.keys(btStats).length)
+            btStats = StatsManager.BATTLE_STATS.__default__
+        
+        return btStats
+    }
 
     constructor(state) {
         this.state = state
-        this._stats = Object.assign({}, StatsManager.BATTLE_STATS, this.state.pokemon.stats, this.state.pokemon.meta.stats);
+        const battleTimeStats = StatsManager.getBattleStats(this.state.pokemon)
+        console.log(battleTimeStats)
+        this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats, this.state.pokemon.meta.stats);
+        console.log(this._stats)
         this.prev = new PrevStatsManager(state, this)
         
         this.state.on("turn", () => {

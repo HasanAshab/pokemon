@@ -29,13 +29,3 @@ priority
 vicegrip
 night shade dam not fixed (for defence)
 detect bug on sleep
-
-
-make a easier syntaxed obj pattern so that
-i can write it easier without ide or auto complete
-
-for example (make more easier syntax if u can)
-foo=1, bar=-2 ...
-
-
-make 2 transformer js funcs one strToObj another objToStr

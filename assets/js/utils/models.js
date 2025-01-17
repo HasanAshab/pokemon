@@ -245,4 +245,8 @@ export class Move {
     recoilDamage(damage) {
         return Math.max(1, damage * this.recoilRate())
     }
+    
+    try(user) {
+        return this.accuracy * user.state.stats.get("spe")
+    }
 }
