@@ -75,8 +75,8 @@ export class PopupMsgQueue {
 
 
 export function startBattle(enemiesMeta, fields = []) {
-    const enemiesBase64List = Object.entries(enemiesMeta).map(([id, meta]) => {
-        return new Pokemon(id, meta).toBase64()
+    const enemiesBase64List = enemiesMeta.map(meta => {
+        return new Pokemon(meta.id, meta).toBase64()
     })
     window.location = `battle.html?enemy=${enemiesBase64List.join(",")}&fields=${fields.join(',')}`;
 }

@@ -38,6 +38,7 @@ function makeEnemyMeta(form, index) {
     }))
     
     return {
+        id: form.querySelector(".enemy").value,
         xp: level * 100,
         nature,
         retreat,
@@ -49,13 +50,12 @@ function makeEnemyMeta(form, index) {
 
 function makeEnemiesMeta() {
   const pokemonForms = document.querySelectorAll(".pokemon-form")
-  const enemiesMeta = {}
+  const enemiesMeta = []
   pokemonForms.forEach((form, index) => {
-      const enemy = form.querySelector(".enemy");
-      if (!enemy.value) return
-      enemiesMeta[enemy.value] = makeEnemyMeta(form, index)
+      if (!form.querySelector(".enemy").value) return
+      enemiesMeta.push(makeEnemyMeta(form, index))
   })
- return enemiesMeta
+return enemiesMeta
 }
 
 function getActiveBattleFields(){

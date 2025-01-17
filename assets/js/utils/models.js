@@ -65,7 +65,6 @@ export class Pokemon extends PSPokemon {
 
     constructor(id, meta, tag = null) {
         super()
-
         this.id = id;
         this.meta = meta;
         this._pokemon = pokemons[id];

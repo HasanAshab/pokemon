@@ -36,10 +36,10 @@ function syncStatsMeta(pokemon) {
     setPokemonMeta(pokemon.id, pokemon.meta)
 }
  globalThis.getEnemiesMetaBtnClickHandler = function() {
-  const meta = teams.enemy.reduce((obj, p) => {
-      obj[p.id] = p.meta
-      return obj
-  }, {})
+  const meta = teams.enemy.map((p) => ({
+    id: p.id,
+    ...p.meta
+  }))
   const fieldsStr = fields.map(f => `"${f}"`).join(', ')
   const code = `startBattle(${JSON.stringify(meta, null, 2)}, [${fieldsStr}])`
    navigator.clipboard.writeText(code)
@@ -67,7 +67,7 @@ globalThis.switchPokemonClickHandler = function({currentTarget}, playerTag){
    const parent = currentTarget.parentElement
     parent.querySelector(".pokemon.active")?.classList.remove("active")
     currentTarget.classList.add("active")
-    switchPokemon(playerTag, currentTarget.dataset.pokemonId)
+    switchPokemon(playerTag, currentTarget.dataset.index)
   }
 }
 
@@ -171,10 +171,11 @@ async function handleWin(winnerTag, looserTag) {
 function loadChoosePokemon(playerTag){
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
    pokemonSwitchControler.innerHTML = ""
-
+    
+   let i = 0
    for (const pokemon of teams[playerTag]) {
     pokemonSwitchControler.innerHTML += `
-          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-pokemon-id="${pokemon.id}">
+          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -187,6 +188,7 @@ function loadChoosePokemon(playerTag){
             <span class="name">${pokemon.name}</span>
           </div>
     `
+    i++
    }
 }
 
@@ -207,13 +209,13 @@ function loadTeams() {
 }
 
 
-function switchPokemon(playerTag, pokemonId) {
+function switchPokemon(playerTag, index) {
     if(playerTag === "you") {
-        globalThis.pokemon = teams.you.find(p => p.id === pokemonId)
+        globalThis.pokemon = teams.you[index]
         globalThis.pokemonMap["you"] = pokemon
     }
     else {
-        globalThis.enemyPokemon = teams.enemy.find(p => p.id === pokemonId)
+        globalThis.enemyPokemon = teams.enemy[index]
         globalThis.pokemonMap["enemy"] = enemyPokemon
     }
     
@@ -599,5 +601,4 @@ window.onload = () => {
     loadTeams()
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
-    
 }

@@ -23,9 +23,11 @@ phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 * Bugs
+same pokemon same team
 stall
 counter
 priority
 vicegrip
 night shade dam not fixed (for defence)
 detect bug on sleep
+acc, evas stat bug
