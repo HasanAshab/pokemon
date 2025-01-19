@@ -40,37 +40,51 @@ globalThis.badgeClickHandler = function badgeClickHandler( {
   loadTotalBadges()
 }
 function updateTotalBattlesCount(){
-   const winsCount = 10
-   const losesCount = 10
+   const winsCount = Number(localStorage.getItem("user-wins-count"))
+   const losesCount = Number(localStorage.getItem("user-loses-count"))
    const totalBattlesCountElm = document.querySelector(".total-battles-count")
-    totalBattlesCountElm.textContent = winsCount + losesCount
-}
-function setWinsCount(val){
-   const oldVal = 10
-   const winsCountElm = document.querySelector(".wins-count")
-    winsCountElm.textContent = val || oldVal
-    updateTotalBattlesCount()
-}
-function setLosesCount(val){
-   const oldVal = 10
-   const losesCountElm = document.querySelector(".loses-count")
-    losesCountElm.textContent = val || oldVal
-    updateTotalBattlesCount()
+   totalBattlesCountElm.textContent = winsCount + losesCount
+   
 }
 
+function setWinsCount(val){
+   const winsCountElm = document.querySelector(".wins-count")
+   if (val) {
+   localStorage.setItem("user-wins-count",val)
+   winsCountElm.textContent = val
+   updateTotalBattlesCount()
+   }else {
+   winsCountElm.textContent = localStorage.getItem("user-wins-count") || 0
+   }
+}
+function setLosesCount(val){
+   const losesCountElm = document.querySelector(".loses-count")
+   if (val) {
+   localStorage.setItem("user-loses-count",val)
+   losesCountElm.textContent = val
+   updateTotalBattlesCount()
+   }else {
+   losesCountElm.textContent = localStorage.getItem("user-loses-count") || 0
+   }
+    
+}
 globalThis.winsCountClickHandler = function({currentTarget}){
-   const newVal = Number(window.prompt("Wins count:",currentTarget.textContent))
-  setWinsCount(newVal) 
+   const val = Number(window.prompt("wins count:",currentTarget.textContent))
+   setWinsCount(val)
 }
 globalThis.losesCountClickHandler = function({currentTarget}){
-   const newVal = Number(window.prompt("loses count:",currentTarget.textContent))
-  setLosesCount(newVal) 
+   const val = Number(window.prompt("loses count:",currentTarget.textContent))
+   setLosesCount(val)
 }
 globalThis.increasePokemonWinCount = function(id){
-    
+    const meta = getPokemonsMeta(id)
+    meta["wins-count"]++
+    setPokemonMeta(id, meta)
 }
-globalThis.decreasePokemonWinCount = function(id){
-    
+globalThis.increasePokemonLosesCount = function(id){
+    const meta = getPokemonsMeta(id)
+    meta["loses-count"]++
+    setPokemonMeta(id, meta) 
 }
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   const addPokemonForm = document.querySelector(".add-pokemon-form")
@@ -96,6 +110,8 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
           "spa":0,
           "spd":0
       },
+      "wins-count":0,
+      "loses-count":0,
       "moves": []
     }
     localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
@@ -132,15 +148,15 @@ globalThis.healAllBtnHandler = function () {
 
 function loadAllPokemons() {
   const pokemonList = document.querySelector(".pokemon-list")
-  const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
-   // pokemonList.innerHTML = ""
+  const pokemons_meta = getPokemonsMeta()
+   pokemonList.innerHTML = ""
   for (const pokemon in pokemons_meta) {
     const meta = pokemons_meta[pokemon]
     pokemonList.innerHTML += `
     <li class="pokemon" >
      <div class="center-controle-btns-cont">
   <svg onclick="increasePokemonWinCount('${pokemon}')" class="win-btn" width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#009c1a"></path> </g></svg>
-   <svg onclick="decreasePokemonWinCount('${pokemon}')"  class="lose-btn"width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ff1212"></path> </g></svg>
+   <svg onclick="increasePokemonLosesCount('${pokemon}')"  class="lose-btn"width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ff1212"></path> </g></svg>
     </div>
     <div class="primary" onclick="pokemonClickHandler('${pokemon}')">
     <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
@@ -176,64 +192,76 @@ function loadAll() {
   //loadFoodCost()
   loadPokemonsDatalist("pokemons-data-list")
   loadNaturesDataList("natures-data-list")
+  setWinsCount()
+  setLosesCount()
+  updateTotalBattlesCount()
 }
 document.body.onload = loadAll
 
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 //startUserBattle("malpo",["normal"])
-
+/*
 startBattle([
-   {
-    "id": "timburr",
-    "xp": 1000,
-    "nature": "calm",
-    "retreat": 2.5,
+  {
+    "id": "poliwag",
+    "xp": 1200,
+    "nature": "jolly",
+    "retreat": 4,
     "moves": [
       {
-        "id": "pound",
+        "id": "watergun",
         "isSelected": true
       },
       {
-        "id": "leer",
+        "id": "hypnosis",
         "isSelected": true
       },
       {
-        "id": "lowkick",
+        "id": "bubble",
         "isSelected": true
       },
       {
-        "id": "rockthrow",
+        "id": "tailslap",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-   {
-    "id": "timburr",
-    "xp": 1000,
-    "nature": "calm",
-    "retreat": 2.5,
+  {
+    "id": "seadra",
+    "xp": 1600,
+    "nature": "bold",
+    "retreat": 3,
     "moves": [
-      {
-        "id": "pound",
-        "isSelected": true
-      },
       {
         "id": "leer",
         "isSelected": true
       },
       {
-        "id": "lowkick",
+        "id": "disable",
         "isSelected": true
       },
       {
-        "id": "rockthrow",
+        "id": "watergun",
+        "isSelected": true
+      },
+      {
+        "id": "waterpulse",
+        "isSelected": true
+      },
+      {
+        "id": "smokescreen",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
-  },
+  }
 ], [])
+*/

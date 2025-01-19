@@ -5,7 +5,7 @@ import { Damage } from "./utils/damage.js"
 import natures from "../../../data/natures.js"
 
 let name = getParam("name")
-const updatablePokemonMetaList = ["retreat","xp","nature"]
+const updatablePokemonMetaList = ["retreat","xp","nature","wins-count","loses-count"]
 globalThis.toggleMoveInfo = function(info){
 info.classList.toggle("active")
 }
@@ -198,6 +198,8 @@ function loadStats() {
     setStat("retreat", pokemon.meta.retreat)
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
     setStat("abilities", pokemon.abilities.join(', '))
+    setStat("wins-count", pokemon.meta["wins-count"])
+    setStat("loses-count", pokemon.meta["loses-count"])
 
     for (const stat in pokemon.stats) {
      const statValue = pokemon.stats[stat]

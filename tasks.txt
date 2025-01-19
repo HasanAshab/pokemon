@@ -9,8 +9,6 @@ semi-invuln
 cb bp retreat process
 protect, ditect advanced
 
-
-xp using cp and xp reduce on loose
 abilities effects (eg guts)
 effect remove
 
@@ -23,11 +21,9 @@ phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 * Bugs
-same pokemon same team
-stall
 counter
 priority
 vicegrip
-night shade dam not fixed (for defence)
 detect bug on sleep
 acc, evas stat bug
+pp not decrease when hp not changed

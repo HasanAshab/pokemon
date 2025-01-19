@@ -11,7 +11,7 @@ function isTwoTurnMove(move) {
         addVolatile(name) {
             isTwoTurn = name === "twoturnmove"
         },
-        hasType() {}
+        hasType() {},
     }
    try {
    move.onTryMove?.(attacker, null, {})
@@ -214,17 +214,17 @@ function setCustomCTX(move) {
 
 function modifyAccuracy(move) {
     if (move.flags.twoturn && move.accuracy !== true) {
-        move.accuracy -= 50
+        move.accuracy -= move.accuracy * 0.30
     }
 }
 
 export default processor([
     mergeDefault,
+    setCustomCTX,
     addFlags,
     modifyPP,
     setEffects,
     setStatChanges,
     setRetreat,
-    setCustomCTX,
     modifyAccuracy,
 ])

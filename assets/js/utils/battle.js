@@ -275,8 +275,14 @@ export class BattleField extends EventEmitter {
 
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
-        const d1 = hit2.toContactDamage(damages.get(this.pokemon1))
-        const d2 = hit1.toContactDamage(damages.get(this.pokemon2))
+
+        const d1 = "damage" in move2
+            ? hit2.damage()
+            : hit2.toContactDamage(damages.get(this.pokemon1))
+        
+        const d2 = "damage" in move1
+            ? hit1.damage()
+            : hit1.toContactDamage(damages.get(this.pokemon2))
 
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
@@ -501,9 +507,7 @@ class StatsManager {
     constructor(state) {
         this.state = state
         const battleTimeStats = StatsManager.getBattleStats(this.state.pokemon)
-        console.log(battleTimeStats)
         this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats, this.state.pokemon.meta.stats);
-        console.log(this._stats)
         this.prev = new PrevStatsManager(state, this)
         
         this.state.on("turn", () => {

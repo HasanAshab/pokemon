@@ -209,6 +209,10 @@ export class Move {
         this._move = moves[id];
         Object.assign(this, this._move)
     }
+    
+    get isNeverFails() {
+        return this.accuracy === true || !this.flags.twoturn
+    }
 
     effectiveness(type) {
         if (type instanceof Move) {
@@ -218,13 +222,13 @@ export class Move {
         if (!this.type) return 1
         return typeChart[this.type][type] || 1
     }
-    
+
     description(short = false) {
         const desc = movesText[this.id]
         const key = short ? "shortDesc" : "desc"
         return desc[key] ?? desc.shortDesc
     }
-    
+
     healRate() {
         return this.heal[0] / this.heal[1]
     }
@@ -244,8 +248,17 @@ export class Move {
     recoilDamage(damage) {
         return Math.max(1, damage * this.recoilRate())
     }
-    
+
     try(user) {
-        return this.accuracy * user.state.stats.get("spe")
+        if (this.isNeverFails) return true
+
+        // Calculate the effective accuracy
+        const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
+
+        // Generate a random number between 0 and 100
+        const randomChance = Math.random() * 100;
+
+        // Check if the move succeeds
+        return randomChance <= effectiveAccuracy;
     }
 }

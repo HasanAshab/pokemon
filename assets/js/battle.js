@@ -538,7 +538,7 @@ function loadMoves(playerTag) {
         </div>
         
         <div class="info damage">
-         <strong>Damage:</strong><span class="data">${damage.count}</span>
+         <strong>Damage:</strong><span class="data">${Math.round(damage.count * (1/70))}</span>
         </div>
         <small class="desc">
          ${move.description()}

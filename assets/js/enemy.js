@@ -1,12 +1,8 @@
 import { Pokemon, Move } from "./utils/models.js";
 import { capitalizeFirstLetter, getMoveLearnset, flagsToObj } from "./utils/helpers.js"
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
-//import learnset from "../../data/learnsets/charmander.js"
 
 
-
-
-//console.log(learnset)
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
     loadNaturesDataList("natures-data-list")
@@ -96,8 +92,8 @@ globalThis.copyFields = function(){
 globalThis.showStats = function(formId) {
     const enemyStats = document.querySelectorAll(".pokemon-form")[formId].querySelector(".enemy-stats")
     const metas = makeEnemiesMeta()
-    formId = Object.keys(metas)[formId]
-    const enemyPokemon = new Pokemon(formId, metas[formId])
+    const meta = metas[formId]
+    const enemyPokemon = new Pokemon(meta.id, meta)
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 

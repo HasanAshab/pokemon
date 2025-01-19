@@ -3,7 +3,7 @@ import { calculateDTManCount } from "../../../assets/js/utils/helpers.js"
 export default {
     staythere: {
       num: 100001,
-      accuracy: null,
+      accuracy: true,
       basePower: 0,
       category: "None",
       name: "Stay There",
@@ -18,7 +18,7 @@ export default {
     },
     dodge: {
       num: 100002,
-      accuracy: null,
+      accuracy: true,
       basePower: 0,
       category: "None",
       name: "Dodge",
