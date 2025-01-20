@@ -16,9 +16,8 @@ class GenericField extends Field {
     }
     
     onTurn(_, senario) {
-        this.battle._states.forEach(state => {
-            const move = senario.get(state.pokemon)
-            
+        this.battle.actives().forEach(pokemon => {
+            const move = senario.get(pokemon)
             /*const effectiveness = typeChart[this.type][move.type] ?? 1
             
             if (effectiveness < 1) {
@@ -27,11 +26,11 @@ class GenericField extends Field {
             else if (effectiveness > 1) {
                 state.damage.chainModify(1.15)
             }*/
-            if (state.pokemon.isTypeOf(this.type)) {
-                state.stats.chainModify("spe", 1.15)
+            if (pokemon.isTypeOf(this.type)) {
+                pokemon.state.stats.chainModify("spe", 1.15)
             }
             if (move.type === this.type) {
-                state.damage.chainModifyCrit(1.5)
+                pokemon.state.damage.chainModifyCrit(1.5)
             }
         })
     }

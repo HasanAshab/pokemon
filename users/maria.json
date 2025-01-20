@@ -1,5 +1,6 @@
-{
-  "combusken": {
+[
+  {
+    "id": "combusken",
     "xp": 1600,
     "nature": "jolly",
     "retreat": 3,
@@ -28,7 +29,8 @@
     "stats": {},
     "token_used": {}
   },
-  "dratini": {
+  {
+    "id": "dratini",
     "xp": 1300,
     "nature": "serious",
     "retreat": 3,
@@ -53,8 +55,8 @@
     "stats": {},
     "token_used": {}
   },
-  
-  "ponytagalar": {
+  {
+    "id": "ponytagalar",
     "xp": 1200,
     "nature": "jolly",
     "retreat": 3,
@@ -79,7 +81,8 @@
     "stats": {},
     "token_used": {}
   },
-  "beedrill": {
+  {
+    "id": "beedrill",
     "xp": 1200,
     "nature": "hardy",
     "retreat": 3,
@@ -104,4 +107,4 @@
     "stats": {},
     "token_used": {}
   }
-}
+]

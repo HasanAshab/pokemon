@@ -1,5 +1,6 @@
-{
-  "grovyle": {
+[
+  {
+    "id": "grovyle",
     "xp": 1500,
     "nature": "adamant",
     "retreat": 3,
@@ -28,7 +29,8 @@
     "stats": {},
     "token_used": {}
   },
-  "hoothoot": {
+  {
+    "id": "hoothoot",
     "xp": 1100,
     "nature": "hardy",
     "retreat": 3,
@@ -53,7 +55,8 @@
     "stats": {},
     "token_used": {}
   },
-  "mankey": {
+  {
+    "id": "mankey",
     "xp": 1300,
     "nature": "calm",
     "retreat": 3,
@@ -78,7 +81,8 @@
     "stats": {},
     "token_used": {}
   },
-  "shinx": {
+  {
+    "id": "shinx",
     "xp": 1200,
     "nature": "jolly",
     "retreat": 3,
@@ -103,4 +107,4 @@
     "stats": {},
     "token_used": {}
   }
-}
+]

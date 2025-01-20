@@ -1,7 +1,6 @@
 import { Pokemon, Move } from "./utils/models.js"
-import { BattleField } from "./utils/battle.js"
+import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
-import { calculateWinXP } from "./utils/battle.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
  
@@ -18,7 +17,7 @@ globalThis.retreatBtnClickHandler = function(playerTag){
         pokemonMap[playerTag].state.emit("used-move", move)
         loadPokemonData(playerTag)
     }
-    else{
+    else {
       const newRetreat = Number(window.prompt("retreat",oldRetreat))
       
     }
@@ -26,7 +25,7 @@ globalThis.retreatBtnClickHandler = function(playerTag){
 
 function loadVeryCloseBtn() {
     const btn = document.getElementById("very-close-btn")
-    battleField.ctx.veryClose
+    battle.ctx.veryClose
         ? btn.classList.add("active")
         : btn.classList.remove("active")
 }
@@ -47,7 +46,7 @@ function syncStatsMeta(pokemon) {
 }
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
-  battleField.ctx.veryClose = !battleField.ctx.veryClose
+  battle.ctx.veryClose = !battle.ctx.veryClose
 }
 globalThis.doubleTeamDataClickHandler = (playerTag)=>{
    const oldDoubleTeamsCount = 1
@@ -146,7 +145,7 @@ function setBattleStateListeners(playerTag) {
         loadChoosePokemon(playerTag)
     })
 
-    battleField.prompt(pokemon).reply("dodge", () => {
+    battle.prompt(pokemon).reply("dodge", () => {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
     })
 }
@@ -208,6 +207,10 @@ function loadTeams() {
     }
 }
 
+function registerBattle() {
+    const Battle = BATTLE_SYSTEMS["multiple"]
+    globalThis.battle = new Battle(teams.you, teams.enemy, fields)
+}
 
 function switchPokemon(playerTag, index) {
     if(playerTag === "you") {
@@ -225,7 +228,8 @@ function switchPokemon(playerTag, index) {
 }
 
 function setupCurrentBattle(switcher) {
-    globalThis.battleField = new BattleField(pokemon, enemyPokemon, fields)
+    battle.activate(pokemon)
+    battle.activate(enemyPokemon)
     setupPokemonForDom("you")
     setupPokemonForDom("enemy")
 }
@@ -556,7 +560,7 @@ function handleMoveCardSelect(card, playerTag) {
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
   if (oponentSelectedMoveCard){
     oponentSelectedMoveCard.classList.remove("selected")
-    battle({
+    runTurn({
         [playerTag]: card.dataset.moveId,
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
     })
@@ -572,7 +576,7 @@ globalThis.moveCardClickHandler = function( {
   handleMoveCardSelect(currentTarget, playerTag)
 }
 
-function battle(moveIds) {
+function runTurn(moveIds) {
     const {you: moveId, enemy: enemyMoveId} = moveIds
     const move1 = new Move(moveId)
     const move2 = new Move(enemyMoveId)
@@ -580,12 +584,12 @@ function battle(moveIds) {
         [pokemon, move1],
         [enemyPokemon, move2],
     ])
-    return battleField.turn(senario)
+    return battle.turn(senario)
 }
 
 
 function loadRetreat(playerTag) {
-    const retreat = pokemonMap[playerTag].state.retreat
+    const retreat = pokemonMap[playerTag].meta.retreat
     setRetreatPerWave(retreat, playerTag)
 }
 
@@ -599,6 +603,7 @@ window.onload = () => {
     globalThis.pokemonMap = {}
     globalThis.fields = getParam("fields")?.split(',') ?? []
     loadTeams()
+    registerBattle()
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
 }

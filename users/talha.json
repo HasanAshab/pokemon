@@ -1,5 +1,6 @@
-{
-  "flaaffy": {
+[
+  {
+    "id": "flaaffy",
     "xp": 1600,
     "nature": "mild",
     "retreat": 3,
@@ -28,7 +29,8 @@
     "stats": {},
     "token_used": {}
   },
-  "bellsprout": {
+  {
+    "id": "bellsprout",
     "xp": 1300,
     "nature": "calm",
     "retreat": 3,
@@ -57,7 +59,8 @@
     "stats": {},
     "token_used": {}
   },
-"cubone": {
+  {
+    "id": "cubone",
     "xp": 1200,
     "nature": "brave",
     "retreat": 3,
@@ -82,7 +85,8 @@
     "stats": {},
     "token_used": {}
   },
-  "taurospaldeablaze": {
+  {
+    "id": "taurospaldeablaze",
     "xp": 900,
     "nature": "calm",
     "retreat": 3,
@@ -107,4 +111,4 @@
     "stats": {},
     "token_used": {}
   }
-}
+]

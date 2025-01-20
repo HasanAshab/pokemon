@@ -1,5 +1,6 @@
-{
-  "drilbur": {
+[
+  {
+    "id": "drilbur",
     "xp": 1200,
     "nature": "calm",
     "retreat": 2,
@@ -16,7 +17,8 @@
     "stats": {},
     "token_used": {}
   },
-  "rookidee": {
+  {
+    "id": "rookidee",
     "xp": 1200,
     "nature": "brave",
     "retreat": 2,
@@ -33,4 +35,4 @@
     "stats": {},
     "token_used": {}
   }
-}
+]

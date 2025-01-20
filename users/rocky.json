@@ -1,5 +1,6 @@
-{
-  "pawniard": {
+[
+  {
+    "id": "pawniard",
     "xp": 1600,
     "nature": "bold",
     "retreat": 3,
@@ -24,7 +25,8 @@
     "stats": {},
     "token_used": {}
   },
-  "bulbasaur": {
+  {
+    "id": "bulbasaur",
     "xp": 1500,
     "nature": "serious",
     "retreat": 3.5,
@@ -53,7 +55,8 @@
     "stats": {},
     "token_used": {}
   },
-  "fraxure": {
+  {
+    "id": "fraxure",
     "xp": 1600,
     "nature": "calm",
     "retreat": 3,
@@ -82,7 +85,8 @@
     "stats": {},
     "token_used": {}
   },
-  "pidgey": {
+  {
+    "id": "pidgey",
     "xp": 1200,
     "nature": "serious",
     "retreat": 2,
@@ -107,4 +111,4 @@
     "stats": {},
     "token_used": {}
   }
-}
+]

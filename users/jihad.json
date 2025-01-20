@@ -1,5 +1,6 @@
-{
-"frogadier": {
+[
+  {
+    "id": "frogadier",
     "xp": 700,
     "nature": "jolly",
     "retreat": 3,
@@ -24,4 +25,4 @@
     "stats": {},
     "token_used": {}
   }
-}
+]

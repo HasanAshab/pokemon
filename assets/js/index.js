@@ -200,29 +200,29 @@ document.body.onload = loadAll
 
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-//startUserBattle("malpo",["normal"])
+startUserBattle("malpo",["normal"])
 /*
 startBattle([
   {
-    "id": "poliwag",
-    "xp": 1200,
-    "nature": "jolly",
-    "retreat": 4,
+    "id": "dodrio",
+    "xp": 1800,
+    "nature": "serious",
+    "retreat": 5,
     "moves": [
       {
-        "id": "watergun",
+        "id": "furyattack",
         "isSelected": true
       },
       {
-        "id": "hypnosis",
+        "id": "growl",
         "isSelected": true
       },
       {
-        "id": "bubble",
+        "id": "supersonic",
         "isSelected": true
       },
       {
-        "id": "tailslap",
+        "id": "peck",
         "isSelected": true
       },
       {
@@ -232,36 +232,6 @@ startBattle([
     ],
     "stats": {},
     "token_used": {}
-  },
-  {
-    "id": "seadra",
-    "xp": 1600,
-    "nature": "bold",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "leer",
-        "isSelected": true
-      },
-      {
-        "id": "disable",
-        "isSelected": true
-      },
-      {
-        "id": "watergun",
-        "isSelected": true
-      },
-      {
-        "id": "waterpulse",
-        "isSelected": true
-      },
-      {
-        "id": "smokescreen",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
   }
-], [])
+], ["Flying", "Normal"])
 */

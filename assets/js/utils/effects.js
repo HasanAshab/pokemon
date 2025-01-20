@@ -75,7 +75,7 @@ class Effect {
     }
     
     _subscribeToOpponent(event) {
-        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const listener = this[`onOpponent${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
             this._listeners.opponent[event] = listener.bind(this)
@@ -84,7 +84,7 @@ class Effect {
     }
     
     _unsubscribeToOpponent(event) {
-        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const listener = this._listeners.opponent[event]
         listener && opponent.state.removeListener(event, listener)
     }
@@ -298,7 +298,7 @@ class LeechSeedEffect extends Effect {
     static effectName = "leechseed"
 
     onWave() {
-        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const loosedHp = opponent.stats.hp / 8
 
         this.state.decreaseHealth(loosedHp)
@@ -333,7 +333,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
     onTurn(_, senario) {
         this.state.decreaseHealth(this._calculateEffectDamage())
         
-        const opponent = this.state.field.opponentOf(this.state.pokemon)
+        const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const move = senario.get(this.state.pokemon)
         const opponentMove = senario.get(opponent)
 
@@ -418,7 +418,7 @@ export class EffectManager {
 
     apply(move, { on, pre = false }) {
         if (on === "self") {
-            const attacker = this.state.field.opponentOf(this.state.pokemon)
+            const attacker = this.state.battle.opponentOf(this.state.pokemon)
             move.effects.self
                 .forEach(effect => {
                     if (Math.random() < (effect.chance / 100)) {

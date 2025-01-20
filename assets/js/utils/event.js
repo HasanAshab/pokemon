@@ -19,7 +19,10 @@ export class EventEmitter {
 
     emit(event, ...args) {
         if (this._events[event]) {
-            this._events[event].forEach(listener => listener(...args));
+            const ctx = {
+                _event: event,
+            }
+            this._events[event].forEach(listener => listener.apply(ctx, args));
         }
     }
 
