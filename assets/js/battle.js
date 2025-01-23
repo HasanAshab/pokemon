@@ -208,7 +208,7 @@ function loadTeams() {
 }
 
 function registerBattle() {
-    const Battle = BATTLE_SYSTEMS["multiple"]
+    const Battle = BATTLE_SYSTEMS[getParam("system") || "single"]
     globalThis.battle = new Battle(teams.you, teams.enemy, fields)
 }
 

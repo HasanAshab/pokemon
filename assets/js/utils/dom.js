@@ -3,6 +3,9 @@ import moves from "../../../data/moves.js"
 import natures from "../../../data/natures.js"
 import { Pokemon } from "./models.js";
 
+
+//console.log(moves.rapidspin)
+
 export function loadPokemonsDatalist(id) {
   const dataList = document.getElementById(id);
   const html = Object.keys(pokemons)
@@ -74,18 +77,18 @@ export class PopupMsgQueue {
 }
 
 
-export function startBattle(enemiesMeta, fields = []) {
+export function startBattle(enemiesMeta, fields = [], system) {
     const enemiesBase64List = enemiesMeta.map(meta => {
         return new Pokemon(meta.id, meta).toBase64()
     })
-    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}&fields=${fields.join(',')}`;
+    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}&fields=${fields.join(',')}${system ? "&system=" + system : ''}`;
 }
 
-export async function startUserBattle(name, fields = []) {
+export async function startUserBattle(name, fields = [], system) {
    try {
-       const prom = await fetch(`./users/${name}.json`)
+       const prom = await fetch(`./users/sessions/1/${name}.json`)
        const enemiesMeta = await prom.json()
-        startBattle(enemiesMeta)
+        startBattle(enemiesMeta, fields, system)
    }
    catch(e) {
        console.error(e)

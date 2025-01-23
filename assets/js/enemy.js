@@ -1,15 +1,41 @@
 import { Pokemon, Move } from "./utils/models.js";
 import { capitalizeFirstLetter, getMoveLearnset, flagsToObj } from "./utils/helpers.js"
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle,startUserBattle } from "./utils/dom.js";
+import { BATTLE_SYSTEMS } from "./utils/battle.js"
 
 
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
     loadNaturesDataList("natures-data-list")
     loadMovesDatalist("moves-data-list")
+    loadCharectersList()
+    loadBattleSystems()
 }
 
+function loadBattleSystems() {
+    const selectElement = document.getElementById('sys-select');
+    Object.keys(BATTLE_SYSTEMS).forEach(optionText => {
+      const option = document.createElement('option');
+      option.value = optionText.toLowerCase().replace(/\s+/g, '-');  // Converts spaces to hyphens for value
+      option.textContent = optionText;
+      selectElement.appendChild(option);
+    });
+}
 
+async function loadCharectersList(){
+   const res = await fetch("../../users/sessions/1/_names.json") 
+   const data = await res.json()
+   const charectersList = document.querySelector(".charecters-list")
+   charectersList.innerHTML = ""
+   for (const charecter of data){
+    const btn = document.createElement("button")
+    btn.className = "charecter"
+    btn.onclick = ()=> startUserBattle(charecter,getActiveBattleFields())
+    btn.textContent = charecter
+    charectersList.appendChild(btn)
+   }
+    
+}
 function makeEnemyMeta(form, index) {
     const levelInp = form.querySelector(".level-inp");
     const retreatInp = form.querySelector(".retreat-inp");
@@ -133,5 +159,8 @@ globalThis.showMoveDetails = function({currentTarget}){
 }
 
 globalThis.startBattleBtnHandler = function() {
-  startBattle(makeEnemiesMeta(), getActiveBattleFields())
+  const sysSelect = document.getElementById('sys-select');
+  startBattle(makeEnemiesMeta(), getActiveBattleFields(), sysSelect.value)
 }
+
+// function

@@ -80,10 +80,11 @@
     padding: 0 10px;
 }
 .pokemon-list {
- margin:0 ;
-    padding: 0;
+    margin:0 ;
+    padding: 10px 0;
     list-style: none;
     overflow-x: scroll;
+    
 }
 .pokemon {
     display: flex;
@@ -93,9 +94,13 @@
     border-bottom: 1px solid #ddd;
     background-color: white;
     width: max-content;
-    min-width: 100%;
+    min-width:calc(100% - 20px);
     user-select: none;
     transition:background-color .4s;
+    margin-top: 10px;
+}
+.pokemon.selected-for-multy-battle{
+    border: 1px solid gold;
 }
 .pokemon > .primary{
 background-color: inherit;
@@ -114,13 +119,7 @@ background-color: inherit;
     font-size: 14px;
     
 }
-.pokemon > .center-controle-btns-cont{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-    padding: 0 10px;
-}
+
 .pokemon:has(.win-btn:active) {
     background-color: #9cff91;
 }
@@ -129,11 +128,31 @@ background-color: inherit;
 
 }
 .pokemon > .right-controle-btns-cont{
- z-index: 1;
- margin-left: 20px;
+display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: relative;
 }
 
+.pokemon > .right-controle-btns-cont > .more-btn.active ~ .more-btns-cont{
+   display: flex; 
+}
+.pokemon > .right-controle-btns-cont > .more-btns-cont{
+   display: none; 
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   width:100px;
+  background-color: #f0f0ff;
+  left: 0px;
+}
+.pokemon > .right-controle-btns-cont > .more-btns-cont > button{
+  width: 100%;
+ background-color: inherit;
 
+}
 .add-pokemon-form {
     display: flex;
     flex-direction: column;

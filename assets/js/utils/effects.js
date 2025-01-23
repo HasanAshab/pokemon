@@ -326,7 +326,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
 
     setup() {
         super.setup()
-        const lifetime = weightedRandom([2, 3, 4, 5], [0.30, 0.50, 0.20, 0.05])
+        const lifetime = weightedRandom([2, 3, 4, 5], [0.20, 0.40, 0.30, 0.15])
         this.lifetime.turns = lifetime
     }
     

@@ -4,26 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./assets/css/global.css">
+  <link rel="stylesheet" href="./assets/css/enemy.css">
   <style>
-      .fields-cont {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin: 10px 0;
-}
-.field {
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    filter: brightness(30%);
-}
-.field.active {
-        filter: brightness(100%);
-
-}
+ 
   </style> 
   <title>Enemy Selection</title>
 </head>
@@ -90,11 +73,16 @@
         <div style="background-color:var(--Stellar-type-color)" data-index="20" onclick="fieldClickHandler(event)" class="field stellar">
           Stellar
         </div>
-
       </div>
    <button onclick="selectRandomFields()" class="select-random-fields-btn">Random Fields</button>
    <button onclick="copyFields()" class="copy-fields-btn">copy fields</button>
   <br><br>
+  <div class="charecter-choose-form">
+      <h2 class="title">charecters</h2>
+      <div class="charecters-list">
+      </div>
+  </div>
+  <select id="sys-select"></select>
   <div class="pokemon-form">
     <label for="enemy">Choose Enemy 1</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(0)">
@@ -126,6 +114,8 @@
       <strong class="move-name">name</strong>
       <span class="desc">Lorem ipsum dolor.</span>
     </div>
+    
+    
   </div>
  <br> <hr><br>
   <div class="pokemon-form">

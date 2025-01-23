@@ -797,8 +797,8 @@ class MultiBattle extends BaseBattle {
         const that = this
 
         this.on(["turn", "turn-end", "wave"], function(...args) {
-            that._states.forEach(state => {
-                state.emit(this._event, ...args)
+            that._all.forEach(p => {
+                p.state.emit(this._event, ...args)
             })
         })
     }
