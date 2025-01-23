@@ -99,8 +99,8 @@
     transition:background-color .4s;
     margin-top: 10px;
 }
-.pokemon.selected-for-multy-battle{
-    border: 1px solid gold;
+.pokemon.selected-for-multy-battle > .primary > .pokemon-name{
+    color: blue;
 }
 .pokemon > .primary{
 background-color: inherit;
@@ -112,6 +112,7 @@ background-color: inherit;
 .pokemon-name {
     font-size: 18px;
     font-weight: bold;
+    color: gray;
 }
 .pokemon-level {
     background: ;

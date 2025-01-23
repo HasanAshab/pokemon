@@ -1,6 +1,6 @@
 import { Pokemon, Move } from "./utils/models.js";
 import { capitalizeFirstLetter, getMoveLearnset, flagsToObj } from "./utils/helpers.js"
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle,startUserBattle } from "./utils/dom.js";
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist,getUserPokemonsMeta, startBattle,startUserBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 
 
@@ -30,12 +30,53 @@ async function loadCharectersList(){
    for (const charecter of data){
     const btn = document.createElement("button")
     btn.className = "charecter"
-    btn.onclick = ()=> startUserBattle(charecter,getActiveBattleFields())
+    btn.onclick = ()=> charecterBtnsClickHandler(charecter)
     btn.textContent = charecter
     charectersList.appendChild(btn)
    }
-    
 }
+async function charecterBtnsClickHandler(charecter){
+  const system = document.getElementById('sys-select')?.value;
+  if (system === "multiple"){
+    const popList = await getPopList(charecter)
+    console.log(popList)
+  }else{
+    startUserBattle(charecter,[],getActiveBattleFields(),system)
+  }
+      
+  }
+ async function getPopList(charecter){
+    const userPokemonsMeta = await getUserPokemonsMeta(charecter)
+    const popListForm = document.querySelector(".pop-list-form")
+    const confirmBtn = document.createElement('button')
+    confirmBtn.classList ="confirm-btn" 
+    confirmBtn.textContent ="Confirm"
+    popListForm.parentElement.classList.add("active")
+    popListForm.innerHTML = ""
+    for (const {id} of userPokemonsMeta) {
+       popListForm.innerHTML += `
+        <label>
+            <input type="checkbox" value="${id}">
+            <strong class="name">${id}</strong>
+        </label>
+        `
+    }
+    popListForm.appendChild(confirmBtn)
+   
+    return new Promise((resolve,reject)=>{
+     confirmBtn.onclick = function(){
+         const popList = []
+         
+        const unCheckedInputs = popListForm.querySelectorAll("label > input:not(:checked)")
+        unCheckedInputs.forEach((inp)=>{
+           popList.push(inp.value) 
+        })
+       resolve(popList)
+     }
+          console.log(confirmBtn.onclick)
+
+  })
+  }
 function makeEnemyMeta(form, index) {
     const levelInp = form.querySelector(".level-inp");
     const retreatInp = form.querySelector(".retreat-inp");

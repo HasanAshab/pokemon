@@ -31,3 +31,20 @@
     margin: 0 auto;
     
 }
+.pop-list-form{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width: 80%;
+   height: 80%;
+   background-color: white;
+}
+.pop-list-form > label{
+  width: 100%;  
+}
+.pop-list-form > .confirm-btn{
+    width: max-content;
+    padding: 10px 20px;
+    margin-top: 10px;
+}

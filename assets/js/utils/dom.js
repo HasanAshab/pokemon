@@ -76,7 +76,11 @@ export class PopupMsgQueue {
     }
 }
 
-
+export async function getUserPokemonsMeta(name){
+  const prom = await fetch(`./users/sessions/1/${name}.json`)
+  const enemiesMeta = await prom.json()
+  return enemiesMeta
+}
 export function startBattle(enemiesMeta, fields = [], system) {
     const enemiesBase64List = enemiesMeta.map(meta => {
         return new Pokemon(meta.id, meta).toBase64()
@@ -84,11 +88,11 @@ export function startBattle(enemiesMeta, fields = [], system) {
     window.location = `battle.html?enemy=${enemiesBase64List.join(",")}&fields=${fields.join(',')}${system ? "&system=" + system : ''}`;
 }
 
-export async function startUserBattle(name, fields = [], system) {
+export async function startUserBattle(name,popList=[],fields =[], system) {
    try {
-       const prom = await fetch(`./users/sessions/1/${name}.json`)
-       const enemiesMeta = await prom.json()
-        startBattle(enemiesMeta, fields, system)
+       const userPokemonsMeta = await getUserPokemonsMeta(name)
+       console.log(userPokemonsMeta)
+       //startBattle(enemiesMeta, fields, system)
    }
    catch(e) {
        console.error(e)

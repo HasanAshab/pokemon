@@ -405,10 +405,11 @@ class BaseBattle extends EventEmitter {
 
     constructor(team1, team2, fieldTypes = []) {
         super()
+        const that = this
         
-        this.team1 = team1
-        this.team2 = team2
-        this._all = [...team1, ...team2]
+        this.team1 = this.filterTeam(team1)
+        this.team2 = this.filterTeam(team2)
+        this._all = [...this.team1, ...this.team2]
         this.fields = fieldTypes.map(f => makeField(this, f))
         
         this._all.forEach(p => {
@@ -438,6 +439,13 @@ class BaseBattle extends EventEmitter {
             this.waveNo++
             this._waveAfterTurns = 0
         })
+        
+        this.on(["turn", "turn-end", "wave"], function(...args) {
+            that.groundedPokemons().forEach(p => {
+                p.state.emit(this._event, ...args)
+            })
+        })
+
     }
     
     opponentOf(pokemon) {
@@ -450,6 +458,10 @@ class BaseBattle extends EventEmitter {
 
     prompt(pokemon) {
         return this._prompts.get(pokemon);
+    }
+    
+    filterTeam(team) {
+        return team
     }
     
     actives() {
@@ -774,37 +786,39 @@ class BaseBattle extends EventEmitter {
 }
 
 class SingleBattle extends BaseBattle {
-    constructor(...args) {
-        super(...args)
-        const that = this
-        
-        this.on(["turn", "turn-end", "wave"], function(...args) {
-            that.actives().forEach(p => {
-                p.state.emit(this._event, ...args)
-            })
-        })
-    }
-
     needNewWave() {
         return !this._waveAfterTurns ||
             (!this.pokemon1.state.usableOffensiveMoves().length && !this.pokemon2.state.usableOffensiveMoves().length)
+    }
+    
+    groundedPokemons() {
+        return this.actives()
     }
 }
 
 class MultiBattle extends BaseBattle {
     constructor(...args) {
         super(...args)
-        const that = this
-
-        this.on(["turn", "turn-end", "wave"], function(...args) {
-            that._all.forEach(p => {
-                p.state.emit(this._event, ...args)
-            })
+        
+        console.log(this._all)
+        
+        const avgPokePerSide = Math.round(this._all.length / 2)
+        this.turnsPerWave = this.turnsPerWave.map(([turns, prob]) => {
+            return [turns * avgPokePerSide, prob]
         })
     }
     
+    filterTeam(team) {
+        return team.filter(p => p.meta.isSelectedForMultiBattle === undefined || p.meta.isSelectedForMultiBattle === true)
+    }
+
+    
     needNewWave() {
         return !this._waveAfterTurns || this._all.every(p => !p.state.usableOffensiveMoves().length)
+    }
+    
+    groundedPokemons() {
+        return this._all
     }
 }
 
