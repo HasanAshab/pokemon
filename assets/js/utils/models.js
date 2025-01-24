@@ -3,6 +3,7 @@ import moves from "../../../data/moves.js"
 import typeChart from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
+import { weightedRandom } from "./helpers.js";
 
 
 class PSPokemon {
@@ -260,5 +261,19 @@ export class Move {
 
         // Check if the move succeeds
         return randomChance <= effectiveAccuracy;
+    }
+    
+    multiHit() {
+        if(!this.multihit)
+            return 1
+        if (!Array.isArray(this.multihit))
+            return this.multihit;
+        // Specific probabilities for multi-hit moves like Fury Attack
+        if (this.multihit[0] === 2 && this.multihit[1] === 5) {
+            const probabilities = [2, 3, 4, 5];
+            const weights = [3 / 8, 3 / 8, 1 / 8, 1 / 8];
+            return weightedRandom(probabilities, weights);
+        }
+        return Math.floor(Math.random() * (this.multihit[1] - this.multihit[0] + 1)) + this.multihit[0];
     }
 }

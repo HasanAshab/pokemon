@@ -1,4 +1,4 @@
-import { fixFloat, weightedRandom } from "./helpers.js";
+import { fixFloat } from "./helpers.js";
 
 
 export class Damage {
@@ -89,7 +89,7 @@ export class Hit {
         this.attacker = attacker
         this.target = target
         this.move = move
-        this.damages = Array.from({ length: this._randomHits() }, (_, i) => {
+        this.damages = Array.from({ length: this.move.multiHit() }, (_, i) => {
             move.hit++
             return new Damage(attacker, move, target)
         })
@@ -126,20 +126,5 @@ export class Hit {
         )
         const defModifier = 1 / defStat
         return damage * defModifier
-    }
-
-
-    _randomHits() {
-        if(!this.move.multihit)
-            return 1
-        if (!Array.isArray(this.move.multihit))
-            return this.move.multihit;
-        // Specific probabilities for multi-hit moves like Fury Attack
-        if (this.move.multihit[0] === 2 && this.move.multihit[1] === 5) {
-            const probabilities = [2, 3, 4, 5];
-            const weights = [3 / 8, 3 / 8, 1 / 8, 1 / 8];
-            return weightedRandom(probabilities, weights);
-        }
-        return Math.floor(Math.random() * (this.move.multihit[1] - this.move.multihit[0] + 1)) + this.move.multihit[0];
     }
 }

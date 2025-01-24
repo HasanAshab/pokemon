@@ -46,6 +46,7 @@ export default {
       contestType: "Cool",
       onHit(pokemon) {
         pokemon.state.manCount = calculateDTManCount(pokemon)
-      }
+      },
+      retreat: 3,
     },
 }

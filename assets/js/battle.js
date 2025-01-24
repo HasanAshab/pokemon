@@ -49,10 +49,12 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   battle.ctx.veryClose = !battle.ctx.veryClose
 }
 globalThis.doubleTeamDataClickHandler = (playerTag)=>{
-   const oldDoubleTeamsCount = 1
+   const oldDoubleTeamsCount = pokemonMap[playerTag].state.manCount
    const newVal = window.prompt(`Set the double team data of ${playerTag}`,oldDoubleTeamsCount)
-   setDoubleTeamData(newVal || 1,playerTag)
+   setDoubleTeamData(newVal, playerTag)
+   pokemonMap[playerTag].state.manCount = newVal
 }
+
 globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
   const pokemon = pokemonMap[playerTag]
   let newHp = prompt(playerTag, pokemon.hp)
@@ -105,6 +107,7 @@ function loadPokemonData(playerTag) {
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
     setEffects(pokemon.state.effects.names(), playerTag)
     setCurrentHealth(hp, playerTag)
+    setDoubleTeamData(pokemon.state.manCount, playerTag)
     loadMoves(playerTag)
 
     if(hp !== oldHp) {
@@ -393,7 +396,7 @@ function setCurrentRetreat(retreat, playerTag) {
   currentRetreat.innerText = retreat
 }
  
- function setDoubleTeamData(count,playerTag){
+ function setDoubleTeamData(count, playerTag){
      const valueElm =  document.querySelector(`.${playerTag}-controle-cont .double-team-data > .value`)
      valueElm.textContent = count
  }
