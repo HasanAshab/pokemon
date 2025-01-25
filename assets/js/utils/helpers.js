@@ -130,7 +130,6 @@ export function flagsToObj(flags) {
         if (value === undefined) return; // Skip malformed entries
         obj[key] = isNaN(value) ? value : Number(value); // Auto-detect numbers
     });
-    console.log(obj)
     return obj;
 }
 

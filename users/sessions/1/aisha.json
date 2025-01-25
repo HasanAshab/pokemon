@@ -1,102 +1,20 @@
 [
   {
-    "id": "pawniard",
-    "xp": 2000,
-    "nature": "bold",
+    "id": "emolga",
+    "xp": 1600,
+    "nature": "brave",
     "retreat": 3,
     "moves": [
       {
-        "id": "metalclaw",
+        "id": "tailwhip",
         "isSelected": true
       },
       {
-        "id": "brutalswing",
+        "id": "thundershock",
         "isSelected": true
       },
       {
-        "id": "ironhead",
-        "isSelected": true
-      },
-      {
-        "id": "furyattack",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "bulbasaur",
-    "xp": 1500,
-    "nature": "serious",
-    "retreat": 3.5,
-    "moves": [
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "razorleaf",
-        "isSelected": true
-      },
-      {
-        "id": "vinewhip",
-        "isSelected": true
-      },
-      {
-        "id": "growth",
-        "isSelected": true
-      },
-      {
-        "id": "leechseed",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "fraxure",
-    "xp": 1700,
-    "nature": "calm",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "scratch",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "isSelected": true
-      },
-      {
-        "id": "bite",
-        "isSelected": true
-      },
-      {
-        "id": "dragonrage",
-        "isSelected": true
-      },
-      {
-        "id": "breakingswipe",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "pidgey",
-    "xp": 1200,
-    "nature": "serious",
-    "retreat": 2,
-    "moves": [
-      {
-        "id": "peck",
-        "isSelected": true
-      },
-      {
-        "id": "furyattack",
+        "id": "nuzzle",
         "isSelected": true
       },
       {
@@ -104,7 +22,97 @@
         "isSelected": true
       },
       {
-        "id": "gust",
+        "id": "doubleteam",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "bayleef",
+    "xp": 1900,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "bulletseed",
+        "isSelected": true
+      },
+      {
+        "id": "vinewhip",
+        "isSelected": true
+      },
+      {
+        "id": "razorleaf",
+        "isSelected": true
+      },
+      {
+        "id": "sleeppowder",
+        "isSelected": true
+      },
+      {
+        "id": "harden",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "marill",
+    "xp": 1600,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "charm",
+        "isSelected": true
+      },
+      {
+        "id": "whirlpool",
+        "isSelected": true
+      },
+      {
+        "id": "watergun",
+        "isSelected": true
+      },
+      {
+        "id": "bubblebeam",
+        "isSelected": true
+      },
+      {
+        "id": "tailslap",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "eevee",
+    "xp": 1700,
+    "nature": "jolly",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "quickattack",
+        "isSelected": true
+      },
+      {
+        "id": "charm",
+        "isSelected": true
+      },
+      {
+        "id": "doubleteam",
+        "isSelected": true
+      },
+      {
+        "id": "furyswipes",
+        "isSelected": true
+      },
+      {
+        "id": "bite",
         "isSelected": true
       }
     ],

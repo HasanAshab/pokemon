@@ -212,5 +212,63 @@ document.body.onload = loadAll
 
 
 import { startBattle, startUserBattle} from "./utils/dom.js";
-//startUserBattle("malpo",["normal"])
-
+/*
+startBattle([
+  {
+    "id": "pawniard",
+    "xp": 1900,
+    "nature": "bold",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "metalclaw",
+        "isSelected": true
+      },
+      {
+        "id": "brutalswing",
+        "isSelected": true
+      },
+      {
+        "id": "ironhead",
+        "isSelected": true
+      },
+      {
+        "id": "furyattack",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "fraxure",
+    "xp": 1700,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "scratch",
+        "isSelected": true
+      },
+      {
+        "id": "leer",
+        "isSelected": true
+      },
+      {
+        "id": "bite",
+        "isSelected": true
+      },
+      {
+        "id": "dragonrage",
+        "isSelected": true
+      },
+      {
+        "id": "breakingswipe",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+], ["normal"], "multiple")
+*/

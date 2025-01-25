@@ -37,13 +37,11 @@ async function loadCharectersList(){
 }
 async function charecterBtnsClickHandler(charecter){
   const system = document.getElementById('sys-select')?.value;
+   let popList = []
   if (system === "multiple"){
-    const popList = await getPopList(charecter)
-    console.log(popList)
-  }else{
-    startUserBattle(charecter,[],getActiveBattleFields(),system)
+     popList = await getPopList(charecter)
   }
-      
+   startUserBattle(charecter,popList,getActiveBattleFields(),system)
   }
  async function getPopList(charecter){
     const userPokemonsMeta = await getUserPokemonsMeta(charecter)
@@ -195,7 +193,11 @@ globalThis.showMoveDetails = function({currentTarget}){
   if (move){
     const moveDetails = form.querySelector(".move-details")
     moveDetails.querySelector(".move-name").textContent = move.name
-    moveDetails.querySelector(".desc").textContent = move.description()
+    moveDetails.querySelector(".desc").textContent = move.description() + '\n' + JSON.stringify({
+        power: move.basePower,
+        category: move.category,
+        priority: move.priority
+    }, null, 2)
  }
 }
 

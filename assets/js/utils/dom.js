@@ -4,7 +4,6 @@ import natures from "../../../data/natures.js"
 import { Pokemon } from "./models.js";
 
 
-//console.log(moves.rapidspin)
 
 export function loadPokemonsDatalist(id) {
   const dataList = document.getElementById(id);
@@ -91,8 +90,7 @@ export function startBattle(enemiesMeta, fields = [], system) {
 export async function startUserBattle(name,popList=[],fields =[], system) {
    try {
        const userPokemonsMeta = await getUserPokemonsMeta(name)
-       console.log(userPokemonsMeta)
-       //startBattle(enemiesMeta, fields, system)
+       startBattle(userPokemonsMeta, fields, system)
    }
    catch(e) {
        console.error(e)

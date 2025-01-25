@@ -114,18 +114,16 @@ class BaseBattle extends EventEmitter {
         !move2.try(this.pokemon2) && senario.set(this.pokemon2, new Move("staythere"))
         
         // multi man move
-        if(this.pokemon1.state.manCount > 0) {
-            const totalMen = this.pokemon1.state.manCount + 1
-            move1.basePower = move1.basePower / totalMen
-            move1.multihit = Array.from({ length: totalMen }).reduce((acc, i) => {
+        if(this.pokemon1.state.manCount > 1) {
+            move1.basePower = move1.basePower / this.pokemon1.state.manCount
+            move1.multihit = Array.from({ length: this.pokemon1.state.manCount }).reduce((acc, i) => {
                 return acc + move1.multiHit()
             }, 0)
             senario.set(this.pokemon1, move1)
         }
-        if(this.pokemon2.state.manCount > 0) {
-            const totalMen = this.pokemon2.state.manCount + 1
-            move2.basePower = move2.basePower / totalMen
-            move2.multihit = Array.from({ length: totalMen }).reduce((acc, i) => {
+        if(this.pokemon2.state.manCount > 1) {
+            move2.basePower = move2.basePower / this.pokemon2.state.manCount
+            move2.multihit = Array.from({ length: this.pokemon2.state.manCount }).reduce((acc, i) => {
                 return acc + move2.multiHit()
             }, 0)
             senario.set(this.pokemon2, move2)
@@ -458,7 +456,7 @@ class MultiBattle extends BaseBattle {
 
 
 class BattleState extends EventEmitter {
-    _manCount = 0
+    _manCount = 1
     moves = [
         new Move("staythere"),
         new Move("dodge")
@@ -506,9 +504,9 @@ class BattleState extends EventEmitter {
     }
 
     set manCount(value) {
-        this._manCount = Math.max(0, value)
+        this._manCount = Math.max(1, value)
     }
-    
+
     addWaveRetreat() {
         this.retreat += this.pokemon.meta.retreat;
     }

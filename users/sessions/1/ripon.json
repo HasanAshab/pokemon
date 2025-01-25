@@ -1,38 +1,20 @@
 [
   {
-    "id": "pawniard",
-    "xp": 2000,
-    "nature": "bold",
+    "id": "nuzleaf",
+    "xp": 1600,
+    "nature": "calm",
     "retreat": 3,
     "moves": [
       {
-        "id": "metalclaw",
+        "id": "pound",
         "isSelected": true
       },
       {
-        "id": "brutalswing",
+        "id": "faketears",
         "isSelected": true
       },
       {
-        "id": "ironhead",
-        "isSelected": true
-      },
-      {
-        "id": "furyattack",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "bulbasaur",
-    "xp": 1500,
-    "nature": "serious",
-    "retreat": 3.5,
-    "moves": [
-      {
-        "id": "tackle",
+        "id": "megadrain",
         "isSelected": true
       },
       {
@@ -40,15 +22,7 @@
         "isSelected": true
       },
       {
-        "id": "vinewhip",
-        "isSelected": true
-      },
-      {
-        "id": "growth",
-        "isSelected": true
-      },
-      {
-        "id": "leechseed",
+        "id": "doubleslap",
         "isSelected": true
       }
     ],
@@ -56,13 +30,73 @@
     "token_used": {}
   },
   {
-    "id": "fraxure",
-    "xp": 1700,
-    "nature": "calm",
+    "id": "marshtomp",
+    "xp": 1900,
+    "nature": "brave",
     "retreat": 3,
     "moves": [
       {
-        "id": "scratch",
+        "id": "mudbomb",
+        "isSelected": true
+      },
+      {
+        "id": "growl",
+        "isSelected": true
+      },
+      {
+        "id": "watergun",
+        "isSelected": true
+      },
+      {
+        "id": "dig",
+        "isSelected": true
+      },
+      {
+        "id": "mudslap",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "haunter",
+    "xp": 1600,
+    "nature": "serious",
+    "retreat": 3.5,
+    "moves": [
+      {
+        "id": "hypnosis",
+        "isSelected": true
+      },
+      {
+        "id": "nightshade",
+        "isSelected": true
+      },
+      {
+        "id": "confuseray",
+        "isSelected": true
+      },
+      {
+        "id": "lick",
+        "isSelected": true
+      },
+      {
+        "id": "smog",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "arctibax",
+    "xp": 1700,
+    "nature": "brave",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "tackle",
         "isSelected": true
       },
       {
@@ -70,45 +104,19 @@
         "isSelected": true
       },
       {
-        "id": "bite",
+        "id": "dragontail",
         "isSelected": true
       },
       {
-        "id": "dragonrage",
+        "id": "icywind",
         "isSelected": true
       },
       {
-        "id": "breakingswipe",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "pidgey",
-    "xp": 1200,
-    "nature": "serious",
-    "retreat": 2,
-    "moves": [
-      {
-        "id": "peck",
-        "isSelected": true
-      },
-      {
-        "id": "furyattack",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "gust",
+        "id": "dragonbreath",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   }
-]
+  ]
