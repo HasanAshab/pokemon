@@ -125,7 +125,7 @@ function loadPokemonData(playerTag) {
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
     pokemon.state.on(
-        ["turn-end", "wave"], 
+        ["scene-end", "wave"], 
         () => loadPokemonData(playerTag)
     )
     
@@ -133,7 +133,7 @@ function setBattleStateListeners(playerTag) {
         popupQueue.add("dodged!", playerTag)
     })
     
-    pokemon.state.on("turn-end", (_, hit) => {
+    pokemon.state.on("scene-end", hit => {
         let msg = null
         if(hit.hitCount() === 1 && hit.criticalCount() === 1) {
             msg =  'Critical Hit!'
@@ -430,7 +430,7 @@ function loadMoves(playerTag) {
       const damage = new Damage(pokemon, move)
     const cardHtml = `
     <div class="single-card-wrapper">
-      <div class="card ${pokemon.state.canUseMove(move.id) ? "" : "disabled"}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" onclick="moveCardClickHandler(event, '${playerTag}')" data-makes-contact="${!!move.flags.contact}">
+      <div class="card ${battle.canUseMove(pokemon, move.id) ? "" : "disabled"}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" onclick="moveCardClickHandler(event, '${playerTag}')" data-makes-contact="${!!move.flags.contact}">
           <div class="card-header" style="background-color:var(--${move.type || "Normal"}-type-color)">
             <div class="category-side">
               
@@ -587,7 +587,7 @@ function runTurn(moveIds) {
         [pokemon, move1],
         [enemyPokemon, move2],
     ])
-    return battle.turn(senario)
+    return battle.run(senario)
 }
 
 

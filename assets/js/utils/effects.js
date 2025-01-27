@@ -23,6 +23,8 @@ class Effect {
         "turn",
         "turn-end",
         "wave",
+        "scene",
+        "scene-end",
         "used-move"
     ]
     _listeners = {
@@ -330,20 +332,27 @@ class PartiallyTrappedEffect extends ExpirableEffect {
         this.lifetime.turns = lifetime
     }
     
-    onTurn(_, senario) {
+    onTurn() {
         this.state.decreaseHealth(this._calculateEffectDamage())
-        
-        const opponent = this.state.battle.opponentOf(this.state.pokemon)
-        const move = senario.get(this.state.pokemon)
-        const opponentMove = senario.get(opponent)
-
+    }
+    
+    onScene(move, senario) {
         if (this.source.flags.contact) {
             move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
-            !opponentMove.flags.contact && senario.set(opponent, new Move("staythere"))
         }
         else {
             move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
-            opponentMove.flags.contact && senario.set(opponent, new Move("staythere"))
+        }
+    }
+    
+    onOpponentScene(move, senario) {
+        const opponent = this.state.battle.opponentOf(this.state.pokemon)
+
+        if (this.source.flags.contact) {
+            !move.flags.contact && senario.set(opponent, new Move("staythere"))
+        }
+        else {
+            move.flags.contact && senario.set(opponent, new Move("staythere"))
         }
     }
     

@@ -60,7 +60,8 @@ export class Damage {
             ? this.attacker.state.stats.get(isSpecial ? "spa" : "atk")
             : this.attacker.stats[isSpecial ? "spa" : "atk"];
 
-        return stab * bp * attackStat * 0.416;
+        //return stab * bp * attackStat * 0.416;
+        return stab * bp * attackStat * 0.65;
     }
 
     _calculate() {

@@ -63,7 +63,11 @@ class BaseBattle extends EventEmitter {
                 p.state.emit(this._event, ...args)
             })
         })
-
+        this.on(["scene", "scene-end"], function(map) {
+            that.groundedPokemons().filter(p => map.has(p)).forEach(p => {
+                p.state.emit(this._event, map.get(p), map)
+            })
+        })
     }
     
     opponentOf(pokemon) {
@@ -95,7 +99,12 @@ class BaseBattle extends EventEmitter {
         }
     }
     
-    async turn(senario) {
+    canUseMove(pokemon, moveId) {
+        const move = pokemon.state.moves.find(m => m.id === moveId)
+        return move.retreat <= pokemon.state.retreat && (move.pp === null || move.pp > 0)
+    }
+
+    async run(senario) {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
     
@@ -130,7 +139,7 @@ class BaseBattle extends EventEmitter {
         }
 
 
-        this.emit("turn", this, senario)
+        this.emit("scene", senario)
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
@@ -374,9 +383,12 @@ class BaseBattle extends EventEmitter {
             this.ctx.veryClose = true
         }
         
-        this.emit("turn-end", this, hit1, hit2)
-        this.pokemon1.state.emit("turn-end", this, hit1)
-        this.pokemon2.state.emit("turn-end", this, hit2)
+        
+        const hitsMap = new Map([
+            [this.pokemon1, hit1], 
+            [this.pokemon2, hit2]
+        ])
+        this.emit("scene-end", hitsMap)
     }
 
     _canDodge(attacker, target, move) {
@@ -420,6 +432,17 @@ class BaseBattle extends EventEmitter {
 }
 
 class SingleBattle extends BaseBattle {
+    constructor(...args) {
+        super(...args)
+        
+        this.on("scene", () => {
+            this.emit("turn", this)
+        })
+        this.on("scene-end", () => {
+            this.emit("turn-end", this)
+        })
+    }
+    
     needNewWave() {
         return !this._waveAfterTurns ||
             (!this.pokemon1.state.usableOffensiveMoves().length && !this.pokemon2.state.usableOffensiveMoves().length)
@@ -431,12 +454,26 @@ class SingleBattle extends BaseBattle {
 }
 
 class MultiBattle extends BaseBattle {
+    _turnParticipants = new Set()
+
     constructor(...args) {
         super(...args)
-
+        
         const avgPokePerSide = Math.round(this._all.length / 2)
         this.turnsPerWave = this.turnsPerWave.map(([turns, prob]) => {
             return [turns * avgPokePerSide, prob]
+        })
+        
+        this.on("scene", senario => {
+            this._addParticipants(senario)
+            this._allParticipated() && this.emit("turn", this)
+        })
+        this.on("scene-end", () => {
+            this.emit("turn-end", this)
+        })
+
+        this.on("turn", () => {
+            this._turnParticipants = new Set()
         })
     }
     
@@ -444,7 +481,6 @@ class MultiBattle extends BaseBattle {
         return team.filter(p => p.meta.isSelectedForMultiBattle === undefined || p.meta.isSelectedForMultiBattle === true)
     }
 
-    
     needNewWave() {
         return !this._waveAfterTurns || this._all.every(p => !p.state.usableOffensiveMoves().length)
     }
@@ -452,8 +488,22 @@ class MultiBattle extends BaseBattle {
     groundedPokemons() {
         return this._all
     }
+    
+    canUseMove(pokemon, move) {
+        return super.canUseMove(pokemon, move) && (!this._turnParticipants.has(pokemon) || move.retreat === 0)
+    }
+    
+    _addParticipants(senario) {
+        senario.keys().forEach(p => {
+            this._turnParticipants.add(p)
+            console.log(p)
+        })
+    }
+    
+    _allParticipated() {
+        return this._all.every(p => this._turnParticipants.has(p))
+    }
 }
-
 
 class BattleState extends EventEmitter {
     _manCount = 1
@@ -522,15 +572,10 @@ class BattleState extends EventEmitter {
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
-    canUseMove(moveId) {
-        const move = this.moves.find(m => m.id === moveId)
-        return move.retreat <= this.retreat && (move.pp === null || move.pp > 0)
+    usableMoves() {
+        return this.moves.filter(m => this.battle.canUseMove(m.id))
     }
 
-    usableMoves() {
-        return this.moves.filter(m => this.canUseMove(m.id))
-    }
-    
     usableOffensiveMoves() {
         return this.usableMoves().filter(m => m.flags.offensive)
     }
@@ -541,7 +586,6 @@ class BattleState extends EventEmitter {
         return move
     }
 }
-
 
 class StatsManager {
     //bug must be in _statChanges
@@ -582,7 +626,7 @@ class StatsManager {
         this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats, this.state.pokemon.meta.stats);
         this.prev = new PrevStatsManager(state, this)
         
-        this.state.on("turn", () => {
+        this.state.on("scene", () => {
             this._modifiers = {}
         })
         this.state.on("wave", () => {
@@ -669,7 +713,7 @@ class PrevStatsManager {
         this.stats = statsManager
         this.refresh()
 
-        this.state.on("turn", () => {
+        this.state.on("scene", () => {
             this.refresh()
         })
         this.state.on("wave", () => {
@@ -716,10 +760,9 @@ class DamageManager {
     constructor(state) {
         this.state = state
         
-        this.state.on("turn", () => {
+        this.state.on("scene", () => {
             this._modifiers = []
             this._critModifiers = []
-            
         })
         this.state.on("wave", () => {
             this._modifiers = []

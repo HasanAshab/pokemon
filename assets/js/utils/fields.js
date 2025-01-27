@@ -12,10 +12,10 @@ class GenericField extends Field {
         super(battle)
         this.type = type
         
-        battle.on("turn", (...args) => this.onTurn(...args))
+        battle.on("scene", (...args) => this.onScene(...args))
     }
     
-    onTurn(_, senario) {
+    onScene(senario) {
         this.battle.actives().forEach(pokemon => {
             const move = senario.get(pokemon)
             /*const effectiveness = typeChart[this.type][move.type] ?? 1
