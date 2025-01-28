@@ -320,10 +320,8 @@ class BaseBattle extends EventEmitter {
             }
         }
         
-        const hitteMain1 = Math.random() < (1 / this.pokemon1.state.manCount)
-        const hitteMain2 = Math.random() < (1 / this.pokemon2.state.manCount)
-        console.log(hitteMain1)
-        console.log(hitteMain2)
+        const hitteMain1 = this._isMainHitte(this.pokemon1, move2) 
+        const hitteMain2 = this._isMainHitte(this.pokemon2, move1)
 
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
@@ -448,7 +446,11 @@ class BaseBattle extends EventEmitter {
         
         return dodged 
     }
-
+    
+    _isMainHitte(target, move) {
+        return move.target === "allAdjacent" || Math.random() < (1 / target.state.manCount)
+    }
+    
     _setWaveTurns() {
         const turns = this.turnsPerWave.map(tpw => tpw[0])
         const weights = this.turnsPerWave.map(tpw => tpw[1])
