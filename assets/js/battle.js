@@ -50,8 +50,9 @@ globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
 }
 globalThis.doubleTeamDataClickHandler = (playerTag)=>{
    const oldDoubleTeamsCount = pokemonMap[playerTag].state.manCount
-   const newVal = window.prompt(`Set the double team data of ${playerTag}`,oldDoubleTeamsCount)
+   const newVal = parseInt(window.prompt(`Set the double team data of ${playerTag}`,oldDoubleTeamsCount))
    setDoubleTeamData(newVal, playerTag)
+   console.log(newVal)
    pokemonMap[playerTag].state.manCount = newVal
 }
 

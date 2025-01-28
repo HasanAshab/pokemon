@@ -27,3 +27,7 @@ vicegrip
 detect bug on sleep
 acc, evas stat bug
 pp not decrease when hp not changed
+
+
+double team
+powder type moves
