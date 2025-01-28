@@ -31,13 +31,16 @@ export function loadNaturesDataList(id){
 
 
 export class PopupMsgQueue {
-    constructor(elemIdSuffix) {
+    queue = []
+    isRunning = false
+
+    constructor(elemIdSuffix, limit = 5) {
         this.elemIdSuffix = "popup-msg-cont";
-        this.queue = [];
-        this.isRunning = false;
+        this.limit = limit
     }
 
     add(msg, playerTag, cb = (() => null)) {
+        if (this.queue.length === this.limit) return
         this.queue.push({ msg, playerTag, cb });
         this.runQueue();
     }
@@ -70,7 +73,7 @@ export class PopupMsgQueue {
                 popupMsgCont.classList.remove("enemy-side");
                 cb();
                 resolve();
-            }, 1500); // Adjust duration if needed
+            }, 1000); // Adjust duration if needed
         });
     }
 }

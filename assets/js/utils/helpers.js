@@ -101,7 +101,7 @@ export async function getMoveLearnset(pokemon, level, limit = 5) {
         .toSorted((a, b) => {
             if (a.source === "level" && b.source !== "level") return -1; // "level" comes first
             if (a.source !== "level" && b.source === "level") return 1;  // "tm" goes below "level"
-            return a.required_level - b.required_level;                  // Sort by level otherwise
+            return b.required_level - a.required_level;                  // Sort by level otherwise
         })
         .slice(0, limit);
 }

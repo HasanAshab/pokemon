@@ -7,6 +7,7 @@ import { fixFloat, weightedRandom } from "./helpers.js"
 
 
 class BaseBattle extends EventEmitter {
+    scenePerTurn = 1
     //Possible turns per wave with their weight
     turnsPerWave = [
         [2, 0.2],
@@ -24,7 +25,7 @@ class BaseBattle extends EventEmitter {
     constructor(team1, team2, fieldTypes = []) {
         super()
         const that = this
-        
+        this._turnAfterScenes = this.scenePerTurn
         this.team1 = this.filterTeam(team1)
         this.team2 = this.filterTeam(team2)
         this._all = [...this.team1, ...this.team2]
@@ -39,8 +40,21 @@ class BaseBattle extends EventEmitter {
         this._prompts = new Map(
             this._all.map(p => [p, new BattlePrompt()])
         );
+        
+        this.on("scene", () => {
+            this._turnAfterScenes--
+            !this._turnAfterScenes && this.emit("turn", this)
+        })
+
+        this.on("scene-end", () => {
+            if (!this._turnAfterScenes) {
+                this.emit("turn-end", this)
+                this._turnAfterScenes = this.scenePerTurn
+            }
+        })
 
         this.on("turn", (...args) => {
+            console.log("new turn!")
             if (!this._waveAfterTurns) {
                 this._setWaveTurns()
             }
@@ -306,6 +320,10 @@ class BaseBattle extends EventEmitter {
             }
         }
         
+        const hitteMain1 = Math.random() < (1 / this.pokemon1.state.manCount)
+        const hitteMain2 = Math.random() < (1 / this.pokemon2.state.manCount)
+        console.log(hitteMain1)
+        console.log(hitteMain2)
 
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
@@ -320,7 +338,7 @@ class BaseBattle extends EventEmitter {
 
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
-        
+
         if(move2.priority > move1.priority) {
             if (d1 && !dodged1) {
                 this.pokemon1.state.decreaseHealth(d1)
@@ -349,16 +367,24 @@ class BaseBattle extends EventEmitter {
         if (!attackSelf2 && canMove2 && ((d1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
             this.pokemon1.state.effects.apply(move2, { on: "target" })
             this.pokemon1.state.stats.apply("target", move2)
+            if(hitteMain1) {
+                this.pokemon1.state.manCount = 1
+            }
         }
         if (!attackSelf1 && canMove1 && ((d2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
             this.pokemon2.state.effects.apply(move1, { on: "target" })
             this.pokemon2.state.stats.apply("target", move1)
+            if(hitteMain2) {
+                this.pokemon2.state.manCount = 1
+            }
         }
         if (attackSelf1) {
+            this.pokemon1.state.manCount = 1
             this.pokemon1.state.effects.apply(move1, { on: "target" })
             this.pokemon1.state.stats.apply("target", move1)
         }
         if (attackSelf2) {
+            this.pokemon2.state.manCount = 1
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
@@ -382,8 +408,7 @@ class BaseBattle extends EventEmitter {
         if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
             this.ctx.veryClose = true
         }
-        
-        
+
         const hitsMap = new Map([
             [this.pokemon1, hit1], 
             [this.pokemon2, hit2]
@@ -432,17 +457,6 @@ class BaseBattle extends EventEmitter {
 }
 
 class SingleBattle extends BaseBattle {
-    constructor(...args) {
-        super(...args)
-        
-        this.on("scene", () => {
-            this.emit("turn", this)
-        })
-        this.on("scene-end", () => {
-            this.emit("turn-end", this)
-        })
-    }
-    
     needNewWave() {
         return !this._waveAfterTurns ||
             (!this.pokemon1.state.usableOffensiveMoves().length && !this.pokemon2.state.usableOffensiveMoves().length)
@@ -454,26 +468,14 @@ class SingleBattle extends BaseBattle {
 }
 
 class MultiBattle extends BaseBattle {
-    _turnParticipants = new Set()
-
     constructor(...args) {
         super(...args)
         
         const avgPokePerSide = Math.round(this._all.length / 2)
+        
+        this.scenePerTurn = this.scenePerTurn * avgPokePerSide
         this.turnsPerWave = this.turnsPerWave.map(([turns, prob]) => {
             return [turns * avgPokePerSide, prob]
-        })
-        
-        this.on("scene", senario => {
-            this._addParticipants(senario)
-            this._allParticipated() && this.emit("turn", this)
-        })
-        this.on("scene-end", () => {
-            this.emit("turn-end", this)
-        })
-
-        this.on("turn", () => {
-            this._turnParticipants = new Set()
         })
     }
     
@@ -487,21 +489,6 @@ class MultiBattle extends BaseBattle {
     
     groundedPokemons() {
         return this._all
-    }
-    
-    canUseMove(pokemon, move) {
-        return super.canUseMove(pokemon, move) && (!this._turnParticipants.has(pokemon) || move.retreat === 0)
-    }
-    
-    _addParticipants(senario) {
-        senario.keys().forEach(p => {
-            this._turnParticipants.add(p)
-            console.log(p)
-        })
-    }
-    
-    _allParticipated() {
-        return this._all.every(p => this._turnParticipants.has(p))
     }
 }
 
@@ -573,7 +560,7 @@ class BattleState extends EventEmitter {
     }
 
     usableMoves() {
-        return this.moves.filter(m => this.battle.canUseMove(m.id))
+        return this.moves.filter(m => this.battle.canUseMove(this.pokemon, m.id))
     }
 
     usableOffensiveMoves() {

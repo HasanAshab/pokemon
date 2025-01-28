@@ -212,7 +212,7 @@ document.body.onload = loadAll
 
 
 import { startBattle, startUserBattle} from "./utils/dom.js";
-/*
+
 startBattle([
   {
     "id": "pawniard",
@@ -271,5 +271,4 @@ startBattle([
     "token_used": {}
   },
 ], ["normal"], "multiple")
-*/
 

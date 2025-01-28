@@ -94,6 +94,11 @@ globalThis.showEffectsEditForm = function(playerTag){
   setEffects(pokemon.state.effects.names(), playerTag)
 }
 
+function setBattleListeners() {
+    battle.on(["wave", "turn"], function() {
+        popupQueue.add(`New ${this._event}!`, "you")
+    })
+}
 
 const opponentTag = tag => (tag === "you" ? "enemy" : "you")
 
@@ -607,6 +612,7 @@ window.onload = () => {
     globalThis.fields = getParam("fields")?.split(',') ?? []
     loadTeams()
     registerBattle()
+    setBattleListeners()
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
 }
