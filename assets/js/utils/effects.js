@@ -127,18 +127,8 @@ class BurnEffect extends Effect {
     static immuneTo = ["Fire"]
     static effectName = "brn"
     
-    setup() {
-        super.setup()
-
-        const attackStat = this.state.stats.get("attack");
-        this.state.stats.set("attack", Math.floor(attackStat / 2));
-    }
-
-    teardown() {
-        super.teardown()
-
-        const attackStat = this.state.stats.get("attack");
-        this.state.stats.set("attack", Math.floor(attackStat * 2));
+    onScene() {
+        this.state.stats.chainModify("atk", 0.5);
     }
 
     onTurn() {
@@ -247,18 +237,8 @@ class ParalyzeEffect extends Effect {
     static immuneTo = ["Electric", "Ground"]
     static effectName = "par"
 
-    setup() {
-        super.setup()
-
-        const speedStat = this.state.stats.get("speed");
-        this.state.stats.set("speed", Math.floor(speedStat / 2)); // Speed halved
-    }
-
-    teardown() {
-        super.teardown()
-
-        const speedStat = this.state.stats.get("speed");
-        this.state.stats.set("speed", Math.floor(speedStat * 2));
+    onScene() {
+        this.state.stats.chainModify("spe", 0.5); // Speed halved
     }
 
     onTurn() {
@@ -282,10 +262,12 @@ class ConfusionEffect extends ExpirableEffect {
     }
 
     onTurn() {
+        super.onTurn(...arguments)
         this.status.attackSelf = Math.random() < ConfusionEffect.ATK_SELF_CHANCE
     }
 
     onTurnEnd() {
+        super.onTurnEnd(...arguments)
         this.status.attackSelf = false
     }
     
@@ -363,6 +345,77 @@ class PartiallyTrappedEffect extends ExpirableEffect {
     }
 }
 
+class DoubleTeamEffect extends ExpirableEffect {
+    static effectName = "doubleteam"
+
+    static isPre() {
+        return true
+    }
+
+    lifetime = { waves: 1 }
+
+    setup() {
+        super.setup()
+        this.state.manCount = this._calculateDTManCount()
+        //this.state.damage.chainModify(0.01)
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.manCount = 1
+    }
+
+    onScene(move, senario) {
+        move = this._modifyMove(move)
+        senario.set(this.state.pokemon, move)
+        
+        // Double Team Defence Halved
+        this.state.stats.chainModify("def", 0.5)
+        this.state.stats.chainModify("spd", 0.5)
+    }
+    
+    onOpponentScene(move) {
+        this.state.manCount -= this._totalManHittee(move)
+        if (this.state.manCount === 1) {
+            this.remove()
+        }
+    }
+    
+    _calculateDTManCount() {
+        return Math.round(
+            this.state.stats.get("spe") * this.state.pokemon.level * (0.06 * 0.1)
+        )
+    }
+
+    _modifyMove(move) {
+        move.basePower = move1.basePower / this.state.manCount
+        move.multihit = Array.from({ length: this.state.manCount }).reduce((acc, i) => {
+            return acc + move.multiHit()
+        }, 0)
+        return move
+    }
+    
+    _totalManHittee(move) {
+        const isMainManHittee = manCount => Math.random() < (1 / manCount)
+        const manCount = this.state.manCount
+        if (move.target.startsWith("allAdjacent")) {
+            for (let i = 0; i < manCount; i++) {
+                if (!isMainManHittee(manCount - i)) {
+                    move.basePower = move.basePower / 2
+                }
+            }
+            return manCount
+        }
+        for (let i = 0; i < move.hit; i++) {
+            if (isMainManHittee(manCount - i)) {
+                return manCount
+            }
+        }
+        return Math.min(manCount, move.hit)
+    }
+}
+
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -374,6 +427,7 @@ export const EFFECTS = makeEffectsMap([
     LeechSeedEffect,
     StallEffect,
     PartiallyTrappedEffect,
+    DoubleTeamEffect,
 ])
 
 

@@ -135,23 +135,6 @@ class BaseBattle extends EventEmitter {
         // move failure
         !move1.try(this.pokemon1) && senario.set(this.pokemon1, new Move("staythere"))
         !move2.try(this.pokemon2) && senario.set(this.pokemon2, new Move("staythere"))
-        
-        // multi man move
-        if(this.pokemon1.state.manCount > 1) {
-            move1.basePower = move1.basePower / this.pokemon1.state.manCount
-            move1.multihit = Array.from({ length: this.pokemon1.state.manCount }).reduce((acc, i) => {
-                return acc + move1.multiHit()
-            }, 0)
-            senario.set(this.pokemon1, move1)
-        }
-        if(this.pokemon2.state.manCount > 1) {
-            move2.basePower = move2.basePower / this.pokemon2.state.manCount
-            move2.multihit = Array.from({ length: this.pokemon2.state.manCount }).reduce((acc, i) => {
-                return acc + move2.multiHit()
-            }, 0)
-            senario.set(this.pokemon2, move2)
-        }
-
 
         this.emit("scene", senario)
 
@@ -428,7 +411,8 @@ class BaseBattle extends EventEmitter {
         // Get speed stats
         const attackerSpd = attacker.state.stats.get("spe");
         const targetSpd = target.state.stats.get("spe");
-
+        
+        console.log(attackerSpd, targetSpd)
         // Get accuracy and evasion stats
         const attackerAccuracy = attacker.state.stats.get("accuracy")
         const targetEvasion = target.state.stats.get("evasion")
@@ -442,6 +426,7 @@ class BaseBattle extends EventEmitter {
     
         // Calculate final hit chance
         const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.70;
+        console.log(target.id, finalHitChance)
     
         // Simulate random factor for dodge mechanics
         const randomFactor = Math.random() * 100;
@@ -454,12 +439,18 @@ class BaseBattle extends EventEmitter {
     }
     
     _totalManHittee(attacker, target, move) {
+        const isMainManHittee = manCount => Math.random() < (1 / manCount)
         const targetManCount = target.state.manCount
         if (move.target.startsWith("allAdjacent")) {
+            for (let i = 0; i < targetManCount; i++) {
+                if (!isMainManHittee(targetManCount - i)) {
+                    move.basePower = move.basePower / 2
+                }
+            }
             return targetManCount
         }
         for (let i = 0; i < move.hit; i++) {
-            if (Math.random() < (1 / (targetManCount - i))) {
+            if (isMainManHittee(targetManCount - i)) {
                 return targetManCount
             }
         }
@@ -539,7 +530,7 @@ class BattleState extends EventEmitter {
 
         this.on("wave", () => {
             this.addWaveRetreat()
-            this.manCount = 0
+            this.manCount = 1
         })
 
         this.on("used-move", move => {

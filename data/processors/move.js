@@ -42,11 +42,13 @@ function modifyPP(move) {
 }
 
 function setEffects(move) {
+    if ("effects" in move) return
+
     move.effects = {
         self: [],
         target: []
     }
-    
+
     move.self?.status && move.effects.self.push({
         name: move.self.status,
         chance: move.self.chance ?? 100,

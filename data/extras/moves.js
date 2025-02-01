@@ -1,4 +1,3 @@
-import { calculateDTManCount } from "../../../assets/js/utils/helpers.js"
 
 export default {
     staythere: {
@@ -43,8 +42,12 @@ export default {
       target: "self",
       type: "Normal",
       contestType: "Cool",
-      onHit(pokemon) {
-        pokemon.state.manCount = calculateDTManCount(pokemon)
+      effects: {
+        self: [{
+          name: "doubleteam",
+          chance: 100,
+          isVolatile: true 
+        }]
       },
       retreat: 3,
     },

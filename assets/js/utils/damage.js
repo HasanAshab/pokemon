@@ -43,7 +43,7 @@ export class Damage {
             if (typeof this.move.damage === "number") 
                 return this.move.damage
             if (this.move.damage === "level")
-                return this.attacker.level * 2
+                return this.attacker.level * 1.5
         }
         
         let bp = this.move.basePower

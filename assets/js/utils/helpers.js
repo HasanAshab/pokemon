@@ -71,13 +71,6 @@ export function getDamageDangerLevel(pokemon, damage) {
     }
 }
 
-
-export function calculateDTManCount(pokemon) {
-    return Math.round(
-        pokemon.state.stats.get("spe") * pokemon.level * (0.06 * 0.1)
-    )
-}
-
 export function logUniqueMethodKeys(obj) {
   const uniqueMethodKeys = new Set();
 

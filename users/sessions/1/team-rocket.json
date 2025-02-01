@@ -1,7 +1,7 @@
 [
   {
     "id": "drilbur",
-    "xp": 1800,
+    "xp": 1900,
     "nature": "calm",
     "retreat": 3,
     "moves": [
@@ -31,7 +31,7 @@
   },
   {
     "id": "corvisquire",
-    "xp": 1600,
+    "xp": 1800,
     "nature": "brave",
     "retreat": 3,
     "moves": [

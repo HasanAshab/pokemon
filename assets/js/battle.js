@@ -19,7 +19,6 @@ globalThis.retreatBtnClickHandler = function(playerTag){
     }
     else {
       const newRetreat = Number(window.prompt("retreat",oldRetreat))
-      
     }
 }
 
@@ -364,6 +363,10 @@ function setEffects(effects, playerTag) {
     },
     "partiallytrapped": {
         "name": "Par. Trapped",
+        "color": "Normal"
+    },
+    "doubleteam": {
+        "name": "Double Team",
         "color": "Normal"
     }
 };

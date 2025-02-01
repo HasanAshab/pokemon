@@ -211,41 +211,27 @@ function loadAll() {
 document.body.onload = loadAll
 
 
-import { startBattle, startUserBattle} from "./utils/dom.js";
-
-startBattle(null, [
+import { startBattle, startUserBattle } from "./utils/dom.js";
+/*
+startBattle([
   {
-    "id": "pawniard",
-    "xp": 1900,
-    "nature": "bold",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "metalclaw",
-        "isSelected": true
-      },
-      {
-        "id": "brutalswing",
-        "isSelected": true
-      },
-      {
-        "id": "ironhead",
-        "isSelected": true
-      },
-      {
-        "id": "furyattack",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "fraxure",
-    "xp": 1700,
+    "id": "sneasel",
+    "xp": 1400,
     "nature": "calm",
     "retreat": 3,
     "moves": [
+      {
+        "id": "honeclaws",
+        "isSelected": true
+      },
+      {
+        "id": "feintattack",
+        "isSelected": true
+      },
+      {
+        "id": "iceshard",
+        "isSelected": true
+      },
       {
         "id": "scratch",
         "isSelected": true
@@ -253,22 +239,169 @@ startBattle(null, [
       {
         "id": "leer",
         "isSelected": true
-      },
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+    {
+    "id": "sneasel",
+    "xp": 1400,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
       {
-        "id": "bite",
+        "id": "honeclaws",
         "isSelected": true
       },
       {
-        "id": "dragonrage",
+        "id": "feintattack",
         "isSelected": true
       },
       {
-        "id": "breakingswipe",
+        "id": "iceshard",
+        "isSelected": true
+      },
+      {
+        "id": "scratch",
+        "isSelected": true
+      },
+      {
+        "id": "leer",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-], ["normal"], "multiple")
+    {
+    "id": "sneasel",
+    "xp": 1400,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "honeclaws",
+        "isSelected": true
+      },
+      {
+        "id": "feintattack",
+        "isSelected": true
+      },
+      {
+        "id": "iceshard",
+        "isSelected": true
+      },
+      {
+        "id": "scratch",
+        "isSelected": true
+      },
+      {
+        "id": "leer",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+    {
+    "id": "sneasel",
+    "xp": 1400,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "honeclaws",
+        "isSelected": true
+      },
+      {
+        "id": "feintattack",
+        "isSelected": true
+      },
+      {
+        "id": "iceshard",
+        "isSelected": true
+      },
+      {
+        "id": "scratch",
+        "isSelected": true
+      },
+      {
+        "id": "leer",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+], 
+["Grass", "Rock", "Normal"],
+"multiple"
+)
+*/
 
+
+/*
+startBattle([
+  {
+    "id": "riolu",
+    "xp": 1200,
+    "nature": "brave",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "forcepalm",
+        "isSelected": true
+      },
+      {
+        "id": "lowkick",
+        "isSelected": true
+      },
+      {
+        "id": "metalclaw",
+        "isSelected": true
+      },
+      {
+        "id": "detect",
+        "isSelected": true
+      },
+      {
+        "id": "bulletpunch",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "bunnelby",
+    "xp": 1200,
+    "nature": "calm",
+    "retreat": 3,
+    "moves": [
+      {
+        "id": "mudshot",
+        "isSelected": true
+      },
+      {
+        "id": "doubleslap",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
+        "isSelected": true
+      },
+      {
+        "id": "laserfocus",
+        "isSelected": true
+      },
+      {
+        "id": "tackle",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+], ["Normal"], "multiple")
+*/
