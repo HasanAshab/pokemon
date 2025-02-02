@@ -11,15 +11,16 @@ info.classList.toggle("active")
 }
 globalThis.retreatBtnClickHandler = function(playerTag){
     const selectedCard = document.querySelector(`.${playerTag}-controle-cont .card-container .card.selected`)
-    const oldRetreat = 2
+    const oldRetreat = pokemonMap[playerTag].state.retreat
     if (selectedCard) {
         const move = new Move(selectedCard.dataset.moveId)
         pokemonMap[playerTag].state.emit("used-move", move)
-        loadPokemonData(playerTag)
     }
     else {
       const newRetreat = Number(window.prompt("retreat",oldRetreat))
+      pokemonMap[playerTag].state.retreat = newRetreat
     }
+    loadPokemonData(playerTag)
 }
 
 function loadVeryCloseBtn() {
