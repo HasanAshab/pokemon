@@ -405,3 +405,68 @@ startBattle([
   }
 ], ["Normal"], "multiple")
 */
+
+/*
+startBattle([
+  {
+    "id": "frogadier",
+    "xp": 1700,
+    "nature": "calm",
+    "retreat": 3.5,
+    "moves": [
+      {
+        "id": "waterpulse",
+        "isSelected": true
+      },
+      {
+        "id": "lick",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
+        "isSelected": true
+      },
+      {
+        "id": "pound",
+        "isSelected": true
+      },
+      {
+        "id": "cut",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "pupitar",
+    "xp": 1600,
+    "nature": "brave",
+    "retreat": 3.5,
+    "moves": [
+      {
+        "id": "rockslide",
+        "isSelected": true
+      },
+      {
+        "id": "heavyslam",
+        "isSelected": true
+      },
+      {
+        "id": "scaryface",
+        "isSelected": true
+      },
+      {
+        "id": "tackle",
+        "isSelected": true
+      },
+      {
+        "id": "leer",
+        "isSelected": true
+      }
+    ],
+    "stats": {},
+    "token_used": {}
+  }
+], ["Ground", "Flying", "Psychic", "Bug", "Rock"])
+*/

@@ -23,7 +23,7 @@ export class Damage {
 
     _setCriticalMultiplier() {
         const critChance = Damage.BASE_CRIT_CHANCE
-            * (1 + (this.move.critRatio ?? 1))
+            * (1 + (this.move.critRatio ?? 0) + (this.attacker.state.stats._statChanges.crit ?? 0))
             * this.attacker.state.damage.critModifier();
 
         if (Math.random() < critChance) {
