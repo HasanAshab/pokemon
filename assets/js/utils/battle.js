@@ -122,6 +122,10 @@ class BaseBattle extends EventEmitter {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
     
+        // TEMP: move power management
+        move1.basePower *= this.pokemon1.state.stats._statChanges["pow"] || 1
+        move2.basePower *= this.pokemon2.state.stats._statChanges["pow"] || 1
+        
         // ctx effects
         if(this.ctx.veryClose && move1.flags.contact !== move2.flags.contact) {
             if(move1.flags.contact) {
@@ -303,15 +307,7 @@ class BaseBattle extends EventEmitter {
             }
         }
         
-        const totalManHittee1 = this._totalManHittee(this.pokemon2, this.pokemon1, move2) 
-        const totalManHittee2 = this._totalManHittee(this.pokemon1, this.pokemon2, move1)
-        
-        const isMainManHittee1 = totalManHittee1 === this.pokemon1.state.manCount
-        const isMainManHittee2 = totalManHittee2 === this.pokemon2.state.manCount
-      
-        console.log(totalManHittee1, totalManHittee2)
-        console.log(isMainManHittee1, isMainManHittee2)
-        
+
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
 
@@ -327,24 +323,24 @@ class BaseBattle extends EventEmitter {
         this.pokemon2.state.decreaseHealth(instD2)
 
         if(move2.priority > move1.priority) {
-            if (d1 && !dodged1 && isMainManHittee1) {
+            if (d1 && !dodged1) {
                 this.pokemon1.state.decreaseHealth(d1)
                 move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1))
                 move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1))
             }
-            if (d2 && !dodged2 && isMainManHittee2) {
+            if (d2 && !dodged2) {
                 this.pokemon2.state.decreaseHealth(d2)
                 move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
                 move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2))
             }
         }
         else {
-            if (d2 && !dodged2 && isMainManHittee2) {
+            if (d2 && !dodged2) {
                 this.pokemon2.state.decreaseHealth(d2)
                 move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
                 move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2))
             }
-            if (d1 && !dodged1 && isMainManHittee1) {
+            if (d1 && !dodged1) {
                 this.pokemon1.state.decreaseHealth(d1)
                 move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1))
                 move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1))
@@ -352,28 +348,28 @@ class BaseBattle extends EventEmitter {
         }
 
         if (!attackSelf2 && canMove2 && ((d1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
-            this.pokemon1.state.manCount -= totalManHittee1
-            if (isMainManHittee1) {
+            this.pokemon1.state.emit("contacted", this.pokemon2)
+            
                 this.pokemon1.state.effects.apply(move2, { on: "target" })
                 this.pokemon1.state.stats.apply("target", move2)
-            }
         }
         if (!attackSelf1 && canMove1 && ((d2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
-            this.pokemon2.state.manCount -= totalManHittee2
-            if (isMainManHittee2) {
+            this.pokemon2.state.emit("contacted", this.pokemon1)
+            
                 this.pokemon2.state.effects.apply(move1, { on: "target" })
                 this.pokemon2.state.stats.apply("target", move1)
-            }
         }
         if (attackSelf1) {
+            this.pokemon1.state.emit("contacted", this.pokemon1)
+            
             this.pokemon1.state.effects.apply(move1, { on: "target" })
             this.pokemon1.state.stats.apply("target", move1)
-            this.pokemon1.state.manCount = 1
         }
         if (attackSelf2) {
+            this.pokemon2.state.emit("contacted", this.pokemon2)
+            
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
-            this.pokemon1.state.manCount = 1
         }
 /*
         if(canMove1 && (move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !move1.flags.contact)) {
@@ -437,26 +433,7 @@ class BaseBattle extends EventEmitter {
         
         return dodged 
     }
-    
-    _totalManHittee(attacker, target, move) {
-        const isMainManHittee = manCount => Math.random() < (1 / manCount)
-        const targetManCount = target.state.manCount
-        if (move.target.startsWith("allAdjacent")) {
-            for (let i = 0; i < targetManCount; i++) {
-                if (!isMainManHittee(targetManCount - i)) {
-                    move.basePower = move.basePower / 2
-                }
-            }
-            return targetManCount
-        }
-        for (let i = 0; i < move.hit; i++) {
-            if (isMainManHittee(targetManCount - i)) {
-                return targetManCount
-            }
-        }
-        return Math.min(targetManCount, move.hit)
-    }
-    
+
     _setWaveTurns() {
         const turns = this.turnsPerWave.map(tpw => tpw[0])
         const weights = this.turnsPerWave.map(tpw => tpw[1])
@@ -630,10 +607,10 @@ class StatsManager {
     }
     
     get(name) {
-        const baseStat = this._stats[name];
+        const baseStat = this._stats[name] || 1;
         const stage = this._statChanges[name] || 0;
         const finalStat = baseStat
-            * this._statStageMultiplier(stage)
+            * this._statStageMultiplier(name, stage)
             * this.modifier(name)
         return fixFloat(finalStat);
     }
@@ -691,14 +668,21 @@ class StatsManager {
         return this._modifiers[name]?.reduce((acc, m) => acc * m, 1) ?? 1
     }
 
-    _statStageMultiplier(stage) {
-        if (stage > 0) {
+    _statStageMultiplier(name, stage) {
+        const handler = this[`_${name}StageMultiplier`]
+        if(handler) {
+            return handler.call(this, stage)
+        } else if (stage > 0) {
             return (2 + stage) / 2; // Positive stages
         } else if (stage < 0) {
             return 2 / (2 - stage); // Negative stages
         } else {
             return 1; // Neutral stage
         }
+    }
+    
+    _critStageMultiplier(stage) {
+        return stage * (1 / 6)
     }
 }
 

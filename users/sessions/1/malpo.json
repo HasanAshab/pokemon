@@ -1,16 +1,16 @@
 [
   {
     "id": "grovyle",
-    "xp": 1500,
+    "xp": 1700,
     "nature": "adamant",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
         "id": "pound",
         "isSelected": true
       },
       {
-        "id": "leer",
+        "id": "agility",
         "isSelected": true
       },
       {

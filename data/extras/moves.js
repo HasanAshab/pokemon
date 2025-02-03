@@ -47,7 +47,8 @@ export default {
           name: "doubleteam",
           chance: 100,
           isVolatile: true 
-        }]
+        }],
+        target: []
       },
       retreat: 3,
     },

@@ -25,7 +25,8 @@ class Effect {
         "wave",
         "scene",
         "scene-end",
-        "used-move"
+        "used-move",
+        "contacted",
     ]
     _listeners = {
         self: {},
@@ -353,6 +354,7 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 
     lifetime = { waves: 1 }
+    meta = {}
 
     setup() {
         super.setup()
@@ -369,16 +371,31 @@ class DoubleTeamEffect extends ExpirableEffect {
         move = this._modifyMove(move)
         senario.set(this.state.pokemon, move)
         
-        // Double Team Defence Halved
-        this.state.stats.chainModify("def", 0.5)
-        this.state.stats.chainModify("spd", 0.5)
+        // Double Team Defence Devided To Each
+        const modifier = 1 / this.state.manCount
+        this.state.stats.chainModify("def", modifier)
+        this.state.stats.chainModify("spd", modifier)
+    }
+    
+    onSceneEnd() {
+        this._lastTotalManHittee = 0
     }
     
     onOpponentScene(move) {
-        this.state.manCount -= this._totalManHittee(move)
-        if (this.state.manCount === 1) {
-            this.remove()
+        this.meta.totalManHittee = this._totalManHittee(move)
+    }
+    
+    onContacted(contactor) {
+        const isMainManHittee = this.meta.totalManHittee === this.state.manCount
+            || contactor === this.state.pokemon
+
+        if (isMainManHittee) {
+            return this.remove()
         }
+        
+        this.state.manCount -= this.meta.totalManHittee
+        console.log(this.state.manCount)
+        this.state.damage.chainModify(0.01)
     }
     
     _calculateDTManCount() {
@@ -388,7 +405,7 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 
     _modifyMove(move) {
-        move.basePower = move1.basePower / this.state.manCount
+        move.basePower = move.basePower / (this.state.manCount / 1.8)
         move.multihit = Array.from({ length: this.state.manCount }).reduce((acc, i) => {
             return acc + move.multiHit()
         }, 0)
@@ -475,9 +492,9 @@ export class EffectManager {
         return effect
     }
     
-    sync(...effectNames) {
-        effectNames.forEach()
-    }
+    // sync(...effectNames) {
+//         effectNames.forEach()
+//     }
 
     apply(move, { on, pre = false }) {
         if (on === "self") {
