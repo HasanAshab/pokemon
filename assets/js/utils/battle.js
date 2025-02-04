@@ -306,7 +306,6 @@ class BaseBattle extends EventEmitter {
                 damages.set(this.pokemon2, -damage * pokeEffect1)
             }
         }
-        
 
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
@@ -607,8 +606,8 @@ class StatsManager {
     }
     
     get(name) {
-        const baseStat = this._stats[name] || 1;
-        const stage = this._statChanges[name] || 0;
+        const baseStat = this._stats[name] ?? 1;
+        const stage = this._statChanges[name] ?? 0;
         const finalStat = baseStat
             * this._statStageMultiplier(name, stage)
             * this.modifier(name)

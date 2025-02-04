@@ -215,29 +215,25 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 /*
 startBattle([
   {
-    "id": "sneasel",
-    "xp": 1400,
-    "nature": "calm",
+    "id": "scyby",
+    "xp": 600,
+    "nature": "jolly",
     "retreat": 3,
     "moves": [
       {
-        "id": "honeclaws",
+        "id": "cut",
         "isSelected": true
       },
       {
-        "id": "feintattack",
+        "id": "gust",
         "isSelected": true
       },
       {
-        "id": "iceshard",
+        "id": "stringshot",
         "isSelected": true
       },
       {
-        "id": "scratch",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
+        "id": "fellstinger",
         "isSelected": true
       }
     ],
@@ -245,228 +241,57 @@ startBattle([
     "token_used": {}
   },
     {
-    "id": "sneasel",
-    "xp": 1400,
-    "nature": "calm",
+    "id": "scyby",
+    "xp": 600,
+    "nature": "jolly",
     "retreat": 3,
     "moves": [
       {
-        "id": "honeclaws",
+        "id": "cut",
         "isSelected": true
       },
       {
-        "id": "feintattack",
+        "id": "gust",
         "isSelected": true
       },
       {
-        "id": "iceshard",
+        "id": "stringshot",
         "isSelected": true
       },
       {
-        "id": "scratch",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
+        "id": "fellstinger",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   },
-    {
-    "id": "sneasel",
-    "xp": 1400,
-    "nature": "calm",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "honeclaws",
-        "isSelected": true
-      },
-      {
-        "id": "feintattack",
-        "isSelected": true
-      },
-      {
-        "id": "iceshard",
-        "isSelected": true
-      },
-      {
-        "id": "scratch",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-    {
-    "id": "sneasel",
-    "xp": 1400,
-    "nature": "calm",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "honeclaws",
-        "isSelected": true
-      },
-      {
-        "id": "feintattack",
-        "isSelected": true
-      },
-      {
-        "id": "iceshard",
-        "isSelected": true
-      },
-      {
-        "id": "scratch",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  }
-], 
-["Grass", "Rock", "Normal"],
-"multiple"
-)
-*/
 
-
-/*
-startBattle([
   {
-    "id": "riolu",
-    "xp": 1200,
+    "id": "scyblade",
+    "xp": 1600,
     "nature": "brave",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
-        "id": "forcepalm",
-        "isSelected": true
-      },
-      {
-        "id": "lowkick",
-        "isSelected": true
-      },
-      {
-        "id": "metalclaw",
-        "isSelected": true
-      },
-      {
-        "id": "detect",
-        "isSelected": true
-      },
-      {
-        "id": "bulletpunch",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "bunnelby",
-    "xp": 1200,
-    "nature": "calm",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "mudshot",
-        "isSelected": true
-      },
-      {
-        "id": "doubleslap",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "laserfocus",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  }
-], ["Normal"], "multiple")
-*/
-
-/*
-startBattle([
-  {
-    "id": "frogadier",
-    "xp": 1700,
-    "nature": "calm",
-    "retreat": 3.5,
-    "moves": [
-      {
-        "id": "waterpulse",
-        "isSelected": true
-      },
-      {
-        "id": "lick",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "pound",
+        "id": "furycutter",
         "isSelected": true
       },
       {
         "id": "cut",
         "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "pupitar",
-    "xp": 1600,
-    "nature": "brave",
-    "retreat": 3.5,
-    "moves": [
+      },
       {
-        "id": "rockslide",
+        "id": "fellstinger",
         "isSelected": true
       },
       {
-        "id": "heavyslam",
-        "isSelected": true
-      },
-      {
-        "id": "scaryface",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
+        "id": "bugbite",
         "isSelected": true
       }
     ],
     "stats": {},
     "token_used": {}
   }
-], ["Ground", "Flying", "Psychic", "Bug", "Rock"])
-*/
+], ["Bug"], "multiple")*/
+

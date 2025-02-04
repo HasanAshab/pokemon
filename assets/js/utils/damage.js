@@ -49,10 +49,20 @@ export class Damage {
                 return this.attacker.level * 1.5
         }
         
-        let bp = this.move.basePower
+        let bp = null
         if (this.move.basePowerCallback) {
-            if(this.target || this.move.basePowerCallback.length === 1)
-                bp = this.move.basePowerCallback(this.attacker, this.target, this.move)
+            if(this.target || this.move.basePowerCallback.length === 1) {
+                try {
+                    bp = this.move.basePowerCallback(this.attacker, this.target, this.move)
+                }
+                catch(e) {
+                    console.error(e)
+                }
+            }
+        }
+        
+        if (!bp) {
+            bp = this.move.basePower
         }
         
         if (!bp) return null

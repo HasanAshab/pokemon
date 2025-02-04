@@ -378,7 +378,7 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
     
     onSceneEnd() {
-        this._lastTotalManHittee = 0
+        this.meta = {}
     }
     
     onOpponentScene(move) {
