@@ -94,7 +94,7 @@ function setEffects(move) {
         })
     })
     
-    move.stallingMove && move.effects.target.push({
+    move.stallingMove && move.effects.self.push({
         name: "stall",
         chance: 80,
         isVolatile: true

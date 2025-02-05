@@ -140,6 +140,7 @@ function setBattleStateListeners(playerTag) {
     })
     
     pokemon.state.on("scene-end", hit => {
+        if (hit.damage() <= 0) return;
         let msg = null
         if(hit.hitCount() === 1 && hit.criticalCount() === 1) {
             msg =  'Critical Hit!'

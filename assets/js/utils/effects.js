@@ -302,7 +302,12 @@ class StallEffect extends ExpirableEffect {
     
     setup() {
         super.setup()
-        this.state.damage.chainModify(0.01)
+        this.state.freeze()
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.unfreeze()
     }
 }
 
@@ -395,7 +400,6 @@ class DoubleTeamEffect extends ExpirableEffect {
         }
         
         this.state.manCount -= this.meta.totalManHittee
-        console.log(this.state.manCount)
         this.state.freeze()
     }
     

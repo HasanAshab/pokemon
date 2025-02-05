@@ -137,14 +137,18 @@ class BaseBattle extends EventEmitter {
         }
         
         // move failure
-        !move1.try(this.pokemon1) && senario.set(this.pokemon1, new Move("staythere"))
-        !move2.try(this.pokemon2) && senario.set(this.pokemon2, new Move("staythere"))
+        this._checkFailure(this.pokemon1, senario)
+        this._checkFailure(this.pokemon2, senario)
 
         this.emit("scene", senario)
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
-    
+        
+        console.log(move1.effects)
+        
+        this.pokemon1.state.emit("used-move", move1)
+        this.pokemon2.state.emit("used-move", move2)
 
         this.pokemon1.state.effects.apply(move2, { on: "self" })
         this.pokemon2.state.effects.apply(move1, { on: "self" })
@@ -368,10 +372,10 @@ class BaseBattle extends EventEmitter {
         }
 
         if(move1.category === "Status" || d2 || instD2) {
-            this.pokemon1.state.emit("used-move", move1) 
+            this.pokemon1.state.emit("hitted-move", move1) 
         }
         if(move2.category === "Status" || d1 || instD1) {
-            this.pokemon2.state.emit("used-move", move2) 
+            this.pokemon2.state.emit("hitted-move", move2) 
         }
 
         if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
@@ -384,6 +388,13 @@ class BaseBattle extends EventEmitter {
         ])
         this.emit("scene-end", hitsMap)
     }
+    
+    _checkFailure(pokemon, senario) {
+        const move = senario.get(pokemon)
+        if (move.try(pokemon)) return
+        pokemon.state.emit("used-move", move)
+        senario.set(pokemon, new Move("staythere"))
+    }
 
     _canDodge(attacker, target, move) {
         if (move.accuracy === true || !target.state.effects.canMove()) {
@@ -394,7 +405,6 @@ class BaseBattle extends EventEmitter {
         const attackerSpd = attacker.state.stats.get("spe");
         const targetSpd = target.state.stats.get("spe");
         
-        console.log(attackerSpd, targetSpd)
         // Get accuracy and evasion stats
         const attackerAccuracy = attacker.state.stats.get("accuracy")
         const targetEvasion = target.state.stats.get("evasion")
@@ -497,13 +507,15 @@ class BattleState extends EventEmitter {
         })
 
         this.on("used-move", move => {
-            const opponent = this.battle.opponentOf(this.pokemon)
-            
-            move.onHit?.(this.pokemon)
-            move.onAfterMove(this.pokemon, opponent, move)
-            
             this.retreat -= move.retreat
             this.reducePP(move.id)
+        })
+        
+        this.on("hitted-move", move => {
+            const opponent = this.battle.opponentOf(this.pokemon)
+
+            move.onHit?.(this.pokemon)
+            move.onAfterMove(this.pokemon, opponent, move)
         })
     }
     

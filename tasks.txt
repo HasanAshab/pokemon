@@ -1,9 +1,8 @@
 dodge
-fix retreat for scratch
 magnitude
 
 increase crit ratio (lazor foc, foc energy)
-disable, furycutter
+disable
 
 semi-invuln
 cb bp retreat process
@@ -26,8 +25,25 @@ priority
 vicegrip
 detect bug on sleep
 acc, evas stat bug
-pp not decrease when hp not changed
 
 
 double team
 powder type moves
+
+
+
+make a website for employee salary management.
+where u will
+
+1. render a table like that
+
+Post | Mans | Salary | T. Salary
+Incharge  2    7000      14000
+Worker  6    6000      36000
+...
+Total  -> 50000
+
+2. use localstorage for persistance
+3. Salary per Man and man count must be editable
+4. Could add new Post
+
