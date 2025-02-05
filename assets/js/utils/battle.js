@@ -318,6 +318,27 @@ class BaseBattle extends EventEmitter {
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))
 
+        if (!attackSelf2 && canMove2 && ((d1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
+            this.pokemon1.state.emit("contacted", this.pokemon2)
+            this.pokemon1.state.effects.apply(move2, { on: "target" })
+            this.pokemon1.state.stats.apply("target", move2)
+        }
+        if (!attackSelf1 && canMove1 && ((d2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
+            this.pokemon2.state.emit("contacted", this.pokemon1)
+            this.pokemon2.state.effects.apply(move1, { on: "target" })
+            this.pokemon2.state.stats.apply("target", move1)
+        }
+        if (attackSelf1) {
+            this.pokemon1.state.emit("contacted", this.pokemon1)
+            this.pokemon1.state.effects.apply(move1, { on: "target" })
+            this.pokemon1.state.stats.apply("target", move1)
+        }
+        if (attackSelf2) {
+            this.pokemon2.state.emit("contacted", this.pokemon2)
+            this.pokemon2.state.effects.apply(move2, { on: "target" })
+            this.pokemon2.state.stats.apply("target", move2)
+        }
+        
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
 
@@ -346,40 +367,6 @@ class BaseBattle extends EventEmitter {
             }
         }
 
-        if (!attackSelf2 && canMove2 && ((d1 && !dodged1) || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
-            this.pokemon1.state.emit("contacted", this.pokemon2)
-            
-                this.pokemon1.state.effects.apply(move2, { on: "target" })
-                this.pokemon1.state.stats.apply("target", move2)
-        }
-        if (!attackSelf1 && canMove1 && ((d2 && !dodged2) || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
-            this.pokemon2.state.emit("contacted", this.pokemon1)
-            
-                this.pokemon2.state.effects.apply(move1, { on: "target" })
-                this.pokemon2.state.stats.apply("target", move1)
-        }
-        if (attackSelf1) {
-            this.pokemon1.state.emit("contacted", this.pokemon1)
-            
-            this.pokemon1.state.effects.apply(move1, { on: "target" })
-            this.pokemon1.state.stats.apply("target", move1)
-        }
-        if (attackSelf2) {
-            this.pokemon2.state.emit("contacted", this.pokemon2)
-            
-            this.pokemon2.state.effects.apply(move2, { on: "target" })
-            this.pokemon2.state.stats.apply("target", move2)
-        }
-/*
-        if(canMove1 && (move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !move1.flags.contact)) {
-            console.log(move1)
-            this.pokemon1.state.emit("used-move", move1) 
-        }
-        if(canMove2 && (move2.category === "Status" || (move2.flags.contact && move1.flags.contact) || !move2.flags.contact)) {
-            console.log(move2)
-            this.pokemon2.state.emit("used-move", move2) 
-        }
-*/        
         if(move1.category === "Status" || d2 || instD2) {
             this.pokemon1.state.emit("used-move", move1) 
         }
@@ -414,7 +401,7 @@ class BaseBattle extends EventEmitter {
 
         // Base dodge chance using a modified speed ratio
         const speedRatio = targetSpd / attackerSpd;
-        const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.5)); // Clamp between 5% and 50%
+        const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.7)); // Clamp between 5% and 70%
     
         // Accuracy and evasion modifiers
         const accuracyModifier = attackerAccuracy / targetEvasion;
@@ -556,6 +543,17 @@ class BattleState extends EventEmitter {
         if (move.pp !== null) move.pp--
         return move
     }
+    
+    freeze() {
+        this.stats.freeze()
+        this.effects.freeze()
+    }
+    
+    unfreeze() {
+        console.log("yeah")
+        this.stats.unfreeze()
+        this.effects.unfreeze()
+    }
 }
 
 class StatsManager {
@@ -569,9 +567,10 @@ class StatsManager {
             "accuracy": 1,
             "evasion": 1,
         }
-    }
+    };
     _statChanges = {};
-    _modifiers = {}
+    _modifiers = {};
+    _freezed = false;
     
     static getBattleStats(pokemon) {
         let btStats = pokemon.types.reduce((stats, type) => {
@@ -615,6 +614,7 @@ class StatsManager {
     }
 
     set(name, value) {
+        if (this._freezed) return null
         this.prev.remember(name)
         this._stats[name] = value;
         if (name === "hp" && value === 0) {
@@ -665,6 +665,14 @@ class StatsManager {
     
     modifier(name) {
         return this._modifiers[name]?.reduce((acc, m) => acc * m, 1) ?? 1
+    }
+    
+    freeze() {
+        this._freezed = true
+    }
+    
+    unfreeze() {
+        this._freezed = false
     }
 
     _statStageMultiplier(name, stage) {

@@ -34,7 +34,7 @@ export class PopupMsgQueue {
     queue = []
     isRunning = false
 
-    constructor(elemIdSuffix, limit = 5) {
+    constructor(elemIdSuffix, limit = 7) {
         this.elemIdSuffix = "popup-msg-cont";
         this.limit = limit
     }

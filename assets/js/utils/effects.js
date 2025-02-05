@@ -359,26 +359,27 @@ class DoubleTeamEffect extends ExpirableEffect {
     setup() {
         super.setup()
         this.state.manCount = this._calculateDTManCount()
-        //this.state.damage.chainModify(0.01)
     }
 
     teardown() {
         super.teardown()
         this.state.manCount = 1
+        this.state.unfreeze()
     }
 
     onScene(move, senario) {
         move = this._modifyMove(move)
         senario.set(this.state.pokemon, move)
-        
+
         // Double Team Defence Devided To Each
         const modifier = 1 / this.state.manCount
         this.state.stats.chainModify("def", modifier)
         this.state.stats.chainModify("spd", modifier)
     }
-    
+
     onSceneEnd() {
         this.meta = {}
+        this.state.unfreeze()
     }
     
     onOpponentScene(move) {
@@ -395,7 +396,7 @@ class DoubleTeamEffect extends ExpirableEffect {
         
         this.state.manCount -= this.meta.totalManHittee
         console.log(this.state.manCount)
-        this.state.damage.chainModify(0.01)
+        this.state.freeze()
     }
     
     _calculateDTManCount() {
@@ -449,7 +450,8 @@ export const EFFECTS = makeEffectsMap([
 
 
 export class EffectManager {
-    _effects = []
+    _effects = [];
+    _freezed = false;
 
     constructor(state) {
         this.state = state;
@@ -474,6 +476,7 @@ export class EffectManager {
     }
     
     add(source, effectName) {
+        if (this._freezed) return null
         const EffectClass = EFFECTS[effectName]
         const isImmune = EffectClass?.isImmune(this.state.pokemon)
         if (EffectClass && !isImmune && !this.has(effectName)) {
@@ -523,6 +526,14 @@ export class EffectManager {
     
     attackSelf() {
         return this._effects.some(e => e.attackSelf())
+    }
+    
+    freeze() {
+        this._freezed = true
+    }
+    
+    unfreeze() {
+        this._freezed = false
     }
 
     _removeEffectObj(effectName) {

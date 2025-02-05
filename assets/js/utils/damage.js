@@ -26,8 +26,6 @@ export class Damage {
             Damage.BASE_CRIT_CHANCE
             * (1 + (this.move.critRatio ?? 0))
             * this.attacker.state.damage.critModifier());
-            
-        console.log(this.move.id, critChance)
 
         if (Math.random() < critChance) {
             this.criticalMultiplier = Damage.CRIT_MULTIPLIER
@@ -60,11 +58,11 @@ export class Damage {
                 }
             }
         }
-        
+
         if (!bp) {
             bp = this.move.basePower
         }
-        
+
         if (!bp) return null
 
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
@@ -72,7 +70,7 @@ export class Damage {
         const attackStat = "state" in this.attacker 
             ? this.attacker.state.stats.get(isSpecial ? "spa" : "atk")
             : this.attacker.stats[isSpecial ? "spa" : "atk"];
-
+        
         //return stab * bp * attackStat * 0.416;
         return stab * bp * attackStat * 0.65;
     }
@@ -133,7 +131,7 @@ export class Hit {
         if (!damage) return damage
         const statMap = {
             "Physical": "def",
-            "Special": "spd",
+            "Special": "spd"
         }
         const defStat = this.target.state.stats.get(
             statMap[this.move.category]

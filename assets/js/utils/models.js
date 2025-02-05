@@ -204,9 +204,9 @@ export class Pokemon extends PSPokemon {
 }
 
 export class Move {
+    hit = 1
     constructor(id) {
         this.id = id;
-        this.hit = 0
         this._move = moves[id];
         Object.assign(this, this._move)
     }

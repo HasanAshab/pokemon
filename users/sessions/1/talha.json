@@ -1,9 +1,9 @@
 [
   {
     "id": "flaaffy",
-    "xp": 1600,
+    "xp": 1800,
     "nature": "mild",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
         "id": "tackle",
@@ -30,17 +30,17 @@
     "token_used": {}
   },
   {
-    "id": "bellsprout",
-    "xp": 1300,
-    "nature": "calm",
-    "retreat": 3,
+    "id": "weepinbell",
+    "xp": 1700,
+    "nature": "serious",
+    "retreat": 3.5,
     "moves": [
       {
-        "id": "vinewhip",
+        "id": "stunspore",
         "isSelected": true
       },
       {
-        "id": "growth",
+        "id": "poisonpowder",
         "isSelected": true
       },
       {
@@ -48,11 +48,11 @@
         "isSelected": true
       },
       {
-        "id": "acid",
+        "id": "vinewhip",
         "isSelected": true
       },
       {
-        "id": "sleeppowder",
+        "id": "wrap",
         "isSelected": true
       }
     ],
@@ -61,24 +61,28 @@
   },
   {
     "id": "cubone",
-    "xp": 1200,
+    "xp": 1900,
     "nature": "brave",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
-        "id": "boneclub",
+        "id": "rage",
         "isSelected": true
       },
       {
-        "id": "doublehit",
+        "id": "focusenergy",
         "isSelected": true
       },
       {
-        "id": "mudslap",
+        "id": "bonerush",
         "isSelected": true
       },
       {
-        "id": "growl",
+        "id": "headbutt",
+        "isSelected": true
+      },
+      {
+        "id": "mudshot",
         "isSelected": true
       }
     ],
@@ -87,7 +91,7 @@
   },
   {
     "id": "taurospaldeablaze",
-    "xp": 900,
+    "xp": 1000,
     "nature": "calm",
     "retreat": 3,
     "moves": [
@@ -104,7 +108,7 @@
         "isSelected": true
       },
       {
-        "id": "megakick",
+        "id": "heavyslam",
         "isSelected": true
       }
     ],
