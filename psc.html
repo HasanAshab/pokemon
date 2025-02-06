@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Salary Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .table-container { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background: #f4f4f4; }
+        input { width: 80px; text-align: center; }
+        .add-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
+        .add-row input, .add-row button { flex: 1; min-width: 120px; }
+        @media (max-width: 600px) {
+            table { font-size: 14px; }
+            input { width: 60px; }
+            .add-row input { min-width: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <h2>Employee Salary Management</h2>
+    
+    <div class="table-container">
+        <table id="salaryTable">
+            <thead>
+                <tr>
+                    <th>Post</th>
+                    <th>Mans</th>
+                    <th>Salary per Man</th>
+                    <th>Total Salary</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total:</strong></td>
+                    <td id="totalSalary">0</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="add-row">
+        <input type="text" id="newPost" placeholder="Post">
+        <input type="number" id="newMans" placeholder="Mans">
+        <input type="number" id="newSalary" placeholder="Salary per Man">
+        <button onclick="addRow()">Add</button>
+    </div>
+
+    <script>
+        let employees = JSON.parse(localStorage.getItem("employees")) || [
+            { post: "Incharge", mans: 2, salary: 7000 },
+            { post: "Worker", mans: 6, salary: 6000 }
+        ];
+
+        function formatNumber(num) {
+            return num.toLocaleString();
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector("#salaryTable tbody");
+            tbody.innerHTML = "";
+            let total = 0;
+
+            employees.forEach((emp, index) => {
+                let tSalary = emp.mans * emp.salary;
+                total += tSalary;
+
+                let row = `<tr>
+                    <td>${emp.post}</td>
+                    <td><input type="number" value="${emp.mans}" onchange="updateValue(${index}, 'mans', this.value)"></td>
+                    <td><input type="number" value="${emp.salary}" onchange="updateValue(${index}, 'salary', this.value)"></td>
+                    <td>${formatNumber(tSalary)}</td>
+                    <td><button onclick="deleteRow(${index})">❌</button></td>
+                </tr>`;
+
+                tbody.innerHTML += row;
+            });
+
+            document.getElementById("totalSalary").innerText = formatNumber(total);
+            localStorage.setItem("employees", JSON.stringify(employees));
+        }
+
+        function updateValue(index, field, value) {
+            employees[index][field] = Number(value);
+            renderTable();
+        }
+
+        function addRow() {
+            let post = document.getElementById("newPost").value.trim();
+            let mans = Number(document.getElementById("newMans").value);
+            let salary = Number(document.getElementById("newSalary").value);
+
+            if (post && mans > 0 && salary > 0) {
+                employees.push({ post, mans, salary });
+                renderTable();
+                document.getElementById("newPost").value = "";
+                document.getElementById("newMans").value = "";
+                document.getElementById("newSalary").value = "";
+            } else {
+                alert("Please enter valid details.");
+            }
+        }
+
+        function deleteRow(index) {
+            employees.splice(index, 1);
+            renderTable();
+        }
+
+        renderTable();
+    </script>
+</body>
+</html>

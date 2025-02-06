@@ -47,3 +47,6 @@ Total  -> 50000
 3. Salary per Man and man count must be editable
 4. Could add new Post
 
+
+
+dodge status, multi hit
