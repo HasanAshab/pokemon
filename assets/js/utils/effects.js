@@ -410,7 +410,8 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 
     _modifyMove(move) {
-        move.basePower = move.basePower / (this.state.manCount / 1.8)
+        const contactModifier = move.flags.contact ? 0.4 : 1
+        move.basePower = move.basePower / (this.state.manCount * contactModifier)
         move.multihit = Array.from({ length: this.state.manCount }).reduce((acc, i) => {
             return acc + move.multiHit()
         }, 0)

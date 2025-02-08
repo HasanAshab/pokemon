@@ -32,7 +32,6 @@ dodge status, multi hit
 -------------
 double team:
 -------------
-1. if contect == true : power--
 2. multy dodge with same retreat "2.5"
 
 -------------
