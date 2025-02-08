@@ -215,8 +215,12 @@ function setCustomCTX(move) {
 }
 
 function modifyAccuracy(move) {
-    if (move.flags.twoturn && move.accuracy !== true) {
+    if (move.accuracy === true) return
+    else if (move.flags.twoturn) {
         move.accuracy -= move.accuracy * 0.30
+    }
+    else if (move.category === "Status") {
+        move.accuracy -= move.accuracy * 0.15
     }
 }
 

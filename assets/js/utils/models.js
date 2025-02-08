@@ -212,7 +212,7 @@ export class Move {
     }
     
     get isNeverFails() {
-        return this.accuracy === true || !this.flags.twoturn
+        return this.accuracy === true || this.category === "Status" || !this.flags.twoturn
     }
 
     effectiveness(type) {

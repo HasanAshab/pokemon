@@ -27,26 +27,21 @@ detect bug on sleep
 acc, evas stat bug
 
 
-double team
 powder type moves
-
-
-
-make a website for employee salary management.
-where u will
-
-1. render a table like that
-
-Post | Mans | Salary | T. Salary
-Incharge  2    7000      14000
-Worker  6    6000      36000
-...
-Total  -> 50000
-
-2. use localstorage for persistance
-3. Salary per Man and man count must be editable
-4. Could add new Post
-
-
-
 dodge status, multi hit
+-------------
+double team:
+-------------
+1. if contect == true : power--
+2. multy dodge with same retreat "2.5"
+
+-------------
+
+
+
+make a website for fake buisness simulation.
+
+1. there should be a chart of every months reveneu
+2. must be a system to add new months reveneu. 3 input fields like low, medium, high must be given and the reveneu will be one from them randomly
+3. use localstoage for persistance
+4. page must be responsible

@@ -3,56 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Salary Management</title>
+    <title>BizSim & Employee Salary Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .table-container { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background: #f4f4f4; }
-        input { width: 80px; text-align: center; }
-        .add-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
-        .add-row input, .add-row button { flex: 1; min-width: 120px; }
-        @media (max-width: 600px) {
-            table { font-size: 14px; }
-            input { width: 60px; }
-            .add-row input { min-width: 80px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #f4f4f4;
+        }
+
+        .add-row {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .add-row input, .add-row button {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .input-group, .add-row {
+                flex-direction: column;
+            }
+
+            input, .add-row input {
+                width: 100%;
+                min-width: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <h2>Employee Salary Management</h2>
-    
-    <div class="table-container">
-        <table id="salaryTable">
-            <thead>
-                <tr>
-                    <th>Post</th>
-                    <th>Mans</th>
-                    <th>Salary per Man</th>
-                    <th>Total Salary</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3"><strong>Total:</strong></td>
-                    <td id="totalSalary">0</td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+    <div class="container">
+        <h1>BizSim - Business Simulation</h1>
+        
+        <!-- Business Simulation Section -->
+        <div class="section">
+            <h2>Monthly Revenue Chart</h2>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <div class="input-group">
+                <input type="number" id="low" placeholder="Low Revenue Estimate">
+                <input type="number" id="medium" placeholder="Medium Revenue Estimate">
+                <input type="number" id="high" placeholder="High Revenue Estimate">
+            </div>
+            <button onclick="addRevenue()">Add Monthly Revenue</button>
+            <button onclick="clearData()" style="background: #e74c3c; margin-left: 10px;">Clear Data</button>
+        </div>
 
-    <div class="add-row">
-        <input type="text" id="newPost" placeholder="Post">
-        <input type="number" id="newMans" placeholder="Mans">
-        <input type="number" id="newSalary" placeholder="Salary per Man">
-        <button onclick="addRow()">Add</button>
+        <!-- Employee Salary Management Section -->
+        <div class="section">
+            <h2>Employee Salary Management</h2>
+            <div class="table-container">
+                <table id="salaryTable">
+                    <thead>
+                        <tr>
+                            <th>Post</th>
+                            <th>Mans</th>
+                            <th>Salary per Man</th>
+                            <th>Total Salary</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Total:</strong></td>
+                            <td id="totalSalary">0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="add-row">
+                <input type="text" id="newPost" placeholder="Post">
+                <input type="number" id="newMans" placeholder="Mans">
+                <input type="number" id="newSalary" placeholder="Salary per Man">
+                <button onclick="addRow()">Add</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Business Simulation Code
+        let revenueChart;
+        let chartData = {
+            labels: [],
+            datasets: [{
+                label: 'Monthly Revenue ($)',
+                data: [],
+                backgroundColor: '#3498db',
+                borderColor: '#2980b9',
+                borderWidth: 2
+            }]
+        };
+
+        function loadData() {
+            const savedData = localStorage.getItem('revenueData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                chartData.labels = parsedData.labels;
+                chartData.datasets[0].data = parsedData.data;
+            }
+        }
+
+        function saveData() {
+            const dataToSave = {
+                labels: chartData.labels,
+                data: chartData.datasets[0].data
+            };
+            localStorage.setItem('revenueData', JSON.stringify(dataToSave));
+        }
+
+        function addRevenue() {
+            const low = parseFloat(document.getElementById('low').value);
+            const medium = parseFloat(document.getElementById('medium').value);
+            const high = parseFloat(document.getElementById('high').value);
+            
+            if (!low || !medium || !high) {
+                alert('Please fill all three estimates!');
+                return;
+            }
+
+            const options = [low, medium, high];
+            const selectedRevenue = options[Math.floor(Math.random() * options.length)];
+            
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const nextMonth = chartData.labels.length % 12;
+            
+            chartData.labels.push(monthNames[nextMonth]);
+            chartData.datasets[0].data.push(selectedRevenue);
+            
+            revenueChart.update();
+            saveData();
+            
+            document.getElementById('low').value = '';
+            document.getElementById('medium').value = '';
+            document.getElementById('high').value = '';
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.removeItem('revenueData');
+                chartData.labels = [];
+                chartData.datasets[0].data = [];
+                revenueChart.update();
+            }
+        }
+
+        // Employee Salary Management Code
         let employees = JSON.parse(localStorage.getItem("employees")) || [
             { post: "Incharge", mans: 2, salary: 7000 },
             { post: "Worker", mans: 6, salary: 6000 }
@@ -112,7 +295,37 @@
             renderTable();
         }
 
-        renderTable();
+        // Initialize on load
+        window.onload = function() {
+            loadData();
+            
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            renderTable();
+        };
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            revenueChart.resize();
+        });
     </script>
 </body>
 </html>
