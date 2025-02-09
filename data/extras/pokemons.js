@@ -187,4 +187,22 @@ export default {
       color: "brown",
       eggGroups: ["Human-Like"]
     },
+    lucario: {
+      num: 448,
+      name: "Lucario",
+      types: ["Fighting", "Steel"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 65, atk: 95, def: 60, spa: 100, spd: 60, spe: 75 },
+      abilities: { 0: "Steadfast", 1: "Inner Focus", H: "Justified" },
+      heightm: 1.2,
+      weightkg: 54,
+      color: "Blue",
+      prevo: "Riolu",
+      evoType: "levelFriendship",
+      evoCondition: "during the day",
+      eggGroups: ["Field", "Human-Like"],
+      otherFormes: ["Lucario-Mega"],
+      formeOrder: ["Lucario", "Lucario-Mega"]
+    },
+
 }

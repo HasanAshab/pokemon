@@ -144,23 +144,9 @@ class BaseBattle extends EventEmitter {
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
-        
-        console.log(move1.effects)
-        
+
         this.pokemon1.state.emit("used-move", move1)
         this.pokemon2.state.emit("used-move", move2)
-
-        this.pokemon1.state.effects.apply(move2, { on: "self" })
-        this.pokemon2.state.effects.apply(move1, { on: "self" })
-        
-        this.pokemon1.state.effects.apply(move2, {
-            on: "target",
-            pre: true,
-        })
-        this.pokemon2.state.effects.apply(move1, {
-            on: "target",
-            pre: true,
-        })
 
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
@@ -507,8 +493,15 @@ class BattleState extends EventEmitter {
         })
 
         this.on("used-move", move => {
+            const opponent = this.battle.opponentOf(this.pokemon)
             this.retreat -= move.retreat
             this.reducePP(move.id)
+            
+            opponent.state.effects.apply(move, { on: "self" })
+            opponent.state.effects.apply(move, {
+                on: "target",
+                pre: true,
+            })
         })
         
         this.on("hitted-move", move => {
@@ -666,6 +659,7 @@ class StatsManager {
     }
 
     applyStatChange(stat, stages) {
+        if (this._freezed) return null
         if (!this._statChanges[stat]) {
             this._statChanges[stat] = 0;
         }

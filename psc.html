@@ -126,9 +126,9 @@
                 <canvas id="revenueChart"></canvas>
             </div>
             <div class="input-group">
-                <input type="number" id="low" placeholder="Low Revenue Estimate">
-                <input type="number" id="medium" placeholder="Medium Revenue Estimate">
-                <input type="number" id="high" placeholder="High Revenue Estimate">
+                <input type="number" id="low" placeholder="Low Revenue Estimate" onchange="saveEstimates()">
+                <input type="number" id="medium" placeholder="Medium Revenue Estimate" onchange="saveEstimates()">
+                <input type="number" id="high" placeholder="High Revenue Estimate" onchange="saveEstimates()">
             </div>
             <button onclick="addRevenue()">Add Monthly Revenue</button>
             <button onclick="clearData()" style="background: #e74c3c; margin-left: 10px;">Clear Data</button>
@@ -181,6 +181,7 @@
             }]
         };
 
+        // Load data from localStorage
         function loadData() {
             const savedData = localStorage.getItem('revenueData');
             if (savedData) {
@@ -188,9 +189,27 @@
                 chartData.labels = parsedData.labels;
                 chartData.datasets[0].data = parsedData.data;
             }
+
+            const savedEstimates = localStorage.getItem('revenueEstimates');
+            if (savedEstimates) {
+                const { low, medium, high } = JSON.parse(savedEstimates);
+                document.getElementById('low').value = low;
+                document.getElementById('medium').value = medium;
+                document.getElementById('high').value = high;
+            }
         }
 
-        function saveData() {
+        // Save revenue estimates to localStorage
+        function saveEstimates() {
+            const low = document.getElementById('low').value;
+            const medium = document.getElementById('medium').value;
+            const high = document.getElementById('high').value;
+
+            localStorage.setItem('revenueEstimates', JSON.stringify({ low, medium, high }));
+        }
+
+        // Save chart data to localStorage
+        function saveChartData() {
             const dataToSave = {
                 labels: chartData.labels,
                 data: chartData.datasets[0].data
@@ -198,6 +217,7 @@
             localStorage.setItem('revenueData', JSON.stringify(dataToSave));
         }
 
+        // Add new revenue
         function addRevenue() {
             const low = parseFloat(document.getElementById('low').value);
             const medium = parseFloat(document.getElementById('medium').value);
@@ -219,18 +239,19 @@
             chartData.datasets[0].data.push(selectedRevenue);
             
             revenueChart.update();
-            saveData();
-            
-            document.getElementById('low').value = '';
-            document.getElementById('medium').value = '';
-            document.getElementById('high').value = '';
+            saveChartData();
         }
 
+        // Clear all data
         function clearData() {
             if (confirm('Are you sure you want to clear all data?')) {
                 localStorage.removeItem('revenueData');
+                localStorage.removeItem('revenueEstimates');
                 chartData.labels = [];
                 chartData.datasets[0].data = [];
+                document.getElementById('low').value = '';
+                document.getElementById('medium').value = '';
+                document.getElementById('high').value = '';
                 revenueChart.update();
             }
         }
