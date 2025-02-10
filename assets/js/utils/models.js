@@ -250,17 +250,22 @@ export class Move {
         return Math.max(1, damage * this.recoilRate())
     }
 
-    try(user) {
-        if (this.isNeverFails) return true
-
-        // Calculate the effective accuracy
-        const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
-
-        // Generate a random number between 0 and 100
-        const randomChance = Math.random() * 100;
-
-        // Check if the move succeeds
-        return randomChance <= effectiveAccuracy;
+    try(user, target, move) {
+        let succeed = this.isNeverFails
+        try {
+            succeed = this.onTryMove(user, target, move) !== null
+        }
+        finally {
+            if (succeed) return true
+            // Calculate the effective accuracy
+            const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
+    
+            // Generate a random number between 0 and 100
+            const randomChance = Math.random() * 100;
+    
+            // Check if the move succeeds
+            return randomChance <= effectiveAccuracy;
+        }
     }
     
     multiHit() {

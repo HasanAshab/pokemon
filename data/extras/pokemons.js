@@ -204,5 +204,37 @@ export default {
       otherFormes: ["Lucario-Mega"],
       formeOrder: ["Lucario", "Lucario-Mega"]
     },
+    anubis: {
+      num: 10008,
+      name: "Anubis",
+      types: ["Fighting"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats:  { hp: 85, atk: 120, def: 85, spa: 120, spd: 85, spe: 105 },
+      abilities: { 0: "Steadfast", 1: "Inner Focus"},
+      heightm: 1.9,
+      weightkg: 54,
+      color: "black",
+      prevo: "Lucario",
+      evoType: "levelFriendship",
+      evoCondition: "during the day",
+      eggGroups: ["Field", "Human-Like"],
+      otherFormes: ["Anubis-Mega"],
+      formeOrder: ["Anubis", "Anubis-Mega"]
+    },
+     anubismega: {
+      num: 10008,
+      name: "Anubis-Mega",
+      baseSpecies: "Anubis",
+      forme: "Mega",
+      types: ["Fighting", "Steel"],
+      genderRatio: { M: 0.875, F: 0.125 },
+ baseStats: { hp: 85, atk: 160, def: 105, spa: 150, spd: 105, spe: 95 },
+      abilities: { 0: "Adaptability" },
+      heightm: 1.9,
+      weightkg: 65,
+      color: "gold",
+      eggGroups: ["Field", "Human-Like"],
+      requiredItem: "Anubisnite"
+    },
 
 }
