@@ -370,6 +370,10 @@ function setEffects(effects, playerTag) {
     "doubleteam": {
         "name": "Double Team",
         "color": "Normal"
+    },
+    "dodge": {
+        "name": "Dodge",
+        "color": "Normal"
     }
 };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)

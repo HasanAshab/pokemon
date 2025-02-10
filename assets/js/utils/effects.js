@@ -311,6 +311,20 @@ class StallEffect extends ExpirableEffect {
     }
 }
 
+class DodgeEffect extends StallEffect {
+    static effectName = "dodge"
+
+    static isPre() {
+        return true
+    }
+    
+    setup() {
+        super.setup()
+        
+        this.meta
+    }
+}
+
 class PartiallyTrappedEffect extends ExpirableEffect {
     static effectName = "partiallytrapped"
 
@@ -449,6 +463,7 @@ export const EFFECTS = makeEffectsMap([
     ConfusionEffect,
     LeechSeedEffect,
     StallEffect,
+    DodgeEffect,
     PartiallyTrappedEffect,
     DoubleTeamEffect,
 ])
@@ -460,6 +475,10 @@ export class EffectManager {
 
     constructor(state) {
         this.state = state;
+    }
+    
+    all() {
+        return this._effects
     }
     
     names() {

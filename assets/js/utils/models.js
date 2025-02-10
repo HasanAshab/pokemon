@@ -205,6 +205,8 @@ export class Pokemon extends PSPokemon {
 
 export class Move {
     hit = 1
+    succeed = true
+
     constructor(id) {
         this.id = id;
         this._move = moves[id];

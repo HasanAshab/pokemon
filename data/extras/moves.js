@@ -28,6 +28,14 @@ export default {
       type: "Normal",
       isOffensive: false,
       retreat: 0.25,
+      effects: {
+        self: [{
+          name: "dodge",
+          chance: 100,
+          isVolatile: true 
+        }],
+        target: []
+      },
       onTryMove(attacker, defender, move) {
         if (move.accuracy === true || !defender.state.effects.canMove()) {
             return null;
@@ -50,14 +58,13 @@ export default {
     
         // Calculate final hit chance
         const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.70;
-        console.log(defender.id, finalHitChance)
+        console.log(defender.id, Math.round(finalHitChance))
     
         // Simulate random factor for dodge mechanics
         const randomFactor = Math.random() * 100;
 
         // Return true if defender dodges, false if the move hits
         const dodged = randomFactor > finalHitChance;
-        //dodged && defender.state.emit("dodged", move)
 
         if (!dodged) return null
       }
