@@ -27,14 +27,8 @@ function mergeDefault(move) {
                 get: () => null
             }
         },
-        heal(hp, pokemon) {
-            pokemon.state.increaseHealth(hp)
-        },
-        damage(damage, pokemon) {
-            pokemon.state.decreaseHealth(damage)
-        },
         onAfterMove(pokemon, target, move) {
-            move.heal && this.heal(pokemon.maxhp * move.healRate(), pokemon)
+            move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
         }
     }
     Object.assign(move, defaultProps, move)

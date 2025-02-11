@@ -129,23 +129,23 @@ function loadPokemonData(playerTag) {
 
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    pokemon.state.on(
-        ["scene-end", "wave"], 
-        () => loadPokemonData(playerTag)
-    )
+    pokemon.state.on(["scene-end", "wave"], () => {
+        loadPokemonData(playerTag)
+    })
     
     pokemon.state.on("dodged", () => {
         popupQueue.add("dodged!", playerTag)
     })
     
-    pokemon.state.on("scene-end", hit => {
-        if (hit.damage() <= 0) return;
+    pokemon.state.on("scene", move => {
+        if (!move.hit) return
+        if (move.hit.damage() <= 0) return;
         let msg = null
-        if(hit.hitCount() === 1 && hit.criticalCount() === 1) {
+        if(move.hits === 1 && move.hit.criticalCount() === 1) {
             msg =  'Critical Hit!'
         }
-        else if(hit.hitCount() > 1) {
-            msg = `${hit.hitCount()} Hits ${hit.criticalCount() ? `, (${hit.criticalCount()} Crit)` : ''} !`
+        else if(move.hits > 1) {
+            msg = `${move.hits} Hits ${move.hit.criticalCount() ? `, (${move.hit.criticalCount()} Crit)` : ''} !`
         }
         msg && popupQueue.add(msg, opponentTag(playerTag))
     })

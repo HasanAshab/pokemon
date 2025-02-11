@@ -315,20 +315,18 @@ class StallEffect extends ExpirableEffect {
     }
 }
 
-class DodgeEffect extends StallEffect {
+class DodgeEffect extends ExpirableEffect {
     static effectName = "dodge"
 
     static isPre() {
         return true
     }
-
-    setup() {
-        super.setup()
-    }
+    
+    lifetime = { turns: 1 }
 
     displayMeta() {
         const dodgedCount = this.source._dodgeMatrix.filter(Boolean).length
-        return `(${dodgedCount}x)`
+        return dodgedCount === 1 ? '' : `(${dodgedCount}x)`
     }
 }
 

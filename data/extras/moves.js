@@ -39,9 +39,12 @@ export default {
       },
       onTryMove(attacker, defender, move) {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
-            console.log(i)
             return canDodge(attacker, defender, move)
         })
+        console.log(this._dodgeMatrix)
+        console.log(move.hit.damages)
+        move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
+        console.log(move.hit.damages)
         if(this._dodgeMatrix.every(d => !d))
             return null
       },
