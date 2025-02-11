@@ -1,6 +1,4 @@
 import { processor, setKeyIfNotExists } from "./helpers.js"
-import { MOVE_CTX } from "../../assets/js/utils/ctx.js"
-
 
 function isTwoTurnMove(move) {
     let isTwoTurn = false
@@ -21,6 +19,20 @@ function isTwoTurnMove(move) {
 
 function mergeDefault(move) {
     const defaultProps = {
+        add: (...args) => null, // todo
+        debug: () => null,
+        runEvent: () => true, //todo
+        dex: {
+            conditions: {
+                get: () => null
+            }
+        },
+        heal(hp, pokemon) {
+            pokemon.state.increaseHealth(hp)
+        },
+        damage(damage, pokemon) {
+            pokemon.state.decreaseHealth(damage)
+        },
         onAfterMove(pokemon, target, move) {
             move.heal && this.heal(pokemon.maxhp * move.healRate(), pokemon)
         }
@@ -206,13 +218,6 @@ function setRetreat(move) {
   move.retreat = retreat
 }
 
-function setCustomCTX(move) {
-  for (const key of Object.keys(move)) {
-    if (typeof move[key] === 'function') {
-      move[key] = move[key].bind(MOVE_CTX);
-    }
-  }
-}
 
 function modifyAccuracy(move) {
     if (move.accuracy === true) return
@@ -226,7 +231,6 @@ function modifyAccuracy(move) {
 
 export default processor([
     mergeDefault,
-    setCustomCTX,
     addFlags,
     modifyPP,
     setEffects,

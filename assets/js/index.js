@@ -213,31 +213,3 @@ document.body.onload = loadAll
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-startBattle([
-  {
-    "id": "onix",
-    "xp": 1800,
-    "nature": "calm",
-    "retreat": 2,
-    "moves": [
-      {
-        "id": "bind",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "rockthrow",
-        "isSelected": true
-      },
-      {
-        "id": "screech",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  }
-], [])

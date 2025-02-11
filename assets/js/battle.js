@@ -90,9 +90,8 @@ globalThis.showEffectsEditForm = function(playerTag){
     .prompt(`edit stat changes of "${playerTag}"`, oldEffects)
     .split(', ')
     .map(e => e.trim())
-  pokemon.state.effects._effects = []
-  newEffects.forEach(e => pokemon.state.effects.add(new Move("staythere"), e))
-  setEffects(pokemon.state.effects.names(), playerTag)
+  pokemon.state.effects.sync(newEffects)
+  setEffects(pokemon.state.effects.all(), playerTag)
 }
 
 function setBattleListeners() {
@@ -111,7 +110,7 @@ function loadPokemonData(playerTag) {
     loadVeryCloseBtn()
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
-    setEffects(pokemon.state.effects.names(), playerTag)
+    setEffects(pokemon.state.effects.all(), playerTag)
     setCurrentHealth(hp, playerTag)
     setDoubleTeamData(pokemon.state.manCount, playerTag)
     loadMoves(playerTag)
@@ -382,8 +381,8 @@ function setEffects(effects, playerTag) {
   effects.forEach(effect => {
     const span = document.createElement("span")
     span.classList.add("effect")
-    span.style.backgroundColor = `var(--${effectsMap[effect].color}-type-color)`
-    span.textContent = `${effectsMap[effect].name}`
+    span.style.backgroundColor = `var(--${effectsMap[effect.constructor.effectName].color}-type-color)`
+    span.textContent = `${effectsMap[effect.constructor.effectName].name} ${effect.displayMeta()}`.trim()
     effectsDataColumn.insertBefore(span,effectsDataColumn.firstElementChild) 
   })
 }
@@ -578,7 +577,7 @@ function handleMoveCardSelect(card, playerTag) {
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
   if (oponentSelectedMoveCard){
     oponentSelectedMoveCard.classList.remove("selected")
-    runTurn({
+    runScene({
         [playerTag]: card.dataset.moveId,
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
     })
@@ -594,7 +593,7 @@ globalThis.moveCardClickHandler = function( {
   handleMoveCardSelect(currentTarget, playerTag)
 }
 
-function runTurn(moveIds) {
+function runScene(moveIds) {
     const {you: moveId, enemy: enemyMoveId} = moveIds
     const move1 = new Move(moveId)
     const move2 = new Move(enemyMoveId)

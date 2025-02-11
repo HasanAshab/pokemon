@@ -1,3 +1,4 @@
+import { canDodge } from "../../assets/js/utils/helpers.js"
 
 export default {
     staythere: {
@@ -37,37 +38,13 @@ export default {
         target: []
       },
       onTryMove(attacker, defender, move) {
-        if (move.accuracy === true || !defender.state.effects.canMove()) {
-            return null;
-        }
-
-        // Get speed stats
-        const attackerSpd = attacker.state.stats.get("spe");
-        const defenderSpd = defender.state.stats.get("spe");
-        
-        // Get accuracy and evasion stats
-        const attackerAccuracy = attacker.state.stats.get("accuracy")
-        const defenderEvasion = defender.state.stats.get("evasion")
-
-        // Base dodge chance using a modified speed ratio
-        const speedRatio = defenderSpd / attackerSpd;
-        const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.7)); // Clamp between 5% and 70%
-    
-        // Accuracy and evasion modifiers
-        const accuracyModifier = attackerAccuracy / defenderEvasion;
-    
-        // Calculate final hit chance
-        const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.70;
-        console.log(defender.id, Math.round(finalHitChance))
-    
-        // Simulate random factor for dodge mechanics
-        const randomFactor = Math.random() * 100;
-
-        // Return true if defender dodges, false if the move hits
-        const dodged = randomFactor > finalHitChance;
-
-        if (!dodged) return null
-      }
+        this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
+            console.log(i)
+            return canDodge(attacker, defender, move)
+        })
+        if(this._dodgeMatrix.every(d => !d))
+            return null
+      },
     },
     doubleteam: {
       num: 104,

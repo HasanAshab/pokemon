@@ -63,6 +63,10 @@ class Effect {
     attackSelf() {
         return this.status.attackSelf
     }
+    
+    displayMeta() {
+        return ""
+    }
 
     _subscribeTo(event) {
         const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
@@ -317,11 +321,14 @@ class DodgeEffect extends StallEffect {
     static isPre() {
         return true
     }
-    
+
     setup() {
         super.setup()
-        
-        this.meta
+    }
+
+    displayMeta() {
+        const dodgedCount = this.source._dodgeMatrix.filter(Boolean).length
+        return `(${dodgedCount}x)`
     }
 }
 
@@ -404,7 +411,7 @@ class DoubleTeamEffect extends ExpirableEffect {
     onOpponentScene(move) {
         this.meta.totalManHittee = this._totalManHittee(move)
     }
-    
+
     onContacted(contactor) {
         const isMainManHittee = this.meta.totalManHittee === this.state.manCount
             || contactor === this.state.pokemon
@@ -416,7 +423,11 @@ class DoubleTeamEffect extends ExpirableEffect {
         this.state.manCount -= this.meta.totalManHittee
         this.state.freeze()
     }
-    
+
+    displayMeta() {
+        return `(-${this.meta.totalManHittee})`
+    }
+
     _calculateDTManCount() {
         return Math.round(
             this.state.stats.get("spe") * this.state.pokemon.level * (0.06 * 0.1)
@@ -519,9 +530,10 @@ export class EffectManager {
         return effect
     }
     
-    // sync(...effectNames) {
-//         effectNames.forEach()
-//     }
+    sync(...effectNames) {
+        this.names().forEach(e => this.remove(e))
+        effectNames.forEach(e => this.add(null, e))
+    }
 
     apply(move, { on, pre = false }) {
         if (on === "self") {
