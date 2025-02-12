@@ -4,8 +4,21 @@ import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from
 import { Damage } from "./utils/damage.js"
 import natures from "../../../data/natures.js"
 
-let name = getParam("name")
+var name = getParam("name")
+var isMegaEvolved = false
 const updatablePokemonMetaList = ["retreat","xp","nature","wins-count","loses-count"]
+
+globalThis.megaBtnClickHandler = function({currentTarget}){
+   currentTarget.classList.toggle("active")
+   isMegaEvolved = currentTarget.classList.contains("active")
+   loadAll()
+    
+}
+globalThis.setMegaSuffix = function(value){
+    const meta = getPokemonsMeta(name) 
+    meta.mega.preffix = value
+    setPokemonMeta(name,meta)
+}
 globalThis.toggleMoveInfo = function(info){
 info.classList.toggle("active")
 }
@@ -142,7 +155,6 @@ globalThis.closeMoveChooseInterface = function() {
 }
 globalThis.learnMove = async function() {
     const moveId = document.getElementById("move-search-inp").value
-    
     if (pokemon.meta.moves.find(move => move.id === moveId)) {
         return
     }
@@ -156,27 +168,7 @@ globalThis.learnMove = async function() {
 }
 
 
-globalThis.selectMove = function(moveId) {
-    pokemon.meta.moves = pokemon.meta.moves.map(move => {
-        if (move.id === moveId) {
-            move.isSelected = true
-        }
-        return move
-    })
-    setPokemonMeta(name, pokemon.meta)
-    loadMoves()
-}
 
-globalThis.unselectMove = function(moveId) {
-    pokemon.meta.moves = pokemon.meta.moves.map(move => {
-        if (move.id === moveId) {
-            move.isSelected = false
-        }
-        return move
-    })
-    setPokemonMeta(name, pokemon.meta)
-    loadMoves()
-}
 
 globalThis.forgetMove = function(id) {
     pokemon.meta.moves = pokemon.meta.moves.filter(move => move.id !== id)
@@ -219,7 +211,7 @@ function loadMoves() {
         const damage = new Damage(pokemon, move)
    movesContainer.innerHTML +=   `  
    <div class="single-card-wrapper">
-      <div class="card  ${moveMeta.isSelected ? "selected" : ""}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" data-makes-contact="${!!move.flags.contact}">
+      <div class="card" data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" data-makes-contact="${!!move.flags.contact}">
           <div class="card-header" style="background-color:var(--${move.type || "Normal"}-type-color)">
             <div class="category-side">
               
@@ -340,8 +332,6 @@ function loadMoves() {
          ${move.description()}
               </small>
           <div class="bottom-btns-cont">
-               <button onclick="selectMove('${move.id}')" class="select-btn">Select</button>
-                    <button onclick="unselectMove('${move.id}')" class="unselect-btn">Unselect</button>
          <button onclick="forgetMove('${move.id}')" class="forget-btn">Forgot move</button>
 
           </div>

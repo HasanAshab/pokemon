@@ -396,40 +396,6 @@ class BaseBattle extends EventEmitter {
         senario.set(pokemon, new Move("staythere"))
     }
 
-    _canDodge(attacker, target, move) {
-        if (move.accuracy === true || !target.state.effects.canMove()) {
-            return false;
-        }
-
-        // Get speed stats
-        const attackerSpd = attacker.state.stats.get("spe");
-        const targetSpd = target.state.stats.get("spe");
-        
-        // Get accuracy and evasion stats
-        const attackerAccuracy = attacker.state.stats.get("accuracy")
-        const targetEvasion = target.state.stats.get("evasion")
-
-        // Base dodge chance using a modified speed ratio
-        const speedRatio = targetSpd / attackerSpd;
-        const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.7)); // Clamp between 5% and 70%
-    
-        // Accuracy and evasion modifiers
-        const accuracyModifier = attackerAccuracy / targetEvasion;
-    
-        // Calculate final hit chance
-        const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.70;
-        console.log(target.id, finalHitChance)
-    
-        // Simulate random factor for dodge mechanics
-        const randomFactor = Math.random() * 100;
-
-        // Return true if target dodges, false if the move hits
-        const dodged = randomFactor > finalHitChance;
-        dodged && target.state.emit("dodged", move)
-        
-        return dodged 
-    }
-
     _setWaveTurns() {
         const turns = this.turnsPerWave.map(tpw => tpw[0])
         const weights = this.turnsPerWave.map(tpw => tpw[1])

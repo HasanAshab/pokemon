@@ -321,7 +321,7 @@ class DodgeEffect extends ExpirableEffect {
     static isPre() {
         return true
     }
-    
+
     lifetime = { turns: 1 }
 
     displayMeta() {

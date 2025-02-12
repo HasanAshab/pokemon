@@ -72,6 +72,29 @@ h1 {
   content: attr(data-value);
 
 }
+.mega-controller{
+    width: calc(100% - 10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 5px;
+    margin-top: 5px;
+}
+.mega-controller .mega-btn{
+    padding: 5px 8px;
+    background-color: #eee;
+    font-weight: bold;
+transition:color,background-color .4s;
+    border-radius: 5px;
+    border: none;
+    font-size: large;
+    user-select: none;
+}
+.mega-controller .mega-btn:is(:active,.active){
+    background-color: royalblue;
+    color: white;
+}
+
 /* Stats Section */
 .stats {
   display: flex;
@@ -198,12 +221,7 @@ h1 {
   background-color: darkred;
   color: white;
 }
-.single-card-wrapper .card.selected ~ .info-wrapper > .bottom-btns-cont > .select-btn {
-  display: none;
-}
-.single-card-wrapper .card:not(.selected) ~ .info-wrapper > .bottom-btns-cont > .unselect-btn {
-  display: none;
-}
+
 
 .move-choose-interface {
   width: calc(90% - 80px);
