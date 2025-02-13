@@ -54,7 +54,6 @@ class BaseBattle extends EventEmitter {
         })
 
         this.on("turn", (...args) => {
-            console.log("new turn!")
             if (!this._waveAfterTurns) {
                 this._setWaveTurns()
             }
@@ -161,8 +160,8 @@ class BaseBattle extends EventEmitter {
         const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
-        const usedDodge1 = move1.id === "dodge"
-        const usedDodge2 = move2.id === "dodge"
+        const usedDodge1 = () => move1.id === "dodge"
+        const usedDodge2 = () => move2.id === "dodge"
 
         canMove2 && this.pokemon1.state.stats.apply("self", move2)
         canMove1 && this.pokemon2.state.stats.apply("self", move1)
@@ -219,18 +218,20 @@ class BaseBattle extends EventEmitter {
                 if (wantDodge) {
                     senario.set(this.pokemon1, new Move("dodge"))
                     this._checkFailure(this.pokemon1, senario)
-                    this.pokemon1.state.emit("used-move", senario.get(this.pokemon1))
+                    move1 = senario.get(this.pokemon1)
+                    this.pokemon1.state.emit("used-move", move1)
                 }
-                damages.set(this.pokemon1, damage * pokeEffect1)
+                !usedDodge1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
                 const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
                 if (wantDodge) {
                     senario.set(this.pokemon2, new Move("dodge"))
                     this._checkFailure(this.pokemon2, senario)
-                    this.pokemon2.state.emit("used-move", senario.get(this.pokemon2))
+                    move2 = senario.get(this.pokemon2)
+                    this.pokemon2.state.emit("used-move", move2)
                 }
-                damages.set(this.pokemon2, -damage * pokeEffect2);
+                !usedDodge2() && damages.set(this.pokemon2, -damage * pokeEffect2);
             }
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move2.flags.contact && !move1.flags.contact) {
@@ -243,18 +244,20 @@ class BaseBattle extends EventEmitter {
                 if (wantDodge) {
                     senario.set(this.pokemon1, new Move("dodge"))
                     this._checkFailure(this.pokemon1, senario)
-                    this.pokemon1.state.emit("used-move", senario.get(this.pokemon1))
+                    move1 = senario.get(this.pokemon1)
+                    this.pokemon1.state.emit("used-move", move1)
                 }
-                damages.set(this.pokemon1, damage * pokeEffect1)
+                !usedDodge1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
                 const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
                 if (wantDodge) {
                     senario.set(this.pokemon2, new Move("dodge"))
                     this._checkFailure(this.pokemon2, senario)
-                    this.pokemon2.state.emit("used-move", senario.get(this.pokemon2))
+                    move2 = senario.get(this.pokemon2)
+                    this.pokemon2.state.emit("used-move", move2)
                 }
-                damages.set(this.pokemon2, -damage * pokeEffect2);
+                !usedDodge2() &&damages.set(this.pokemon2, -damage * pokeEffect2);
             }
         }
         else if (
@@ -267,9 +270,10 @@ class BaseBattle extends EventEmitter {
                 if (wantDodge) {
                     senario.set(this.pokemon2, new Move("dodge"))
                     this._checkFailure(this.pokemon2, senario)
-                    this.pokemon2.state.emit("used-move", senario.get(this.pokemon2))
+                    move2 = senario.get(this.pokemon2)
+                    this.pokemon2.state.emit("used-move", move2)
                 }
-                this.pokemon2.state.effects.has("dodge") 
+                usedDodge2() 
                     ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
                     : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
             }
@@ -278,9 +282,10 @@ class BaseBattle extends EventEmitter {
                 if (wantDodge) {
                     senario.set(this.pokemon1, new Move("dodge"))
                     this._checkFailure(this.pokemon1, senario)
-                    this.pokemon1.state.emit("used-move", senario.get(this.pokemon1))
+                    move1 = senario.get(this.pokemon1)
+                    this.pokemon1.state.emit("used-move", move1)
                 }
-                this.pokemon1.state.effects.has("dodge") 
+                usedDodge1()
                     ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
                     : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
             }
@@ -288,22 +293,24 @@ class BaseBattle extends EventEmitter {
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             if (damage > 0) {
-                const wantDodge = !usedDodge1 && move1.id !== "staythere" && await this.prompt(this.pokemon1).ask("dodge")
+                const wantDodge = !usedDodge1() && move1.id !== "staythere" && await this.prompt(this.pokemon1).ask("dodge")
                 if (wantDodge) {
                     senario.set(this.pokemon1, new Move("dodge"))
                     this._checkFailure(this.pokemon1, senario)
-                    this.pokemon1.state.emit("used-move", senario.get(this.pokemon1))
+                    move1 = senario.get(this.pokemon1)
+                    this.pokemon1.state.emit("used-move", move1)
                 }
-                damages.set(this.pokemon1, damage * pokeEffect2)
+                !usedDodge1() && damages.set(this.pokemon1, damage * pokeEffect2)
             }
             else {
-                const wantDodge = !usedDodge2 && move2.id !== "staythere" && await this.prompt(this.pokemon2).ask("dodge")
+                const wantDodge = !usedDodge2() && move2.id !== "staythere" && await this.prompt(this.pokemon2).ask("dodge")
                 if (wantDodge) {
                     senario.set(this.pokemon2, new Move("dodge"))
                     this._checkFailure(this.pokemon2, senario)
-                    this.pokemon2.state.emit("used-move", senario.get(this.pokemon2))
+                    move2 = senario.get(this.pokemon2)
+                    this.pokemon2.state.emit("used-move", move2)
                 }
-                damages.set(this.pokemon2, -damage * pokeEffect1)
+                !usedDodge2() && damages.set(this.pokemon2, -damage * pokeEffect1)
             }
         }
 
@@ -443,6 +450,7 @@ class BattleState extends EventEmitter {
     _manCount = 1
     moves = [
         new Move("staythere"),
+        new Move("megaevolve"),
         new Move("dodge")
     ]
 
@@ -460,10 +468,8 @@ class BattleState extends EventEmitter {
         
         if(pokemon.meta.moves) {
             pokemon.meta.moves.forEach(moveMeta => {
-                if (moveMeta.isSelected) {
-                    const move = new Move(moveMeta.id)
-                    this.moves.push(move)
-                }
+                const move = new Move(moveMeta.id)
+                this.moves.push(move)
             })
         }
 
@@ -580,10 +586,8 @@ class StatsManager {
 
     constructor(state) {
         this.state = state
-        const battleTimeStats = StatsManager.getBattleStats(this.state.pokemon)
-        this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats, this.state.pokemon.meta.stats);
-        this.prev = new PrevStatsManager(state, this)
-        
+        this.refresh()
+
         this.state.on("scene", () => {
             this._modifiers = {}
         })
@@ -662,6 +666,13 @@ class StatsManager {
     
     unfreeze() {
         this._freezed = false
+    }
+
+    refresh() {
+        const battleTimeStats = StatsManager.getBattleStats(this.state.pokemon)
+        //this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats, this.state.pokemon.meta.stats);
+        this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats);
+        this.prev = new PrevStatsManager(this.state, this)
     }
 
     _statStageMultiplier(name, stage) {

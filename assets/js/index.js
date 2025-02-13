@@ -110,6 +110,10 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
           "spa":0,
           "spd":0
       },
+      "mega": {
+          "suffix": "mega",
+          "moves": []
+      },
       "wins-count":0,
       "loses-count":0,
       "moves": []
@@ -213,125 +217,3 @@ document.body.onload = loadAll
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-/*startBattle([
-  {
-    "id": "mightyena",
-    "xp": 2000,
-    "nature": "brave",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "swagger",
-        "isSelected": true
-      },
-      {
-        "id": "howl",
-        "isSelected": true
-      },
-      {
-        "id": "poisonfang",
-        "isSelected": true
-      },
-      {
-        "id": "mudslap",
-        "isSelected": true
-      },
-      {
-        "id": "crunch",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "poochyena",
-    "xp": 1000,
-    "nature": "serious",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "bite",
-        "isSelected": true
-      },
-      {
-        "id": "sandattack",
-        "isSelected": true
-      },
-      {
-        "id": "growl",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "poochyena",
-    "xp": 1000,
-    "nature": "serious",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "bite",
-        "isSelected": true
-      },
-      {
-        "id": "sandattack",
-        "isSelected": true
-      },
-      {
-        "id": "growl",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "poochyena",
-    "xp": 1000,
-    "nature": "serious",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "bite",
-        "isSelected": true
-      },
-      {
-        "id": "sandattack",
-        "isSelected": true
-      },
-      {
-        "id": "growl",
-        "isSelected": true
-      },
-      {
-        "id": "tackle",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  }
-], ["Grass"], "multiple")*/

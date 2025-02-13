@@ -1,16 +1,3 @@
-dodge
-magnitude
-
-increase crit ratio (lazor foc, foc energy)
-disable
-
-semi-invuln
-cb bp retreat process
-protect, ditect advanced
-
-abilities effects (eg guts)
-effect remove
-
 * Proposal
 
 * Scenario
@@ -21,26 +8,12 @@ phy 0 -> sp = x - y d
 
 * Bugs
 counter
-priority
-vicegrip
+priority die
 detect bug on sleep
 acc, evas stat bug
-
-
-powder type moves
-dodge status, multi hit
--------------
-double team:
--------------
-2. multy dodge with same retreat "2.5"
-
--------------
-
-
-
-make a website for fake buisness simulation.
-
-1. there should be a chart of every months reveneu
-2. must be a system to add new months reveneu. 3 input fields like low, medium, high must be given and the reveneu will be one from them randomly
-3. use localstoage for persistance
-4. page must be responsible
+semi-invuln
+abilities effects (eg guts)
+effect remove
+double vs powder type moves
+dodge status, later dodge
+magnitude

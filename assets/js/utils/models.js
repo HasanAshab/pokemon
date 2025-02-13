@@ -72,6 +72,10 @@ export class Pokemon extends PSPokemon {
         this._tag = tag;
         this.stats = this._calculateTotalStat();
     }
+    
+    get megaId() {
+        return this.id + this.meta.mega.suffix
+    }
 
     get name() {
         return this._pokemon.name
@@ -114,7 +118,15 @@ export class Pokemon extends PSPokemon {
     }
     
     getSTAB(move) {
-        return this.isTypeOf(move.type) ? 2 : 1;
+        return this.isTypeOf(move.type) ? 1.4 : 1;
+    }
+    
+    hasMegaForm() {
+        return this.megaId in pokemons
+    }
+    
+    isMegaForm() {
+        return this._pokemon === pokemons[this.megaId]
     }
 
     toBase64() {
@@ -128,6 +140,33 @@ export class Pokemon extends PSPokemon {
     
     tokensRemaining() {
         return (this.level * Pokemon.TOKEN_PER_LEVEL) - this.tokensUsed()
+    }
+    
+    megaEvolve() {
+        if (!this.hasMegaForm()) return false
+        this._pokemon = pokemons[this.megaId];
+        this.stats = this._calculateTotalStat();
+        if ("state" in this) {
+            this.state.stats.refresh()
+        }
+        return true
+    }
+    
+    megaDevolve() {
+        if (!this.isMegaForm()) return false
+        this._pokemon = pokemons[this.id];
+        this.stats = this._calculateTotalStat();
+        if ("state" in this) {
+            this.state.stats.refresh()
+        }
+        return true
+    }
+    
+    movesMeta() {
+        console.log(this.isMegaForm())
+        return this.isMegaForm() 
+            ? this.meta.mega.moves
+            : this.meta.moves
     }
 
     _calculateLevelStat() {

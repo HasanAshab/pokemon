@@ -23058,12 +23058,12 @@ export default {
       type: "Grass",
       contestType: "Cool"
     },
-    visegrip: {
+    vicegrip: {
       num: 11,
       accuracy: 100,
       basePower: 55,
       category: "Physical",
-      name: "Vise Grip",
+      name: "Vice Grip",
       pp: 30,
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },

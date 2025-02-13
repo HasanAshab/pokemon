@@ -45,7 +45,7 @@ export default {
       requiredItem: "Charizardite Z"
     },
      magtauros: {
-      num: 10002,
+      num: 10001,
       name: "Magtauros",
       baseSpecies: "Tauros",
       types: ["Fighting", "Fire"],
@@ -60,7 +60,7 @@ export default {
      eggGroups: ["Field"]
     },
     terrachomp: {
-      num: 10001,
+      num: 10002,
       name: "Terrachomp",
       types: ["Dragon", "Fire","Ground","Flying"],
       baseStats: {
@@ -81,7 +81,7 @@ export default {
       formeOrder: ["Terrachomp"]
     },
     noctario: {
-      num: 10002,
+      num: 10003,
       name: "Noctario",
       types: ["Fighting", "Steel","Dark"],
       genderRatio: { M: 0.875, F: 0.125 },
@@ -96,13 +96,13 @@ export default {
       otherFormes: ["nocario-Mega"],
       formeOrder: ["noctario", "noctario-Mega"]
     },
-    lucariomega: {
+    noctariomega: {
       num: 10003,
       name: "noctario-Mega",
       forme: "Mega",
       types: ["Fighting", "Steel","dark"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 70, atk: 165, def: 100, spa: 150, spd: 100, spe: 100 },
+      baseStats: { hp: 70, atk: 165, def: 100, spa: 150, spd: 100, spe: 130 },
       abilities: { 0: "Adaptability" },
       heightm: 1.3,
       weightkg: 70,
@@ -147,7 +147,7 @@ export default {
       evoLevel: 23,
       prevo: "Scyblade",
       color: "Green",
-      evos: ["Scizor", "Kleavor"],
+      evos: ["Scizor", "Kleavor","Scydon"],
       eggGroups: ["Bug"]
     },
     scydon: {
@@ -204,6 +204,22 @@ export default {
       otherFormes: ["Lucario-Mega"],
       formeOrder: ["Lucario", "Lucario-Mega"]
     },
+    lucariomega: {
+      num: 448,
+      name: "Lucario-Mega",
+      baseSpecies: "Lucario",
+      forme: "Mega",
+      types: ["Fighting", "Steel"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 65, atk: 105, def: 70, spa: 100, spd: 70, spe: 75  },
+      abilities: { 0: "Adaptability" },
+      heightm: 1.3,
+      weightkg: 55,
+      color: "Blue",
+      eggGroups: ["Field", "Human-Like"],
+      requiredItem: "Lucarionite"
+    },
+
     anubis: {
       num: 10008,
       name: "Anubis",
@@ -212,7 +228,7 @@ export default {
       baseStats:  { hp: 85, atk: 120, def: 85, spa: 120, spd: 85, spe: 105 },
       abilities: { 0: "Steadfast", 1: "Inner Focus"},
       heightm: 1.9,
-      weightkg: 54,
+      weightkg: 65,
       color: "black",
       prevo: "Lucario",
       evoType: "levelFriendship",
@@ -221,20 +237,32 @@ export default {
       otherFormes: ["Anubis-Mega"],
       formeOrder: ["Anubis", "Anubis-Mega"]
     },
-     anubismega: {
+     kingfu: {
       num: 10008,
-      name: "Anubis-Mega",
-      baseSpecies: "Anubis",
-      forme: "Mega",
-      types: ["Fighting", "Steel"],
+      name: "Kingfu",
+      baseSpecies: "Kingfu",
+      types: ["Fighting"],
       genderRatio: { M: 0.875, F: 0.125 },
- baseStats: { hp: 85, atk: 160, def: 105, spa: 150, spd: 105, spe: 95 },
+      baseStats:  { hp: 100, atk: 150, def: 80, spa: 150, spd: 100, spe: 150 },
       abilities: { 0: "Adaptability" },
-      heightm: 1.9,
-      weightkg: 65,
+      heightm: 1.7,
+      weightkg: 57,
       color: "gold",
       eggGroups: ["Field", "Human-Like"],
-      requiredItem: "Anubisnite"
     },
-
+    noivernmega: {
+      num: 715,
+      name: "Noivern-Mega",
+      types: ["Flying", "Dragon"],
+      baseStats :{ hp: 85, atk: 120, def: 100, spa: 117, spd: 90, spe: 123 },
+      abilities: { 0: "Frisk", 1: "Infiltrator", H: "Telepathy" },
+      heightm: 1.5,
+      weightkg: 85,
+      color: "Purple",
+      prevo: "Noibat",
+      evoLevel: 48,
+      baseSpecies: "Noivern",
+      forme: "Mega",
+      requiredItem: "noivernite",
+    },
 }

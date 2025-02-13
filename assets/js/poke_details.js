@@ -11,12 +11,14 @@ const updatablePokemonMetaList = ["retreat","xp","nature","wins-count","loses-co
 globalThis.megaBtnClickHandler = function({currentTarget}){
    currentTarget.classList.toggle("active")
    isMegaEvolved = currentTarget.classList.contains("active")
+   isMegaEvolved 
+       ? pokemon.megaEvolve()
+       : pokemon.megaDevolve()
    loadAll()
-    
 }
 globalThis.setMegaSuffix = function(value){
     const meta = getPokemonsMeta(name) 
-    meta.mega.preffix = value
+    meta.mega.suffix = value
     setPokemonMeta(name,meta)
 }
 globalThis.toggleMoveInfo = function(info){
@@ -78,6 +80,9 @@ globalThis.changePokemon =  function (){
  pokemonsMeta[pokemonInput.value] = temp
    localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
   name = pokemonInput.value
+    const meta = getPokemonsMeta(name)
+  globalThis.pokemon = new Pokemon(name, meta)
+
   loadAll()
  closePokemonChooseForm()
 }
@@ -192,21 +197,24 @@ function loadStats() {
     setStat("abilities", pokemon.abilities.join(', '))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
-
+    
+    let total = 0
     for (const stat in pokemon.stats) {
      const statValue = pokemon.stats[stat]
+     total += statValue
       setStat(stat,statValue)
       setStatToken(stat, pokemon.meta.token_used[stat], false)
-      if (stat === "hp"){
+      if (stat === "hp") {
           setTotalHealth(statValue)
       }
     }
+    setStat("total", total)
 }
 
 function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
-    for (const moveMeta of pokemon.meta.moves) {
+    for (const moveMeta of pokemon.movesMeta()) {
         const move = new Move(moveMeta.id)
         const damage = new Damage(pokemon, move)
    movesContainer.innerHTML +=   `  
@@ -344,9 +352,6 @@ function loadMoves() {
 }
 
 function loadAll(){
-      const meta = getPokemonsMeta(name)
-    globalThis.pokemon = new Pokemon(name, meta)
-
     loadNaturesDataList("natures-data-list")
     loadName()
     loadMoves()
@@ -354,5 +359,8 @@ function loadAll(){
 }
 
 window.onload = () => {
-loadAll()
+    const meta = getPokemonsMeta(name)
+  globalThis.pokemon = new Pokemon(name, meta)
+
+    loadAll()
 }

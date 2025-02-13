@@ -15,8 +15,26 @@ export default {
       type: "Normal",
       retreat: 0,
     },
-    dodge: {
+    megaevolve: {
       num: 100002,
+      accuracy: true,
+      basePower: 0,
+      category: "None",
+      name: "Mega Evolve",
+      pp: 1,
+      priority: 2,
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      retreat: 4,
+      flags: {},
+      onTryMove(attacker) {
+        if (!attacker.megaEvolve())
+          return null
+      }
+    },
+    dodge: {
+      num: 100003,
       accuracy: true,
       basePower: 0,
       category: "None",

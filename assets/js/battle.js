@@ -111,6 +111,7 @@ function loadPokemonData(playerTag) {
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
     setEffects(pokemon.state.effects.all(), playerTag)
+    loadHealth(playerTag)
     setCurrentHealth(hp, playerTag)
     setDoubleTeamData(pokemon.state.manCount, playerTag)
     loadMoves(playerTag)
@@ -156,23 +157,6 @@ function setBattleStateListeners(playerTag) {
 
     battle.prompt(pokemon).reply("dodge", () => {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
-    })
-}
-
-
-async function handleWin(winnerTag, looserTag) {
-    const winner = pokemonMap[winnerTag]
-    const looser = pokemonMap[looserTag]
-
-    const xp = await calculateWinXP(winner , looser)
- 
-    const meta = getPokemonsMeta(pokemon.name)
-    meta.xp += xp
-    setPokemonMeta(pokemon.id, meta)
-     
-    
-    popupQueue.add("Winner! +" + xp, winnerTag, () => {
-        window.location = `poke_details.html?name=${pokemon.name}`
     })
 }
 
@@ -245,7 +229,6 @@ function setupCurrentBattle(switcher) {
 
 function setupPokemonForDom(playerTag) {
     setBattleStateListeners(playerTag)
-    loadHealth(playerTag)
     loadRetreat(playerTag)
     loadPokemonData(playerTag)
 }
@@ -431,7 +414,7 @@ function setCurrentHealth(hp, playerTag) {
   healthProgressBar.querySelector(".current-hp").textContent = hp
   const progress = (hp / pokemon.maxhp) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
-  playerTag === "you" && syncStatsMeta(pokemon)
+  //playerTag === "you" && syncStatsMeta(pokemon)
 }
 
 function loadMoves(playerTag) {
