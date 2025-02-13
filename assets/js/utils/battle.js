@@ -120,32 +120,36 @@ class BaseBattle extends EventEmitter {
     async run(senario) {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
-    
+        const usedDodge1 = () => move1.id === "dodge"
+        const usedDodge2 = () => move2.id === "dodge"
+
         // TEMP: move power management
         move1.basePower *= this.pokemon1.state.stats._statChanges["pow"] || 1
         move2.basePower *= this.pokemon2.state.stats._statChanges["pow"] || 1
         
         // ctx effects
         if(this.ctx.veryClose && move1.flags.contact !== move2.flags.contact) {
-            if(move1.flags.contact) {
+            if(move1.flags.contact && !usedDodge2()) {
                 senario.set(this.pokemon2, new Move("staythere"))
             }
-            else {
+            else if (move2.flags.contact && !usedDodge1()) {
                 senario.set(this.pokemon1, new Move("staythere"))
             }
         }
+        
+        // todo: must be after failure
+        this.emit("scene", senario)
         
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
         
         const hit1 = move1.hit
         const hit2 = move2.hit
-        
+
         // move failure
         this._checkFailure(this.pokemon1, senario)
         this._checkFailure(this.pokemon2, senario)
         
-        this.emit("scene", senario)
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
@@ -159,9 +163,6 @@ class BaseBattle extends EventEmitter {
         
         const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
-
-        const usedDodge1 = () => move1.id === "dodge"
-        const usedDodge2 = () => move2.id === "dodge"
 
         canMove2 && this.pokemon1.state.stats.apply("self", move2)
         canMove1 && this.pokemon2.state.stats.apply("self", move1)
@@ -557,7 +558,6 @@ class BattleState extends EventEmitter {
     }
     
     unfreeze() {
-        console.log("yeah")
         this.stats.unfreeze()
         this.effects.unfreeze()
     }

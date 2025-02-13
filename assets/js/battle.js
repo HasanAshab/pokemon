@@ -130,7 +130,7 @@ function loadPokemonData(playerTag) {
 
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    pokemon.state.on(["scene", "wave"], () => {
+    pokemon.state.on(["scene-end", "wave"], () => {
         loadPokemonData(playerTag)
     })
     
