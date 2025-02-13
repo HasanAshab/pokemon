@@ -108,6 +108,7 @@ function loadPokemonData(playerTag) {
     const oldHp = pokemon.state.stats.prev.get("hp")
 
     loadVeryCloseBtn()
+    setEffects(pokemon.state.effects.all(), playerTag)
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
     loadHealth(playerTag)
@@ -129,7 +130,7 @@ function loadPokemonData(playerTag) {
 
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
-    pokemon.state.on(["scene-end", "wave"], () => {
+    pokemon.state.on(["scene", "wave"], () => {
         loadPokemonData(playerTag)
     })
     
@@ -137,8 +138,11 @@ function setBattleStateListeners(playerTag) {
         popupQueue.add("dodged!", playerTag)
     })
     
-    pokemon.state.on("scene", () => {
-        setEffects(pokemon.state.effects.all(), playerTag)
+    pokemon.state.on("scene-end", () => {
+        setTimeout(
+            () => loadPokemonData(playerTag),
+            1500
+        )
     })
 
     

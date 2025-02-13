@@ -160,12 +160,11 @@ globalThis.closeMoveChooseInterface = function() {
 }
 globalThis.learnMove = async function() {
     const moveId = document.getElementById("move-search-inp").value
-    if (pokemon.meta.moves.find(move => move.id === moveId)) {
+    if (pokemon.movesMeta().find(move => move.id === moveId)) {
         return
     }
-    pokemon.meta.moves.push({
+    pokemon.movesMeta().push({
         id: moveId,
-        isSelected: false
     })
     setPokemonMeta(name, pokemon.meta)
     closeMoveChooseInterface()
@@ -176,7 +175,11 @@ globalThis.learnMove = async function() {
 
 
 globalThis.forgetMove = function(id) {
-    pokemon.meta.moves = pokemon.meta.moves.filter(move => move.id !== id)
+    const oldMoves = pokemon.movesMeta()
+    const newMoves = oldMoves.filter(move => move.id !== id)
+    
+    oldMoves.splice(0, oldMoves.length)
+    newMoves.forEach(m => oldMoves.push(m))
     setPokemonMeta(name, pokemon.meta)
     loadMoves()
 }

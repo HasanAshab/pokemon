@@ -31,6 +31,8 @@ export default {
       onTryMove(attacker) {
         if (!attacker.megaEvolve())
           return null
+        const megaMoves = attacker.meta.mega.moves
+        megaMoves && attacker.state.setMoves(megaMoves)
       }
     },
     dodge: {

@@ -447,6 +447,12 @@ class MultiBattle extends BaseBattle {
 }
 
 class BattleState extends EventEmitter {
+    static DEFAULT_MOVES = [
+        "staythere",
+        "megaevolve",
+        "dodge",
+    ]
+    
     _manCount = 1
     moves = [
         new Move("staythere"),
@@ -466,12 +472,7 @@ class BattleState extends EventEmitter {
         this.effects = new EffectManager(this);
         this.damage = new DamageManager(this);
         
-        if(pokemon.meta.moves) {
-            pokemon.meta.moves.forEach(moveMeta => {
-                const move = new Move(moveMeta.id)
-                this.moves.push(move)
-            })
-        }
+        pokemon.meta.moves && this.setMoves(pokemon.meta.moves)
 
         this.on("wave", () => {
             this.addWaveRetreat()
@@ -506,6 +507,18 @@ class BattleState extends EventEmitter {
 
     set manCount(value) {
         this._manCount = Math.max(1, value)
+    }
+    
+    setMoves(moves) {
+        this.moves = []
+        BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+        moves.forEach(moveMeta => this.addMove(moveMeta.id))
+    }
+    
+    addMove(id) {
+        const move = new Move(id)
+        !this.moves.find(m => m.id === id)
+            && this.moves.push(move)
     }
 
     addWaveRetreat() {
