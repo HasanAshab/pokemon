@@ -320,7 +320,7 @@ class BaseBattle extends EventEmitter {
         const d1 = "damage" in move2
             ? hit2.damage()
             : hit2.toContactDamage(damages.get(this.pokemon1))
-        
+
         const d2 = "damage" in move1
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))

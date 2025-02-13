@@ -214,6 +214,11 @@ class FreezeEffect extends ExpirableEffect {
     isExpired() {
         return Math.random() < this._thawChance
     }
+    
+    displayMeta() {
+        const frozenPart = Math.round((1 - this._thawChance) * 100)
+        return `(${frozenPart}%)`
+    }
 }
 
 class FlinchEffect extends ExpirableEffect {
@@ -247,12 +252,15 @@ class ParalyzeEffect extends Effect {
     }
 
     onTurn() {
-        const canNotMove = Math.random() < 0.25;
-        this.status.canMove = !canNotMove
+        this.status.canMove = Math.random() > 0.25
     }
 
     onTurnEnd() {
         this.status.canMove = true
+    }
+    
+    displayMeta() {
+        return !this.status.canMove ? '🔴' : '🟢'
     }
 }
 
@@ -268,7 +276,7 @@ class ConfusionEffect extends ExpirableEffect {
 
     onTurn() {
         super.onTurn(...arguments)
-        this.status.attackSelf = Math.random() < ConfusionEffect.ATK_SELF_CHANCE
+        this.status.attackSelf = true || Math.random() < ConfusionEffect.ATK_SELF_CHANCE
     }
 
     onTurnEnd() {
@@ -279,6 +287,10 @@ class ConfusionEffect extends ExpirableEffect {
     teardown() {
         super.teardown()
         this.status.attackSelf = false
+    }
+    
+    displayMeta() {
+        return this.status.attackSelf ? '🔴' : '🟢'
     }
 }
 
@@ -335,7 +347,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
 
     setup() {
         super.setup()
-        const lifetime = weightedRandom([2, 3, 4, 5], [0.20, 0.40, 0.30, 0.15])
+        const lifetime = weightedRandom([2, 3, 4, 5], [0.20, 0.40, 0.30, 0.10])
         this.lifetime.turns = lifetime
     }
     
@@ -362,7 +374,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
             move.flags.contact && senario.set(opponent, new Move("staythere"))
         }
     }
-    
+
     _calculateEffectDamage() {
         const maxHP = this.state.pokemon.stats.hp;
         const trappedDamage = Math.floor(maxHP / 8); // 1/8th HP loss
@@ -423,7 +435,9 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 
     displayMeta() {
-        return `(-${this.meta.totalManHittee})`
+        return this.meta.totalManHittee 
+            ? `(-${this.meta.totalManHittee})`
+            : ''
     }
 
     _calculateDTManCount() {
@@ -457,7 +471,7 @@ class DoubleTeamEffect extends ExpirableEffect {
                 return manCount
             }
         }
-        return Math.min(manCount, move.hit)
+        return Math.min(manCount, move.hits)
     }
 }
 

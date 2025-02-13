@@ -133,8 +133,9 @@ export class Hit {
             "Physical": "def",
             "Special": "spd"
         }
+        console.log("here is bug", this.move.category)
         const defStat = this.target.state.stats.get(
-            statMap[this.move.category]
+            statMap[this.move.category] ?? "def"
         )
         const defModifier = 1 / defStat
         return damage * defModifier

@@ -110,7 +110,6 @@ function loadPokemonData(playerTag) {
     loadVeryCloseBtn()
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
-    setEffects(pokemon.state.effects.all(), playerTag)
     loadHealth(playerTag)
     setCurrentHealth(hp, playerTag)
     setDoubleTeamData(pokemon.state.manCount, playerTag)
@@ -137,6 +136,11 @@ function setBattleStateListeners(playerTag) {
     pokemon.state.on("dodged", () => {
         popupQueue.add("dodged!", playerTag)
     })
+    
+    pokemon.state.on("scene", () => {
+        setEffects(pokemon.state.effects.all(), playerTag)
+    })
+
     
     pokemon.state.on("scene", move => {
         if (!move.hit) return
