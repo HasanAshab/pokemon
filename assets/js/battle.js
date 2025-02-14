@@ -134,8 +134,21 @@ function setBattleStateListeners(playerTag) {
         loadPokemonData(playerTag)
     })
     
-    pokemon.state.on("dodged", () => {
-        popupQueue.add("dodged!", playerTag)
+    pokemon.state.on("used-move", move => {
+        if (move.id === "dodge") {
+            const dodgedCount = move._dodgeMatrix.filter(Boolean).length
+            const failedCount = move._dodgeMatrix.length - dodgedCount
+            if(!dodgedCount) return
+            //here
+            let msg = null
+            if (move._dodgeMatrix.length === 1 && dodgedCount) 
+                msg = 'Dodged!'
+            else if (move._dodgeMatrix.length > 1)
+                msg = `${dodgedCount}x Dodged, ${failedCount} failed!`
+
+            msg && popupQueue.add(msg, playerTag)
+        }
+        
     })
     
     pokemon.state.on("scene-end", () => {

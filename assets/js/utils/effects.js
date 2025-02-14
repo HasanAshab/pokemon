@@ -327,21 +327,6 @@ class StallEffect extends ExpirableEffect {
     }
 }
 
-class DodgeEffect extends ExpirableEffect {
-    static effectName = "dodge"
-
-    static isPre() {
-        return true
-    }
-
-    lifetime = { turns: 1 }
-
-    displayMeta() {
-        const dodgedCount = this.source._dodgeMatrix.filter(Boolean).length
-        return dodgedCount === 1 ? '' : `(${dodgedCount}x)`
-    }
-}
-
 class PartiallyTrappedEffect extends ExpirableEffect {
     static effectName = "partiallytrapped"
 
@@ -486,7 +471,6 @@ export const EFFECTS = makeEffectsMap([
     ConfusionEffect,
     LeechSeedEffect,
     StallEffect,
-    DodgeEffect,
     PartiallyTrappedEffect,
     DoubleTeamEffect,
 ])

@@ -19,7 +19,7 @@ export default {
       num: 100002,
       accuracy: true,
       basePower: 0,
-      category: "None",
+      category: "Status",
       name: "Mega Evolve",
       pp: 1,
       priority: 2,
@@ -49,14 +49,6 @@ export default {
       type: "Normal",
       isOffensive: false,
       retreat: 0.25,
-      effects: {
-        self: [{
-          name: "dodge",
-          chance: 100,
-          isVolatile: true 
-        }],
-        target: []
-      },
       onTryMove(attacker, defender, move) {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
             return canDodge(attacker, defender, move)

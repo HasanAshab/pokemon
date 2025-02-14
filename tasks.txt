@@ -15,6 +15,6 @@ semi-invuln
 abilities effects (eg guts)
 effect remove
 double vs powder type moves
-dodge status, later dodge
+dodge status
 magnitude
 confusion hit self KO (move category ditection)

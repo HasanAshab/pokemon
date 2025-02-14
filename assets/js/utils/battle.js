@@ -120,13 +120,13 @@ class BaseBattle extends EventEmitter {
     async run(senario) {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
-        const usedDodge1 = () => move1.id === "dodge"
+        const usedDodge1 = () => move1.id === "dodge" && 
         const usedDodge2 = () => move2.id === "dodge"
 
         // TEMP: move power management
         move1.basePower *= this.pokemon1.state.stats._statChanges["pow"] || 1
         move2.basePower *= this.pokemon2.state.stats._statChanges["pow"] || 1
-        
+
         // ctx effects
         if(this.ctx.veryClose && move1.flags.contact !== move2.flags.contact) {
             if(move1.flags.contact && !usedDodge2()) {
@@ -136,27 +136,26 @@ class BaseBattle extends EventEmitter {
                 senario.set(this.pokemon1, new Move("staythere"))
             }
         }
-        
-        // todo: must be after failure
-        this.emit("scene", senario)
-        
+
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
-        
+
         const hit1 = move1.hit
         const hit2 = move2.hit
 
         // move failure
         this._checkFailure(this.pokemon1, senario)
         this._checkFailure(this.pokemon2, senario)
-        
+
+        this.emit("scene", senario)
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
         
+
         this.pokemon1.state.emit("used-move", move1)
         this.pokemon2.state.emit("used-move", move2)
-        
+
 
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
