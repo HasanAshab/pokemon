@@ -36,6 +36,10 @@ class PSPokemon {
     hasType(...args) {
         return this.isTypeOf(...args)
     }
+    
+    getStat(name) {
+        return this.state.stats.get(name)
+    }
 }
 
 export class Pokemon extends PSPokemon {

@@ -20,7 +20,7 @@ function isTwoTurnMove(move) {
 function mergeDefault(move) {
     const defaultProps = {
         add: (...args) => null, // todo
-        debug: () => null,
+        debug: console.log,
         runEvent: () => true, //todo
         dex: {
             conditions: {

@@ -49,15 +49,12 @@ export default {
       type: "Normal",
       isOffensive: false,
       retreat: 0.25,
-      onTryMove(attacker, defender, move) {
+      onBeforeMove(attacker, defender, move) {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
             return canDodge(attacker, defender, move)
         })
-        
         console.log(this._dodgeMatrix, move)
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
-        if(this._dodgeMatrix.every(d => !d))
-            return null
       },
     },
     doubleteam: {
