@@ -75,10 +75,27 @@ async function charecterBtnsClickHandler(charecter){
 
   })
   }
+  
+ function getMegaMoves(form){
+     const megaMoveInputs = form.querySelectorAll(".mega-move-input")
+     const moveInputs = form.querySelectorAll(".move-input")
+     const moves = []
+     for (let i = 0; i < megaMoveInputs.length;i++){
+       let id = ""
+       if (megaMoveInputs[i].value === ""){
+         id = moveInputs[i].value
+       }
+        else id = megaMoveInputs[i].value
+        moves.push({id,isSelected:true})
+     }
+     
+     return moves
+ }
 function makeEnemyMeta(form, index) {
     const levelInp = form.querySelector(".level-inp");
     const retreatInp = form.querySelector(".retreat-inp");
     const natureInp = form.querySelector(".nature-inp");
+    const megaSuffixSelect = form.querySelector(".mega-suffix-select");
     const tokenInp = form.querySelector(".token-inp");
      const enemyStats = form.querySelector(".enemy-stats");
 
@@ -86,6 +103,10 @@ function makeEnemyMeta(form, index) {
     const retreat = Number(retreatInp.value);
 
     const nature = natureInp.value;
+    const mega = {
+        moves: getMegaMoves(form),
+        suffix: megaSuffixSelect.value
+    }
     const tokens = flagsToObj(tokenInp.value);
     const moves = [
         form.querySelector(".move-input-1").value,
@@ -104,6 +125,7 @@ function makeEnemyMeta(form, index) {
         nature,
         retreat,
         moves,
+        mega,
         stats: {},
         token_used: tokens
     }
@@ -179,9 +201,18 @@ globalThis.setDefaultMoves = async ({currentTarget})=>{
   }
 }
 
+
+export function makeStartBattleCode(meta, fields, system = "single") {
+    fields = fields.map(f => `"${f}"`).join(', ')
+    return `startBattle(${JSON.stringify(meta, null, 2)}, [${fields}], "${system}")`;
+}
+
+
 globalThis.copyStartBattleCode = function() {
-    const fields = getActiveBattleFields().map(f => `"${f}"`).join(', ')
-    const code = `startBattle(${JSON.stringify(makeEnemiesMeta(), null, 2)}, [${fields}])`;
+    const code = makeStartBattleCode(
+        makeEnemiesMeta(),
+        getActiveBattleFields()
+    )
     navigator.clipboard.writeText(code)
     alert(code)
 }
@@ -203,7 +234,18 @@ globalThis.showMoveDetails = function({currentTarget}){
 
 globalThis.startBattleBtnHandler = function() {
   const sysSelect = document.getElementById('sys-select');
+  const code = makeStartBattleCode(
+        makeEnemiesMeta(),
+        getActiveBattleFields(),
+        sysSelect.value
+   )
+
+  localStorage.setItem("last-battle", code)
   startBattle(makeEnemiesMeta(), getActiveBattleFields(), sysSelect.value)
 }
 
-// function
+globalThis.startLastBattle = function() {
+    eval(localStorage.getItem("last-battle"))
+}
+
+// functionm

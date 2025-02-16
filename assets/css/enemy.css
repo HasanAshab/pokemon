@@ -48,3 +48,6 @@
     padding: 10px 20px;
     margin-top: 10px;
 }
+.pokemon-form *{
+    margin: 3px;
+}

@@ -31,8 +31,8 @@ export default {
       onTryMove(attacker) {
         if (!attacker.megaEvolve())
           return null
-        const megaMoves = attacker.meta.mega.moves
-        megaMoves && attacker.state.setMoves(megaMoves)
+        //const megaMoves = attacker.meta.mega.moves
+        //megaMoves && attacker.state.setMoves(megaMoves)
       }
     },
     dodge: {
@@ -53,7 +53,6 @@ export default {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
             return canDodge(attacker, defender, move)
         })
-        console.log(this._dodgeMatrix, move)
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },

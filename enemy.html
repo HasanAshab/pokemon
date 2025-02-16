@@ -71,16 +71,10 @@
         <div style="background-color:var(--Normal-type-color)" data-index="17" onclick="fieldClickHandler(event)" class="field normal">
           Normal
         </div>
-        <div style="background-color:var(--Unknown-type-color)" data-index="18" onclick="fieldClickHandler(event)" class="field unknown">
-          Unknown
-        </div>
-
-        <div style="background-color:var(--Stellar-type-color)" data-index="20" onclick="fieldClickHandler(event)" class="field stellar">
-          Stellar
-        </div>
       </div>
    <button onclick="selectRandomFields()" class="select-random-fields-btn">Random Fields</button>
    <button onclick="copyFields()" class="copy-fields-btn">copy fields</button>
+   <button onclick="startLastBattle()">Last Battle</button>
   <br><br>
   <div class="charecter-choose-form">
       <h2 class="title">charecters</h2>
@@ -101,6 +95,14 @@
     <label for="nature-inp">Nature</label>
     <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(0)" class="nature-inp">
     <br>
+        <label for="mega-suffix-select">Mega Suffix</label>
+    <select class="mega-suffix-select" name="mega-suffix-select">
+      <option value="mega">Mega</option>
+      <option value="megax">X</option>
+      <option value="megay">Y</option>
+      <option value="megaz">Z</option>
+    </select>
+    <br>   
     <label for="token-inp">Token Used</label>
     <textarea name="token-inp" onblur="showStats(0)" class="token-inp"></textarea>
     <br>
@@ -143,6 +145,14 @@
     <label for="nature-inp">Nature</label>
     <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(1)" class="nature-inp">
     <br>
+        <label for="mega-suffix-select">Mega Suffix</label>
+    <select class="mega-suffix-select" name="mega-suffix-select">
+      <option value="mega">Mega</option>
+      <option value="megax">X</option>
+      <option value="megay">Y</option>
+      <option value="megaz">Z</option>
+    </select>
+    <br>   
     <label for="token-inp">Token Used</label>
     <textarea name="token-inp" onblur="showStats(1)" class="token-inp"></textarea>
     <br>
@@ -183,7 +193,14 @@
     <br>
     <label for="nature-inp">Nature</label>
     <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(2)" class="nature-inp">
-    <br>
+       <label for="mega-suffix-select">Mega Suffix</label>
+    <select class="mega-suffix-select" name="mega-suffix-select">
+      <option value="mega">Mega</option>
+      <option value="megax">X</option>
+      <option value="megay">Y</option>
+      <option value="megaz">Z</option>
+    </select>
+    <br>    <br>
     <label for="token-inp">Token Used</label>
     <textarea name="token-inp" onblur="showStats(2)" class="token-inp"></textarea>
     <br>
@@ -224,6 +241,14 @@
     <br>
     <label for="nature-inp">Nature</label>
     <input list="natures-data-list" value="calm" name="nature-inp" type="text" onblur="showStats(3)" class="nature-inp">
+       <label for="mega-suffix-select">Mega Suffix</label>
+    <select class="mega-suffix-select" name="mega-suffix-select">
+      <option value="mega">Mega</option>
+      <option value="megax">X</option>
+      <option value="megay">Y</option>
+      <option value="megaz">Z</option>
+    </select>
+    <br>   
     <br>
     <label for="token-inp">Token Used</label>
     <textarea name="token-inp" onblur="showStats(3)" class="token-inp"></textarea>
