@@ -108,16 +108,20 @@ function makeEnemyMeta(form, index) {
         suffix: megaSuffixSelect.value
     }
     const tokens = flagsToObj(tokenInp.value);
-    const moves = [
-        form.querySelector(".move-input-1").value,
-        form.querySelector(".move-input-2").value,
-        form.querySelector(".move-input-3").value,
-        form.querySelector(".move-input-4").value,
-        form.querySelector(".move-input-5").value,
-    ].filter(Boolean).map(id => ({
-        id,
-        isSelected: true
-    }))
+    // pushing all the move inp values to moves
+    const moves = []
+    form.querySelectorAll(".move-input").forEach(inp=>{
+     if (inp.value !== ""){
+      moves.push({
+         id: inp.value,
+          isSelected: true
+        })  
+     }
+    })
+
+   
+   
+   
     
     return {
         id: form.querySelector(".enemy").value,

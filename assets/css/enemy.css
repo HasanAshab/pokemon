@@ -1,4 +1,4 @@
-     .fields-cont {
+.fields-cont {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -48,6 +48,6 @@
     padding: 10px 20px;
     margin-top: 10px;
 }
-.pokemon-form *{
+.pokemon-form * {
     margin: 3px;
 }

@@ -374,9 +374,9 @@ function setEffects(effects, playerTag) {
         "name": "Double Team",
         "color": "Normal"
     },
-    "dodge": {
-        "name": "Dodge",
-        "color": "Normal"
+    "aquaring": {
+        "name": "Aqua Ring",
+        "color": "Water"
     }
 };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)

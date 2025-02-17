@@ -162,6 +162,15 @@ class PoisonEffect extends Effect {
     }
 }
 
+class AquaRingEffect extends Effect {
+    static effectName = "aquaring"
+
+    onTurn() {
+        const hp = Math.floor(this.state.pokemon.stats.hp / 16)
+        this.state.increaseHealth(hp)
+    }
+}
+
 class SleepEffect extends ExpirableEffect {
     static effectName = "slp"
     static PRE_CHANCE = 0.30
