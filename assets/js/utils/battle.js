@@ -215,23 +215,13 @@ class BaseBattle extends EventEmitter {
             instantDamages.set(this.pokemon1, thornsDamage * pokeEffect1)
 
             if (damage > 0) {
-                const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon1, new Move("dodge"))
-                    this._checkFailure(this.pokemon1, senario)
-                    move1 = senario.get(this.pokemon1)
-                    this.pokemon1.state.emit("used-move", move1)
-                }
+                await this._tryDodge(this.pokemon1, senario)
+                move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
-                const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon2, new Move("dodge"))
-                    this._checkFailure(this.pokemon2, senario)
-                    move2 = senario.get(this.pokemon2)
-                    this.pokemon2.state.emit("used-move", move2)
-                }
+                await this._tryDodge(this.pokemon2, senario)
+                move2 = senario.get(this.pokemon2)
                 !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect2);
             }
         }
@@ -241,23 +231,13 @@ class BaseBattle extends EventEmitter {
             instantDamages.set(this.pokemon2, thornsDamage * pokeEffect2)
             
             if (damage > 0) {
-                const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon1, new Move("dodge"))
-                    this._checkFailure(this.pokemon1, senario)
-                    move1 = senario.get(this.pokemon1)
-                    this.pokemon1.state.emit("used-move", move1)
-                }
+                await this._tryDodge(this.pokemon1, senario)
+                move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
-                const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon2, new Move("dodge"))
-                    this._checkFailure(this.pokemon2, senario)
-                    move2 = senario.get(this.pokemon2)
-                    this.pokemon2.state.emit("used-move", move2)
-                }
+                await this._tryDodge(this.pokemon2, senario)
+                move2 = senario.get(this.pokemon2)
                 !isDodged2() &&damages.set(this.pokemon2, -damage * pokeEffect2);
             }
         }
@@ -267,25 +247,15 @@ class BaseBattle extends EventEmitter {
             && move1.flags.contact !== move2.flags.contact
         ) {
             if (move2.flags.contact) {
-                const wantDodge = await this.prompt(this.pokemon2).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon2, new Move("dodge"))
-                    this._checkFailure(this.pokemon2, senario)
-                    move2 = senario.get(this.pokemon2)
-                    this.pokemon2.state.emit("used-move", move2)
-                }
+                await this._tryDodge(this.pokemon2, senario)
+                move2 = senario.get(this.pokemon2)
                 isDodged2()
                     ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
                     : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
             }
             else {
-                const wantDodge = await this.prompt(this.pokemon1).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon1, new Move("dodge"))
-                    this._checkFailure(this.pokemon1, senario)
-                    move1 = senario.get(this.pokemon1)
-                    this.pokemon1.state.emit("used-move", move1)
-                }
+                await this._tryDodge(this.pokemon1, senario)
+                move1 = senario.get(this.pokemon1)
                 isDodged1()
                     ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
                     : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
@@ -294,23 +264,13 @@ class BaseBattle extends EventEmitter {
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             if (damage > 0) {
-                const wantDodge = !isDodged1() && move1.id !== "staythere" && await this.prompt(this.pokemon1).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon1, new Move("dodge"))
-                    this._checkFailure(this.pokemon1, senario)
-                    move1 = senario.get(this.pokemon1)
-                    this.pokemon1.state.emit("used-move", move1)
-                }
+                await this._tryDodge(this.pokemon1, senario)
+                move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect2)
             }
             else {
-                const wantDodge = !isDodged2() && move2.id !== "staythere" && await this.prompt(this.pokemon2).ask("dodge")
-                if (wantDodge) {
-                    senario.set(this.pokemon2, new Move("dodge"))
-                    this._checkFailure(this.pokemon2, senario)
-                    move2 = senario.get(this.pokemon2)
-                    this.pokemon2.state.emit("used-move", move2)
-                }
+                await this._tryDodge(this.pokemon2, senario)
+                move2 = senario.get(this.pokemon2)
                 !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect1)
             }
         }
@@ -394,7 +354,6 @@ class BaseBattle extends EventEmitter {
         this.emit("scene-end", hitsMap)
     }
     
-
     _checkFailure(pokemon, senario) {
         const opponent = this.opponentOf(pokemon)
         const move = senario.get(pokemon)
@@ -403,6 +362,21 @@ class BaseBattle extends EventEmitter {
         if (move.succeed) return
         pokemon.state.emit("used-move", move)
         senario.set(pokemon, new Move("staythere"))
+    }
+
+    async _tryDodge(pokemon, senario) {
+        let move = senario.get(pokemon)
+        const opponent = this.opponentOf(pokemon)
+        const opponentMove = senario.get(opponent)
+        const wantDodge = !["staythere", "dodge"].includes(move.id) 
+            && await this.prompt(pokemon).ask("dodge")
+        
+        if (wantDodge) {
+            move = new Move("dodge")
+            senario.set(pokemon, move)
+            move.onBeforeMove?.(pokemon, opponent, opponentMove)
+            pokemon.state.emit("used-move", move)
+        }
     }
 
     _setWaveTurns() {

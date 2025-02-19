@@ -3,7 +3,6 @@ import moves from "../../../data/moves.js"
 import natures from "../../../data/natures.js"
 import { Pokemon } from "./models.js";
 
-console.log(moves.aquaring)
 
 export function loadPokemonsDatalist(id) {
   const dataList = document.getElementById(id);
