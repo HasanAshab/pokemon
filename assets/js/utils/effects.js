@@ -166,6 +166,14 @@ class AquaRingEffect extends Effect {
     static effectName = "aquaring"
 
     onTurn() {
+        this._increaseHealth()
+    }
+    
+    onWave() {
+        this._increaseHealth()
+    }
+    
+    _increaseHealth() {
         const hp = Math.floor(this.state.pokemon.stats.hp / 16)
         this.state.increaseHealth(hp)
     }
@@ -423,7 +431,7 @@ class DoubleTeamEffect extends ExpirableEffect {
         if (isMainManHittee) {
             return this.remove()
         }
-        
+
         this.state.manCount -= this.meta.totalManHittee
         this.state.freeze()
     }
@@ -473,6 +481,7 @@ class DoubleTeamEffect extends ExpirableEffect {
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
+    AquaRingEffect,
     SleepEffect,
     FreezeEffect,
     FlinchEffect,

@@ -3,7 +3,7 @@ import moves from "../../../data/moves.js"
 import natures from "../../../data/natures.js"
 import { Pokemon } from "./models.js";
 
-
+console.log(moves.aquaring)
 
 export function loadPokemonsDatalist(id) {
   const dataList = document.getElementById(id);
@@ -39,9 +39,9 @@ export class PopupMsgQueue {
         this.limit = limit
     }
 
-    add(msg, playerTag, cb = (() => null)) {
+    add(msg, playerTag, lifetime = 1000) {
         if (this.queue.length === this.limit) return
-        this.queue.push({ msg, playerTag, cb });
+        this.queue.push({ msg, playerTag, lifetime });
         this.runQueue();
     }
 
@@ -51,14 +51,14 @@ export class PopupMsgQueue {
         this.isRunning = true;
 
         while (this.queue.length > 0) {
-            const { msg, playerTag, cb } = this.queue.shift();
-            await this.showPopupMsg(msg, playerTag, cb);
+            const { msg, playerTag, lifetime } = this.queue.shift();
+            await this.showPopupMsg(msg, playerTag, lifetime);
         }
 
         this.isRunning = false;
     }
 
-    showPopupMsg(msg, playerTag, cb) {
+    showPopupMsg(msg, playerTag, lifetime) {
         return new Promise(resolve => {
             const popupMsgCont = document.getElementById(playerTag + "-" + this.elemIdSuffix);
 
@@ -71,9 +71,8 @@ export class PopupMsgQueue {
             setTimeout(() => {
                 popupMsgCont.classList.remove("active");
                 popupMsgCont.classList.remove("enemy-side");
-                cb();
                 resolve();
-            }, 1000); // Adjust duration if needed
+            }, lifetime); // Adjust duration if needed
         });
     }
 }

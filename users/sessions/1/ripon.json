@@ -1,9 +1,9 @@
 [
   {
     "id": "nuzleaf",
-    "xp": 1600,
+    "xp": 1700,
     "nature": "calm",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
         "id": "pound",
@@ -33,7 +33,7 @@
     "id": "marshtomp",
     "xp": 1900,
     "nature": "brave",
-    "retreat": 3,
+    "retreat": 3.8,
     "moves": [
       {
         "id": "mudbomb",
@@ -48,7 +48,7 @@
         "isSelected": true
       },
       {
-        "id": "dig",
+        "id": "bulldoze",
         "isSelected": true
       },
       {
@@ -61,7 +61,7 @@
   },
   {
     "id": "haunter",
-    "xp": 1600,
+    "xp": 2000,
     "nature": "serious",
     "retreat": 3.5,
     "moves": [
@@ -91,9 +91,9 @@
   },
   {
     "id": "arctibax",
-    "xp": 1700,
+    "xp": 2300,
     "nature": "brave",
-    "retreat": 3,
+    "retreat": 3.5,
     "moves": [
       {
         "id": "tackle",

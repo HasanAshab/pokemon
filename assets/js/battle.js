@@ -7,7 +7,7 @@ import { PopupMsgQueue } from "./utils/dom.js"
 
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.toggleMoveInfo = function(info){
-info.classList.toggle("active")
+    info.classList.toggle("active")
 }
 globalThis.retreatBtnClickHandler = function(playerTag){
     const selectedCard = document.querySelector(`.${playerTag}-controle-cont .card-container .card.selected`)
@@ -146,7 +146,7 @@ function setBattleStateListeners(playerTag) {
             else if (move._dodgeMatrix.length > 1)
                 msg = `${dodgedCount}x Dodged, ${failedCount} failed!`
 
-            msg && popupQueue.add(msg, playerTag)
+            msg && popupQueue.add(msg, playerTag, 2500)
         }
         
     })
@@ -397,6 +397,7 @@ function setStatChanges(data, playerTag) {
   statElements.forEach((elm)=>attributesDataRow.removeChild(elm))
   
   for (const [stat, value] of Object.entries(data)) {
+      if (value === 0) continue
       const change = value > 0 ? '+' + value : value
       const span = document.createElement("span")
       span.classList.add("stat")

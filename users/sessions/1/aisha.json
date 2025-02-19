@@ -1,9 +1,9 @@
 [
   {
     "id": "emolga",
-    "xp": 1600,
+    "xp": 1700,
     "nature": "brave",
-    "retreat": 3,
+    "retreat": 4,
     "moves": [
       {
         "id": "tailwhip",

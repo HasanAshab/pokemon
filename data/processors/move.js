@@ -71,12 +71,19 @@ function setEffects(move) {
         chance: 100,
         isVolatile: false
     })
-    move.volatileStatus && move.effects.target.push({
-        name: move.volatileStatus,
-        chance: 100,
-        isVolatile: true
-    })
-
+    if ("volatileStatus" in move) {
+        move.target === "self"
+            ? move.effects.self.push({
+                name: move.volatileStatus,
+                chance: 100,
+                isVolatile: true
+            })  
+            : move.effects.target.push({
+                name: move.volatileStatus,
+                chance: 100,
+                isVolatile: true
+            });
+    }
     move.secondary?.status && move.effects.target.push({
         name: move.secondary.status,
         chance: move.secondary.chance ?? 100,

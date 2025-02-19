@@ -145,13 +145,13 @@ class BaseBattle extends EventEmitter {
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
-        
+
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
 
         const hit1 = move1.hit
         const hit2 = move2.hit
-        
+
         move1.onBeforeMove?.(this.pokemon1, this.pokemon2, move2)
         move2.onBeforeMove?.(this.pokemon2, this.pokemon1, move1)
 
@@ -160,7 +160,7 @@ class BaseBattle extends EventEmitter {
 
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
-        
+
         const attackSelf1 = this.pokemon1.state.effects.attackSelf()
         const attackSelf2 = this.pokemon2.state.effects.attackSelf()
 
@@ -177,7 +177,7 @@ class BaseBattle extends EventEmitter {
             [this.pokemon1, 0],
             [this.pokemon2, 0]
         ])
-        
+
         const instantDamages = new Map([
             [this.pokemon1, 0],
             [this.pokemon2, 0]
@@ -274,7 +274,7 @@ class BaseBattle extends EventEmitter {
                     move2 = senario.get(this.pokemon2)
                     this.pokemon2.state.emit("used-move", move2)
                 }
-                isDodged2() 
+                isDodged2()
                     ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
                     : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
             }
@@ -349,7 +349,8 @@ class BaseBattle extends EventEmitter {
         
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
-
+        
+        console.log(d1, d2)
         if(move2.priority > move1.priority) {
             if (d1) {
                 this.pokemon1.state.decreaseHealth(d1)
