@@ -18,18 +18,16 @@
 
 }
 .charecter-choose-form{
-    margin: 10px 0;
-
+    margin: 10px;
 }
 .charecter-choose-form > .charecters-list{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 300px;
-    overflow-x: scroll;
-    gap: 10px;
+/*     overflow-x: scroll;
+ */    gap: 10px;
     margin: 0 auto;
-    
 }
 .pop-list-form{
    display: flex;

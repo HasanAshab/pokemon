@@ -443,6 +443,7 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 
     _calculateDTManCount() {
+        console.log(this.state.stats.get("spe"))
         return Math.round(
             this.state.stats.get("spe") * this.state.pokemon.level * (0.06 * 0.1)
         )

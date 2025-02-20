@@ -1,0 +1,31 @@
+update this function
+
+export async function getMoveLearnset(pokemon, level, limit = 5) {
+    const { default: moveLearnset } = await import(`../../../data/learnsets/${pokemon}.js`);
+    return moveLearnset
+        .filter(ml => ml.required_level <= level)
+        .toSorted((a, b) => {
+            if (a.source === "level" && b.source !== "level") return -1; // "level" comes first
+            if (a.source !== "level" && b.source === "level") return 1;  // "tm" goes below "level"
+            return b.required_level - a.required_level;                  // Sort by level otherwise
+        })
+        .slice(0, limit);
+}
+
+
+with new signature function getMoveLearnset(pokemon, options)
+
+here is the structure of a options obj
+
+Partial<{
+    level: number,
+    power: {
+        min: number,
+        max: number
+    },
+    category: string,
+    priority: number,
+    types: string[],
+    effects: string[],
+    limit: number
+}>

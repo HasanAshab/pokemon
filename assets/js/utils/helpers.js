@@ -87,50 +87,41 @@ export function logUniqueMethodKeys(obj) {
 }
 
 
-export async function getMoveLearnset(pokemon, level, limit = 5) {
+export async function getMoveLearnset(pokemon, options = {}) {
     const { default: moveLearnset } = await import(`../../../data/learnsets/${pokemon}.js`);
+    const {
+        level,
+        power,
+        category,
+        priority,
+        types,
+        effects,
+        limit = 5
+    } = options;
+
     return moveLearnset
-        .filter(ml => ml.required_level <= level)
+        .filter(ml => {
+            const matchesLevel = level === undefined ? true : ml.required_level <= level;
+            const matchesPower = !power ? true : 
+                ml.power !== null && ml.power >= power.min && ml.power <= power.max;
+            const matchesCategory = !category ? true : ml.category === category;
+            const matchesPriority = priority === undefined ? true : ml.priority === priority;
+            const matchesTypes = !types?.length ? true : types.includes(ml.type);
+            const matchesEffects = true//!effects?.length ? true : effects.includes(ml.effect);
+
+            return matchesLevel &&
+                   matchesPower &&
+                   matchesCategory &&
+                   matchesPriority &&
+                   matchesTypes &&
+                   matchesEffects;
+        })
         .toSorted((a, b) => {
-            if (a.source === "level" && b.source !== "level") return -1; // "level" comes first
-            if (a.source !== "level" && b.source === "level") return 1;  // "tm" goes below "level"
-            return b.required_level - a.required_level;                  // Sort by level otherwise
+            if (a.source === "level" && b.source !== "level") return -1;
+            if (a.source !== "level" && b.source === "level") return 1;
+            return b.required_level - a.required_level;
         })
         .slice(0, limit);
-}
-
-
-
-export function rankStats(pokemon) {
-    const statsArray = Object.entries(pokemon.stats); // Convert stats object to array of [statName, statValue]
-    
-    // Sort the array in descending order of stat values
-    statsArray.sort((a, b) => b[1] - a[1]);
-
-    // Create a ranked object
-    const result = {};
-    statsArray.forEach(([statName], index) => {
-        result[statName] = index + 1; // Assign rank starting from 1
-    });
-
-    return result;
-}
-
-export function flagsToObj(flags) {
-    const obj = {};
-    flags.split(' ').forEach(pair => {
-        const [key, value] = pair.split('=');
-        if (value === undefined) return; // Skip malformed entries
-        obj[key] = isNaN(value) ? value : Number(value); // Auto-detect numbers
-    });
-    return obj;
-}
-
-// Converts object to simplified string
-export function objToFlags(obj) {
-    return Object.entries(obj)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(' ');
 }
 
 export function canDodge(attacker, defender, move) {
@@ -164,4 +155,36 @@ export function canDodge(attacker, defender, move) {
     const dodged = randomFactor > finalHitChance;
 
     return dodged
+}
+
+export function rankStats(pokemon) {
+    const statsArray = Object.entries(pokemon.stats); // Convert stats object to array of [statName, statValue]
+    
+    // Sort the array in descending order of stat values
+    statsArray.sort((a, b) => b[1] - a[1]);
+
+    // Create a ranked object
+    const result = {};
+    statsArray.forEach(([statName], index) => {
+        result[statName] = index + 1; // Assign rank starting from 1
+    });
+
+    return result;
+}
+
+export function flagsToObj(flags) {
+    const obj = {};
+    flags.split(' ').forEach(pair => {
+        const [key, value] = pair.split('=');
+        if (value === undefined) return; // Skip malformed entries
+        obj[key] = isNaN(value) ? value : Number(value); // Auto-detect numbers
+    });
+    return obj;
+}
+
+// Converts object to simplified string
+export function objToFlags(obj) {
+    return Object.entries(obj)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(' ');
 }

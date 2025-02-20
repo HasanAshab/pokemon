@@ -188,14 +188,28 @@ globalThis.showStats = function(formId) {
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
+function getDefaultOptions() {
+    const level = form.querySelector(".level-inp").value
+    return {
+       level,
+       power: {
+           min: 0,
+           max: 1000,
+       },
+       category: null,
+       priority: null,
+       types: null,
+       effects: null,
+       limit: 5,
+   }
+}
+
 globalThis.setDefaultMoves = async ({currentTarget})=>{
    const form = currentTarget.parentElement
    const pokemonName = form.querySelector(".enemy").value
-   const level = form.querySelector(".level-inp").value
- 
   if (pokemonName) {
    const moveInputs = form.querySelectorAll(".move-input")
-   const moveLearnset =  await getMoveLearnset(pokemonName,level)
+   const moveLearnset =  await getMoveLearnset(pokemonName, options)
    let i = 0;
    for (const moveInput of moveInputs) {
      if (moveInput.value === ""){
