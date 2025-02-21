@@ -1,3 +1,5 @@
+import MOVES from "../../../data/moves.js"
+
 export const camelize = s => s.replace(/-./g, x=>x[1].toUpperCase())
 
 export function capitalizeFirstLetter(string) {
@@ -9,6 +11,12 @@ export function toTitleCase(str) {
     /\w\S*/g,
     text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
   );
+}
+
+export function sliceObj(obj, start, end) {
+    return Object.fromEntries(
+        Object.entries(obj).slice(start, end)
+    )
 }
 
 export function getParam(name) {
@@ -87,42 +95,72 @@ export function logUniqueMethodKeys(obj) {
 }
 
 
+export function queryMoves(query, moves = MOVES) {
+    const {
+        power,
+        category,
+        priority,
+        contact,
+        types,
+        effects,
+    } = query;
+    const matchedMoves = {}
+    
+    for(const id in moves) {
+        const move = moves[id]
+        const matchesPower = !power ? true : 
+            move.basePower !== null && move.basePower >= power.min && move.basePower <= power.max;
+        const matchesCategory = !category ? true : move.category === category;
+        const matchesPriority = priority === undefined ? true : move.priority === priority;
+        const matchesContact = contact === undefined ? true : move.flags.contact === contact;
+        const matchesTypes = !types?.length ? true : types.includes(move.type);
+        const matchesEffects = true//!effects?.length ? true : effects.includes(move.effects);
+    
+        const matched = matchesPower &&
+               matchesCategory &&
+               matchesPriority &&
+               matchesContact &&
+               matchesTypes &&
+               matchesEffects;
+        if (matched) {
+            matchedMoves[id] = move
+        }
+    }
+    
+    return matchedMoves
+}
+
 export async function getMoveLearnset(pokemon, options = {}) {
     const { default: moveLearnset } = await import(`../../../data/learnsets/${pokemon}.js`);
     const {
         level,
-        power,
-        category,
-        priority,
-        types,
-        effects,
-        limit = 5
+        limit = 5,
+        ...query
     } = options;
 
-    return moveLearnset
-        .filter(ml => {
-            const matchesLevel = level === undefined ? true : ml.required_level <= level;
-            const matchesPower = !power ? true : 
-                ml.power !== null && ml.power >= power.min && ml.power <= power.max;
-            const matchesCategory = !category ? true : ml.category === category;
-            const matchesPriority = priority === undefined ? true : ml.priority === priority;
-            const matchesTypes = !types?.length ? true : types.includes(ml.type);
-            const matchesEffects = true//!effects?.length ? true : effects.includes(ml.effect);
-
-            return matchesLevel &&
-                   matchesPower &&
-                   matchesCategory &&
-                   matchesPriority &&
-                   matchesTypes &&
-                   matchesEffects;
-        })
+    const moves = moveLearnset
+        .filter(ml => level === undefined ? true : ml.required_level <= level)
         .toSorted((a, b) => {
             if (a.source === "level" && b.source !== "level") return -1;
             if (a.source !== "level" && b.source === "level") return 1;
             return b.required_level - a.required_level;
         })
-        .slice(0, limit);
+        .reduce((obj, ml) => {
+            obj[ml.name] = MOVES[ml.name]
+            return obj
+        }, {})
+    const matchedMoves = queryMoves(query, moves)
+    return Object.keys(sliceObj(matchedMoves, 0, limit))
 }
+
+// getMoveLearnset("charizard", {
+//     level: 36,
+//     limit: 4,
+//     power: {
+//         min: 50,
+//         max: 1000,
+//     }
+// }).then(console.log)
 
 export function canDodge(attacker, defender, move) {
     if (move.accuracy === true || !defender.state.effects.canMove()) {

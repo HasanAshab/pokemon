@@ -354,6 +354,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
     }
     
     onTurn() {
+        super.onTurn(...arguments)
         this.state.decreaseHealth(this._calculateEffectDamage())
     }
     

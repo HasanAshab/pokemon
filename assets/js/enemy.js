@@ -188,19 +188,19 @@ globalThis.showStats = function(formId) {
     enemyStats.innerHTML = JSON.stringify(enemyPokemon.stats,  null, 2);
 }
 
-function getDefaultOptions() {
+function getDefaultOptions(form) {
     const level = form.querySelector(".level-inp").value
     return {
        level,
-       power: {
-           min: 0,
-           max: 1000,
-       },
-       category: null,
-       priority: null,
-       types: null,
-       effects: null,
        limit: 5,
+      //  power: {
+//            min: 1,
+//            max: 1000,
+//        },
+//        category: null,
+//        priority: null,
+//        types: null,
+//        effects: null,
    }
 }
 
@@ -209,12 +209,15 @@ globalThis.setDefaultMoves = async ({currentTarget})=>{
    const pokemonName = form.querySelector(".enemy").value
   if (pokemonName) {
    const moveInputs = form.querySelectorAll(".move-input")
-   const moveLearnset =  await getMoveLearnset(pokemonName, options)
+   const options = getDefaultOptions(form)//JSON.parse(form.querySelector(".query").value)
+   const moveLearnset = await getMoveLearnset(pokemonName, options)
+   console.log(moveLearnset)
    let i = 0;
    for (const moveInput of moveInputs) {
-     if (moveInput.value === ""){
-     moveInput.value = moveLearnset[i++].name
+     if (moveInput.value === "" && moveLearnset[i]){
+        moveInput.value = moveLearnset[i]
      }
+     i++
    }
   }
 }

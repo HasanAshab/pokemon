@@ -3,7 +3,7 @@
     "id": "frogadier",
     "xp": 2000,
     "nature": "calm",
-    "retreat": 4,
+    "retreat": 3.5,
     "moves": [
       {
         "id": "doubleteam",
@@ -33,7 +33,7 @@
     "id": "pupitar",
     "xp": 1900,
     "nature": "brave",
-    "retreat": 3,
+    "retreat": 3.5,
     "moves": [
       {
         "id": "harden",
