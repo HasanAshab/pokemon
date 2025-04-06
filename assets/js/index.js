@@ -217,3 +217,61 @@ document.body.onload = loadAll
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
+// startBattle([
+//   {
+//     "id": "metang",
+//     "xp": 2700,
+//     "nature": "serious",
+//     "retreat": 3.5,
+//       "moves": [
+//         {
+//           "id": "bulletpunch",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "slash",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "heavyslam",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "hypnosis",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "confusion",
+//           "isSelected": true
+//         }
+//       ],
+//     "mega": {
+//       "moves": [
+//         {
+//           "id": "bulletpunch",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "slash",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "heavyslam",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "hypnosis",
+//           "isSelected": true
+//         },
+//         {
+//           "id": "confusion",
+//           "isSelected": true
+//         }
+//       ],
+//       "suffix": "mega"
+//     },
+//     "stats": {},
+//     "token_used": {}
+//   }
+// ], ["Psychic", "Steel"])
+// 

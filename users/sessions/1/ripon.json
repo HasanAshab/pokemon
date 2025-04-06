@@ -61,12 +61,16 @@
   },
   {
     "id": "haunter",
-    "xp": 2000,
-    "nature": "serious",
+    "xp": 2600,
+    "nature": "calm",
     "retreat": 3.5,
     "moves": [
       {
-        "id": "hypnosis",
+        "id": "shadowpunch",
+        "isSelected": true
+      },
+      {
+        "id": "protect",
         "isSelected": true
       },
       {
@@ -78,25 +82,46 @@
         "isSelected": true
       },
       {
-        "id": "lick",
-        "isSelected": true
-      },
-      {
-        "id": "smog",
+        "id": "poisonfang",
         "isSelected": true
       }
     ],
+    "mega": {
+      "moves": [
+        {
+          "id": "shadowpunch",
+          "isSelected": true
+        },
+        {
+          "id": "protect",
+          "isSelected": true
+        },
+        {
+          "id": "nightshade",
+          "isSelected": true
+        },
+        {
+          "id": "confuseray",
+          "isSelected": true
+        },
+        {
+          "id": "poisonfang",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
     "stats": {},
     "token_used": {}
   },
   {
     "id": "arctibax",
-    "xp": 2300,
+    "xp": 2500,
     "nature": "brave",
     "retreat": 3.5,
     "moves": [
       {
-        "id": "tackle",
+        "id": "icefang",
         "isSelected": true
       },
       {
@@ -108,7 +133,7 @@
         "isSelected": true
       },
       {
-        "id": "icywind",
+        "id": "aurorabeam",
         "isSelected": true
       },
       {

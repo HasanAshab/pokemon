@@ -21,6 +21,7 @@ class BaseBattle extends EventEmitter {
         veryClose: false
     }
     _states = new Map()
+    _history = []
 
     constructor(team1, team2, fieldTypes = []) {
         super()
@@ -42,9 +43,15 @@ class BaseBattle extends EventEmitter {
         );
         
         this.on("scene", () => {
+            this._history.push(this.toJSON())
+        })
+
+        
+        this.on("scene", () => {
             this._turnAfterScenes--
             !this._turnAfterScenes && this.emit("turn", this)
         })
+
 
         this.on("scene-end", () => {
             if (!this._turnAfterScenes) {
@@ -83,6 +90,42 @@ class BaseBattle extends EventEmitter {
         })
     }
     
+    toJSON() {
+        const states = []
+        this._states.values().forEach(s => {
+            states.push(s.toJSON())
+        })
+        return {
+            turnNo: this.turnNo,
+            waveNo: this.waveNo,
+            ctx: this.ctx,
+            _states: states,
+            //_history: this._history,
+        }
+    }
+    
+    sync(data) {
+        this.turnNo = data.turnNo
+        this.waveNo = data.waveNo
+        this.ctx = data.ctx
+        let i = 0
+        this._states.forEach(state => {
+            state.sync(data._states[i++])
+        })
+        //this._history = data._history
+    }
+    
+    undo() {
+        const data = this._history.pop()
+        this.sync(data)
+        console.log("Undo")
+    }
+    redo() {
+        const data = this._history.pop()
+        this.sync(data)
+        console.log("Redo")
+    }
+
     opponentOf(pokemon) {
         return pokemon._tag === this.pokemon1._tag  ? this.pokemon2 : this.pokemon1;
     }
@@ -102,6 +145,11 @@ class BaseBattle extends EventEmitter {
     actives() {
         return [this.pokemon1, this.pokemon2]
     }
+    
+    canUseMove(pokemon, moveId) {
+        const move = pokemon.state.moves.find(m => m.id === moveId)
+        return move.retreat <= pokemon.state.retreat && (move.pp === null || move.pp > 0)
+    }
 
     activate(pokemon) {
         if (this.team1.includes(pokemon)) {
@@ -110,11 +158,6 @@ class BaseBattle extends EventEmitter {
         else if (this.team2.includes(pokemon)) {
             this.pokemon2 = pokemon
         }
-    }
-    
-    canUseMove(pokemon, moveId) {
-        const move = pokemon.state.moves.find(m => m.id === moveId)
-        return move.retreat <= pokemon.state.retreat && (move.pp === null || move.pp > 0)
     }
 
     async run(senario) {
@@ -310,7 +353,6 @@ class BaseBattle extends EventEmitter {
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
         
-        console.log(d1, d2)
         if(move2.priority > move1.priority) {
             if (d1) {
                 this.pokemon1.state.decreaseHealth(d1)
@@ -428,7 +470,7 @@ class BattleState extends EventEmitter {
         "dodge",
         "megaevolve",
     ]
-    
+
     _manCount = 1
     moves = [
         new Move("staythere"),
@@ -477,6 +519,32 @@ class BattleState extends EventEmitter {
         })
     }
     
+    toJSON() {
+        return {
+            _manCount: this._manCount,
+            retreat: this.retreat,
+            stats: this.stats.toJSON(),
+            effects: this.effects.toJSON(),
+            damage: this.damage.toJSON(),
+            moves: this.moves.map(move => ({
+                id: move.id,
+                pp: move.pp
+            }))
+        }
+    }
+    
+    sync(data) {
+        this._manCount = data._manCount
+        this.retreat = data.retreat
+        this.stats.sync(data.stats);
+        this.effects.sync(data.effects);
+        this.damage.sync(data.damage);
+        data.moves.forEach(moveData => {
+            const move = this.moves.find(m => m.id === moveData.id)
+            move.pp = moveData.pp
+        })
+    }
+    
     get manCount() {
         return this._manCount
     }
@@ -503,7 +571,6 @@ class BattleState extends EventEmitter {
 
     // Health Management
     increaseHealth(amount) {
-        console.log("incr", amount)
         const maxHealth = this.pokemon.maxhp; // Use calculated HP stat
         const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
         return this.stats.set("hp", newHp);
@@ -584,6 +651,23 @@ class StatsManager {
         })
     }
     
+    toJSON() {
+        return {
+            _stats: { ...this._stats },
+            _statChanges: { ...this._statChanges },
+            _modifiers: { ...this._modifiers },
+            _freezed: this._freezed
+        }
+    }
+    
+    sync(data) {
+        this._stats = data._stats
+        this._statChanges = data._statChanges
+        this._modifiers = data._modifiers
+        this._freezed = data._freezed
+        this.prev.refresh()
+    }
+
     get(name) {
         const baseStat = this._stats[name] ?? 1;
         const stage = this._statChanges[name] ?? 0;
@@ -712,21 +796,6 @@ class PrevStatsManager {
     }
 }
 
-class BattlePrompt {
-    _repliers = {};
-
-    async ask(tag) {
-        const replier = this._repliers[tag]
-        if (!replier) throw new Error(`No replier for tag ${tag}`)
-        return await replier()
-    }
-
-    reply(tag, cb) {
-        this._repliers[tag] = cb
-        return this
-    }
-}
-
 class DamageManager {
     _modifiers = []
     _critModifiers = []
@@ -744,14 +813,26 @@ class DamageManager {
         })
     }
     
+    toJSON() {
+        return {
+            _modifiers: { ...this._modifiers },
+            _critModifiers: { ...this._critModifiers },
+        }
+    }
+    
+    sync(data) {
+        this._modifiers = data._modifiers
+        this._critModifiers = data._critModifiers
+    }
+
     modifier() {
         return this._modifiers.reduce((acc, m) => acc * m, 1)
     }
-    
+
     critModifier() {
         return this._critModifiers.reduce((acc, m) => acc * m, 1)
     }
-    
+
     chainModify(modifier) {
         this._modifiers.push(modifier)
     }
@@ -761,6 +842,20 @@ class DamageManager {
     }
 }
 
+class BattlePrompt {
+    _repliers = {};
+
+    async ask(tag) {
+        const replier = this._repliers[tag]
+        if (!replier) throw new Error(`No replier for tag ${tag}`)
+        return await replier()
+    }
+
+    reply(tag, cb) {
+        this._repliers[tag] = cb
+        return this
+    }
+}
 
 export const BATTLE_SYSTEMS = {
     "single": SingleBattle,

@@ -460,7 +460,7 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
     
     _totalManHittee(move) {
-        const isMainManHittee = manCount => Math.random() < (1 / manCount)
+        const isMainManHittee = manCount => Math.random() < ((1 / manCount) * 1.5)
         const manCount = this.state.manCount
         if (move.target.startsWith("allAdjacent")) {
             for (let i = 0; i < manCount; i++) {
@@ -546,9 +546,15 @@ export class EffectManager {
         return effect
     }
     
+    toJSON() {
+        return this.names()
+    }
+    
     sync(...effectNames) {
-        this.names().forEach(e => this.remove(e))
-        effectNames.forEach(e => this.add(null, e))
+        this.names().forEach(e => !effectNames.includes(e) && this.remove(e))
+        effectNames.forEach(e => {
+            this.add(null, e)
+        })
     }
 
     apply(move, { on, pre = false }) {

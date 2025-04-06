@@ -44,6 +44,11 @@ function syncStatsMeta(pokemon) {
    navigator.clipboard.writeText(code)
    alert(code)
 }
+globalThis.undoScene = function () {
+    battle.undo()
+    loadPokemonData("you")
+    loadPokemonData("enemy")
+}
 globalThis.veryCloseBtnClickHandler = function({currentTarget}) {
   currentTarget.classList.toggle("active")
   battle.ctx.veryClose = !battle.ctx.veryClose
@@ -90,7 +95,7 @@ globalThis.showEffectsEditForm = function(playerTag){
     .prompt(`edit stat changes of "${playerTag}"`, oldEffects)
     .split(', ')
     .map(e => e.trim())
-  pokemon.state.effects.sync(newEffects)
+  pokemon.state.effects.sync(...newEffects)
   setEffects(pokemon.state.effects.all(), playerTag)
 }
 

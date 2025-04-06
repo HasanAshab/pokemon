@@ -51,7 +51,7 @@ export default {
       retreat: 0.25,
       onBeforeMove(attacker, defender, move) {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
-            return canDodge(attacker, defender, move)
+            return canDodge(defender, attacker, move)
         })
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
@@ -79,4 +79,49 @@ export default {
       },
       retreat: 3,
     },
+    swordsmash: {
+      num: 100004,
+      accuracy: 100,
+      basePower: 70,
+      category: "Physical",
+      name: "Sword Smash",
+      pp: 15,
+      priority: 1,
+      flags: { contact: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Cool",
+      critRatio: 2,
+      effects: {
+        self: [{
+          name: "flinch",
+          chance: 10,
+          isVolatile: true 
+        }],
+        target: []
+      },
+    },
+    rushout: {
+      num: 488,
+      accuracy: 100,
+      basePower: 30,
+      category: "Physical",
+      name: "Rush Out",
+      pp: 20,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 100,
+        self: {
+          boosts: {
+            spe: 1.5
+          }
+        }
+      },
+      target: "allAdjacentFoes",
+      type: "Steel",
+      contestType: "Cool"
+    },
+
 }

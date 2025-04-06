@@ -238,7 +238,7 @@ export default {
       formeOrder: ["Anubis", "Anubis-Mega"]
     },
      kingfu: {
-      num: 10008,
+      num: 10009,
       name: "Kingfu",
       baseSpecies: "Kingfu",
       types: ["Fighting"],
@@ -265,4 +265,34 @@ export default {
       forme: "Mega",
       requiredItem: "noivernite",
     },
+      stellarchomp: {
+      num: 10010,
+      name: "Stellarchomp",
+      types: ["Dragon", "Steel"],
+      baseStats: { hp: 90, atk: 140, def: 115, spa: 70, spd: 115, spe: 70 },
+      abilities: { 0: "Sand Veil", H: "Rough Skin" },
+      heightm: 1.9,
+      weightkg: 110,
+      color: "White",
+      prevo: "Gabite",
+      evoLevel: 48,
+      eggGroups: ["Monster", "Dragon"],
+      otherFormes: ["Stellarchomp-Mega"],
+      formeOrder: ["Stellarchomp", "Stellarchomp-Mega"]
+    },
+    stellarchompmega: {
+      num: 10011,
+      name: "Stellarchomp-Mega",
+      baseSpecies: "Stellarchomp",
+      forme: "Mega",
+      types: ["Dragon", "Steel"],
+      baseStats: { hp: 80, atk: 158, def: 135, spa: 100, spd: 135, spe: 82 },
+      abilities: { 0: "Sand Force" },
+      heightm: 1.9,
+      weightkg: 130,
+      color: "White",
+      eggGroups: ["Monster", "Dragon"],
+      requiredItem: "Stellarchompite"
+    },
+
 }

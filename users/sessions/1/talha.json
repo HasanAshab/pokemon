@@ -1,37 +1,172 @@
 [
   {
-    "id": "flaaffy",
-    "xp": 1800,
-    "nature": "mild",
-    "retreat": 4,
+    "id": "marowakalola",
+    "xp": 2500,
+    "nature": "brave",
+    "retreat": 3.5,
     "moves": [
       {
-        "id": "tackle",
+        "id": "shadowpunch",
         "isSelected": true
       },
       {
-        "id": "growl",
+        "id": "lick",
         "isSelected": true
       },
       {
-        "id": "thundershock",
+        "id": "firefang",
         "isSelected": true
       },
       {
-        "id": "thunderwave",
+        "id": "boneclub",
+        "isSelected": true
+      },
+      {
+        "id": "sharpen",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "shadowpunch",
+          "isSelected": true
+        },
+        {
+          "id": "lick",
+          "isSelected": true
+        },
+        {
+          "id": "firefang",
+          "isSelected": true
+        },
+        {
+          "id": "boneclub",
+          "isSelected": true
+        },
+        {
+          "id": "sharpen",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "flaaffy",
+    "xp": 2500,
+    "nature": "calm",
+    "retreat": 3.2,
+    "moves": [
+      {
+        "id": "electroball",
+        "isSelected": true
+      },
+      {
+        "id": "spark",
+        "isSelected": true
+      },
+      {
+        "id": "charge",
         "isSelected": true
       },
       {
         "id": "cottonspore",
         "isSelected": true
+      },
+      {
+        "id": "headbutt",
+        "isSelected": true
       }
     ],
+    "mega": {
+      "moves": [
+        {
+          "id": "electroball",
+          "isSelected": true
+        },
+        {
+          "id": "spark",
+          "isSelected": true
+        },
+        {
+          "id": "charge",
+          "isSelected": true
+        },
+        {
+          "id": "cottonspore",
+          "isSelected": true
+        },
+        {
+          "id": "headbutt",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "taurospaldeablaze",
+    "xp": 2500,
+    "nature": "calm",
+    "retreat": 3.3,
+    "moves": [
+      {
+        "id": "flamecharge",
+        "isSelected": true
+      },
+      {
+        "id": "rollingkick",
+        "isSelected": true
+      },
+      {
+        "id": "heavyslam",
+        "isSelected": true
+      },
+      {
+        "id": "headbutt",
+        "isSelected": true
+      },
+      {
+        "id": "hornattack",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "flamecharge",
+          "isSelected": true
+        },
+        {
+          "id": "rollingkick",
+          "isSelected": true
+        },
+        {
+          "id": "heavyslam",
+          "isSelected": true
+        },
+        {
+          "id": "headbutt",
+          "isSelected": true
+        },
+        {
+          "id": "hornattack",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
     "stats": {},
     "token_used": {}
   },
   {
     "id": "weepinbell",
-    "xp": 1700,
+    "xp": 2500,
     "nature": "serious",
     "retreat": 3.5,
     "moves": [
@@ -44,7 +179,7 @@
         "isSelected": true
       },
       {
-        "id": "razorleaf",
+        "id": "leaftornado",
         "isSelected": true
       },
       {
@@ -56,62 +191,31 @@
         "isSelected": true
       }
     ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "cubone",
-    "xp": 1900,
-    "nature": "brave",
-    "retreat": 4,
-    "moves": [
-      {
-        "id": "rage",
-        "isSelected": true
-      },
-      {
-        "id": "focusenergy",
-        "isSelected": true
-      },
-      {
-        "id": "bonerush",
-        "isSelected": true
-      },
-      {
-        "id": "headbutt",
-        "isSelected": true
-      },
-      {
-        "id": "mudshot",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "taurospaldeablaze",
-    "xp": 1000,
-    "nature": "calm",
-    "retreat": 3,
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      },
-      {
-        "id": "hornattack",
-        "isSelected": true
-      },
-      {
-        "id": "bulkup",
-        "isSelected": true
-      },
-      {
-        "id": "heavyslam",
-        "isSelected": true
-      }
-    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "stunspore",
+          "isSelected": true
+        },
+        {
+          "id": "poisonpowder",
+          "isSelected": true
+        },
+        {
+          "id": "leaftornado",
+          "isSelected": true
+        },
+        {
+          "id": "vinewhip",
+          "isSelected": true
+        },
+        {
+          "id": "wrap",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
     "stats": {},
     "token_used": {}
   }

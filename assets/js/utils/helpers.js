@@ -183,7 +183,7 @@ export function canDodge(attacker, defender, move) {
     const accuracyModifier = attackerAccuracy / defenderEvasion;
 
     // Calculate final hit chance
-    const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.70;
+    const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.80;
     console.log(defender.id, Math.round(finalHitChance))
 
     // Simulate random factor for dodge mechanics

@@ -1,4 +1,4 @@
-import { Move } from "./utils/models.js";
+import { Pokemon, Move } from "./utils/models.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js";
 
 function _canDodge(attacker, target, move) {
@@ -10,7 +10,6 @@ function _canDodge(attacker, target, move) {
         const attackerSpd = attacker.state.stats.get("spe");
         const targetSpd = target.state.stats.get("spe");
         
-        console.log("move acc", move.accuracy)
         console.log(attackerSpd, targetSpd)
         // Get accuracy and evasion stats
         const attackerAccuracy = attacker.state.stats.get("accuracy")
@@ -18,13 +17,14 @@ function _canDodge(attacker, target, move) {
 
         // Base dodge chance using a modified speed ratio
         const speedRatio = targetSpd / attackerSpd;
+        console.log(speedRatio)
         const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.5)); // Clamp between 5% and 50%
     
         // Accuracy and evasion modifiers
         const accuracyModifier = attackerAccuracy / targetEvasion;
     
         // Calculate final hit chance
-        const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.70;
+        const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.80;
         console.log(target.id, finalHitChance)
     
         // Simulate random factor for dodge mechanics
@@ -37,11 +37,10 @@ function _canDodge(attacker, target, move) {
         return dodged 
     }
 
-let atk = new Pokemon("machoke", {
-    "xp": 1700,
+let tar = new Pokemon("metang", {
+    "xp": 2900,
     "nature": "calm",
-      "stats": {},
-      "token_used":{
+    "token_used":{
           "hp":0,
           "spe":0,
           "atk":0,
@@ -51,13 +50,10 @@ let atk = new Pokemon("machoke", {
       }
 })
 
-let tar = new Pokemon("fletchinder", {
-    "xp": 1800,
+let atk = new Pokemon("lucario", {
+    "xp": 2900,
     "nature": "calm",
-      "stats": {
-          "spe": 2
-      },
-      "token_used":{
+    "token_used": {
           "hp":0,
           "spe":0,
           "atk":0,

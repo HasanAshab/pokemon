@@ -15,7 +15,11 @@ export function loadPokemonsDatalist(id) {
 export function loadMovesDatalist(id) {
   const dataList = document.getElementById(id);
   const html = Object.keys(moves)
-    .map(id => `<option value="${id}">${moves[id].name} (${moves[id].type})</option>`)
+    .map(id => {
+        const move = moves[id]
+        const display = `${move.name} (${move.type}, ${move.flags.contact ? '->' : 'x'}, ${move.basePower})`
+        return `<option value="${id}">${display}</option>`
+    })
     .join("")
   dataList.innerHTML = html;
 }
