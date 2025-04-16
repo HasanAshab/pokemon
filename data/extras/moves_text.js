@@ -13,5 +13,8 @@ export default {
   },
   rushout: {
     shortDesc: "Increase spe 1.5 stage"
-  }
+  },
+  thunderblade: {
+    shortDesc: "increased crit ratio"
+  },
 }

@@ -294,5 +294,16 @@ export default {
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Stellarchompite"
     },
-
+  abyssagon: {
+    num: 10012,
+    name: "Abyssagon",
+    types: ["Dragon", "Water"],
+    genderRatio: { M: 0.875, F: 0.125 },
+    baseStats: { hp: 100, atk: 140, def: 110, spa: 120, spd: 90, spe: 120 },
+    abilities: { 0: "Pressure", H: "Torrential Rage" },
+    heightm: 6.3,
+    weightkg: 312.0,
+    color: "Blue",
+    eggGroups: ["Dragon", "Water 2"]
+  },
 }

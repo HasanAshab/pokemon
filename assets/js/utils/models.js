@@ -125,6 +125,15 @@ export class Pokemon extends PSPokemon {
         return this.isTypeOf(move.type) ? 1.4 : 1;
     }
     
+    cp() {
+      let total = 0
+      for (const stat in this.stats) {
+        const statValue = this.stats[stat]
+        total += statValue
+      }
+      return Math.round(total)
+    }
+    
     hasMegaForm() {
         return this.megaId in pokemons
     }

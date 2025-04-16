@@ -103,7 +103,7 @@ export default {
       },
     },
     rushout: {
-      num: 488,
+      num: 100005,
       accuracy: 100,
       basePower: 30,
       category: "Physical",
@@ -123,5 +123,18 @@ export default {
       type: "Steel",
       contestType: "Cool"
     },
-
+    thunderblade: {
+      num: 100006,
+      accuracy: 100,
+      basePower: 50,
+      category: "Physical",
+      name: "Thunder Blade",
+      pp: 25,
+      critRatio: 2,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      target: "normal",
+      type: "Electric",
+      contestType: "Cool"
+    },
 }

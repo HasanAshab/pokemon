@@ -29,7 +29,7 @@ function modifyBaseStats(pokemon) {
 
     const baseStats = pokemon.baseStats;
     const statKeys = Object.keys(baseStats).filter(stat => stat !== 'spe');
-    const share = speedReduced / statKeys.length;
+    const share = Math.round(speedReduced / statKeys.length);
 
     for (const stat of statKeys) {
         baseStats[stat] = parseFloat((baseStats[stat] + share).toFixed(2));

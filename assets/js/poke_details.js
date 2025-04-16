@@ -201,17 +201,15 @@ function loadStats() {
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
     
-    let total = 0
     for (const stat in pokemon.stats) {
      const statValue = pokemon.stats[stat]
-     total += statValue
       setStat(stat,statValue)
       setStatToken(stat, pokemon.meta.token_used[stat], false)
       if (stat === "hp") {
           setTotalHealth(statValue)
       }
     }
-    setStat("total", total)
+    setStat("total", pokemon.cp())
 }
 
 function loadMoves() {

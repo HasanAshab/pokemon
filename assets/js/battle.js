@@ -244,6 +244,10 @@ function switchPokemon(playerTag, index) {
     if(globalThis.pokemon && globalThis.enemyPokemon) {
         setupCurrentBattle(playerTag)
     }
+    
+    const diff = pokemon.cp() - enemyPokemon.cp()
+    popupQueue.add(`CP: ${pokemon.cp()} ${diff > 0 ? `  ↑${diff}` : ''}`, "you", 3000)
+    popupQueue.add(`CP: ${enemyPokemon.cp()} ${diff < 0 ? `  ↑${diff}` : ''} `, "enemy", 3000)
 }
 
 function setupCurrentBattle(switcher) {

@@ -1,35 +1,5 @@
 [
   {
-    "id": "frogadier",
-    "xp": 2000,
-    "nature": "calm",
-    "retreat": 3.5,
-    "moves": [
-      {
-        "id": "doubleteam",
-        "isSelected": true
-      },
-      {
-        "id": "waterpulse",
-        "isSelected": true
-      },
-      {
-        "id": "lick",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
-        "isSelected": true
-      },
-      {
-        "id": "cut",
-        "isSelected": true
-      }
-    ],
-    "stats": {},
-    "token_used": {}
-  },
-  {
     "id": "pupitar",
     "xp": 1900,
     "nature": "brave",
@@ -90,32 +60,112 @@
     "token_used": {}
   },
   {
-    "id": "pignite",
-    "xp": 1700,
-    "nature": "adamant",
-    "retreat": 4,
+    "id": "greninja",
+    "xp": 3000,
+    "nature": "hasty",
+    "retreat": 3.5,
     "moves": [
+      {
+        "id": "slash",
+        "isSelected": true
+      },
+      {
+        "id": "knockoff",
+        "isSelected": true
+      },
+      {
+        "id": "icepunch",
+        "isSelected": true
+      },
+      {
+        "id": "waterpulse",
+        "isSelected": true
+      },
+      {
+        "id": "doubleteam",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "slash",
+          "isSelected": true
+        },
+        {
+          "id": "knockoff",
+          "isSelected": true
+        },
+        {
+          "id": "icepunch",
+          "isSelected": true
+        },
+        {
+          "id": "waterpulse",
+          "isSelected": true
+        },
+        {
+          "id": "doubleteam",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "emboar",
+    "xp": 3000,
+    "nature": "calm",
+    "retreat": 3.5,
+    "moves": [
+      {
+        "id": "firespin",
+        "isSelected": true
+      },
       {
         "id": "flamecharge",
         "isSelected": true
       },
       {
-        "id": "defensecurl",
+        "id": "forcepalm",
         "isSelected": true
       },
       {
-        "id": "rollout",
+        "id": "bulkup",
         "isSelected": true
       },
       {
-        "id": "tailwhip",
-        "isSelected": true
-      },
-      {
-        "id": "ember",
+        "id": "flamewheel",
         "isSelected": true
       }
     ],
+    "mega": {
+      "moves": [
+        {
+          "id": "firespin",
+          "isSelected": true
+        },
+        {
+          "id": "flamecharge",
+          "isSelected": true
+        },
+        {
+          "id": "forcepalm",
+          "isSelected": true
+        },
+        {
+          "id": "bulkup",
+          "isSelected": true
+        },
+        {
+          "id": "flamewheel",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
     "stats": {},
     "token_used": {}
   }

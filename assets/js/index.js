@@ -68,6 +68,15 @@ function setLosesCount(val){
    }
     
 }
+function setRank(val){
+   const rankElm = document.getElementById("cor-rank")
+   if (val) {
+   localStorage.setItem("user-cor-rank",val)
+   rankElm.textContent = val
+   }else {
+   rankElm.textContent = localStorage.getItem("user-cor-rank") || 0
+   }
+}
 globalThis.winsCountClickHandler = function({currentTarget}){
    const val = Number(window.prompt("wins count:",currentTarget.textContent))
    setWinsCount(val)
@@ -76,6 +85,12 @@ globalThis.losesCountClickHandler = function({currentTarget}){
    const val = Number(window.prompt("loses count:",currentTarget.textContent))
    setLosesCount(val)
 }
+
+globalThis.rankClickHandler = function({currentTarget}){
+   const val = Number(window.prompt("Rank: ",currentTarget.textContent))
+   setRank(val)
+}
+
 globalThis.increasePokemonWinCount = function(id){
     const meta = getPokemonsMeta(id)
     meta["wins-count"]++
@@ -200,16 +215,26 @@ function loadFoodCost() {
   foodCost.textContent = cost
 }
 
+function loadTotalCP() {
+  const pokemonsMeta = getPokemonsMeta()
+  const pokemons = Object.keys(pokemonsMeta).map(id => {
+    const m = pokemonsMeta[id]
+    return new Pokemon(id, m)
+  })
+  const totalCpBar = document.getElementById("total-cp")
+  totalCpBar.textContent = pokemons.reduce((acc, p) => acc + p.cp(), 0)
+}
 
 function loadAll() {
-  
   loadActiveBadges()
   loadAllPokemons()
   //loadFoodCost()
+  loadTotalCP()
   loadPokemonsDatalist("pokemons-data-list")
   loadNaturesDataList("natures-data-list")
   setWinsCount()
   setLosesCount()
+  setRank()
   updateTotalBattlesCount()
 }
 document.body.onload = loadAll
@@ -217,61 +242,124 @@ document.body.onload = loadAll
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-// startBattle([
-//   {
-//     "id": "metang",
-//     "xp": 2700,
-//     "nature": "serious",
-//     "retreat": 3.5,
-//       "moves": [
-//         {
-//           "id": "bulletpunch",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "slash",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "heavyslam",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "hypnosis",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "confusion",
-//           "isSelected": true
-//         }
-//       ],
-//     "mega": {
-//       "moves": [
-//         {
-//           "id": "bulletpunch",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "slash",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "heavyslam",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "hypnosis",
-//           "isSelected": true
-//         },
-//         {
-//           "id": "confusion",
-//           "isSelected": true
-//         }
-//       ],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {}
-//   }
-// ], ["Psychic", "Steel"])
-// 
+
+//kadebra
+/*
+startBattle(null,[
+  {
+    "id": "arcanine",
+    "xp": 2800,
+    "nature": "calm",
+    "retreat": 3.4,
+    "moves": [
+      {
+        "id": "heatcrash",
+        "isSelected": true
+      },
+      {
+        "id": "firefang",
+        "isSelected": true
+      },
+      {
+        "id": "firespin",
+        "isSelected": true
+      },
+      {
+        "id": "bite",
+        "isSelected": true
+      },
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "heatcrash",
+          "isSelected": true
+        },
+        {
+          "id": "firefang",
+          "isSelected": true
+        },
+        {
+          "id": "firespin",
+          "isSelected": true
+        },
+        {
+          "id": "bite",
+          "isSelected": true
+        },
+        {
+          "id": "ember",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
+*/
+
+//anubis
+/*startBattle([
+  {
+    "id": "hitmonchan",
+    "xp": 2800,
+    "nature": "careful",
+    "retreat": 3.5,
+    "moves": [
+      {
+        "id": "dizzypunch",
+        "isSelected": true
+      },
+      {
+        "id": "vacuumwave",
+        "isSelected": true
+      },
+      {
+        "id": "icepunch",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "isSelected": true
+      },
+      {
+        "id": "jetpunch",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "dizzypunch",
+          "isSelected": true
+        },
+        {
+          "id": "vacuumwave",
+          "isSelected": true
+        },
+        {
+          "id": "icepunch",
+          "isSelected": true
+        },
+        {
+          "id": "poweruppunch",
+          "isSelected": true
+        },
+        {
+          "id": "jetpunch",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
+*/

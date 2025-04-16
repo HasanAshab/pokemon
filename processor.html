@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gemini AI Chat</title>
+  <script>var exports = {};</script>
+  <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@0.24.0/dist/index.min.js"></script>
+</head>
+<body>
+  <select class="pokemons-wrapper">
+  </select>
+  <textarea id="instr" placeholder="Any instruction..."></textarea>
+  <button onclick="generate()">Find</button>
+  <pre id="result"></pre>
+</body>
+  <script src="./assets/js/processor.js" type="module"></script>
+</html>
