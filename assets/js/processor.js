@@ -6,7 +6,7 @@ const pokemonsMeta = getPokemonsMeta()
 const pokemonSelect = document.querySelector(".pokemons-wrapper")
 
 
-function loadUserPokemons(){
+function loadUserPokemons() {
   for (const pokemon in pokemonsMeta){
     pokemonSelect.innerHTML += `
      <option value="${pokemon}">${pokemon}</option>
@@ -16,21 +16,23 @@ function loadUserPokemons(){
 
 globalThis.generate = async function generate() {
   const extraInst = document.getElementById('instr').value
+  const level = document.getElementById('level').value
   const instr = `
     You are a helper for my pokemon game. you will be given players pokemon with
     its xp, retreat (used as a cost for using moves), nature and moves and mega moves (moves replaced by actual moves when turns to mega). 
     
-    Notes: 
-      1. you have to predict a worthy and equal opponent for a joyful battle
-      2. Balance the opponent by increasing or decreading factors like, if you want to keep opponent
-      less level make something else stronger like better moves than player or something else (token, type advantage, retreat ...etc)
-      3. Enemy should not be fully equal to players (enemy can be a bit more or less powerful)
-      4. response should be only json
-  
-    ${extraInst ? `***Must Instruction***\n\t${extraInst}` : ''}
+    Here are some constrains about the enemy:
+      ${level ? `XP Must Be: ${(level - 1) * 1000}` : ''}
+      Difficulty To Defeat: ${document.getElementById('difficulty').value}
+      Typing: ${document.getElementById('typing').value}
+      Move Max Power: ${document.getElementById('move-power').value}
+
+    ***Extra Instruction***
+      ${extraInst || "Not provided..."}
 
     your response example:
-      {
+    *** should be plain json (i will parse json)
+     \` {
         "id": "hitmonchan",
         "xp": 2800,
         "nature": "careful",
@@ -82,11 +84,16 @@ globalThis.generate = async function generate() {
           ],
           "suffix": "mega"
         },
-        "stats": {},
-        "token_used": {}
-      }
+        "token_used": {
+          "spe": 2,
+          "atk": 1
+        }
+      }\`
+      
+    
+    Here is players pokemon
   `
-  const prompt = JSON.stringify(pokemonSelect.value, null, 2)
+  const prompt = JSON.stringify(pokemonsMeta[pokemonSelect.value], null, 2)
     
   const text = instr + "\n\n" + prompt
   
@@ -97,9 +104,21 @@ globalThis.generate = async function generate() {
   const resultEl = document.getElementById("result");
   resultEl.textContent = "Finding a worthy opponent...";
   const result = await model.generateContent(text);
-  resultEl.textContent = result.response.text();
+  const fullText = result.response.text();
+  const lines = fullText.split('\n');
+  const trimmedText = lines.slice(1, -1).join('\n');
+  resultEl.textContent = `startBattle([${trimmedText}], [], 'single')`;
 }
 
-window.onload = ()=>{
+document.getElementById("copy-btn").addEventListener("click", () => {
+  const resultText = document.getElementById("result").textContent;
+  navigator.clipboard.writeText(resultText).then(() => {
+    alert("Copied to clipboard!");
+  }).catch(err => {
+    alert("Failed to copy: " + err);
+  });
+});
+
+window.onload = ()=> {
     loadUserPokemons()
 }

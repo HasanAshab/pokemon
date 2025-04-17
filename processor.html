@@ -6,11 +6,43 @@
   <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@0.24.0/dist/index.min.js"></script>
 </head>
 <body>
-  <select class="pokemons-wrapper">
+  
+  <label for="poke">Your Pokemon</label>
+  <select id="poke" class="pokemons-wrapper"></select>
+  <br>
+  
+  <label for="difficulty">Difficulty</label>
+  <select id="difficulty">
+    <option value="Should feel almost equal">Equal</option>
+    <option value="Very Easy">Very Easy</option>
+    <option value="Easy">Easy</option>
+    <option value="Medium">Medium</option>
+    <option value="Hard">Hard</option>
+    <option value="Insane">Insane</option>
   </select>
-  <textarea id="instr" placeholder="Any instruction..."></textarea>
+  <br>
+  
+  <label for="typing">Enemy Typing</label>
+  <select id="typing">
+    <option value="Random">Random</option>
+    <option value="Both should get advantage. like dragon vs dragon, (ice and flying) vs (fighting and steel)">Both Advantage</option>
+    <option value="None should get any advantage or disadvantage">No Advantage</option>
+    <option value="Should be totally different. like fighting vs dragon, (flying and fire) vs (steel and dark)">Totally Different</option>
+    <option value="Should be Semi-Equal. like (fire and flying) vs (water and flying)">Semi-Equal</option>
+    <option value="Should bs totally same. like fire vs fire">Totally Same</option>
+  </select>
+  <br>
+  
+  <label for="move-power">Move Max Power: </label>
+  <input id="move-power" type="number" value="250">
+  <br>
+  <label for="level">Level: </label>
+  <input id="level" type="number">
+  
+  <textarea id="instr" cols="45" rows="10" placeholder="Any extra instruction"></textarea>
   <button onclick="generate()">Find</button>
   <pre id="result"></pre>
+<button id="copy-btn">Copy</button>
 </body>
   <script src="./assets/js/processor.js" type="module"></script>
 </html>
