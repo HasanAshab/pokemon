@@ -359,7 +359,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
     }
     
     onScene(move, senario) {
-        if (this.source.flags.contact) {
+        if (this.source && this.source.flags.contact) {
             move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
         }
         else {
@@ -370,7 +370,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
     onOpponentScene(move, senario) {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
 
-        if (this.source.flags.contact) {
+        if (this.source && this.source.flags.contact) {
             !move.flags.contact && senario.set(opponent, new Move("staythere"))
         }
         else {
