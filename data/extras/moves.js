@@ -26,7 +26,7 @@ export default {
       secondary: null,
       target: "normal",
       type: "Normal",
-      retreat: 4,
+      retreat: 3,
       flags: {},
       onTryMove(attacker) {
         if (!attacker.megaEvolve())
@@ -48,7 +48,7 @@ export default {
       target: "normal",
       type: "Normal",
       isOffensive: false,
-      retreat: 0.25,
+      retreat: 0.2,
       onBeforeMove(attacker, defender, move) {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
             return canDodge(defender, attacker, move)
@@ -77,7 +77,7 @@ export default {
         }],
         target: []
       },
-      retreat: 3,
+      retreat: 2,
     },
     swordsmash: {
       num: 100004,

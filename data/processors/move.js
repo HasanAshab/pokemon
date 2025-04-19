@@ -149,29 +149,38 @@ function setStatChanges(move) {
 
 function setRetreat(move) {
   if("retreat" in move) return
-  const retreats = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5, 5.5, 6];
-  const thresholds = [0, 10, 20, 30, 50, 60, 70, 80, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250];
-  let retreat;
+    const retreats = [
+    0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0,
+    2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0,
+    4.2, 4.4, 4.6, 4.8, 5.0, 5.2
+  ];
   
+  const thresholds = [
+    0, 10, 20, 30, 40, 50, 60, 70, 80, 90,
+    100, 110, 120, 130, 140, 150, 160, 170, 180, 190,
+    200, 210, 220, 230, 240, 250
+  ];
+  let retreat;
   const adjustToClosestRetreat = num => {
     return retreats.reduce((prev, curr) => 
         Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev
     )
   }
-
-  for (let i = 0; i < thresholds.length; i++) {
-      if (move.basePower <= thresholds[i]) {
-        retreat = retreats[i];
-        break;
-      }
-  }
   
   if(move.category === "Status") {
-      retreat = 0.25
+      retreat = 0.4
+  }
+  else {
+    for (let i = 0; i < thresholds.length; i++) {
+        if (move.basePower <= thresholds[i]) {
+          retreat = retreats[i];
+          break;
+        }
+    }
   }
 
   if (move.stallingMove) {
-      retreat += 0.25
+      retreat += 0.2
   }
 
   const selfStatEffectBonus = Object.keys(move.statChanges.target).reduce((acc, stat) => {
@@ -181,20 +190,29 @@ function setRetreat(move) {
   const targetStatEffectBonus = Object.keys(move.statChanges.self).reduce((acc, stat) => {
       return acc + move.statChanges.self[stat]
   }, 0)
+  
+  const critRatioBonus = move.critRatio > 1 
+    ? move.critRatio * 0.2
+    : 0
+    
+  const targetBonus = move.target.startsWith("allAdjacent")
+    ? 0.2
+    : 0
 
   const multiplier = (
       move.effects.target.length
       - move.effects.self.length
       + selfStatEffectBonus
       + targetStatEffectBonus
+      + critRatioBonus
   )
-  retreat += 0.25 * multiplier
+  retreat += 0.2 * multiplier
   
   if("multihit" in move) {
       const avgHits = Array.isArray(move.multihit)
         ? (move.multihit[0] + move.multihit[1]) / 2
         : move.multihit
-      retreat += 0.25 * avgHits
+      retreat += 0.2 * avgHits
   }
   
   if ("heal" in move) {
@@ -208,11 +226,15 @@ function setRetreat(move) {
   if ("recoil" in move) {
       retreat -= 2 * (move.recoil[0] / move.recoil[1])
   }
-  
+
+  if (move.accuracy === true) {
+    retreat += 0.2
+  }
+    
   retreat = adjustToClosestRetreat(retreat)
 
   // we failed to detect its speciality
-  if (retreat <= 0.50 && move.category !== "Status") {
+  if (retreat <= 0.4 && move.category !== "Status") {
       retreat = retreats[5]
   }
   
