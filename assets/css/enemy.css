@@ -22,12 +22,10 @@
 }
 .charecter-choose-form > .charecters-list{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
     width: 300px;
-/*     overflow-x: scroll;
- */    gap: 10px;
-    margin: 0 auto;
+    overflow-x: scroll;
 }
 .pop-list-form{
    display: flex;

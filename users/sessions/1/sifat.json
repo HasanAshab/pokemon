@@ -1,0 +1,57 @@
+ [
+  {
+    "id": "infernape",
+    "xp": 3000,
+    "nature": "serious",
+    "retreat": 3.3,
+    "moves": [
+      {
+        "id": "doublekick",
+        "isSelected": true
+      },
+      {
+        "id": "doubleteam",
+        "isSelected": true
+      },
+      {
+        "id": "flamewheel",
+        "isSelected": true
+      },
+      {
+        "id": "firefang",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "doublekick",
+          "isSelected": true
+        },
+        {
+          "id": "doubleteam",
+          "isSelected": true
+        },
+        {
+          "id": "flamewheel",
+          "isSelected": true
+        },
+        {
+          "id": "firefang",
+          "isSelected": true
+        },
+        {
+          "id": "poweruppunch",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+]

@@ -149,10 +149,10 @@ function setStatChanges(move) {
 
 function setRetreat(move) {
   if("retreat" in move) return
-    const retreats = [
-    0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0,
-    2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0,
-    4.2, 4.4, 4.6, 4.8, 5.0, 5.2
+  const retreats = [
+    0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0,
+    5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0,
+    10.5, 11.0, 11.5, 12.0, 12.5, 13.0
   ];
   
   const thresholds = [
@@ -168,7 +168,7 @@ function setRetreat(move) {
   }
   
   if(move.category === "Status") {
-      retreat = 0.4
+      retreat = 1
   }
   else {
     for (let i = 0; i < thresholds.length; i++) {
@@ -180,7 +180,7 @@ function setRetreat(move) {
   }
 
   if (move.stallingMove) {
-      retreat += 0.2
+      retreat += 0.5
   }
 
   const selfStatEffectBonus = Object.keys(move.statChanges.target).reduce((acc, stat) => {
@@ -192,11 +192,11 @@ function setRetreat(move) {
   }, 0)
   
   const critRatioBonus = move.critRatio > 1 
-    ? move.critRatio * 0.2
+    ? move.critRatio * 0.5
     : 0
     
   const targetBonus = move.target.startsWith("allAdjacent")
-    ? 0.2
+    ? 0.5
     : 0
 
   const multiplier = (
@@ -206,38 +206,38 @@ function setRetreat(move) {
       + targetStatEffectBonus
       + critRatioBonus
   )
-  retreat += 0.2 * multiplier
+  retreat += 0.5 * multiplier
   
   if("multihit" in move) {
       const avgHits = Array.isArray(move.multihit)
         ? (move.multihit[0] + move.multihit[1]) / 2
         : move.multihit
-      retreat += 0.2 * avgHits
+      retreat += 0.5 * avgHits
   }
-  
+  //here todo
   if ("heal" in move) {
-      retreat += 3 * (move.heal[0] / move.heal[1])
+      retreat += 4 * (move.heal[0] / move.heal[1])
   }
 
   if ("drain" in move) {
-      retreat += 1.05 * (move.drain[0] / move.drain[1])
+      retreat += 1.5 * (move.drain[0] / move.drain[1])
   }
 
   if ("recoil" in move) {
-      retreat -= 2 * (move.recoil[0] / move.recoil[1])
+      retreat -= 3 * (move.recoil[0] / move.recoil[1])
   }
 
   if (move.accuracy === true) {
-    retreat += 0.2
+    retreat += 0.5
   }
     
   retreat = adjustToClosestRetreat(retreat)
 
   // we failed to detect its speciality
-  if (retreat <= 0.4 && move.category !== "Status") {
+  if (retreat <= 1 && move.category !== "Status") {
       retreat = retreats[5]
   }
-  
+
   move.retreat = retreat
 }
 

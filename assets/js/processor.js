@@ -1,8 +1,13 @@
 import {getPokemonsMeta} from "./utils/helpers.js"
 import {getUserPokemonsMeta, loadPokemonsDatalist} from "./utils/dom.js"
 
+const models = [
+  "gemini-2.0-flash-lite",
+  "gemini-2.5-flash-preview-04-17",
+  "gemini-2.5-pro-exp-03-25",
+]
 const API_KEY = "AIzaSyDuACe-uhQf17Qz3NxNmfzDBvUJ6kRLfcQ"
-const MODEL = "gemini-2.5-pro-exp-03-25"
+const MODEL = models[2]
 const pokemonsMeta = getPokemonsMeta()
 const pokemonSelect = document.getElementById("poke")
 const charSelect = document.getElementById("char")
@@ -66,17 +71,17 @@ globalThis.generateEnemy = async function() {
   }
   
   const text = `
-    You are a enemy finder for my pokemon game. you will be given players pokemon with
+    You are a enemy generator for my pokemon game. you will be given players pokemon with
     its xp, retreat (used as a cost for using moves), nature and moves and mega moves (moves replaced by actual moves when turns to mega). 
     
-    *** Here are some constrains about the enemy pokemon:
+    *** You have to generate the enemy pokemon with some constrains:
       ${def.id ? '' : `Typing: ${document.getElementById('typing').value}`}
       Difficulty To Defeat: ${document.getElementById('difficulty').value}
       Move Max Power: ${document.getElementById('move-power').value}
     
     ${Object.keys(def).length
       ? `
-      *** Here is default object that you have to start filling with
+      *** Here is default object that you have to start filling with:
       ${JSON.stringify(def, null, 2)}
       `
       : ''
@@ -91,50 +96,40 @@ globalThis.generateEnemy = async function() {
         "id": "hitmonchan",
         "xp": 2800,
         "nature": "careful",
-        "retreat": 3.5,
+        "retreat": 3,
         "moves": [
           {
             "id": "dizzypunch",
-            "isSelected": true
           },
           {
             "id": "vacuumwave",
-            "isSelected": true
           },
           {
             "id": "icepunch",
-            "isSelected": true
           },
           {
             "id": "poweruppunch",
-            "isSelected": true
           },
           {
             "id": "jetpunch",
-            "isSelected": true
           }
         ],
         "mega": {
           "moves": [
             {
               "id": "dizzypunch",
-              "isSelected": true
             },
             {
               "id": "vacuumwave",
-              "isSelected": true
             },
             {
               "id": "icepunch",
-              "isSelected": true
             },
             {
               "id": "poweruppunch",
-              "isSelected": true
             },
             {
               "id": "jetpunch",
-              "isSelected": true
             }
           ],
           "suffix": "mega"
