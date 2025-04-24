@@ -166,10 +166,6 @@ class BaseBattle extends EventEmitter {
         const isDodged1 = () => move1.id === "dodge" && move1._dodgeMatrix.every(Boolean)
         const isDodged2 = () => move2.id === "dodge" && move2._dodgeMatrix.every(Boolean)
 
-        // TEMP: move power management
-        move1.basePower *= this.pokemon1.state.stats._statChanges["pow"] || 1
-        move2.basePower *= this.pokemon2.state.stats._statChanges["pow"] || 1
-
         // ctx effects
         if(this.ctx.veryClose && move1.flags.contact !== move2.flags.contact) {
             if(move1.flags.contact && !move1.id === "dodge") {
@@ -185,6 +181,11 @@ class BaseBattle extends EventEmitter {
         this._checkFailure(this.pokemon2, senario)
 
         this.emit("scene", senario)
+        
+        // TEMP: move power management
+        this.pokemon1.state.damage.chainModifyPower('*', this.pokemon1.state.stats._statChanges["pow"] || 1)
+        this.pokemon2.state.damage.chainModifyPower('*', this.pokemon2.state.stats._statChanges["pow"] || 1)
+
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
@@ -799,6 +800,7 @@ class PrevStatsManager {
 class DamageManager {
     _modifiers = []
     _critModifiers = []
+    _powerModifiers = {}
     
     constructor(state) {
         this.state = state
@@ -806,10 +808,12 @@ class DamageManager {
         this.state.on("scene", () => {
             this._modifiers = []
             this._critModifiers = []
+            this._powerModifiers = {}
         })
         this.state.on("wave", () => {
             this._modifiers = []
             this._critModifiers = []
+            this._powerModifiers = {}
         })
     }
     
@@ -832,6 +836,12 @@ class DamageManager {
     critModifier() {
         return this._critModifiers.reduce((acc, m) => acc * m, 1)
     }
+    
+    powerModifier(id) {
+        const all = this._powerModifiers['*']?.reduce((acc, m) => acc * m, 1) ?? 1
+        const specific = this._powerModifiers[id]?.reduce((acc, m) => acc * m, 1) ?? 1
+        return all * specific
+    }
 
     chainModify(modifier) {
         this._modifiers.push(modifier)
@@ -839,6 +849,12 @@ class DamageManager {
 
     chainModifyCrit(modifier) {
         this._critModifiers.push(modifier)
+    }
+    
+    chainModifyPower(id, modifier) {
+        if (!this._powerModifiers[id]) 
+            this._powerModifiers[id] = []
+        this._powerModifiers[id].push(modifier)
     }
 }
 

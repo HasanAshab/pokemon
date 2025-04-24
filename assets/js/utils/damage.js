@@ -64,6 +64,10 @@ export class Damage {
         }
 
         if (!bp) return null
+        
+        bp *= this.attacker.state.damage.powerModifier(this.move.id)
+        console.log(this.attacker.state.damage.powerModifier(this.move.id))
+        console.log(this.move.id, ' BP: ', bp)
 
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
         const isSpecial = this.move.category === "Special";

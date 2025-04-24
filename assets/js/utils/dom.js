@@ -80,8 +80,8 @@ export class PopupMsgQueue {
     }
 }
 
-export async function getUserPokemonsMeta(name){
-  const prom = await fetch(`./users/sessions/1/${name}.json`)
+export async function getUserPokemonsMeta(name, session = 1){
+  const prom = await fetch(`./users/sessions/${session}/${name}.json`)
   const enemiesMeta = await prom.json()
   return enemiesMeta
 }

@@ -7,7 +7,7 @@ const models = [
   "gemini-2.5-pro-exp-03-25",
 ]
 const API_KEY = "AIzaSyDuACe-uhQf17Qz3NxNmfzDBvUJ6kRLfcQ"
-const MODEL = models[2]
+const MODEL = models[1]
 const pokemonsMeta = getPokemonsMeta()
 const pokemonSelect = document.getElementById("poke")
 const charSelect = document.getElementById("char")
@@ -19,6 +19,7 @@ window.onload = ()=> {
     loadPokemonsDatalist("pokemons-data-list")
 }
 
+const charMetaEx = await getUserPokemonsMeta('malpo', 1)
 
 function loadUserPokemons() {
   for (const pokemon in pokemonsMeta){
@@ -69,7 +70,7 @@ globalThis.generateEnemy = async function() {
   if (Object.keys(def).length) {
     def["Rest of the properties"] = "..."
   }
-  
+
   const text = `
     You are a enemy generator for my pokemon game. you will be given players pokemon with
     its xp, retreat (used as a cost for using moves), nature and moves and mega moves (moves replaced by actual moves when turns to mega). 
@@ -82,7 +83,7 @@ globalThis.generateEnemy = async function() {
     ${Object.keys(def).length
       ? `
       *** Here is default object that you have to start filling with:
-      ${JSON.stringify(def, null, 2)}
+      ${JSON.stringify(def)}
       `
       : ''
     }
@@ -92,57 +93,11 @@ globalThis.generateEnemy = async function() {
     
     your response example:
     *** should be plain json (i will parse json)
-     \` {
-        "id": "hitmonchan",
-        "xp": 2800,
-        "nature": "careful",
-        "retreat": 3,
-        "moves": [
-          {
-            "id": "dizzypunch",
-          },
-          {
-            "id": "vacuumwave",
-          },
-          {
-            "id": "icepunch",
-          },
-          {
-            "id": "poweruppunch",
-          },
-          {
-            "id": "jetpunch",
-          }
-        ],
-        "mega": {
-          "moves": [
-            {
-              "id": "dizzypunch",
-            },
-            {
-              "id": "vacuumwave",
-            },
-            {
-              "id": "icepunch",
-            },
-            {
-              "id": "poweruppunch",
-            },
-            {
-              "id": "jetpunch",
-            }
-          ],
-          "suffix": "mega"
-        },
-        "token_used": {
-          "spe": 2,
-          "atk": 1
-        }
-      }\`
+     \`${JSON.stringify(charMetaEx[0])}\`
     
 
     Here is players pokemon
-    ${JSON.stringify(pokemonsMeta[pokemonSelect.value], null, 2)}
+    ${JSON.stringify(pokemonsMeta[pokemonSelect.value])}
   `
 
 
@@ -156,7 +111,7 @@ globalThis.generateEnemy = async function() {
   const fullText = result.response.text();
   const lines = fullText.split('\n');
   const trimmedText = lines.slice(1, -1).join('\n');
-  resultEl.textContent = `startBattle([${trimmedText}], [], 'single')`;
+  resultEl.textContent = `startBattle([${JSON.stringify(JSON.parse(trimmedText), null, 2)}], [], 'single')`;
 }
 
 globalThis.syncChar = async function() {

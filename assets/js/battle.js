@@ -23,17 +23,7 @@ globalThis.retreatBtnClickHandler = function(playerTag){
     loadPokemonData(playerTag)
 }
 
-function loadVeryCloseBtn() {
-    const btn = document.getElementById("very-close-btn")
-    battle.ctx.veryClose
-        ? btn.classList.add("active")
-        : btn.classList.remove("active")
-}
 
-function syncStatsMeta(pokemon) {
-    pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
-    setPokemonMeta(pokemon.id, pokemon.meta)
-}
  globalThis.getEnemiesMetaBtnClickHandler = function() {
   const meta = teams.enemy.map((p) => ({
     id: p.id,
@@ -99,13 +89,36 @@ globalThis.showEffectsEditForm = function(playerTag){
   setEffects(pokemon.state.effects.all(), playerTag)
 }
 
+
+function loadVeryCloseBtn() {
+    const btn = document.getElementById("very-close-btn")
+    battle.ctx.veryClose
+        ? btn.classList.add("active")
+        : btn.classList.remove("active")
+}
+
+function syncStatsMeta(pokemon) {
+    pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
+    setPokemonMeta(pokemon.id, pokemon.meta)
+}
+ 
 function setBattleListeners() {
     battle.on(["wave", "turn"], function() {
         popupQueue.add(`New ${this._event}!`, "you")
     })
 }
 
+
 const opponentTag = tag => (tag === "you" ? "enemy" : "you")
+
+function addFieldMove(playerTag, moveId, per) {
+  const pokemon = pokemonMap[playerTag]
+  pokemon.state.addMove(moveId)
+  pokemon.state.on("scene", () => {
+    pokemon.state.damage.chainModifyPower(moveId, per / 100)
+  })
+  loadPokemonData(playerTag)
+}
 
 function loadPokemonData(playerTag) {
     const pokemon = pokemonMap[playerTag]
@@ -255,6 +268,8 @@ function setupCurrentBattle(switcher) {
     battle.activate(enemyPokemon)
     setupPokemonForDom("you")
     setupPokemonForDom("enemy")
+
+    addFieldMove('you', 'ember', 70)
 }
 
 function setupPokemonForDom(playerTag) {

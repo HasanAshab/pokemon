@@ -1,5 +1,60 @@
  [
   {
+    "id": "medicham",
+    "xp": 3700,
+    "nature": "calm",
+    "retreat": 5,
+    "moves": [
+      {
+        "id": "doubleteam",
+        "isSelected": true
+      },
+      {
+        "id": "triplekick",
+        "isSelected": true
+      },
+      {
+        "id": "psychocut",
+        "isSelected": true
+      },
+      {
+        "id": "drainpunch",
+        "isSelected": true
+      },
+      {
+        "id": "agility",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [
+        {
+          "id": "doubleteam",
+          "isSelected": true
+        },
+        {
+          "id": "triplekick",
+          "isSelected": true
+        },
+        {
+          "id": "psychocut",
+          "isSelected": true
+        },
+        {
+          "id": "drainpunch",
+          "isSelected": true
+        },
+        {
+          "id": "agility",
+          "isSelected": true
+        }
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
     "id": "infernape",
     "xp": 3000,
     "nature": "serious",
