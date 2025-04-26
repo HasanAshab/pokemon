@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokemons Meta Editor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 20px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    button {
+      padding: 10px 15px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #message {
+      margin-top: 15px;
+      color: green;
+      font-size: 14px;
+    }
+    #name-display {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Editing Pokémon Meta for: <span id="name-display"></span></h1>
+  <textarea id="value-editor" placeholder="Loading..."></textarea>
+  <div>
+    <button id="copy-btn">Copy Current</button>
+    <button id="copy-all-btn">Copy All</button>
+    <button id="update-btn">Update</button>
+  </div>
+  <div id="message"></div>
+
+  <script>
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+    const ROOT_KEY = 'pokemons-meta';
+    const nameParam = getQueryParam('name');
+    const nameDisplay = document.getElementById('name-display');
+    const valueEditor = document.getElementById('value-editor');
+    const copyBtn = document.getElementById('copy-btn');
+    const copyAllBtn = document.getElementById('copy-all-btn');
+    const updateBtn = document.getElementById('update-btn');
+    const messageEl = document.getElementById('message');
+
+    if (!nameParam) {
+      document.body.innerHTML = "<h1 style='color: red;'>Error: 'name' param is required in URL</h1>";
+      throw new Error("'name' param is missing in URL");
+    }
+
+    nameDisplay.textContent = nameParam;
+
+    function loadRoot() {
+      const raw = localStorage.getItem(ROOT_KEY);
+      try {
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        console.error('Invalid JSON in pokemons-meta, resetting.');
+        return {};
+      }
+    }
+
+    function saveRoot(obj) {
+      localStorage.setItem(ROOT_KEY, JSON.stringify(obj));
+    }
+
+    function loadValue() {
+      const rootObj = loadRoot();
+      const value = rootObj[nameParam];
+
+      if (value === undefined) {
+        valueEditor.value = "";
+      } else if (typeof value === 'object') {
+        valueEditor.value = JSON.stringify(value, null, 2);
+      } else {
+        valueEditor.value = String(value);
+      }
+    }
+
+    copyBtn.addEventListener('click', () => {
+      valueEditor.select();
+      document.execCommand('copy');
+      showMessage('Copied current value to clipboard');
+    });
+
+    copyAllBtn.addEventListener('click', () => {
+      const rootObj = loadRoot();
+      const json = JSON.stringify(rootObj, null, 2);
+      copyText(json);
+      showMessage('Copied entire pokemons-meta to clipboard');
+    });
+
+    updateBtn.addEventListener('click', () => {
+      const rootObj = loadRoot();
+      let newValue = valueEditor.value;
+
+      try {
+        newValue = JSON.parse(newValue);
+      } catch (e) {
+        // Not JSON, keep as string
+      }
+
+      rootObj[nameParam] = newValue;
+      saveRoot(rootObj);
+      showMessage('Updated pokemons-meta');
+    });
+
+    function copyText(text) {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+    }
+
+    function showMessage(msg) {
+      messageEl.textContent = msg;
+      setTimeout(() => {
+        messageEl.textContent = '';
+      }, 2000);
+    }
+
+    loadValue();
+  </script>
+</body>
+</html>

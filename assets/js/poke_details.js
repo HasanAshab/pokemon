@@ -185,8 +185,12 @@ globalThis.forgetMove = function(id) {
 }
 
 function loadName() {
+    const display = document.getElementById("pokemon-name")
     const displayName = capitalizeFirstLetter(name)
-    document.getElementById("pokemon-name").innerText = displayName
+    display.innerText = displayName
+    display.onclick = () => {
+      window.location = '/data.html?name=' + name
+    }
 }
 
 
