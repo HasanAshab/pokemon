@@ -1,9 +1,9 @@
  [
   {
     "id": "medicham",
-    "xp": 3700,
+    "xp": 3900,
     "nature": "calm",
-    "retreat": 5,
+    "retreat": 6.9,
     "moves": [
       {
         "id": "doubleteam",

@@ -337,6 +337,8 @@ function loadMoves() {
         <div class="info damage">
          <strong>Damage:</strong><span class="data"> ${Math.round(damage.count * (1/70))}</span>
         </div>
+        ${'⭐ '.repeat(move.grade ?? 0)}
+
         <small class="desc">
          ${move.description()}
               </small>

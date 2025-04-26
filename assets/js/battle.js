@@ -24,7 +24,7 @@ globalThis.retreatBtnClickHandler = function(playerTag){
 }
 
 
- globalThis.getEnemiesMetaBtnClickHandler = function() {
+globalThis.getEnemiesMetaBtnClickHandler = function() {
   const meta = teams.enemy.map((p) => ({
     id: p.id,
     ...p.meta
@@ -113,7 +113,7 @@ const opponentTag = tag => (tag === "you" ? "enemy" : "you")
 
 function addFieldMove(playerTag, moveId, per) {
   const pokemon = pokemonMap[playerTag]
-  pokemon.state.addMove(moveId)
+  const move = pokemon.state.addMove(moveId)
   pokemon.state.on("scene", () => {
     pokemon.state.damage.chainModifyPower(moveId, per / 100)
   })
@@ -469,6 +469,7 @@ function loadMoves(playerTag) {
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
     moveCardsContainer.innerHTML = ''
   for (const move of pokemon.state.moves) {
+      const mod = pokemon.state.damage.powerModifier(move.id)
       const effectiveness = opponentPokemon.effectiveness(move.type)
       const damage = new Damage(pokemon, move)
     const cardHtml = `
@@ -551,7 +552,7 @@ function loadMoves(playerTag) {
                   </g>
                 </svg>`}
                 :
-                <span class="data">${move.basePower}</span>
+                <span class="data">${move.basePower} ${ mod !== 1 ? `(${mod > 1 ? '+' : ''}${Math.round((mod - 1) * 100)}%)` : ''}</span>
               </div>` : ``
               }
               <div class="retreat-data">
@@ -587,6 +588,7 @@ function loadMoves(playerTag) {
         <button class="close-btn" onclick="toggleMoveInfo(this.parentNode.parentNode)">&#10060;</button>
         </div>
         
+        ${'⭐ '.repeat(move._meta.grade ?? 0)}
         <div class="info damage">
          <strong>Damage:</strong><span class="data">${Math.round(damage.count * (1/70))}</span>
         </div>

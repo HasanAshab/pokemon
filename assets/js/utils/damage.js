@@ -65,8 +65,7 @@ export class Damage {
 
         if (!bp) return null
         
-        bp *= this.attacker.state.damage.powerModifier(this.move.id)
-        console.log(this.attacker.state.damage.powerModifier(this.move.id))
+        bp *= ("state" in this.attacker ? this.attacker.state.damage.powerModifier(this.move.id) : 1) 
         console.log(this.move.id, ' BP: ', bp)
 
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
@@ -137,7 +136,7 @@ export class Hit {
             "Physical": "def",
             "Special": "spd"
         }
-        console.log("here is bug", this.move.category)
+        //console.log("here is bug", this.move.category)
         const defStat = this.target.state.stats.get(
             statMap[this.move.category] ?? "def"
         )
