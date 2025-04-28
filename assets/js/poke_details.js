@@ -1,3 +1,4 @@
+import { BATTLE_SYSTEMS } from "./utils/battle.js";
 import { loadNaturesDataList, loadMovesDatalist ,loadPokemonsDatalist } from "./utils/dom.js";
 import { Pokemon, Move } from "./utils/models.js"
 import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
@@ -7,6 +8,17 @@ import natures from "../../../data/natures.js"
 var name = getParam("name")
 var isMegaEvolved = false
 const updatablePokemonMetaList = ["retreat","xp","nature","wins-count","loses-count"]
+
+
+globalThis.upgradeMove = function(id) {
+    const meta = getPokemonsMeta(name)
+    const moveMeta = meta.moves.find(m => m.id === id)
+    const grade = moveMeta.grade ? moveMeta.grade + 1 : 1
+    moveMeta.grade = grade
+    setPokemonMeta(name, meta)
+    loadPokemon()
+    loadMoves()
+}
 
 globalThis.megaBtnClickHandler = function({currentTarget}){
    currentTarget.classList.toggle("active")
@@ -221,6 +233,7 @@ function loadMoves() {
     movesContainer.innerHTML = ""
     for (const moveMeta of pokemon.movesMeta()) {
         const move = new Move(moveMeta.id)
+        move._meta = moveMeta
         const damage = new Damage(pokemon, move)
    movesContainer.innerHTML +=   `  
    <div class="single-card-wrapper">
@@ -341,14 +354,14 @@ function loadMoves() {
         <div class="info damage">
          <strong>Damage:</strong><span class="data"> ${Math.round(damage.count * (1/70))}</span>
         </div>
-        ${'⭐ '.repeat(move.grade ?? 0)}
+        ${'⭐ '.repeat(moveMeta.grade ?? 0)}
 
         <small class="desc">
          ${move.description()}
               </small>
           <div class="bottom-btns-cont">
          <button onclick="forgetMove('${move.id}')" class="forget-btn">Forgot move</button>
-
+         <button onclick="upgradeMove('${move.id}')" class="upgrade-btn">Upgrade move</button>
           </div>
       
       </div>
@@ -358,7 +371,33 @@ function loadMoves() {
     }
 }
 
+function loadPokemon() {
+  const meta = getPokemonsMeta(name)
+  globalThis.pokemon = new Pokemon(name, meta)
+  globalThis.dummy = new Pokemon('charmander', {
+    "xp": 100,
+    "nature": "hardy",
+    "retreat": 1,
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 5,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    },
+    "moves": [],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    }
+  })
+  globalThis.battle = new BATTLE_SYSTEMS["single"]([pokemon], [dummy])
+}
+
 function loadAll(){
+    loadPokemon()
     loadNaturesDataList("natures-data-list")
     loadName()
     loadMoves()
@@ -366,8 +405,5 @@ function loadAll(){
 }
 
 window.onload = () => {
-    const meta = getPokemonsMeta(name)
-  globalThis.pokemon = new Pokemon(name, meta)
-
     loadAll()
 }

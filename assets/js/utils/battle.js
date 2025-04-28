@@ -557,13 +557,6 @@ class BattleState extends EventEmitter {
     setMoves(moves) {
         this.moves = []
         BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
-        moves.forEach(moveMeta => {
-          const per = moveMeta.grade * 20
-          this.addMove(moveMeta.id, moveMeta)
-          moveMeta.grade && this.on("scene", () => {
-            this.damage.chainModifyPower(moveMeta.id, per / 100)
-          })
-        })
     }
     
     addMove(id, meta = {}) {

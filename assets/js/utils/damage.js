@@ -65,7 +65,10 @@ export class Damage {
 
         if (!bp) return null
         
-        bp *= ("state" in this.attacker ? this.attacker.state.damage.powerModifier(this.move.id) : 1) 
+        const gradeModifier = this.move._meta.grade ? 1 + (this.move._meta.grade * 0.1) : 1
+        const eventModifier = ("state" in this.attacker ? this.attacker.state.damage.powerModifier(this.move.id) : 1) 
+
+        bp *= eventModifier * gradeModifier
         console.log(this.move.id, ' BP: ', bp)
 
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
