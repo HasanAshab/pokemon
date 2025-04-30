@@ -3,8 +3,10 @@ import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
- 
+import {loadMovesDatalist } from "./utils/dom.js";
 
+
+const system = getParam("system") || "single"
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.toggleMoveInfo = function(info){
     info.classList.toggle("active")
@@ -104,6 +106,7 @@ function syncStatsMeta(pokemon) {
  
 function setBattleListeners() {
     battle.on(["wave", "turn"], function() {
+        if (system === "single" && this._event === "turn") return
         popupQueue.add(`New ${this._event}!`, "you")
     })
 }
@@ -126,7 +129,6 @@ function loadPokemonData(playerTag) {
     const oldHp = pokemon.state.stats.prev.get("hp")
 
     loadVeryCloseBtn()
-    setEffects(pokemon.state.effects.all(), playerTag)
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
     loadHealth(playerTag)
@@ -137,7 +139,7 @@ function loadPokemonData(playerTag) {
     if(hp !== oldHp) {
         const hpDist = fixFloat(hp - oldHp) 
         const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
-        popupQueue.add(msg, playerTag)
+        //popupQueue.add(msg, playerTag)
     }
 
     if (hp === 0) {
@@ -146,18 +148,34 @@ function loadPokemonData(playerTag) {
     }
 }
 
+function loadEffects(playerTag) {
+  const pokemon = pokemonMap[playerTag]
+  setEffects(pokemon.state.effects.all(), playerTag)
+}
 function setBattleStateListeners(playerTag) {
     const pokemon = pokemonMap[playerTag]
     pokemon.state.on(["scene-end", "wave"], () => {
-        loadPokemonData(playerTag)
+      loadPokemonData(playerTag)
     })
     
+    
+    
+    pokemon.state.on("scene", () => {
+        loadEffects(playerTag)
+    })
+    pokemon.state.on("scene-end", () => {
+        setTimeout(
+            () => loadEffects(playerTag),
+            2000
+        )
+    })
+
+    // dodge pop up
     pokemon.state.on("used-move", move => {
         if (move.id === "dodge") {
             const dodgedCount = move._dodgeMatrix.filter(Boolean).length
             const failedCount = move._dodgeMatrix.length - dodgedCount
             if(!dodgedCount) return
-            //here
             let msg = null
             if (move._dodgeMatrix.length === 1 && dodgedCount) 
                 msg = 'Dodged!'
@@ -169,15 +187,8 @@ function setBattleStateListeners(playerTag) {
         
     })
     
-    pokemon.state.on("scene-end", () => {
-        setTimeout(
-            () => loadPokemonData(playerTag),
-            1500
-        )
-    })
-
-    
-    pokemon.state.on("scene", move => {
+    // critical pop up
+    pokemon.state.on("used-move", move => {
         if (!move.hit) return
         if (move.hit.damage() <= 0) return;
         let msg = null
@@ -187,11 +198,7 @@ function setBattleStateListeners(playerTag) {
         else if(move.hits > 1) {
             msg = `${move.hits} Hits ${move.hit.criticalCount() ? `, (${move.hit.criticalCount()} Crit)` : ''} !`
         }
-        msg && popupQueue.add(msg, opponentTag(playerTag))
-    })
-
-    pokemon.state.on("fainted", () => {
-        loadChoosePokemon(playerTag)
+        msg && popupQueue.add(msg, opponentTag(playerTag), 3500)
     })
 
     battle.prompt(pokemon).reply("dodge", () => {
@@ -240,7 +247,7 @@ function loadTeams() {
 }
 
 function registerBattle() {
-    const Battle = BATTLE_SYSTEMS[getParam("system") || "single"]
+    const Battle = BATTLE_SYSTEMS[system]
     globalThis.battle = new Battle(teams.you, teams.enemy, fields)
 }
 
@@ -268,8 +275,6 @@ function setupCurrentBattle(switcher) {
     battle.activate(enemyPokemon)
     setupPokemonForDom("you")
     setupPokemonForDom("enemy")
-
-    addFieldMove('you', 'ember', 70)
 }
 
 function setupPokemonForDom(playerTag) {
@@ -600,8 +605,49 @@ function loadMoves(playerTag) {
     `
     moveCardsContainer.innerHTML += cardHtml
   }
+  const addFieldMoveBtnHtml = `
+     <div onclick="showFieldMoveForm('${playerTag}')" class="add-field-move-btn">
+      <span> Add Move </span>
+     </div>
+  `
+  moveCardsContainer.innerHTML += addFieldMoveBtnHtml
 }
+globalThis.showMoveDetails = function({currentTarget}){
+  const form = currentTarget.parentElement
+  const move = new Move(currentTarget.value)
+  if (move){
+    const moveDetails = form.querySelector(".move-details")
+    moveDetails.querySelector(".move-name").textContent = move.name
+    moveDetails.querySelector(".desc").textContent = move.description() + '\n' + JSON.stringify({
+        power: move.basePower,
+        category: move.category,
+        priority: move.priority
+    }, null, 2)
+ }
+}
+globalThis.showFieldMoveForm = (playerTag)=> {
+  const fieldMoveForm = document.querySelector(".field-move-form")
+  const name = fieldMoveForm.querySelector(".name")
+  const moveInput = fieldMoveForm.querySelector(".move-input")
+  const percentInput = fieldMoveForm.querySelector(".percent-input")
+  const addBtn = fieldMoveForm.querySelector(".add-btn")
+  const cancelBtn = fieldMoveForm.querySelector(".cancel-btn")
+  
+  fieldMoveForm.parentElement.classList.add("active")
+  name.textContent = playerTag
+  addBtn.onclick = ()=>{
+  
+    addFieldMove(playerTag,moveInput.value,percentInput.value)
+    moveInput.value=""
+    fieldMoveForm.parentElement.classList.remove("active")
 
+  }
+  cancelBtn.onclick = ()=>{
+    moveInput.value=""
+    fieldMoveForm.parentElement.classList.remove("active")
+
+  }
+}
 function handleMoveCardSelect(card, playerTag) {
   if (card.classList.contains("disabled")) return
   const oponentPlayerTag = playerTag === "you" ? "enemy": "you"
@@ -655,4 +701,6 @@ window.onload = () => {
     setBattleListeners()
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
+    loadMovesDatalist("moves-data-list")
+
 }

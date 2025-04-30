@@ -189,6 +189,9 @@ class BaseBattle extends EventEmitter {
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
+        
+        move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
+        move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
 
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
@@ -557,6 +560,7 @@ class BattleState extends EventEmitter {
     setMoves(moves) {
         this.moves = []
         BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+        moves.forEach(moveMeta => this.addMove(moveMeta.id, moveMeta))
     }
     
     addMove(id, meta = {}) {

@@ -11,7 +11,24 @@
 </head>
 <body>
   <div class="container">
-    
+   <div class="blur-bg">
+     <div class="field-move-form">
+       <h3 class="name">foo</h3>
+       <label for="move-input">Choose Move:</label>
+       <input onblur="showMoveDetails(event)" type="text" list="moves-data-list" class="move-input move-input-1">
+       <input style="width:30%" class="percent-input" type="number"/>
+       <datalist id="moves-data-list"></datalist>
+     <div class="move-details">
+      <strong class="move-name">name</strong>
+      <span class="desc">Lorem ipsum dolor.</span>
+    </div>
+      <div class="btns-cont">
+        <button class="add-btn">Add</button>
+        <button class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+   
+   </div>
     <div class="battle-prompt-popup">
       <p class="msg">
         Lorem ipsum dolor.

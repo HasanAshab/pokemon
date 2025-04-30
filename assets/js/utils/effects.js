@@ -277,7 +277,7 @@ class ParalyzeEffect extends Effect {
     }
     
     displayMeta() {
-        return !this.status.canMove ? '🔴' : '🟢'
+        return !this.status.canMove ? '🔴' : '⚪'
     }
 }
 
@@ -293,7 +293,7 @@ class ConfusionEffect extends ExpirableEffect {
 
     onTurn() {
         super.onTurn(...arguments)
-        this.status.attackSelf = true || Math.random() < ConfusionEffect.ATK_SELF_CHANCE
+        this.status.attackSelf = Math.random() < ConfusionEffect.ATK_SELF_CHANCE
     }
 
     onTurnEnd() {
@@ -307,7 +307,7 @@ class ConfusionEffect extends ExpirableEffect {
     }
     
     displayMeta() {
-        return this.status.attackSelf ? '🔴' : '🟢'
+        return this.status.attackSelf ? '🔴' : '⚪'
     }
 }
 

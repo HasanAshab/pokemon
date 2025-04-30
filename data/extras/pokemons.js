@@ -8,7 +8,7 @@ export default {
       genderRatio: { M: 0.875, F: 0.125 },
       baseStats: { hp: 78, atk: 120, def: 111, spa: 140, spd: 85, spe: 100 },
       abilities: { 0: "Tough Claws" },
-      heightm: 1.7,
+      heightm: 2,
       weightkg: 110.5,
       color: "Black",
       eggGroups: ["Monster", "Dragon"],
@@ -294,8 +294,21 @@ export default {
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Stellarchompite"
     },
-  abyssagon: {
-    num: 10012,
+     oarfish: {
+      num: 10012,
+      name: "Oarfish",
+      types: ["Water"],
+      baseStats: { hp: 50, atk: 100, def: 80, spa: 100, spd: 30, spe: 50 },
+      abilities: { 0: "Swift Swim", H: "Rattled" },
+      heightm: 1.5,
+      weightkg: 10,
+      color: "Red",
+      evos: ["Gyarados"],
+      eggGroups: ["Water 2"]
+    },
+
+  levithan: {
+    num: 10013,
     name: "Abyssagon",
     types: ["Dragon", "Water"],
     genderRatio: { M: 0.875, F: 0.125 },
@@ -306,4 +319,5 @@ export default {
     color: "Blue",
     eggGroups: ["Dragon", "Water 2"]
   },
+  
 }

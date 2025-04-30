@@ -1,5 +1,4 @@
 * Proposal
-fix conf, par red light
 move grade
 
 * Scenario
