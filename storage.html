@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LocalStorage Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f2f2f2;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .controls input, .controls button {
+      padding: 10px;
+      font-size: 1em;
+      min-width: 150px;
+    }
+
+    .controls button {
+      cursor: pointer;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      min-width: 600px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #222;
+      color: white;
+    }
+
+    tr:hover {
+      background: #f9f9f9;
+    }
+
+    .editable:hover {
+      background: #eef;
+      cursor: pointer;
+    }
+
+    .edit-btn, .delete-btn {
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: #007BFF;
+      font-size: 0.95em;
+    }
+
+    .edit-btn:hover, .delete-btn:hover {
+      text-decoration: underline;
+    }
+
+    td input[type="text"] {
+      width: 95%;
+      padding: 5px;
+      font-size: 1em;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5em;
+      }
+      .controls input, .controls button {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>LocalStorage Editor</h1>
+
+  <div class="controls">
+    <input type="text" id="keyInput" placeholder="Key">
+    <input type="text" id="valueInput" placeholder="Value">
+    <button onclick="addOrUpdate()">Add / Update</button>
+    <button onclick="clearAll()">Clear All</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value (click to edit)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="storageTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function renderStorage() {
+      const table = document.getElementById('storageTable');
+      table.innerHTML = '';
+      if (localStorage.length === 0) {
+        table.innerHTML = '<tr><td colspan="3" style="text-align:center;">No data</td></tr>';
+        return;
+      }
+
+      Object.keys(localStorage).forEach(key => {
+        const value = localStorage.getItem(key);
+        const row = document.createElement('tr');
+
+        const keyCell = document.createElement('td');
+        keyCell.textContent = key;
+
+        const valueCell = document.createElement('td');
+        valueCell.className = 'editable';
+        valueCell.textContent = value;
+        valueCell.addEventListener('click', () => makeEditable(valueCell, key));
+
+        const actionCell = document.createElement('td');
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-btn';
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = () => deleteItem(key);
+        actionCell.appendChild(delBtn);
+
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+        row.appendChild(actionCell);
+        table.appendChild(row);
+      });
+    }
+
+    function makeEditable(td, key) {
+      const originalValue = td.textContent;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = originalValue;
+      input.addEventListener('blur', () => {
+        localStorage.setItem(key, input.value);
+        renderStorage();
+      });
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') input.blur();
+        if (e.key === 'Escape') {
+          input.value = originalValue;
+          input.blur();
+        }
+      });
+      td.textContent = '';
+      td.appendChild(input);
+      input.focus();
+      input.select();
+    }
+
+    function addOrUpdate() {
+      const key = document.getElementById('keyInput').value.trim();
+      const value = document.getElementById('valueInput').value;
+      if (!key) {
+        alert("Key cannot be empty");
+        return;
+      }
+      localStorage.setItem(key, value);
+      document.getElementById('keyInput').value = '';
+      document.getElementById('valueInput').value = '';
+      renderStorage();
+    }
+
+    function deleteItem(key) {
+      if (confirm(`Delete key "${key}"?`)) {
+        localStorage.removeItem(key);
+        renderStorage();
+      }
+    }
+
+    function clearAll() {
+      if (confirm("Are you sure you want to clear all localStorage data?")) {
+        localStorage.clear();
+        renderStorage();
+      }
+    }
+
+    renderStorage();
+  </script>
+</body>
+</html>
