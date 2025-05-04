@@ -56,29 +56,6 @@ export default {
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },
-    doubleteam: {
-      num: 104,
-      accuracy: true,
-      basePower: 0,
-      category: "Status",
-      name: "Double Team",
-      pp: 15,
-      priority: 1,
-      flags: { snatch: 1, metronome: 1 },
-      secondary: null,
-      target: "self",
-      type: "Normal",
-      contestType: "Cool",
-      effects: {
-        self: [{
-          name: "doubleteam",
-          chance: 100,
-          isVolatile: true 
-        }],
-        target: []
-      },
-      retreat: 5,
-    },
     swordsmash: {
       num: 100004,
       accuracy: 100,
@@ -137,4 +114,57 @@ export default {
       type: "Electric",
       contestType: "Cool"
     },
+    
+    doubleteam: {
+      num: 104,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Double Team",
+      pp: 15,
+      priority: 1,
+      flags: { snatch: 1, metronome: 1 },
+      secondary: null,
+      target: "self",
+      type: "Normal",
+      contestType: "Cool",
+      effects: {
+        self: [{
+          name: "doubleteam",
+          chance: 100,
+          isVolatile: true 
+        }],
+        target: []
+      },
+      retreat: 5,
+    },
+    focusenergy: {
+      num: 116,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Focus Energy",
+      pp: 30,
+      priority: 0,
+      flags: { snatch: 1, metronome: 1 },
+      onAfterMove(pokemon) {
+        const statCh = pokemon.state.stats._statChanges
+        const oldCrit = statCh.crit ?? 0
+        const turnNo = pokemon.state.battle.turnNo
+
+        statCh.crit = 6
+        pokemon.state.on('turn-end', () => {
+          if (pokemon.state.battle.turnNo === turnNo + 1) {
+            statCh.crit = oldCrit
+          }
+        })
+      },
+      secondary: null,
+      target: "self",
+      type: "Normal",
+      zMove: { boost: { accuracy: 1 } },
+      contestType: "Cool",
+      retreat: 2,
+    },
+
 }

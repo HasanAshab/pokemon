@@ -241,65 +241,10 @@ document.body.onload = loadAll
 
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-/*
-startBattle([
-  {
-    "id": "garbodor",
-    "xp": 3000,
-    "nature": "calm",
-    "retreat": 2,
-    "moves": [
-      {
-        "id": "acidspray",
-        "isSelected": true
-      },
-      {
-        "id": "acidarmor",
-        "isSelected": true
-      },
-      {
-        "id": "bodyslam",
-        "isSelected": true
-      },
-      {
-        "id": "crosspoison",
-        "isSelected": true
-      },
-      {
-        "id": "metalclaw",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [
-        {
-          "id": "acidspray",
-          "isSelected": true
-        },
-        {
-          "id": "acidarmor",
-          "isSelected": true
-        },
-        {
-          "id": "bodyslam",
-          "isSelected": true
-        },
-        {
-          "id": "crosspoison",
-          "isSelected": true
-        },
-        {
-          "id": "metalclaw",
-          "isSelected": true
-        }
-      ],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {}
-  }
-], [], "single")
-*/
+
+
+
+
 //kadebra
 /*
 startBattle(null,[

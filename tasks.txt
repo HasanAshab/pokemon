@@ -1,5 +1,10 @@
 * Proposal
-move grade
+isUnselected
+crit
+Chance for retreat
+processed .js
+
+Progress tracker
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

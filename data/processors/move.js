@@ -31,7 +31,11 @@ function mergeDefault(move) {
             move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
         }
     }
-    Object.assign(move, defaultProps, move)
+    
+    for (const key in defaultProps) {
+      if (key in move) continue
+      else move[key] = defaultProps[key]
+    }
 }
 
 function addFlags(move) {
@@ -115,6 +119,8 @@ function setEffects(move) {
 }
 
 function setStatChanges(move) {
+    if ("statChanges" in move) return
+
     move.statChanges = {
         chance: 100,
         self: {},

@@ -45,7 +45,7 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         input {
@@ -54,6 +54,13 @@
             border-radius: 5px;
             flex: 1;
             min-width: 200px;
+        }
+
+        #companyWorth {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 10px;
         }
 
         button {
@@ -127,9 +134,10 @@
             </div>
             <div class="input-group">
                 <input type="number" id="low" placeholder="Low Revenue Estimate" onchange="saveEstimates()">
-                <input type="number" id="medium" placeholder="Medium Revenue Estimate" onchange="saveEstimates()">
+                <input type="number" id="medium" placeholder="Medium Revenue Estimate" onchange="saveEstimates(); updateWorth();" oninput="updateWorth()">
                 <input type="number" id="high" placeholder="High Revenue Estimate" onchange="saveEstimates()">
             </div>
+            <div id="companyWorth">Total Worth $: 0</div>
             <button onclick="addRevenue()">Add Monthly Revenue</button>
             <button onclick="clearData()" style="background: #e74c3c; margin-left: 10px;">Clear Data</button>
         </div>
@@ -164,11 +172,71 @@
                 <input type="number" id="newSalary" placeholder="Salary per Man">
                 <button onclick="addRow()">Add</button>
             </div>
+        </div> 
+        
+        <!-- Contract Management Section -->
+        <div class="section">
+          <h2>Contract Management</h2>
+<div class="table-container">
+    <table id="contractTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Profit ($)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td><strong>Total Profit:</strong></td>
+                <td id="totalProfit">0</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="add-row">
+    <input type="text" id="contractName" placeholder="Contract Name">
+    <input type="number" id="contractProfit" placeholder="Profit">
+    <button onclick="addContract()">Add Contract</button>
+</div>
+
+          
         </div>
+        
+        <!-- Asset Management Section -->
+        <div class="section">
+            <h2>Asset Management</h2>
+            <div class="table-container">
+                <table id="assetTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Rent</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total Rent:</strong></td>
+                            <td id="totalAssetRent">0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="add-row">
+                <input type="text" id="assetName" placeholder="Name">
+                <input type="number" id="assetRent" placeholder="Rent">
+                <button onclick="addAsset()">Add</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // Business Simulation Code
         let revenueChart;
         let chartData = {
             labels: [],
@@ -181,7 +249,12 @@
             }]
         };
 
-        // Load data from localStorage
+        function updateWorth() {
+            const medium = parseFloat(document.getElementById('medium').value);
+            const worth = !isNaN(medium) ? medium * 70 : 0;
+            document.getElementById('companyWorth').textContent = `Total Worth $: ${worth.toLocaleString()}`;
+        }
+
         function loadData() {
             const savedData = localStorage.getItem('revenueData');
             if (savedData) {
@@ -196,19 +269,17 @@
                 document.getElementById('low').value = low;
                 document.getElementById('medium').value = medium;
                 document.getElementById('high').value = high;
+                updateWorth(); // Refresh worth on load
             }
         }
 
-        // Save revenue estimates to localStorage
         function saveEstimates() {
             const low = document.getElementById('low').value;
             const medium = document.getElementById('medium').value;
             const high = document.getElementById('high').value;
-
             localStorage.setItem('revenueEstimates', JSON.stringify({ low, medium, high }));
         }
 
-        // Save chart data to localStorage
         function saveChartData() {
             const dataToSave = {
                 labels: chartData.labels,
@@ -217,12 +288,11 @@
             localStorage.setItem('revenueData', JSON.stringify(dataToSave));
         }
 
-        // Add new revenue
         function addRevenue() {
             const low = parseFloat(document.getElementById('low').value);
             const medium = parseFloat(document.getElementById('medium').value);
             const high = parseFloat(document.getElementById('high').value);
-            
+
             if (!low || !medium || !high) {
                 alert('Please fill all three estimates!');
                 return;
@@ -230,19 +300,18 @@
 
             const options = [low, medium, high];
             const selectedRevenue = options[Math.floor(Math.random() * options.length)];
-            
+
             const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const nextMonth = chartData.labels.length % 12;
-            
+
             chartData.labels.push(monthNames[nextMonth]);
             chartData.datasets[0].data.push(selectedRevenue);
-            
+
             revenueChart.update();
             saveChartData();
         }
 
-        // Clear all data
         function clearData() {
             if (confirm('Are you sure you want to clear all data?')) {
                 localStorage.removeItem('revenueData');
@@ -252,11 +321,12 @@
                 document.getElementById('low').value = '';
                 document.getElementById('medium').value = '';
                 document.getElementById('high').value = '';
+                document.getElementById('companyWorth').textContent = 'Total Worth $: 0';
                 revenueChart.update();
             }
         }
 
-        // Employee Salary Management Code
+        // Employee Salary Management
         let employees = JSON.parse(localStorage.getItem("employees")) || [
             { post: "Incharge", mans: 2, salary: 7000 },
             { post: "Worker", mans: 6, salary: 6000 }
@@ -272,81 +342,143 @@
             let total = 0;
 
             employees.forEach((emp, index) => {
-                let tSalary = emp.mans * emp.salary;
-                total += tSalary;
+                const row = document.createElement("tr");
+                const totalSalary = emp.mans * emp.salary;
+                total += totalSalary;
 
-                let row = `<tr>
+                row.innerHTML = `
                     <td>${emp.post}</td>
-                    <td><input type="number" value="${emp.mans}" onchange="updateValue(${index}, 'mans', this.value)"></td>
-                    <td><input type="number" value="${emp.salary}" onchange="updateValue(${index}, 'salary', this.value)"></td>
-                    <td>${formatNumber(tSalary)}</td>
-                    <td><button onclick="deleteRow(${index})">❌</button></td>
-                </tr>`;
-
-                tbody.innerHTML += row;
+                    <td>${emp.mans}</td>
+                    <td>${formatNumber(emp.salary)}</td>
+                    <td>${formatNumber(totalSalary)}</td>
+                    <td><button onclick="removeRow(${index})" style="background:#e74c3c;">Remove</button></td>
+                `;
+                tbody.appendChild(row);
             });
 
-            document.getElementById("totalSalary").innerText = formatNumber(total);
+            document.getElementById("totalSalary").textContent = formatNumber(total);
             localStorage.setItem("employees", JSON.stringify(employees));
         }
 
-        function updateValue(index, field, value) {
-            employees[index][field] = Number(value);
-            renderTable();
-        }
-
         function addRow() {
-            let post = document.getElementById("newPost").value.trim();
-            let mans = Number(document.getElementById("newMans").value);
-            let salary = Number(document.getElementById("newSalary").value);
+            const post = document.getElementById("newPost").value;
+            const mans = parseInt(document.getElementById("newMans").value);
+            const salary = parseInt(document.getElementById("newSalary").value);
 
-            if (post && mans > 0 && salary > 0) {
-                employees.push({ post, mans, salary });
-                renderTable();
-                document.getElementById("newPost").value = "";
-                document.getElementById("newMans").value = "";
-                document.getElementById("newSalary").value = "";
-            } else {
-                alert("Please enter valid details.");
+            if (!post || isNaN(mans) || isNaN(salary)) {
+                alert("Please fill in all fields correctly.");
+                return;
             }
+
+            employees.push({ post, mans, salary });
+            renderTable();
+
+            document.getElementById("newPost").value = "";
+            document.getElementById("newMans").value = "";
+            document.getElementById("newSalary").value = "";
         }
 
-        function deleteRow(index) {
+        function removeRow(index) {
             employees.splice(index, 1);
             renderTable();
         }
 
-        // Initialize on load
-        window.onload = function() {
+        window.onload = function () {
             loadData();
-            
+            renderTable();
             const ctx = document.getElementById('revenueChart').getContext('2d');
             revenueChart = new Chart(ctx, {
                 type: 'bar',
                 data: chartData,
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
                     scales: {
                         y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + value.toLocaleString();
-                                }
-                            }
+                            beginAtZero: true
                         }
                     }
                 }
             });
+        }
+        
+    function addContract() {
+    const nameInput = document.getElementById("contractName");
+    const profitInput = document.getElementById("contractProfit");
 
-            renderTable();
-        };
+    const name = nameInput.value.trim();
+    const profit = parseFloat(profitInput.value);
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            revenueChart.resize();
-        });
+    if (!name || isNaN(profit)) {
+        alert("Please enter valid contract name and profit.");
+        return;
+    }
+
+    const tableBody = document.querySelector("#contractTable tbody");
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${name}</td>
+        <td>${profit.toFixed(2)}</td>
+        <td><button onclick="this.closest('tr').remove(); calculateTotalProfit();">Delete</button></td>
+    `;
+
+    tableBody.appendChild(row);
+
+    nameInput.value = "";
+    profitInput.value = "";
+    calculateTotalProfit();
+}
+
+function calculateTotalProfit() {
+    const tableBody = document.querySelector("#contractTable tbody");
+    let total = 0;
+    for (const row of tableBody.rows) {
+        const profit = parseFloat(row.cells[1].textContent);
+        if (!isNaN(profit)) {
+            total += profit;
+        }
+    }
+    document.getElementById("totalProfit").textContent = total.toFixed(2);
+}
+
+function addAsset() {
+    const name = document.getElementById('assetName').value.trim();
+    const rent = parseFloat(document.getElementById('assetRent').value);
+
+    if (!name || isNaN(rent)) {
+        alert("Please provide both name and valid rent.");
+        return;
+    }
+
+    const table = document.getElementById('assetTable').getElementsByTagName('tbody')[0];
+    const row = table.insertRow();
+
+    const nameCell = row.insertCell(0);
+    const rentCell = row.insertCell(1);
+    const actionCell = row.insertCell(2);
+
+    nameCell.textContent = name;
+    rentCell.textContent = rent.toFixed(2);
+    actionCell.innerHTML = `<button onclick="deleteAsset(this, ${rent})" style="background:#e74c3c;">Delete</button>`;
+
+    updateAssetTotal(rent);
+    document.getElementById('assetName').value = '';
+    document.getElementById('assetRent').value = '';
+}
+
+function deleteAsset(button, rent) {
+    const row = button.parentNode.parentNode;
+    row.remove();
+    updateAssetTotal(-rent);
+}
+
+let currentAssetTotal = 0;
+
+function updateAssetTotal(change) {
+    currentAssetTotal += change;
+    document.getElementById('totalAssetRent').textContent = currentAssetTotal.toFixed(2);
+}
+
     </script>
 </body>
 </html>
