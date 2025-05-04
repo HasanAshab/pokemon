@@ -114,7 +114,6 @@ export default {
       type: "Electric",
       contestType: "Cool"
     },
-    
     doubleteam: {
       num: 104,
       accuracy: true,
@@ -147,6 +146,28 @@ export default {
       pp: 30,
       priority: 0,
       flags: { snatch: 1, metronome: 1 },
+      statChanges: {
+        chance: 100,
+        self: {
+          crit: 2
+        },
+        target: {}
+      },
+      secondary: null,
+      target: "self",
+      type: "Normal",
+      zMove: { boost: { accuracy: 1 } },
+      contestType: "Cool"
+    },
+    laserfocus: {
+      num: 673,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      isNonstandard: "Past",
+      name: "Laser Focus",
+      pp: 30,
+      priority: 0,
       onAfterMove(pokemon) {
         const statCh = pokemon.state.stats._statChanges
         const oldCrit = statCh.crit ?? 0
@@ -159,12 +180,12 @@ export default {
           }
         })
       },
+      flags: { snatch: 1, metronome: 1 },
       secondary: null,
       target: "self",
       type: "Normal",
-      zMove: { boost: { accuracy: 1 } },
+      zMove: { boost: { atk: 1 } },
       contestType: "Cool",
-      retreat: 2,
+      retreat: 2
     },
-
 }

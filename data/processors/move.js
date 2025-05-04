@@ -186,17 +186,21 @@ function setRetreat(move) {
   }
 
   if (move.stallingMove) {
-      retreat += 0.5
+      retreat += 1
   }
+  
+  
+  const statEffectChanceMod = (move.statChanges.chance / 100)
 
-  const selfStatEffectBonus = Object.keys(move.statChanges.target).reduce((acc, stat) => {
+  const selfStatEffectBonus = statEffectChanceMod * Object.keys(move.statChanges.target).reduce((acc, stat) => {
       return acc - move.statChanges.target[stat]
   }, 0)
 
-  const targetStatEffectBonus = Object.keys(move.statChanges.self).reduce((acc, stat) => {
+  const targetStatEffectBonus = statEffectChanceMod * Object.keys(move.statChanges.self).reduce((acc, stat) => {
       return acc + move.statChanges.self[stat]
-  }, 0)
+  }, 0) 
   
+
   const critRatioBonus = move.critRatio > 1 
     ? move.critRatio * 0.5
     : 0
@@ -207,7 +211,7 @@ function setRetreat(move) {
 
   const multiplier = (
       move.effects.target.length
-      - move.effects.self.length
+  //  - move.effects.self.length
       + selfStatEffectBonus
       + targetStatEffectBonus
       + critRatioBonus
@@ -220,7 +224,7 @@ function setRetreat(move) {
         : move.multihit
       retreat += 0.5 * avgHits
   }
-  //here todo
+
   if ("heal" in move) {
       retreat += 4 * (move.heal[0] / move.heal[1])
   }

@@ -1,7 +1,5 @@
 * Proposal
 isUnselected
-crit
-Chance for retreat
 processed .js
 
 Progress tracker
