@@ -1,4 +1,4 @@
-import MOVES from "../../../data/moves.js"
+//import MOVES from "../../../data/moves.js"
 
 export const camelize = s => s.replace(/-./g, x=>x[1].toUpperCase())
 
@@ -130,29 +130,29 @@ export function queryMoves(query, moves = MOVES) {
     return matchedMoves
 }
 
-export async function getMoveLearnset(pokemon, options = {}) {
-    const { default: moveLearnset } = await import(`../../../data/learnsets/${pokemon}.js`);
-    const {
-        level,
-        limit = 5,
-        ...query
-    } = options;
-
-    const moves = moveLearnset
-        .filter(ml => level === undefined ? true : ml.required_level <= level)
-        .toSorted((a, b) => {
-            if (a.source === "level" && b.source !== "level") return -1;
-            if (a.source !== "level" && b.source === "level") return 1;
-            return b.required_level - a.required_level;
-        })
-        .reduce((obj, ml) => {
-            obj[ml.name] = MOVES[ml.name]
-            return obj
-        }, {})
-    const matchedMoves = queryMoves(query, moves)
-    return Object.keys(sliceObj(matchedMoves, 0, limit))
-}
-
+// export async function getMoveLearnset(pokemon, options = {}) {
+//     const { default: moveLearnset } = await import(`../../../data/learnsets/${pokemon}.js`);
+//     const {
+//         level,
+//         limit = 5,
+//         ...query
+//     } = options;
+// 
+//     const moves = moveLearnset
+//         .filter(ml => level === undefined ? true : ml.required_level <= level)
+//         .toSorted((a, b) => {
+//             if (a.source === "level" && b.source !== "level") return -1;
+//             if (a.source !== "level" && b.source === "level") return 1;
+//             return b.required_level - a.required_level;
+//         })
+//         .reduce((obj, ml) => {
+//             obj[ml.name] = MOVES[ml.name]
+//             return obj
+//         }, {})
+//     const matchedMoves = queryMoves(query, moves)
+//     return Object.keys(sliceObj(matchedMoves, 0, limit))
+// }
+// 
 // getMoveLearnset("charizard", {
 //     level: 36,
 //     limit: 4,

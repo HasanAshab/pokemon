@@ -1,10 +1,12 @@
-import process from './processors/move.js'
-import defaultMoves from './default/moves.js'
-import extraMoves from './extras/moves.js'
+// import config from '../config.js'
+// 
+// const path = config.lazyData 
+//   ? './lazy/moves.js'
+//   : './cache/moves.js'
 
 
-// Export processed moves
-export default process({
-    ...defaultMoves,
-    ...extraMoves
-});
+//import moves from './lazy/moves.js'
+import moves from './cache/moves.js'
+
+
+export default moves

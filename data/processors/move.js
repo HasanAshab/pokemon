@@ -13,7 +13,7 @@ function isTwoTurnMove(move) {
     }
    try {
    move.onTryMove?.(attacker, null, {})
-   } catch (e){console.log(e)}
+   } catch (e){}
    return isTwoTurn
 }
 

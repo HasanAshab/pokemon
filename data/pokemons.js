@@ -1,9 +1,12 @@
-import process from './processors/pokemon.js'
-import defaultPokemons from './default/pokemons.js'
-import extraPokemons from './extras/pokemons.js'
+// import config from '../config.js'
+// 
+// const path = config.lazyData 
+//   ? './lazy/pokemons.js'
+//   : './cache/pokemons.js'
 
-// Export processed moves
-export default process({
-    ...defaultPokemons,
-    ...extraPokemons
-});
+
+//import pokemons from './lazy/pokemons.js'
+import pokemons from './cache/pokemons.js'
+
+
+export default pokemons
