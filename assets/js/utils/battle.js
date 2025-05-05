@@ -560,7 +560,8 @@ class BattleState extends EventEmitter {
     setMoves(moves) {
         this.moves = []
         BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
-        moves.forEach(moveMeta => this.addMove(moveMeta.id, moveMeta))
+        moves.filter(moveMeta => !moveMeta.isUnselected)
+          .forEach(moveMeta => this.addMove(moveMeta.id, moveMeta))
     }
     
     addMove(id, meta = {}) {

@@ -5,8 +5,8 @@
 //   : './cache/pokemons.js'
 
 
-//import pokemons from './lazy/pokemons.js'
-import pokemons from './cache/pokemons.js'
+import pokemons from './lazy/pokemons.js'
+//import pokemons from './cache/pokemons.js'
 
 
 export default pokemons

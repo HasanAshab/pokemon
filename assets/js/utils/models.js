@@ -283,7 +283,6 @@ export class Move {
     }
 
     description(short = false) {
-      console.log(this.id)
         const desc = movesText[this.id]
         const key = short ? "shortDesc" : "desc"
         return desc[key] ?? desc.shortDesc

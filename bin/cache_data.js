@@ -6,12 +6,19 @@ const DIR_PATH = path.resolve('./data/lazy');
 const CACHE_DIR = path.resolve('./data/cache');
 
 async function ensureCacheDir() {
-  try {
-    await fs.mkdir(CACHE_DIR, { recursive: true });
-  } catch (err) {
-    console.error('Failed to create cache directory:', err);
-    throw err;
-  }
+  await fs.mkdir(CACHE_DIR, { recursive: true });
+}
+
+// Generate JavaScript-safe export code (not JSON)
+function serializeToJs(obj) {
+  const entries = Object.entries(obj).map(([key, value]) => {
+    if (typeof value === 'function') {
+      return `${key}: ${value.toString()}`;
+    } else {
+      return `${key}: ${JSON.stringify(value, null, 2)}`;
+    }
+  });
+  return `export default {\n  ${entries.join(',\n  ')}\n};\n`;
 }
 
 async function main(dirPath) {
@@ -23,15 +30,18 @@ async function main(dirPath) {
     .map(entry => path.join(dirPath, entry.name));
 
   for (const file of files) {
-    console.log(pathToFileURL(file).href)
-    const data = await import(pathToFileURL(file).href);
+    const module = await import(pathToFileURL(file).href);
 
     let exportedValue = null;
-    for (const key in data) {
-      exportedValue = data[key]; // triggers proxies if present
+    for (const key in module) {
+      exportedValue = module[key]; // use default or named export
     }
 
-    const content = `export default ${JSON.stringify(exportedValue, null, 2)};\n`;
+    if (typeof exportedValue !== 'object' || exportedValue === null) {
+      throw new Error(`Export from ${file} must be an object`);
+    }
+
+    const content = serializeToJs(exportedValue);
     const baseName = path.basename(file);
     const targetPath = path.join(CACHE_DIR, baseName);
 

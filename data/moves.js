@@ -4,9 +4,8 @@
 //   ? './lazy/moves.js'
 //   : './cache/moves.js'
 
-
-//import moves from './lazy/moves.js'
-import moves from './cache/moves.js'
+import moves from './lazy/moves.js'
+//import moves from './cache/moves.js'
 
 
 export default moves
