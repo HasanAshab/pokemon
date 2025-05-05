@@ -242,7 +242,7 @@ globalThis.copyStartBattleCode = function() {
 globalThis.showMoveDetails = function({currentTarget}){
   const form = currentTarget.parentElement
   const move = new Move(currentTarget.value)
-  if (move){
+  if (move.exists()){
     const moveDetails = form.querySelector(".move-details")
     moveDetails.querySelector(".move-name").textContent = move.name
     moveDetails.querySelector(".desc").textContent = move.description() + '\n' + JSON.stringify({

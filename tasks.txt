@@ -1,6 +1,6 @@
 * Proposal
 isUnselected
-processed .js
+shift users on localstorage
 
 Progress tracker
 

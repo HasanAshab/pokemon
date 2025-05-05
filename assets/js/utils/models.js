@@ -268,6 +268,10 @@ export class Move {
     get isNeverFails() {
         return this.accuracy === true || this.category === "Status" || !this.flags.twoturn
     }
+    
+    exists() {
+      return !!this._move
+    }
 
     effectiveness(type) {
         if (type instanceof Move) {
@@ -279,6 +283,7 @@ export class Move {
     }
 
     description(short = false) {
+      console.log(this.id)
         const desc = movesText[this.id]
         const key = short ? "shortDesc" : "desc"
         return desc[key] ?? desc.shortDesc
