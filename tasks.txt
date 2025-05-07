@@ -1,4 +1,6 @@
 * Proposal
+psi
+substitute
 isUnselected
 shift users on localstorage
 

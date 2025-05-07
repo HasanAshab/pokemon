@@ -260,7 +260,7 @@
             if (savedData) {
                 const parsedData = JSON.parse(savedData);
                 chartData.labels = parsedData.labels;
-                chartData.datasets[0].data = parsedData.data;
+                chartData.datasets[0].data = parsedData.datasets;
             }
 
             const savedEstimates = localStorage.getItem('revenueEstimates');
@@ -387,6 +387,7 @@
             loadData();
             renderTable();
             const ctx = document.getElementById('revenueChart').getContext('2d');
+            console.log(chartData)
             revenueChart = new Chart(ctx, {
                 type: 'bar',
                 data: chartData,
@@ -400,7 +401,7 @@
                 }
             });
         }
-        
+  /*      
     function addContract() {
     const nameInput = document.getElementById("contractName");
     const profitInput = document.getElementById("contractProfit");
@@ -478,7 +479,7 @@ function updateAssetTotal(change) {
     currentAssetTotal += change;
     document.getElementById('totalAssetRent').textContent = currentAssetTotal.toFixed(2);
 }
-
+*/
     </script>
 </body>
 </html>

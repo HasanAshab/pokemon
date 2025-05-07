@@ -1,10 +1,10 @@
 {
   "lucario": {
-    "xp": 3200,
+    "xp": 3300,
     "nature": "hardy",
-    "retreat": 5.3,
+    "retreat": 6.3,
     "stats": {
-      "hp": 309
+      "hp": 316
     },
     "token_used": {
       "hp": 0,
@@ -24,7 +24,8 @@
         "id": "karatechop"
       },
       {
-        "id": "poweruppunch"
+        "id": "poweruppunch",
+        "grade": 1
       },
       {
         "id": "metalclaw"
@@ -34,6 +35,9 @@
       },
       {
         "id": "scaryface"
+      },
+      {
+        "id": "hammerarm"
       }
     ],
     "isSelectedForMultiBattle": false,
@@ -46,7 +50,7 @@
   "garchomp": {
     "xp": 3100,
     "nature": "hardy",
-    "retreat": 5.5,
+    "retreat": 6.5,
     "stats": {
       "hp": 487
     },
@@ -65,10 +69,12 @@
       },
       {
         "id": "dragonbreath",
-        "isSelected": true
+        "isSelected": true,
+        "grade": 0
       },
       {
-        "id": "dragontail"
+        "id": "dragontail",
+        "grade": 0
       },
       {
         "id": "doubleteam"
@@ -87,11 +93,11 @@
     }
   },
   "talonflame": {
-    "xp": 2900,
+    "xp": 3400,
     "nature": "careful",
-    "retreat": 5.7,
+    "retreat": 6.7,
     "stats": {
-      "hp": 325
+      "hp": 365
     },
     "token_used": {
       "hp": 0,
@@ -99,8 +105,7 @@
       "atk": 0,
       "def": 0,
       "spa": 0,
-      "spd": 0,
-      "wins-count": 2
+      "spd": 0
     },
     "moves": [
       {
@@ -113,7 +118,8 @@
       },
       {
         "id": "flamecharge",
-        "isSelected": true
+        "isSelected": true,
+        "grade": 1
       },
       {
         "id": "doubleteam",
@@ -123,7 +129,7 @@
         "id": "aircutter"
       }
     ],
-    "wins-count": 26,
+    "wins-count": 27,
     "loses-count": 8,
     "isSelectedForMultyBattle": false,
     "isSelectedForMultiBattle": true,
@@ -135,7 +141,7 @@
   "alakazam": {
     "xp": 2900,
     "nature": "jolly",
-    "retreat": 5.7,
+    "retreat": 6.7,
     "stats": {
       "hp": 254
     },
@@ -178,5 +184,42 @@
       "moves": [],
       "suffix": "mega"
     }
+  },
+  "chimchar": {
+    "xp": 1100,
+    "nature": "calm",
+    "retreat": 4.2,
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    },
+    "mega": {
+      "suffix": "mega",
+      "moves": []
+    },
+    "wins-count": 0,
+    "loses-count": 0,
+    "moves": [
+      {
+        "id": "doubleslap"
+      },
+      {
+        "id": "ember"
+      },
+      {
+        "id": "growl"
+      },
+      {
+        "id": "pound"
+      },
+      {
+        "id": "machpunch"
+      }
+    ]
   }
 }
