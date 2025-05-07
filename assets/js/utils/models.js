@@ -1,5 +1,6 @@
 import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
+import abilities from "../../../data/abilities.js"
 import typeChart from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
@@ -14,15 +15,9 @@ class PSPokemon {
     get hp() {
         return this.state.stats.get("hp") ?? null
     }
-    
-    get abilities() {
-        return Object.keys(this._pokemon.abilities)
-            .filter(key => key !== "H") // Exclude hidden abilities
-            .map(key => this._pokemon.abilities[key])
-    }
-    
+
     hasAbility(ability) {
-        return this.abilities.includes(ability)
+        return this.abilities.has(ability)
     }
 
     getWeight() {
@@ -75,6 +70,7 @@ export class Pokemon extends PSPokemon {
         this._pokemon = pokemons[id];
         this._tag = tag;
         this.stats = this._calculateTotalStat();
+        this.abilities = new AbilityManager(this)
     }
     
     get megaId() {
@@ -176,7 +172,6 @@ export class Pokemon extends PSPokemon {
     }
     
     movesMeta() {
-        console.log(this.isMegaForm())
         return this.isMegaForm() 
             ? this.meta.mega.moves
             : this.meta.moves
@@ -338,5 +333,47 @@ export class Move {
             return weightedRandom(probabilities, weights);
         }
         return Math.floor(Math.random() * (this.multihit[1] - this.multihit[0] + 1)) + this.multihit[0];
+    }
+}
+
+class Ability {
+    constructor(name, isHidden, manager) {
+        this.name = name
+        this.isHidden = isHidden
+        this.manager = manager
+        this._ability = abilities[this.id]
+    }
+    
+    get id() {
+        return this.name.toLowerCase().replace(/\s+/g, '');
+    }
+    
+    isImmune(effect) {
+        const status = { id: effect }
+        if ("onTryAddVolatile" in this._ability) {
+          return this._ability.onTryAddVolatile(status, this.manager.pokemon) === null
+        }
+        return false
+    }
+}
+
+class AbilityManager {
+    constructor(pokemon) {
+        this.pokemon = pokemon
+        this._abilities = []
+        for (const [key, name] of Object.entries(pokemon._pokemon.abilities)) {
+          //console.log(name)
+          const isHidden = key === 'H'
+          const ability = new Ability(name, isHidden, this)
+          this._abilities.push(ability)
+        }
+    }
+    
+    has(name) {
+        return this._abilities.includes(name)
+    }
+    
+    isImmune(effect) {
+        return this._abilities.some(ability => ability.isImmune(effect))
     }
 }

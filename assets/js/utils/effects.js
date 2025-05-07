@@ -6,13 +6,14 @@ class Effect {
     static immuneTo = []
     
     static isImmune(pokemon) {
-        return pokemon.types.some(t => this.immuneTo.includes(t))
+        const abilityTrigger = pokemon.abilities.isImmune(this.effectName)
+        abilityTrigger && console.log(`${pokemon.name}: ${this.effectName} avoided by ability`)
+        return abilityTrigger || pokemon.types.some(t => this.immuneTo.includes(t))
     }
-    
+
     static isPre() {
         return false
     }
-
 
     status = {
         canMove: true,
