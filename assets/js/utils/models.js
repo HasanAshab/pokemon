@@ -71,6 +71,7 @@ export class Pokemon extends PSPokemon {
         this._tag = tag;
         this.stats = this._calculateTotalStat();
         this.abilities = new AbilityManager(this)
+        this.items = new ItemManager(this)
     }
     
     get megaId() {
@@ -377,3 +378,17 @@ class AbilityManager {
         return this._abilities.some(ability => ability.isImmune(effect))
     }
 }
+
+class ItemManager {
+    constructor(pokemon) {
+        this.pokemon = pokemon
+        this._abilities = []
+        for (const [key, name] of Object.entries(pokemon._pokemon.abilities)) {
+          //console.log(name)
+          const isHidden = key === 'H'
+          const ability = new Ability(name, isHidden, this)
+          this._abilities.push(ability)
+        }
+    }
+}
+

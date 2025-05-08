@@ -480,6 +480,100 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 }
 
+class ShadowCloneEffect extends ExpirableEffect {
+    static effectName = "shadowclone"
+
+    static isPre() {
+        return true
+    }
+
+    lifetime = { waves: 1 }
+    meta = {}
+
+    setup() {
+        super.setup()
+        this.state.manCount = this._calculateDTManCount()
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.manCount = 1
+        this.state.unfreeze()
+    }
+
+    onScene(move, senario) {
+        move = this._modifyMove(move)
+        senario.set(this.state.pokemon, move)
+
+        // Double Team Defence Devided To Each
+        const modifier = 1 / this.state.manCount
+        this.state.stats.chainModify("def", modifier)
+        this.state.stats.chainModify("spd", modifier)
+    }
+
+    onSceneEnd() {
+        this.meta = {}
+        this.state.unfreeze()
+    }
+    
+    onOpponentScene(move) {
+        this.meta.totalManHittee = this._totalManHittee(move)
+    }
+
+    onContacted(contactor) {
+        const isMainManHittee = this.meta.totalManHittee === this.state.manCount
+            || contactor === this.state.pokemon
+
+        if (isMainManHittee) {
+            return this.remove()
+        }
+
+        this.state.manCount -= this.meta.totalManHittee
+        this.state.freeze()
+    }
+
+    displayMeta() {
+        return this.meta.totalManHittee 
+            ? `(-${this.meta.totalManHittee})`
+            : ''
+    }
+
+    _calculateDTManCount() {
+        console.log(this.state.stats.get("spe"))
+        return Math.round(
+            this.state.stats.get("spe") * this.state.pokemon.level * (0.06 * 0.1)
+        )
+    }
+
+    _modifyMove(move) {
+        const contactModifier = move.flags.contact ? 0.4 : 1
+        move.basePower = move.basePower / (this.state.manCount * contactModifier)
+        move.multihit = Array.from({ length: this.state.manCount }).reduce((acc, i) => {
+            return acc + move.multiHit()
+        }, 0)
+        return move
+    }
+    
+    _totalManHittee(move) {
+        const isMainManHittee = manCount => Math.random() < ((1 / manCount) * 1.5)
+        const manCount = this.state.manCount
+        if (move.target.startsWith("allAdjacent")) {
+            for (let i = 0; i < manCount; i++) {
+                if (!isMainManHittee(manCount - i)) {
+                    move.basePower = move.basePower / 2
+                }
+            }
+            return manCount
+        }
+        for (let i = 0; i < move.hit; i++) {
+            if (isMainManHittee(manCount - i)) {
+                return manCount
+            }
+        }
+        return Math.min(manCount, move.hits)
+    }
+}
+
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,

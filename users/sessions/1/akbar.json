@@ -1,4 +1,4 @@
-  {
+[  {
     "id": "hawlucha",
     "xp": 3000,
     "nature": "adamant",
@@ -52,4 +52,4 @@
     },
     "stats": {},
     "token_used": {}
-}
+}]

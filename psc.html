@@ -260,7 +260,7 @@
             if (savedData) {
                 const parsedData = JSON.parse(savedData);
                 chartData.labels = parsedData.labels;
-                chartData.datasets[0].data = parsedData.datasets;
+                chartData.datasets[0].data = parsedData.data;
             }
 
             const savedEstimates = localStorage.getItem('revenueEstimates');
