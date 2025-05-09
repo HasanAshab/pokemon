@@ -28,8 +28,25 @@ let charizard = new Pokemon("charizard", {
       }
 })
 
+class Wave {
+  constructor(commander, soldiers, options) {
+    this.commander = commander
+    this.soldiers = soldiers
+    this.options = options
+  }
 
-function canWin(attackers, defenders) {
+  cp() {
+    const commanderCp = this.commander.image.cp()
+    const soldiersCp = Array.from(this.soldiers.entries()).reduce((sum, [pokemon, quantity]) => {
+      return sum + pokemon.cp() * quantity;
+    }, 0);
+    
+    return commanderCp + soldiersCp
+  }
+}
+
+
+function calculateWaveOutcome(attackers, defenders) {
   // Sum soldier CPs
   let attackersCP = Array.from(attackers.soldier.entries()).reduce((sum, [pokemon, quantity]) => {
     return sum + pokemon.cp() * quantity;
@@ -55,44 +72,65 @@ function canWin(attackers, defenders) {
   const adjustedAttackersCP = attackersCP * attackerIQMultiplier * attackerLuck;
   const adjustedDefendersCP = defendersCP * defenderIQMultiplier * defenderLuck;
 
-  console.log("Raw Attackers CP:", attackersCP);
-  console.log("Raw Defenders CP:", defendersCP);
+  // Calculate differences
+  const luckDiff = attackerLuck - defenderLuck;
+  const iqDiff = attackerIQMultiplier - defenderIQMultiplier;
+  const cpDiff = attackersCP - defendersCP;
 
-  const luckDiff = (attackerLuck - defenderLuck).toFixed(2);
-  const iqDiff = (attackerIQMultiplier - defenderIQMultiplier).toFixed(2) * 10;
-
-  if (luckDiff > 0) {
-    console.log(`Attackers are luckier by +${luckDiff}`);
-  } else if (luckDiff < 0) {
-    console.log(`Defenders are luckier by +${Math.abs(luckDiff)}`);
+  // Determine the main cause of win/loss
+  let cause = '';
+  if (Math.abs(luckDiff) > Math.abs(iqDiff) && Math.abs(luckDiff) > Math.abs(cpDiff) / Math.max(attackersCP, defendersCP)) {
+    cause = luckDiff > 0 ? 'Attackers won due to better luck.' : 'Defenders won due to better luck.';
+  } else if (Math.abs(iqDiff) > Math.abs(cpDiff) / Math.max(attackersCP, defendersCP)) {
+    cause = iqDiff > 0 ? 'Attackers won with better strategic IQ.' : 'Defenders won with better strategic IQ.';
   } else {
-    console.log("Both sides have equal luck");
+    cause = cpDiff > 0 ? 'Attackers overpowered the defenders with stronger units.' : 'Defenders overpowered the attackers with stronger units.';
   }
 
-  if (iqDiff > 0) {
-    console.log(`Attackers have higher IQ by +${iqDiff}`);
-  } else if (iqDiff < 0) {
-    console.log(`Defenders have higher IQ by +${Math.abs(iqDiff)}`);
-  } else {
-    console.log("Both sides have equal strategic IQ");
+  const win = adjustedAttackersCP > adjustedDefendersCP;
+
+  // Wounded estimation (simple 20% of soldiers lost for the loser)
+  function calculateWounded(soldiers, percent) {
+    const result = new Map();
+    for (const [pokemon, quantity] of soldiers.entries()) {
+      result.set(pokemon, Math.ceil(quantity * percent));
+    }
+    return result;
   }
 
-  console.log("Adjusted Attackers CP:", adjustedAttackersCP.toFixed(2));
-  console.log("Adjusted Defenders CP:", adjustedDefendersCP.toFixed(2));
+  const wounded = {
+    atk: win ? calculateWounded(attackers.soldier, 0.1) : calculateWounded(attackers.soldier, 0.2),
+    def: win ? calculateWounded(defenders.soldier, 0.2) : calculateWounded(defenders.soldier, 0.1),
+  };
 
-  return adjustedAttackersCP > adjustedDefendersCP;
+  return {
+    win,
+    cause,
+    wounded,
+  };
 }
 
 
-const atk = {
-  commander: {
+const com1 = {
     image: charizard, // image means assume another charizard the commander
     iq: {
       // 10 is max iq for any kind
       offensive: 3,
       defensive: 1.5,
     }
-  },
+}
+const com2 = {
+    image: charmander, // image means assume another charmander the commander
+    iq: {
+      // 10 is max iq for any kind
+      offensive: 1,
+      defensive: 5,
+    }
+  }
+
+
+const wave1 = {
+  commander: com1,
   soldier: new Map([
     [charizard, 10],
     [charmander, 100],
@@ -101,15 +139,8 @@ const atk = {
     //luck: 1
   }
 }
-const def = {
-  commander: {
-    image: charmander, // image means assume another charmander the commander
-    iq: {
-      // 10 is max iq for any kind
-      offensive: 1,
-      defensive: 5,
-    }
-  },
+const wave2 = {
+  commander: com2,
   soldier: new Map([
     [charizard, 40],
   ]),
@@ -117,4 +148,4 @@ const def = {
 }
 
 
-console.log(canWin(atk, def))
+console.log(calculateWaveOutcome(wave1, wave1))

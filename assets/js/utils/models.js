@@ -35,6 +35,11 @@ class PSPokemon {
     getStat(name) {
         return this.state.stats.get(name)
     }
+    
+    trySetStatus(effect, target) {
+        this.state.effects.add(null, effect)
+        target && console.log(`${this.name}: ${target.name}'s ability caused ${effect}`)
+    }
 }
 
 export class Pokemon extends PSPokemon {
@@ -70,8 +75,9 @@ export class Pokemon extends PSPokemon {
         this._pokemon = pokemons[id];
         this._tag = tag;
         this.stats = this._calculateTotalStat();
+        
         this.abilities = new AbilityManager(this)
-        this.items = new ItemManager(this)
+        //this.items = new ItemManager(this)
     }
     
     get megaId() {
@@ -342,7 +348,9 @@ class Ability {
         this.name = name
         this.isHidden = isHidden
         this.manager = manager
+        this.pokemon = manager.pokemon
         this._ability = abilities[this.id]
+        this._subscribeListeners()
     }
     
     get id() {
@@ -356,26 +364,64 @@ class Ability {
         }
         return false
     }
+    
+    _subscribeListeners() {
+        this.pokemon.state?.on('contacted', contactor => {
+            console.log("yeah")
+            try {
+                if ('onDamagingHit' in this._ability) {
+                    const ctx = {
+                        checkMoveMakesContact: () => true,
+                        randomChance(numerator, denominator) {
+                            return true
+                            return Math.floor(Math.random() * denominator) < numerator;
+                        },
+                    }
+                    this._ability.onDamagingHit.call(
+                        ctx,
+                        null,
+                        contactor,
+                        this.pokemon,
+                        null
+                    )
+                }
+            }
+            catch (e) {
+              console.log(e)
+            }
+        })
+    }
 }
 
 class AbilityManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._abilities = []
-        for (const [key, name] of Object.entries(pokemon._pokemon.abilities)) {
-          //console.log(name)
-          const isHidden = key === 'H'
-          const ability = new Ability(name, isHidden, this)
-          this._abilities.push(ability)
-        }
+        this._setAbilities(pokemon._pokemon.abilities)
+    }
+    
+    names() {
+      return this._abilities.map(ab => ab.name)
     }
     
     has(name) {
         return this._abilities.includes(name)
     }
     
+    isEnabled() {
+        return this.pokemon.level >= 36
+    }
+
     isImmune(effect) {
         return this._abilities.some(ability => ability.isImmune(effect))
+    }
+    
+    _setAbilities(abilities) {
+      this._abilities = []
+        for (const [key, name] of Object.entries(abilities)) {
+          const isHidden = key === 'H'
+          const ability = new Ability(name, isHidden, this)
+          this._abilities.push(ability)
+        }
     }
 }
 

@@ -306,5 +306,3 @@ startBattle(null,[
 
 //anubis
 
-
-

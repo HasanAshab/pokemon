@@ -4,9 +4,9 @@ import { Move } from "./models.js"
 
 class Effect {
     static immuneTo = []
-    
+
     static isImmune(pokemon) {
-        const abilityTrigger = pokemon.abilities.isImmune(this.effectName)
+        const abilityTrigger = pokemon.abilities.isEnabled() && pokemon.abilities.isImmune(this.effectName)
         abilityTrigger && console.log(`${pokemon.name}: ${this.effectName} avoided by ability`)
         return abilityTrigger || pokemon.types.some(t => this.immuneTo.includes(t))
     }
@@ -480,6 +480,8 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 }
 
+
+//TODO
 class ShadowCloneEffect extends ExpirableEffect {
     static effectName = "shadowclone"
 
@@ -588,6 +590,7 @@ export const EFFECTS = makeEffectsMap([
     StallEffect,
     PartiallyTrappedEffect,
     DoubleTeamEffect,
+    ShadowCloneEffect,
 ])
 
 

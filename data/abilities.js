@@ -1562,6 +1562,7 @@ export default {
   },
   flamebody: {
     onDamagingHit(damage, target, source, move) {
+      console.log(this.checkMoveMakesContact(move, source, target), source.trySetStatus("brn", target))
       if (this.checkMoveMakesContact(move, source, target)) {
         if (this.randomChance(3, 10)) {
           source.trySetStatus("brn", target)

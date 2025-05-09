@@ -213,7 +213,7 @@ function loadStats() {
     setStat("xp", pokemon.meta.xp)
     setStat("retreat", pokemon.meta.retreat)
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
-    setStat("abilities", pokemon.abilities.join(', '))
+    setStat("abilities", pokemon.abilities.names().join(', '))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
     
