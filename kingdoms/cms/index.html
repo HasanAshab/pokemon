@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kingdom CMS</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="kingdomName">Kingdom</h1>
+
+    <label>Land Area (km²)
+      <input type="number" id="landArea" />
+    </label>
+
+    <label>Density (people/km²)
+      <input type="number" id="density" />
+    </label>
+    
+    <label>Per Capita Income ($)
+      <input type="number" id="pci" />
+    </label>
+
+
+    <div class="bar-group">
+      <div class="label">Population: <span id="populationLabel">0</span></div>
+      <div class="bar" id="populationBar"></div>
+    </div>
+
+    <div class="bar-group">
+      <div class="label">Tax: $<span id="taxLabel">0</span></div>
+      <div class="bar tax" id="taxBar"></div>
+    </div>
+
+    <button id="saveBtn">Save</button>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

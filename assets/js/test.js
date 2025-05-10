@@ -287,3 +287,11 @@ const p = [
   ]
 prepareSoldiers(militia, p).forEach(console.log)
 
+
+
+// utils
+function upgradePrice(basePrice, growthRate, level) {
+  return Math.round(basePrice * Math.pow(growthRate, level - 1));
+}
+
+console.log(upgradePrice(5000, 1.5, 3).toLocaleString())
