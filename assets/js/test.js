@@ -35,14 +35,17 @@ class Wave {
     this._processOptions(options)
   }
   
+
   soldiersCp() {
-    return Array.from(this.soldiers.entries()).reduce((sum, [pokemon, quantity]) => {
-      return sum + pokemon.cp() * quantity;
+    return Array.from(this.soldiers.entries()).reduce((sum, [image, quantity]) => {
+      return sum + image.cp() * quantity;
     }, 0);
   }
-
-  cp() {
-    return this.commander.image.cp() + this.soldiersCp()
+  
+  soldiersCount() {
+    return Array.from(this.soldiers.entries()).reduce((sum, [image, quantity]) => {
+      return sum + quantity;
+    }, 0);
   }
   
   soldiersStat(stat) {
@@ -58,6 +61,10 @@ class Wave {
       result.set(image, Math.ceil(quantity * mod));
     }
     return result;
+  }
+
+  cp() {
+    return this.commander.image.cp() + this.soldiersCp()
   }
 
   statOf(stat) {
@@ -110,6 +117,21 @@ class DefenseWave extends Wave {
 }
 
 
+function vsQuantStr(attackers, defenders) {
+  const atk = attackers.soldiersCount()
+  const def = defenders.soldiersCount()
+  
+  const atkQuant = atk > def
+    ? `${Math.ceil(atk / def)} Attackers`
+    : "1 Attacker"
+    
+  const defQuant = def > atk
+    ? `${Math.ceil(def / atk)} Defenders`
+    : "1 Defender"
+  return `${atkQuant} vs ${defQuant}`
+}
+
+
 function calculateScore(w1, w2) {
   const phyScore = w1.statOf('def') - w2.statOf('atk')
   const spScore = w1.statOf('spd') - w2.statOf('spa')
@@ -118,9 +140,21 @@ function calculateScore(w1, w2) {
 }
 
 function calculateWaveOutcome(attackers, defenders) {
-  const attackersScore = calculateScore(attackers, defenders);
-  const defendersScore = calculateScore(defenders, attackers);
-  console.log(attackersScore, defendersScore)
+  const atkCount = attackers.soldiersCount();
+  const defCount = defenders.soldiersCount();
+  const HANDS_BONUS_FACTOR = 0.1;
+
+  const atkHandsModifier = atkCount > defCount
+    ? 1 + ((atkCount - defCount) / defCount) * HANDS_BONUS_FACTOR
+    : 1;
+
+  const defHandsModifier = defCount > atkCount
+    ? 1 + ((defCount - atkCount) / atkCount) * HANDS_BONUS_FACTOR
+    : 1;
+
+  const attackersScore = calculateScore(attackers, defenders) * atkHandsModifier;
+  const defendersScore = calculateScore(defenders, attackers) * defHandsModifier;
+
   const win = attackersScore > defendersScore;
 
   const attackersCP = attackers.soldiersCp();
@@ -132,19 +166,23 @@ function calculateWaveOutcome(attackers, defenders) {
 
   const commentLines = [];
 
+  // Units quantity
+  if (atkCount !== defCount) {
+    commentLines.push(vsQuantStr(attackers, defenders));
+  }
+
   // Stronger units
   if (cpDiff > 0) {
     commentLines.push("Attacker has stronger units");
   } else {
     commentLines.push("Defender has stronger units");
   }
-  
+
   // Units advantage
   if (attackersScore > defendersScore !== attackers.cp() > defenders.cp()) {
     if (attackersScore > defendersScore) {
       commentLines.push("Attacker units got advantage");
-    }
-    else {
+    } else {
       commentLines.push("Defender units got advantage");
     }
   }
@@ -166,14 +204,13 @@ function calculateWaveOutcome(attackers, defenders) {
   const wounded = {};
 
   if (win) {
-    const per = (defendersScore * 100) / attackersScore
-    wounded.atk = attackers.pluckSoldiers(per)
-    wounded.def = defenders.soldiers
-  }
-  else {
-    const per = (attackersScore * 100) / defendersScore
-    wounded.def = defenders.pluckSoldiers(per)
-    wounded.atk = attackers.soldiers
+    const per = (defendersScore * 100) / attackersScore;
+    wounded.atk = attackers.pluckSoldiers(per);
+    wounded.def = defenders.soldiers;
+  } else {
+    const per = (attackersScore * 100) / defendersScore;
+    wounded.def = defenders.pluckSoldiers(per);
+    wounded.atk = attackers.soldiers;
   }
 
   return {
@@ -182,7 +219,6 @@ function calculateWaveOutcome(attackers, defenders) {
     wounded,
   };
 }
-
 
 const com1 = {
     image: charizard, // image means assume another charizard the commander
@@ -216,7 +252,8 @@ const wave2 = new DefenseWave(com2, new Map([
 const res = calculateWaveOutcome(wave1, wave2)
 console.log(res)
 
-console.log('atk')
-res.wounded.atk.forEach(console.log)
-console.log('def')
-res.wounded.def.forEach(console.log)
+// console.log('atk')
+// res.wounded.atk.forEach(console.log)
+// console.log('def')
+// res.wounded.def.forEach(console.log)
+
