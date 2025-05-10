@@ -28,6 +28,45 @@ let charizard = new Pokemon("charizard", {
       }
 })
 
+class SoldierStack extends Map {
+  constructor(data = []) {
+    data = data.map(([imageMeta, quantity]) => {
+      const image = imageMeta instanceof Pokemon
+        ? imageMeta
+        : new Pokemon(imageMeta.id, imageMeta)
+      return [image, quantity]
+    })
+    super(data)
+  }
+  
+  cp() {
+    return Array.from(this.entries()).reduce((sum, [image, quantity]) => {
+      return sum + image.cp() * quantity;
+    }, 0);
+  }
+  
+  count() {
+    return Array.from(this.entries()).reduce((sum, [image, quantity]) => {
+      return sum + quantity;
+    }, 0);
+  }
+  
+  statOf(stat) {
+    return Array.from(this.entries()).reduce((sum, [image, quantity]) => {
+      return sum + (image.stats[stat] * quantity);
+    }, 0);
+  }
+  
+  resize(percent) {
+    const result = new SoldierStack();
+    const mod = percent / 100
+    for (const [image, quantity] of this.entries()) {
+      result.set(image, Math.ceil(quantity * mod));
+    }
+    return result;
+  }
+}
+
 class Wave {
   constructor(commander, soldiers, options = {}) {
     this.commander = commander
@@ -35,49 +74,25 @@ class Wave {
     this._processOptions(options)
   }
   
-
-  soldiersCp() {
-    return Array.from(this.soldiers.entries()).reduce((sum, [image, quantity]) => {
-      return sum + image.cp() * quantity;
-    }, 0);
-  }
-  
-  soldiersCount() {
-    return Array.from(this.soldiers.entries()).reduce((sum, [image, quantity]) => {
-      return sum + quantity;
-    }, 0);
-  }
-  
-  soldiersStat(stat) {
-    return Array.from(this.soldiers.entries()).reduce((sum, [soldier, quantity]) => {
-      return sum + (soldier.stats[stat] * quantity);
-    }, 0);
-  }
-  
-  pluckSoldiers(percent) {
-    const result = new Map();
-    const mod = percent / 100
-    for (const [image, quantity] of this.soldiers.entries()) {
-      result.set(image, Math.ceil(quantity * mod));
-    }
-    return result;
+  resize(percent) {
+    const soldiers = this.soldiers.resize(percent)
+    return new Wave(this.commander, soldiers, this.options)
   }
 
   cp() {
-    return this.commander.image.cp() + this.soldiersCp()
+    return this.commander.image.cp() + this.soldiers.cp()
   }
 
   statOf(stat) {
     const commanderStat = this.commander.image.stats[stat]
-    const totalCp = commanderStat + this.soldiersCp(stat)
+    const totalCp = commanderStat + this.soldiers.statOf(stat)
     return totalCp * this.cpModifier()
   }
   
   cpModifier() {
     return this._cpModifiers.reduce((acc, mod) => acc * mod, 1)
   }
-  
-  
+
   _processOptions(options) {
     this.options = options
     this._cpModifiers = options.cpModifiers || []
@@ -118,8 +133,8 @@ class DefenseWave extends Wave {
 
 
 function vsQuantStr(attackers, defenders) {
-  const atk = attackers.soldiersCount()
-  const def = defenders.soldiersCount()
+  const atk = attackers.soldiers.count()
+  const def = defenders.soldiers.count()
   
   const atkQuant = atk > def
     ? `${Math.ceil(atk / def)} Attackers`
@@ -140,9 +155,9 @@ function calculateScore(w1, w2) {
 }
 
 function calculateWaveOutcome(attackers, defenders) {
-  const atkCount = attackers.soldiersCount();
-  const defCount = defenders.soldiersCount();
-  const HANDS_BONUS_FACTOR = 0.1;
+  const atkCount = attackers.soldiers.count();
+  const defCount = defenders.soldiers.count();
+  const HANDS_BONUS_FACTOR = 0.07;
 
   const atkHandsModifier = atkCount > defCount
     ? 1 + ((atkCount - defCount) / defCount) * HANDS_BONUS_FACTOR
@@ -157,8 +172,8 @@ function calculateWaveOutcome(attackers, defenders) {
 
   const win = attackersScore > defendersScore;
 
-  const attackersCP = attackers.soldiersCp();
-  const defendersCP = defenders.soldiersCp();
+  const attackersCP = attackers.soldiers.cp();
+  const defendersCP = defenders.soldiers.cp();
 
   const luckDiff = attackers.meta.luckModifier - defenders.meta.luckModifier;
   const iqDiff = attackers.meta.iqModifier - defenders.meta.iqModifier;
@@ -205,11 +220,11 @@ function calculateWaveOutcome(attackers, defenders) {
 
   if (win) {
     const per = (defendersScore * 100) / attackersScore;
-    wounded.atk = attackers.pluckSoldiers(per);
+    wounded.atk = attackers.soldiers.resize(per);
     wounded.def = defenders.soldiers;
   } else {
     const per = (attackersScore * 100) / defendersScore;
-    wounded.def = defenders.pluckSoldiers(per);
+    wounded.def = defenders.soldiers.resize(per);
     wounded.atk = attackers.soldiers;
   }
 
@@ -238,12 +253,12 @@ const com2 = {
   }
 
 
-const wave1 = new AttackWave(com1, new Map([
+const wave1 = new AttackWave(com1, new SoldierStack([
   [charizard, 10],
   [charmander, 100],
 ]))
 
-const wave2 = new DefenseWave(com2, new Map([
+const wave2 = new DefenseWave(com2, new SoldierStack([
   [charizard, 40],
 ]), { morality: 70 })
 
@@ -256,4 +271,21 @@ console.log(res)
 // res.wounded.atk.forEach(console.log)
 // console.log('def')
 // res.wounded.def.forEach(console.log)
+
+
+//wave1.resize(10)
+//wave1.soldiers.forEach(console.log)
+
+
+
+
+charizard.meta.id = 'charizard'
+charmander.meta.id = 'charmander'
+const data = [
+  [charizard.meta, 10],
+  [charmander.meta, 100],
+]
+
+const s = new SoldierStack(data)
+
 
