@@ -29,83 +29,156 @@ let charizard = new Pokemon("charizard", {
 })
 
 class Wave {
-  constructor(commander, soldiers, options) {
+  constructor(commander, soldiers, options = {}) {
     this.commander = commander
     this.soldiers = soldiers
-    this.options = options
+    this._processOptions(options)
+  }
+  
+  soldiersCp() {
+    return Array.from(this.soldiers.entries()).reduce((sum, [pokemon, quantity]) => {
+      return sum + pokemon.cp() * quantity;
+    }, 0);
   }
 
   cp() {
-    const commanderCp = this.commander.image.cp()
-    const soldiersCp = Array.from(this.soldiers.entries()).reduce((sum, [pokemon, quantity]) => {
-      return sum + pokemon.cp() * quantity;
+    return this.commander.image.cp() + this.soldiersCp()
+  }
+  
+  soldiersStat(stat) {
+    return Array.from(this.soldiers.entries()).reduce((sum, [soldier, quantity]) => {
+      return sum + (soldier.stats[stat] * quantity);
     }, 0);
-    
-    return commanderCp + soldiersCp
   }
-}
-
-
-function calculateWaveOutcome(attackers, defenders) {
-  // Sum soldier CPs
-  let attackersCP = Array.from(attackers.soldier.entries()).reduce((sum, [pokemon, quantity]) => {
-    return sum + pokemon.cp() * quantity;
-  }, 0);
-
-  let defendersCP = Array.from(defenders.soldier.entries()).reduce((sum, [pokemon, quantity]) => {
-    return sum + pokemon.cp() * quantity;
-  }, 0);
-
-  // Add commander's CP
-  attackersCP += attackers.commander.image.cp();
-  defendersCP += defenders.commander.image.cp();
-
-  // IQ multipliers
-  const attackerIQMultiplier = 1 + (attackers.commander.iq.offensive / 10);
-  const defenderIQMultiplier = 1 + (defenders.commander.iq.defensive / 10);
-
-  // Use explicit luck if provided, else random
-  const attackerLuck = attackers.options?.luck ?? (0.9 + Math.random() * 0.2);
-  const defenderLuck = defenders.options?.luck ?? (0.9 + Math.random() * 0.2);
-
-  // Adjusted CP
-  const adjustedAttackersCP = attackersCP * attackerIQMultiplier * attackerLuck;
-  const adjustedDefendersCP = defendersCP * defenderIQMultiplier * defenderLuck;
-
-  // Calculate differences
-  const luckDiff = attackerLuck - defenderLuck;
-  const iqDiff = attackerIQMultiplier - defenderIQMultiplier;
-  const cpDiff = attackersCP - defendersCP;
-
-  // Determine the main cause of win/loss
-  let cause = '';
-  if (Math.abs(luckDiff) > Math.abs(iqDiff) && Math.abs(luckDiff) > Math.abs(cpDiff) / Math.max(attackersCP, defendersCP)) {
-    cause = luckDiff > 0 ? 'Attackers won due to better luck.' : 'Defenders won due to better luck.';
-  } else if (Math.abs(iqDiff) > Math.abs(cpDiff) / Math.max(attackersCP, defendersCP)) {
-    cause = iqDiff > 0 ? 'Attackers won with better strategic IQ.' : 'Defenders won with better strategic IQ.';
-  } else {
-    cause = cpDiff > 0 ? 'Attackers overpowered the defenders with stronger units.' : 'Defenders overpowered the attackers with stronger units.';
-  }
-
-  const win = adjustedAttackersCP > adjustedDefendersCP;
-
-  // Wounded estimation (simple 20% of soldiers lost for the loser)
-  function calculateWounded(soldiers, percent) {
+  
+  pluckSoldiers(percent) {
     const result = new Map();
-    for (const [pokemon, quantity] of soldiers.entries()) {
-      result.set(pokemon, Math.ceil(quantity * percent));
+    const mod = percent / 100
+    for (const [image, quantity] of this.soldiers.entries()) {
+      result.set(image, Math.ceil(quantity * mod));
     }
     return result;
   }
 
-  const wounded = {
-    atk: win ? calculateWounded(attackers.soldier, 0.1) : calculateWounded(attackers.soldier, 0.2),
-    def: win ? calculateWounded(defenders.soldier, 0.2) : calculateWounded(defenders.soldier, 0.1),
-  };
+  statOf(stat) {
+    const commanderStat = this.commander.image.stats[stat]
+    const totalCp = commanderStat + this.soldiersCp(stat)
+    return totalCp * this.cpModifier()
+  }
+  
+  cpModifier() {
+    return this._cpModifiers.reduce((acc, mod) => acc * mod, 1)
+  }
+  
+  
+  _processOptions(options) {
+    this.options = options
+    this._cpModifiers = options.cpModifiers || []
+    this.meta = {}
+    
+    this.meta.luckModifier = options?.luck ?? (0.9 + Math.random() * 0.2)
+    this._cpModifiers.push(this.meta.luckModifier)
+    
+    this.meta.morality = options.morality ?? 100;
+    this.meta.moralityFactor = (this.meta.morality / 100) * 1 + ((100 - this.meta.morality) / 100) * 0.6;
+    this._cpModifiers.push(this.meta.moralityFactor);
+  }
+}
+
+class AttackWave extends Wave {
+  constructor() {
+    super(...arguments)
+    this._setIqModifier()
+  }
+  
+  _setIqModifier() {
+    this.meta.iqModifier = 1 + (this.commander.iq.offensive / 10)
+    this._cpModifiers.push(this.meta.iqModifier)
+  }
+}
+
+class DefenseWave extends Wave {
+  constructor() {
+    super(...arguments)
+    this._setIqModifier()
+  }
+  
+  _setIqModifier() {
+    this.meta.iqModifier = 1 + (this.commander.iq.defensive / 10)
+    this._cpModifiers.push(this.meta.iqModifier)
+  }
+}
+
+
+function calculateScore(w1, w2) {
+  const phyScore = w1.statOf('def') - w2.statOf('atk')
+  const spScore = w1.statOf('spd') - w2.statOf('spa')
+  const otherScore = w1.statOf('hp') + w1.statOf('spe')
+  return phyScore + spScore + otherScore
+}
+
+function calculateWaveOutcome(attackers, defenders) {
+  const attackersScore = calculateScore(attackers, defenders);
+  const defendersScore = calculateScore(defenders, attackers);
+  console.log(attackersScore, defendersScore)
+  const win = attackersScore > defendersScore;
+
+  const attackersCP = attackers.soldiersCp();
+  const defendersCP = defenders.soldiersCp();
+
+  const luckDiff = attackers.meta.luckModifier - defenders.meta.luckModifier;
+  const iqDiff = attackers.meta.iqModifier - defenders.meta.iqModifier;
+  const cpDiff = attackersCP - defendersCP;
+
+  const commentLines = [];
+
+  // Stronger units
+  if (cpDiff > 0) {
+    commentLines.push("Attacker has stronger units");
+  } else {
+    commentLines.push("Defender has stronger units");
+  }
+  
+  // Units advantage
+  if (attackersScore > defendersScore !== attackers.cp() > defenders.cp()) {
+    if (attackersScore > defendersScore) {
+      commentLines.push("Attacker units got advantage");
+    }
+    else {
+      commentLines.push("Defender units got advantage");
+    }
+  }
+
+  // Better luck
+  if (luckDiff > 0) {
+    commentLines.push("Attacker has better luck");
+  } else {
+    commentLines.push("Defender has better luck");
+  }
+
+  // Better commander IQ
+  if (iqDiff > 0) {
+    commentLines.push("Attacker has better commander");
+  } else {
+    commentLines.push("Defender has better commander");
+  }
+
+  const wounded = {};
+
+  if (win) {
+    const per = (defendersScore * 100) / attackersScore
+    wounded.atk = attackers.pluckSoldiers(per)
+    wounded.def = defenders.soldiers
+  }
+  else {
+    const per = (attackersScore * 100) / defendersScore
+    wounded.def = defenders.pluckSoldiers(per)
+    wounded.atk = attackers.soldiers
+  }
 
   return {
     win,
-    cause,
+    comment: commentLines.join('\n'),
     wounded,
   };
 }
@@ -129,23 +202,21 @@ const com2 = {
   }
 
 
-const wave1 = {
-  commander: com1,
-  soldier: new Map([
-    [charizard, 10],
-    [charmander, 100],
-  ]),
-  options: {
-    //luck: 1
-  }
-}
-const wave2 = {
-  commander: com2,
-  soldier: new Map([
-    [charizard, 40],
-  ]),
-  options: {}
-}
+const wave1 = new AttackWave(com1, new Map([
+  [charizard, 10],
+  [charmander, 100],
+]))
+
+const wave2 = new DefenseWave(com2, new Map([
+  [charizard, 40],
+]), { morality: 70 })
 
 
-console.log(calculateWaveOutcome(wave1, wave1))
+
+const res = calculateWaveOutcome(wave1, wave2)
+console.log(res)
+
+console.log('atk')
+res.wounded.atk.forEach(console.log)
+console.log('def')
+res.wounded.def.forEach(console.log)
