@@ -1,6 +1,7 @@
 import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
 import abilities from "../../../data/abilities.js"
+import items from "../../../data/items.js"
 import typeChart from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
@@ -74,10 +75,17 @@ export class Pokemon extends PSPokemon {
         this.meta = meta;
         this._pokemon = pokemons[id];
         this._tag = tag;
-        this.stats = this._calculateTotalStat();
-        
+        this.tokens = Object.assign({
+          "hp":0,
+          "spe":0,
+          "atk":0,
+          "def":0,
+          "spa":0,
+          "spd":0
+        }, meta.token_used)
+        this.items = new ItemManager(this)
         this.abilities = new AbilityManager(this)
-        //this.items = new ItemManager(this)
+        this.stats = this._calculateTotalStat();
     }
     
     get megaId() {
@@ -233,7 +241,7 @@ export class Pokemon extends PSPokemon {
             // Use the dynamic token modifier, fallback to default if not specified
             const tokenModifier = Math.pow(
                 Pokemon.TOKEN_MODIFIERS[statName] || Pokemon.TOKEN_MODIFIERS.default,
-                this.meta.token_used[statName] ?? 0
+                this.tokens[statName] ?? 0
             );
 
             // Apply token modifier
@@ -425,16 +433,28 @@ class AbilityManager {
     }
 }
 
+class Item {
+    constructor(id, manager) {
+        this.id = id
+        this.manager = manager
+        this.pokemon = manager.pokemon
+        this._item = items[this.id]
+        this._apply()
+    }
+    
+    _apply() {
+        for (const key in this._item.tokens) {
+            this.pokemon.tokens[key] += this._item.tokens[key]
+        }
+    }
+}
+
 class ItemManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._abilities = []
-        for (const [key, name] of Object.entries(pokemon._pokemon.abilities)) {
-          //console.log(name)
-          const isHidden = key === 'H'
-          const ability = new Ability(name, isHidden, this)
-          this._abilities.push(ability)
-        }
+        this._items = pokemon.meta.items?.map(id => {
+            return new Item(id, this)
+        })
     }
 }
 

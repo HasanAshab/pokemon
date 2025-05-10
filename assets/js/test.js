@@ -4,28 +4,12 @@ import { Pokemon, Move } from "./utils/models.js";
 let charmander = new Pokemon("charmander", {
     "xp": 500,
     "nature": "calm",
-    "token_used": {
-          "hp":0,
-          "spe":0,
-          "atk":0,
-          "def":0,
-          "spa":0,
-          "spd":0
-    },
     "items": ["ironarmor"]
 })
 
 let charizard = new Pokemon("charizard", {
     "xp": 3000,
-    "nature": "calm",
-    "token_used": {
-          "hp":0,
-          "spe":0,
-          "atk":0,
-          "def":0,
-          "spa":0,
-          "spd":0
-      }
+    "nature": "calm"
 })
 
 class SoldierStack extends Map {
@@ -37,6 +21,11 @@ class SoldierStack extends Map {
       return [image, quantity]
     })
     super(data)
+  }
+  
+  find(id) {
+    const stack = this.entries().find(([image]) => image.id === id)
+    return stack[1]
   }
   
   cp() {
@@ -278,14 +267,23 @@ console.log(res)
 
 
 
+function prepareSoldiers(total, percentMap) {
+  const data = percentMap.map(([image, per]) => {
+    const quantity = Math.ceil(total.find(image.id) * (per / 100))
+    return [image, quantity]
+  })
+  return new SoldierStack(data)
+}
 
 charizard.meta.id = 'charizard'
 charmander.meta.id = 'charmander'
-const data = [
-  [charizard.meta, 10],
-  [charmander.meta, 100],
-]
-
-const s = new SoldierStack(data)
-
+const militia = new SoldierStack([
+  [charmander.meta, 20],
+  [charizard.meta, 5],
+])
+const p = [
+    [charmander, 50],
+    [charizard, 25]
+  ]
+prepareSoldiers(militia, p).forEach(console.log)
 
