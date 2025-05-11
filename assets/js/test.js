@@ -3,13 +3,11 @@ import { Pokemon, Move } from "./utils/models.js";
 
 let student = new Pokemon("student", {
     "xp": 500,
-    "nature": "calm",
     "items": ["ironarmor"]
 })
 
 let genin = new Pokemon("genin", {
     "xp": 3000,
-    "nature": "calm"
 })
 
 class SoldierStack extends Map {

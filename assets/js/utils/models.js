@@ -72,17 +72,22 @@ export class Pokemon extends PSPokemon {
     constructor(id, meta, tag = null) {
         super()
         this.id = id;
-        this.meta = meta;
-        this._pokemon = pokemons[id];
-        this._tag = tag;
-        this.tokens = Object.assign({
+        this.meta = Object.assign({
+          nature: 'calm',
+          token_used: {
           "hp":0,
           "spe":0,
           "atk":0,
           "def":0,
           "spa":0,
           "spd":0
-        }, meta.token_used)
+          }
+        }, meta);
+        
+        
+        this._pokemon = pokemons[id];
+        this._tag = tag;
+        this.tokens = this.meta.token_used
         this.items = new ItemManager(this)
         this.abilities = new AbilityManager(this)
         this.stats = this._calculateTotalStat();
