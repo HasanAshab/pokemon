@@ -1,3 +1,18 @@
+export const sumObj = (obj1, obj2) => {
+  const obj = Object.assign({}, obj2)
+  for (const key in obj1) {
+    obj[key] = obj1[key] + (obj2[key] || 0)
+  }
+  return obj
+}
+  
+export const modObj = (obj, mod) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    acc[key] = obj[key] * mod
+    return acc
+  }, {})
+}
+
 export function calculateSize(baseSize, level) {
   return Math.round(baseSize * Math.pow(1.2, level - 1));
 }
@@ -17,7 +32,54 @@ export function calculateBuildUsedLandArea(kingdom) {
   }, 0)
 }
 
-export function calculateTax(population, pci, taxRate) {
-  const totalIncome = population * pci;
-  return Math.floor(totalIncome * taxRate);
+export function calcPopulation(kingdom) {
+  return kingdom.landArea * kingdom.density;
+}
+
+export function calculateTax(kingdom) {
+  const totalIncome = calcPopulation(kingdom) * kingdom.pci;
+  return Math.floor(totalIncome * kingdom.taxRate);
+}
+
+
+export function calcBuildProduction(kingdom) {
+  return kingdom.buildings.reduce((prod, build) => {
+    return modObj(
+      sumObj(prod, build.produces),
+      build.quantity
+    )
+  }, {})
+}
+
+export function calcBuildConsumtion(kingdom) {
+  return kingdom.buildings.reduce((prod, build) => {
+    return modObj(
+      sumObj(prod, build.consumes),
+      build.quantity
+    )
+  }, {})
+}
+
+export function calcBuildNetProd(kingdom) {
+  const prod = calcBuildProduction(kingdom)
+  const cons = modObj(calcBuildConsumtion(kingdom), -1)
+  return sumObj(prod, cons)
+}
+
+export function calcNetProd(kingdom, localize = false) {
+  const sysProd = {
+    coins: calculateTax(kingdom),
+  }
+  const sysCons = {}
+  const buildProd = calcBuildNetProd(kingdom)
+  const prod = sumObj(
+    sumObj(sysProd, buildProd),
+    modObj(sysCons, -1)
+  )
+
+  if (!localize) return prod
+  return Object.keys(prod).reduce((acc, key) => {
+    acc[key] = prod[key].toLocaleString()
+    return acc
+  }, {})
 }

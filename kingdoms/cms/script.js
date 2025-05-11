@@ -1,5 +1,6 @@
 import { calculateTax, calculateBuildUsedLandArea, calculatePeopleUsedLandArea } from '../utils.js'
 
+
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
 
@@ -28,6 +29,13 @@ let kingdom = kingdoms[name] || {
   taxRate: 0.3
 };
 
+import { calcBuildProduction, calcBuildConsumtion, calcBuildNetProd, calcNetProd } from '../utils.js'
+
+console.log(calcBuildProduction(kingdom))
+console.log(calcBuildConsumtion(kingdom))
+console.log(calcBuildNetProd(kingdom))
+console.log(calcNetProd(kingdom, true))
+
 landAreaInput.value = kingdom.landArea;
 densityInput.value = kingdom.density;
 pciInput.value = kingdom.pci;
@@ -44,7 +52,7 @@ function updateDisplay() {
   const totalUsedLand = calculateBuildUsedLandArea(kingdom) + calculatePeopleUsedLandArea(population, pci, taxRate);
   const freeLand = Math.max(area - totalUsedLand, 0);
 
-  const tax = calculateTax(population, pci, taxRate);
+  const tax = calculateTax(kingdom);
 
   taxRateValue.textContent = taxRateInput.value;
 
