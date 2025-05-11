@@ -8,7 +8,7 @@ kingdomNameEl.textContent = name ? `${name}'s Storage` : "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
-if (!kingdoms[name].storage) kingdoms[name].storage = [];
+if (!kingdoms[name].storage) kingdoms[name].storage = {};
 
 function saveAndRefresh() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -17,43 +17,64 @@ function saveAndRefresh() {
 
 function renderItems() {
   itemsContainer.innerHTML = "";
-  kingdoms[name].storage.forEach((item, index) => {
+  const storage = kingdoms[name].storage;
+
+  Object.keys(storage).forEach(itemName => {
     const div = document.createElement("div");
     div.className = "item";
 
+    const nameLabel = document.createElement("label");
+    nameLabel.textContent = "Item Name";
+
     const nameInput = document.createElement("input");
-    nameInput.value = item.name;
+    nameInput.value = itemName;
+
+    const qtyLabel = document.createElement("label");
+    qtyLabel.textContent = "Quantity";
 
     const qtyInput = document.createElement("input");
     qtyInput.type = "number";
-    qtyInput.value = item.quantity;
+    qtyInput.value = storage[itemName];
+
+    const itemActions = document.createElement("div");
+    itemActions.className = "item-actions";
 
     const saveBtn = document.createElement("button");
+    saveBtn.className = "btn primary-btn";
     saveBtn.textContent = "Save";
     saveBtn.onclick = () => {
-      item.name = nameInput.value.trim();
-      item.quantity = parseInt(qtyInput.value) || 0;
+      const newName = nameInput.value.trim();
+      const quantity = parseInt(qtyInput.value) || 0;
+      if (newName !== itemName) {
+        delete storage[itemName];
+      }
+      storage[newName] = quantity;
       saveAndRefresh();
     };
 
     const delBtn = document.createElement("button");
+    delBtn.className = "btn secondary-btn";
     delBtn.textContent = "Delete";
     delBtn.onclick = () => {
-      kingdoms[name].storage.splice(index, 1);
+      delete storage[itemName];
       saveAndRefresh();
     };
 
+    itemActions.appendChild(saveBtn);
+    itemActions.appendChild(delBtn);
+
+    div.appendChild(nameLabel);
     div.appendChild(nameInput);
+    div.appendChild(qtyLabel);
     div.appendChild(qtyInput);
-    div.appendChild(saveBtn);
-    div.appendChild(delBtn);
+    div.appendChild(itemActions);
 
     itemsContainer.appendChild(div);
   });
 }
 
 addItemBtn.onclick = () => {
-  kingdoms[name].storage.push({ name: "New Item", quantity: 0 });
+  kingdoms[name].storage["New Item"] = 0;
   saveAndRefresh();
 };
 

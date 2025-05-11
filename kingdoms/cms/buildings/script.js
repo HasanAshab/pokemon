@@ -1,96 +1,149 @@
-const urlParams = new URLSearchParams(window.location.search);
-const name = urlParams.get('name');
+const params = new URLSearchParams(window.location.search);
+const name = params.get("name");
+const kingdomNameEl = document.getElementById("kingdomName");
+const buildingsContainer = document.getElementById("buildingsContainer");
+const addBuildingBtn = document.getElementById("addBuildingBtn");
 
-const landAreaInput = document.getElementById('landArea');
-const densityInput = document.getElementById('density');
-const pciInput = document.getElementById('pci');
-const taxRateInput = document.getElementById('taxRate');
-const taxRateValue = document.getElementById('taxRateValue');
+kingdomNameEl.textContent = name ? `${name}'s Buildings` : "Unknown Kingdom";
 
-const kingdomName = document.getElementById('kingdomName');
-const populationLabel = document.getElementById('populationLabel');
-const populationBar = document.getElementById('populationBar');
-const taxLabel = document.getElementById('taxLabel');
-const taxBar = document.getElementById('taxBar');
-const usedLandLabel = document.getElementById('usedLandLabel');
-const freeLandLabel = document.getElementById('freeLandLabel');
-const saveBtn = document.getElementById('saveBtn');
+let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
+if (!kingdoms[name]) kingdoms[name] = {};
+if (!kingdoms[name].buildings) kingdoms[name].buildings = [];
 
-kingdomName.textContent = name || 'Unknown Kingdom';
+function parseItemsInput(input) {
+  try {
+    return JSON.parse(input) || {};
+  } catch {
+    alert("Invalid JSON format in produces/consumes");
+    return {};
+  }
+}
 
-let kingdoms = JSON.parse(localStorage.getItem('kingdoms') || '{}');
-let kingdom = kingdoms[name] || {
-  landArea: 1000,
-  density: 100,
-  pci: 50,
-  taxRate: 0.3
+function saveAndRefresh() {
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  renderBuildings();
+}
+
+function renderBuildings() {
+  buildingsContainer.innerHTML = "";
+  kingdoms[name].buildings.forEach((building, index) => {
+    const div = document.createElement("div");
+    div.className = "building";
+
+    const nameLabel = document.createElement("label");
+    nameLabel.textContent = "Building Name";
+
+    const nameInput = document.createElement("input");
+    nameInput.value = building.name;
+    nameInput.disabled = true;
+
+    const levelLabel = document.createElement("label");
+    levelLabel.textContent = "Current Level";
+
+    const levelDisplay = document.createElement("div");
+    levelDisplay.textContent = `Level ${building.currentLevel}`;
+
+    const sizeLabel = document.createElement("label");
+    sizeLabel.textContent = "Current Size";
+
+    const sizeDisplay = document.createElement("div");
+    sizeDisplay.textContent = `${building.baseSize * building.currentLevel} sq.m`;
+
+    const basePriceInput = document.createElement("input");
+    basePriceInput.value = building.basePrice;
+    basePriceInput.className = "editable";
+    basePriceInput.style.display = "none";
+
+    const baseSizeInput = document.createElement("input");
+    baseSizeInput.value = building.baseSize;
+    baseSizeInput.className = "editable";
+    baseSizeInput.style.display = "none";
+
+    const producesInput = document.createElement("input");
+    producesInput.value = JSON.stringify(building.produces);
+    producesInput.placeholder = "Produces (e.g., {\"wood\": 10})";
+
+    const consumesInput = document.createElement("input");
+    consumesInput.value = JSON.stringify(building.consumes);
+    consumesInput.placeholder = "Consumes (e.g., {\"ore\": 5})";
+
+    const upgradeBtn = document.createElement("button");
+    upgradeBtn.className = "btn primary-btn";
+    const upgradeCost = building.basePrice * building.currentLevel;
+    upgradeBtn.textContent = `Upgrade (Cost: ${upgradeCost} coins)`;
+
+    upgradeBtn.onclick = () => {
+      const storage = kingdoms[name].storage;
+      if ((storage.coins || 0) >= upgradeCost) {
+        storage.coins -= upgradeCost;
+        building.currentLevel++;
+        saveAndRefresh();
+      } else {
+        alert("Not enough coins!");
+      }
+    };
+
+    const itemActions = document.createElement("div");
+    itemActions.className = "building-actions";
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn primary-btn";
+    editBtn.textContent = "Edit";
+    editBtn.onclick = () => {
+      nameInput.disabled = false;
+      basePriceInput.style.display = "block";
+      baseSizeInput.style.display = "block";
+
+      editBtn.textContent = "Save";
+      editBtn.onclick = () => {
+        building.name = nameInput.value.trim();
+        building.basePrice = parseFloat(basePriceInput.value);
+        building.baseSize = parseFloat(baseSizeInput.value);
+        building.produces = parseItemsInput(producesInput.value);
+        building.consumes = parseItemsInput(consumesInput.value);
+        saveAndRefresh();
+      };
+    };
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn secondary-btn";
+    delBtn.textContent = "Delete";
+    delBtn.onclick = () => {
+      kingdoms[name].buildings.splice(index, 1);
+      saveAndRefresh();
+    };
+
+    itemActions.appendChild(editBtn);
+    itemActions.appendChild(delBtn);
+
+    div.appendChild(nameLabel);
+    div.appendChild(nameInput);
+    div.appendChild(levelLabel);
+    div.appendChild(levelDisplay);
+    div.appendChild(sizeLabel);
+    div.appendChild(sizeDisplay);
+    div.appendChild(basePriceInput);
+    div.appendChild(baseSizeInput);
+    div.appendChild(producesInput);
+    div.appendChild(consumesInput);
+    div.appendChild(upgradeBtn);
+    div.appendChild(itemActions);
+
+    buildingsContainer.appendChild(div);
+  });
+}
+
+addBuildingBtn.onclick = () => {
+  const newBuilding = {
+    name: "New Building",
+    basePrice: 100,
+    baseSize: 50,
+    currentLevel: 1,
+    produces: {},
+    consumes: {}
+  };
+  kingdoms[name].buildings.push(newBuilding);
+  saveAndRefresh();
 };
 
-landAreaInput.value = kingdom.landArea;
-densityInput.value = kingdom.density;
-pciInput.value = kingdom.pci;
-taxRateInput.value = (kingdom.taxRate * 100).toFixed(0);
-taxRateValue.textContent = taxRateInput.value;
-
-// Updated function as per your logic
-function calculateUsedLandArea(pci, taxRate) {
-  return (pci - (taxRate * pci)) * 0.0002;
-}
-
-function calculateTax(population, pci, taxRate) {
-  const totalIncome = population * pci;
-  return Math.floor(totalIncome * taxRate);
-}
-
-function updateDisplay() {
-  const area = parseFloat(landAreaInput.value) || 0;
-  const density = parseFloat(densityInput.value) || 0;
-  const pci = parseFloat(pciInput.value) || 0;
-  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
-
-  const population = area * density;
-  const usedPerPerson = calculateUsedLandArea(pci, taxRate);
-  const totalUsedLand = population * usedPerPerson;
-  const freeLand = Math.max(area - totalUsedLand, 0);
-
-  const tax = calculateTax(population, pci, taxRate);
-
-  taxRateValue.textContent = taxRateInput.value;
-
-  populationLabel.textContent = population.toLocaleString();
-  populationBar.style.width = Math.min(population / 10000 * 100, 100) + '%';
-
-  taxLabel.textContent = tax.toLocaleString();
-  taxBar.style.width = Math.min(tax / 2000 * 100, 100) + '%';
-
-  usedLandLabel.textContent = totalUsedLand.toFixed(2);
-  freeLandLabel.textContent = freeLand.toFixed(2);
-}
-
-landAreaInput.addEventListener('input', updateDisplay);
-densityInput.addEventListener('input', updateDisplay);
-pciInput.addEventListener('input', updateDisplay);
-taxRateInput.addEventListener('input', updateDisplay);
-
-saveBtn.addEventListener('click', () => {
-  const area = parseFloat(landAreaInput.value) || 0;
-  const density = parseFloat(densityInput.value) || 0;
-  const pci = parseFloat(pciInput.value) || 0;
-  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
-
-  kingdoms[name] = { landArea: area, density, pci, taxRate };
-  localStorage.setItem('kingdoms', JSON.stringify(kingdoms));
-  alert('Kingdom saved!');
-});
-
-document.querySelectorAll('.info-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const target = card.getAttribute('data-target');
-    if (!name || !target) return;
-    const encoded = encodeURIComponent(name);
-    window.location.href = `/kingdoms/cms/${target}/?name=${encoded}`;
-  });
-});
-
-
-updateDisplay();
+renderBuildings();
