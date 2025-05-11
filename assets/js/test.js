@@ -1,13 +1,13 @@
 import { Pokemon, Move } from "./utils/models.js";
 
 
-let charmander = new Pokemon("student", {
+let student = new Pokemon("student", {
     "xp": 500,
     "nature": "calm",
     "items": ["ironarmor"]
 })
 
-let charizard = new Pokemon("genin", {
+let genin = new Pokemon("genin", {
     "xp": 3000,
     "nature": "calm"
 })
@@ -225,7 +225,7 @@ function calculateWaveOutcome(attackers, defenders) {
 }
 
 const com1 = {
-    image: charizard, // image means assume another charizard the commander
+    image: genin, // image means assume another genin the commander
     iq: {
       // 10 is max iq for any kind
       offensive: 3,
@@ -233,7 +233,7 @@ const com1 = {
     }
 }
 const com2 = {
-    image: charmander, // image means assume another charmander the commander
+    image: student, // image means assume another student the commander
     iq: {
       // 10 is max iq for any kind
       offensive: 1,
@@ -243,12 +243,12 @@ const com2 = {
 
 
 const wave1 = new AttackWave(com1, new SoldierStack([
-  [charizard, 10],
-  [charmander, 100],
+  [genin, 10],
+  [student, 100],
 ]))
 
 const wave2 = new DefenseWave(com2, new SoldierStack([
-  [charizard, 40],
+  [genin, 40],
 ]), { morality: 70 })
 
 
@@ -275,15 +275,15 @@ function prepareSoldiers(total, percentMap) {
   return new SoldierStack(data)
 }
 
-charizard.meta.id = 'charizard'
-charmander.meta.id = 'charmander'
+genin.meta.id = 'genin'
+student.meta.id = 'student'
 const militia = new SoldierStack([
-  [charmander.meta, 20],
-  [charizard.meta, 5],
+  [student.meta, 20],
+  [genin.meta, 5],
 ])
 const p = [
-    [charmander, 80],
-    [charizard, 80]
+    [student, 80],
+    [genin, 80]
   ]
 prepareSoldiers(militia, p).resize(10).forEach(console.log)
 

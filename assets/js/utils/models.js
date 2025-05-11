@@ -375,7 +375,6 @@ class Ability {
     
     _subscribeListeners() {
         this.pokemon.state?.on('contacted', contactor => {
-            console.log("yeah")
             try {
                 if ('onDamagingHit' in this._ability) {
                     const ctx = {
