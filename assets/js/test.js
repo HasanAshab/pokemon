@@ -141,7 +141,7 @@ function calculateScore(w1, w2) {
   return phyScore + spScore + otherScore
 }
 
-function calculateWaveOutcome(attackers, defenders) {
+function calculateWaveOutcome(attackers, defenders, isOccupationAttack = false) {
   const atkCount = attackers.soldiers.count();
   const defCount = defenders.soldiers.count();
   const HANDS_BONUS_FACTOR = 0.07;
@@ -157,7 +157,9 @@ function calculateWaveOutcome(attackers, defenders) {
   const attackersScore = calculateScore(attackers, defenders) * atkHandsModifier;
   const defendersScore = calculateScore(defenders, attackers) * defHandsModifier;
 
-  const win = attackersScore > defendersScore;
+  const win = isOccupationAttack
+    ? attackersScore * 0.3 > defendersScore
+    : attackersScore > defendersScore;
 
   const attackersCP = attackers.soldiers.cp();
   const defendersCP = defenders.soldiers.cp();
@@ -251,7 +253,7 @@ const wave2 = new DefenseWave(com2, new SoldierStack([
 
 
 
-const res = calculateWaveOutcome(wave1, wave2)
+const res = calculateWaveOutcome(wave1, wave2, true)
 console.log(res)
 
 // console.log('atk')
