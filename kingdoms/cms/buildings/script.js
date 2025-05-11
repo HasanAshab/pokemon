@@ -1,3 +1,6 @@
+import { calculateSize, upgradePrice } from '../../utils.js'
+
+
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const kingdomNameEl = document.getElementById("kingdomName");
@@ -10,19 +13,11 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].buildings) kingdoms[name].buildings = [];
 
-function parseItemsInput(input) {
-  try {
-    return JSON.parse(input) || {};
-  } catch {
-    alert("Invalid JSON format in produces/consumes");
-    return {};
-  }
-}
-
 function saveAndRefresh() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   renderBuildings();
 }
+
 
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
@@ -47,7 +42,16 @@ function renderBuildings() {
     sizeLabel.textContent = "Current Size";
 
     const sizeDisplay = document.createElement("div");
-    sizeDisplay.textContent = `${building.baseSize * building.currentLevel} sq.m`;
+    sizeDisplay.textContent = `${calculateSize(building.baseSize, building.currentLevel)} sq.m`;
+
+    const quantityLabel = document.createElement("label");
+    quantityLabel.textContent = "Quantity: " + building.quantity || 1;
+
+    const quantityInput = document.createElement("input");
+    quantityInput.type = "number";
+    quantityInput.value = building.quantity || 1;
+    quantityInput.className = "editable";
+    quantityInput.style.display = "none";
 
     const basePriceInput = document.createElement("input");
     basePriceInput.value = building.basePrice;
@@ -59,17 +63,59 @@ function renderBuildings() {
     baseSizeInput.className = "editable";
     baseSizeInput.style.display = "none";
 
-    const producesInput = document.createElement("input");
-    producesInput.value = JSON.stringify(building.produces);
-    producesInput.placeholder = "Produces (e.g., {\"wood\": 10})";
+    function renderKeyValueSection(container, items, label) {
+      container.innerHTML = "";
 
-    const consumesInput = document.createElement("input");
-    consumesInput.value = JSON.stringify(building.consumes);
-    consumesInput.placeholder = "Consumes (e.g., {\"ore\": 5})";
+      Object.entries(items).forEach(([key, value]) => {
+        const pairDiv = document.createElement("div");
+        pairDiv.className = "item-pair";
+
+        const keyInput = document.createElement("input");
+        keyInput.placeholder = "Item";
+        keyInput.value = key;
+
+        const valInput = document.createElement("input");
+        valInput.type = "number";
+        valInput.placeholder = "Amount";
+        valInput.value = value;
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "−";
+        delBtn.onclick = () => {
+          delete items[key];
+          renderKeyValueSection(container, items, label);
+        };
+
+        pairDiv.appendChild(keyInput);
+        pairDiv.appendChild(valInput);
+        pairDiv.appendChild(delBtn);
+        container.appendChild(pairDiv);
+      });
+
+      const addBtn = document.createElement("button");
+      addBtn.textContent = `+ Add ${label}`;
+      addBtn.onclick = () => {
+        items[""] = 0;
+        renderKeyValueSection(container, items, label);
+      };
+      container.appendChild(addBtn);
+    }
+
+    const producesLabel = document.createElement("label");
+    producesLabel.textContent = "Produces";
+
+    const producesContainer = document.createElement("div");
+    renderKeyValueSection(producesContainer, building.produces, "Produce");
+
+    const consumesLabel = document.createElement("label");
+    consumesLabel.textContent = "Consumes";
+
+    const consumesContainer = document.createElement("div");
+    renderKeyValueSection(consumesContainer, building.consumes, "Consume");
 
     const upgradeBtn = document.createElement("button");
     upgradeBtn.className = "btn primary-btn";
-    const upgradeCost = building.basePrice * building.currentLevel;
+    const upgradeCost = upgradePrice(building.basePrice, building.currentLevel);
     upgradeBtn.textContent = `Upgrade (Cost: ${upgradeCost} coins)`;
 
     upgradeBtn.onclick = () => {
@@ -93,14 +139,28 @@ function renderBuildings() {
       nameInput.disabled = false;
       basePriceInput.style.display = "block";
       baseSizeInput.style.display = "block";
+      quantityInput.style.display = "block";
 
       editBtn.textContent = "Save";
       editBtn.onclick = () => {
         building.name = nameInput.value.trim();
         building.basePrice = parseFloat(basePriceInput.value);
         building.baseSize = parseFloat(baseSizeInput.value);
-        building.produces = parseItemsInput(producesInput.value);
-        building.consumes = parseItemsInput(consumesInput.value);
+        building.quantity = parseInt(quantityInput.value) || 1;
+
+        const extractValues = (container) => {
+          const result = {};
+          [...container.querySelectorAll(".item-pair")].forEach(pair => {
+            const inputs = pair.querySelectorAll("input");
+            const k = inputs[0].value.trim();
+            const v = parseFloat(inputs[1].value);
+            if (k) result[k] = isNaN(v) ? 0 : v;
+          });
+          return result;
+        };
+
+        building.produces = extractValues(producesContainer);
+        building.consumes = extractValues(consumesContainer);
         saveAndRefresh();
       };
     };
@@ -122,10 +182,14 @@ function renderBuildings() {
     div.appendChild(levelDisplay);
     div.appendChild(sizeLabel);
     div.appendChild(sizeDisplay);
+    div.appendChild(quantityLabel);
+    div.appendChild(quantityInput);
     div.appendChild(basePriceInput);
     div.appendChild(baseSizeInput);
-    div.appendChild(producesInput);
-    div.appendChild(consumesInput);
+    div.appendChild(producesLabel);
+    div.appendChild(producesContainer);
+    div.appendChild(consumesLabel);
+    div.appendChild(consumesContainer);
     div.appendChild(upgradeBtn);
     div.appendChild(itemActions);
 
@@ -139,6 +203,7 @@ addBuildingBtn.onclick = () => {
     basePrice: 100,
     baseSize: 50,
     currentLevel: 1,
+    quantity: 1,
     produces: {},
     consumes: {}
   };

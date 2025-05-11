@@ -288,8 +288,3 @@ const p = [
 prepareSoldiers(militia, p).resize(10).forEach(console.log)
 
 
-
-// utils
-function upgradePrice(basePrice, growthRate, level) {
-  return Math.round(basePrice * Math.pow(growthRate, level - 1));
-}

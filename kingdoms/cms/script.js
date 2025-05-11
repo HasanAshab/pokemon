@@ -1,3 +1,5 @@
+import { calculateTax, calculateBuildUsedLandArea, calculatePeopleUsedLandArea } from '../utils.js'
+
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
 
@@ -32,25 +34,14 @@ pciInput.value = kingdom.pci;
 taxRateInput.value = (kingdom.taxRate * 100).toFixed(0);
 taxRateValue.textContent = taxRateInput.value;
 
-// Updated function as per your logic
-function calculateUsedLandArea(pci, taxRate) {
-  return (pci - (taxRate * pci)) * 0.0002;
-}
-
-function calculateTax(population, pci, taxRate) {
-  const totalIncome = population * pci;
-  return Math.floor(totalIncome * taxRate);
-}
 
 function updateDisplay() {
   const area = parseFloat(landAreaInput.value) || 0;
   const density = parseFloat(densityInput.value) || 0;
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
-
   const population = area * density;
-  const usedPerPerson = calculateUsedLandArea(pci, taxRate);
-  const totalUsedLand = population * usedPerPerson;
+  const totalUsedLand = calculateBuildUsedLandArea(kingdom) + calculatePeopleUsedLandArea(population, pci, taxRate);
   const freeLand = Math.max(area - totalUsedLand, 0);
 
   const tax = calculateTax(population, pci, taxRate);
@@ -78,7 +69,10 @@ saveBtn.addEventListener('click', () => {
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
 
-  kingdoms[name] = { landArea: area, density, pci, taxRate };
+  kingdom.landArea = area
+  kingdom.density = density
+  kingdom.pci = pci
+  kingdom.taxRate = taxRate
   localStorage.setItem('kingdoms', JSON.stringify(kingdoms));
   alert('Kingdom saved!');
 });
