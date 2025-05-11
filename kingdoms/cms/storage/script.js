@@ -1,3 +1,5 @@
+import { calcNetProd } from '../../utils.js';
+
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const kingdomNameEl = document.getElementById("kingdomName");
@@ -16,8 +18,17 @@ function saveAndRefresh() {
 }
 
 function renderItems() {
-  itemsContainer.innerHTML = "";
   const storage = kingdoms[name].storage;
+  const netProd = calcNetProd(kingdoms[name]);
+
+  // Add missing netProd items to storage with 0 quantity
+  Object.keys(netProd).forEach(key => {
+    if (!(key in storage)) {
+      storage[key] = 0;
+    }
+  });
+
+  itemsContainer.innerHTML = "";
 
   Object.keys(storage).forEach(itemName => {
     const div = document.createElement("div");
@@ -35,6 +46,12 @@ function renderItems() {
     const qtyInput = document.createElement("input");
     qtyInput.type = "number";
     qtyInput.value = storage[itemName];
+
+    const prodSpan = document.createElement("span");
+    prodSpan.className = "production";
+    const rawVal = parseInt(netProd[itemName] || 0);
+    prodSpan.textContent = rawVal >= 0 ? `+${rawVal.toLocaleString()}` : rawVal.toLocaleString();
+    prodSpan.classList.add(rawVal >= 0 ? "prod-positive" : "prod-negative");
 
     const itemActions = document.createElement("div");
     itemActions.className = "item-actions";
@@ -67,6 +84,7 @@ function renderItems() {
     div.appendChild(nameInput);
     div.appendChild(qtyLabel);
     div.appendChild(qtyInput);
+    div.appendChild(prodSpan);
     div.appendChild(itemActions);
 
     itemsContainer.appendChild(div);

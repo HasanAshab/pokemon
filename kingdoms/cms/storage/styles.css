@@ -111,3 +111,18 @@ button:hover {
 .item input:focus {
   border-color: #4CAF50;
 }
+
+.production {
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.prod-positive {
+  color: green;
+}
+
+.prod-negative {
+  color: red;
+}

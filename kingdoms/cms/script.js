@@ -29,12 +29,6 @@ let kingdom = kingdoms[name] || {
   taxRate: 0.3
 };
 
-import { calcBuildProduction, calcBuildConsumtion, calcBuildNetProd, calcNetProd } from '../utils.js'
-
-console.log(calcBuildProduction(kingdom))
-console.log(calcBuildConsumtion(kingdom))
-console.log(calcBuildNetProd(kingdom))
-console.log(calcNetProd(kingdom, true))
 
 landAreaInput.value = kingdom.landArea;
 densityInput.value = kingdom.density;
