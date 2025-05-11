@@ -1,4 +1,4 @@
-import { calcNetProd } from '../../utils.js';
+import { sumObj, calcNetProd } from '../../utils.js';
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -95,5 +95,13 @@ addItemBtn.onclick = () => {
   kingdoms[name].storage["New Item"] = 0;
   saveAndRefresh();
 };
+
+const newMonthBtn = document.getElementById("newMonthBtn");
+newMonthBtn.onclick = () => {
+  const netProd = calcNetProd(kingdoms[name]);
+  kingdoms[name].storage = sumObj(kingdoms[name].storage, netProd)
+  saveAndRefresh()
+};
+
 
 renderItems();
