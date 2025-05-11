@@ -1,13 +1,13 @@
 import { Pokemon, Move } from "./utils/models.js";
 
 
-let charmander = new Pokemon("charmander", {
+let charmander = new Pokemon("student", {
     "xp": 500,
     "nature": "calm",
     "items": ["ironarmor"]
 })
 
-let charizard = new Pokemon("charizard", {
+let charizard = new Pokemon("genin", {
     "xp": 3000,
     "nature": "calm"
 })
@@ -282,10 +282,10 @@ const militia = new SoldierStack([
   [charizard.meta, 5],
 ])
 const p = [
-    [charmander, 50],
-    [charizard, 25]
+    [charmander, 80],
+    [charizard, 80]
   ]
-prepareSoldiers(militia, p).forEach(console.log)
+prepareSoldiers(militia, p).resize(10).forEach(console.log)
 
 
 
@@ -293,5 +293,3 @@ prepareSoldiers(militia, p).forEach(console.log)
 function upgradePrice(basePrice, growthRate, level) {
   return Math.round(basePrice * Math.pow(growthRate, level - 1));
 }
-
-console.log(upgradePrice(5000, 1.5, 3).toLocaleString())

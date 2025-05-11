@@ -3,26 +3,41 @@ const name = urlParams.get('name');
 
 const landAreaInput = document.getElementById('landArea');
 const densityInput = document.getElementById('density');
+const pciInput = document.getElementById('pci');
+const taxRateInput = document.getElementById('taxRate');
+const taxRateValue = document.getElementById('taxRateValue');
+
 const kingdomName = document.getElementById('kingdomName');
 const populationLabel = document.getElementById('populationLabel');
 const populationBar = document.getElementById('populationBar');
 const taxLabel = document.getElementById('taxLabel');
 const taxBar = document.getElementById('taxBar');
+const usedLandLabel = document.getElementById('usedLandLabel');
+const freeLandLabel = document.getElementById('freeLandLabel');
 const saveBtn = document.getElementById('saveBtn');
-const pciInput = document.getElementById('pci');
 
 kingdomName.textContent = name || 'Unknown Kingdom';
 
 let kingdoms = JSON.parse(localStorage.getItem('kingdoms') || '{}');
-let kingdom = kingdoms[name] || { landArea: 1000, density: 100, pci: 50 };
+let kingdom = kingdoms[name] || {
+  landArea: 1000,
+  density: 100,
+  pci: 50,
+  taxRate: 0.3
+};
 
 landAreaInput.value = kingdom.landArea;
 densityInput.value = kingdom.density;
 pciInput.value = kingdom.pci;
+taxRateInput.value = (kingdom.taxRate * 100).toFixed(0);
+taxRateValue.textContent = taxRateInput.value;
 
-// Function to calculate tax based on population and PCI
-function calculateTax(population, pci) {
-  const taxRate = 0.3; // Tax rate 30%
+// Updated function as per your logic
+function calculateUsedLandArea(pci, taxRate) {
+  return (pci - (taxRate * pci)) * 0.0002;
+}
+
+function calculateTax(population, pci, taxRate) {
   const totalIncome = population * pci;
   return Math.floor(totalIncome * taxRate);
 }
@@ -30,33 +45,52 @@ function calculateTax(population, pci) {
 function updateDisplay() {
   const area = parseFloat(landAreaInput.value) || 0;
   const density = parseFloat(densityInput.value) || 0;
-  const population = area * density;
-  const pci = parseFloat(pciInput.value) || 0; // Make sure PCI is considered in calculations
+  const pci = parseFloat(pciInput.value) || 0;
+  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
 
-  const tax = calculateTax(population, pci);
+  const population = area * density;
+  const usedPerPerson = calculateUsedLandArea(pci, taxRate);
+  const totalUsedLand = population * usedPerPerson;
+  const freeLand = Math.max(area - totalUsedLand, 0);
+
+  const tax = calculateTax(population, pci, taxRate);
+
+  taxRateValue.textContent = taxRateInput.value;
 
   populationLabel.textContent = population.toLocaleString();
-  populationBar.style.width = Math.min(population / 10000 * 100, 100) + '%'; // Adjust width based on population
+  populationBar.style.width = Math.min(population / 10000 * 100, 100) + '%';
 
   taxLabel.textContent = tax.toLocaleString();
-  taxBar.style.width = Math.min(tax / 2000 * 100, 100) + '%'; // Adjust width based on tax
+  taxBar.style.width = Math.min(tax / 2000 * 100, 100) + '%';
+
+  usedLandLabel.textContent = totalUsedLand.toFixed(2);
+  freeLandLabel.textContent = freeLand.toFixed(2);
 }
 
-// Event listeners to update on input changes
 landAreaInput.addEventListener('input', updateDisplay);
 densityInput.addEventListener('input', updateDisplay);
-pciInput.addEventListener('input', updateDisplay); // Ensure PCI updates the display as well
+pciInput.addEventListener('input', updateDisplay);
+taxRateInput.addEventListener('input', updateDisplay);
 
-// Save the updated kingdom data to localStorage
 saveBtn.addEventListener('click', () => {
   const area = parseFloat(landAreaInput.value) || 0;
   const density = parseFloat(densityInput.value) || 0;
   const pci = parseFloat(pciInput.value) || 0;
+  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
 
-  kingdoms[name] = { landArea: area, density, pci };
+  kingdoms[name] = { landArea: area, density, pci, taxRate };
   localStorage.setItem('kingdoms', JSON.stringify(kingdoms));
   alert('Kingdom saved!');
 });
 
-// Initialize the display
+document.querySelectorAll('.info-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const target = card.getAttribute('data-target');
+    if (!name || !target) return;
+    const encoded = encodeURIComponent(name);
+    window.location.href = `/kingdoms/cms/${target}/?name=${encoded}`;
+  });
+});
+
+
 updateDisplay();
