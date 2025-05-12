@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Militia</title>
-  <link rel="stylesheet" href="./styles.css">
+  <title>Commanders</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <div class="container">
-    <h1 id="kingdomName">Kingdom</h1>
-<div class="bottom-cards">
-  <div class="info-card" data-target="commanders">Commanders</div>
-  <div class="info-card" data-target="army">Army</div>
-  <div class="info-card" data-target="academy">Academy</div>
-  <div class="info-card" data-target="defence">Defence</div>
-</div>
+  <h1 id="commandersTitle"></h1>
+  <button id="addCommanderBtn">+ Add Commander</button>
+  <div id="commandersContainer"></div>
+
+  <!-- JSON editor modal -->
+  <div id="jsonEditorModal" class="modal hidden">
+    <textarea id="jsonEditor" rows="30" cols="50"></textarea>
+    <div class="modal-actions">
+      <button id="saveJsonBtn">Save JSON</button>
+      <button id="cancelJsonBtn">Cancel</button>
+    </div>
+  </div>
 
   <script type="module" src="script.js"></script>
 </body>

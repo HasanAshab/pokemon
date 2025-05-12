@@ -1,10 +1,9 @@
 * Proposal
-psi
+takedown-weapon
+weapon weight
+ko, random ko
 substitute
-isUnselected
-shift users on localstorage
 
-Progress tracker
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
@@ -25,3 +24,24 @@ double vs powder type moves
 dodge status
 magnitude
 confusion hit self KO (move category ditection)
+
+
+
+
+
+now make commanders.html js and css
+there should list all commanders and must be manageable (edit, add, delete)
+
+a commander have these keys (
+  name,
+  iq: {key: number} // use good interface for non it guys,
+  image // use select input
+)
+
+also give a full json editor for a specific commander
+
+store commander like this
+
+kingdoms[name].commanders[name] = {iq, image}
+
+
