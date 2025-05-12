@@ -13,6 +13,10 @@ class PSPokemon {
         return this.stats.hp
     }
     
+    get baseMaxhp() {
+        return this.maxhp
+    }
+    
     get hp() {
         return this.state.stats.get("hp") ?? null
     }

@@ -208,8 +208,8 @@ class BaseBattle extends EventEmitter {
         move1.onBeforeMove?.(this.pokemon1, this.pokemon2, move2)
         move2.onBeforeMove?.(this.pokemon2, this.pokemon1, move1)
 
-        this.pokemon1.state.emit("used-move", move1)
-        this.pokemon2.state.emit("used-move", move2)
+        this.pokemon1.state.emit("used-move", move1, move2)
+        this.pokemon2.state.emit("used-move", move2, move1)
 
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
@@ -517,6 +517,12 @@ class BattleState extends EventEmitter {
                     pre: true,
                 })
             }
+        })
+        
+        this.on("used-move", (move, opponentMove) => {
+            const opponent = this.battle.opponentOf(this.pokemon)
+            const moveFailed = !move.succeed || (opponentMove.id === "dodge" && opponentMove._dodgeMatrix?.[0])
+            moveFailed && move.onMoveFail?.(opponent, this.pokemon, opponentMove)
         })
         
         this.on("hitted-move", move => {

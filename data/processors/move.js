@@ -19,6 +19,21 @@ function isTwoTurnMove(move) {
 
 function mergeDefault(move) {
     const defaultProps = {
+        tokenChanges: {},
+        onAfterMove(pokemon, target, move) {
+            move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
+        },
+    }
+    
+    for (const key in defaultProps) {
+      if (key in move) continue
+      else move[key] = defaultProps[key]
+    }
+}
+
+function bindMethods(move) {
+    const exclude = ["onBeforeMove"]
+    const ctx = {
         add: (...args) => null, // todo
         debug: console.log,
         runEvent: () => true, //todo
@@ -30,12 +45,15 @@ function mergeDefault(move) {
         tokenChanges: {},
         onAfterMove(pokemon, target, move) {
             move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
+        },
+        damage(amount, target) {
+          target.state.decreaseHealth(amount)
         }
     }
     
-    for (const key in defaultProps) {
-      if (key in move) continue
-      else move[key] = defaultProps[key]
+    for (const key in move) {
+      if (typeof move[key] !== "function" || exclude.includes(key)) continue
+      else move[key] = move[key].bind(ctx)
     }
 }
 
@@ -274,6 +292,7 @@ function addKoHandler(move) {
 
 export default processor([
     mergeDefault,
+    bindMethods,
     addFlags,
     modifyPP,
     setEffects,

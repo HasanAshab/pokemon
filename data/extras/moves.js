@@ -79,6 +79,7 @@ export default {
       },
       retreat: 5,
     },
+    
     focusenergy: {
       num: 116,
       accuracy: true,
@@ -101,6 +102,27 @@ export default {
       zMove: { boost: { accuracy: 1 } },
       contestType: "Cool"
     },
+    substitute: {
+      num: 164,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Substitute",
+      pp: 10,
+      priority: 0,
+      flags: { snatch: 1, nonsky: 1, metronome: 1 },
+      //volatileStatus: "substitute",
+      stallingMove: true,
+      // onHit(target) {
+//         this.directDamage(target.maxhp / 4)
+//       },
+      secondary: null,
+      target: "self",
+      type: "Normal",
+      zMove: { effect: "clearnegativeboost" },
+      contestType: "Cute"
+    },
+
     laserfocus: {
       num: 673,
       accuracy: true,
