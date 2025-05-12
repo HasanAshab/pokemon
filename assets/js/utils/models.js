@@ -299,6 +299,7 @@ export class Move {
 
     description(short = false) {
         const desc = movesText[this.id]
+        if (!desc) return "No description available"
         const key = short ? "shortDesc" : "desc"
         return desc[key] ?? desc.shortDesc
     }
@@ -408,6 +409,7 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {
         this.pokemon = pokemon
+        console.log(pokemon.id)
         this._setAbilities(pokemon._pokemon.abilities)
     }
     

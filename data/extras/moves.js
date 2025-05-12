@@ -56,64 +56,6 @@ export default {
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },
-    swordsmash: {
-      num: 100004,
-      accuracy: 100,
-      basePower: 70,
-      category: "Physical",
-      name: "Sword Smash",
-      pp: 15,
-      priority: 1,
-      flags: { contact: 1 },
-      secondary: null,
-      target: "normal",
-      type: "Steel",
-      contestType: "Cool",
-      critRatio: 2,
-      effects: {
-        self: [{
-          name: "flinch",
-          chance: 10,
-          isVolatile: true 
-        }],
-        target: []
-      },
-    },
-    rushout: {
-      num: 100005,
-      accuracy: 100,
-      basePower: 30,
-      category: "Physical",
-      name: "Rush Out",
-      pp: 20,
-      priority: 0,
-      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
-      secondary: {
-        chance: 100,
-        self: {
-          boosts: {
-            spe: 1.5
-          }
-        }
-      },
-      target: "allAdjacentFoes",
-      type: "Steel",
-      contestType: "Cool"
-    },
-    thunderblade: {
-      num: 100006,
-      accuracy: 100,
-      basePower: 50,
-      category: "Physical",
-      name: "Thunder Blade",
-      pp: 25,
-      critRatio: 2,
-      priority: 0,
-      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
-      target: "normal",
-      type: "Electric",
-      contestType: "Cool"
-    },
     doubleteam: {
       num: 104,
       accuracy: true,
@@ -187,5 +129,55 @@ export default {
       zMove: { boost: { atk: 1 } },
       contestType: "Cool",
       retreat: 2
+    },
+    takeweapon: {
+      num: 100004,
+      accuracy: true,
+      basePower: 0,
+      category: "Normal",
+      name: "Take Weapon",
+      pp: null,
+      priority: 0,
+      flags: { offensive: 0, contact: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      isOffensive: false,
+      retreat: 1.5,
+      effects: {
+        self: [{
+          name: "stall",
+          chance: 70,
+          isVolatile: true 
+        }],
+        target: []
+      },
+      onTryMove(attacker, defender, move) {
+        if (!move.flags.weapon) return false;
+      
+        const chance = 0.65 + (attacker.level - defender.level) / (2 * (attacker.level + defender.level));
+        const rand = Math.random()
+
+        if (rand > chance) return false
+        
+        if (move.flags.contact) {
+          move = defender.state.removeMove(move.id)
+          attacker.state.addMoveForced(move)
+        }
+        else {
+          move = defender.state.moves.find(m => m.id === move.id)
+          if (attacker.state.hasMove(move.id)) {
+            attacker.state.increasePP(move.id)
+          }
+          else {
+            const newMove = new move.constructor(move.id)
+            newMove.pp = 1
+            newMove._meta = move._meta
+            attacker.state.addMoveForced(newMove)
+          }
+        }
+        
+        return true
+      },
     },
 }

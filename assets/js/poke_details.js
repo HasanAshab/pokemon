@@ -374,7 +374,7 @@ function loadMoves() {
 function loadPokemon() {
   const meta = getPokemonsMeta(name)
   globalThis.pokemon = new Pokemon(name, meta)
-  globalThis.dummy = new Pokemon('charmander', {
+  globalThis.dummy = new Pokemon('student', {
     "xp": 100,
     "nature": "hardy",
     "retreat": 1,

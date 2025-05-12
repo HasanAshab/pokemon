@@ -179,7 +179,7 @@ class BaseBattle extends EventEmitter {
         // move failure
         this._checkFailure(this.pokemon1, senario)
         this._checkFailure(this.pokemon2, senario)
-
+        
         this.emit("scene", senario)
         
         // TEMP: move power management
@@ -190,9 +190,15 @@ class BaseBattle extends EventEmitter {
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
         
-        move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
-        move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
-
+        try {
+          move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
+          move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
+        }
+        catch (e) {
+          move1._meta = {}
+          move2._meta = {}
+        }
+      
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
 
@@ -564,13 +570,29 @@ class BattleState extends EventEmitter {
           .forEach(moveMeta => this.addMove(moveMeta.id, moveMeta))
     }
     
+    hasMove(id) {
+      return !!this.moves.find(m => m.id === id)
+    }
+    
     addMove(id, meta = {}) {
         const move = new Move(id)
         move._meta = meta
-        if(!this.moves.find(m => m.id === id)) {
+        if(!this.hasMove(id)) {
             this.moves.push(move)
             return move
         }
+    }
+    addMoveForced(move) {
+        this.removeMove(move.id)
+        this.moves.push(move)
+        return move
+    }
+    
+    
+    removeMove(id) {
+      const move = this.moves.find(m => m.id === id)
+      this.moves = this.moves.filter(m => m.id !== id)
+      return move
     }
 
     addWaveRetreat() {
@@ -596,8 +618,15 @@ class BattleState extends EventEmitter {
         return this.usableMoves().filter(m => m.flags.offensive)
     }
 
+    increasePP(moveId) {
+        const move = this.moves.find(m => m.id === moveId)
+        if(!move) return
+        if (move.pp !== null) move.pp++
+        return move
+    }
     reducePP(moveId) {
         const move = this.moves.find(m => m.id === moveId)
+        if(!move) return
         if (move.pp !== null) move.pp--
         return move
     }
