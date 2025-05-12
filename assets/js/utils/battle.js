@@ -3,7 +3,7 @@ import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
-import { fixFloat, weightedRandom } from "./helpers.js"
+import { fixFloat, weightedRandom, sumObj, modObj } from "./helpers.js"
 
 
 class BaseBattle extends EventEmitter {
@@ -499,8 +499,6 @@ class BattleState extends EventEmitter {
         this.stats = new StatsManager(this);
         this.effects = new EffectManager(this);
         this.damage = new DamageManager(this);
-        
-        pokemon.meta.moves && this.setMoves(pokemon.meta.moves)
 
         this.on("wave", () => {
             this.addWaveRetreat()
@@ -527,6 +525,14 @@ class BattleState extends EventEmitter {
             move.onHit?.(this.pokemon)
             move.onAfterMove(this.pokemon, opponent, move)
         })
+
+        this.on("move-added", move => {
+            this.pokemon.tokens = sumObj(this.pokemon.tokens, move.tokenChanges)
+        })
+        this.on("move-removed", move => {
+            this.pokemon.tokens = sumObj(modObj(move.tokenChanges, -1), this.pokemon.tokens)
+        })
+        pokemon.meta.moves && this.setMoves(pokemon.meta.moves)
     }
     
     toJSON() {
@@ -569,7 +575,7 @@ class BattleState extends EventEmitter {
         moves.filter(moveMeta => !moveMeta.isUnselected)
           .forEach(moveMeta => this.addMove(moveMeta.id, moveMeta))
     }
-    
+
     hasMove(id) {
       return !!this.moves.find(m => m.id === id)
     }
@@ -579,18 +585,22 @@ class BattleState extends EventEmitter {
         move._meta = meta
         if(!this.hasMove(id)) {
             this.moves.push(move)
+            this.emit("move-added", move)
             return move
         }
     }
     addMoveForced(move) {
         this.removeMove(move.id)
         this.moves.push(move)
+        this.emit("move-added", move)
         return move
     }
     
     
     removeMove(id) {
       const move = this.moves.find(m => m.id === id)
+      if (!move) return
+      this.emit("move-removed", move)
       this.moves = this.moves.filter(m => m.id !== id)
       return move
     }

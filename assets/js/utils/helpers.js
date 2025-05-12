@@ -1,3 +1,18 @@
+export const sumObj = (obj1, obj2) => {
+  const obj = Object.assign({}, obj2)
+  for (const key in obj1) {
+    obj[key] = obj1[key] + (obj2[key] || 0)
+  }
+  return obj
+}
+  
+export const modObj = (obj, mod) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    acc[key] = obj[key] * mod
+    return acc
+  }, {})
+}
+
 export const camelize = s => s.replace(/-./g, x=>x[1].toUpperCase())
 
 export function capitalizeFirstLetter(string) {

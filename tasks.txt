@@ -1,6 +1,5 @@
 * Proposal
-weapon weight
-ko, random ko
+combo
 substitute
 
 

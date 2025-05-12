@@ -27,6 +27,7 @@ function mergeDefault(move) {
                 get: () => null
             }
         },
+        tokenChanges: {},
         onAfterMove(pokemon, target, move) {
             move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
         }

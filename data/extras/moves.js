@@ -188,11 +188,14 @@ export default {
       name: "Sword",
       pp: 35,
       priority: 0,
-      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
-      koChance: 100,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+      koChance: 1,
       secondary: null,
       target: "normal",
       type: "Normal",
-      contestType: "Tough"
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -2
+      }
     },
 }

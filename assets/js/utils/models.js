@@ -74,15 +74,17 @@ export class Pokemon extends PSPokemon {
         this.id = id;
         this.meta = Object.assign({
           nature: 'calm',
-          token_used: {
+        }, meta);
+        
+        this.meta.token_used = Object.assign({
           "hp":0,
           "spe":0,
           "atk":0,
           "def":0,
           "spa":0,
           "spd":0
-          }
-        }, meta);
+        }, meta.token_used)
+
         
         
         this._pokemon = pokemons[id];
@@ -90,7 +92,6 @@ export class Pokemon extends PSPokemon {
         this.tokens = this.meta.token_used
         this.items = new ItemManager(this)
         this.abilities = new AbilityManager(this)
-        this.stats = this._calculateTotalStat();
     }
     
     get megaId() {
@@ -174,7 +175,6 @@ export class Pokemon extends PSPokemon {
     megaEvolve() {
         if (!this.hasMegaForm()) return false
         this._pokemon = pokemons[this.megaId];
-        this.stats = this._calculateTotalStat();
         if ("state" in this) {
             this.state.stats.refresh()
         }
@@ -184,7 +184,6 @@ export class Pokemon extends PSPokemon {
     megaDevolve() {
         if (!this.isMegaForm()) return false
         this._pokemon = pokemons[this.id];
-        this.stats = this._calculateTotalStat();
         if ("state" in this) {
             this.state.stats.refresh()
         }
@@ -255,7 +254,7 @@ export class Pokemon extends PSPokemon {
 
         return tokenStats;
     }      
-    _calculateTotalStat() {
+    get stats() {
         const baseStats = this._pokemon.baseStats;
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
@@ -409,7 +408,6 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        console.log(pokemon.id)
         this._setAbilities(pokemon._pokemon.abilities)
     }
     
