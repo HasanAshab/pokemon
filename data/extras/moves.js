@@ -180,4 +180,19 @@ export default {
         return true
       },
     },
+    sword: {
+      num: 100000,
+      accuracy: 100,
+      basePower: 40,
+      category: "Physical",
+      name: "Sword",
+      pp: 35,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      koChance: 100,
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      contestType: "Tough"
+    },
 }

@@ -200,6 +200,12 @@ function setBattleStateListeners(playerTag) {
         }
         msg && popupQueue.add(msg, opponentTag(playerTag), 3500)
     })
+    
+    // KO popup
+    pokemon.state.on("used-move", move => {
+        if (move._bp === Infinity)
+          popupQueue.add("K.O!", opponentTag(playerTag), 3500)
+    })
 
     battle.prompt(pokemon).reply("dodge", () => {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)

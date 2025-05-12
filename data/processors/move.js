@@ -262,6 +262,15 @@ function modifyAccuracy(move) {
     }
 }
 
+function addKoHandler(move) {
+  if (!move.koChance) return 
+  move.basePowerCallback = function(attacker) {
+    return Math.random() < (move.koChance / 100)
+      ? Infinity
+      : move.basePower
+  }
+}
+
 export default processor([
     mergeDefault,
     addFlags,
@@ -270,4 +279,5 @@ export default processor([
     setStatChanges,
     setRetreat,
     modifyAccuracy,
+    addKoHandler,
 ])
