@@ -499,6 +499,7 @@ class BattleState extends EventEmitter {
         this.stats = new StatsManager(this);
         this.effects = new EffectManager(this);
         this.damage = new DamageManager(this);
+        this.armor = new ArmorManager(this);
 
         this.on("wave", () => {
             this.addWaveRetreat()
@@ -622,7 +623,10 @@ class BattleState extends EventEmitter {
         return this.stats.set("hp", newHp);
     }
 
-    decreaseHealth(amount) {
+    decreaseHealth(amount, isInternal = false) {
+        if (!isInternal) {
+            amount = this.armor.consume(amount)
+        }
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
@@ -907,6 +911,45 @@ class DamageManager {
         if (!this._powerModifiers[id]) 
             this._powerModifiers[id] = []
         this._powerModifiers[id].push(modifier)
+    }
+}
+
+class ArmorManager {
+    constructor(state) {
+        this.state = state
+        this._items = this.state.pokemon.items._items.filter(item => {
+          return "armor" in item
+        })
+        this._items.forEach(item => {
+          return item.armor._hp = item.armor.hp
+        })
+    }
+    
+    maxhp() {
+        return this._items.reduce((hp, item) => {
+            return hp + item.armor.hp
+        }, 0)
+    }
+
+    hp() {
+        return this._items.reduce((hp, item) => {
+            return hp + item.armor._hp
+        }, 0)
+    }
+
+    consume(amount) {
+        this._triggeredArmors().forEach(item => {
+            if (amount < 0) return;
+            amount = item.armor.hp - amount
+            item.armor.hp = Math.max(item.armor.hp - amount)
+        })
+        return Math.abs(amount)
+    }
+    
+    _triggeredArmors() {
+        return this._items.filter(item => {
+            return Math.random() < (item.armor.covers / 100)
+        })
     }
 }
 

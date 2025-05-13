@@ -442,17 +442,24 @@ class AbilityManager {
 }
 
 class Item {
+    static exists(id) {
+      return id in items
+    }
+  
     constructor(id, manager) {
         this.id = id
         this.manager = manager
         this.pokemon = manager.pokemon
         this._item = items[this.id]
+        Object.assign(this, this._item)
         this._apply()
     }
     
     _apply() {
-        for (const key in this._item.tokens) {
-            this.pokemon.tokens[key] += this._item.tokens[key]
+        if ("tokens" in  this._item) {
+            for (const key in this._item.tokens) {
+                this.pokemon.tokens[key] += this._item.tokens[key]
+            }
         }
     }
 }
@@ -460,9 +467,17 @@ class Item {
 class ItemManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._items = pokemon.meta.items?.map(id => {
+        this._items = pokemon.meta.items?.filter(id => {
+            if (Item.exists(id)) return true
+            console.log(`${pokemon.name} has invalid item: ${id}`)
+            return false
+        }).map(id => {
             return new Item(id, this)
         })
+    }
+    
+    names() {
+      return this._items.map(item => item.id)
     }
 }
 

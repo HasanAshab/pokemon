@@ -61,10 +61,10 @@ globalThis.progressbarClickHandler = ({currentTarget},playerTag)=>{
   newHp = pokemon.state.stats.set("hp", newHp)
   setCurrentHealth("health",newHp, playerTag)
   }else {
-     // armour progress-bar clicked
+     // armor progress-bar clicked
    const oldHp = 40 // set this
-   let newArmourHp = prompt(`armour of ${playerTag}`, oldHp)
-   setCurrentHealth("armour-hp",newArmourHp, playerTag)
+   let newArmourHp = prompt(`armor of ${playerTag}`, oldHp)
+   setCurrentHealth("armor-hp",newArmourHp, playerTag)
 
   }
 }
@@ -141,6 +141,7 @@ function loadPokemonData(playerTag) {
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
     loadHealth(playerTag)
+    loadAHealth(playerTag)
     setCurrentHealth("health",hp, playerTag)
     setDoubleTeamData(pokemon.state.manCount, playerTag)
     loadMoves(playerTag)
@@ -705,6 +706,10 @@ function loadRetreat(playerTag) {
 function loadHealth(playerTag) {
     const hp = pokemonMap[playerTag].stats.hp
     setTotalHealth("health",hp, playerTag)
+}
+function loadAHealth(playerTag) {
+    const hp = pokemonMap[playerTag].state.armor.hp()
+    setTotalHealth("armor-hp",hp, playerTag)
 }
 
 

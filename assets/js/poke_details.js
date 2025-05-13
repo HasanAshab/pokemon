@@ -54,12 +54,15 @@ function setCurrentHealth(hp) {
 }
 
 function setStat(slug, value) {
+  
   const stat = document.querySelector(`.stat.${slug}`)
    if (updatablePokemonMetaList.includes(slug)){
-     const meta = getPokemonsMeta(name) 
+     if (slug === 'items') {
+       value = value.split(', ').map(item => item.trim()).filter(Boolean)
+     }
+     const meta = getPokemonsMeta(name)
      meta[slug] = value
     setPokemonMeta(name,meta)
-    
   }else{
      if (slug === "hp")
     setTotalHealth(value)
@@ -214,6 +217,7 @@ function loadStats() {
     setStat("retreat", pokemon.meta.retreat)
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
     setStat("abilities", pokemon.abilities.names().join(', '))
+    setStat("items", pokemon.items.names().join(', '))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
     
