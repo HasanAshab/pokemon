@@ -2,7 +2,7 @@ export default {
   ironarmor: {
     armor: {
       hp: 150,
-      covers: 100
+      covers: 50
     }
   }
 }

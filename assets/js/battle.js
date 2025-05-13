@@ -63,8 +63,9 @@ globalThis.progressbarClickHandler = ({currentTarget},playerTag)=>{
   }else {
      // armor progress-bar clicked
    const oldHp = pokemonMap[playerTag].state.armor.hp()
-   let newArmourHp = prompt(`armor of ${playerTag}`, oldHp)
-   setCurrentHealth("armor-hp",newArmourHp, playerTag)
+   console.error(`modifying armor hp not implemented yet`)
+   //let newArmourHp = prompt(`armor of ${playerTag}`, oldHp)
+   //setCurrentHealth("armor-hp",newArmourHp, playerTag)
 
   }
 }
@@ -480,7 +481,9 @@ function setCurrentHealth(className,hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".current-hp").textContent = hp
-  const progress = (hp / pokemon.maxhp) * 100
+  const progress = className === "health"
+    ? (hp / pokemon.maxhp) * 100 
+    : (hp / pokemon.state.armor.maxhp()) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
   //playerTag === "you" && syncStatsMeta(pokemon)
 }

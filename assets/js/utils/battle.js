@@ -624,9 +624,11 @@ class BattleState extends EventEmitter {
     }
 
     decreaseHealth(amount, isInternal = false) {
+      console.log("Decrease Health 1", amount)
         if (!isInternal) {
             amount = this.armor.consume(amount)
         }
+        console.log("Decrease Health 2", amount)
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
@@ -939,11 +941,12 @@ class ArmorManager {
 
     consume(amount) {
         this._triggeredArmors().forEach(item => {
-            if (amount < 0) return;
-            amount = item.armor._hp - amount
-            item.armor._hp = Math.max(amount, 0)
+            console.log("amount", amount)
+            if (amount <= 0) return;
+            amount -= item.armor._hp
+            item.armor._hp = Math.max(Math.abs(amount), 0)
         })
-        return Math.abs(amount)
+        return Math.max(amount, 0)
     }
     
     _triggeredArmors() {
