@@ -932,16 +932,16 @@ class ArmorManager {
     }
 
     hp() {
-        return this._items.reduce((hp, item) => {
+        return Math.round(this._items.reduce((hp, item) => {
             return hp + item.armor._hp
-        }, 0)
+        }, 0))
     }
 
     consume(amount) {
         this._triggeredArmors().forEach(item => {
             if (amount < 0) return;
-            amount = item.armor.hp - amount
-            item.armor.hp = Math.max(item.armor.hp - amount)
+            amount = item.armor._hp - amount
+            item.armor._hp = Math.max(amount, 0)
         })
         return Math.abs(amount)
     }

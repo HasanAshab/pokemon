@@ -234,7 +234,7 @@ flex-direction: column;
 .primary-data-nav  .health.progress-bar {
   height: 20px;
 }
-.primary-data-nav  .armour-hp.progress-bar {
+.primary-data-nav  .armor-hp.progress-bar {
  height: 10px;
 }
 .primary-data-nav  .progress-bar .inner {
@@ -248,7 +248,7 @@ flex-direction: column;
 .primary-data-nav  .health.progress-bar .inner {
   background-color:rgb(255,76,76) ;
 }
-.primary-data-nav  .armour-hp.progress-bar .inner {
+.primary-data-nav  .armor-hp.progress-bar .inner {
   background-color: royalblue;
 }
 .primary-data-nav  .progress-bar .health-data {
@@ -256,7 +256,7 @@ flex-direction: column;
   font-weight: bold;
   z-index: 1;
 }
-.primary-data-nav  .armour-hp.progress-bar .health-data {
+.primary-data-nav  .armor-hp.progress-bar .health-data {
  font-size: small;
 }
 .enemy-controle-cont .card-container {

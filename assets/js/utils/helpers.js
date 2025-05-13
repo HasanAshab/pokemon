@@ -38,7 +38,7 @@ export function getParam(name) {
 }
 
 export function getPokemonsMeta(name) {
-    const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta"))
+    const pokemons_meta = JSON.parse(localStorage.getItem("pokemons-meta") || "{}")
     if (!name) return pokemons_meta
     return pokemons_meta[name]
 }

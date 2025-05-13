@@ -467,7 +467,7 @@ class Item {
 class ItemManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._items = pokemon.meta.items?.filter(id => {
+        this._items = (pokemon.meta.items || []).filter(id => {
             if (Item.exists(id)) return true
             console.log(`${pokemon.name} has invalid item: ${id}`)
             return false

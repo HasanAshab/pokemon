@@ -125,7 +125,7 @@ function makeEnemyMeta(form, index) {
     
     return {
         id: form.querySelector(".enemy").value,
-        xp: level * 100,
+        xp: (level - 1) * 100,
         nature,
         retreat,
         moves,

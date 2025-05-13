@@ -1,5 +1,6 @@
 * Proposal
 armor (ahp stat)
+enemy level - 1
 combo
 
 
