@@ -186,10 +186,16 @@ flex-direction: column;
 }
 .primary-data-nav {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   width: calc(100% - 10px);
   padding: 5px;
+}
+.primary-data-nav > .left-items-wrapper{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 50%;
 }
 .primary-data-nav .retreat {
   background-color: darkblue;
@@ -203,35 +209,55 @@ flex-direction: column;
 .enemy-controle-cont .primary-data-nav {
   transform: rotate(180deg);
 }
-.primary-data-nav > .double-team-data{
+.primary-data-nav  .double-team-data{
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: 10px;
 }
-.primary-data-nav > .health-progress-bar {
+.primary-data-nav > .progressbars-wrapper{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: center;
+}
+.primary-data-nav  .progress-bar {
   border: 1px solid black;
   width: 170px;
-  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   margin-left: auto;
 }
-.primary-data-nav > .health-progress-bar .inner {
+.primary-data-nav  .health.progress-bar {
+  height: 20px;
+}
+.primary-data-nav  .armour-hp.progress-bar {
+ height: 10px;
+}
+.primary-data-nav  .progress-bar .inner {
   width: 100%;
   height: 100%;
-  background-color: limegreen;
   position: absolute;
   right: 0;
   top: 0;
   transition: width .3s;
 }
-.primary-data-nav > .health-progress-bar .health-data {
+.primary-data-nav  .health.progress-bar .inner {
+  background-color:rgb(255,76,76) ;
+}
+.primary-data-nav  .armour-hp.progress-bar .inner {
+  background-color: royalblue;
+}
+.primary-data-nav  .progress-bar .health-data {
   color: black;
   font-weight: bold;
   z-index: 1;
+}
+.primary-data-nav  .armour-hp.progress-bar .health-data {
+ font-size: small;
 }
 .enemy-controle-cont .card-container {
   transform: rotate(180deg);

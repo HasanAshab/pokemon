@@ -53,11 +53,20 @@ globalThis.doubleTeamDataClickHandler = (playerTag)=>{
    pokemonMap[playerTag].state.manCount = newVal
 }
 
-globalThis.healthProgressbarClickHandler = ({currentTarget},playerTag)=>{
+globalThis.progressbarClickHandler = ({currentTarget},playerTag)=>{
+  if (currentTarget.classList.contains("health")){
+  // health progress-bar clicked
   const pokemon = pokemonMap[playerTag]
-  let newHp = prompt(playerTag, pokemon.hp)
+  let newHp = prompt(`health of ${playerTag}`, pokemon.hp)
   newHp = pokemon.state.stats.set("hp", newHp)
-  setCurrentHealth(newHp, playerTag)
+  setCurrentHealth("health",newHp, playerTag)
+  }else {
+     // armour progress-bar clicked
+   const oldHp = 40 // set this
+   let newArmourHp = prompt(`armour of ${playerTag}`, oldHp)
+   setCurrentHealth("armour-hp",newArmourHp, playerTag)
+
+  }
 }
 
 
@@ -132,7 +141,7 @@ function loadPokemonData(playerTag) {
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
     loadHealth(playerTag)
-    setCurrentHealth(hp, playerTag)
+    setCurrentHealth("health",hp, playerTag)
     setDoubleTeamData(pokemon.state.manCount, playerTag)
     loadMoves(playerTag)
 
@@ -455,8 +464,8 @@ function setCurrentRetreat(retreat, playerTag) {
      valueElm.textContent = count
  }
 
-function setTotalHealth(hp, playerTag) {
-  const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
+function setTotalHealth(className,hp, playerTag) {
+  const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
   healthProgressBar.setAttribute("data-total-hp", hp)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".inner").style.width = '100%'
@@ -464,9 +473,9 @@ function setTotalHealth(hp, playerTag) {
   healthProgressBar.querySelector(".total-hp").textContent = hp
 }
 
-function setCurrentHealth(hp, playerTag) {
+function setCurrentHealth(className,hp, playerTag) {
   const pokemon = pokemonMap[playerTag]
-  const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .health-progress-bar`)
+  const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".current-hp").textContent = hp
   const progress = (hp / pokemon.maxhp) * 100
@@ -695,7 +704,7 @@ function loadRetreat(playerTag) {
 
 function loadHealth(playerTag) {
     const hp = pokemonMap[playerTag].stats.hp
-    setTotalHealth(hp, playerTag)
+    setTotalHealth("health",hp, playerTag)
 }
 
 

@@ -1,6 +1,8 @@
 * Proposal
 armor (ahp stat)
 combo
+
+
 substitute
 
 

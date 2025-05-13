@@ -7,7 +7,7 @@ import natures from "../../../data/natures.js"
 
 var name = getParam("name")
 var isMegaEvolved = false
-const updatablePokemonMetaList = ["retreat","xp","nature","wins-count","loses-count"]
+const updatablePokemonMetaList = ["items","retreat","xp","nature","wins-count","loses-count"]
 
 
 globalThis.upgradeMove = function(id) {
