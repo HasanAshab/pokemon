@@ -138,7 +138,7 @@ class BurnEffect extends Effect {
     }
 
     onTurn() {
-        this.state.decreaseHealth(this._calculateEffectDamage())
+        this.state.decreaseHealth(this._calculateEffectDamage(), true)
     }
     
     _calculateEffectDamage() {
@@ -153,7 +153,7 @@ class PoisonEffect extends Effect {
     static effectName = "psn"
 
     onTurn() {
-        this.state.decreaseHealth(this._calculateEffectDamage())
+        this.state.decreaseHealth(this._calculateEffectDamage(), true)
     }
     
     _calculateEffectDamage() {
@@ -320,7 +320,7 @@ class LeechSeedEffect extends Effect {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const loosedHp = opponent.stats.hp / 8
 
-        this.state.decreaseHealth(loosedHp)
+        this.state.decreaseHealth(loosedHp, true)
         opponent.state.increaseHealth(loosedHp)
     }
 }
