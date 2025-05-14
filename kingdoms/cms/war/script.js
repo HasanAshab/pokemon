@@ -23,14 +23,21 @@ function renderStrategySelect() {
 
 function renderKingdomSelects() {
   const kingdomsList = Object.keys(kingdoms);
+  const attackerSelect = document.getElementById('attacker');
   const defenderSelect = document.getElementById('defender');
   
   kingdomsList.forEach(kingdom => {
-    const option = document.createElement('option');
-    option.value = kingdom;
-    option.textContent = kingdom;
-    if (kingdom === name) option.selected = true;
-    defenderSelect.appendChild(option);
+    const attackerOption = document.createElement('option');
+    attackerOption.value = kingdom;
+    attackerOption.textContent = kingdom;
+    if (kingdom === name) attackerOption.selected = true;
+    attackerSelect.appendChild(attackerOption);
+
+    const defenderOption = document.createElement('option');
+    defenderOption.value = kingdom;
+    defenderOption.textContent = kingdom;
+    if (kingdom === name) defenderOption.selected = true;
+    defenderSelect.appendChild(defenderOption);
   });
 }
 
