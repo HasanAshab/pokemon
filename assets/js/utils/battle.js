@@ -175,6 +175,20 @@ class BaseBattle extends EventEmitter {
                 senario.set(this.pokemon1, new Move("staythere"))
             }
         }
+        
+        // weapon effects
+        if(
+          move1.flags.weapon !== move2.flags.weapon
+          && move1.flags.offensive === move2.flags.offensive
+          && move1.priority === move2.priority
+        ) {
+            const succesor = move1.flags.weapon
+              ? this.pokemon1
+              : this.pokemon2
+            const failor = this.opponentOf(succesor)
+            succesor.state.damage.chainModifyPower('*', 1.3)
+            senario.set(failor, new Move("staythere"))
+        }
 
         // move failure
         this._checkFailure(this.pokemon1, senario)
@@ -624,11 +638,9 @@ class BattleState extends EventEmitter {
     }
 
     decreaseHealth(amount, isInternal = false) {
-      console.log("Decrease Health 1", amount)
         if (!isInternal) {
             amount = this.armor.consume(amount)
         }
-        console.log("Decrease Health 2", amount)
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
@@ -941,7 +953,6 @@ class ArmorManager {
 
     consume(amount) {
         this._triggeredArmors().forEach(item => {
-            console.log("amount", amount)
             if (amount <= 0) return;
             amount -= item.armor._hp
             item.armor._hp = Math.max(Math.abs(amount), 0)

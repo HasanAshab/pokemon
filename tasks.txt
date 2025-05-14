@@ -1,5 +1,4 @@
 * Proposal
-weapon vs hand ++ damage
 enemy items
 combo
 
