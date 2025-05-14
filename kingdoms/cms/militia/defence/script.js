@@ -134,7 +134,8 @@ function renderWaves() {
 
       // Update label when the range changes
       percentageInput.oninput = () => {
-        percentageLabel.textContent = `${percentageInput.value}%`;
+        const actualQuantity = actualSoldiers[index]?.find(soldier.image) || 0;
+        percentageLabel.textContent = `${percentageInput.value}% (${actualQuantity} soldiers)`;
       };
 
       const itemsInput = document.createElement("input");
