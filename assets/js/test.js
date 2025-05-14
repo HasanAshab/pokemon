@@ -26,22 +26,37 @@ class SoldierStack extends Map {
     return stack[1]
   }
   
+  reduce() {
+    return Array.from(this.entries()).reduce(...arguments)
+  }
+  
   cp() {
-    return Array.from(this.entries()).reduce((sum, [image, quantity]) => {
+    return this.reduce((sum, [image, quantity]) => {
       return sum + image.cp() * quantity;
     }, 0);
   }
   
   count() {
-    return Array.from(this.entries()).reduce((sum, [image, quantity]) => {
+    return this.reduce((sum, [image, quantity]) => {
       return sum + quantity;
     }, 0);
   }
   
   statOf(stat) {
-    return Array.from(this.entries()).reduce((sum, [image, quantity]) => {
+    return this.reduce((sum, [image, quantity]) => {
       return sum + (image.stats[stat] * quantity);
     }, 0);
+  }
+  
+  armorScore() {
+    return this.reduce((score, [image, quantity]) => {
+      const ahp = image.items._items.reduce((ahp, item) => {
+        if ("armor" in item)
+          ahp += item.armor.hp * (item.armor.covers / 100)
+        return ahp
+      }, 0)
+      return score + (ahp * quantity)
+    }, 0)
   }
   
   resize(percent) {
@@ -133,32 +148,30 @@ function vsQuantStr(attackers, defenders) {
   return `${atkQuant} vs ${defQuant}`
 }
 
+function calcManPowerMod(w1, w2) {
+  const MP_BONUS_FACTOR = 0.07;
+  const w1Count = w1.soldiers.count();
+  const w2Count = w2.soldiers.count();
 
-function calculateScore(w1, w2) {
-  const phyScore = w1.statOf('def') - w2.statOf('atk')
-  const spScore = w1.statOf('spd') - w2.statOf('spa')
-  const otherScore = w1.statOf('hp') + w1.statOf('spe')
-  return phyScore + spScore + otherScore
+  return w1Count > w2Count
+    ? 1 + ((w1Count - w2Count) / w2Count) * MP_BONUS_FACTOR
+    : 1;
 }
 
-function calculateWaveOutcome(attackers, defenders, isOccupationAttack = false) {
-  const atkCount = attackers.soldiers.count();
-  const defCount = defenders.soldiers.count();
-  const HANDS_BONUS_FACTOR = 0.07;
+function calcScore(w1, w2) {
+  const manPowerModifier = calcManPowerMod(w1, w2)
+  const phyScore = w1.statOf('def') - w2.statOf('atk')
+  const spScore = w1.statOf('spd') - w2.statOf('spa')
+  const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()
+  return (phyScore + spScore + otherScore) * manPowerModifier
+}
 
-  const atkHandsModifier = atkCount > defCount
-    ? 1 + ((atkCount - defCount) / defCount) * HANDS_BONUS_FACTOR
-    : 1;
-
-  const defHandsModifier = defCount > atkCount
-    ? 1 + ((defCount - atkCount) / atkCount) * HANDS_BONUS_FACTOR
-    : 1;
-
-  const attackersScore = calculateScore(attackers, defenders) * atkHandsModifier;
-  const defendersScore = calculateScore(defenders, attackers) * defHandsModifier;
+function calcWaveOutcome(attackers, defenders, isOccupationAttack = false) {
+  const attackersScore = calcScore(attackers, defenders);
+  const defendersScore = calcScore(defenders, attackers);
 
   const win = isOccupationAttack
-    ? attackersScore * 0.3 > defendersScore
+    ? attackersScore * 0.7 > defendersScore
     : attackersScore > defendersScore;
 
   const attackersCP = attackers.soldiers.cp();
@@ -171,9 +184,7 @@ function calculateWaveOutcome(attackers, defenders, isOccupationAttack = false) 
   const commentLines = [];
 
   // Units quantity
-  if (atkCount !== defCount) {
-    commentLines.push(vsQuantStr(attackers, defenders));
-  }
+  commentLines.push(vsQuantStr(attackers, defenders));
 
   // Stronger units
   if (cpDiff > 0) {
@@ -221,6 +232,10 @@ function calculateWaveOutcome(attackers, defenders, isOccupationAttack = false) 
     win,
     comment: commentLines.join('\n'),
     wounded,
+    scores: {
+      atk: attackersScore,
+      def: defendersScore
+    }
   };
 }
 
@@ -253,7 +268,7 @@ const wave2 = new DefenseWave(com2, new SoldierStack([
 
 
 
-const res = calculateWaveOutcome(wave1, wave2, true)
+const res = calcWaveOutcome(wave1, wave2, true)
 console.log(res)
 
 // console.log('atk')
@@ -285,6 +300,6 @@ const p = [
     [student, 80],
     [genin, 80]
   ]
-prepareSoldiers(militia, p).resize(10).forEach(console.log)
+//prepareSoldiers(militia, p).resize(10).forEach(console.log)
 
 
