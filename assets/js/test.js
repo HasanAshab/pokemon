@@ -133,111 +133,168 @@ class DefenseWave extends Wave {
   }
 }
 
+class War {
+  constructor(attackers, defenders) {
+    if (!(attackers instanceof AttackWave && defenders instanceof DefenseWave))
+      throw new Error('Invalid waves!')
+    this.attackers = attackers
+    this.defenders = defenders
+    this.result = {
+      scores: {}
+    }
+    this._generateResult()
+  }
 
-function vsQuantStr(attackers, defenders) {
-  const atk = attackers.soldiers.count()
-  const def = defenders.soldiers.count()
-  
-  const atkQuant = atk > def
-    ? `${Math.ceil(atk / def)} Attackers`
-    : "1 Attacker"
+  comments() {
+    const commentLines = [];
+    const attackersScore = this.result.scores.atk;
+    const defendersScore = this.result.scores.def;
+    const attackersCP = this.attackers.soldiers.cp();
+    const defendersCP = this.defenders.soldiers.cp();
+    const luckDiff = this.attackers.meta.luckModifier - this.defenders.meta.luckModifier;
+    const iqDiff = this.attackers.meta.iqModifier - this.defenders.meta.iqModifier;
+    const cpDiff = attackersCP - defendersCP;
     
-  const defQuant = def > atk
-    ? `${Math.ceil(def / atk)} Defenders`
-    : "1 Defender"
-  return `${atkQuant} vs ${defQuant}`
-}
 
-function calcManPowerMod(w1, w2) {
-  const MP_BONUS_FACTOR = 0.07;
-  const w1Count = w1.soldiers.count();
-  const w2Count = w2.soldiers.count();
-
-  return w1Count > w2Count
-    ? 1 + ((w1Count - w2Count) / w2Count) * MP_BONUS_FACTOR
-    : 1;
-}
-
-function calcScore(w1, w2) {
-  const manPowerModifier = calcManPowerMod(w1, w2)
-  const phyScore = w1.statOf('def') - w2.statOf('atk')
-  const spScore = w1.statOf('spd') - w2.statOf('spa')
-  const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()
-  return (phyScore + spScore + otherScore) * manPowerModifier
-}
-
-function calcWaveOutcome(attackers, defenders, isOccupationAttack = false) {
-  const attackersScore = calcScore(attackers, defenders);
-  const defendersScore = calcScore(defenders, attackers);
-
-  const win = isOccupationAttack
-    ? attackersScore * 0.7 > defendersScore
-    : attackersScore > defendersScore;
-
-  const attackersCP = attackers.soldiers.cp();
-  const defendersCP = defenders.soldiers.cp();
-
-  const luckDiff = attackers.meta.luckModifier - defenders.meta.luckModifier;
-  const iqDiff = attackers.meta.iqModifier - defenders.meta.iqModifier;
-  const cpDiff = attackersCP - defendersCP;
-
-  const commentLines = [];
-
-  // Units quantity
-  commentLines.push(vsQuantStr(attackers, defenders));
-
-  // Stronger units
-  if (cpDiff > 0) {
-    commentLines.push("Attacker has stronger units");
-  } else {
-    commentLines.push("Defender has stronger units");
-  }
-
-  // Units advantage
-  if (attackersScore > defendersScore !== attackers.cp() > defenders.cp()) {
-    if (attackersScore > defendersScore) {
-      commentLines.push("Attacker units got advantage");
+    // Units quantity
+    commentLines.push(this._vsQuantStr());
+  
+    // Stronger units
+    if (cpDiff > 0) {
+      commentLines.push("Attacker has stronger units");
     } else {
-      commentLines.push("Defender units got advantage");
+      commentLines.push("Defender has stronger units");
     }
-  }
-
-  // Better luck
-  if (luckDiff > 0) {
-    commentLines.push("Attacker has better luck");
-  } else {
-    commentLines.push("Defender has better luck");
-  }
-
-  // Better commander IQ
-  if (iqDiff > 0) {
-    commentLines.push("Attacker has better commander");
-  } else {
-    commentLines.push("Defender has better commander");
-  }
-
-  const wounded = {};
-
-  if (win) {
-    const per = (defendersScore * 100) / attackersScore;
-    wounded.atk = attackers.soldiers.resize(per);
-    wounded.def = defenders.soldiers;
-  } else {
-    const per = (attackersScore * 100) / defendersScore;
-    wounded.def = defenders.soldiers.resize(per);
-    wounded.atk = attackers.soldiers;
-  }
-
-  return {
-    win,
-    comment: commentLines.join('\n'),
-    wounded,
-    scores: {
-      atk: attackersScore,
-      def: defendersScore
+  
+    // Units advantage
+    if (attackersScore > defendersScore !== attackersCP > defendersCP) {
+      if (attackersScore > defendersScore) {
+        commentLines.push("Attacker units got advantage");
+      } else {
+        commentLines.push("Defender units got advantage");
+      }
     }
-  };
+  
+    // Better luck
+    if (luckDiff > 0) {
+      commentLines.push("Attacker has better luck");
+    } else {
+      commentLines.push("Defender has better luck");
+    }
+  
+    // Better commander IQ
+    if (iqDiff > 0) {
+      commentLines.push("Attacker has better commander");
+    } else {
+      commentLines.push("Defender has better commander");
+    }
+    return commentLines
+  }
+  
+  _generateResult() {
+    this.result.scores.atk = this._calcScore(this.attackers);
+    this.result.scores.def = this._calcScore(this.defenders);
+    this.result.raisedWhiteFlag = this._raisedWhiteFlag()
+    this.result.win = this.result.raisedWhiteFlag || this._canWin()
+    this.result.wounded = this._calcWounded()
+  }
+  
+  _raisedWhiteFlag() {
+    return false
+  }
+  
+  _canWin() {
+    return this.result.scores.atk > this.result.scores.def;
+  }
+  
+  _calcWounded() {
+    const wounded = {
+      atk: new Map(),
+      def: new Map()
+    }
+    if (this.result.raisedWhiteFlag)
+      return wounded
+    
+    if (this.result.win) {
+      const per = (this.result.scores.def * 100) / this.result.scores.atk;
+      wounded.atk = this.attackers.soldiers.resize(per);
+      wounded.def = this.defenders.soldiers;
+    } else {
+      const per = (attackersScore * 100) / defendersScore;
+      wounded.def = this.defenders.soldiers.resize(per);
+      wounded.atk = this.attackers.soldiers;
+    }
+    return wounded
+  }
+
+  _opponentOf(w) {
+    return w === this.attackers
+      ? this.defenders
+      : this.attackers
+  }
+
+  _calcScore(w1) {
+    const w2 = this._opponentOf(w1)
+    const manPowerModifier = this._calcManPowerMod(w1)
+    const phyScore = w1.statOf('def') - w2.statOf('atk')
+    const spScore = w1.statOf('spd') - w2.statOf('spa')
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()
+    return (phyScore + spScore + otherScore) * manPowerModifier
+  }
+  
+  _calcManPowerMod(w1) {
+    const w2 = this._opponentOf(w1)
+    const MP_BONUS_FACTOR = 0.07;
+    const w1Count = w1.soldiers.count();
+    const w2Count = w2.soldiers.count();
+  
+    return w1Count > w2Count
+      ? 1 + ((w1Count - w2Count) / w2Count) * MP_BONUS_FACTOR
+      : 1;
+  }
+  
+  _vsQuantStr() {
+    const atk = this.attackers.soldiers.count()
+    const def = this.defenders.soldiers.count()
+    
+    const atkQuant = atk > def
+      ? `${Math.ceil(atk / def)} Attackers`
+      : "1 Attacker"
+      
+    const defQuant = def > atk
+      ? `${Math.ceil(def / atk)} Defenders`
+      : "1 Defender"
+    return `${atkQuant} vs ${defQuant}`
+  }
 }
+
+class SabotagingWar extends War {}
+
+class OccupationWar extends War {
+  _canWin() {
+    return this.result.scores.atk * 0.7 > this.result.scores.def
+  }
+}
+
+class HarvestingWar extends War {
+  _raisedWhiteFlag() {
+    const whiteFlagChance = Math.min(
+      Math.max(
+        ((this.result.scores.atk / this.result.scores.def) * 0.7) - 1,
+        0
+      ),
+      0.95
+    )
+    return Math.random() < whiteFlagChance
+  }
+}
+
+const WAR_SYSTEMS = {
+  "sabotage": SabotagingWar,
+  "occupy": OccupationWar,
+  "harvest": HarvestingWar,
+}
+
 
 const com1 = {
     image: genin, // image means assume another genin the commander
@@ -268,8 +325,9 @@ const wave2 = new DefenseWave(com2, new SoldierStack([
 
 
 
-const res = calcWaveOutcome(wave1, wave2, true)
-console.log(res)
+const war = new HarvestingWar(wave1, wave2)
+console.log(war.result)
+console.log(war.comments())
 
 // console.log('atk')
 // res.wounded.atk.forEach(console.log)
