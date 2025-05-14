@@ -129,7 +129,7 @@ function renderWaves() {
       percentageInput.value = soldier.percentage || 0;
 
       const percentageLabel = document.createElement("span");
-      const actualQuantity = actualSoldiers[index]?.get(pokemons[soldier.image]) || 0;
+      const actualQuantity = actualSoldiers[index]?.find(soldier.image) || 0;
       percentageLabel.textContent = `${percentageInput.value}% (${actualQuantity} soldiers)`;
 
       // Update label when the range changes
