@@ -134,8 +134,9 @@ function renderWaves() {
 
       // Update label when the range changes
       percentageInput.oninput = () => {
-        const actualQuantity = actualSoldiers[index]?.find(soldier.image) || 0;
-        percentageLabel.textContent = `${percentageInput.value}% (${actualQuantity} soldiers)`;
+        const total = kingdoms[name].barrack.soldiers.find(s => s.image.id === soldier.image).quantity;
+        const quantity = Math.ceil(total * (percentageInput.value / 100));
+        percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
 
       const itemsInput = document.createElement("input");
