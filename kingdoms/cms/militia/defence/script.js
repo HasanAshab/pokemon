@@ -1,3 +1,5 @@
+import { SoldierStack } from "../../../war.js"
+
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get("name");
 
@@ -32,21 +34,18 @@ function validateItems(items, waveIndex) {
   return Object.entries(itemCounts).every(([item, count]) => (storage[item] || 0) >= count);
 }
 
-function calculateTotalPercentage(imageId, excludeIndex = -1, includePercentage = 0) {
-  const total = kingdoms[name].defenceWaves.reduce((total, wave, idx) => {
-    if (idx === excludeIndex) return total;
-    const soldierPercentages = wave.soldiers
-      .filter(s => s.image === imageId)
-      .reduce((sum, s) => sum + (s.percentage || 0), 0);
-    return total + soldierPercentages;
-  }, 0);
-
-  return total + includePercentage;
+export function prepareDefenceSoldiers(kingdom) {
+  kingdom.defenceWaves.map(wave => {
+    const data = wave.soldiers.forEach(console.log)
+    return new SoldierStack()
+  })
+  
 }
 
 function renderWaves() {
   const wavesList = document.getElementById("wavesList");
   wavesList.innerHTML = "";
+  console.log(prepareDefenceSoldiers(kingdoms[name]))
 
   kingdoms[name].defenceWaves.forEach((wave, index) => {
     const waveDiv = document.createElement("div");
@@ -107,44 +106,45 @@ function renderWaves() {
       document.body.appendChild(modal);
     };
 
-    function createSoldierEntry(soldier, waveIndex) {
-      const soldierDiv = document.createElement("div");
-      soldierDiv.className = "soldier-entry";
-
-      const percentageInput = document.createElement("input");
-      percentageInput.type = "number";
-      percentageInput.min = "0";
-      percentageInput.max = "100";
-      percentageInput.value = soldier.percentage;
-
-      // Add percentage validation
-      percentageInput.onchange = () => {
-        const newPercentage = parseInt(percentageInput.value) || 0;
-        const totalPercentage = calculateTotalPercentage(soldier.image, waveIndex, newPercentage);
-        if (totalPercentage > 100) {
-          alert(`Total percentage for ${soldier.image} cannot exceed 100%`);
-          percentageInput.value = soldier.percentage;
-          return;
-        }
-      };
-
-      const itemsInput = document.createElement("input");
-      itemsInput.type = "text";
-      itemsInput.placeholder = "Items (comma-separated)";
-      itemsInput.value = soldier.items?.join(",") || "";
-
-      const removeBtn = document.createElement("button");
-      removeBtn.className = "remove-soldier-btn";
-      removeBtn.innerHTML = "×";
-      removeBtn.onclick = () => soldierDiv.remove();
-
-      soldierDiv.innerHTML = `<span>${soldier.image}</span>`;
-      soldierDiv.appendChild(percentageInput);
-      soldierDiv.appendChild(itemsInput);
-      soldierDiv.appendChild(removeBtn);
-
-      return soldierDiv;
-    }
+  function createSoldierEntry(soldier, waveIndex) {
+    const soldierDiv = document.createElement("div");
+    soldierDiv.className = "soldier-entry";
+  
+    const percentageInput = document.createElement("input");
+    percentageInput.type = "range";
+    percentageInput.min = "0";
+    percentageInput.max = "100";
+    percentageInput.value = soldier.percentage || 0;
+  
+    const percentageLabel = document.createElement("span");
+    percentageLabel.textContent = `${percentageInput.value}%`;
+  
+    // Update label when the range changes
+    percentageInput.oninput = () => {
+      percentageLabel.textContent = `${percentageInput.value}%`;
+    };
+  
+    const itemsInput = document.createElement("input");
+    itemsInput.type = "text";
+    itemsInput.placeholder = "Items (comma-separated)";
+    itemsInput.value = soldier.items?.join(",") || "";
+  
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "remove-soldier-btn";
+    removeBtn.innerHTML = "×";
+    removeBtn.onclick = () => soldierDiv.remove();
+  
+    soldierDiv.innerHTML = `<span>${soldier.image}</span>`;
+    soldierDiv.appendChild(document.createElement('br'));
+    soldierDiv.appendChild(percentageInput);
+    soldierDiv.appendChild(percentageLabel);
+    soldierDiv.appendChild(document.createElement('br'));
+    soldierDiv.appendChild(itemsInput);
+    soldierDiv.appendChild(document.createElement('br'));
+    soldierDiv.appendChild(removeBtn);
+  
+    return soldierDiv;
+  }
 
     // Add existing soldiers
     wave.soldiers.forEach(soldier => {
@@ -165,35 +165,16 @@ function renderWaves() {
       const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
       soldierEntries.forEach((entry) => {
         const image = entry.querySelector('span').textContent;
-        const percentage = parseInt(entry.querySelector('input[type="number"]').value) || 0;
+        const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;
         const items = entry.querySelector('input[type="text"]').value
           .split(",")
           .map(item => item.trim())
           .filter(item => item);
 
-        if (percentage > 0) {
-          const totalPercentage = calculateTotalPercentage(image, index, percentage);
-          if (totalPercentage > 100) {
-            alert(`Total percentage for ${image} exceeds 100% (Current: ${totalPercentage}%)`);
-            valid = false;
-            return;
-          }
-
-          if (items.length > 0 && !validateItems(items, index)) {
-            alert(`Some items are not available in storage`);
-            valid = false;
-            return;
-          }
-
           newWave.soldiers.push({ image: image, percentage, items });
-        }
       });
-
-      if (valid) {
-        kingdoms[name].defenceWaves[index] = newWave;
-        localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
-        renderWaves();
-      }
+      localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+      renderWaves();
     };
 
     const deleteBtn = document.createElement("button");
