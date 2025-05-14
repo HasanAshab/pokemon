@@ -10,6 +10,7 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].commanders) kingdoms[name].commanders = {};
 
+
 function save() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   renderCommanders();
