@@ -197,9 +197,17 @@ document.getElementById("addWaveBtn").onclick = () => {
   renderWaves();
 };
 
+const areaPercentageInput = document.getElementById('areaPercentage');
+const areaPercentageLabel = document.getElementById('areaPercentageLabel');
+
+areaPercentageInput.oninput = () => {
+  areaPercentageLabel.textContent = `${areaPercentageInput.value}%`;
+};
+
 document.getElementById('startWar').onclick = () => {
   const defender = document.getElementById('defender').value;
   const strategy = document.getElementById('warStrategy').value;
+  const areaPercentage = parseInt(areaPercentageInput.value);
   // Implementation for war execution will go here
 };
 
