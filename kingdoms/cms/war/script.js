@@ -208,7 +208,10 @@ const areaPercentageInput = document.getElementById('areaPercentage');
 const areaPercentageLabel = document.getElementById('areaPercentageLabel');
 
 areaPercentageInput.oninput = () => {
-  areaPercentageLabel.textContent = `${areaPercentageInput.value}%`;
+  const percent = areaPercentageInput.value;
+  const totalArea = kingdoms[name].landArea;
+  const actualArea = Math.round((totalArea * percent) / 100);
+  areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;
 };
 
 document.getElementById('startWar').onclick = () => {
