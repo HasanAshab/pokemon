@@ -8,16 +8,21 @@ if (!kingdoms[name].defenceWaves) kingdoms[name].defenceWaves = [];
 const kingdomName = document.getElementById("kingdomName");
 kingdomName.textContent = name || "Unknown Kingdom";
 
-function calculateTotalPercentage(imageId, excludeIndex = -1) {
-  return kingdoms[name].defenceWaves.reduce((total, wave, idx) => {
-    if (idx === excludeIndex) return total;
-    return total + (wave.soldiers.find(s => s.image === imageId)?.percentage || 0);
-  }, 0);
-}
-
 function validateItems(items) {
   const storage = kingdoms[name].storage || {};
-  return items.every(item => (storage[item] || 0) > 0);
+  return items.every(item => (storage[item] || 0) >= items.filter(i => i === item).length);
+}
+
+function calculateTotalPercentage(imageId, excludeIndex = -1, includePercentage = 0) {
+  const total = kingdoms[name].defenceWaves.reduce((total, wave, idx) => {
+    if (idx === excludeIndex) return total;
+    const soldierPercentages = wave.soldiers
+      .filter(s => s.image === imageId)
+      .reduce((sum, s) => sum + (s.percentage || 0), 0);
+    return total + soldierPercentages;
+  }, 0);
+
+  return total + includePercentage;
 }
 
 function renderWaves() {
@@ -96,7 +101,7 @@ function renderWaves() {
       // Add percentage validation
       percentageInput.onchange = () => {
         const newPercentage = parseInt(percentageInput.value) || 0;
-        const totalPercentage = calculateTotalPercentage(soldier.image, waveIndex) + newPercentage;
+        const totalPercentage = calculateTotalPercentage(soldier.image, waveIndex, newPercentage);
         if (totalPercentage > 100) {
           alert(`Total percentage for ${soldier.image} cannot exceed 100%`);
           percentageInput.value = soldier.percentage;
@@ -148,9 +153,9 @@ function renderWaves() {
           .filter(item => item);
 
         if (percentage > 0) {
-          const totalPercentage = calculateTotalPercentage(image, index) + percentage;
+          const totalPercentage = calculateTotalPercentage(image, index, percentage);
           if (totalPercentage > 100) {
-            alert(`Total percentage for ${image} exceeds 100%`);
+            alert(`Total percentage for ${image} exceeds 100% (Current: ${totalPercentage}%)`);
             valid = false;
             return;
           }
