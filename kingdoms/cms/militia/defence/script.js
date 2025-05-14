@@ -40,10 +40,50 @@ function renderWaves() {
     const soldiersDiv = document.createElement("div");
     soldiersDiv.className = "soldiers-list";
 
-    const soldiers = kingdoms[name].barrack?.soldiers || [];
-    soldiers.forEach(soldier => {
-      const existingSoldier = wave.soldiers.find(s => s.image === soldier.image.id);
-      
+    // Create add soldier button
+    const addSoldierBtn = document.createElement("button");
+    addSoldierBtn.className = "add-soldier-btn";
+    addSoldierBtn.innerHTML = "+";
+    addSoldierBtn.onclick = () => {
+      // Create soldier selection modal
+      const modal = document.createElement("div");
+      modal.className = "modal";
+
+      const modalContent = document.createElement("div");
+      modalContent.className = "modal-content";
+
+      const soldierSelect = document.createElement("select");
+      const soldiers = kingdoms[name].barrack?.soldiers || [];
+      soldiers.forEach(soldier => {
+        const option = document.createElement("option");
+        option.value = soldier.image.id;
+        option.textContent = soldier.image.id;
+        soldierSelect.appendChild(option);
+      });
+
+      const addBtn = document.createElement("button");
+      addBtn.textContent = "Add";
+      addBtn.onclick = () => {
+        const selectedImage = soldierSelect.value;
+
+        // Create new soldier entry
+        const soldierDiv = createSoldierEntry({
+          image: selectedImage,
+          percentage: 0,
+          items: []
+        }, index);
+
+        soldiersDiv.appendChild(soldierDiv);
+        modal.remove();
+      };
+
+      modalContent.appendChild(soldierSelect);
+      modalContent.appendChild(addBtn);
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
+    };
+
+    function createSoldierEntry(soldier, waveIndex) {
       const soldierDiv = document.createElement("div");
       soldierDiv.className = "soldier-entry";
 
@@ -51,23 +91,43 @@ function renderWaves() {
       percentageInput.type = "number";
       percentageInput.min = "0";
       percentageInput.max = "100";
-      percentageInput.value = existingSoldier?.percentage || 0;
+      percentageInput.value = soldier.percentage;
+
+      // Add percentage validation
+      percentageInput.onchange = () => {
+        const newPercentage = parseInt(percentageInput.value) || 0;
+        const totalPercentage = calculateTotalPercentage(soldier.image, waveIndex) + newPercentage;
+        if (totalPercentage > 100) {
+          alert(`Total percentage for ${soldier.image} cannot exceed 100%`);
+          percentageInput.value = soldier.percentage;
+          return;
+        }
+      };
 
       const itemsInput = document.createElement("input");
       itemsInput.type = "text";
       itemsInput.placeholder = "Items (comma-separated)";
-      itemsInput.value = existingSoldier?.items?.join(",") || "";
+      itemsInput.value = soldier.items?.join(",") || "";
 
-      soldierDiv.innerHTML = `
-        <span>${soldier.image.id}</span>
-        <label>Percentage: </label>
-      `;
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "remove-soldier-btn";
+      removeBtn.innerHTML = "×";
+      removeBtn.onclick = () => soldierDiv.remove();
+
+      soldierDiv.innerHTML = `<span>${soldier.image}</span>`;
       soldierDiv.appendChild(percentageInput);
-      soldierDiv.innerHTML += `<label>Items: </label>`;
       soldierDiv.appendChild(itemsInput);
+      soldierDiv.appendChild(removeBtn);
 
-      soldiersDiv.appendChild(soldierDiv);
+      return soldierDiv;
+    }
+
+    // Add existing soldiers
+    wave.soldiers.forEach(soldier => {
+      soldiersDiv.appendChild(createSoldierEntry(soldier, index));
     });
+
+    soldiersDiv.appendChild(addSoldierBtn);
 
     const saveBtn = document.createElement("button");
     saveBtn.textContent = "Save Wave";
@@ -78,8 +138,9 @@ function renderWaves() {
       };
 
       let valid = true;
-      soldiersDiv.querySelectorAll(".soldier-entry").forEach((entry, idx) => {
-        const imageId = soldiers[idx].image.id;
+      const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
+      soldierEntries.forEach((entry) => {
+        const image = entry.querySelector('span').textContent;
         const percentage = parseInt(entry.querySelector('input[type="number"]').value) || 0;
         const items = entry.querySelector('input[type="text"]').value
           .split(",")
@@ -87,9 +148,9 @@ function renderWaves() {
           .filter(item => item);
 
         if (percentage > 0) {
-          const totalPercentage = calculateTotalPercentage(imageId, index) + percentage;
+          const totalPercentage = calculateTotalPercentage(image, index) + percentage;
           if (totalPercentage > 100) {
-            alert(`Total percentage for ${imageId} exceeds 100%`);
+            alert(`Total percentage for ${image} exceeds 100%`);
             valid = false;
             return;
           }
@@ -100,7 +161,7 @@ function renderWaves() {
             return;
           }
 
-          newWave.soldiers.push({ image: imageId, percentage, items });
+          newWave.soldiers.push({ image: image, percentage, items });
         }
       });
 
