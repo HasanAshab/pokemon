@@ -268,7 +268,6 @@ class War {
   }
 }
 
-class SabotagingWar extends War {}
 
 class OccupationWar extends War {
   _canWin() {
@@ -290,7 +289,7 @@ class HarvestingWar extends War {
 }
 
 const WAR_SYSTEMS = {
-  "sabotage": SabotagingWar,
+  "sabotage": War,
   "occupy": OccupationWar,
   "harvest": HarvestingWar,
 }
@@ -312,7 +311,6 @@ const com2 = {
       defensive: 5,
     }
   }
-
 
 const wave1 = new AttackWave(com1, new SoldierStack([
   [genin, 10],

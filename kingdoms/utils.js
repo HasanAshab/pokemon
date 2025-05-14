@@ -17,8 +17,8 @@ export function calculateSize(baseSize, level) {
   return Math.round(baseSize * Math.pow(1.2, level - 1));
 }
 
-export function upgradePrice(basePrice, level) {
-  return Math.round(basePrice * Math.pow(1.5, level - 1));
+export function upgradePrice(basePrice, level, rate = 1.5) {
+  return Math.round(basePrice * Math.pow(rate, level - 1));
 }
 
 export function calculatePeopleUsedLandArea(population, pci, taxRate) {
@@ -41,6 +41,19 @@ export function calculateTax(kingdom) {
   return Math.floor(totalIncome * kingdom.taxRate);
 }
 
+export function calcSoldiersSalary(kingdom) {
+  if (!kingdom?.barrack?.soldiers) return 0;
+
+  return kingdom.barrack.soldiers.reduce((total, soldier) => {
+    const soldierTotal = (soldier.quantity || 0) * (soldier.ivSalary || 0);
+    return total + soldierTotal;
+  }, 0);
+}
+
+export function calcAcademyCost(kingdom) {
+  const level = kingdom.barrack.academyLevel
+  return upgradePrice(30_000, level, 3);
+}
 
 export function calcBuildProduction(kingdom) {
   return kingdom.buildings.reduce((prod, build) => {
@@ -70,7 +83,9 @@ export function calcNetProd(kingdom, localize = false) {
   const sysProd = {
     coins: calculateTax(kingdom),
   }
-  const sysCons = {}
+  const sysCons = {
+    coins: calcSoldiersSalary(kingdom) + calcAcademyCost(kingdom)
+  }
   const buildProd = calcBuildNetProd(kingdom)
   const prod = sumObj(
     sumObj(sysProd, buildProd),

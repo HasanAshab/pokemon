@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Militia</title>
-  <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8">
+  <title>Barrack</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1 id="kingdomName">Kingdom</h1>
+  <h1 id="barrackTitle">Barrack</h1>
+
+  <section id="academySection">
+    <h2>Academy</h2>
+    <div>
+      <span>Level:</span>
+      <button id="decrAcademy">-</button>
+      <span id="academyLevel">1</span>
+      <button id="incrAcademy">+</button>
+    </div>
+    <div>Monthly Cost: <span id="academyCost">100</span> coins</div>
+  </section>
+
+  <section id="soldiersSection">
+    <h2>Soldiers</h2>
+    <button id="addSoldierBtn">+ Add Soldier</button>
+    <div id="soldiersContainer"></div>
+  </section>
 
   <script type="module" src="script.js"></script>
 </body>
