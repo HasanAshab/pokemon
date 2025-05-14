@@ -8,9 +8,28 @@ if (!kingdoms[name].defenceWaves) kingdoms[name].defenceWaves = [];
 const kingdomName = document.getElementById("kingdomName");
 kingdomName.textContent = name || "Unknown Kingdom";
 
-function validateItems(items) {
+function validateItems(items, waveIndex) {
   const storage = kingdoms[name].storage || {};
-  return items.every(item => (storage[item] || 0) >= items.filter(i => i === item).length);
+  const itemCounts = {};
+  
+  // Count items from other waves
+  kingdoms[name].defenceWaves.forEach((wave, idx) => {
+    if (idx !== waveIndex) {
+      wave.soldiers.forEach(soldier => {
+        soldier.items.forEach(item => {
+          itemCounts[item] = (itemCounts[item] || 0) + 1;
+        });
+      });
+    }
+  });
+
+  // Add current items
+  items.forEach(item => {
+    itemCounts[item] = (itemCounts[item] || 0) + 1;
+  });
+
+  // Check if we have enough in storage
+  return Object.entries(itemCounts).every(([item, count]) => (storage[item] || 0) >= count);
 }
 
 function calculateTotalPercentage(imageId, excludeIndex = -1, includePercentage = 0) {
@@ -160,7 +179,7 @@ function renderWaves() {
             return;
           }
 
-          if (items.length > 0 && !validateItems(items)) {
+          if (items.length > 0 && !validateItems(items, index)) {
             alert(`Some items are not available in storage`);
             valid = false;
             return;
