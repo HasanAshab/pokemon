@@ -2,184 +2,185 @@ import { Pokemon } from "./utils/models.js";
 import { getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js";
 import { loadPokemonsDatalist, loadNaturesDataList } from "./utils/dom.js";
 
-window.location = '/kingdoms/cms/militia/barrack/?name=Bengalia'
+window.location = "/kingdoms/cms/militia/defence/?name=Bengalia";
 
-
-var totalBadgesCount =  0
-const badgesDataStr = localStorage.getItem("badges-data")
-const badgesData = JSON.parse(badgesDataStr) || [0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0]
-const totalBadges = document.getElementById("total-badges")
+var totalBadgesCount = 0;
+const badgesDataStr = localStorage.getItem("badges-data");
+const badgesData = JSON.parse(badgesDataStr) || [
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+];
+const totalBadges = document.getElementById("total-badges");
 function loadTotalBadges() {
-  totalBadges.textContent = totalBadgesCount
+  totalBadges.textContent = totalBadgesCount;
 }
 
 function loadActiveBadges() {
-  const badges = document.querySelectorAll(".badges-cont >.badge")
-  badges.forEach((badge, index)=> {
-    if (badgesData[index]){
-      badge.classList.add("active")
-      totalBadgesCount++
+  const badges = document.querySelectorAll(".badges-cont >.badge");
+  badges.forEach((badge, index) => {
+    if (badgesData[index]) {
+      badge.classList.add("active");
+      totalBadgesCount++;
     }
-  })
-  loadTotalBadges()
+  });
+  loadTotalBadges();
 }
 
-globalThis.badgeClickHandler = function badgeClickHandler( {
-  currentTarget
-}) {
-  const classList = currentTarget.classList
-  const index = currentTarget.getAttribute("data-index")
+globalThis.badgeClickHandler = function badgeClickHandler({ currentTarget }) {
+  const classList = currentTarget.classList;
+  const index = currentTarget.getAttribute("data-index");
   if (classList.contains("active")) {
-    classList.remove("active")
-    totalBadgesCount--
-    badgesData[index] = 0
+    classList.remove("active");
+    totalBadgesCount--;
+    badgesData[index] = 0;
   } else {
-    classList.add("active")
-    totalBadgesCount++
-    badgesData[index] = 1
+    classList.add("active");
+    totalBadgesCount++;
+    badgesData[index] = 1;
   }
-  localStorage.setItem("badges-data", JSON.stringify(badgesData))
-  loadTotalBadges()
-}
-function updateTotalBattlesCount(){
-   const winsCount = Number(localStorage.getItem("user-wins-count"))
-   const losesCount = Number(localStorage.getItem("user-loses-count"))
-   const totalBattlesCountElm = document.querySelector(".total-battles-count")
-   totalBattlesCountElm.textContent = winsCount + losesCount
-   
-}
-
-function setWinsCount(val){
-   const winsCountElm = document.querySelector(".wins-count")
-   if (val) {
-   localStorage.setItem("user-wins-count",val)
-   winsCountElm.textContent = val
-   updateTotalBattlesCount()
-   }else {
-   winsCountElm.textContent = localStorage.getItem("user-wins-count") || 0
-   }
-}
-function setLosesCount(val){
-   const losesCountElm = document.querySelector(".loses-count")
-   if (val) {
-   localStorage.setItem("user-loses-count",val)
-   losesCountElm.textContent = val
-   updateTotalBattlesCount()
-   }else {
-   losesCountElm.textContent = localStorage.getItem("user-loses-count") || 0
-   }
-    
-}
-function setRank(val){
-   const rankElm = document.getElementById("cor-rank")
-   if (val) {
-   localStorage.setItem("user-cor-rank",val)
-   rankElm.textContent = val
-   }else {
-   rankElm.textContent = localStorage.getItem("user-cor-rank") || 0
-   }
-}
-globalThis.winsCountClickHandler = function({currentTarget}){
-   const val = Number(window.prompt("wins count:",currentTarget.textContent))
-   setWinsCount(val)
-}
-globalThis.losesCountClickHandler = function({currentTarget}){
-   const val = Number(window.prompt("loses count:",currentTarget.textContent))
-   setLosesCount(val)
+  localStorage.setItem("badges-data", JSON.stringify(badgesData));
+  loadTotalBadges();
+};
+function updateTotalBattlesCount() {
+  const winsCount = Number(localStorage.getItem("user-wins-count"));
+  const losesCount = Number(localStorage.getItem("user-loses-count"));
+  const totalBattlesCountElm = document.querySelector(".total-battles-count");
+  totalBattlesCountElm.textContent = winsCount + losesCount;
 }
 
-globalThis.rankClickHandler = function({currentTarget}){
-   const val = Number(window.prompt("Rank: ",currentTarget.textContent))
-   setRank(val)
+function setWinsCount(val) {
+  const winsCountElm = document.querySelector(".wins-count");
+  if (val) {
+    localStorage.setItem("user-wins-count", val);
+    winsCountElm.textContent = val;
+    updateTotalBattlesCount();
+  } else {
+    winsCountElm.textContent = localStorage.getItem("user-wins-count") || 0;
+  }
 }
+function setLosesCount(val) {
+  const losesCountElm = document.querySelector(".loses-count");
+  if (val) {
+    localStorage.setItem("user-loses-count", val);
+    losesCountElm.textContent = val;
+    updateTotalBattlesCount();
+  } else {
+    losesCountElm.textContent = localStorage.getItem("user-loses-count") || 0;
+  }
+}
+function setRank(val) {
+  const rankElm = document.getElementById("cor-rank");
+  if (val) {
+    localStorage.setItem("user-cor-rank", val);
+    rankElm.textContent = val;
+  } else {
+    rankElm.textContent = localStorage.getItem("user-cor-rank") || 0;
+  }
+}
+globalThis.winsCountClickHandler = function ({ currentTarget }) {
+  const val = Number(window.prompt("wins count:", currentTarget.textContent));
+  setWinsCount(val);
+};
+globalThis.losesCountClickHandler = function ({ currentTarget }) {
+  const val = Number(window.prompt("loses count:", currentTarget.textContent));
+  setLosesCount(val);
+};
 
-globalThis.increasePokemonWinCount = function(id){
-    const meta = getPokemonsMeta(id)
-    meta["wins-count"]++
-    setPokemonMeta(id, meta)
-}
-globalThis.increasePokemonLosesCount = function(id){
-    const meta = getPokemonsMeta(id)
-    meta["loses-count"]++
-    setPokemonMeta(id, meta) 
-}
+globalThis.rankClickHandler = function ({ currentTarget }) {
+  const val = Number(window.prompt("Rank: ", currentTarget.textContent));
+  setRank(val);
+};
+
+globalThis.increasePokemonWinCount = function (id) {
+  const meta = getPokemonsMeta(id);
+  meta["wins-count"]++;
+  setPokemonMeta(id, meta);
+};
+globalThis.increasePokemonLosesCount = function (id) {
+  const meta = getPokemonsMeta(id);
+  meta["loses-count"]++;
+  setPokemonMeta(id, meta);
+};
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
-  const addPokemonForm = document.querySelector(".add-pokemon-form")
-  const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name")
-  const levelInput = addPokemonForm.querySelector(".level")
-  const natureInput = addPokemonForm.querySelector(".nature")
-  const retreatInput = addPokemonForm.querySelector(".retreat")
-  const addBtn = addPokemonForm.querySelector(".add-btn")
-  const cancelBtn = addPokemonForm.querySelector(".cancel-btn")
-  addPokemonForm.parentNode.classList.add("active")
-  addBtn.onclick = ()=> {
-    const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
+  const addPokemonForm = document.querySelector(".add-pokemon-form");
+  const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name");
+  const levelInput = addPokemonForm.querySelector(".level");
+  const natureInput = addPokemonForm.querySelector(".nature");
+  const retreatInput = addPokemonForm.querySelector(".retreat");
+  const addBtn = addPokemonForm.querySelector(".add-btn");
+  const cancelBtn = addPokemonForm.querySelector(".cancel-btn");
+  addPokemonForm.parentNode.classList.add("active");
+  addBtn.onclick = () => {
+    const pokemonsMeta =
+      JSON.parse(localStorage.getItem("pokemons-meta")) || {};
     pokemonsMeta[pokemonNameInput.value] = {
-      "xp": (levelInput.value - 1) * 100,
-      "nature": natureInput.value,
-      "retreat": parseInt(retreatInput.value),
-      "stats": {},
-      "token_used":{
-          "hp":0,
-          "spe":0,
-          "atk":0,
-          "def":0,
-          "spa":0,
-          "spd":0
+      xp: (levelInput.value - 1) * 100,
+      nature: natureInput.value,
+      retreat: parseInt(retreatInput.value),
+      stats: {},
+      token_used: {
+        hp: 0,
+        spe: 0,
+        atk: 0,
+        def: 0,
+        spa: 0,
+        spd: 0,
       },
-      "mega": {
-          "suffix": "mega",
-          "moves": []
+      mega: {
+        suffix: "mega",
+        moves: [],
       },
-      "wins-count":0,
-      "loses-count":0,
-      "moves": []
-    }
-    localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
-    addPokemonForm.parentNode.classList.remove("active")
-     loadAllPokemons()
-  }
-  cancelBtn.onclick = ()=> {
-    addPokemonForm.parentNode.classList.remove("active")
-  }
-}
+      "wins-count": 0,
+      "loses-count": 0,
+      moves: [],
+    };
+    localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta));
+    addPokemonForm.parentNode.classList.remove("active");
+    loadAllPokemons();
+  };
+  cancelBtn.onclick = () => {
+    addPokemonForm.parentNode.classList.remove("active");
+  };
+};
 
 globalThis.deletePokemon = function deletePokemon(name) {
-  const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {}
-  const totalPokemonsCount =  Number(localStorage.getItem("total-pokemons-count")) || 0
-  delete pokemonsMeta[name]
-  localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
- loadAllPokemons()
-}
+  const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {};
+  const totalPokemonsCount =
+    Number(localStorage.getItem("total-pokemons-count")) || 0;
+  delete pokemonsMeta[name];
+  localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta));
+  loadAllPokemons();
+};
 
 globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
-  window.location = `poke_details.html?name=${slug}`
-}
-globalThis.selectForMultyBattle = function(id,{currentTarget}){
-   const pokemonCard = currentTarget.parentElement.parentElement
-   const meta = getPokemonsMeta(id)
-   pokemonCard.classList.toggle("selected-for-multy-battle")
-   meta.isSelectedForMultiBattle = pokemonCard.classList.contains("selected-for-multy-battle")
-   setPokemonMeta(id,meta)
-}
+  window.location = `poke_details.html?name=${slug}`;
+};
+globalThis.selectForMultyBattle = function (id, { currentTarget }) {
+  const pokemonCard = currentTarget.parentElement.parentElement;
+  const meta = getPokemonsMeta(id);
+  pokemonCard.classList.toggle("selected-for-multy-battle");
+  meta.isSelectedForMultiBattle = pokemonCard.classList.contains(
+    "selected-for-multy-battle",
+  );
+  setPokemonMeta(id, meta);
+};
 globalThis.healPokemon = function (id) {
-    const meta = getPokemonsMeta(id)
-    const pokemon = new Pokemon(id, meta)
-    meta.stats.hp = pokemon.maxhp
-    setPokemonMeta(id, meta)
-}
+  const meta = getPokemonsMeta(id);
+  const pokemon = new Pokemon(id, meta);
+  meta.stats.hp = pokemon.maxhp;
+  setPokemonMeta(id, meta);
+};
 
 globalThis.healAllBtnHandler = function () {
-    Object.keys(getPokemonsMeta()).forEach(healPokemon)
-}
+  Object.keys(getPokemonsMeta()).forEach(healPokemon);
+};
 
 function loadAllPokemons() {
-  const pokemonList = document.querySelector(".pokemon-list")
-  const pokemons_meta = getPokemonsMeta()
-  pokemonList.innerHTML = ""
+  const pokemonList = document.querySelector(".pokemon-list");
+  const pokemons_meta = getPokemonsMeta();
+  pokemonList.innerHTML = "";
   for (const pokemon in pokemons_meta) {
-    const meta = pokemons_meta[pokemon]
-     // example
+    const meta = pokemons_meta[pokemon];
+    // example
     pokemonList.innerHTML += `
 
                   <li class="pokemon ${meta.isSelectedForMultiBattle ? "selected-for-multy-battle" : ""}" >
@@ -201,49 +202,47 @@ function loadAllPokemons() {
      
     </li>
 
-    `
+    `;
   }
 }
 
-globalThis.openEnemyChooseInterface = function() {
-  window.location = `enemy.html?name=${name}`
-}
+globalThis.openEnemyChooseInterface = function () {
+  window.location = `enemy.html?name=${name}`;
+};
 function loadFoodCost() {
-  const costPerLevel = 300
-  const foodCost = document.getElementById("food-cost")
+  const costPerLevel = 300;
+  const foodCost = document.getElementById("food-cost");
   const cost = Object.values(getPokemonsMeta()).reduce((acc, meta) => {
-    return acc + ((meta.xp / 100) * costPerLevel)
-  }, 0)
-  foodCost.textContent = cost
+    return acc + (meta.xp / 100) * costPerLevel;
+  }, 0);
+  foodCost.textContent = cost;
 }
 
 function loadTotalCP() {
-  const pokemonsMeta = getPokemonsMeta()
-  const pokemons = Object.keys(pokemonsMeta).map(id => {
-    const m = pokemonsMeta[id]
-    return new Pokemon(id, m)
-  })
-  const totalCpBar = document.getElementById("total-cp")
-  totalCpBar.textContent = pokemons.reduce((acc, p) => acc + p.cp(), 0)
+  const pokemonsMeta = getPokemonsMeta();
+  const pokemons = Object.keys(pokemonsMeta).map((id) => {
+    const m = pokemonsMeta[id];
+    return new Pokemon(id, m);
+  });
+  const totalCpBar = document.getElementById("total-cp");
+  totalCpBar.textContent = pokemons.reduce((acc, p) => acc + p.cp(), 0);
 }
 
 function loadAll() {
-  loadActiveBadges()
-  loadAllPokemons()
+  loadActiveBadges();
+  loadAllPokemons();
   //loadFoodCost()
-  loadTotalCP()
-  loadPokemonsDatalist("pokemons-data-list")
-  loadNaturesDataList("natures-data-list")
-  setWinsCount()
-  setLosesCount()
-  setRank()
-  updateTotalBattlesCount()
+  loadTotalCP();
+  loadPokemonsDatalist("pokemons-data-list");
+  loadNaturesDataList("natures-data-list");
+  setWinsCount();
+  setLosesCount();
+  setRank();
+  updateTotalBattlesCount();
 }
-document.body.onload = loadAll
-
+document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-
 
 //kadebra
 /*
@@ -307,4 +306,3 @@ startBattle(null,[
 */
 
 //anubis
-

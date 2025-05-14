@@ -1,5 +1,5 @@
-import pokemons from '../../../../data/pokemons.js'
-import { calcSoldiersSalary, calcAcademyCost } from '../../../utils.js'
+import pokemons from "../../../../data/pokemons.js";
+import { calcSoldiersSalary, calcAcademyCost } from "../../../utils.js";
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -8,8 +8,9 @@ barrackTitle.textContent = name ? `${name}'s Barrack` : "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
-if (!kingdoms[name].barrack) kingdoms[name].barrack = { academyLevel: 1, soldiers: [] };
-const kingdom = kingdoms[name]
+if (!kingdoms[name].barrack)
+  kingdoms[name].barrack = { academyLevel: 1, soldiers: [] };
+const kingdom = kingdoms[name];
 
 const academyLevelEl = document.getElementById("academyLevel");
 const academyCostEl = document.getElementById("academyCost");
@@ -58,14 +59,16 @@ const createField = (labelText, inputEl) => {
 function renderSoldiers() {
   soldiersContainer.innerHTML = "";
 
-
   kingdoms[name].barrack.soldiers.forEach((soldier, index) => {
     const div = document.createElement("div");
     div.className = "soldier-card";
 
     const imageSelect = document.createElement("select");
-    const images = Object.keys(pokemons).splice(0, kingdom.barrack.academyLevel)
-    images.forEach(opt => {
+    const images = Object.keys(pokemons).splice(
+      0,
+      kingdom.barrack.academyLevel,
+    );
+    images.forEach((opt) => {
       const option = document.createElement("option");
       option.value = opt;
       option.textContent = opt.split(".")[0];
@@ -79,7 +82,7 @@ function renderSoldiers() {
 
     const levelInput = document.createElement("input");
     levelInput.type = "number";
-    levelInput.value = (soldier.image.xp / 100) + 1;
+    levelInput.value = soldier.image.xp / 100 + 1;
     levelInput.onblur = () => {
       const newLevel = parseInt(levelInput.value) || 1;
       soldier.image.xp = (newLevel - 1) * 100;
@@ -141,7 +144,7 @@ document.getElementById("addSoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
-    ivSalary: 0
+    ivSalary: 0,
   });
   save();
   renderSoldiers();
