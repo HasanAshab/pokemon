@@ -54,7 +54,7 @@ export function prepareDefenceSoldiers(kingdom) {
 function renderWaves() {
   const wavesList = document.getElementById("wavesList");
   wavesList.innerHTML = "";
-  console.log(prepareDefenceSoldiers(kingdoms[name]));
+  const actualSoldiers = prepareDefenceSoldiers(kingdoms[name]);
 
   kingdoms[name].defenceWaves.forEach((wave, index) => {
     const waveDiv = document.createElement("div");
@@ -129,7 +129,8 @@ function renderWaves() {
       percentageInput.value = soldier.percentage || 0;
 
       const percentageLabel = document.createElement("span");
-      percentageLabel.textContent = `${percentageInput.value}%`;
+      const actualQuantity = actualSoldiers[index]?.get(pokemons[soldier.image]) || 0;
+      percentageLabel.textContent = `${percentageInput.value}% (${actualQuantity} soldiers)`;
 
       // Update label when the range changes
       percentageInput.oninput = () => {
