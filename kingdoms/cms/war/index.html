@@ -1,15 +1,32 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Militia</title>
+  <title>War</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="container">
     <h1 id="kingdomName">Kingdom</h1>
+    
+    <div class="war-settings">
+      <div class="form-group">
+        <label for="defender">Defender:</label>
+        <select id="defender"></select>
+      </div>
+      
+      <div class="form-group">
+        <label for="warStrategy">Strategy:</label>
+        <select id="warStrategy"></select>
+      </div>
+    </div>
 
+    <div id="wavesList" class="waves-list"></div>
+    <button id="addWaveBtn" class="add-wave-btn">Add Attack Wave</button>
+    <button id="startWar" class="start-war-btn">Start War</button>
+  </div>
   <script type="module" src="script.js"></script>
 </body>
 </html>
