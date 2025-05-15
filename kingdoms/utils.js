@@ -124,3 +124,13 @@ export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
     return new SoldierStack(data).resize(areaPercentage);
   });
 }
+
+
+export function prepareDefenceWaves(kingdom, areaPercentage = 100) {
+  return kingdom.defenceWaves.map((wave) => {
+    return {
+      ...wave,
+      soldiers: prepareDefenceSoldiers(kingdom, areaPercentage),
+    };
+  });
+}

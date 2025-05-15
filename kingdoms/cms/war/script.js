@@ -1,6 +1,6 @@
 
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { prepareDefenceSoldiers } from "../../utils.js";
+import { prepareDefenceWaves } from "../../utils.js";
 import items from "../../../data/items.js";
 
 
@@ -196,27 +196,37 @@ function renderWaves() {
 }
 
 function getActualDefenders() {
-  return prepareDefenceSoldiers(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
+  return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
 }
 
-function generateDefendersReport(exposureLevel = 0) {
+function generateDefendersReport(expLvl = 0) {
   const actualDefenders = getActualDefenders();
+  
   const reportLines = [];
+  const totalUnits = actualDefenders.reduce((total, wave) => {
+    total += wave.soldiers.reduce((total, soldiers) => {
+      return total + soldiers.count()
+    }, 0)
+    return total
+  }, 0)
+  
 
-  reportLines.push("Total Waves: " + actualDefenders.length);
+  reportLines.push("Total"); 
+  reportLines.push("Waves: " + actualDefenders.length);
+  expLvl && reportLines.push("Units: " + totalUnits);
 
-  actualDefenders.forEach((defenders, index) => {
+  expLvl > 1 && actualDefenders.forEach((defenders, index) => {  
     reportLines.push("");
     reportLines.push(`Wave ${(index + 1)}:`);
-    defenders.forEach((quantity, image) => {
-      console.log(image);
+    expLvl > 4 && reportLines.push(`Commander IQ: ${defenders.commander.iq.deffensive}`);
+    expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
       const items = image.items.names().join(", ") || "foo, bar";
       const level = `(lvl ${image.level})`;
-      reportLines.push(`${quantity} ${image.id}'s ${level} ${items && (" with " + items)}`);
+      const moreData = `${level} ${items && (" with " + items)}`
+      reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
     })
-    reportLines.push(`Units: ${defenders.count()}`);
+    reportLines.push(`Units: ${defenders.soldiers.reduce((total, image) => total + image.count(), 0)}`);
   });
-
   return reportLines.join("<br>");
 }
 
