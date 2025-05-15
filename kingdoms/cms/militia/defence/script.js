@@ -1,4 +1,4 @@
-import { SoldierStack } from "../../../war.js";
+import { prepareDefenceSoldiers } from "../../../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get("name");
@@ -36,20 +36,6 @@ function validateItems(items, waveIndex) {
   );
 }
 
-export function prepareDefenceSoldiers(kingdom) {
-  return kingdom.defenceWaves.map((wave) => {
-    const data = wave.soldiers.map((soldier) => {
-      const { image, quantity: total } = kingdom.barrack.soldiers.find(
-        (s) => s.image.id === soldier.image,
-      );
-      image.items = soldier.items;
-
-      const quantity = Math.ceil(total * (soldier.percentage / 100));
-      return [image, quantity];
-    });
-    return new SoldierStack(data);
-  });
-}
 
 function renderWaves() {
   const wavesList = document.getElementById("wavesList");

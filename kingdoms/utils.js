@@ -1,3 +1,6 @@
+import { SoldierStack } from "./war.js";
+
+
 export const sumObj = (obj1, obj2) => {
   const obj = Object.assign({}, obj2)
   for (const key in obj1) {
@@ -97,4 +100,20 @@ export function calcNetProd(kingdom, localize = false) {
     acc[key] = prod[key].toLocaleString()
     return acc
   }, {})
+}
+
+
+export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
+  return kingdom.defenceWaves.map((wave) => {
+    const data = wave.soldiers.map((soldier) => {
+      const { image, quantity: total } = kingdom.barrack.soldiers.find(
+        (s) => s.image.id === soldier.image,
+      );
+      image.items = soldier.items;
+
+      const quantity = Math.ceil(total * (soldier.percentage / 100));
+      return [image, quantity];
+    });
+    return new SoldierStack(data).resize(areaPercentage);
+  });
 }

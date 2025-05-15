@@ -1,15 +1,19 @@
 
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
+import { prepareDefenceSoldiers } from "../../utils.js";
+
 
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
-
+const attackerSelect = document.getElementById('attacker');
+const defenderSelect = document.getElementById('defender');
 const kingdomName = document.getElementById('kingdomName');
 kingdomName.textContent = name || 'Unknown Kingdom';
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
-if (!kingdoms[name].attackWaves) kingdoms[name].attackWaves = [];
+const attackWaves = [];
+
 
 function renderStrategySelect() {
   const select = document.getElementById('warStrategy');
@@ -23,21 +27,17 @@ function renderStrategySelect() {
 
 function renderKingdomSelects() {
   const kingdomsList = Object.keys(kingdoms);
-  const attackerSelect = document.getElementById('attacker');
-  const defenderSelect = document.getElementById('defender');
+  const defenderOption = document.createElement('option');
+  defenderOption.value = name;
+  defenderOption.textContent = name;
+  defenderSelect.appendChild(defenderOption);
   
   kingdomsList.forEach(kingdom => {
+    if (kingdom === name) return;
     const attackerOption = document.createElement('option');
     attackerOption.value = kingdom;
     attackerOption.textContent = kingdom;
-    if (kingdom === name) attackerOption.selected = true;
     attackerSelect.appendChild(attackerOption);
-
-    const defenderOption = document.createElement('option');
-    defenderOption.value = kingdom;
-    defenderOption.textContent = kingdom;
-    if (kingdom === name) defenderOption.selected = true;
-    defenderSelect.appendChild(defenderOption);
   });
 }
 
@@ -45,11 +45,12 @@ function renderWaves() {
   const wavesList = document.getElementById("wavesList");
   wavesList.innerHTML = "";
 
-  kingdoms[name].attackWaves.forEach((wave, index) => {
+  attackWaves.forEach((wave, index) => {
     const waveDiv = document.createElement("div");
     waveDiv.className = "wave-item";
 
     const commanderSelect = document.createElement("select");
+    console.log(kingdoms[name]);
     Object.keys(kingdoms[name].commanders || {}).forEach((commanderId) => {
       const option = document.createElement("option");
       option.value = commanderId;
@@ -174,16 +175,14 @@ function renderWaves() {
         newWave.soldiers.push({ image, percentage, items });
       });
 
-      kingdoms[name].attackWaves[index] = newWave;
-      localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+      attackWaves[index] = newWave;
       renderWaves();
     };
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete Wave";
     deleteBtn.onclick = () => {
-      kingdoms[name].attackWaves.splice(index, 1);
-      localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+      attackWaves.splice(index, 1);
       renderWaves();
     };
 
@@ -195,12 +194,21 @@ function renderWaves() {
   });
 }
 
+function getActualDefenders() {
+  return prepareDefenceSoldiers(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
+}
+
+function generateDefendersReport(exposureLevel) {
+  const actualDefenders = getActualDefenders();
+
+  return "waves: " + actualDefenders.length;
+}
+
 document.getElementById("addWaveBtn").onclick = () => {
-  kingdoms[name].attackWaves.push({
+  attackWaves.push({
     commander: Object.keys(kingdoms[name].commanders || {})[0] || "",
     soldiers: [],
   });
-  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   renderWaves();
 };
 
@@ -215,10 +223,10 @@ areaPercentageInput.oninput = () => {
 };
 
 document.getElementById('startWar').onclick = () => {
-  const defender = document.getElementById('defender').value;
   const strategy = document.getElementById('warStrategy').value;
-  const areaPercentage = parseInt(areaPercentageInput.value);
-  // Implementation for war execution will go here
+  const defendersReport = generateDefendersReport(3);
+  console.log(defendersReport);
+  
 };
 
 renderStrategySelect();

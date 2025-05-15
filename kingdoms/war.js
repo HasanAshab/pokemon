@@ -13,7 +13,8 @@ export class SoldierStack extends Map {
   }
   
   find(id) {
-    const stack = this.entries().find(([image]) => image.id === id)
+    this.forEach(console.log)
+    const stack = this.entries().find(([image]) => image.id === id) ?? [0]
     return stack[1]
   }
   
