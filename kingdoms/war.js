@@ -79,7 +79,7 @@ class Wave {
 
   statOf(stat) {
     const commanderStat = this.commander.image.stats[stat]
-    const totalCp = commanderStat + this.soldiers.statOf(stat)
+    const totalCp = commanderStat + this.soldiers.statOf(stat)    
     return totalCp * this.cpModifier()
   }
   
@@ -207,13 +207,13 @@ class War {
     }
     if (this.result.raisedWhiteFlag)
       return wounded
-    
+
     if (this.result.win) {
       const per = (this.result.scores.def * 100) / this.result.scores.atk;
       wounded.atk = this.attackers.soldiers.resize(per);
       wounded.def = this.defenders.soldiers;
     } else {
-      const per = (attackersScore * 100) / defendersScore;
+      const per = (this.result.scores.atk * 100) / this.result.scores.def;
       wounded.def = this.defenders.soldiers.resize(per);
       wounded.atk = this.attackers.soldiers;
     }
@@ -232,6 +232,8 @@ class War {
     const phyScore = w1.statOf('def') - w2.statOf('atk')
     const spScore = w1.statOf('spd') - w2.statOf('spa')
     const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()
+    console.log(phyScore, spScore, otherScore);
+    
     return (phyScore + spScore + otherScore) * manPowerModifier
   }
   

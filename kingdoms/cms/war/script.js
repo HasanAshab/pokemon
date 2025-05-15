@@ -277,20 +277,21 @@ areaPercentageInput.oninput = () => {
 };
 
 document.getElementById('startWar').onclick = () => {
+  const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
-  
   attackWaves.forEach((wave, index) => {
+    const dwave = defenceWaves[index];
     const kingdom = kingdoms[attackerSelect.value];
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers);
     const commander = prepareCommander(kingdom, wave.commander);    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
-    const defWave = new DefenseWave(commander, soldierStack, attackerOpts);
+    const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts);
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
-    
+
     console.log(war.comments())
-    console.log(war.results)
+    console.log(war.result)
   })
 };
 

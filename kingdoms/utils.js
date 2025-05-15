@@ -114,7 +114,6 @@ export function calcNetProd(kingdom, localize = false) {
 export function prepareCommander(kingdom, commanderName) {
   const commander = structuredClone(kingdom.commanders[commanderName]);    
   commander.name = commanderName
-  console.log(commander)
   commander.image = new Pokemon(commander.image);
   return commander
 }

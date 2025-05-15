@@ -111,7 +111,7 @@ export class Pokemon extends PSPokemon {
     }
 
     get level() {
-        const xp = this.meta.xp;
+        const xp = this.meta.xp ?? 0;        
         return Pokemon.calculateLevel(xp); // Level starts at 1
     }
 
@@ -200,7 +200,7 @@ export class Pokemon extends PSPokemon {
             : this.meta.moves
     }
 
-    _calculateLevelStat() {
+    _calculateLevelStat() {  
         const stats = {};
 
         Object.keys(this._pokemon.baseStats).forEach(statName => {
@@ -255,7 +255,6 @@ export class Pokemon extends PSPokemon {
             // Apply token modifier
             tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
         });
-
         return tokenStats;
     }      
     get stats() {
@@ -263,6 +262,7 @@ export class Pokemon extends PSPokemon {
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
         const tokenStats = this._calculateTokenStat();
+        
         const totalStats = {};
         Object.keys(baseStats).forEach(statName => {
           totalStats[statName] =
