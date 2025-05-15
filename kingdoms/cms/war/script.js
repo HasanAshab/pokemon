@@ -285,6 +285,8 @@ startWarBtn.onclick = () => {
   const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
+  const results = [];
+
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
@@ -295,7 +297,8 @@ startWarBtn.onclick = () => {
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts);
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
-    
+    results.push(war.result);
+  
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {      
       setTimeout(() => {
@@ -314,10 +317,15 @@ startWarBtn.onclick = () => {
       }, 2000)
     })
   }
-  
+  if (i < attackWaves.length) {
   handleWave(attackWaves[i], i).then(() => {
     startWarBtn.disabled = false;
   })
+  }
+  else {
+    const outcome = results.filter(r => r.win).length > results.filter(r => !r.win).length ? "Success" : "Failour";
+    resultDiv.innerHTML += `<h2>Outcome: ${outcome}</h2>`
+  }
   i++
 };
 

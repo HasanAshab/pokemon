@@ -130,6 +130,10 @@ button {
   margin: 1rem 0;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 button:hover {
   opacity: 0.9;
 }
