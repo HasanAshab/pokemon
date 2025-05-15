@@ -1,5 +1,4 @@
 * Proposal
-calc commander salary
 enemy items
 combo
 

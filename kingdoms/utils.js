@@ -44,6 +44,13 @@ export function calculateTax(kingdom) {
   return Math.floor(totalIncome * kingdom.taxRate);
 }
 
+export function calcCommandersSalary(kingdom) {
+  if (!kingdom?.commanders) return 0;
+  return Object.entries(kingdom.commanders).reduce((total, [_, commander]) => {
+    return total + commander.salary;
+  }, 0);
+}
+
 export function calcSoldiersSalary(kingdom) {
   if (!kingdom?.barrack?.soldiers) return 0;
 
@@ -87,7 +94,7 @@ export function calcNetProd(kingdom, localize = false) {
     coins: calculateTax(kingdom),
   }
   const sysCons = {
-    coins: calcSoldiersSalary(kingdom) + calcAcademyCost(kingdom)
+    coins: calcSoldiersSalary(kingdom) + calcAcademyCost(kingdom) + calcCommandersSalary(kingdom)
   }
   const buildProd = calcBuildNetProd(kingdom)
   const prod = sumObj(
