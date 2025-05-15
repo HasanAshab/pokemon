@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Enemies & Moves</title>
+  <link rel="stylesheet" href="./assets/css/n-enemy.css">
+</head>
+<body>
+
+  <h1>Enemy Manager</h1>
+  <div id="enemies-container"></div>
+  <button id="add-enemy-btn">Add Enemy</button>
+
+  <datalist id="enemy-data-list">
+    <option value="Pikachu"></option>
+    <option value="Charizard"></option>
+    <option value="Blastoise"></option>
+  </datalist>
+
+  <datalist id="natures-data-list">
+    <option value="calm"></option>
+    <option value="bold"></option>
+    <option value="timid"></option>
+  </datalist>
+
+  <datalist id="moves-data-list">
+    <option value="Thunderbolt"></option>
+    <option value="Flamethrower"></option>
+    <option value="Hydro Pump"></option>
+  </datalist>
+<button id="start-battle-btn">Start Battle</button>
+
+<script type="module" src="./assets/js/n-enemy.js"></script>
+</body>
+</html>

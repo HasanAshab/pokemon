@@ -1,0 +1,23 @@
+.pokemon-form {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.move-section {
+  margin-top: 10px;
+}
+
+.move-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.move-item input {
+  margin-right: 5px;
+}
+
+.move-item button {
+  padding: 2px 5px;
+}
