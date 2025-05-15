@@ -15,7 +15,6 @@ export class SoldierStack extends Map {
   }
   
   find(id) {
-    this.entries().find(console.log);
     const stack = this.entries().find(([image]) => image.id === id) ?? [0]
     return stack[1]
   }

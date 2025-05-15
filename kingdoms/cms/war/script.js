@@ -288,8 +288,6 @@ startWarBtn.onclick = () => {
   
   const totalWounded = key => {
     return results.reduce((total, res) => {
-      console.log(results); //these are not logging
-      console.log(total, res.wounded[key]); // this also not
       return sumMap(total, res.wounded[key]);
     }, new SoldierStack())
   }
@@ -307,7 +305,6 @@ startWarBtn.onclick = () => {
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     results.push(war.result);
-    console.log(results, "results");
     
   
     resultDiv.innerHTML += war.comments().join("<br>");
