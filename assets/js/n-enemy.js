@@ -1,6 +1,27 @@
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, getUserPokemonsMeta, startBattle, startUserBattle } from "./utils/dom.js";
+import { BATTLE_SYSTEMS } from "./utils/battle.js"
+
+
+window.onload = () => {
+    loadPokemonsDatalist("enemy-data-list")
+    loadNaturesDataList("natures-data-list")
+    loadMovesDatalist("moves-data-list")
+    loadBattleSystems()
+}
+
 let enemyCount = 0;
 
 document.getElementById('add-enemy-btn').addEventListener('click', addEnemy);
+
+function loadBattleSystems() {
+    const selectElement = document.getElementById('sys-select');
+    Object.keys(BATTLE_SYSTEMS).forEach(optionText => {
+      const option = document.createElement('option');
+      option.value = optionText.toLowerCase().replace(/\s+/g, '-');  // Converts spaces to hyphens for value
+      option.textContent = optionText;
+      selectElement.appendChild(option);
+    });
+}
 
 function addEnemy() {
   const container = document.getElementById('enemies-container');
@@ -38,6 +59,10 @@ function getEnemyForm(index) {
     <label>Token Used</label>
     <textarea class="token-inp" onblur="showStats(event)"></textarea>
     <br>
+    <label>Items (comma-separated)</label>
+    <input type="text" class="items-inp">
+    <br>
+
     <pre class="enemy-stats">Stats will show here...</pre>
 
     <div class="move-section">
@@ -86,7 +111,7 @@ function showMoveDetails(event) {
 
 document.getElementById('start-battle-btn').addEventListener('click', startBattleBtnHandler);
 
-function startBattleBtnHandler() {
+function makeEnemiesMeta() {
   const enemiesMeta = [];
 
   document.querySelectorAll('.pokemon-form').forEach(form => {
@@ -96,6 +121,8 @@ function startBattleBtnHandler() {
     const nature = form.querySelector('.nature-inp')?.value || '';
     const megaSuffix = form.querySelector('.mega-suffix-select')?.value || '';
     const tokenUsed = form.querySelector('.token-inp')?.value || '';
+    const itemsRaw = form.querySelector('.items-inp')?.value || '';
+    const items = itemsRaw.split(',').map(item => item.trim()).filter(item => item);
 
     const moves = [];
     form.querySelectorAll('.moves-list .move-input').forEach(input => {
@@ -114,6 +141,7 @@ function startBattleBtnHandler() {
       xp: xp,
       nature: nature,
       retreat: retreat,
+      items,
       moves: moves,
       mega: {
         moves: megaMoves,
@@ -125,12 +153,68 @@ function startBattleBtnHandler() {
 
     enemiesMeta.push(enemyMeta);
   });
-
-  console.log('Generated Enemies Meta:', enemiesMeta);
+  return enemiesMeta
 }
+
+function makeStartBattleCode(meta, fields, system = "single") {
+    fields = fields.map(f => `"${f}"`).join(', ')
+    return `startBattle(${JSON.stringify(meta, null, 2)}, [${fields}], "${system}")`;
+}
+
+function getActiveBattleFields(){
+    const battleFields = []
+    const activeFields = document.querySelectorAll(".fields-cont > .field.active")
+    for (const field of activeFields){
+       battleFields.push(capitalizeFirstLetter(field.classList[1]))
+    }
+    return battleFields
+}
+
+
+function startBattleBtnHandler() {
+  const sysSelect = document.getElementById('sys-select');
+  const code = makeStartBattleCode(
+        makeEnemiesMeta(),
+        getActiveBattleFields(),
+        sysSelect.value
+   )
+
+  localStorage.setItem("last-battle", code)
+  startBattle(makeEnemiesMeta(), getActiveBattleFields(), sysSelect.value)
+}
+
 
 
 globalThis.showStats = showStats
 globalThis.addMove = addMove
 globalThis.removeMove = removeMove
 globalThis.showMoveDetails = showMoveDetails
+globalThis.fieldClickHandler = function({currentTarget}){
+    currentTarget.classList.toggle("active")
+}
+globalThis.selectRandomFields = function(){
+ const fields = document.querySelectorAll(".fields-cont > .field")
+ const startIndex = Math.floor(Math.random() * fields.length)
+ const totalFeildsToSelect = Math.floor(Math.random() * 6) + 1
+ let fieldsSelected = 0
+ while (fieldsSelected !== totalFeildsToSelect){
+  for (let i = startIndex; i < fields.length; i++){
+      const isSelected = (Math.floor(Math.random() * 11) + 1) <= 3 ? true : false
+      if (isSelected){
+          fields[i].classList.add("active")
+          fieldsSelected++
+      }
+      if (fieldsSelected === totalFeildsToSelect)
+         break;
+  }
+ }
+}
+
+globalThis.copyStartBattleCode = function() {
+    const code = makeStartBattleCode(
+        makeEnemiesMeta(),
+        getActiveBattleFields()
+    )
+    navigator.clipboard.writeText(code)
+    alert(code)
+}

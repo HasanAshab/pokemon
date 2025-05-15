@@ -6,29 +6,73 @@
   <link rel="stylesheet" href="./assets/css/n-enemy.css">
 </head>
 <body>
+    <datalist id="enemy-data-list"></datalist>
+  <datalist id="moves-data-list"></datalist>
+  <datalist id="natures-data-list"></datalist>
 
+    <div class="fields-cont">
+        <div style="background-color:var(--Fire-type-color)"  onclick="fieldClickHandler(event)" class="field fire">
+          Fire
+        </div>
+        <div style="background-color:var(--Water-type-color)"  onclick="fieldClickHandler(event)" class="field water">
+          Water
+        </div>
+        <div style="background-color:var(--Electric-type-color)"  onclick="fieldClickHandler(event)" class="field electric">
+          Electric
+        </div>
+        <div style="background-color:var(--Grass-type-color)"  onclick="fieldClickHandler(event)" class="field grass">
+          Grass
+        </div>
+        <div style="background-color:var(--Ice-type-color)"  onclick="fieldClickHandler(event)" class="field ice">
+          Ice
+        </div>
+        <div style="background-color:var(--Fighting-type-color)"  onclick="fieldClickHandler(event)" class="field fighting">
+          Fighting
+        </div>
+        <div style="background-color:var(--Poison-type-color)"  onclick="fieldClickHandler(event)" class="field poison">
+          Poison
+        </div>
+        <div style="background-color:var(--Ground-type-color)"  onclick="fieldClickHandler(event)" class="field ground">
+          Ground
+        </div>
+        <div style="background-color:var(--Flying-type-color)"  onclick="fieldClickHandler(event)" class="field flying">
+          Flying
+        </div>
+        <div style="background-color:var(--Psychic-type-color)"  onclick="fieldClickHandler(event)" class="field psychic">
+          Psychic
+        </div>
+        <div style="background-color:var(--Bug-type-color)" data-index="10" onclick="fieldClickHandler(event)" class="field bug">
+          Bug
+        </div>
+        <div style="background-color:var(--Rock-type-color)" data-index="11" onclick="fieldClickHandler(event)" class="field rock">
+          Rock
+        </div>
+        <div style="background-color:var(--Ghost-type-color)" data-index="12" onclick="fieldClickHandler(event)" class="field ghost">
+          Ghost
+        </div>
+        <div style="background-color:var(--Dragon-type-color)" data-index="13" onclick="fieldClickHandler(event)" class="field dragon">
+          Dragon
+        </div>
+        <div style="background-color:var(--Dark-type-color)" data-index="14" onclick="fieldClickHandler(event)" class="field dark">
+          Dark
+        </div>
+        <div style="background-color:var(--Steel-type-color)" data-index="15" onclick="fieldClickHandler(event)" class="field steel">
+          Steel
+        </div>
+        <div style="background-color:var(--Fairy-type-color)" data-index="16" onclick="fieldClickHandler(event)" class="field fairy">
+          Fairy
+        </div>
+        <div style="background-color:var(--Normal-type-color)" data-index="17" onclick="fieldClickHandler(event)" class="field normal">
+          Normal
+        </div>
+      </div>
+   <button onclick="selectRandomFields()" class="select-random-fields-btn">Random Fields</button>
   <h1>Enemy Manager</h1>
+  <select id="sys-select"></select>
   <div id="enemies-container"></div>
   <button id="add-enemy-btn">Add Enemy</button>
-
-  <datalist id="enemy-data-list">
-    <option value="Pikachu"></option>
-    <option value="Charizard"></option>
-    <option value="Blastoise"></option>
-  </datalist>
-
-  <datalist id="natures-data-list">
-    <option value="calm"></option>
-    <option value="bold"></option>
-    <option value="timid"></option>
-  </datalist>
-
-  <datalist id="moves-data-list">
-    <option value="Thunderbolt"></option>
-    <option value="Flamethrower"></option>
-    <option value="Hydro Pump"></option>
-  </datalist>
-<button id="start-battle-btn">Start Battle</button>
+  <button onclick="copyStartBattleCode()">copy code</button>
+  <button id="start-battle-btn">Start Battle</button>
 
 <script type="module" src="./assets/js/n-enemy.js"></script>
 </body>

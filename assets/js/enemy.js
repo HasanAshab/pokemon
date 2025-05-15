@@ -1,6 +1,6 @@
 import { Pokemon, Move } from "./utils/models.js";
 import { capitalizeFirstLetter, getMoveLearnset, flagsToObj } from "./utils/helpers.js"
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist,getUserPokemonsMeta, startBattle,startUserBattle } from "./utils/dom.js";
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, getUserPokemonsMeta, startBattle, startUserBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 
 
