@@ -283,10 +283,14 @@ document.getElementById('startWar').onclick = () => {
   attackWaves.forEach((wave, index) => {
     const kingdom = kingdoms[attackerSelect.value];
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers);
-    const commander = prepareCommander(kingdom, wave.commander);
-    console.log(commander, soldierStack, attackerOpts);
-    
+    const commander = prepareCommander(kingdom, wave.commander);    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
+    const defWave = new DefenseWave(commander, soldierStack, attackerOpts);
+    
+    const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
+    
+    console.log(war.comments())
+    console.log(war.results)
   })
 };
 
