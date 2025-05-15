@@ -1,7 +1,5 @@
-
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
 import { prepareDefenceWaves } from "../../utils.js";
-import items from "../../../data/items.js";
 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -201,7 +199,7 @@ function getActualDefenders() {
 
 function generateDefendersReport(expLvl = 0) {
   const actualDefenders = getActualDefenders();
-  
+  console.log(actualDefenders)
   const reportLines = [];
   const totalUnits = actualDefenders.reduce((total, wave) => {
     total += wave.soldiers.reduce((total, soldiers) => {
