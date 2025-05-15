@@ -1,6 +1,7 @@
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
 import { prepareDefenceWaves, prepareSoldiers, prepareCommander } from "../../utils.js";
 
+var i = 0;
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
 const attackerSelect = document.getElementById('attacker');
@@ -174,7 +175,7 @@ function renderWaves() {
 
       attackWaves[index] = newWave;
       renderWaves();
-    };
+    }
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete Wave";
@@ -276,12 +277,14 @@ areaPercentageInput.oninput = () => {
   showDefenderData();
 };
 
-document.getElementById('startWar').onclick = () => {
+const startWarBtn = document.getElementById('startWar')
+
+startWarBtn.onclick = () => {
+  startWarBtn.disabled = true;
   const resultDiv = document.getElementById("war-data");
   const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
-  resultDiv.innerHTML = "";
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
@@ -311,18 +314,11 @@ document.getElementById('startWar').onclick = () => {
       }, 2000)
     })
   }
-  const wavesPromises = attackWaves.reduce((promises, wave, index) => {
-    if (index === 0) {
-      promises.push(handleWave(wave, index));
-    } else {
-      promises.push(
-        promises[index - 1].then(() => handleWave(wave, index))
-      );
-    }
-    return promises;
-  }, []);
-
-  Promise.all(wavesPromises).then(() => {});
+  
+  handleWave(attackWaves[i], i).then(() => {
+    startWarBtn.disabled = false;
+  })
+  i++
 };
 
 renderStrategySelect();
