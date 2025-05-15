@@ -1,16 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>War</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
+
   <div class="container">
+
     <h1 id="kingdomName">Kingdom</h1>
-    
     <div class="war-settings">
       <div class="form-group">
         <label for="attacker">Attacker:</label>
@@ -21,7 +23,7 @@
         <label for="defender">Defender:</label>
         <select id="defender"></select>
       </div>
-      
+
       <div class="form-group">
         <label for="warStrategy">Strategy:</label>
         <select id="warStrategy"></select>
@@ -38,6 +40,39 @@
     <button id="addWaveBtn" class="add-wave-btn">Add Attack Wave</button>
     <button id="startWar" class="start-war-btn">Start War</button>
   </div>
+  <br>
+
+  <div class="container defender-data">
+    <h3>Defender Data</h3>
+    <div id="defender-data"></div>
+    <br>
+    <input style="width: 25px;" type="number" id="expose-level-inp" value="0" min="0" oninput="showDefenderData()" />
+  </div>
+  <br>
+  <div class="container data-box" id="attacker">
+    <h4 class="title">Attacker Options</h4>
+    <div class="data-rows-wrapper">
+      <div class="data-row">
+        <input type="text" class="key" placeholder="Key" value="morality"/>
+        <input type="text" class="value" placeholder="Value" value="100"/>
+        <button class="remove-btn" onclick="removeRow('attacker', event)">-</button> 
+      </div>
+    </div>
+    <button id="add-data" onclick="addDataRow('attacker')">Add Data</button>
+  </div>
+  <br>
+  <div class="container data-box" id="defender">
+    <h4 class="title">Deffender Options</h4>
+    <div class="data-rows-wrapper">
+      <div class="data-row">
+        <input type="text" class="key" placeholder="Key" value="morality"/>
+        <input type="text" class="value" placeholder="Value" value="100"/>
+        <button class="remove-btn" onclick="removeRow('defender', event)">-</button> 
+      </div>
+    </div>
+    <button id="add-data" onclick="addDataRow('defender')">Add Data</button>
+  </div>  
   <script type="module" src="script.js"></script>
 </body>
+
 </html>

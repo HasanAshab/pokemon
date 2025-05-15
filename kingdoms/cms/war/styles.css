@@ -16,6 +16,7 @@ body {
 
 .war-settings {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -131,4 +132,33 @@ button {
 
 button:hover {
   opacity: 0.9;
+}
+
+
+.data-rows-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.data-rows-wrapper  .data-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3%;
+  justify-content: center;
+  align-items: center;
+}
+.data-rows-wrapper  .data-row input{
+ width: 30%;
+}
+.remove-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff4444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
 }

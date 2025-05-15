@@ -1,12 +1,14 @@
 
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
 import { prepareDefenceSoldiers } from "../../utils.js";
+import items from "../../../data/items.js";
 
 
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
 const attackerSelect = document.getElementById('attacker');
 const defenderSelect = document.getElementById('defender');
+const strategySelect = document.getElementById('warStrategy')
 const kingdomName = document.getElementById('kingdomName');
 kingdomName.textContent = name || 'Unknown Kingdom';
 
@@ -16,12 +18,11 @@ const attackWaves = [];
 
 
 function renderStrategySelect() {
-  const select = document.getElementById('warStrategy');
   Object.keys(WAR_SYSTEMS).forEach(strategy => {
     const option = document.createElement('option');
     option.value = strategy;
     option.textContent = strategy;
-    select.appendChild(option);
+    strategySelect.appendChild(option);
   });
 }
 
@@ -198,11 +199,63 @@ function getActualDefenders() {
   return prepareDefenceSoldiers(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
 }
 
-function generateDefendersReport(exposureLevel) {
+function generateDefendersReport(exposureLevel = 0) {
   const actualDefenders = getActualDefenders();
+  const reportLines = [];
 
-  return "waves: " + actualDefenders.length;
+  reportLines.push("Total Waves: " + actualDefenders.length);
+
+  actualDefenders.forEach((defenders, index) => {
+    reportLines.push("");
+    reportLines.push(`Wave ${(index + 1)}:`);
+    defenders.forEach((quantity, image) => {
+      console.log(image);
+      const items = image.items.names().join(", ") || "foo, bar";
+      const level = `(lvl ${image.level})`;
+      reportLines.push(`${quantity} ${image.id}'s ${level} ${items && (" with " + items)}`);
+    })
+    reportLines.push(`Units: ${defenders.count()}`);
+  });
+
+  return reportLines.join("<br>");
 }
+
+function getDataBoxData(containerId) {
+  const container = document.querySelector(`.container.data-box#${containerId}`);
+  const dataRowsWrapper = container.querySelector(".data-rows-wrapper");
+  const data = {};
+  dataRowsWrapper.querySelectorAll(".data-row").forEach(row => {
+    const key = row.querySelector(".key").value;
+    const value = row.querySelector(".value").value;
+    data[key] = value;
+  });
+  return data;
+}
+
+globalThis.showDefenderData = () => {
+  const exposureLevel = document.getElementById("expose-level-inp").value;
+  document.getElementById("defender-data").innerHTML = generateDefendersReport(parseInt(exposureLevel));
+}
+globalThis.addDataRow = (containerId) => {
+  const container = document.querySelector(`.container.data-box#${containerId}`);
+  const dataRowsWrapper = container.querySelector(".data-rows-wrapper");
+  const rowIndex = dataRowsWrapper.children.length;
+  const dataRow = document.createElement("div");
+  dataRow.className = "data-row";
+  dataRow.innerHTML = `
+        <input type="text" class="key" placeholder="Key"/>
+        <input type="text" class="value" placeholder="Value"/>
+        <button class="remove-btn" onclick="removeRow('${containerId}',event)">-</button> 
+        `;
+  dataRowsWrapper.appendChild(dataRow);
+}
+
+globalThis.removeRow = (containerId, {currentTarget}) => {
+  const container = document.querySelector(`.container.data-box#${containerId}`);
+  const dataRowsWrapper = container.querySelector(".data-rows-wrapper");
+  dataRowsWrapper.removeChild(currentTarget.parentElement);  
+}
+
 
 document.getElementById("addWaveBtn").onclick = () => {
   attackWaves.push({
@@ -220,15 +273,18 @@ areaPercentageInput.oninput = () => {
   const totalArea = kingdoms[name].landArea;
   const actualArea = Math.round((totalArea * percent) / 100);
   areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;
+  showDefenderData();
 };
 
 document.getElementById('startWar').onclick = () => {
-  const strategy = document.getElementById('warStrategy').value;
-  const defendersReport = generateDefendersReport(3);
-  console.log(defendersReport);
+
+ 
+ console.log(getDataBoxData('attacker'));
   
 };
 
 renderStrategySelect();
 renderKingdomSelects();
 renderWaves();
+showDefenderData()
+
