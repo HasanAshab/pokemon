@@ -3,6 +3,8 @@ import { Pokemon } from "../assets/js/utils/models.js";
 
 export class SoldierStack extends Map {
   constructor(data = []) {
+    if (data instanceof Map)
+      data = [...data.entries()]
     data = data.map(([imageMeta, quantity]) => {
       const image = imageMeta instanceof Pokemon
         ? imageMeta

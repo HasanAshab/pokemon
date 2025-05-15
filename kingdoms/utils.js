@@ -11,7 +11,7 @@ export const sumObj = (obj1, obj2) => {
 }
 
 export const sumMap = (map1, map2) => {
-  const result = new Map(map2)
+  const result = new map2.constructor(map2)
 
   for (const [key, value] of map1) {
     result.set(key, value + (map2.get(key) || 0))

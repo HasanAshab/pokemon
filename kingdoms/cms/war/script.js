@@ -13,7 +13,7 @@ kingdomName.textContent = name || 'Unknown Kingdom';
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 const attackWaves = [];
-
+const results = []
 
 function renderStrategySelect() {
   Object.keys(WAR_SYSTEMS).forEach(strategy => {
@@ -285,11 +285,8 @@ startWarBtn.onclick = () => {
   const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
-  const results = [];
   
-  const totalWounded = (key, results) => {
-    console.log(results);
-    results.reduce(console.log, {})
+  const totalWounded = key => {
     return results.reduce((total, res) => {
       console.log(results); //these are not logging
       console.log(total, res.wounded[key]); // this also not
@@ -310,6 +307,8 @@ startWarBtn.onclick = () => {
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     results.push(war.result);
+    console.log(results, "results");
+    
   
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {      
@@ -342,8 +341,8 @@ startWarBtn.onclick = () => {
     resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`
     
     
-    removeSoldiers(atkKingdom, totalWounded('atk', results))
-    removeSoldiers(defKingdom, totalWounded('def', results))
+    removeSoldiers(atkKingdom, totalWounded('atk'))
+    removeSoldiers(defKingdom, totalWounded('def'))
 
     if (strategySelect.value === "harvest") {
       const items = getDataBoxData('harvest')
