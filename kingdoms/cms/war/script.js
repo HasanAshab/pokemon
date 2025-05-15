@@ -193,7 +193,7 @@ function renderWaves() {
   });
 }
 
-function getActualDefenders() {
+function getActualDefenders() {  
   return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
 }
 
@@ -201,13 +201,7 @@ function generateDefendersReport(expLvl = 0) {
   const actualDefenders = getActualDefenders();
   console.log(actualDefenders)
   const reportLines = [];
-  const totalUnits = actualDefenders.reduce((total, wave) => {
-    total += wave.soldiers.reduce((total, soldiers) => {
-      return total + soldiers.count()
-    }, 0)
-    return total
-  }, 0)
-  
+  const totalUnits = actualDefenders.reduce((total, wave) => total += wave.soldiers.count(), 0)
 
   reportLines.push("Total"); 
   reportLines.push("Waves: " + actualDefenders.length);
@@ -216,14 +210,14 @@ function generateDefendersReport(expLvl = 0) {
   expLvl > 1 && actualDefenders.forEach((defenders, index) => {  
     reportLines.push("");
     reportLines.push(`Wave ${(index + 1)}:`);
-    expLvl > 4 && reportLines.push(`Commander IQ: ${defenders.commander.iq.deffensive}`);
+    expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${defenders.commander.iq.defensive})`);
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
       const items = image.items.names().join(", ") || "foo, bar";
       const level = `(lvl ${image.level})`;
       const moreData = `${level} ${items && (" with " + items)}`
       reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
     })
-    reportLines.push(`Units: ${defenders.soldiers.reduce((total, image) => total + image.count(), 0)}`);
+    reportLines.push(`Units: ${defenders.soldiers.count()}`);
   });
   return reportLines.join("<br>");
 }

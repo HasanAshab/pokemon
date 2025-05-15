@@ -73,7 +73,7 @@ export class Pokemon extends PSPokemon {
         return 1; // No effect
     }
 
-    constructor(id, meta, tag = null) {
+    constructor(id, meta = {}, tag = null) {
         super()
         this.id = id;
         this.meta = Object.assign({
@@ -414,7 +414,7 @@ class AbilityManager {
         this.pokemon = pokemon
         this._setAbilities(pokemon._pokemon.abilities)
     }
-    
+
     names() {
       return this._abilities.map(ab => ab.name)
     }

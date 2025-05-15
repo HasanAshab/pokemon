@@ -63,10 +63,7 @@ export default {
       spd: 45,
       spe: 50
     },
-    abilities: {
-      0: "Leadership",
-      H: "Discipline"
-    },
+    abilities: {},
     heightm: 1.6,
     weightkg: 50,
     color: "Brown",
@@ -91,10 +88,7 @@ export default {
       spd: 65,
       spe: 70
     },
-    abilities: {
-      0: "Tactical Genius",
-      H: "Battle Hardened"
-    },
+    abilities: {},
     heightm: 1.7,
     weightkg: 55,
     color: "Black",
@@ -120,10 +114,7 @@ export default {
       spd: 70,
       spe: 85
     },
-    abilities: {
-      0: "Stealth Ops",
-      H: "Assassin’s Focus"
-    },
+    abilities: {},
     heightm: 1.75,
     weightkg: 58,
     color: "Silver",
@@ -147,10 +138,7 @@ export default {
       spd: 85,
       spe: 75
     },
-    abilities: {
-      0: "Authority",
-      H: "Village Protector"
-    },
+    abilities: {},
     heightm: 1.8,
     weightkg: 60,
     color: "Gold",

@@ -165,8 +165,7 @@ function renderWaves() {
       const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
       soldierEntries.forEach((entry) => {
         const image = entry.querySelector("span").textContent;
-        const percentage =
-          parseInt(entry.querySelector('input[type="range"]').value) || 0;
+        const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;        
         const items = entry
           .querySelector('input[type="text"]')
           .value.split(",")

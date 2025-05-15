@@ -1,3 +1,4 @@
+import { Pokemon } from "../assets/js/utils/models.js";
 import { SoldierStack } from "./war.js";
 
 
@@ -110,12 +111,21 @@ export function calcNetProd(kingdom, localize = false) {
 }
 
 
+export function prepareDefenceCommanders(kingdom) {
+  return kingdom.defenceWaves.map((wave) => {    
+    const commander = structuredClone(kingdom.commanders[wave.commander]);    
+    commander.name = wave.commander
+    commander.image = new Pokemon(commander.image);
+    return commander
+  });
+}
+
 export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
   return kingdom.defenceWaves.map((wave) => {
     const data = wave.soldiers.map((soldier) => {
       const { image, quantity: total } = kingdom.barrack.soldiers.find(
         (s) => s.image.id === soldier.image,
-      );
+      );      
       image.items = soldier.items;
 
       const quantity = Math.ceil(total * (soldier.percentage / 100));
@@ -127,10 +137,13 @@ export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
 
 
 export function prepareDefenceWaves(kingdom, areaPercentage = 100) {
-  return kingdom.defenceWaves.map((wave) => {
+  const commanders = prepareDefenceCommanders(kingdom)
+  const soldiers = prepareDefenceSoldiers(kingdom, areaPercentage)
+  return kingdom.defenceWaves.map((wave, index) => {    
     return {
       ...wave,
-      soldiers: prepareDefenceSoldiers(kingdom, areaPercentage),
+      commander: commanders[index],
+      soldiers: soldiers[index],
     };
   });
 }
