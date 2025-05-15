@@ -13,6 +13,7 @@ export class SoldierStack extends Map {
   }
   
   find(id) {
+    this.entries().find(console.log);
     const stack = this.entries().find(([image]) => image.id === id) ?? [0]
     return stack[1]
   }
@@ -209,11 +210,11 @@ class War {
       return wounded
 
     if (this.result.win) {
-      const per = (this.result.scores.def * 100) / this.result.scores.atk;
+      const per = Math.max((this.result.scores.def * 100) / this.result.scores.atk, 0);      
       wounded.atk = this.attackers.soldiers.resize(per);
       wounded.def = this.defenders.soldiers;
     } else {
-      const per = (this.result.scores.atk * 100) / this.result.scores.def;
+      const per = Math.max((this.result.scores.atk * 100) / this.result.scores.def, 0);
       wounded.def = this.defenders.soldiers.resize(per);
       wounded.atk = this.attackers.soldiers;
     }

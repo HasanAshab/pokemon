@@ -287,9 +287,17 @@ startWarBtn.onclick = () => {
   const defenderOpts = getDataBoxData('defender');
   const results = [];
   
-  const totalWounded = key => results.reduce(total, res => {
-    return sumMap(total, res.wounded[key])
-  }, new SoldierStack())
+  const totalWounded = (key, results) => {
+    console.log(results);
+    results.reduce(console.log, {})
+    return results.reduce((total, res) => {
+      console.log(results); //these are not logging
+      console.log(total, res.wounded[key]); // this also not
+      return sumMap(total, res.wounded[key]);
+    }, new SoldierStack())
+  }
+  
+
   
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
@@ -318,7 +326,7 @@ startWarBtn.onclick = () => {
           ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
         `
         resolve()
-      }, 2000)
+      }, 1)
     })
   }
   if (i < attackWaves.length) {
@@ -333,8 +341,9 @@ startWarBtn.onclick = () => {
     const outcome = win ? "Success" : "Failour";
     resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`
     
-    removeSoldiers(atkKingdom, totalWounded('atk'))
-    removeSoldiers(defKingdom, totalWounded('def'))
+    
+    removeSoldiers(atkKingdom, totalWounded('atk', results))
+    removeSoldiers(defKingdom, totalWounded('def', results))
 
     if (strategySelect.value === "harvest") {
       const items = getDataBoxData('harvest')
@@ -356,4 +365,5 @@ renderStrategySelect();
 renderKingdomSelects();
 renderWaves();
 showDefenderData()
+
 
