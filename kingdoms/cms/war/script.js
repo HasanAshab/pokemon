@@ -1,5 +1,5 @@
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { prepareDefenceWaves, prepareSoldiers, prepareCommander } from "../../utils.js";
+import { sumMap, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, removeSoldiers } from "../../utils.js";
 
 var i = 0;
 const urlParams = new URLSearchParams(window.location.search);
@@ -286,7 +286,11 @@ startWarBtn.onclick = () => {
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
   const results = [];
-
+  
+  const totalWounded = key => results.reduce(total, res => {
+    return sumMap(total, res.wounded[key])
+  }, new SoldierStack())
+  
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
@@ -323,8 +327,27 @@ startWarBtn.onclick = () => {
   })
   }
   else {
-    const outcome = results.filter(r => r.win).length > results.filter(r => !r.win).length ? "Success" : "Failour";
-    resultDiv.innerHTML += `<h2>Outcome: ${outcome}</h2>`
+    const atkKingdom = kingdoms[attackerSelect.value]
+    const defKingdom = kingdoms[defenderSelect.value]
+    const win = results.filter(r => r.win).length > results.filter(r => !r.win).length
+    const outcome = win ? "Success" : "Failour";
+    resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`
+    
+    removeSoldiers(atkKingdom, totalWounded('atk'))
+    removeSoldiers(defKingdom, totalWounded('def'))
+
+    if (strategySelect.value === "harvest") {
+      const items = getDataBoxData('harvest')
+      atkKingdom.storage = sumObj(atkKingdom.storage, items)
+      defKingdom.storage = sumObj(atkKingdom.storage, modObj(items, -1))
+    }
+    else if (strategySelect.value === "occupy") {
+      const percentageInp = document.getElementById("areaPercentage")
+      const occupiedArea = defKingdom.landArea * (parseInt(percentageInp.value) / 100)
+      atkKingdom.landArea += occupiedArea
+      defKingdom.landArea -= occupiedArea
+    }
+    localStorage.setItem('kingdoms', JSON.stringify(kingdoms))
   }
   i++
 };

@@ -9,12 +9,32 @@ export const sumObj = (obj1, obj2) => {
   }
   return obj
 }
-  
+
+export const sumMap = (map1, map2) => {
+  const result = new Map(map2)
+
+  for (const [key, value] of map1) {
+    result.set(key, value + (map2.get(key) || 0))
+  }
+
+  return result
+}
+
 export const modObj = (obj, mod) => {
   return Object.keys(obj).reduce((acc, key) => {
     acc[key] = obj[key] * mod
     return acc
   }, {})
+}
+
+export const modMap = (map, mod) => {
+  const result = new Map()
+
+  for (const [key, value] of map) {
+    result.set(key, value * mod)
+  }
+
+  return result
 }
 
 export function calculateSize(baseSize, level) {
@@ -155,5 +175,16 @@ export function prepareDefenceWaves(kingdom, areaPercentage = 100) {
       commander: commanders[index],
       soldiers: soldiers[index],
     };
+  });
+}
+
+export function removeSoldiers(kingdom, soldierStack, commit = false) {
+  kingdom.barrack.soldiers = kingdom.barrack.soldiers.map((s) => {
+      const quantity = soldierStack.find(s.image.id)
+      console.log(quantity)
+      if (quantity) {
+        s.quantity -= quantity
+      }
+      return s;
   });
 }
