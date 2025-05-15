@@ -277,10 +277,13 @@ areaPercentageInput.oninput = () => {
 };
 
 document.getElementById('startWar').onclick = () => {
+  const resultDiv = document.getElementById("war-data");
   const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
-  attackWaves.forEach((wave, index) => {
+  resultDiv.innerHTML = "";
+  const handleWave = (wave, index) => {
+    resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
     const kingdom = kingdoms[attackerSelect.value];
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers);
@@ -289,10 +292,37 @@ document.getElementById('startWar').onclick = () => {
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts);
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
+    
+    resultDiv.innerHTML += war.comments().join("<br>");
+    return new Promise((resolve, _) => {      
+      setTimeout(() => {
+        resultDiv.innerHTML += `
+          <br>
+          <h5>Outcome: <span style="color: ${war.result.win ? "green" : "red"}">${war.result.win ? "Success" : "Failour"}</span></h5><br>
+          ${war.result.raisedWhiteFlag ? "Defender raised White Flag!<br>" : ""}
 
-    console.log(war.comments())
-    console.log(war.result)
-  })
+          Wounded Units: <br>
+          Attacker:<br>
+          ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
+          Defender:<br>
+          ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
+        `
+        resolve()
+      }, 2000)
+    })
+  }
+  const wavesPromises = attackWaves.reduce((promises, wave, index) => {
+    if (index === 0) {
+      promises.push(handleWave(wave, index));
+    } else {
+      promises.push(
+        promises[index - 1].then(() => handleWave(wave, index))
+      );
+    }
+    return promises;
+  }, []);
+
+  Promise.all(wavesPromises).then(() => {});
 };
 
 renderStrategySelect();
