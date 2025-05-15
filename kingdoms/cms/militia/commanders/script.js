@@ -146,7 +146,7 @@ salaryInput.onblur = () => {
 addCommanderBtn.onclick = () => {
   const newCommanderName = prompt("Commander name?");
   if (!newCommanderName) return;
-  kingdoms[name].commanders[newCommanderName] = { iq: {}, salary: 0, image: "knight.png" };
+  kingdoms[name].commanders[newCommanderName] = { iq: {}, salary: 0, image: "student" };
   save();
 };
 

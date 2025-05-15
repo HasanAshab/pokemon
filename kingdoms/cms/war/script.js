@@ -1,6 +1,5 @@
 import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { prepareDefenceWaves } from "../../utils.js";
-
+import { prepareDefenceWaves, prepareSoldiers, prepareCommander } from "../../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
@@ -49,8 +48,7 @@ function renderWaves() {
     waveDiv.className = "wave-item";
 
     const commanderSelect = document.createElement("select");
-    console.log(kingdoms[name]);
-    Object.keys(kingdoms[name].commanders || {}).forEach((commanderId) => {
+    Object.keys(kingdoms[attackerSelect.value].commanders || {}).forEach((commanderId) => {
       const option = document.createElement("option");
       option.value = commanderId;
       option.textContent = commanderId;
@@ -114,7 +112,7 @@ function renderWaves() {
       percentageInput.value = soldier.percentage || 0;
 
       const percentageLabel = document.createElement("span");
-      const total = kingdoms[name].barrack.soldiers.find(
+      const total = kingdoms[attackerSelect.value].barrack.soldiers.find(
         s => s.image.id === soldier.image
       ).quantity;
       const quantity = Math.ceil(total * (percentageInput.value / 100));
@@ -199,7 +197,6 @@ function getActualDefenders() {
 
 function generateDefendersReport(expLvl = 0) {
   const actualDefenders = getActualDefenders();
-  console.log(actualDefenders)
   const reportLines = [];
   const totalUnits = actualDefenders.reduce((total, wave) => total += wave.soldiers.count(), 0)
 
@@ -229,7 +226,8 @@ function getDataBoxData(containerId) {
   dataRowsWrapper.querySelectorAll(".data-row").forEach(row => {
     const key = row.querySelector(".key").value;
     const value = row.querySelector(".value").value;
-    data[key] = value;
+    const maybeNumber = Number(value);
+    data[key] = Number.isNaN(maybeNumber) ? value : maybeNumber;
   });
   return data;
 }
@@ -261,7 +259,7 @@ globalThis.removeRow = (containerId, {currentTarget}) => {
 
 document.getElementById("addWaveBtn").onclick = () => {
   attackWaves.push({
-    commander: Object.keys(kingdoms[name].commanders || {})[0] || "",
+    commander: Object.keys(kingdoms[attackerSelect.value].commanders || {})[0] || "",
     soldiers: [],
   });
   renderWaves();
@@ -279,10 +277,17 @@ areaPercentageInput.oninput = () => {
 };
 
 document.getElementById('startWar').onclick = () => {
-
- 
- console.log(getDataBoxData('attacker'));
+  const attackerOpts = getDataBoxData('attacker');
+  const defenderOpts = getDataBoxData('defender');
   
+  attackWaves.forEach((wave, index) => {
+    const kingdom = kingdoms[attackerSelect.value];
+    const soldierStack = prepareSoldiers(kingdom, wave.soldiers);
+    const commander = prepareCommander(kingdom, wave.commander);
+    console.log(commander, soldierStack, attackerOpts);
+    
+    const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
+  })
 };
 
 renderStrategySelect();

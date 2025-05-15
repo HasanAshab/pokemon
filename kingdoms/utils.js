@@ -111,27 +111,38 @@ export function calcNetProd(kingdom, localize = false) {
 }
 
 
-export function prepareDefenceCommanders(kingdom) {
-  return kingdom.defenceWaves.map((wave) => {    
-    const commander = structuredClone(kingdom.commanders[wave.commander]);    
-    commander.name = wave.commander
-    commander.image = new Pokemon(commander.image);
-    return commander
-  });
+export function prepareCommander(kingdom, commanderName) {
+  const commander = structuredClone(kingdom.commanders[commanderName]);    
+  commander.name = commanderName
+  console.log(commander)
+  commander.image = new Pokemon(commander.image);
+  return commander
 }
 
-export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
-  return kingdom.defenceWaves.map((wave) => {
-    const data = wave.soldiers.map((soldier) => {
+export function prepareSoldiers(kingdom, soldiers, areaPercentage = 100) {
+   const data = soldiers.map((soldier) => {
       const { image, quantity: total } = kingdom.barrack.soldiers.find(
         (s) => s.image.id === soldier.image,
-      );      
+      );
       image.items = soldier.items;
 
       const quantity = Math.ceil(total * (soldier.percentage / 100));
       return [image, quantity];
     });
-    return new SoldierStack(data).resize(areaPercentage);
+  return new SoldierStack(data).resize(areaPercentage);
+}
+
+
+
+export function prepareDefenceCommanders(kingdom) {
+  return kingdom.defenceWaves.map((wave) => {    
+    return prepareCommander(kingdom, wave.commander);
+  });
+}
+
+export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
+  return kingdom.defenceWaves.map((wave) => {
+    return prepareSoldiers(kingdom, wave.soldiers, areaPercentage);
   });
 }
 
