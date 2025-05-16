@@ -366,7 +366,7 @@ Shuriken: {
       statChanges:{
         self:{
           atk:-1
-        }
+        },
         target:{}
       },
       critRatio: 2,
@@ -395,7 +395,7 @@ Shuriken: {
       statChanges:{
         self:{
           atk:-1
-        }
+        },
         target:{}
       },
       tokenChanges: {

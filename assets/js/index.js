@@ -2,7 +2,7 @@ import { Pokemon } from "./utils/models.js";
 import { getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js";
 import { loadPokemonsDatalist, loadNaturesDataList } from "./utils/dom.js";
 
-window.location = "/kingdoms/cms/militia/barrack/?name=Bengalia";
+//window.location = "/kingdoms/cms/militia/barrack/?name=Bengalia";
 
 var totalBadgesCount = 0;
 const badgesDataStr = localStorage.getItem("badges-data");
