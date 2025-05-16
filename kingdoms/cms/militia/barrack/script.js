@@ -1,6 +1,5 @@
-
 import pokemons from "../../../../data/pokemons.js";
-import { calcSoldiersSalary, calcAcademyCost } from "../../../utils.js";
+import { calcAcademyCost } from "../../../utils.js";
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -10,13 +9,13 @@ barrackTitle.textContent = name ? `${name}'s Barrack` : "Unknown Kingdom";
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].barrack)
-  kingdoms[name].barrack = { 
-    academyLevel: 1, 
+  kingdoms[name].barrack = {
+    academyLevel: 1,
     soldiers: {
       day: [],
       night: [],
-      emergency: []
-    }
+      emergency: [],
+    },
   };
 const kingdom = kingdoms[name];
 
@@ -153,23 +152,25 @@ function renderSoldierSection(type) {
 }
 
 function renderAllSoldiers() {
-  renderSoldierSection('day');
-  renderSoldierSection('night');
-  renderSoldierSection('emergency');
-  
-  const totalSalary = ['day', 'night', 'emergency'].reduce((total, type) => {
+  renderSoldierSection("day");
+  renderSoldierSection("night");
+  renderSoldierSection("emergency");
+
+  const totalSalary = ["day", "night", "emergency"].reduce((total, type) => {
     return total + calcTypeSalary(kingdoms[name].barrack.soldiers[type]);
   }, 0);
-  
-  const totalSalaryEl = document.getElementById('totalSalaryContainer') || document.createElement('div');
-  totalSalaryEl.id = 'totalSalaryContainer';
-  totalSalaryEl.className = 'total-salary-container';
+
+  const totalSalaryEl =
+    document.getElementById("totalSalaryContainer") ||
+    document.createElement("div");
+  totalSalaryEl.id = "totalSalaryContainer";
+  totalSalaryEl.className = "total-salary-container";
   totalSalaryEl.textContent = `Total Army Salary: ${totalSalary.toLocaleString()}$`;
-  
-  document.querySelector('main').appendChild(totalSalaryEl);
-  renderSoldierSection('day');
-  renderSoldierSection('night');
-  renderSoldierSection('emergency');
+
+  document.querySelector("main").appendChild(totalSalaryEl);
+  renderSoldierSection("day");
+  renderSoldierSection("night");
+  renderSoldierSection("emergency");
 }
 
 document.getElementById("addDaySoldierBtn").onclick = () => {
@@ -179,7 +180,7 @@ document.getElementById("addDaySoldierBtn").onclick = () => {
     ivSalary: 0,
   });
   save();
-  renderSoldierSection('day');
+  renderSoldierSection("day");
 };
 
 document.getElementById("addNightSoldierBtn").onclick = () => {
@@ -189,7 +190,7 @@ document.getElementById("addNightSoldierBtn").onclick = () => {
     ivSalary: 0,
   });
   save();
-  renderSoldierSection('night');
+  renderSoldierSection("night");
 };
 
 document.getElementById("addEmergencySoldierBtn").onclick = () => {
@@ -199,7 +200,7 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
     ivSalary: 0,
   });
   save();
-  renderSoldierSection('emergency');
+  renderSoldierSection("emergency");
 };
 
 renderAcademy();
