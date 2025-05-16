@@ -62,6 +62,12 @@ const createField = (labelText, inputEl) => {
   return wrapper;
 };
 
+function calcTypeSalary(soldiers) {
+  return soldiers.reduce((total, soldier) => {
+    return total + (soldier.quantity || 0) * (soldier.ivSalary || 0);
+  }, 0);
+}
+
 function renderSoldierSection(type) {
   const container = document.getElementById(`${type}SoldiersContainer`);
   container.innerHTML = "";
@@ -94,7 +100,7 @@ function renderSoldierSection(type) {
       const newLevel = parseInt(levelInput.value) || 1;
       soldier.image.xp = (newLevel - 1) * 100;
       save();
-      renderSoldierSection(type);
+      renderAllSoldiers();
     };
 
     const quantityInput = document.createElement("input");
@@ -103,7 +109,7 @@ function renderSoldierSection(type) {
     quantityInput.onblur = () => {
       soldier.quantity = parseInt(quantityInput.value) || 0;
       save();
-      renderSoldierSection(type);
+      renderAllSoldiers();
     };
 
     const ivSalaryInput = document.createElement("input");
@@ -112,7 +118,7 @@ function renderSoldierSection(type) {
     ivSalaryInput.onblur = () => {
       soldier.ivSalary = parseFloat(ivSalaryInput.value) || 0;
       save();
-      renderSoldierSection(type);
+      renderAllSoldiers();
     };
 
     const totalSalary = soldier.quantity * soldier.ivSalary;
@@ -126,7 +132,7 @@ function renderSoldierSection(type) {
     delBtn.onclick = () => {
       kingdoms[name].barrack.soldiers[type].splice(index, 1);
       save();
-      renderSoldierSection(type);
+      renderAllSoldiers();
     };
 
     div.appendChild(imageSelect);
@@ -139,11 +145,28 @@ function renderSoldierSection(type) {
     container.appendChild(div);
   });
 
-  const grandTotalEl = document.createElement("div");
-  grandTotalEl.className = "grand-total-salary";
-  grandTotalEl.textContent = `Total ${type.charAt(0).toUpperCase() + type.slice(1)} Soldiers Salary: ${calcSoldiersSalary(kingdom).toLocaleString()} coins`;
+  const typeTotalSalary = calcTypeSalary(kingdoms[name].barrack.soldiers[type]);
+  const typeTotalEl = document.createElement("div");
+  typeTotalEl.className = "type-total-salary";
+  typeTotalEl.textContent = `Total ${type.charAt(0).toUpperCase() + type.slice(1)} Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
+  container.appendChild(typeTotalEl);
+}
 
-  container.appendChild(grandTotalEl);
+function renderAllSoldiers() {
+  renderSoldierSection('day');
+  renderSoldierSection('night');
+  renderSoldierSection('emergency');
+  
+  const totalSalary = ['day', 'night', 'emergency'].reduce((total, type) => {
+    return total + calcTypeSalary(kingdoms[name].barrack.soldiers[type]);
+  }, 0);
+  
+  const totalSalaryEl = document.getElementById('totalSalaryContainer') || document.createElement('div');
+  totalSalaryEl.id = 'totalSalaryContainer';
+  totalSalaryEl.className = 'total-salary-container';
+  totalSalaryEl.textContent = `Total Army Salary: ${totalSalary.toLocaleString()}$`;
+  
+  document.querySelector('main').appendChild(totalSalaryEl);
 }
 
 function renderAllSoldiers() {
