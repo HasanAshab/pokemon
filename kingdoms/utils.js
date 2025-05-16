@@ -139,9 +139,9 @@ export function prepareCommander(kingdom, commanderName) {
   return commander;
 }
 
-export function prepareSoldiers(kingdom, soldiers, areaPercentage = 100) {
+export function prepareSoldiers(kingdom, soldiers, areaPercentage = 100, shift) {
   const data = soldiers.map((soldier) => {
-    const { image, quantity: total } = kingdom.barrack.soldiers.find(
+    const { image, quantity: total } = kingdom.barrack.soldiers[shift].find(
       (s) => s.image.id === soldier.image,
     );
     image.items = soldier.items;
@@ -158,15 +158,15 @@ export function prepareDefenceCommanders(kingdom) {
   });
 }
 
-export function prepareDefenceSoldiers(kingdom, areaPercentage = 100) {
+export function prepareDefenceSoldiers(kingdom, areaPercentage = 100, shift) {
   return kingdom.defenceWaves.map((wave) => {
-    return prepareSoldiers(kingdom, wave.soldiers, areaPercentage);
+    return prepareSoldiers(kingdom, wave.soldiers, areaPercentage, shift);
   });
 }
 
-export function prepareDefenceWaves(kingdom, areaPercentage = 100) {
+export function prepareDefenceWaves(kingdom, areaPercentage = 100, shift) {
   const commanders = prepareDefenceCommanders(kingdom);
-  const soldiers = prepareDefenceSoldiers(kingdom, areaPercentage);
+  const soldiers = prepareDefenceSoldiers(kingdom, areaPercentage, shift);
   return kingdom.defenceWaves.map((wave, index) => {
     return {
       ...wave,

@@ -7,40 +7,15 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].defenceWaves) kingdoms[name].defenceWaves = [];
 
+
+const shiftSelect = document.getElementById("shift");
 const kingdomName = document.getElementById("kingdomName");
 kingdomName.textContent = name || "Unknown Kingdom";
-
-function validateItems(items, waveIndex) {
-  const storage = kingdoms[name].storage || {};
-  const itemCounts = {};
-
-  // Count items from other waves
-  kingdoms[name].defenceWaves.forEach((wave, idx) => {
-    if (idx !== waveIndex) {
-      wave.soldiers.forEach((soldier) => {
-        soldier.items.forEach((item) => {
-          itemCounts[item] = (itemCounts[item] || 0) + 1;
-        });
-      });
-    }
-  });
-
-  // Add current items
-  items.forEach((item) => {
-    itemCounts[item] = (itemCounts[item] || 0) + 1;
-  });
-
-  // Check if we have enough in storage
-  return Object.entries(itemCounts).every(
-    ([item, count]) => (storage[item] || 0) >= count,
-  );
-}
-
 
 function renderWaves() {
   const wavesList = document.getElementById("wavesList");
   wavesList.innerHTML = "";
-  const actualSoldiers = prepareDefenceSoldiers(kingdoms[name]);
+  const actualSoldiers = prepareDefenceSoldiers(kingdoms[name], 100, shiftSelect.value);
 
   kingdoms[name].defenceWaves.forEach((wave, index) => {
     const waveDiv = document.createElement("div");
@@ -71,7 +46,7 @@ function renderWaves() {
       modalContent.className = "modal-content";
 
       const soldierSelect = document.createElement("select");
-      const soldiers = kingdoms[name].barrack?.soldiers || [];
+      const soldiers = kingdoms[name].barrack?.soldiers[shiftSelect.value] || [];
       soldiers.forEach((soldier) => {
         const option = document.createElement("option");
         option.value = soldier.image.id;
@@ -120,7 +95,7 @@ function renderWaves() {
 
       // Update label when the range changes
       percentageInput.oninput = () => {
-        const total = kingdoms[name].barrack.soldiers.find(s => s.image.id === soldier.image).quantity;
+        const total = kingdoms[name].barrack.soldiers[shiftSelect.value].find(s => s.image.id === soldier.image).quantity;
         const quantity = Math.ceil(total * (percentageInput.value / 100));
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
@@ -205,4 +180,5 @@ document.getElementById("addWaveBtn").onclick = () => {
   renderWaves();
 };
 
+shiftSelect.onchange = () => renderWaves();
 renderWaves();
