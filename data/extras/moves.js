@@ -348,11 +348,10 @@ sword: {
       tokenChanges: {
         spe: -50
       },
-      koRatio: 2
     },
 
 
-Katana: {
+katana: {
       num: 100007,
       accuracy: 80,
       basePower: 100,
@@ -368,7 +367,8 @@ Katana: {
       contestType: "Tough",
       tokenChanges: {
         spe: -50
-      }
+      },
+      koRatio:1
     },
 Shuriken: {
       num: 100008,
@@ -512,7 +512,8 @@ Shuriken: {
       contestType: "Tough",
       tokenChanges: {
         spe: -20
-      }
+      },
+      koRatio:1
     },
     punch: {
       num: 100016,
@@ -555,6 +556,55 @@ Shuriken: {
       target: "normal",
       type: "Normal",
       contestType: "Tough",
+    },
+  rasengan: {
+      num: 100017,
+      accuracy: 80,
+      basePower: 90,
+      category: "Physical",
+      name: "Rasengan",
+      pp: 15 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Psychic",
+      contestType: "Cool"
+    },
+  rasenshuriken: {
+      num: 100018,
+      accuracy: 60,
+      basePower: 130,
+      category: "Physical",
+      name: "Rasen Shuriken",
+      pp: 2 * 3,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1 },
+      statChanges:{
+        self:{
+          atk:-2
+        },
+        target:{}
+      },
+      critRatio: 1,
+      secondary: null,
+      target: "normal",
+      type: "Rock",
+      type: "Psychic",
+      contestType: "Cool"
+    },
+  chiduri: {
+      num: 100019,
+      accuracy: 60,
+      basePower: 50,
+      category: "Physical",
+      name: "Chiduri",
+      pp: 15 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      target: "normal",
+      type: "Electric",
+      koRatio:3
     },
 
 }
