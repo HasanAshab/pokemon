@@ -191,7 +191,7 @@ function renderWaves() {
   });
 }
 
-function getActualDefenders() {  
+function getActualDefenders() {
   return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
 }
 
@@ -209,7 +209,7 @@ function generateDefendersReport(expLvl = 0) {
     reportLines.push(`Wave ${(index + 1)}:`);
     expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${defenders.commander.iq.defensive})`);
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
-      const items = image.items.names().join(", ") || "foo, bar";
+      const items = image.items.names().join(", ");
       const level = `(lvl ${image.level})`;
       const moreData = `${level} ${items && (" with " + items)}`
       reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
@@ -284,8 +284,8 @@ startWarBtn.onclick = () => {
   const defKingdom = kingdoms[defenderSelect.value]
   const resultDiv = document.getElementById("war-data");
   const defenceWaves = getActualDefenders()
-  const attackerOpts = getDataBoxData('attacker');
-  const defenderOpts = getDataBoxData('defender');
+  const attackerOpts = getDataBoxData('atk');
+  const defenderOpts = getDataBoxData('def');
 
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`

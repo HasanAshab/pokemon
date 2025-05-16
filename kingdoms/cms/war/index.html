@@ -10,6 +10,45 @@
 
 <body>
 
+   <div class="container data-box" id="harvest">
+    <h4 class="title">Harvest Options</h4>
+    <div class="data-rows-wrapper">
+    </div>
+    <button id="add-data" onclick="addDataRow('harvest')">Add Data</button>
+  </div>
+  <br>
+
+  <div class="container data-box" id="atk">
+    <h4 class="title">Attacker Options</h4>
+    <div class="data-rows-wrapper">
+      <div class="data-row">
+        <input type="text" class="key" placeholder="Key" value="morality"/>
+        <input type="text" class="value" placeholder="Value" value="100"/>
+        <button class="remove-btn" onclick="removeRow('atk', event)">-</button> 
+      </div>
+    </div>
+    <button id="add-data" onclick="addDataRow('atk')">Add Data</button>
+  </div>
+  <br>
+  <div class="container data-box" id="def">
+    <h4 class="title">Deffender Options</h4>
+    <div class="data-rows-wrapper">
+      <div class="data-row">
+        <input type="text" class="key" placeholder="Key" value="morality"/>
+        <input type="text" class="value" placeholder="Value" value="100"/>
+        <button class="remove-btn" onclick="removeRow('def', event)">-</button> 
+      </div>
+    </div>
+    <button id="add-data" onclick="addDataRow('def')">Add Data</button>
+  </div>  
+  <br>
+   <div class="container defender-data">
+    <h3>Espionage Report</h3>
+    <div id="defender-data"></div>
+    <br>
+    <input style="width: 25px;" type="number" id="expose-level-inp" value="0" min="0" oninput="showDefenderData()" />
+  </div>
+  <br>
   <div class="container">
 
     <h1 id="kingdomName">Kingdom</h1>
@@ -41,49 +80,11 @@
     <button id="startWar" class="start-war-btn">Start War</button>
   </div>
   <br>
-
-  <div class="container defender-data">
-    <h3>Defender Data</h3>
-    <div id="defender-data"></div>
-    <br>
-    <input style="width: 25px;" type="number" id="expose-level-inp" value="0" min="0" oninput="showDefenderData()" />
-  </div>
-  <br>
-  <div class="container data-box" id="attacker">
-    <h4 class="title">Attacker Options</h4>
-    <div class="data-rows-wrapper">
-      <div class="data-row">
-        <input type="text" class="key" placeholder="Key" value="morality"/>
-        <input type="text" class="value" placeholder="Value" value="100"/>
-        <button class="remove-btn" onclick="removeRow('attacker', event)">-</button> 
-      </div>
-    </div>
-    <button id="add-data" onclick="addDataRow('attacker')">Add Data</button>
-  </div>
-  <br>
-  <div class="container data-box" id="defender">
-    <h4 class="title">Deffender Options</h4>
-    <div class="data-rows-wrapper">
-      <div class="data-row">
-        <input type="text" class="key" placeholder="Key" value="morality"/>
-        <input type="text" class="value" placeholder="Value" value="100"/>
-        <button class="remove-btn" onclick="removeRow('defender', event)">-</button> 
-      </div>
-    </div>
-    <button id="add-data" onclick="addDataRow('defender')">Add Data</button>
-  </div>  
-  <br>
   <div class="container">
     <h3>War Result</h3>
     <div id="war-data"> </div>
   </div>
   <br>
-    <div class="container data-box" id="harvest">
-    <h4 class="title">Harvest Options</h4>
-    <div class="data-rows-wrapper">
-    </div>
-    <button id="add-data" onclick="addDataRow('harvest')">Add Data</button>
-  </div>  
   <script type="module" src="script.js"></script>
 </body>
 
