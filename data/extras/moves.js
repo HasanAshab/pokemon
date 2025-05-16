@@ -332,7 +332,8 @@ sword: {
       contestType: "Tough",
       tokenChanges: {
         spe: -50
-      }
+      },
+      koRatio: 2
     },
 
 

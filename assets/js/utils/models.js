@@ -50,11 +50,6 @@ class PSPokemon {
 export class Pokemon extends PSPokemon {
     static XP_PER_LEVEL = 100;
     static TOKEN_PER_LEVEL = 2
-    static TOKEN_MODIFIERS = {
-        hp: 1.03,
-        spe: 1.009, 
-        default: 1.025 // Default modifier for all other stats
-    };
 
     static calculateLevel(xp) {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
@@ -242,19 +237,10 @@ export class Pokemon extends PSPokemon {
 
     _calculateTokenStat() {
         const tokenStats = {};
-
         Object.keys(this._pokemon.baseStats).forEach(statName => {
-            const baseStat = this._pokemon.baseStats[statName];
-
-            // Use the dynamic token modifier, fallback to default if not specified
-            const tokenModifier = Math.pow(
-                Pokemon.TOKEN_MODIFIERS[statName] || Pokemon.TOKEN_MODIFIERS.default,
-                this.tokens[statName] ?? 0
-            );
-
-            // Apply token modifier
-            tokenStats[statName] = Math.floor(baseStat * tokenModifier) - baseStat;
+            tokenStats[statName] = this.tokens[statName]
         });
+        console.log(tokenStats)
         return tokenStats;
     }      
     get stats() {

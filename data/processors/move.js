@@ -282,11 +282,14 @@ function modifyAccuracy(move) {
 }
 
 function addKoHandler(move) {
-  if (!move.koChance) return 
-  move.basePowerCallback = function(attacker) {
-    return Math.random() < (move.koChance / 100)
+  const cb = move.basePowerCallback
+  move.basePowerCallback = function(pokemon, target) {
+    const bp = cb ? cb(...arguments) : move.basePower 
+    const koChance = 0.5 + (pokemon.level - target.level) / (2 * (pokemon.level + target.level))
+    const finalChance = koChance * (move.koRatio ?? 0)
+    return Math.random() < finalChance
       ? Infinity
-      : move.basePower
+      : bp
   }
 }
 
