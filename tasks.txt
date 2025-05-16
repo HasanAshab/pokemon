@@ -2,6 +2,7 @@
 enemy items
 combo
 
+ko: (50% = user.lvl && target.lvl), (50%= random) 
 
 substitute
 

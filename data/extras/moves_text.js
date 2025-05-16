@@ -8,13 +8,6 @@ export default {
   dodge: {
       shortDesc: "Move quickly to avoid attack"
   },
-  swordsmash: {
-    shortDesc: "Has a 10% chance to flinch and increased crit ratio"
-  },
-  rushout: {
-    shortDesc: "Increase spe 1.5 stage"
-  },
-  thunderblade: {
-    shortDesc: "increased crit ratio"
-  },
+ 
+  
 }

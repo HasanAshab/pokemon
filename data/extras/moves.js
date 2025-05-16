@@ -202,22 +202,301 @@ export default {
         return true
       },
     },
-    sword: {
+    chakrablade: {
       num: 100000,
       accuracy: 100,
-      basePower: 40,
+      multiHit:[2,5],
+      basePower: 20,
       category: "Physical",
-      name: "Sword",
-      pp: 35,
+      name: "Chakra Blade",
+      pp: 15 * 3,
       priority: 0,
-      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-      koChance: 1,
+      flags: {
+        contact: 1, 
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 1
+      },
+      critRatio: 1,
       secondary: null,
       target: "normal",
-      type: "Normal",
+      type: "Rock",
       contestType: "Tough",
       tokenChanges: {
-        spe: -2
+        spe: -5
       }
     },
+
+kunai: {
+      num: 100001,
+      accuracy: 100,
+      basePower: 50,
+      category: "Physical",
+      name: "Kunai",
+      pp: 30 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Rock",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -10
+      }
+},
+
+ninjastar: {
+      num: 100002,
+      accuracy: 100,
+      basePower: 50,
+      category: "Physical",
+      name: "Ninja Star",
+      pp: 15 * 3,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      secondary: null,
+      target: "normal",
+      type: "Rock",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -10
+      }
+    },
+ 
+bamboo: {
+      num: 100003,
+      accuracy: 70,
+      basePower: 70,
+      category: "Physical",
+      name: "Bamboo",
+      pp: 25 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      secondary: null,
+      target: "normal",
+      type: "Grass",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -50
+      }
+    },   
+ninjablade: {
+      num: 100004,
+      accuracy: 100,
+      basePower: 70,
+      category: "Physical",
+      name: "Ninja Blade",
+      pp: 30 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -20
+      }
+    },
+   
+kohgastar: {
+      num: 100005,
+      accuracy: 100,
+      basePower: 70,
+      category: "Physical",
+      name: "Kohga Star",
+      pp: 15 * 3,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -20
+      }
+    },
+
+sword: {
+      num: 100006,
+      accuracy: 70,
+      basePower: 90,
+      category: "Physical",
+      name: "sword",
+      pp: 25 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon:1 },
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -50
+      }
+    },
+
+
+Katana: {
+      num: 100007,
+      accuracy: 80,
+      basePower: 100,
+      category: "Physical",
+      name: "Katana",
+      pp: 25 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 , weapon: 1},
+      critRatio: 2,
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -50
+      }
+    },
+Shuriken: {
+      num: 100008,
+      accuracy: 60,
+      basePower: 130,
+      category: "Physical",
+      name: "Shuriken",
+      pp: 2 * 3,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+      statChanges:{
+        self:{
+          atk:-1
+        }
+        target:{}
+      },
+      critRatio: 2,
+      secondary: null,
+      target: "normal",
+      type: "Rock",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -80
+      }
+    },
+ longsword: {
+      num: 100009,
+      accuracy: 60,
+      basePower: 130,
+      category: "Physical",
+      name: "Katana",
+      pp: 15 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 , weapon: 1},
+      critRatio: 2,
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      statChanges:{
+        self:{
+          atk:-1
+        }
+        target:{}
+      },
+      tokenChanges: {
+        spe: -80
+      }
+    },
+ ninechaku:{
+      num: 100010,
+      accuracy: 100,
+      multiHit:[2,5],
+      basePower: 20,
+      category: "Physical",
+      name: "Nine Chaku",
+      pp: 15 * 3,
+      priority: 1,
+      flags: {
+        contact: 1, 
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 1
+      },
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -10
+      }
+    },
+  ninechakublade:{
+      num: 100011,
+      accuracy: 100,
+      multiHit:[2,5],
+      basePower: 35,
+      category: "Physical",
+      name: "Nine Chaku(Blade)",
+      pp: 15 * 3,
+      priority: 0,
+      flags: {
+        contact: 1, 
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 1
+      },
+      secondary: null,
+      target: "normal",
+      type: "Steel",
+      contestType: "Tough",
+      recoil: [10, 100],
+      tokenChanges: {
+        spe: -10
+      }
+    },
+  dirt: {
+      num: 100012,
+      accuracy: 100,
+      basePower: 20,
+      category: "Physical",
+      name: "Dirt",
+      pp: 15 * 3,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      secondary: {
+        chance: 80,
+        status: "psn"
+      },
+      target: "normal",
+      type: "Poison",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -5
+      }
+    },
+   ninjaclaw:{
+      num: 100013,
+      accuracy: 100,
+      multiHit:2,
+      basePower: 45,
+      category: "Physical",
+      name: "Ninja Claw",
+      pp: 20 * 3,
+      priority: 0,
+      flags: {
+        contact: 1, 
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 1
+      },
+      secondary: {
+        chance: 20,
+        status: "psn"
+      },
+      target: "normal",
+      type: "Poison",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -20
+      }
+    },
+
 }
