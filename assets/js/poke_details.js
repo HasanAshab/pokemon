@@ -96,7 +96,7 @@ globalThis.changePokemon =  function (){
    localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
   name = pokemonInput.value
     const meta = getPokemonsMeta(name)
-  globalThis.pokemon = new Pokemon(name, meta)
+  globalThis.pokemon = new Pokemon(meta.id, meta)
 
   loadAll()
  closePokemonChooseForm()
@@ -377,26 +377,8 @@ function loadMoves() {
 
 function loadPokemon() {
   const meta = getPokemonsMeta(name)
-  globalThis.pokemon = new Pokemon(name, meta)
-  globalThis.dummy = new Pokemon('student', {
-    "xp": 100,
-    "nature": "hardy",
-    "retreat": 1,
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 5,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    },
-    "moves": [],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    }
-  })
+  globalThis.pokemon = new Pokemon(meta.id, meta)
+  globalThis.dummy = new Pokemon('student')
   globalThis.battle = new BATTLE_SYSTEMS["single"]([pokemon], [dummy])
 }
 

@@ -103,6 +103,7 @@ globalThis.increasePokemonLosesCount = function (id) {
 globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   const addPokemonForm = document.querySelector(".add-pokemon-form");
   const pokemonNameInput = addPokemonForm.querySelector(".pokemon-name");
+  const pokemonIdInput = addPokemonForm.querySelector(".pokemon-id");
   const levelInput = addPokemonForm.querySelector(".level");
   const natureInput = addPokemonForm.querySelector(".nature");
   const retreatInput = addPokemonForm.querySelector(".retreat");
@@ -113,6 +114,7 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
     const pokemonsMeta =
       JSON.parse(localStorage.getItem("pokemons-meta")) || {};
     pokemonsMeta[pokemonNameInput.value] = {
+      id: pokemonIdInput.value,
       xp: (levelInput.value - 1) * 100,
       nature: natureInput.value,
       retreat: parseInt(retreatInput.value),
@@ -177,6 +179,8 @@ globalThis.healAllBtnHandler = function () {
 function loadAllPokemons() {
   const pokemonList = document.querySelector(".pokemon-list");
   const pokemons_meta = getPokemonsMeta();
+  console.log(pokemons_meta);
+  
   pokemonList.innerHTML = "";
   for (const pokemon in pokemons_meta) {
     const meta = pokemons_meta[pokemon];
@@ -209,20 +213,12 @@ function loadAllPokemons() {
 globalThis.openEnemyChooseInterface = function () {
   window.location = `enemy.html?name=${name}`;
 };
-function loadFoodCost() {
-  const costPerLevel = 300;
-  const foodCost = document.getElementById("food-cost");
-  const cost = Object.values(getPokemonsMeta()).reduce((acc, meta) => {
-    return acc + (meta.xp / 100) * costPerLevel;
-  }, 0);
-  foodCost.textContent = cost;
-}
 
 function loadTotalCP() {
   const pokemonsMeta = getPokemonsMeta();
-  const pokemons = Object.keys(pokemonsMeta).map((id) => {
-    const m = pokemonsMeta[id];
-    return new Pokemon(id, m);
+  const pokemons = Object.keys(pokemonsMeta).map((name) => {
+    const m = pokemonsMeta[name];
+    return new Pokemon(m.id, m);
   });
   const totalCpBar = document.getElementById("total-cp");
   totalCpBar.textContent = pokemons.reduce((acc, p) => acc + p.cp(), 0);

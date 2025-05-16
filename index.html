@@ -104,8 +104,11 @@
     <div class="blur-bg">
       <div class="add-pokemon-form">
         <h2>Pokemon Form</h2>
-        <label for="pokemon-name">Pokemon Name:</label>
-        <input list="pokemons-data-list" type="text" class="pokemon-name" name="pokemon-name" placeholder="Enter Pokemon name">
+        <label for="pokemon-name">Name:</label>
+        <input type="text" class="pokemon-name" name="pokemon-name" placeholder="Enter name">
+        <datalist id="pokemons-data-list"></datalist>
+        <label for="pokemon-id">Image:</label>
+        <input list="pokemons-data-list" type="text" class="pokemon-id" name="pokemon-id" placeholder="Enter Image">
         <datalist id="pokemons-data-list"></datalist>
         <label for="level">Level:</label>
         <input type="number" value="1" class="level" name="level" placeholder="Enter Level value">
@@ -136,5 +139,4 @@
   <small><a href="/kingdoms/">Kingdoms</a></small>
 </body>
 <script src="./assets/js/index.js" type="module"></script>
-<script src="./assets/js/test.js" type="module"></script>
 </html>
