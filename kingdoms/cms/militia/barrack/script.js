@@ -78,7 +78,7 @@ function renderSoldierSection(type) {
     const imageSelect = document.createElement("select");
     const images = Object.keys(pokemons).splice(
       0,
-      kingdom.barrack.academyLevel,
+      kingdom.barrack.academyLevel + 1,
     );
     images.forEach((opt) => {
       const option = document.createElement("option");
