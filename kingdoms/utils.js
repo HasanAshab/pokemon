@@ -181,7 +181,6 @@ export function prepareDefenceWaves(kingdom, areaPercentage = 100) {
 export function removeSoldiers(kingdom, soldierStack) {  
   kingdom.barrack.soldiers = kingdom.barrack.soldiers.map((s) => {
       const quantity = soldierStack.find(s.image.id)
-      console.log(quantity)
       if (quantity) {
         s.quantity -= quantity
       }

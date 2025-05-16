@@ -204,8 +204,8 @@ class War {
   
   _calcWounded() {
     const wounded = {
-      atk: new Map(),
-      def: new Map()
+      atk: new SoldierStack(),
+      def: new SoldierStack()
     }
     if (this.result.raisedWhiteFlag)
       return wounded

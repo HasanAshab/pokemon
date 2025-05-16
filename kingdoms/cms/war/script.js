@@ -2,6 +2,7 @@ import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js
 import { sumMap, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, removeSoldiers } from "../../utils.js";
 
 var i = 0;
+var netWin = 0;
 const urlParams = new URLSearchParams(window.location.search);
 const name = urlParams.get('name');
 const attackerSelect = document.getElementById('attacker');
@@ -11,9 +12,7 @@ const kingdomName = document.getElementById('kingdomName');
 kingdomName.textContent = name || 'Unknown Kingdom';
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
-if (!kingdoms[name]) kingdoms[name] = {};
 const attackWaves = [];
-const results = []
 
 function renderStrategySelect() {
   Object.keys(WAR_SYSTEMS).forEach(strategy => {
@@ -71,7 +70,7 @@ function renderWaves() {
       modalContent.className = "modal-content";
 
       const soldierSelect = document.createElement("select");
-      const soldiers = kingdoms[name].barrack?.soldiers || [];
+      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers || [];
       soldiers.forEach((soldier) => {
         const option = document.createElement("option");
         option.value = soldier.image.id;
@@ -271,7 +270,7 @@ const areaPercentageLabel = document.getElementById('areaPercentageLabel');
 
 areaPercentageInput.oninput = () => {
   const percent = areaPercentageInput.value;
-  const totalArea = kingdoms[name].landArea;
+  const totalArea = kingdoms[defenderSelect.value].landArea;
   const actualArea = Math.round((totalArea * percent) / 100);
   areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;
   showDefenderData();
@@ -281,19 +280,13 @@ const startWarBtn = document.getElementById('startWar')
 
 startWarBtn.onclick = () => {
   startWarBtn.disabled = true;
+  const atkKingdom = kingdoms[attackerSelect.value]
+  const defKingdom = kingdoms[defenderSelect.value]
   const resultDiv = document.getElementById("war-data");
   const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('attacker');
   const defenderOpts = getDataBoxData('defender');
-  
-  const totalWounded = key => {
-    return results.reduce((total, res) => {
-      return sumMap(total, res.wounded[key]);
-    }, new SoldierStack())
-  }
-  
 
-  
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
@@ -304,7 +297,10 @@ startWarBtn.onclick = () => {
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts);
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
-    results.push(war.result);
+    netWin += war.result.win ? 1 : -1;
+
+    removeSoldiers(atkKingdom, war.result.wounded.atk)
+    removeSoldiers(defKingdom, war.result.wounded.def)
     
   
     resultDiv.innerHTML += war.comments().join("<br>");
@@ -331,29 +327,25 @@ startWarBtn.onclick = () => {
   })
   }
   else {
-    const atkKingdom = kingdoms[attackerSelect.value]
-    const defKingdom = kingdoms[defenderSelect.value]
-    const win = results.filter(r => r.win).length > results.filter(r => !r.win).length
+    const win = netWin > 0
     const outcome = win ? "Success" : "Failour";
     resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`
-    
-    
-    removeSoldiers(atkKingdom, totalWounded('atk'))
-    removeSoldiers(defKingdom, totalWounded('def'))
 
-    if (strategySelect.value === "harvest") {
-      const items = getDataBoxData('harvest')
-      atkKingdom.storage = sumObj(atkKingdom.storage, items)
-      defKingdom.storage = sumObj(atkKingdom.storage, modObj(items, -1))
+    if (win) {
+      if (strategySelect.value === "harvest") {
+        const items = getDataBoxData('harvest')
+        atkKingdom.storage = sumObj(atkKingdom.storage, items)
+        defKingdom.storage = sumObj(atkKingdom.storage, modObj(items, -1))
+      }
+      else if (strategySelect.value === "occupy") {
+        const percentageInp = document.getElementById("areaPercentage")
+        const occupiedArea = defKingdom.landArea * (parseInt(percentageInp.value) / 100)
+        atkKingdom.landArea += occupiedArea
+        defKingdom.landArea -= occupiedArea
+      }
     }
-    else if (strategySelect.value === "occupy") {
-      const percentageInp = document.getElementById("areaPercentage")
-      const occupiedArea = defKingdom.landArea * (parseInt(percentageInp.value) / 100)
-      atkKingdom.landArea += occupiedArea
-      defKingdom.landArea -= occupiedArea
-    }
-    localStorage.setItem('kingdoms', JSON.stringify(kingdoms))
   }
+  localStorage.setItem('kingdoms', JSON.stringify(kingdoms))
   i++
 };
 
