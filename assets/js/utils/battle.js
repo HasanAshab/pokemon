@@ -345,11 +345,11 @@ class BaseBattle extends EventEmitter {
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
 
-        const d1 = "damage" in move2
+        let d1 = "damage" in move2
             ? hit2.damage()
             : hit2.toContactDamage(damages.get(this.pokemon1))
 
-        const d2 = "damage" in move1
+        let d2 = "damage" in move1
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))
 
@@ -390,6 +390,11 @@ class BaseBattle extends EventEmitter {
             }
         }
         else {
+            if (move1.id === "block")
+                d2 = d2 / 2
+            if (move2.id === "block")
+                d1 = d1 / 2
+
             if (d2) {
                 this.pokemon2.state.decreaseHealth(d2)
                 move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))

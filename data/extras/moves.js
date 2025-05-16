@@ -56,6 +56,21 @@ export default {
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },
+    block: {
+      num: 100014,
+      accuracy: true,
+      basePower: 0,
+      category: "Normal",
+      name: "Block",
+      pp: null,
+      priority: 0,
+      flags: { offensive: 0 },
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      isOffensive: false,
+      retreat: 1,
+    },
     doubleteam: {
       num: 104,
       accuracy: true,
@@ -79,7 +94,6 @@ export default {
       },
       retreat: 5,
     },
-    
     focusenergy: {
       num: 116,
       accuracy: true,
@@ -153,7 +167,7 @@ export default {
       retreat: 2
     },
     takeweapon: {
-      num: 100004,
+      num: 100015,
       accuracy: true,
       basePower: 0,
       category: "Normal",
@@ -202,6 +216,7 @@ export default {
         return true
       },
     },
+
     chakrablade: {
       num: 100000,
       accuracy: 100,
@@ -498,6 +513,48 @@ Shuriken: {
       tokenChanges: {
         spe: -20
       }
+    },
+    punch: {
+      num: 100016,
+      accuracy: 100,
+      basePower: 20,
+      category: "Physical",
+      name: "Punch",
+      pp: 50 * 3,
+      priority: 0,
+      flags: {
+        contact: 1, 
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 0
+      },
+      critRatio: 1,
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      contestType: "Tough",
+    },
+    kick: {
+      num: 100016,
+      accuracy: 70,
+      basePower: 40,
+      category: "Physical",
+      name: "Kick",
+      pp: 50 * 3,
+      priority: 0,
+      flags: {
+        contact: 1, 
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 0
+      },
+      critRatio: 1,
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      contestType: "Tough",
     },
 
 }

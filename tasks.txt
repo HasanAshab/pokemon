@@ -1,6 +1,6 @@
 * Proposal
-ko: (50% = user.lvl && target.lvl), (50%= random) 
-
+block
+change protect
 substitute
 
 

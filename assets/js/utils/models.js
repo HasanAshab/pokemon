@@ -122,6 +122,10 @@ export class Pokemon extends PSPokemon {
     }
 
     effectiveness(type) {
+      return 1
+      
+      // no effects ...
+
         if (type instanceof Move) {
             if(type.damage) return 1
             type = type.type
@@ -240,7 +244,6 @@ export class Pokemon extends PSPokemon {
         Object.keys(this._pokemon.baseStats).forEach(statName => {
             tokenStats[statName] = this.tokens[statName]
         });
-        console.log(tokenStats)
         return tokenStats;
     }      
     get stats() {
