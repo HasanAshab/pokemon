@@ -3,6 +3,7 @@ block
 change protect
 substitute
 ko bug
+weapon drop
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
