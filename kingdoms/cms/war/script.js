@@ -8,6 +8,7 @@ const name = urlParams.get('name');
 const attackerSelect = document.getElementById('attacker');
 const defenderSelect = document.getElementById('defender');
 const strategySelect = document.getElementById('warStrategy')
+const shiftSelect = document.getElementById('shift')
 const kingdomName = document.getElementById('kingdomName');
 kingdomName.textContent = name || 'Unknown Kingdom';
 
@@ -70,7 +71,7 @@ function renderWaves() {
       modalContent.className = "modal-content";
 
       const soldierSelect = document.createElement("select");
-      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers || [];
+      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers[shiftSelect.value] || [];
       soldiers.forEach((soldier) => {
         const option = document.createElement("option");
         option.value = soldier.image.id;
@@ -112,7 +113,7 @@ function renderWaves() {
       percentageInput.value = soldier.percentage || 0;
 
       const percentageLabel = document.createElement("span");
-      const total = kingdoms[attackerSelect.value].barrack.soldiers.find(
+      const total = kingdoms[attackerSelect.value].barrack.soldiers[shiftSelect.value].find(
         s => s.image.id === soldier.image
       ).quantity;
       const quantity = Math.ceil(total * (percentageInput.value / 100));
@@ -192,7 +193,7 @@ function renderWaves() {
 }
 
 function getActualDefenders() {
-  return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value));
+  return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value), shiftSelect.value);
 }
 
 function generateDefendersReport(expLvl = 0) {
@@ -256,6 +257,7 @@ globalThis.removeRow = (containerId, {currentTarget}) => {
   dataRowsWrapper.removeChild(currentTarget.parentElement);  
 }
 
+shiftSelect.onchange = () => renderWaves();
 
 document.getElementById("addWaveBtn").onclick = () => {
   attackWaves.push({
@@ -291,7 +293,7 @@ startWarBtn.onclick = () => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
     const kingdom = kingdoms[attackerSelect.value];
-    const soldierStack = prepareSoldiers(kingdom, wave.soldiers);
+    const soldierStack = prepareSoldiers(kingdom, wave.soldiers, 100, "emergency");
     const commander = prepareCommander(kingdom, wave.commander);    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts);
