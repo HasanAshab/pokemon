@@ -2,7 +2,7 @@
 block
 change protect
 substitute
-
+ko bug
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

@@ -604,7 +604,7 @@ Shuriken: {
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
       target: "normal",
       type: "Electric",
-      koRatio:3
+      koRatio: 3
     },
 
 }
