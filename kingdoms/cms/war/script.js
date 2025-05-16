@@ -71,7 +71,7 @@ function renderWaves() {
       modalContent.className = "modal-content";
 
       const soldierSelect = document.createElement("select");
-      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers[shiftSelect.value] || [];
+      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers.emergency || [];
       soldiers.forEach((soldier) => {
         const option = document.createElement("option");
         option.value = soldier.image.id;
@@ -113,7 +113,7 @@ function renderWaves() {
       percentageInput.value = soldier.percentage || 0;
 
       const percentageLabel = document.createElement("span");
-      const total = kingdoms[attackerSelect.value].barrack.soldiers[shiftSelect.value].find(
+      const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
         s => s.image.id === soldier.image
       ).quantity;
       const quantity = Math.ceil(total * (percentageInput.value / 100));
@@ -301,8 +301,8 @@ startWarBtn.onclick = () => {
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
 
-    removeSoldiers(atkKingdom, war.result.wounded.atk)
-    removeSoldiers(defKingdom, war.result.wounded.def)
+    removeSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
+    removeSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
     
   
     resultDiv.innerHTML += war.comments().join("<br>");

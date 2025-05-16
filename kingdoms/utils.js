@@ -176,8 +176,8 @@ export function prepareDefenceWaves(kingdom, areaPercentage = 100, shift) {
   });
 }
 
-export function removeSoldiers(kingdom, soldierStack) {
-  kingdom.barrack.soldiers = kingdom.barrack.soldiers.map((s) => {
+export function removeSoldiers(kingdom, soldierStack, shift) {
+  kingdom.barrack.soldiers[shift] = kingdom.barrack.soldiers[shift].map((s) => {
     const quantity = soldierStack.find(s.image.id);
     if (quantity) {
       s.quantity -= quantity;
