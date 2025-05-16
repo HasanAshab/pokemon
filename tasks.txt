@@ -1,5 +1,4 @@
 * Proposal
-block
 ko bug
 hospital
 immune
