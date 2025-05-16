@@ -385,7 +385,6 @@ class BaseBattle extends EventEmitter {
           if (move2.id === "block")
             d2 = d2 / 2
         }
-        
 
         if(move2.priority > move1.priority) {
             if (d1) {
