@@ -376,7 +376,12 @@ class BaseBattle extends EventEmitter {
         
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
-        
+        console.log(d1, d2)
+        if (move1.id === "block")
+            d2 = d2 / 2
+        if (move2.id === "block")
+            d1 = d1 / 2
+        console.log(d1, d2)
         if(move2.priority > move1.priority) {
             if (d1) {
                 this.pokemon1.state.decreaseHealth(d1)
@@ -390,11 +395,6 @@ class BaseBattle extends EventEmitter {
             }
         }
         else {
-            if (move1.id === "block")
-                d2 = d2 / 2
-            if (move2.id === "block")
-                d1 = d1 / 2
-
             if (d2) {
                 this.pokemon2.state.decreaseHealth(d2)
                 move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
@@ -497,7 +497,8 @@ class BattleState extends EventEmitter {
     static DEFAULT_MOVES = [
         "staythere",
         "dodge",
-        "megaevolve",
+        //"megaevolve",
+        "block",
     ]
 
     _manCount = 1

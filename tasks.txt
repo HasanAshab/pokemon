@@ -1,11 +1,12 @@
 * Proposal
+hospital
 block
 change protect
 substitute
 ko bug
 weapon drop
 extra types
-
+immune
 * Scenario
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 

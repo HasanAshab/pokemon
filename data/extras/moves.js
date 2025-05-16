@@ -136,7 +136,6 @@ export default {
       zMove: { effect: "clearnegativeboost" },
       contestType: "Cute"
     },
-
     laserfocus: {
       num: 673,
       accuracy: true,
@@ -216,7 +215,6 @@ export default {
         return true
       },
     },
-
     chakrablade: {
       num: 100000,
       accuracy: 100,
@@ -527,8 +525,7 @@ Shuriken: {
         contact: 1, 
         protect: 1,
         mirror: 1, 
-        metronome: 1 ,
-        weapon: 0
+        metronome: 1
       },
       critRatio: 1,
       secondary: null,
