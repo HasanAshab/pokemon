@@ -1,3 +1,4 @@
+
 import pokemons from "../../../../data/pokemons.js";
 import { calcSoldiersSalary, calcAcademyCost } from "../../../utils.js";
 
@@ -9,12 +10,18 @@ barrackTitle.textContent = name ? `${name}'s Barrack` : "Unknown Kingdom";
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].barrack)
-  kingdoms[name].barrack = { academyLevel: 1, soldiers: [] };
+  kingdoms[name].barrack = { 
+    academyLevel: 1, 
+    soldiers: {
+      day: [],
+      night: [],
+      emergency: []
+    }
+  };
 const kingdom = kingdoms[name];
 
 const academyLevelEl = document.getElementById("academyLevel");
 const academyCostEl = document.getElementById("academyCost");
-const soldiersContainer = document.getElementById("soldiersContainer");
 
 function save() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -29,7 +36,7 @@ function renderAcademy() {
 document.getElementById("incrAcademy").onclick = () => {
   kingdoms[name].barrack.academyLevel++;
   renderAcademy();
-  renderSoldiers();
+  renderAllSoldiers();
   save();
 };
 
@@ -37,12 +44,11 @@ document.getElementById("decrAcademy").onclick = () => {
   if (kingdoms[name].barrack.academyLevel > 1) {
     kingdoms[name].barrack.academyLevel--;
     renderAcademy();
-    renderSoldiers();
+    renderAllSoldiers();
     save();
   }
 };
 
-// Instead of <br>, wrap label+input in divs
 const createField = (labelText, inputEl) => {
   const wrapper = document.createElement("div");
   wrapper.className = "soldier-field";
@@ -56,10 +62,11 @@ const createField = (labelText, inputEl) => {
   return wrapper;
 };
 
-function renderSoldiers() {
-  soldiersContainer.innerHTML = "";
+function renderSoldierSection(type) {
+  const container = document.getElementById(`${type}SoldiersContainer`);
+  container.innerHTML = "";
 
-  kingdoms[name].barrack.soldiers.forEach((soldier, index) => {
+  kingdoms[name].barrack.soldiers[type].forEach((soldier, index) => {
     const div = document.createElement("div");
     div.className = "soldier-card";
 
@@ -87,7 +94,7 @@ function renderSoldiers() {
       const newLevel = parseInt(levelInput.value) || 1;
       soldier.image.xp = (newLevel - 1) * 100;
       save();
-      renderSoldiers();
+      renderSoldierSection(type);
     };
 
     const quantityInput = document.createElement("input");
@@ -96,7 +103,7 @@ function renderSoldiers() {
     quantityInput.onblur = () => {
       soldier.quantity = parseInt(quantityInput.value) || 0;
       save();
-      renderSoldiers();
+      renderSoldierSection(type);
     };
 
     const ivSalaryInput = document.createElement("input");
@@ -105,7 +112,7 @@ function renderSoldiers() {
     ivSalaryInput.onblur = () => {
       soldier.ivSalary = parseFloat(ivSalaryInput.value) || 0;
       save();
-      renderSoldiers();
+      renderSoldierSection(type);
     };
 
     const totalSalary = soldier.quantity * soldier.ivSalary;
@@ -117,9 +124,9 @@ function renderSoldiers() {
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
     delBtn.onclick = () => {
-      kingdoms[name].barrack.soldiers.splice(index, 1);
+      kingdoms[name].barrack.soldiers[type].splice(index, 1);
       save();
-      renderSoldiers();
+      renderSoldierSection(type);
     };
 
     div.appendChild(imageSelect);
@@ -129,26 +136,51 @@ function renderSoldiers() {
     div.appendChild(totalSalaryEl);
     div.appendChild(delBtn);
 
-    soldiersContainer.appendChild(div);
+    container.appendChild(div);
   });
 
-  // Render Grand Total Salary
   const grandTotalEl = document.createElement("div");
   grandTotalEl.className = "grand-total-salary";
-  grandTotalEl.textContent = `All Soldiers Total Salary: ${calcSoldiersSalary(kingdom).toLocaleString()} coins`;
+  grandTotalEl.textContent = `Total ${type.charAt(0).toUpperCase() + type.slice(1)} Soldiers Salary: ${calcSoldiersSalary(kingdom).toLocaleString()} coins`;
 
-  soldiersContainer.appendChild(grandTotalEl);
+  container.appendChild(grandTotalEl);
 }
 
-document.getElementById("addSoldierBtn").onclick = () => {
-  kingdoms[name].barrack.soldiers.push({
+function renderAllSoldiers() {
+  renderSoldierSection('day');
+  renderSoldierSection('night');
+  renderSoldierSection('emergency');
+}
+
+document.getElementById("addDaySoldierBtn").onclick = () => {
+  kingdoms[name].barrack.soldiers.day.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
     ivSalary: 0,
   });
   save();
-  renderSoldiers();
+  renderSoldierSection('day');
+};
+
+document.getElementById("addNightSoldierBtn").onclick = () => {
+  kingdoms[name].barrack.soldiers.night.push({
+    image: { id: "student", xp: 0 },
+    quantity: 0,
+    ivSalary: 0,
+  });
+  save();
+  renderSoldierSection('night');
+};
+
+document.getElementById("addEmergencySoldierBtn").onclick = () => {
+  kingdoms[name].barrack.soldiers.emergency.push({
+    image: { id: "student", xp: 0 },
+    quantity: 0,
+    ivSalary: 0,
+  });
+  save();
+  renderSoldierSection('emergency');
 };
 
 renderAcademy();
-renderSoldiers();
+renderAllSoldiers();
