@@ -376,12 +376,17 @@ class BaseBattle extends EventEmitter {
         
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
-        console.log(d1, d2)
-        if (move1.id === "block")
-            d2 = d2 / 2
-        if (move2.id === "block")
+        
+        
+        // TEMP: block move support
+        if (move1.priority === move2.priority) {
+          if (move1.id === "block")
             d1 = d1 / 2
-        console.log(d1, d2)
+          if (move2.id === "block")
+            d2 = d2 / 2
+        }
+        
+
         if(move2.priority > move1.priority) {
             if (d1) {
                 this.pokemon1.state.decreaseHealth(d1)

@@ -60,7 +60,7 @@ export default {
       num: 100014,
       accuracy: true,
       basePower: 0,
-      category: "Normal",
+      category: "Physical",
       name: "Block",
       pp: null,
       priority: 0,
