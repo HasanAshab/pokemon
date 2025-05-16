@@ -1,9 +1,9 @@
 import { BATTLE_SYSTEMS } from "./utils/battle.js";
 import { loadNaturesDataList, loadMovesDatalist ,loadPokemonsDatalist } from "./utils/dom.js";
 import { Pokemon, Move } from "./utils/models.js"
-import { capitalizeFirstLetter, getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
+import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 import { Damage } from "./utils/damage.js"
-import natures from "../../../data/natures.js"
+
 
 var name = getParam("name")
 var isMegaEvolved = false
@@ -85,19 +85,14 @@ globalThis.showPokemonChooseForm = function(){
   const pokemonChooseForm = document.querySelector(".pokemon-choose-form")
   pokemonChooseForm.parentElement.classList.add('active')
   loadPokemonsDatalist("pokemon-data-list")
-  
 }
+
 globalThis.changePokemon =  function (){
   const pokemonInput = document.querySelector(".pokemon-choose-form > #pokemon-inp")
-  const pokemonsMeta =  getPokemonsMeta()
- const temp = pokemonsMeta[name]
- delete pokemonsMeta[name]
- pokemonsMeta[pokemonInput.value] = temp
-   localStorage.setItem("pokemons-meta",JSON.stringify(pokemonsMeta))
-  name = pokemonInput.value
-    const meta = getPokemonsMeta(name)
+  const meta = getPokemonsMeta(name)
+  meta.id = pokemonInput.value
   globalThis.pokemon = new Pokemon(meta.id, meta)
-
+  setPokemonMeta(name,meta)
   loadAll()
  closePokemonChooseForm()
 }
@@ -201,8 +196,7 @@ globalThis.forgetMove = function(id) {
 
 function loadName() {
     const display = document.getElementById("pokemon-name")
-    const displayName = capitalizeFirstLetter(name)
-    display.innerText = displayName
+    display.innerText = `${name} (${pokemon.name})`  
     display.onclick = () => {
       window.location = '/data.html?name=' + name
     }
