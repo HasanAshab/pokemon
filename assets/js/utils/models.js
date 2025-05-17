@@ -102,7 +102,7 @@ export class Pokemon extends PSPokemon {
     }
 
     get types() {
-        return this._pokemon.types
+        return [ ... new Set([ ...this._pokemon.types, ...(this.meta.types ?? [])]) ]
     }
 
     get level() {

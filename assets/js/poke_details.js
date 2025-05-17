@@ -7,7 +7,7 @@ import { Damage } from "./utils/damage.js"
 
 var name = getParam("name")
 var isMegaEvolved = false
-const updatablePokemonMetaList = ["items","retreat","xp","nature","wins-count","loses-count"]
+const updatablePokemonMetaList = ["items", "types", "retreat","xp","nature","wins-count","loses-count"]
 
 
 globalThis.upgradeMove = function(id) {
@@ -54,10 +54,10 @@ function setCurrentHealth(hp) {
 }
 
 function setStat(slug, value) {
-  
   const stat = document.querySelector(`.stat.${slug}`)
    if (updatablePokemonMetaList.includes(slug)){
-     if (slug === 'items') {
+    const commaStrs = ["items", "types"]
+     if (commaStrs.includes(slug)) {
        value = value.split(', ').map(item => item.trim()).filter(Boolean)
      }
      const meta = getPokemonsMeta(name)
@@ -77,7 +77,7 @@ function setStatToken(slug,value,shouldSetMeta = true){
      meta.token_used[slug] = parseInt(value)
      setPokemonMeta(name,meta)
     }
-      stat.setAttribute("data-token-used",value)
+      stat.setAttribute("data-token-used", value)
   }
 }
 
@@ -124,16 +124,16 @@ globalThis.statClickHandler = function( {
   
   statUpdateForm.parentNode.classList.add("active")
   statNameElm.textContent = currentTarget.querySelector("strong").textContent
-   
+
   if (updatablePokemonMetaList.includes(statSlug)){
     if (statSlug === "nature")
    statValueInp.setAttribute('list',"natures-data-list")
-  } else{
+  } else {
    attributeName = "data-token-used"
    document.getElementById("remaining-token").textContent = pokemon.tokensRemaining()
    }
    
-  statValueInp.value = currentTarget.getAttribute(attributeName)
+  statValueInp.value = currentTarget.getAttribute(attributeName) || pokemon.types.join(", ")
 
   saveBtn.onclick = ()=> {
    if (attributeName === "data-value")
@@ -212,6 +212,7 @@ function loadStats() {
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
     setStat("abilities", pokemon.abilities.names().join(', '))
     setStat("items", pokemon.items.names().join(', '))
+    setStat("types", pokemon.types.join(', '))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
     

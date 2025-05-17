@@ -1,6 +1,6 @@
 * Proposal
-weapon drop
 extra types
+weapon drop
 immune
 ko bug
 
