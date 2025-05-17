@@ -1,9 +1,9 @@
 * Proposal
-ko bug
 hospital
-immune
 weapon drop
 extra types
+immune
+ko bug
 change protect
 substitute
 
