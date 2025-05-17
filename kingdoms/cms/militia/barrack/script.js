@@ -175,7 +175,7 @@ function renderAllSoldiers() {
   totalSalaryEl.className = "total-salary-container";
   totalSalaryEl.textContent = `Total Army Salary: ${totalSalary.toLocaleString()}$`;
 
-  document.querySelector("main").appendChild(totalSalaryEl);
+  document.querySelector("body").appendChild(totalSalaryEl);
   renderSoldierSection("day");
   renderSoldierSection("night");
   renderSoldierSection("emergency");
