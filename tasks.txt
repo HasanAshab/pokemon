@@ -1,11 +1,10 @@
 * Proposal
-hospital
 weapon drop
 extra types
 immune
 ko bug
+
 change protect
-substitute
 
 
 * Scenario
