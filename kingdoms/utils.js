@@ -203,3 +203,18 @@ export function removeSoldiers(kingdom, soldierStack, shift) {
     return s;
   });
 }
+
+
+export function tryHealSoldiers(kingdom, soldierStack, shift) {
+  let hospitalCap = getHospitalCapacity(kingdom);
+
+  kingdom.barrack.soldiers[shift] = kingdom.barrack.soldiers[shift].map((s) => {
+    const quantity = soldierStack.find(s.image.id);
+    hospitalCap -= quantity;
+    if (hospitalCap < 0) {
+      s.quantity -= Math.abs(hospitalCap);
+      hospitalCap = 0;
+    }
+    return s;
+  });
+}
