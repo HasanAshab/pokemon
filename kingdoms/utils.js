@@ -94,6 +94,18 @@ export function calcAcademyCost(kingdom) {
   return upgradePrice(30_000, level, 3);
 }
 
+export function calcHospitalCost(kingdom) {
+  const level = kingdom.barrack.hospitalLevel;
+  if (level === 0) return 0;
+  return upgradePrice(20_000, level, 2.5);
+}
+
+export function getHospitalCapacity(kingdom) {
+  const level = kingdom.barrack.hospitalLevel;
+  if (level === 0) return 0;
+  return Math.round(100 * Math.pow(1.5, level - 1));
+}
+
 export function calcBuildProduction(kingdom) {
   return kingdom.buildings.reduce((prod, build) => {
     return modObj(sumObj(prod, build.produces), build.quantity);
@@ -120,6 +132,7 @@ export function calcNetProd(kingdom, localize = false) {
     coins:
       calcSoldiersSalary(kingdom) +
       calcAcademyCost(kingdom) +
+      calcHospitalCost(kingdom) +
       calcCommandersSalary(kingdom),
   };
   const buildProd = calcBuildNetProd(kingdom);
@@ -139,7 +152,12 @@ export function prepareCommander(kingdom, commanderName) {
   return commander;
 }
 
-export function prepareSoldiers(kingdom, soldiers, areaPercentage = 100, shift) {
+export function prepareSoldiers(
+  kingdom,
+  soldiers,
+  areaPercentage = 100,
+  shift,
+) {
   const data = soldiers.map((soldier) => {
     const { image, quantity: total } = kingdom.barrack.soldiers[shift].find(
       (s) => s.image.id === soldier.image,

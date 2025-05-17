@@ -1,5 +1,9 @@
 import pokemons from "../../../../data/pokemons.js";
-import { calcAcademyCost } from "../../../utils.js";
+import {
+  calcAcademyCost,
+  calcHospitalCost,
+  getHospitalCapacity,
+} from "../../../utils.js";
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -11,7 +15,7 @@ if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].barrack)
   kingdoms[name].barrack = {
     academyLevel: 1,
-    hospitalLevel: 1,
+    hospitalLevel: 0,
     soldiers: {
       day: [],
       night: [],
@@ -211,7 +215,8 @@ function renderHospital() {
   const level = kingdoms[name].barrack.hospitalLevel;
   hospitalLevelEl.textContent = level;
   hospitalCostEl.textContent = calcHospitalCost(kingdom).toLocaleString();
-  hospitalCapacityEl.textContent = getHospitalCapacity(kingdom).toLocaleString();
+  hospitalCapacityEl.textContent =
+    getHospitalCapacity(kingdom).toLocaleString();
 }
 
 document.getElementById("incrHospital").onclick = () => {
@@ -221,11 +226,9 @@ document.getElementById("incrHospital").onclick = () => {
 };
 
 document.getElementById("decrHospital").onclick = () => {
-  if (kingdoms[name].barrack.hospitalLevel > 1) {
-    kingdoms[name].barrack.hospitalLevel--;
-    renderHospital();
-    save();
-  }
+  kingdoms[name].barrack.hospitalLevel--;
+  renderHospital();
+  save();
 };
 
 renderAcademy();
