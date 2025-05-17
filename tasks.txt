@@ -1,5 +1,4 @@
 * Proposal
-ko bug
 
 change protect
 

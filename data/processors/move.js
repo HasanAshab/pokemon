@@ -284,13 +284,20 @@ function modifyAccuracy(move) {
 function addKoHandler(move) {
   const cb = move.basePowerCallback
   move.basePowerCallback = function(pokemon, target) {
-    const bp = cb ? cb(...arguments) : move.basePower 
-    const koChance = 0.5 + (pokemon.level - target.level) / (2 * (pokemon.level + target.level))
-    const finalChance = koChance * (move.koRatio ?? 0)
-    return Math.random() < finalChance
-      ? Infinity
-      : bp
-  }
+    const bp = cb ? cb(...arguments) : move.basePower;
+
+    const levelDiff = pokemon.level - target.level;
+
+    // Sigmoid centered at 0, returns values between ~0.0067 and ~0.993
+    const baseSigmoid = 1 / (1 + Math.exp(-0.4 * levelDiff));
+
+    // Map sigmoid output (~0.0067–0.993) to range ~0.005–1
+    const koChance = baseSigmoid * 0.95 + 0.005;
+
+    const finalChance = Math.min(1, koChance * (move.koRatio ?? 0)) - 0.05;
+    
+    return Math.random() < finalChance ? Infinity : bp;
+  };
 }
 
 export default processor([
