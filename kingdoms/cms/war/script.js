@@ -1,5 +1,5 @@
-import { SoldierStack, WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { sumMap, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, removeSoldiers } from "../../utils.js";
+import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
+import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers } from "../../utils.js";
 
 var i = 0;
 var netWin = 0;
@@ -301,9 +301,8 @@ startWarBtn.onclick = () => {
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
 
-    removeSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
-    removeSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
-    
+    tryHealSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
+    tryHealSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
   
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {      
