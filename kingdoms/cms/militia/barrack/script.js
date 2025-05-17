@@ -11,6 +11,7 @@ if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].barrack)
   kingdoms[name].barrack = {
     academyLevel: 1,
+    hospitalLevel: 1,
     soldiers: {
       day: [],
       night: [],
@@ -21,6 +22,9 @@ const kingdom = kingdoms[name];
 
 const academyLevelEl = document.getElementById("academyLevel");
 const academyCostEl = document.getElementById("academyCost");
+const hospitalLevelEl = document.getElementById("hospitalLevel");
+const hospitalCostEl = document.getElementById("hospitalCost");
+const hospitalCapacityEl = document.getElementById("hospitalCapacity");
 
 function save() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -203,5 +207,27 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
   renderSoldierSection("emergency");
 };
 
+function renderHospital() {
+  const level = kingdoms[name].barrack.hospitalLevel;
+  hospitalLevelEl.textContent = level;
+  hospitalCostEl.textContent = calcHospitalCost(kingdom).toLocaleString();
+  hospitalCapacityEl.textContent = getHospitalCapacity(kingdom).toLocaleString();
+}
+
+document.getElementById("incrHospital").onclick = () => {
+  kingdoms[name].barrack.hospitalLevel++;
+  renderHospital();
+  save();
+};
+
+document.getElementById("decrHospital").onclick = () => {
+  if (kingdoms[name].barrack.hospitalLevel > 1) {
+    kingdoms[name].barrack.hospitalLevel--;
+    renderHospital();
+    save();
+  }
+};
+
 renderAcademy();
+renderHospital();
 renderAllSoldiers();
