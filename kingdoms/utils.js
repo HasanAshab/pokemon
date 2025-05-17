@@ -204,6 +204,10 @@ export function removeSoldiers(kingdom, soldierStack, shift) {
   });
 }
 
+export function reducePopulation(kingdom, quantity) {
+  kingdom.density = kingdom.density - (quantity / kingdom.landArea)
+}
+
 
 export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
   let hospitalCap = getHospitalCapacity(kingdom);
@@ -213,7 +217,7 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
     hospitalCap -= quantity;
     if (hospitalCap < 0) {
       s.quantity -= Math.abs(hospitalCap);
-      kingdom.density = kingdom.density - (Math.abs(hospitalCap) / kingdom.landArea);
+      reducePopulation(kingdom, Math.abs(hospitalCap));
       hospitalCap = 0;
     }
     return s;
