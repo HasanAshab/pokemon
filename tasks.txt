@@ -1,5 +1,4 @@
 * Proposal
-weapon drop
 ko bug
 
 change protect

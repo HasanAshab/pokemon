@@ -627,7 +627,7 @@ function loadMoves(playerTag) {
          ${move.description()}
               </small>
               <br/>
-           <button class="remove-btn" onclick="removeMove('${playerTag}', '${move.name}')">Remove</button>   
+           <button class="remove-btn" onclick="removeMove('${playerTag}', '${move.id}')">Remove</button>   
       </div>
     </div>
     `

@@ -629,7 +629,7 @@ class BattleState extends EventEmitter {
     
     
     removeMove(id) {
-      const move = this.moves.find(m => m.id === id)
+      const move = this.moves.find(m => m.id === id)      
       if (!move) return
       this.emit("move-removed", move)
       this.moves = this.moves.filter(m => m.id !== id)
