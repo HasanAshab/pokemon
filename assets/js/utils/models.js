@@ -122,9 +122,12 @@ export class Pokemon extends PSPokemon {
     }
 
     effectiveness(type) {
-      if (type instanceof Move && type.damage)
-        return 1
-      else if (this.types.some(tType => typeChart[type]?.[tType] === 0.25))
+      if (type instanceof Move) {
+        if (type.damage) return 1
+        type = type.type
+      }
+      
+      if (this.types.some(tType => typeChart[type]?.[tType] === 0.25))
         return 0
       return 1
       

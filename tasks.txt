@@ -1,7 +1,5 @@
 * Proposal
-extra types
 weapon drop
-immune
 ko bug
 
 change protect
