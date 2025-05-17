@@ -133,6 +133,13 @@ function addFieldMove(playerTag, moveId, per) {
   loadPokemonData(playerTag)
 }
 
+globalThis.removeMove = function (playerTag, moveId) {
+  const pokemon = pokemonMap[playerTag]
+  pokemon.state.removeMove(moveId)
+  loadPokemonData(playerTag)
+}
+
+
 function loadPokemonData(playerTag) {
     const pokemon = pokemonMap[playerTag]
     const hp = pokemon.state.stats.get("hp")
