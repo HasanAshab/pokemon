@@ -650,7 +650,7 @@ class BattleState extends EventEmitter {
     decreaseHealth(amount, isInternal = false) {
         if (!isInternal) {
             amount = this.armor.consume(amount)
-        }
+        }        
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 

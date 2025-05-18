@@ -125,11 +125,10 @@ export default {
       pp: 10,
       priority: 0,
       flags: { snatch: 1, nonsky: 1, metronome: 1 },
-      //volatileStatus: "substitute",
       stallingMove: true,
-      // onHit(target) {
-//         this.directDamage(target.maxhp / 4)
-//       },
+      onBeforeMove(target) {
+        target.state.decreaseHealth(target.maxhp / 4, true)
+      },
       secondary: null,
       target: "self",
       type: "Normal",
