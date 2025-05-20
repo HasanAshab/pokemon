@@ -179,7 +179,6 @@ globalThis.healAllBtnHandler = function () {
 function loadAllPokemons() {
   const pokemonList = document.querySelector(".pokemon-list");
   const pokemons_meta = getPokemonsMeta();
-  console.log(pokemons_meta);
   
   pokemonList.innerHTML = "";
   for (const pokemon in pokemons_meta) {
