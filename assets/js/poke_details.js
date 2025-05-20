@@ -58,7 +58,8 @@ function setStat(slug, value) {
    if (updatablePokemonMetaList.includes(slug)){
     const commaStrs = ["items", "types"]
      if (commaStrs.includes(slug)) {
-       value = value.split(', ').map(item => item.trim()).filter(Boolean)
+       value = value.split(',').map(item => item.trim()).filter(Boolean)
+       value = [ ... new Set(value) ]       
      }
      const meta = getPokemonsMeta(name)
      meta[slug] = value
