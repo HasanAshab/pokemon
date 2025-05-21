@@ -70,7 +70,7 @@ export class Damage {
 
         bp *= eventModifier * gradeModifier
         this.move._bp = bp
-        console.log(this.move.id, ' BP: ', bp)
+        // console.log(this.move.id, ' BP: ', bp)
 
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
         const isSpecial = this.move.category === "Special";

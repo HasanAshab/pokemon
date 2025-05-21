@@ -586,7 +586,7 @@ export default {
       }
     },
     onModifySpAPriority: 5,
-    onModifySpA(atk, attacker, defender, move) {
+    onModifySpA(atk, attacker, defender, move) {      
       if (move.type === "Fire" && attacker.hp <= attacker.maxhp / 3) {
         this.debug("Blaze boost")
         return this.chainModify(1.5)

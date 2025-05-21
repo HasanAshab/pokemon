@@ -374,15 +374,15 @@ class Ability {
 
     setDamageModifier(move) {
         const handlers = {
-          "Physical": this._ability.onModifyAtk,
-          "Special": this._ability.onModifySpa
+          "Physical": "onModifyAtk",
+          "Special": "onModifySpA"
         }
         const ctx = {
-            chainModify(modifier) {
+            chainModify: (modifier) => {              
                 this.pokemon.state.damage.chainModify(modifier)
             },
             debug: console.log
-        }
+        }        
         const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
         this._ability[handlers[move.category]]?.call(ctx, null, this.pokemon, opponent, move)
     }
