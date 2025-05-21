@@ -371,8 +371,26 @@ class Ability {
         }
         return false
     }
-    
+
+    setDamageModifier(move) {
+        const handlers = {
+          "Physical": this._ability.onModifyAtk,
+          "Special": this._ability.onModifySpa
+        }
+        const ctx = {
+            chainModify(modifier) {
+                this.pokemon.state.damage.chainModify(modifier)
+            },
+            debug: console.log
+        }
+        const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
+        this._ability[handlers[move.category]]?.call(ctx, null, this.pokemon, opponent, move)
+    }
+
     _subscribeListeners() {
+        if (!this.pokemon.state)
+            throw new Error("Pokemon state is null")
+
         this.pokemon.state.on('start', () => {
             try {
                 this._ability.onStart?.(this.manager.pokemon)
@@ -382,28 +400,35 @@ class Ability {
             }
         })
 
-        this.pokemon.state.on('contacted', contactor => {
+        this.pokemon.state.on('scene', move => {
             try {
-                if ('onDamagingHit' in this._ability) {
-                    const ctx = {
-                        checkMoveMakesContact: () => true,
-                        randomChance(numerator, denominator) {
-                            return Math.floor(Math.random() * denominator) < numerator;
-                        },
-                    }
-                    this._ability.onDamagingHit.call(
-                        ctx,
-                        null,
-                        contactor,
-                        this.pokemon,
-                        null
-                    )
-                }
+              this.setDamageModifier(move)
             }
             catch (e) {
               console.log(e)
             }
         })
+
+        this.pokemon.state.on('contacted', contactor => {
+            try {
+                const ctx = {
+                    checkMoveMakesContact: () => true,
+                    randomChance(numerator, denominator) {
+                        return Math.floor(Math.random() * denominator) < numerator;
+                    },
+                }
+                this._ability.onDamagingHit?.call(
+                    ctx,
+                    null,
+                    contactor,
+                    this.pokemon,
+                    null
+                )
+            }
+            catch (e) {
+              console.log(e)
+            }
+        })   
     }
 }
 

@@ -15,10 +15,8 @@ export default {
         delete boost.accuracy
       }
     },
-
     onTryAddVolatile(status, pokemon) {
       if (status.id === "confusion") return null
     }
-  },
-
+  }
 }
