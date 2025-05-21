@@ -373,11 +373,15 @@ class Ability {
     }
     
     _subscribeListeners() {
-        this.pokemon.state.once('turn', () => {
-          console.log("on start");
-          
+        this.pokemon.state.on('start', () => {
+            try {
+                this._ability.onStart?.(this.manager.pokemon)
+            }
+            catch (e) {
+              console.log(e)
+            }
         })
-        
+
         this.pokemon.state.on('contacted', contactor => {
             try {
                 if ('onDamagingHit' in this._ability) {

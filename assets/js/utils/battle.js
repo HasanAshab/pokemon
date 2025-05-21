@@ -36,6 +36,7 @@ class BaseBattle extends EventEmitter {
             if (!p.state) {
                 p.state = new BattleState(this, p)
                 p.abilities.activate()
+                p.state.emit("start")
             }
             this._states.set(p, p.state)
         })
@@ -43,9 +44,9 @@ class BaseBattle extends EventEmitter {
             this._all.map(p => [p, new BattlePrompt()])
         );
         
-        this.on("scene", () => {
-            this._history.push(this.toJSON())
-        })
+        // this.on("scene", () => {
+        //     this._history.push(this.toJSON())
+        // })
 
         
         this.on("scene", () => {

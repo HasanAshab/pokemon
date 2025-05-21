@@ -2,6 +2,7 @@ export class EventEmitter {
     constructor() {
         this._events = {};
         this._debouncedEmitters = {};
+        this._onceEvents = {};
     }
 
     on(events, listener) {
@@ -17,12 +18,30 @@ export class EventEmitter {
         });
     }
 
+    once(events, listener) {
+        if (!Array.isArray(events)) {
+            events = [events]; // Convert single event to an array
+        }
+
+        events.forEach(event => {
+            if (!this._onceEvents[event]) {
+                this._onceEvents[event] = [];
+            }
+            this._onceEvents[event].push(listener);
+        });
+    }
+
     emit(event, ...args) {
         if (this._events[event]) {
             const ctx = {
                 _event: event,
             }
             this._events[event].forEach(listener => listener.apply(ctx, args));
+        }
+
+        if (this._onceEvents[event]) {
+            this._onceEvents[event].forEach(listener => listener.apply(this, args));
+            delete this._onceEvents[event];
         }
     }
 
@@ -45,6 +64,9 @@ export class EventEmitter {
         events.forEach(event => {
             if (this._events[event]) {
                 this._events[event] = this._events[event].filter(fn => fn !== listener);
+            }
+            if (this._onceEvents[event]) {
+                this._onceEvents[event] = this._onceEvents[event].filter(fn => fn !== listener);
             }
         });
     }
