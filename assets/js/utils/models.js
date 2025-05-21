@@ -358,7 +358,6 @@ class Ability {
         this.manager = manager
         this.pokemon = manager.pokemon
         this._ability = abilities[this.id]
-        this._subscribeListeners()
     }
     
     get id() {
@@ -374,13 +373,17 @@ class Ability {
     }
     
     _subscribeListeners() {
-        this.pokemon.state?.on('contacted', contactor => {
+        this.pokemon.state.once('turn', () => {
+          console.log("on start");
+          
+        })
+        
+        this.pokemon.state.on('contacted', contactor => {
             try {
                 if ('onDamagingHit' in this._ability) {
                     const ctx = {
                         checkMoveMakesContact: () => true,
                         randomChance(numerator, denominator) {
-                            return true
                             return Math.floor(Math.random() * denominator) < numerator;
                         },
                     }
@@ -403,9 +406,7 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };
-        console.log(this._rawAbilities);
-        
+        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };        
         this._setAbilities(this._rawAbilities)
     }
 
@@ -418,11 +419,18 @@ class AbilityManager {
     }
     
     isEnabled() {
+        return true // its always enabled
         return this.pokemon.level >= 36
     }
 
     isImmune(effect) {
         return this._abilities.some(ability => ability.isImmune(effect))
+    }
+
+    activate() {
+      console.log("activated");
+      
+        this._abilities.forEach(ability => ability._subscribeListeners())
     }
     
     _setAbilities(abilities) {

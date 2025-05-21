@@ -35,6 +35,7 @@ class BaseBattle extends EventEmitter {
         this._all.forEach(p => {
             if (!p.state) {
                 p.state = new BattleState(this, p)
+                p.abilities.activate()
             }
             this._states.set(p, p.state)
         })
