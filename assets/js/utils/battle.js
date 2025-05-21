@@ -783,11 +783,11 @@ class StatsManager {
     apply(on, move) {
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return
-
+        // this.state.pokemon.abilities.onTryBoost()
         if(on === "self") {
             const attacker = this.state.battle.opponentOf(this.state.pokemon);
             for (const [stat, change] of Object.entries(move.statChanges.self)) {
-                attacker.state.stats.applyStatChange(stat, change)
+                attacker.state.stats.applyStatChange(stat, change, true)
             }
         }
         else if (on === "target") {
@@ -799,6 +799,7 @@ class StatsManager {
 
     applyStatChange(stat, stages) {
         if (this._freezed) return null
+  
         if (!this._statChanges[stat]) {
             this._statChanges[stat] = 0;
         }
