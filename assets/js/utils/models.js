@@ -98,7 +98,7 @@ export class Pokemon extends PSPokemon {
     }
 
     get name() {
-        return this._pokemon.name
+        return this.meta.name ?? this._pokemon.name
     }
 
     get types() {
@@ -416,12 +416,16 @@ class Ability {
                     randomChance(numerator, denominator) {
                         return Math.floor(Math.random() * denominator) < numerator;
                     },
+                    damage: (amount) => {
+                        contactor.state.decreaseHealth(amount)
+                        console.log(`${contactor.name}: ${this.pokemon.name}'s ability caused ${amount} damage`)
+                    }
                 }
                 this._ability.onDamagingHit?.call(
                     ctx,
                     null,
-                    contactor,
                     this.pokemon,
+                    contactor,
                     null
                 )
             }
