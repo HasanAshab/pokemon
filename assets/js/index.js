@@ -134,6 +134,9 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
       "wins-count": 0,
       "loses-count": 0,
       moves: [],
+      types: [],
+      items: [],
+      abilities: [],
     };
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta));
     addPokemonForm.parentNode.classList.remove("active");

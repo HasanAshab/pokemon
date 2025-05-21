@@ -7,7 +7,7 @@ import { Damage } from "./utils/damage.js"
 
 var name = getParam("name")
 var isMegaEvolved = false
-const updatablePokemonMetaList = ["items", "types", "retreat","xp","nature","wins-count","loses-count"]
+const updatablePokemonMetaList = ["items", "types", "abilities", "retreat","xp","nature","wins-count","loses-count"]
 
 
 globalThis.upgradeMove = function(id) {
@@ -56,10 +56,10 @@ function setCurrentHealth(hp) {
 function setStat(slug, value) {
   const stat = document.querySelector(`.stat.${slug}`)
    if (updatablePokemonMetaList.includes(slug)){
-    const commaStrs = ["items", "types"]
+    const commaStrs = ["items", "types", "abilities"]
      if (commaStrs.includes(slug)) {
        value = value.split(',').map(item => item.trim()).filter(Boolean)
-       value = [ ... new Set(value) ]       
+       value = [ ... new Set(value) ]        
      }
      const meta = getPokemonsMeta(name)
      meta[slug] = value
@@ -133,8 +133,8 @@ globalThis.statClickHandler = function( {
    attributeName = "data-token-used"
    document.getElementById("remaining-token").textContent = pokemon.tokensRemaining()
    }
-   
-  statValueInp.value = currentTarget.getAttribute(attributeName) || pokemon.types.join(", ")
+
+  statValueInp.value = currentTarget.getAttribute(attributeName) || pokemon.types.join(",")
 
   saveBtn.onclick = ()=> {
    if (attributeName === "data-value")
@@ -213,7 +213,8 @@ function loadStats() {
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
     setStat("abilities", pokemon.abilities.names().join(', '))
     setStat("items", pokemon.items.names().join(', '))
-    setStat("types", pokemon.types.join(', '))
+    setStat("types", pokemon.types.join(','))
+    setStat("abilities", pokemon.abilities.names().join(','))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
     
@@ -235,7 +236,7 @@ function loadMoves() {
         const move = new Move(moveMeta.id)
         move._meta = moveMeta
         const damage = new Damage(pokemon, move)
-   movesContainer.innerHTML +=   `  
+   movesContainer.innerHTML +=   `
    <div class="single-card-wrapper">
       <div class="card" data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" data-makes-contact="${!!move.flags.contact}">
           <div class="card-header" style="background-color:var(--${move.type || "Normal"}-type-color)">

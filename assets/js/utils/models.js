@@ -403,7 +403,10 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._setAbilities(pokemon._pokemon.abilities)
+        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };
+        console.log(this._rawAbilities);
+        
+        this._setAbilities(this._rawAbilities)
     }
 
     names() {
