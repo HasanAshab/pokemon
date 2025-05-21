@@ -1,6 +1,6 @@
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, getUserPokemonsMeta, startBattle, startUserBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
-
+import moves from "../../data/moves.js"
 
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
@@ -59,6 +59,12 @@ function getEnemyForm(index) {
     <label>Token Used</label>
     <textarea class="token-inp" onblur="showStats(event)"></textarea>
     <br>
+    <label>Types (comma-separated)</label>
+    <input type="text" class="types-inp">
+    <br>
+    <label>Abilities (comma-separated)</label>
+    <input type="text" class="abilities-inp">
+    <br>
     <label>Items (comma-separated)</label>
     <input type="text" class="items-inp">
     <br>
@@ -104,8 +110,8 @@ function removeMove(event) {
 }
 
 function showMoveDetails(event) {
-  const input = event.target;
-  console.log(`Move details for: ${input.value}`);
+  const details = moves[event.target.value];
+  document.getElementById("details").textContent = JSON.stringify(details, null, 2);
 }
 
 
@@ -121,7 +127,11 @@ function makeEnemiesMeta() {
     const nature = form.querySelector('.nature-inp')?.value || '';
     const megaSuffix = form.querySelector('.mega-suffix-select')?.value || '';
     const tokenUsed = form.querySelector('.token-inp')?.value || '';
+    const typesRaw = form.querySelector('.types-inp')?.value || '';
+    const abilitiesRaw = form.querySelector('.abilities-inp')?.value || '';
     const itemsRaw = form.querySelector('.items-inp')?.value || '';
+    const types = typesRaw.split(',').map(item => item.trim()).filter(item => item);
+    const abilities = abilitiesRaw.split(',').map(item => item.trim()).filter(item => item);
     const items = itemsRaw.split(',').map(item => item.trim()).filter(item => item);
 
     const moves = [];
@@ -141,6 +151,8 @@ function makeEnemiesMeta() {
       xp: xp,
       nature: nature,
       retreat: retreat,
+      types,
+      abilities,
       items,
       moves: moves,
       mega: {

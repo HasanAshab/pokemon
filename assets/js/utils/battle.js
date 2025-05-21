@@ -505,14 +505,11 @@ class BattleState extends EventEmitter {
         "dodge",
         //"megaevolve",
         "block",
+        "punch",
+        "kick"
     ]
 
     _manCount = 1
-    moves = [
-        new Move("staythere"),
-        new Move("megaevolve"),
-        new Move("dodge")
-    ]
 
     constructor(battle, pokemon) {
         super()
