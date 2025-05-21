@@ -1,6 +1,6 @@
 * Proposal
-change protect
-
+sharingan
+mounshingan
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
