@@ -241,7 +241,50 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-
+startBattle([
+  {
+    "id": "student",
+    "xp": 700,
+    "nature": "brave",
+    "retreat": 3,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "harden",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "student",
+    "xp": 400,
+    "nature": "hasty",
+    "retreat": 3.6,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "mudslap",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
 //kadebra
 /*
 startBattle(null,[
