@@ -408,6 +408,15 @@ class Ability {
               console.log(e)
             }
         })
+        
+        this.pokemon.state.on('turn', battle => {
+            try {
+              this._ability.onTurn?.(this.manager.pokemon, battle)
+            }
+            catch (e) {
+              console.log(e)
+            }
+        })
 
         this.pokemon.state.on('contacted', contactor => {
             try {
@@ -439,7 +448,7 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };        
+        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };                
         this._setAbilities(this._rawAbilities)
     }
 
@@ -459,10 +468,12 @@ class AbilityManager {
     isImmune(effect) {
         return this._abilities.some(ability => ability.isImmune(effect))
     }
+    
+    onTryBoost() {
+        return this._abilities.forEach(ability => ability._ability.onTryBoost?.(...arguments))
+    }
 
-    activate() {
-      console.log("activated");
-      
+    activate() {      
         this._abilities.forEach(ability => ability._subscribeListeners())
     }
     

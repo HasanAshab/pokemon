@@ -51,7 +51,7 @@ export default {
       retreat: 1,
       onBeforeMove(attacker, defender, move) {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
-            return canDodge(defender, attacker, move)
+            return attacker.state.flags.autoDodge || canDodge(defender, attacker, move)
         })
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },

@@ -1,5 +1,5 @@
 export default {
-  sharinganI: {
+  sharingan1: {
     onStart(pokemon) {
       pokemon.state.stats._statChanges.accuracy = 2
     },
@@ -8,7 +8,32 @@ export default {
     }
   },
 
-  sharinganII: {
+  sharingan2: {
+    onTryBoost(boost, target, source, effect) {
+      if (source && target === source) return
+      if (boost.accuracy && boost.accuracy < 0) {
+        delete boost.accuracy
+      }
+    },
+    onTryAddVolatile(status, pokemon) {
+      if (status.id === "confusion") return null
+    }
+  },
+
+  sharingan3: {
+    onTurn(pokemon) {
+      const AUTO_DODGE_CD = 3
+
+      if (pokemon.state._data.autoDodgeCountDown === undefined) {
+        pokemon.state._data.autoDodgeCountDown = AUTO_DODGE_CD
+      }
+
+      pokemon.state._data.autoDodgeCountDown--
+      if (pokemon.state._data.autoDodgeCountDown > 0) {
+        pokemon.state._data.autoDodgeCountDown = AUTO_DODGE_CD
+        pokemon.state.flags.autoDodge = 1
+      }
+    },
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
       if (boost.accuracy && boost.accuracy < 0) {
