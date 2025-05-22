@@ -26,7 +26,7 @@ export default {
       if (pokemon.state._data.autoDodgeCountDown > 0)
       pokemon.state._data.autoDodgeCountDown = 3
       pokemon.state.flags.autoDodge = 1
-    }
+    },
 
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
