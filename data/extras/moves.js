@@ -754,5 +754,4 @@ Shuriken: {
       type: "Dark",
       contestType: "Tough",
     },
-
 }
