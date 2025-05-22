@@ -53,6 +53,11 @@ export default {
         this._dodgeMatrix = Array.from({ length: move.hits }, (_, i) => {
             return attacker.state.flags.autoDodge || canDodge(defender, attacker, move)
         })
+
+        if (attacker.state.flags.autoDodge) {
+          attacker.state.flags.autoDodge = 0
+        }
+        
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },

@@ -509,7 +509,9 @@ class BattleState extends EventEmitter {
         "kick"
     ]
 
+    flags = {}
     _manCount = 1
+    _data = {}
 
     constructor(battle, pokemon) {
         super()
