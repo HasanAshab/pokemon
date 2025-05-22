@@ -19,7 +19,6 @@ export default {
       if (status.id === "confusion") return null
     }
   },
-
   sharingan3: {
     onTurn(pokemon) {
       if (pokemon.state.flags.autoDodge) return
@@ -43,6 +42,17 @@ export default {
     },
     onTryAddVolatile(status, pokemon) {
       if (status.id === "confusion") return null
+    }
+  },
+
+  shadow: {
+    canUseMove(move) {      
+      return move.category !== "Physical"
+    },
+    onModifyOpponentAtk(_, target, source, move) {
+      console.log(`${source.name}: ability immune to ${move.name}`);
+      
+      return this.chainModify(0)
     }
   }
 }

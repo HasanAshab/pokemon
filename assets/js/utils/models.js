@@ -372,19 +372,24 @@ class Ability {
         return false
     }
 
-    setDamageModifier(move) {
+    setDamageModifiers(move, opponentMove) {
         const handlers = {
           "Physical": "onModifyAtk",
           "Special": "onModifySpA"
         }
-        const ctx = {
-            chainModify: (modifier) => {              
-                this.pokemon.state.damage.chainModify(modifier)
+        const oppHandlers = {
+          "Physical": "onModifyOpponentAtk",
+          "Special": "onModifyOpponentSpA"
+        }
+        const makeCtx = self => ({
+            chainModify: (modifier) => {
+                self.state.damage.chainModify(modifier)
             },
             debug: console.log
-        }        
+        })
         const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
-        this._ability[handlers[move.category]]?.call(ctx, null, this.pokemon, opponent, move)
+        this._ability[handlers[move.category]]?.call(makeCtx(this.pokemon), null, this.pokemon, opponent, move)
+        this._ability[oppHandlers[opponentMove.category]]?.call(makeCtx(opponent), null, opponent, this.pokemon, opponentMove)
     }
 
     _subscribeListeners() {
@@ -394,15 +399,6 @@ class Ability {
         this.pokemon.state.on('start', () => {
             try {
                 this._ability.onStart?.(this.manager.pokemon)
-            }
-            catch (e) {
-              console.log(e)
-            }
-        })
-
-        this.pokemon.state.on('scene', move => {
-            try {
-              this.setDamageModifier(move)
             }
             catch (e) {
               console.log(e)
@@ -418,9 +414,10 @@ class Ability {
             }
         })
         
-        this.pokemon.state.on('using-move', move => {
+        this.pokemon.state.on('using-move', (move, opponentMove) => {
             try {
               this._ability.onModifyMove?.(move)
+              this.setDamageModifiers(move, opponentMove)
             }
             catch (e) {
               console.log(e)
@@ -472,6 +469,10 @@ class AbilityManager {
     isEnabled() {
         return true // its always enabled
         return this.pokemon.level >= 36
+    }
+
+    canUseMove(move) {
+        return this._abilities.every(ability => ability._ability.canUseMove?.(move) ?? true)
     }
 
     isImmune(effect) {
