@@ -1,7 +1,6 @@
 * Proposal
 mayangan, shadow, lucycharm
 moves sharingan, mayangan
-enemy name
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

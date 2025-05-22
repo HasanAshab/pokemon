@@ -36,8 +36,11 @@ function addEnemy() {
 function getEnemyForm(index) {
   return `
     <h3>Enemy ${index + 1}</h3>
-    <label>Choose Enemy</label>
+    <label>Choose Enemy Image</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(event)">
+    <br>
+    <label>Name</label>
+    <input type="text" class="name-inp" value="E${index + 1}">
     <br>
     <label>Level</label>
     <input type="number" class="level-inp" value="1" onchange="showStats(event)">
@@ -122,6 +125,7 @@ function makeEnemiesMeta() {
 
   document.querySelectorAll('.pokemon-form').forEach(form => {
     const enemyId = form.querySelector('.enemy')?.value || '';
+    const name = form.querySelector('.name-inp')?.value;
     const xp = parseInt(form.querySelector('.level-inp')?.value || '1', 10) * 100; // Example XP logic
     const retreat = parseFloat(form.querySelector('.retreat-inp')?.value || '2');
     const nature = form.querySelector('.nature-inp')?.value || '';
@@ -148,6 +152,7 @@ function makeEnemiesMeta() {
 
     const enemyMeta = {
       id: enemyId,
+      name,
       xp: xp,
       nature: nature,
       retreat: retreat,

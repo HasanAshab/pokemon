@@ -241,7 +241,7 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-startBattle([
+startBattle(null, [
   {
     "id": "student",
     "xp": 700,
