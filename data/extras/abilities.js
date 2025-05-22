@@ -18,7 +18,7 @@ export default {
     onTryAddVolatile(status, pokemon) {
       if (status.id === "confusion") return null
     }
-  }
+  },
 
   sharingan3: {
     onTurn(pokemon) {
@@ -27,7 +27,6 @@ export default {
       pokemon.state._data.autoDodgeCountDown = 3
       pokemon.state.flags.autoDodge = 1
     },
-
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
       if (boost.accuracy && boost.accuracy < 0) {
