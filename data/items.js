@@ -1,8 +1,8 @@
 export default {
-  ironarmor: {
+  latherarmor: {
     armor: {
-      hp: 150,
-      covers: 50
+      hp: 30,
+      covers: 20
     }
   }
 }
