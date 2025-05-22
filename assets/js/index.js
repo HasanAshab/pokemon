@@ -241,8 +241,9 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-startBattle(null, [
+startBattle( [
   {
+    "name":"kabaw",
     "id": "student",
     "xp": 700,
     "nature": "brave",
@@ -263,7 +264,7 @@ startBattle(null, [
     "stats": {},
     "token_used": {}
   },
-  {
+  { "name":"sabu",
     "id": "student",
     "xp": 400,
     "nature": "hasty",
@@ -284,7 +285,7 @@ startBattle(null, [
     "stats": {},
     "token_used": {}
   }
-], [], "single")
+], [], "multiple")
 //kadebra
 /*
 startBattle(null,[

@@ -385,6 +385,7 @@ class BaseBattle extends EventEmitter {
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
         
+        console.log(d1, d2)
         
         // TEMP: block move support
         if (move1.priority === move2.priority) {
