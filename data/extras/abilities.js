@@ -22,10 +22,17 @@ export default {
 
   sharingan3: {
     onTurn(pokemon) {
+      const AUTO_DODGE_CD = 3
+
+      if (pokemon.state._data.autoDodgeCountDown === undefined) {
+        pokemon.state._data.autoDodgeCountDown = AUTO_DODGE_CD
+      }
+
       pokemon.state._data.autoDodgeCountDown--
-      if (pokemon.state._data.autoDodgeCountDown > 0)
-      pokemon.state._data.autoDodgeCountDown = 3
-      pokemon.state.flags.autoDodge = 1
+      if (pokemon.state._data.autoDodgeCountDown > 0) {
+        pokemon.state._data.autoDodgeCountDown = AUTO_DODGE_CD
+        pokemon.state.flags.autoDodge = 1
+      }
     },
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
