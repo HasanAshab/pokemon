@@ -1,5 +1,4 @@
 * Proposal
-sharingan
 mounshingan
 
 * Scenario
