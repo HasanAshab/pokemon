@@ -46,11 +46,48 @@ export default {
   },
 
   mayangan1: {
+    onTryBoost(boost, target, source, effect) {
+      if (source && target === source) return
+      for (let i in boost) {
+        boost[i] *= -1
+      }
+    }
+  },
+  mayangan2: {
+    onTryBoost(boost, target, source, effect) {
+      if (source && target === source) return
+      for (let i in boost) {
+        boost[i] *= -1
+      }
+    },
     onTurn(pokemon, opponent) {
       // Config
-      const MAX = 10;
+      const MAX = 8;
       const MIN = 2;
-      const ATTACK_SELF_CHANCE = 20;
+
+      // Revive
+      const maxHp = pokemon.maxhp;
+      const currentHp = pokemon.hp;
+      const missingHpRatio = 1 - (currentHp / maxHp);
+      const hpIncreasePercent = Math.min((MIN / 100) + missingHpRatio * 0.23, (MAX / 100)).toFixed(2);
+      const hp = maxHp * hpIncreasePercent;
+      pokemon.state.increaseHealth(hp);
+      console.log(`${pokemon.name}: ability increased health by ${hp.toFixed(2)} (${hpIncreasePercent * 100}%)`);
+    }
+
+  },
+  mayangan3: {
+    onTryBoost(boost, target, source, effect) {
+      if (source && target === source) return
+      for (let i in boost) {
+        boost[i] *= -1
+      }
+    },
+    onTurn(pokemon, opponent) {
+      // Config
+      const MAX = 15;
+      const MIN = 5;
+      const ATTACK_SELF_CHANCE = 30;
 
       // Cleanup
       opponent.state.flags.attackSelf = 0;
@@ -71,7 +108,6 @@ export default {
         console.log(`${opponent.name}: ${pokemon.name}'s ability caused attack self`);
       }
     }
-
   },
 
   shadow: {
