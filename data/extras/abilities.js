@@ -46,10 +46,16 @@ export default {
   },
 
   mayangan1: {
-    onTurn(pokemon) {
+    onTurn(pokemon, opponent) {
+      // Config
       const MAX = 10;
       const MIN = 2;
+      const ATTACK_SELF_CHANCE = 20;
 
+      // Cleanup
+      opponent.state.flags.attackSelf = 0;
+
+      // Revive
       const maxHp = pokemon.maxhp;
       const currentHp = pokemon.hp;
       const missingHpRatio = 1 - (currentHp / maxHp);
@@ -57,9 +63,15 @@ export default {
       const hp = maxHp * hpIncreasePercent;
       pokemon.state.increaseHealth(hp);
       console.log(`${pokemon.name}: ability increased health by ${hp.toFixed(2)} (${hpIncreasePercent * 100}%)`);
+      
+
+      // Opponent Attack Self
+      if (Math.random() * 100 < ATTACK_SELF_CHANCE) {
+        opponent.state.flags.attackSelf = 1;
+        console.log(`${opponent.name}: ${pokemon.name}'s ability caused attack self`);
+      }
     }
 
-    
   },
 
   shadow: {

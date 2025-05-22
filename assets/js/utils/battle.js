@@ -236,8 +236,8 @@ class BaseBattle extends EventEmitter {
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
 
-        const attackSelf1 = this.pokemon1.state.effects.attackSelf()
-        const attackSelf2 = this.pokemon2.state.effects.attackSelf()
+        const attackSelf1 = this.pokemon1.state.attackSelf()
+        const attackSelf2 = this.pokemon2.state.attackSelf()
 
         canMove2 && this.pokemon1.state.stats.apply("self", move2)
         canMove1 && this.pokemon2.state.stats.apply("self", move1)
@@ -652,6 +652,10 @@ class BattleState extends EventEmitter {
         const maxHealth = this.pokemon.maxhp; // Use calculated HP stat
         const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
         return this.stats.set("hp", newHp);
+    }
+
+    attackSelf() {
+        return this.flags.attackSelf || this.effects.attackSelf()
     }
 
     decreaseHealth(amount, isInternal = false) {

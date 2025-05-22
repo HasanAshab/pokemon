@@ -407,7 +407,8 @@ class Ability {
         
         this.pokemon.state.on('turn', battle => {
             try {
-              this._ability.onTurn?.(this.manager.pokemon, battle)
+              const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
+              this._ability.onTurn?.(this.pokemon, opponent, battle)
             }
             catch (e) {
               console.log(e)
