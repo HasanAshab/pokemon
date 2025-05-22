@@ -417,6 +417,15 @@ class Ability {
               console.log(e)
             }
         })
+        
+        this.pokemon.state.on('using-move', move => {
+            try {
+              this._ability.onModifyMove?.(move)
+            }
+            catch (e) {
+              console.log(e)
+            }
+        })
 
         this.pokemon.state.on('contacted', contactor => {
             try {

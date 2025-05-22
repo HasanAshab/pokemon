@@ -214,7 +214,10 @@ class BaseBattle extends EventEmitter {
           move1._meta = {}
           move2._meta = {}
         }
-      
+
+        this.pokemon1.state.emit("using-move", move1, move2)
+        this.pokemon2.state.emit("using-move", move2, move1)
+
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
 
