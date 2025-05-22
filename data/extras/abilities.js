@@ -45,6 +45,23 @@ export default {
     }
   },
 
+  mayangan1: {
+    onTurn(pokemon) {
+      const MAX = 10;
+      const MIN = 2;
+
+      const maxHp = pokemon.maxhp;
+      const currentHp = pokemon.hp;
+      const missingHpRatio = 1 - (currentHp / maxHp);
+      const hpIncreasePercent = Math.min((MIN / 100) + missingHpRatio * 0.23, (MAX / 100)).toFixed(2);
+      const hp = maxHp * hpIncreasePercent;
+      pokemon.state.increaseHealth(hp);
+      console.log(`${pokemon.name}: ability increased health by ${hp.toFixed(2)} (${hpIncreasePercent * 100}%)`);
+    }
+
+    
+  },
+
   shadow: {
     canUseMove(move) {      
       return move.category !== "Physical"
