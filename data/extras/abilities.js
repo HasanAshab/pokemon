@@ -2,8 +2,11 @@ import { sumObj } from "../../assets/js/utils/helpers.js"
 
 export default {
   sharingan1: {
-    onStart(pokemon) {
-      pokemon.state.stats._statChanges.accuracy = 2
+    onActivate(pokemon) {
+      pokemon.state.stats._statChanges.accuracy += 2
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.stats._statChanges.accuracy += 2
     },
     onTryAddVolatile(status, pokemon) {
       if (status.id === "confusion") return null
@@ -123,12 +126,20 @@ export default {
   },
   onehandedbeast: {
     type: 'beast',
-    onStart(pokemon) {
+    //dynamic
+    onActivate(pokemon) {
       const tokens = {
         atk: 15,
         spe: 5,
       }
       pokemon.tokens = sumObj(pokemon.tokens, tokens)
+    },
+    onDeactivate(pokemon) {
+      const tokens = {
+        atk: 15,
+        spe: 5,
+      }
+      pokemon.tokens = sumObj(pokemon.tokens, modObj(tokens, -1))
     },
     onModifyAtk(_, target, source, move) {
       const chance = 30
