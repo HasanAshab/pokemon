@@ -1,3 +1,5 @@
+import { sumObj } from "../../assets/js/utils/helpers.js"
+
 export default {
   sharingan1: {
     onStart(pokemon) {
@@ -7,7 +9,6 @@ export default {
       if (status.id === "confusion") return null
     }
   },
-
   sharingan2: {
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
@@ -118,6 +119,23 @@ export default {
       console.log(`${source.name}: ability immune to ${move.name}`);
       
       return this.chainModify(0)
+    }
+  },
+  onehandedbeast: {
+    type: 'beast',
+    onStart(pokemon) {
+      const tokens = {
+        atk: 15,
+        spe: 5,
+      }
+      pokemon.tokens = sumObj(pokemon.tokens, tokens)
+    },
+    onModifyAtk(_, target, source, move) {
+      const chance = 30
+      if (!move.flags.weapon && Math.random() * 100 < chance) {
+        this.chainModify(1.3)
+        this.debug(`${target.name}: beast also used ${move.name}`);
+      }
     }
   }
 }
