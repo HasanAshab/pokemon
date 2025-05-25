@@ -283,7 +283,7 @@ ninjastar: {
  
 bamboo: {
       num: 100003,
-      accuracy: 70,
+      accuracy: 60,
       basePower: 70,
       category: "Physical",
       name: "Bamboo",
@@ -292,7 +292,7 @@ bamboo: {
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1},
       secondary: null,
       target: "normal",
-      type: "Grass",
+      type: "Normal",
       contestType: "Tough",
       tokenChanges: {
         spe: -50

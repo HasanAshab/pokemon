@@ -1,0 +1,36 @@
+startBattle([
+  {
+    "id": "student",
+    "name": "Kabaw",
+    "xp": 700,
+    "nature": "brave",
+    "retreat": 3.3,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "harden",
+        "isSelected": true
+      },
+      {
+        "id": "bamboo",
+        "isSelected": true
+      },
+      {
+        "id": "rollout",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      spe: -20,
+      atk: 10,
+      def: 10
+    }
+  }
+], [], "single")
