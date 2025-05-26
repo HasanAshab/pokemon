@@ -118,6 +118,18 @@ export default {
     }
   },
 
+  mistmaster: {
+    statChanges: {
+      accuracy: 3
+    },
+    opponentStatChanges: {
+      accuracy: -3
+    },
+    canUseMove(move) {      
+      return ["Water", "Ice"].includes(move.type)
+    },
+  },
+
   hand1beast: {
     type: 'beast',
     beastAttackChance: 30,

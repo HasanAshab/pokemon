@@ -374,13 +374,14 @@ class Ability {
     activate() {
         if (this.active) return
         this.active = true
-        this._ability.onActivate?.(this.manager.pokemon)
+        
+        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
     }
 
     deactivate() {
         if (!this.active) return
         this.active = false
-        this._ability.onDeactivate?.(this.manager.pokemon)
+        this._ability.onDeactivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
     }
     
     isImmune(effect) {
