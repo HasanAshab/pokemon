@@ -282,3 +282,26 @@ flex-direction: column;
   border: 2px solid black;
   border-style: dashed;
 }
+.abilities-msg-cont{
+  position: fixed;
+  left: 10vw;
+  bottom: 3vh;
+  width: calc( 80vw - 40px);
+  padding: 20px;
+  background-color: white;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  box-shadow: 0 0 5px 10px rgba(0,0,0,0.5);
+  height: calc(10vh - 40px);
+}
+#enemy-abilities-msg-cont{
+  top: 3vh;
+  transform: rotate(180deg);
+}
+.abilities-msg-cont.active {
+  display: flex;
+}
