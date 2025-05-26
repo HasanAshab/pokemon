@@ -1,5 +1,5 @@
 import { processor } from "./helpers.js"
-import { sumObj } from "../../assets/js/utils/helpers.js"
+import { sumObj, modObj } from "../../assets/js/utils/helpers.js"
 
 
 const makeCtx = (ability) => ({

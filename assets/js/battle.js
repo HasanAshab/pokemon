@@ -54,8 +54,12 @@ globalThis.doubleTeamDataClickHandler = (playerTag)=>{
    pokemonMap[playerTag].state.manCount = newVal
 }
 globalThis.closePlayerSettingsForm = function ({currentTarget}) {
-  currentTarget.parentElement.parentElement.parentElement.classList.remove("active")
+  const playerSettingsForm = document.querySelector(".player-settings-form")
+  playerSettingsForm.parentElement.classList.remove("active")
   
+  // abilities cleanup
+  const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .abilities-wrapper')
+  abilitiesWrapper.innerHTML = ''
 }
 globalThis.progressbarClickHandler = ({currentTarget},playerTag)=>{
   if (currentTarget.classList.contains("health")){
@@ -105,6 +109,12 @@ globalThis.showEffectsEditForm = function(playerTag){
   setEffects(pokemon.state.effects.all(), playerTag)
 }
 
+globalThis.showPlayerSettingsForm = function(playerTag){
+  const playerSettingsForm = document.querySelector(".player-settings-form")
+    playerSettingsForm.parentElement.classList.add("active")
+    playerSettingsForm.querySelector(".header > .name").textContent = playerTag
+   loadAbilities(playerTag)
+}
 
 function loadVeryCloseBtn() {
     const btn = document.getElementById("very-close-btn")
@@ -309,6 +319,7 @@ function setupPokemonForDom(playerTag) {
     setBattleStateListeners(playerTag)
     loadRetreat(playerTag)
     loadPokemonData(playerTag)
+ 
 }
 
 //todo
@@ -729,6 +740,23 @@ function loadAHealth(playerTag) {
 }
 
 
+function loadAbilities(playerTag) {
+    const pokemon = pokemonMap[playerTag]
+    const abilities = pokemon.abilities._abilities
+
+    const  playerSettingsForm = document.querySelector('.player-settings-form')
+    const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .abilities-wrapper')
+    for (const ability of abilities) {
+        abilitiesWrapper.innerHTML += ` <button type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
+    
+    }
+}
+globalThis.toggleAbility = function({currentTarget},playerTag, ability_name){
+   currentTarget.classList.toggle("active")
+   pokemonMap[playerTag].abilities.toggle(ability_name);
+   loadPokemonData(playerTag)
+   loadPokemonData(opponentTag(playerTag))
+}
 window.onload = () => {
     globalThis.pokemonMap = {}
     globalThis.fields = getParam("fields")?.split(',') ?? []
@@ -738,5 +766,4 @@ window.onload = () => {
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
     loadMovesDatalist("moves-data-list")
-
 }

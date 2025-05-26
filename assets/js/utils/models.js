@@ -383,6 +383,14 @@ class Ability {
         this.active = false
         this._ability.onDeactivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
     }
+
+    toggle() {
+        if (this.active) {
+            this.deactivate()
+        } else {
+            this.activate()
+        }
+    }
     
     isImmune(effect) {
         const status = { id: effect }
@@ -474,6 +482,10 @@ class AbilityManager {
     
     has(name) {
         return this._abilities.includes(name)
+    }
+
+    toggle(name) {
+        this._abilities.find(ab => ab.name === name).toggle()
     }
     
     isEnabled() {
