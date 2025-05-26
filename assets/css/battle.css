@@ -215,6 +215,14 @@ flex-direction: column;
     align-items: center;
     margin-left: 10px;
 }
+.primary-data-nav .left-items-wrapper .settings-btn {
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .primary-data-nav > .progressbars-wrapper{
   width: 50%;
   display: flex;
@@ -305,3 +313,70 @@ flex-direction: column;
 .abilities-msg-cont.active {
   display: flex;
 }
+
+.player-settings-form{
+  width: calc( 80% - 40px);
+  padding: 20px;
+  background-color: white;
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  box-shadow: 0 0 5px 10px rgba(0,0,0,0.5);
+  height: calc(80% - 40px);
+  overflow-y: scroll;
+}
+
+.player-settings-form .header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-settings-form .header .close-btn{
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: none;
+}
+
+.player-settings-form .settings-wrapper{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.player-settings-form .settings-wrapper .settings{
+  width: 100%;
+  background-color: #eee;
+  padding: 10px;
+  
+}
+
+.player-settings-form .settings-wrapper .settings.abilities .abilities-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.player-settings-form .settings-wrapper .settings.abilities .abilities-wrapper .ability{
+  padding: 4px 8px;
+  background-color: transparent;
+  color: black;
+  border-radius: 5px;
+}
+.player-settings-form .settings-wrapper .settings.abilities .abilities-wrapper .ability.active{
+  background-color: green;
+  color: white;
+  border-color: gold;
+  font-weight: bold;
+}
+

@@ -53,7 +53,10 @@ globalThis.doubleTeamDataClickHandler = (playerTag)=>{
    console.log(newVal)
    pokemonMap[playerTag].state.manCount = newVal
 }
-
+globalThis.closePlayerSettingsForm = function ({currentTarget}) {
+  currentTarget.parentElement.parentElement.parentElement.classList.remove("active")
+  
+}
 globalThis.progressbarClickHandler = ({currentTarget},playerTag)=>{
   if (currentTarget.classList.contains("health")){
   // health progress-bar clicked
