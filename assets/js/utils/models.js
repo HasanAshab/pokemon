@@ -363,11 +363,24 @@ class Ability {
         this.isHidden = isHidden
         this.manager = manager
         this.pokemon = manager.pokemon
+        this.active = false
         this._ability = abilities[this.id]
     }
     
     get id() {
         return this.name.toLowerCase().replace(/\s+/g, '');
+    }
+
+    activate() {
+        if (this.active) return
+        this.active = true
+        this._ability.onActivate?.(this.manager.pokemon)
+    }
+
+    deactivate() {
+        if (!this.active) return
+        this.active = false
+        this._ability.onDeactivate?.(this.manager.pokemon)
     }
     
     isImmune(effect) {

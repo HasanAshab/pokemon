@@ -35,7 +35,7 @@ function mergeDefault(ability, key) {
           }
           return tokenChanges
         },
-        onStart(pokemon) {
+        onActivate(pokemon) {
             if ('statChanges' in this.ability) {
                 pokemon.state.stats._statChanges = sumObj(pokemon.state.stats._statChanges, this.ability.statChanges)
             }
@@ -46,9 +46,8 @@ function mergeDefault(ability, key) {
             if ('statChanges' in this.ability) {
                 pokemon.state.stats._statChanges = sumObj(pokemon.state.stats._statChanges, modObj(this.ability.statChanges, -1))
             }
-            if ('tokenChanges' in this.ability) {
-                pokemon.tokens = sumObj(pokemon.tokens, modObj(this.ability.tokenChanges, -1))
-            }
+            const tokenChanges = this.ability.getTokenChanges()
+            pokemon.tokens = sumObj(pokemon.tokens, modObj(tokenChanges, -1))
         },
     }
     
