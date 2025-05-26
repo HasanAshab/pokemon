@@ -301,7 +301,7 @@ export default {
             }
         }
     },
-    onTryBoost(boost, target, source, effect) {
+    onTryBoost(boost, target, source, effect) {      
       delete boost.spe
       delete boost.crit
     },
