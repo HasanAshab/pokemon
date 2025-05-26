@@ -117,6 +117,7 @@ export default {
       return this.chainModify(0)
     }
   },
+
   hand1beast: {
     type: 'beast',
     beastAttackChance: 30,
@@ -207,6 +208,26 @@ export default {
       beast.state = pokemon.state.clone()
       
       return beast
+    },
+  },
+
+  tail1beast: {
+    type: 'beast',
+    beastTailsCount: 1,
+    tokenChangesPercent: {
+      spe: 50,
+      def: -20,
+    },
+    statChanges: {
+      crit: 1
+    },
+    onModifyMove(move) {
+        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
+            const hitCount = move.multiHit();
+            move.multiHit = function () {
+                return hitCount * this.ability.beastTailsCount
+            }
+        }
     },
   },
 }
