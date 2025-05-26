@@ -2,7 +2,8 @@ import { sumObj } from "../../assets/js/utils/helpers.js"
 
 export default {
   sharingan1: {
-    onActivate(pokemon) {
+    onStart(pokemon) {
+      console.log(popupQueue)
       pokemon.state.stats._statChanges.accuracy += 2
     },
     onDeactivate(pokemon) {
