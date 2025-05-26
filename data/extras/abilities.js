@@ -142,7 +142,7 @@ export default {
     _getBeast(pokemon) {
       const beast = pokemon.clone()
       beast.meta.name += " (Beast)"
-      beast.tokens.atk += pokemon.stats.atk * 0.3
+      beast.tokens.atk += pokemon.stats.atk * 0.2
       beast.state = pokemon.state.clone()
       
       return beast
@@ -173,7 +173,7 @@ export default {
     _getBeast(pokemon) {
       const beast = pokemon.clone()
       beast.meta.name += " (Beast)"
-      beast.tokens.atk += pokemon.stats.atk * 0.3
+      beast.tokens.atk += pokemon.stats.atk * 0.2
       beast.state = pokemon.state.clone()
       
       return beast
@@ -204,7 +204,7 @@ export default {
     _getBeast(pokemon) {
       const beast = pokemon.clone()
       beast.meta.name += " (Beast)"
-      beast.tokens.atk += pokemon.stats.atk * 0.3
+      beast.tokens.atk += pokemon.stats.atk * 0.2
       beast.state = pokemon.state.clone()
       
       return beast
