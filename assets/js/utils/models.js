@@ -385,7 +385,6 @@ class Ability {
             chainModify: (modifier) => {
                 self.state.damage.chainModify(modifier)
             },
-            debug: console.log
         })
         const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
         this._ability[handlers[move.category]]?.callWithExtraCtx(makeCtx(this.pokemon), null, this.pokemon, opponent, move)
@@ -427,14 +426,8 @@ class Ability {
 
         this.pokemon.state.on('contacted', contactor => {
             try {
-                const ctx = {
-                    damage: (amount) => {
-                        contactor.state.decreaseHealth(amount)
-                        console.log(`${contactor.name}: ${this.pokemon.name}'s ability caused ${amount} damage`)
-                    }
-                }
                 this._ability.onDamagingHit?.callWithExtraCtx(
-                    ctx,
+                    { _contacted: true },
                     null,
                     this.pokemon,
                     contactor,

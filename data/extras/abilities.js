@@ -1,12 +1,10 @@
 import { sumObj } from "../../assets/js/utils/helpers.js"
 
+
 export default {
   sharingan1: {
-    onActivate(pokemon) {
-      pokemon.state.stats._statChanges.accuracy += 2
-    },
-    onDeactivate(pokemon) {
-      pokemon.state.stats._statChanges.accuracy += 2
+    statChanges: {
+      accuracy: 2
     },
     onTryAddVolatile(status, pokemon) {
       if (status.id === "confusion") return null
@@ -57,6 +55,7 @@ export default {
     }
   },
   mayangan2: {
+    healthBoost: [2, 8],
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
       for (let i in boost) {
@@ -65,8 +64,7 @@ export default {
     },
     onTurn(pokemon, opponent) {
       // Config
-      const MAX = 8;
-      const MIN = 2;
+      const [MIN, MAX] = this.ability.healthBoost;
 
       // Revive
       const maxHp = pokemon.maxhp;
@@ -80,6 +78,8 @@ export default {
 
   },
   mayangan3: {
+    healthBoost: [5, 15],
+    attackSelfChance: 30,
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
       for (let i in boost) {
@@ -88,9 +88,8 @@ export default {
     },
     onTurn(pokemon, opponent) {
       // Config
-      const MAX = 15;
-      const MIN = 5;
-      const ATTACK_SELF_CHANCE = 30;
+      const [MIN, MAX] = this.ability.healthBoost;
+      const ATTACK_SELF_CHANCE = this.ability.attackSelfChance;
 
       // Cleanup
       opponent.state.flags.attackSelf = 0;
@@ -119,32 +118,20 @@ export default {
     },
     onModifyOpponentAtk(_, target, source, move) {
       console.log(`${source.name}: ability immune to ${move.name}`);
-      
       return this.chainModify(0)
     }
   },
   onehandedbeast: {
     type: 'beast',
-    //dynamic
-    onActivate(pokemon) {
-      const tokens = {
-        atk: 15,
-        spe: 5,
-      }
-      pokemon.tokens = sumObj(pokemon.tokens, tokens)
-    },
-    onDeactivate(pokemon) {
-      const tokens = {
-        atk: 15,
-        spe: 5,
-      }
-      pokemon.tokens = sumObj(pokemon.tokens, modObj(tokens, -1))
+    tokenChanges: {
+      atk: 15,
+      spe: 5,
     },
     onModifyAtk(_, target, source, move) {
       const chance = 30
       if (!move.flags.weapon && Math.random() * 100 < chance) {
         this.chainModify(1.3)
-        this.debug(`${target.name}: beast also used ${move.name}`);
+        this.popup(`${target.name}: beast also used ${move.name}`);
       }
     }
   }
