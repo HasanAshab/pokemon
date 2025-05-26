@@ -29,7 +29,7 @@ export default {
       if (pokemon.state._data.autoDodgeCountDown === 0) {
         pokemon.state._data.autoDodgeCountDown = undefined
         pokemon.state.flags.autoDodge = 1
-        this.popup("ability aquired auto dodge");
+        this.popup("ability aquired auto dodge", pokemon);
       }
     },
     onTryBoost(boost, target, source, effect) {
@@ -100,7 +100,7 @@ export default {
       // Opponent Attack Self
       if (Math.random() * 100 < ATTACK_SELF_CHANCE) {
         opponent.state.flags.attackSelf = 1;
-        this.popup("opponent attack self");
+        this.popup("opponent attack self", pokemon);
       }
     }
   },
@@ -110,10 +110,11 @@ export default {
       return move.category !== "Physical"
     },
     onModifyOpponentAtk(_, target, source, move) {
-      this.popup("immune to physical touch");
+      this.popup("immune to physical touch", source);
       return this.chainModify(0)
     }
   },
+  //tailed
   hand1beast: {
     type: 'beast',
     beastAttackChance: 30,
@@ -122,9 +123,10 @@ export default {
       spe: -10,
     },
     onModifyAtk(_, target, source, move) {
-      if (!move.flags.weapon && Math.random() * 100 < this.ability.beastAttackChance) {
+      const rand = Math.random() * 100
+      if (!move.flags.weapon && rand < this.ability.beastAttackChance) {
         this.chainModify(1.3)
-        this.popup("beast also attacked");
+        this.popup("beast also attacked", target);
       }
     }
   }

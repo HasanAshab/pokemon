@@ -37,12 +37,15 @@ export class PopupMsgQueue {
     queue = []
     isRunning = false
 
-    constructor(elemIdSuffix, limit = 7) {
+    constructor(elemIdSuffix, limit = 7, lifetime = 1000) {
         this.elemIdSuffix = elemIdSuffix;
         this.limit = limit
+        this.lifetime = lifetime
     }
 
-    add(msg, playerTag, lifetime = 1000) {
+    add(msg, playerTag, lifetime) {
+        if (!lifetime)
+            lifetime = this.lifetime
         if (this.queue.length === this.limit) return
         this.queue.push({ msg, playerTag, lifetime });
         this.runQueue();

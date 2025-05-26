@@ -21,8 +21,9 @@ const makeCtx = (ability) => ({
     },
 })
 
-function mergeDefault(ability) {
+function mergeDefault(ability, key) {
     const defaultProps = {
+        id: key,
         type: 'normal',
         getTokenChanges() {
           const tokenChanges = this.ability.tokenChanges || {}

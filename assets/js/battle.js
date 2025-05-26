@@ -8,7 +8,7 @@ import {loadMovesDatalist } from "./utils/dom.js";
 
 const system = getParam("system") || "single"
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
-globalThis.abilitiesPopupQueue = new PopupMsgQueue("abilities-msg-cont");
+globalThis.abilitiesPopupQueue = new PopupMsgQueue("abilities-msg-cont", 4, 3000);
 globalThis.toggleMoveInfo = function(info){
     info.classList.toggle("active")
 }
