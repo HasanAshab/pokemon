@@ -119,8 +119,8 @@ export default {
   },
   hand1beast: {
     type: 'beast',
-    beastAttackChance: 100,
-    beastAttackCount: 3,
+    beastAttackChance: 30,
+    beastAttackCount: 1,
     tokenChangesPercent: {
       atk: 20,
       spe: -10,
