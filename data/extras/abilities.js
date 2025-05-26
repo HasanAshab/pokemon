@@ -146,5 +146,67 @@ export default {
       
       return beast
     },
-  }
+  },
+  hand3beast: {
+    type: 'beast',
+    beastAttackChance: 30,
+    beastAttackCount: [1, 3],
+    tokenChangesPercent: {
+      atk: 30,
+      spe: -50,
+    },
+    onModifyAtk(_, target, source, move) {
+      const rand = Math.random() * 100
+      if (!move.flags.weapon && rand < this.ability.beastAttackChance) {
+        target.state.once("used-move", move => {
+            const beastAttackCount = Math.floor(Math.random() * (this.ability.beastAttackCount[1] - this.ability.beastAttackCount[0] + 1) + this.ability.beastAttackCount[0])            
+            const beast = this.ability._getBeast(target)
+            Array.from({ length: beastAttackCount }, (_, i) => {
+                const damage = new Damage(beast, move, source)
+                move.hit.damages.push(damage)
+            })
+            this.popup("beast also attacked", target);
+        })
+      }
+    },
+    _getBeast(pokemon) {
+      const beast = pokemon.clone()
+      beast.meta.name += " (Beast)"
+      beast.tokens.atk += pokemon.stats.atk * 0.3
+      beast.state = pokemon.state.clone()
+      
+      return beast
+    },
+  },
+  hand6beast: {
+    type: 'beast',
+    beastAttackChance: 45,
+    beastAttackCount: [2, 6],
+    tokenChangesPercent: {
+      atk: 50,
+      spe: -100,
+    },
+    onModifyAtk(_, target, source, move) {
+      const rand = Math.random() * 100
+      if (!move.flags.weapon && rand < this.ability.beastAttackChance) {
+        target.state.once("used-move", move => {
+            const beastAttackCount = Math.floor(Math.random() * (this.ability.beastAttackCount[1] - this.ability.beastAttackCount[0] + 1) + this.ability.beastAttackCount[0])            
+            const beast = this.ability._getBeast(target)
+            Array.from({ length: beastAttackCount }, (_, i) => {
+                const damage = new Damage(beast, move, source)
+                move.hit.damages.push(damage)
+            })
+            this.popup("beast also attacked", target);
+        })
+      }
+    },
+    _getBeast(pokemon) {
+      const beast = pokemon.clone()
+      beast.meta.name += " (Beast)"
+      beast.tokens.atk += pokemon.stats.atk * 0.3
+      beast.state = pokemon.state.clone()
+      
+      return beast
+    },
+  },
 }
