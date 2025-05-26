@@ -2,8 +2,7 @@ import { sumObj } from "../../assets/js/utils/helpers.js"
 
 export default {
   sharingan1: {
-    onStart(pokemon) {
-      console.log(popupQueue)
+    onActivate(pokemon) {
       pokemon.state.stats._statChanges.accuracy += 2
     },
     onDeactivate(pokemon) {
@@ -35,8 +34,7 @@ export default {
       if (pokemon.state._data.autoDodgeCountDown === 0) {
         pokemon.state._data.autoDodgeCountDown = undefined
         pokemon.state.flags.autoDodge = 1
-        console.log(`${pokemon.name}: ability aquired auto dodge`);
-        
+        this.popup("ability aquired auto dodge");
       }
     },
     onTryBoost(boost, target, source, effect) {

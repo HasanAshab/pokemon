@@ -388,8 +388,8 @@ class Ability {
             debug: console.log
         })
         const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
-        this._ability[handlers[move.category]]?.call(makeCtx(this.pokemon), null, this.pokemon, opponent, move)
-        this._ability[oppHandlers[opponentMove.category]]?.call(makeCtx(opponent), null, opponent, this.pokemon, opponentMove)
+        this._ability[handlers[move.category]]?.callWithExtraCtx(makeCtx(this.pokemon), null, this.pokemon, opponent, move)
+        this._ability[oppHandlers[opponentMove.category]]?.callWithExtraCtx(makeCtx(opponent), null, opponent, this.pokemon, opponentMove)
     }
 
     _subscribeListeners() {
@@ -428,16 +428,12 @@ class Ability {
         this.pokemon.state.on('contacted', contactor => {
             try {
                 const ctx = {
-                    checkMoveMakesContact: () => true,
-                    randomChance(numerator, denominator) {
-                        return Math.floor(Math.random() * denominator) < numerator;
-                    },
                     damage: (amount) => {
                         contactor.state.decreaseHealth(amount)
                         console.log(`${contactor.name}: ${this.pokemon.name}'s ability caused ${amount} damage`)
                     }
                 }
-                this._ability.onDamagingHit?.call(
+                this._ability.onDamagingHit?.callWithExtraCtx(
                     ctx,
                     null,
                     this.pokemon,
