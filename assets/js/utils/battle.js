@@ -385,8 +385,6 @@ class BaseBattle extends EventEmitter {
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
         
-        console.log(d1, d2)
-        
         // TEMP: block move support
         if (move1.priority === move2.priority) {
           if (move1.id === "block")
@@ -604,6 +602,10 @@ class BattleState extends EventEmitter {
         })
     }
     
+    clone() {
+        return new BattleState(this.battle, this.pokemon)
+        
+    }
     get manCount() {
         return this._manCount
     }
@@ -717,7 +719,7 @@ class StatsManager {
     _statChanges = {};
     _modifiers = {};
     _freezed = false;
-    
+
     static getBattleStats(pokemon) {
         let btStats = pokemon.types.reduce((stats, type) => {
             const typeStats = StatsManager.BATTLE_STATS[type] ?? {}
@@ -747,26 +749,9 @@ class StatsManager {
             this._modifiers = {}
         })
     }
-    
-    toJSON() {
-        return {
-            _stats: { ...this._stats },
-            _statChanges: { ...this._statChanges },
-            _modifiers: { ...this._modifiers },
-            _freezed: this._freezed
-        }
-    }
-    
-    sync(data) {
-        this._stats = data._stats
-        this._statChanges = data._statChanges
-        this._modifiers = data._modifiers
-        this._freezed = data._freezed
-        this.prev.refresh()
-    }
 
     get(name) {
-        const baseStat = this._stats[name] ?? 1;
+        const baseStat = this._stats[name] ?? this.state.pokemon.stats[name] ?? 1;
         const stage = this._statChanges[name] ?? 0;
         const finalStat = baseStat
             * this._statStageMultiplier(name, stage)
@@ -775,6 +760,11 @@ class StatsManager {
     }
 
     set(name, value) {
+        if (name !== "hp") {
+          console.log(`BUG: Set ${name} to ${value}`);
+          return
+        }
+
         if (this._freezed) return null
         this.prev.remember(name)
         this._stats[name] = value;
@@ -840,9 +830,9 @@ class StatsManager {
     }
 
     refresh() {
-        const battleTimeStats = StatsManager.getBattleStats(this.state.pokemon)
-        //this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats, this.state.pokemon.meta.stats);
-        this._stats = Object.assign({}, this.state.pokemon.stats, battleTimeStats);
+        this._stats = {
+          hp: this.state.pokemon.stats.hp
+        };
         this.prev = new PrevStatsManager(this.state, this)
     }
 

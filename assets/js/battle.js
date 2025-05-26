@@ -211,9 +211,9 @@ function setBattleStateListeners(playerTag) {
     })
     
     // critical pop up
-    pokemon.state.on("used-move", move => {
+    pokemon.state.tailListener("used-move", move => {
         if (!move.hit) return
-        if (move.hit.damage() <= 0) return;
+        if (move.hit.damage() <= 0) return;   
         let msg = null
         if(move.hits === 1 && move.hit.criticalCount() === 1) {
             msg =  'Critical Hit!'

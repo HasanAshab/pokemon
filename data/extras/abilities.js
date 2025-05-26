@@ -1,3 +1,6 @@
+import { Damage } from "../../assets/js/utils/damage.js"
+
+
 export default {
   sharingan1: {
     statChanges: {
@@ -114,10 +117,10 @@ export default {
       return this.chainModify(0)
     }
   },
-  //tailed
   hand1beast: {
     type: 'beast',
-    beastAttackChance: 30,
+    beastAttackChance: 100,
+    beastAttackCount: 3,
     tokenChangesPercent: {
       atk: 20,
       spe: -10,
@@ -125,9 +128,23 @@ export default {
     onModifyAtk(_, target, source, move) {
       const rand = Math.random() * 100
       if (!move.flags.weapon && rand < this.ability.beastAttackChance) {
-        this.chainModify(1.3)
-        this.popup("beast also attacked", target);
+        target.state.once("used-move", move => {
+            const beast = this.ability._getBeast(target)
+            Array.from({ length: this.ability.beastAttackCount }, (_, i) => {
+                const damage = new Damage(beast, move, source)
+                move.hit.damages.push(damage)
+            })
+            this.popup("beast also attacked", target);
+        })
       }
-    }
+    },
+    _getBeast(pokemon) {
+      const beast = pokemon.clone()
+      beast.meta.name += " (Beast)"
+      beast.tokens.atk += pokemon.stats.atk * 0.3
+      beast.state = pokemon.state.clone()
+      
+      return beast
+    },
   }
 }

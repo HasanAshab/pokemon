@@ -167,6 +167,10 @@ export class Pokemon extends PSPokemon {
     toBase64() {
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
+    
+    clone() {
+        return Pokemon.fromBase64(this.toBase64());
+    }
 
     tokensUsed() {
         return Object.keys(this.meta.token_used)
@@ -265,7 +269,6 @@ export class Pokemon extends PSPokemon {
 }
 
 export class Move {
-    hits = 1
     succeed = true
 
     constructor(id) {
@@ -276,6 +279,9 @@ export class Move {
     
     get isNeverFails() {
         return this.accuracy === true || this.category === "Status" || !this.flags.twoturn
+    }
+    get hits() {
+        return 'hit' in this ? this.hit.hitCount() : 1
     }
     
     exists() {

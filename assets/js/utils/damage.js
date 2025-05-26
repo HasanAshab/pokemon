@@ -111,7 +111,6 @@ export class Hit {
         this.damages = Array.from({ length: this.move.multiHit() }, (_, i) => {
             return new Damage(attacker, move, target)
         })
-        move.hits = this.hitCount()
     }
 
     damage() {
