@@ -1,11 +1,14 @@
 import { processor } from "./helpers.js"
+import { sumObj } from "../../assets/js/utils/helpers.js"
 
 
 const makeCtx = (ability) => ({
     ability,
     _contacted: false,
     debug: console.log,
-    popup: (msg, poke) => globalThis.abilitiesPopupQueue.add(msg, poke._tag),
+    popup: (msg, poke) => {
+      globalThis.abilitiesPopupQueue.add(`${ability.id}: ${msg}`, poke._tag)
+    },
     checkMoveMakesContact() {
         return this._contacted
     },
@@ -20,20 +23,30 @@ const makeCtx = (ability) => ({
 
 function mergeDefault(ability) {
     const defaultProps = {
-        onActivate(pokemon) {
-            if ('tokenChanges' in this.ability) {
-                pokemon.tokens = sumObj(pokemon.tokens, this.ability.tokenChanges)
+        type: 'normal',
+        getTokenChanges() {
+          const tokenChanges = this.ability.tokenChanges || {}
+          if ('tokenChangesPercent' in this.ability) {
+            for (const [stat, per] of Object.entries(this.ability.tokenChangesPercent)) {
+                if (stat in tokenChanges) continue
+                tokenChanges[stat] = pokemon.stats[stat] * (per / 100)
             }
+          }
+          return tokenChanges
+        },
+        onStart(pokemon) {
             if ('statChanges' in this.ability) {
                 pokemon.state.stats._statChanges = sumObj(pokemon.state.stats._statChanges, this.ability.statChanges)
             }
+            const tokenChanges = this.ability.getTokenChanges()
+            pokemon.tokens = sumObj(pokemon.tokens, tokenChanges)
         },
         onDeactivate(pokemon) {
-            if ('tokenChanges' in this.ability) {
-                pokemon.tokens = sumObj(pokemon.tokens, modObj(this.ability.tokenChanges, -1))
-            }
             if ('statChanges' in this.ability) {
                 pokemon.state.stats._statChanges = sumObj(pokemon.state.stats._statChanges, modObj(this.ability.statChanges, -1))
+            }
+            if ('tokenChanges' in this.ability) {
+                pokemon.tokens = sumObj(pokemon.tokens, modObj(this.ability.tokenChanges, -1))
             }
         },
     }

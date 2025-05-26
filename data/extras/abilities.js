@@ -1,6 +1,3 @@
-import { sumObj } from "../../assets/js/utils/helpers.js"
-
-
 export default {
   sharingan1: {
     statChanges: {
@@ -73,9 +70,7 @@ export default {
       const hpIncreasePercent = Math.min((MIN / 100) + missingHpRatio * 0.23, (MAX / 100)).toFixed(2);
       const hp = maxHp * hpIncreasePercent;
       pokemon.state.increaseHealth(hp);
-      console.log(`${pokemon.name}: ability increased health by ${hp.toFixed(2)} (${hpIncreasePercent * 100}%)`);
     }
-
   },
   mayangan3: {
     healthBoost: [5, 15],
@@ -101,13 +96,11 @@ export default {
       const hpIncreasePercent = Math.min((MIN / 100) + missingHpRatio * 0.23, (MAX / 100)).toFixed(2);
       const hp = maxHp * hpIncreasePercent;
       pokemon.state.increaseHealth(hp);
-      console.log(`${pokemon.name}: ability increased health by ${hp.toFixed(2)} (${hpIncreasePercent * 100}%)`);
-      
 
       // Opponent Attack Self
       if (Math.random() * 100 < ATTACK_SELF_CHANCE) {
         opponent.state.flags.attackSelf = 1;
-        console.log(`${opponent.name}: ${pokemon.name}'s ability caused attack self`);
+        this.popup("opponent attack self");
       }
     }
   },
@@ -117,21 +110,21 @@ export default {
       return move.category !== "Physical"
     },
     onModifyOpponentAtk(_, target, source, move) {
-      console.log(`${source.name}: ability immune to ${move.name}`);
+      this.popup("immune to physical touch");
       return this.chainModify(0)
     }
   },
-  onehandedbeast: {
+  hand1beast: {
     type: 'beast',
-    tokenChanges: {
-      atk: 15,
-      spe: 5,
+    beastAttackChance: 30,
+    tokenChangesPercent: {
+      atk: 20,
+      spe: -10,
     },
     onModifyAtk(_, target, source, move) {
-      const chance = 30
-      if (!move.flags.weapon && Math.random() * 100 < chance) {
+      if (!move.flags.weapon && Math.random() * 100 < this.ability.beastAttackChance) {
         this.chainModify(1.3)
-        this.popup(`${target.name}: beast also used ${move.name}`);
+        this.popup("beast also attacked");
       }
     }
   }

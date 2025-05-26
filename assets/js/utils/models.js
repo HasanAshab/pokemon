@@ -466,7 +466,13 @@ class AbilityManager {
     }
 
     isImmune(effect) {
-        return this._abilities.some(ability => ability.isImmune(effect))
+        return this._abilities.some(ability => {
+          if (ability.isImmune(effect)) {
+            abilitiesPopupQueue.add(`${ability.id}: ${effect} avoided`, this.pokemon._tag)
+            return true
+          }
+          return false
+        })
     }
     
     onTryBoost() {

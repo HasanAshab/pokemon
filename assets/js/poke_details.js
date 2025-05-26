@@ -219,7 +219,7 @@ function loadStats() {
     setStat("loses-count", pokemon.meta["loses-count"])
     
     for (const stat in pokemon.stats) {
-     const statValue = pokemon.stats[stat]
+     const statValue = pokemon.stats[stat].toFixed(2)
       setStat(stat,statValue)
       setStatToken(stat, pokemon.meta.token_used[stat], false)
       if (stat === "hp") {

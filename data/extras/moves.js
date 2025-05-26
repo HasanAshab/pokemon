@@ -241,7 +241,7 @@ export default {
       type: "Rock",
       contestType: "Tough",
       tokenChanges: {
-        spe: -5
+        spe: -3
       }
     },
 
@@ -259,7 +259,7 @@ kunai: {
       type: "Rock",
       contestType: "Tough",
       tokenChanges: {
-        spe: -10
+        spe: -6
       }
 },
 
@@ -277,7 +277,7 @@ ninjastar: {
       type: "Rock",
       contestType: "Tough",
       tokenChanges: {
-        spe: -10
+        spe: -6
       }
     },
  
@@ -295,7 +295,7 @@ bamboo: {
       type: "Normal",
       contestType: "Tough",
       tokenChanges: {
-        spe: -50
+        spe: -30
       }
     },   
 ninjablade: {
@@ -312,7 +312,7 @@ ninjablade: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -20
+        spe: -12
       }
     },
    
@@ -330,7 +330,7 @@ kohgastar: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -20
+        spe: -10
       }
     },
 
@@ -348,7 +348,7 @@ sword: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -50
+        spe: -30
       },
     },
 
@@ -368,7 +368,7 @@ katana: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -50
+        spe: -30
       },
       koRatio:1
     },
@@ -393,7 +393,7 @@ Shuriken: {
       type: "Rock",
       contestType: "Tough",
       tokenChanges: {
-        spe: -80
+        spe: -45
       }
     },
  longsword: {
@@ -417,7 +417,7 @@ Shuriken: {
         target:{}
       },
       tokenChanges: {
-        spe: -80
+        spe: -50
       }
     },
  ninechaku:{
@@ -441,7 +441,7 @@ Shuriken: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -10
+        spe: -6
       }
     },
   ninechakublade:{
@@ -466,7 +466,7 @@ Shuriken: {
       contestType: "Tough",
       recoil: [10, 100],
       tokenChanges: {
-        spe: -10
+        spe: -6
       }
     },
   dirt: {
@@ -486,7 +486,7 @@ Shuriken: {
       type: "Poison",
       contestType: "Tough",
       tokenChanges: {
-        spe: -5
+        spe: -3
       }
     },
    ninjaclaw:{
@@ -513,7 +513,7 @@ Shuriken: {
       type: "Poison",
       contestType: "Tough",
       tokenChanges: {
-        spe: -20
+        spe: -10
       },
       koRatio:1
     },

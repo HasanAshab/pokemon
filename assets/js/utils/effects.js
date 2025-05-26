@@ -7,7 +7,6 @@ class Effect {
 
     static isImmune(pokemon) {
         const abilityTrigger = pokemon.abilities.isEnabled() && pokemon.abilities.isImmune(this.effectName)
-        abilityTrigger && console.log(`${pokemon.name}: ${this.effectName} avoided by ability`)
         return abilityTrigger || pokemon.types.some(t => this.immuneTo.includes(t))
     }
 
