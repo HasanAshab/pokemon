@@ -224,10 +224,86 @@ export default {
     onModifyMove(move) {
         if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
             const hitCount = move.multiHit();
-            move.multiHit = function () {
+            move.multiHit = () => {
                 return hitCount * this.ability.beastTailsCount
             }
         }
+    },
+  },
+  tail3beast: {
+    type: 'beast',
+    beastTailsCount: 3,
+    tokenChangesPercent: {
+      spe: 100,
+    },
+    statChanges: {
+      crit: 2
+    },
+    onModifyMove(move) {
+        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
+            const hitCount = move.multiHit();
+            move.multiHit = () => {
+                return hitCount * this.ability.beastTailsCount
+            }
+        }
+    },
+  },
+  tail6beast: {
+    type: 'beast',
+    beastTailsCount: 6,
+    tokenChangesPercent: {
+      spe: 200,
+    },
+    statChanges: {
+      crit: 2
+    },
+    onModifyMove(move) {
+        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
+            const hitCount = move.multiHit();
+            move.multiHit = () => {
+                return hitCount * this.ability.beastTailsCount
+            }
+        }
+    },
+  },
+  tail9beast: {
+    type: 'beast',
+    beastTailsCount: 9,
+    tokenChangesPercent: {
+      spe: 300,
+    },
+    statChanges: {
+      crit: 3
+    },
+    onModifyMove(move) {
+        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
+            const hitCount = move.multiHit();
+            move.multiHit = () => {
+                return hitCount * this.ability.beastTailsCount
+            }
+        }
+    },
+  },
+  tail10beast: {
+    type: 'beast',
+    beastTailsCount: 10,
+    tokenChangesPercent: {
+      spe: 300,
+    },
+    statChanges: {
+      crit: 3
+    },
+    onModifyMove(move) {
+        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
+            const hitCount = move.multiHit();
+            move.multiHit = () => {
+                return hitCount * this.ability.beastTailsCount
+            }
+        }
+    },
+    onTryBoost(boost, target, source, effect) {
+      delete boost.spe
+      delete boost.crit
     },
   },
 }
