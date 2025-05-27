@@ -380,16 +380,16 @@ class BaseBattle extends EventEmitter {
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
-        
+
         this.pokemon1.state.decreaseHealth(instD1)
         this.pokemon2.state.decreaseHealth(instD2)
-        
+
         // TEMP: block move support
         if (move1.priority === move2.priority) {
-          if (move1.id === "block")
-            d1 = d1 / 2
-          if (move2.id === "block")
-            d2 = d2 / 2
+          console.log(this.pokemon1.state.damage.blockModifier());
+          console.log(this.pokemon2.state.damage.blockModifier());
+            d1 -= d1 * this.pokemon1.state.damage.blockModifier()
+            d2 -=  d2 * this.pokemon2.state.damage.blockModifier()
         }
 
         if(move2.priority > move1.priority) {
@@ -887,6 +887,7 @@ class PrevStatsManager {
 class DamageManager {
     _modifiers = []
     _critModifiers = []
+    _blockModifiers = []
     _powerModifiers = {}
     
     constructor(state) {
@@ -895,11 +896,13 @@ class DamageManager {
         this.state.on("scene", () => {
             this._modifiers = []
             this._critModifiers = []
+            this._blockModifiers = []
             this._powerModifiers = {}
         })
         this.state.on("wave", () => {
             this._modifiers = []
             this._critModifiers = []
+            this._blockModifiers = []
             this._powerModifiers = {}
         })
     }
@@ -924,6 +927,9 @@ class DamageManager {
         return this._critModifiers.reduce((acc, m) => acc * m, 1)
     }
     
+    blockModifier() {
+        return this._blockModifiers.reduce((acc, m) => acc + m, 0)
+    }
     powerModifier(id) {
         const all = this._powerModifiers['*']?.reduce((acc, m) => acc * m, 1) ?? 1
         const specific = this._powerModifiers[id]?.reduce((acc, m) => acc * m, 1) ?? 1
@@ -942,6 +948,10 @@ class DamageManager {
         if (!this._powerModifiers[id]) 
             this._powerModifiers[id] = []
         this._powerModifiers[id].push(modifier)
+    }
+
+    chainAddBlock(modifier) {
+        this._blockModifiers.push(modifier)
     }
 }
 

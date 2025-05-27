@@ -468,7 +468,7 @@ class Ability {
         }
         this._listeners["using-move"] = (move, opponentMove) => {
             try {
-              this._ability.onModifyMove?.(move)
+              this._ability.onModifyMove?.(move, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
               this.setDamageModifiers(move, opponentMove)
             }
             catch (e) {

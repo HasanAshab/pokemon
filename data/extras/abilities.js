@@ -227,6 +227,12 @@ export default {
       atk: 30,
       spe: -50,
     },
+    onModifyMove(move, pokemon) {
+      if (move.id !== "block") return
+      const modifier = Math.random() * 0.2
+      pokemon.state.damage.chainAddBlock(modifier)
+      console.log(`hand beast blocked more ${modifier * 100}% of damage`);
+    },
     onModifyAtk(_, target, source, move) {
       const rand = Math.random() * 100
       if (!move.flags.weapon && rand < this.ability.beastAttackChance) {
@@ -257,6 +263,12 @@ export default {
     tokenChangesPercent: {
       atk: 50,
       spe: -100,
+    },
+    onModifyMove(move, pokemon) {
+      if (move.id !== "block") return
+      const modifier = Math.random() * 0.5
+      pokemon.state.damage.chainAddBlock(modifier)
+      console.log(`hand beast blocked more ${modifier * 100}% of damage`);
     },
     onModifyAtk(_, target, source, move) {
       const rand = Math.random() * 100

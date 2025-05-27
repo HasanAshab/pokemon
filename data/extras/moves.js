@@ -70,6 +70,9 @@ export default {
       priority: 0,
       flags: { offensive: 0 },
       secondary: null,
+      onBeforeMove(attacker, defender, move) {
+        attacker.state.damage.chainAddBlock(0.5)
+      },
       target: "normal",
       type: "Normal",
       isOffensive: false,
