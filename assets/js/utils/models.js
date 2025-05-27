@@ -365,6 +365,7 @@ class Ability {
         this.pokemon = manager.pokemon
         this.active = false
         this._ability = abilities[this.id]
+        this._listeners = {}
     }
     
     get id() {
@@ -374,14 +375,15 @@ class Ability {
     activate() {
         if (this.active) return
         this.active = true
-        
         this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+        this._subscribeListeners()
     }
 
     deactivate() {
         if (!this.active) return
         this.active = false
         this._ability.onDeactivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+        this._unsubscribeListeners()
     }
 
     toggle() {
@@ -421,18 +423,17 @@ class Ability {
 
     _subscribeListeners() {
         if (!this.pokemon.state)
-            throw new Error("Pokemon state is null")
+            throw new Error(`${this.pokemon.name} has no state`)
 
-        this.pokemon.state.on('start', () => {
+        this._listeners.start = () => {
             try {
                 this._ability.onStart?.(this.manager.pokemon)
             }
             catch (e) {
               console.log(e)
             }
-        })
-        
-        this.pokemon.state.on('turn', battle => {
+        }
+        this._listeners.turn = (battle) => {
             try {
               const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
               this._ability.onTurn?.(this.pokemon, opponent, battle)
@@ -440,9 +441,8 @@ class Ability {
             catch (e) {
               console.log(e)
             }
-        })
-        
-        this.pokemon.state.on('using-move', (move, opponentMove) => {
+        }
+        this._listeners["using-move"] = (move, opponentMove) => {
             try {
               this._ability.onModifyMove?.(move)
               this.setDamageModifiers(move, opponentMove)
@@ -450,9 +450,8 @@ class Ability {
             catch (e) {
               console.log(e)
             }
-        })
-
-        this.pokemon.state.on('contacted', contactor => {
+        }
+        this._listeners["contacted"] = (contactor) => {
             try {
                 this._ability.onDamagingHit?.callWithExtraCtx(
                     { _contacted: true },
@@ -465,7 +464,16 @@ class Ability {
             catch (e) {
               console.log(e)
             }
-        })   
+        }
+        Object.keys(this._listeners).forEach(event => {
+            this.pokemon.state.on(event, this._listeners[event])
+        })
+    }
+
+    _unsubscribeListeners() {
+        Object.keys(this._listeners).forEach(event => {
+            this.pokemon.state.removeListener(event, this._listeners[event])
+        })
     }
 }
 
@@ -478,6 +486,10 @@ class AbilityManager {
 
     names() {
       return this._abilities.map(ab => ab.name)
+    }
+
+    actives() {
+      return this._abilities.filter(ab => ab.active)
     }
     
     has(name) {
@@ -494,11 +506,11 @@ class AbilityManager {
     }
 
     canUseMove(move) {
-        return this._abilities.every(ability => ability._ability.canUseMove?.(move) ?? true)
+        return this.actives().every(ability => ability._ability.canUseMove?.(move) ?? true)
     }
 
     isImmune(effect) {
-        return this._abilities.some(ability => {
+        return this.actives().some(ability => {
           if (ability.isImmune(effect)) {
             abilitiesPopupQueue.add(`${ability.id}: ${effect} avoided`, this.pokemon._tag)
             return true
@@ -508,13 +520,9 @@ class AbilityManager {
     }
     
     onTryBoost() {
-        return this._abilities.forEach(ability => ability._ability.onTryBoost?.(...arguments))
+        return this.actives().forEach(ability => ability._ability.onTryBoost?.(...arguments))
     }
 
-    activate() {      
-        this._abilities.forEach(ability => ability._subscribeListeners())
-    }
-    
     _setAbilities(abilities) {
       this._abilities = []
         for (const [key, name] of Object.entries(abilities)) {

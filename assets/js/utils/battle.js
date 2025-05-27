@@ -35,7 +35,6 @@ class BaseBattle extends EventEmitter {
         this._all.forEach(p => {
             if (!p.state) {
                 p.state = new BattleState(this, p)
-                p.abilities.activate()
                 p.state.emit("start")
             }
             this._states.set(p, p.state)
@@ -697,26 +696,23 @@ class BattleState extends EventEmitter {
         this.stats.freeze()
         this.effects.freeze()
     }
-    
+
     unfreeze() {
         this.stats.unfreeze()
         this.effects.unfreeze()
     }
 }
 
-class StatsManager {
-    //bug must be in _statChanges
-    static BATTLE_STATS = {
-        "Bug": {
-            "accuracy": 3,
-            "evasion": 1,
-        },
-        "__default__": {
-            "accuracy": 1,
-            "evasion": 1,
-        }
+class StatsManager {  
+    _statChanges = {
+      atk: 0,
+      def: 0,
+      spe: 0,
+      spa: 0,
+      spd: 0,
+      accuracy: 0,
+      evasion: 0,
     };
-    _statChanges = {};
     _modifiers = {};
     _freezed = false;
 

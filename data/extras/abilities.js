@@ -130,6 +130,25 @@ export default {
     },
   },
 
+  flash: {
+    _totalSpeedBoost: 0,
+    onTurn(pokemon) {
+      pokemon.state.stats._statChanges.spe += 0.5
+      this.ability._totalSpeedBoost += 0.5
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.stats._statChanges.spe -= this.ability._totalSpeedBoost
+      this.ability._totalSpeedBoost = 0
+    },
+    onDamagingHit(damage, target, source, move) {
+      if (this.checkMoveMakesContact(move, source, target)) {
+        if (this.randomChance(3, 10)) {
+          source.trySetStatus("par", target)
+        }
+      }
+    },
+  },
+
   hand1beast: {
     type: 'beast',
     beastAttackChance: 30,
