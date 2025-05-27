@@ -199,14 +199,16 @@ export class Pokemon extends PSPokemon {
             "def": "spd",
             "spa": "atk",
             "spd": "def"
-        }        
+        }
+        let hp = 0
         for (const [stat1, stat2] of Object.entries(maping)) {
             const bonus = this.stats[stat2] * bonusRate
             if (stat1 === "hp") {
-                this.state.increaseHealth(bonus)
+                hp = bonus
             }
             this.tokens[stat1] += bonus
         }
+        this.state.increaseHealth(hp)
     }
 
     megaDevolve() {
