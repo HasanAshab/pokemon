@@ -509,7 +509,7 @@ class BattleState extends EventEmitter {
     static DEFAULT_MOVES = [
         "staythere",
         "dodge",
-        //"megaevolve",
+        "sagemode",
         "block",
         "punch",
         "kick"

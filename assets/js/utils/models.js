@@ -190,6 +190,27 @@ export class Pokemon extends PSPokemon {
         return true
     }
     
+    toSageMode() {
+        const bonusRate = 0.5
+        const maping = {
+            "hp": "spe",
+            "spe": "hp",
+            "atk": "spa",
+            "def": "spd",
+            "spa": "atk",
+            "spd": "def"
+        }
+        console.log(this.tokens);
+        
+        for (const [stat1, stat2] of Object.entries(maping)) {
+            this.tokens[stat1] += this.stats[stat2] * bonusRate
+            console.log(stat1, "-->", stat2, this.stats[stat2] * bonusRate);
+        }
+        
+        console.log(this.tokens);
+        
+    }
+
     megaDevolve() {
         if (!this.isMegaForm()) return false
         this._pokemon = pokemons[this.id];

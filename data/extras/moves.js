@@ -15,12 +15,12 @@ export default {
       type: "Normal",
       retreat: 0,
     },
-    megaevolve: {
+    sagemode: {
       num: 100002,
       accuracy: true,
       basePower: 0,
       category: "Status",
-      name: "Mega Evolve",
+      name: "Sage Mode",
       pp: 1,
       priority: 2,
       secondary: null,
@@ -28,9 +28,8 @@ export default {
       type: "Normal",
       retreat: 6,
       flags: {},
-      onTryMove(attacker) {
-        if (!attacker.megaEvolve())
-          return null
+      onBeforeMove(attacker) {
+        attacker.toSageMode()
         //const megaMoves = attacker.meta.mega.moves
         //megaMoves && attacker.state.setMoves(megaMoves)
       }
