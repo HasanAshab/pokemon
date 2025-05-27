@@ -9,6 +9,9 @@ const makeCtx = (ability) => ({
     popup: (msg, poke) => {
       globalThis.abilitiesPopupQueue.add(`${ability.id}: ${msg}`, poke._tag)
     },
+    deactivate() {
+        this.ability._shouldDeactivate = true
+    },
     checkMoveMakesContact() {
         return this._contacted
     },

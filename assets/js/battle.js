@@ -190,17 +190,15 @@ function setBattleStateListeners(playerTag) {
     pokemon.state.on(["scene-end", "wave"], () => {
       loadPokemonData(playerTag)
     })
-    
-    
-    
+
     pokemon.state.on("scene", () => {
         loadEffects(playerTag)
     })
     pokemon.state.on("scene-end", () => {
-        setTimeout(
-            () => loadEffects(playerTag),
-            2000
-        )
+        setTimeout(() => {
+            loadEffects(playerTag)
+            setStatChanges(pokemon.state.stats._statChanges, playerTag)
+        }, 2000)
     })
 
     // dodge pop up

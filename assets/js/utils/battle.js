@@ -419,9 +419,11 @@ class BaseBattle extends EventEmitter {
 
         if(move1.category === "Status" || d2 || instD2) {
             this.pokemon1.state.emit("hitted-move", move1) 
+            this.pokemon2.state.emit("hittee-move", move1) 
         }
         if(move2.category === "Status" || d1 || instD1) {
-            this.pokemon2.state.emit("hitted-move", move2) 
+            this.pokemon2.state.emit("hitted-move", move2)
+            this.pokemon1.state.emit("hittee-move", move2)
         }
 
         if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
@@ -710,6 +712,7 @@ class StatsManager {
       spe: 0,
       spa: 0,
       spd: 0,
+      crit: 0,
       accuracy: 0,
       evasion: 0,
     };

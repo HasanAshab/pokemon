@@ -133,8 +133,8 @@ export default {
   flash: {
     _totalSpeedBoost: 0,
     onTurn(pokemon) {
-      pokemon.state.stats._statChanges.spe += 0.5
-      this.ability._totalSpeedBoost += 0.5
+      pokemon.state.stats._statChanges.spe += 0.25
+      this.ability._totalSpeedBoost += 0.25
     },
     onDeactivate(pokemon) {
       pokemon.state.stats._statChanges.spe -= this.ability._totalSpeedBoost
@@ -145,6 +145,46 @@ export default {
         if (this.randomChance(3, 10)) {
           source.trySetStatus("par", target)
         }
+      }
+    },
+    onModifyOpponentAtk(_, target, source, move) {
+      if (move.type === "Ground") {
+        return this.chainModify(1.5)
+      }
+    },
+    onHitteeMove(move, pokemon, opponent) {
+      if (move.type === "Ground" && move.hit.criticalCount()) {
+        this.deactivate()
+        this.popup(`breaked by ${move.name}`, pokemon);
+      }
+    }
+  },
+  flamebody: {
+    _totalSpeedDecrease: 0,
+    onTurn(pokemon, opponent) {
+      opponent.state.stats._statChanges.spe -= 0.25
+      this.ability._totalSpeedDecrease += 0.25
+    },
+    onDeactivate(pokemon, opponent) {
+      opponent.state.stats._statChanges.spe += this.ability._totalSpeedDecrease
+      this.ability._totalSpeedDecrease = 0
+    },
+    onDamagingHit(damage, target, source, move) {
+      if (this.checkMoveMakesContact(move, source, target)) {
+        if (this.randomChance(3, 10)) {
+          source.trySetStatus("brn", target)
+        }
+      }
+    },
+    onModifyOpponentAtk(_, target, source, move) {
+      if (move.type === "Water") {
+        return this.chainModify(1.5)
+      }
+    },
+    onHitteeMove(move, pokemon, opponent) {
+      if (move.type === "Water" && move.hit.criticalCount()) {
+        this.deactivate()
+        this.popup(`breaked by ${move.name}`, pokemon);
       }
     },
   },

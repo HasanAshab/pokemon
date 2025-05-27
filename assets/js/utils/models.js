@@ -43,7 +43,7 @@ class PSPokemon {
     
     trySetStatus(effect, target) {
         this.state.effects.add(null, effect)
-        target && console.log(`${this.name}: ${target.name}'s ability caused ${effect}`)
+        target && abilitiesPopupQueue.add(`ability caused ${effect} to opponent`, target._tag)
     }
 }
 
@@ -433,6 +433,9 @@ class Ability {
               console.log(e)
             }
         }
+        this._listeners["scene-end"] = () => {
+            this._ability._shouldDeactivate && this.deactivate()
+        }
         this._listeners.turn = (battle) => {
             try {
               const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
@@ -446,6 +449,14 @@ class Ability {
             try {
               this._ability.onModifyMove?.(move)
               this.setDamageModifiers(move, opponentMove)
+            }
+            catch (e) {
+              console.log(e)
+            }
+        }
+        this._listeners["hittee-move"] = move => {
+            try {
+              this._ability.onHitteeMove?.(move, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
             }
             catch (e) {
               console.log(e)
