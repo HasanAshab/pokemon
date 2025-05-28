@@ -567,7 +567,7 @@ Shuriken: {
       name: "Rasengan",
       pp: 15 * 3,
       priority: 0,
-      flags: { protect: 1, mirror: 1 },
+      flags: { protect: 1, mirror: 1, contact: 1 },
       secondary: null,
       target: "normal",
       type: "Flying",

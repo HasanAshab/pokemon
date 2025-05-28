@@ -186,12 +186,22 @@ class BaseBattle extends EventEmitter {
           && move1.flags.offensive === move2.flags.offensive
           && move1.priority === move2.priority
         ) {
-            const succesor = move1.flags.weapon
+            const bareTypes = ["Normal", "Fighting"]
+            const armed = move1.flags.weapon
               ? this.pokemon1
               : this.pokemon2
-            const failor = this.opponentOf(succesor)
-            succesor.state.damage.chainModifyPower('*', 1.3)
-            senario.set(failor, new Move("staythere"))
+            const bare = this.opponentOf(armed)
+            const armedMove = senario.get(armed)
+            const bareMove = senario.get(bare)
+
+            if (bareTypes.includes(bareMove.type)) {
+                armed.state.damage.chainModifyPower(armedMove.id, 1.3)
+                senario.set(bare, new Move("staythere"))
+                armed.state.removeMove(armedMove.id)
+            }
+            else {
+                bareMove.recoil = [1, 10]
+            }
         }
 
         // move failure
@@ -386,8 +396,6 @@ class BaseBattle extends EventEmitter {
 
         // TEMP: block move support
         if (move1.priority === move2.priority) {
-          console.log(this.pokemon1.state.damage.blockModifier());
-          console.log(this.pokemon2.state.damage.blockModifier());
             d1 -= d1 * this.pokemon1.state.damage.blockModifier()
             d2 -=  d2 * this.pokemon2.state.damage.blockModifier()
         }
@@ -926,9 +934,8 @@ class DamageManager {
     critModifier() {
         return this._critModifiers.reduce((acc, m) => acc * m, 1)
     }
-    
     blockModifier() {
-        return this._blockModifiers.reduce((acc, m) => acc + m, 0)
+        return Math.min(1, this._blockModifiers.reduce((acc, m) => acc + m, 0))
     }
     powerModifier(id) {
         const all = this._powerModifiers['*']?.reduce((acc, m) => acc * m, 1) ?? 1
