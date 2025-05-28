@@ -1,7 +1,6 @@
 * Tasks
 moves sharingan, mayangan
 tailNbeast
-improve weapon logic
 
 
 * Scenario
