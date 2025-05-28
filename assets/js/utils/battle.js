@@ -179,7 +179,33 @@ class BaseBattle extends EventEmitter {
                 senario.set(this.pokemon1, new Move("staythere"))
             }
         }
+
+        // move failure
+        this._checkFailure(this.pokemon1, senario)
+        this._checkFailure(this.pokemon2, senario)
         
+        this.emit("scene", senario)
+        
+        // TEMP: move power management
+        this.pokemon1.state.damage.chainModifyPower('*', this.pokemon1.state.stats._statChanges["pow"] || 1)
+        this.pokemon2.state.damage.chainModifyPower('*', this.pokemon2.state.stats._statChanges["pow"] || 1)
+
+
+        move1 = senario.get(this.pokemon1)
+        move2 = senario.get(this.pokemon2)
+
+        try {
+          move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
+          move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
+        }
+        catch (e) {
+          move1._meta = {}
+          move2._meta = {}
+        }
+
+        this.pokemon1.state.emit("using-move", move1, move2)
+        this.pokemon2.state.emit("using-move", move2, move1)
+
         // weapon effects
         if(
           move1.flags.weapon !== move2.flags.weapon
@@ -197,39 +223,17 @@ class BaseBattle extends EventEmitter {
             if (bareTypes.includes(bareMove.type)) {
                 armed.state.damage.chainModifyPower(armedMove.id, 1.3)
                 senario.set(bare, new Move("staythere"))
-                move1.flags.contact === move2.flags.contact
-                  && armed.state.removeMove(armedMove.id)
+                if (
+                  !armedMove.flags.bodypart
+                  && move1.flags.contact === move2.flags.contact
+                ) {
+                  armed.state.removeMove(armedMove.id)
+                }
             }
             else {
               bareMove.recoil = [3, 10]
             }
         }
-
-        // move failure
-        this._checkFailure(this.pokemon1, senario)
-        this._checkFailure(this.pokemon2, senario)
-        
-        this.emit("scene", senario)
-        
-        // TEMP: move power management
-        this.pokemon1.state.damage.chainModifyPower('*', this.pokemon1.state.stats._statChanges["pow"] || 1)
-        this.pokemon2.state.damage.chainModifyPower('*', this.pokemon2.state.stats._statChanges["pow"] || 1)
-
-
-        move1 = senario.get(this.pokemon1)
-        move2 = senario.get(this.pokemon2)
-        
-        try {
-          move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
-          move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
-        }
-        catch (e) {
-          move1._meta = {}
-          move2._meta = {}
-        }
-
-        this.pokemon1.state.emit("using-move", move1, move2)
-        this.pokemon2.state.emit("using-move", move2, move1)
 
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)

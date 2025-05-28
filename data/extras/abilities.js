@@ -296,97 +296,39 @@ export default {
 
   tail1beast: {
     type: 'beast',
+    _tailsUsed: 0,
     beastTailsCount: 1,
-    tokenChangesPercent: {
-      spe: 50,
-      def: -20,
+    onDeactivate() {
+      this.ability._tailsUsed = 0
     },
-    statChanges: {
-      crit: 1
+    canUseMove(move) {      
+      return !move.flags.weapon
     },
-    onModifyMove(move) {
-        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
-            const hitCount = move.multiHit();
-            move.multiHit = () => {
-                return hitCount * this.ability.beastTailsCount
-            }
-        }
-    },
-  },
-  tail3beast: {
-    type: 'beast',
-    beastTailsCount: 3,
-    tokenChangesPercent: {
-      spe: 100,
-    },
-    statChanges: {
-      crit: 2
-    },
-    onModifyMove(move) {
-        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
-            const hitCount = move.multiHit();
-            move.multiHit = () => {
-                return hitCount * this.ability.beastTailsCount
-            }
-        }
-    },
-  },
-  tail6beast: {
-    type: 'beast',
-    beastTailsCount: 6,
-    tokenChangesPercent: {
-      spe: 200,
-    },
-    statChanges: {
-      crit: 2
-    },
-    onModifyMove(move) {
-        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
-            const hitCount = move.multiHit();
-            move.multiHit = () => {
-                return hitCount * this.ability.beastTailsCount
-            }
-        }
-    },
-  },
-  tail9beast: {
-    type: 'beast',
-    beastTailsCount: 9,
-    tokenChangesPercent: {
-      spe: 300,
-    },
-    statChanges: {
-      crit: 3
-    },
-    onModifyMove(move) {
-        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
-            const hitCount = move.multiHit();
-            move.multiHit = () => {
-                return hitCount * this.ability.beastTailsCount
-            }
-        }
-    },
-  },
-  tail10beast: {
-    type: 'beast',
-    beastTailsCount: 10,
-    tokenChangesPercent: {
-      spe: 300,
-    },
-    statChanges: {
-      crit: 3
-    },
-    onModifyMove(move) {
-        if (move.id.startsWith("tail") || move.id.endsWith("tail")) {
-            const hitCount = move.multiHit();
-            move.multiHit = () => {
-                return hitCount * this.ability.beastTailsCount
-            }
-        }
-    },
-    onTryBoost(boost, target, source, effect) {      
-      delete boost.spe
-      delete boost.crit
+    onModifyMove(move, pokemon) {
+      const oldFlags = structuredClone(move.flags)
+      const oldMultihit = structuredClone(move.multihit)
+
+      move.flags.weapon = 1
+      move.flags.bodypart = 1
+      console.log(`tail used ${this.ability._tailsUsed}`);
+      
+      if (move.id.includes("tail") && move.multihit) {
+          const bonus = Math.max(this.ability.beastTailsCount - this.ability._tailsUsed, 0)
+          if (!Array.isArray(move.multihit))        
+            move.multihit += bonus;
+          else
+            move.multihit[1] += bonus;
+          this.ability._tailsUsed++
+      }
+
+      // TEMP: workaround
+      pokemon.state.once("used-move", move => {
+        console.log("used move");
+        
+        const actualMove = pokemon.state.moves.find(m => m.id === move.id)
+        actualMove.flags = oldFlags
+        actualMove.multihit = oldMultihit
+      })
     },
   },
 }
