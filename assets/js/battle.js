@@ -114,6 +114,7 @@ globalThis.showPlayerSettingsForm = function(playerTag){
     playerSettingsForm.parentElement.classList.add("active")
     playerSettingsForm.querySelector(".header > .name").textContent = playerTag
    loadAbilities(playerTag)
+   loadTokenStats(playerTag)
 }
 
 function loadVeryCloseBtn() {
@@ -749,6 +750,13 @@ function loadAbilities(playerTag) {
     
     }
 }
+function loadTokenStats(playerTag) {
+   const tokenStats = pokemonMap[playerTag].tokens
+
+    const  playerSettingsForm = document.querySelector('.player-settings-form')
+    const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats')
+    preStats.innerHTML = JSON.stringify(tokenStats, null, 2)  
+  }
 globalThis.toggleAbility = function({currentTarget},playerTag, ability_name){
    currentTarget.classList.toggle("active")
    pokemonMap[playerTag].abilities.toggle(ability_name);
