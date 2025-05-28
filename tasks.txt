@@ -1,5 +1,8 @@
-* Proposal
+* Tasks
 moves sharingan, mayangan
+tailNbeast
+improve weapon logic
+
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
