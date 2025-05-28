@@ -293,7 +293,6 @@ export default {
       return beast
     },
   },
-
   tail1beast: {
     type: 'beast',
     _tailsUsed: 0,
@@ -305,15 +304,12 @@ export default {
       return !move.flags.weapon
     },
     onModifyMove(move, pokemon) {
-      const oldFlags = structuredClone(move.flags)
-      const oldMultihit = structuredClone(move.multihit)
-
       move.flags.weapon = 1
       move.flags.bodypart = 1
-      console.log(`tail used ${this.ability._tailsUsed}`);
       
       if (move.id.includes("tail") && move.multihit) {
           const bonus = Math.max(this.ability.beastTailsCount - this.ability._tailsUsed, 0)
+          
           if (!Array.isArray(move.multihit))        
             move.multihit += bonus;
           else
@@ -321,13 +317,11 @@ export default {
           this.ability._tailsUsed++
       }
 
-      // TEMP: workaround
-      pokemon.state.once("used-move", move => {
-        console.log("used move");
-        
-        const actualMove = pokemon.state.moves.find(m => m.id === move.id)
-        actualMove.flags = oldFlags
-        actualMove.multihit = oldMultihit
+      // TEMP: workaround to reset move
+      pokemon.state.once("used-move", move => {        
+        const actualMove = pokemon.state.moves.find(m => m.id === move.id)        
+        actualMove.flags = actualMove._ref.flags
+        actualMove.multihit = actualMove._ref.multihit
       })
     },
   },
