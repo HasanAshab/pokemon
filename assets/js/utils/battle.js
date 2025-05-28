@@ -197,10 +197,11 @@ class BaseBattle extends EventEmitter {
             if (bareTypes.includes(bareMove.type)) {
                 armed.state.damage.chainModifyPower(armedMove.id, 1.3)
                 senario.set(bare, new Move("staythere"))
-                armed.state.removeMove(armedMove.id)
+                move1.flags.contact === move2.flags.contact
+                  && armed.state.removeMove(armedMove.id)
             }
             else {
-                bareMove.recoil = [1, 10]
+              bareMove.recoil = [3, 10]
             }
         }
 
