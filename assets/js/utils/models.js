@@ -538,6 +538,10 @@ class AbilityManager {
         return this.pokemon.level >= 36
     }
 
+    retreatCost() {
+        return this.actives().reduce((acc, ability) => acc + ability._ability.retreat, 0)
+    }
+
     canUseMove(move) {
         return this.actives().every(ability => ability._ability.canUseMove?.(move) ?? true)
     }

@@ -82,6 +82,7 @@ function mergeDefault(ability, key) {
     }
 }
 
+
 function bindMethods(ability) {
     const exclude = []
     for (const key in ability) {
@@ -103,9 +104,14 @@ function addCtxMixer(ability) {
     }
 }
 
+function setRetreat(ability) {
+    if ("retreat" in ability) return
+    ability.retreat = Math.max(ability.rating ?? 0, 0)
+}
 
 export default processor([
     mergeDefault,
     bindMethods,
     addCtxMixer,
+    setRetreat,
 ])

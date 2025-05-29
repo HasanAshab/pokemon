@@ -587,6 +587,10 @@ class BattleState extends EventEmitter {
         this.on("move-removed", move => {
             this.pokemon.tokens = sumObj(modObj(move.tokenChanges, -1), this.pokemon.tokens)
         })
+
+        this.on("turn-end", () => {          
+            this.retreat -= this.pokemon.abilities.retreatCost()
+        })
         pokemon.meta.moves && this.setMoves(pokemon.meta.moves)
     }
     

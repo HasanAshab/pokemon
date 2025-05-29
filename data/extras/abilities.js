@@ -296,6 +296,7 @@ export default {
   tail1beast: {
     type: 'beast',
     _tailsUsed: 0,
+    retreat: 1,
     beastTailsCount: 1,
     onDeactivate() {
       this.ability._tailsUsed = 0
