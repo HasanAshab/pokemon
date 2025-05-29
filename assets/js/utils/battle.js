@@ -464,9 +464,9 @@ class BaseBattle extends EventEmitter {
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
-        const wantDodge = !["staythere", "dodge"].includes(move.id) 
+        const wantDodge = !["staythere", "dodge"].includes(move.id) && !(move.flags.contact && opponentMove.flags.contact) 
             && await this.prompt(pokemon).ask("dodge")
-        
+
         if (wantDodge) {
             move = new Move("dodge")
             senario.set(pokemon, move)
@@ -1014,7 +1014,6 @@ class BattlePrompt {
     _repliers = {};
 
     async ask(tag) {
-        return false // for now, no prompts
         const replier = this._repliers[tag]
         if (!replier) throw new Error(`No replier for tag ${tag}`)
         return await replier()
