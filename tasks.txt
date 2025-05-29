@@ -1,7 +1,7 @@
 * Tasks
 moves sharingan, mayangan
 tailNbeast
-accuracy on take weapon
+accuracy or physical strength on take weapon
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
