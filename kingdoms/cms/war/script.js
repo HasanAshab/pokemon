@@ -301,8 +301,8 @@ startWarBtn.onclick = () => {
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
 
-    tryHealSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
-    tryHealSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
+    handleWoundedSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
+    handleWoundedSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
   
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {      
@@ -311,7 +311,7 @@ startWarBtn.onclick = () => {
           <br>
           <h5>Outcome: <span style="color: ${war.result.win ? "green" : "red"}">${war.result.win ? "Success" : "Failour"}</span></h5><br>
           ${war.result.raisedWhiteFlag ? "Defender raised White Flag!<br>" : ""}
-
+          Score Diff (DEF - ATK): ${war.result.scores.def - war.result.scores.atk} (${parseInt((war.result.scores.atk * 100) / war.result.scores.def)}%) <br>
           Wounded Units: <br>
           Attacker:<br>
           ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>

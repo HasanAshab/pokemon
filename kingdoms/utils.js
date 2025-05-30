@@ -145,7 +145,7 @@ export function calcNetProd(kingdom, localize = false) {
   }, {});
 }
 
-export function prepareCommander(kingdom, commanderName) {
+export function prepareCommander(kingdom, commanderName) {  
   const commander = structuredClone(kingdom.commanders[commanderName]);
   commander.name = commanderName;
   commander.image = new Pokemon(commander.image);
@@ -171,7 +171,7 @@ export function prepareSoldiers(
 }
 
 export function prepareDefenceCommanders(kingdom) {
-  return kingdom.defenceWaves.map((wave) => {
+  return kingdom.defenceWaves.map((wave) => {    
     return prepareCommander(kingdom, wave.commander);
   });
 }

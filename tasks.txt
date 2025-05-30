@@ -3,7 +3,6 @@ moves sharingan, mayangan
 tailNbeast
 physical strength on take weapon
 anger ability
-battle score percent
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
