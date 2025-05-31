@@ -1,6 +1,6 @@
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, getUserPokemonsMeta, startBattle, startUserBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
-import moves from "../../data/moves.js"
+import MOVES from "../../data/moves.js"
 
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
@@ -113,7 +113,7 @@ function removeMove(event) {
 }
 
 function showMoveDetails(event) {
-  const details = moves[event.target.value];
+  const details = MOVES[event.target.value];
   document.getElementById("details").textContent = JSON.stringify(details, null, 2);
 }
 

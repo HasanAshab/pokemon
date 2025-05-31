@@ -1,4 +1,4 @@
-startBattle([
+[
   {
     "id": "student",
     "name": "Kabaw",
@@ -28,9 +28,9 @@ startBattle([
     },
     "stats": {},
     "token_used": {
-      spe: -20,
-      atk: 10,
-      def: 10
+      "spe": -20,
+      "atk": 10,
+      "def": 10
     }
   }
-], [], "single")
+]

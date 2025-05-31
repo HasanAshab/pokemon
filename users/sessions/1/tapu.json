@@ -1,0 +1,36 @@
+[
+  {
+    "id": "rookie",
+    "name": "Tapu",
+    "xp": 1100,
+    "nature": "adamant",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "kunai",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "isSelected": true
+      },
+      {
+        "id": "watergun",
+        "isSelected": true
+      },
+      {
+        "id": "rapidspin",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+]
