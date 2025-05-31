@@ -2,7 +2,7 @@
 moves sharingan, mayangan
 tailNbeast
 physical strength on take weapon
-anger ability
+summon 
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

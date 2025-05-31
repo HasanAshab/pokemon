@@ -22,6 +22,13 @@ const makeCtx = (ability) => ({
         target.state.decreaseHealth(amount)
         this.popup(`${source.name}'s ability caused ${amount} damage`, target)
     },
+    boost(obj, target, source) {
+      console.log(obj, target.name);
+      
+        for (const [stat, amount] of Object.entries(obj)) {
+            target.state.stats.applyStatChange(stat, amount)
+        }
+    }
 })
 
 function mergeDefault(ability, key) {

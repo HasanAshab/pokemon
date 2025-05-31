@@ -152,7 +152,7 @@ export default {
         return this.chainModify(1.5)
       }
     },
-    onHitteeMove(move, pokemon, opponent) {
+    onHit(pokemon, opponent, move) {
       if (move.type === "Ground" && move.hit.criticalCount()) {
         this.deactivate()
         this.popup(`breaked by ${move.name}`, pokemon);
@@ -181,7 +181,7 @@ export default {
         return this.chainModify(1.5)
       }
     },
-    onHitteeMove(move, pokemon, opponent) {
+    onHit(pokemon, opponent, move) {
       if (move.type === "Water" && move.hit.criticalCount()) {
         this.deactivate()
         this.popup(`breaked by ${move.name}`, pokemon);

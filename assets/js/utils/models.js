@@ -45,6 +45,12 @@ class PSPokemon {
         this.state.effects.add(null, effect)
         target && abilitiesPopupQueue.add(`ability caused ${effect} to opponent`, target._tag)
     }
+
+    getMoveHitData(move) {
+        return {
+            crit: !!move.hit?.criticalCount(),
+        }
+    }
 }
 
 export class Pokemon extends PSPokemon {
@@ -291,6 +297,7 @@ export class Pokemon extends PSPokemon {
 
 export class Move {
     succeed = true
+    effectType = "Move"
 
     constructor(id) {
         this.id = id;
@@ -478,7 +485,7 @@ class Ability {
         }
         this._listeners["hittee-move"] = move => {
             try {
-              this._ability.onHitteeMove?.(move, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+              this._ability.onHit?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), move)
             }
             catch (e) {
               console.log(e)

@@ -146,7 +146,7 @@ export default {
     num: 148
   },
   angerpoint: {
-    onHit(target, source, move) {
+    onHit(target, source, move) {    
       if (!target.hp) return
       if (move?.effectType === "Move" && target.getMoveHitData(move).crit) {
         this.boost({ atk: 12 }, target, target)
