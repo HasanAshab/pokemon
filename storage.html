@@ -108,6 +108,16 @@
     <button onclick="clearAll()">Clear All</button>
   </div>
 
+  <div class="controls">
+    <button onclick="copyAll()">Copy localStorage</button>
+    <button onclick="importAll()">Import localStorage</button>
+  </div>
+
+  <div class="controls">
+    <textarea id="importTextarea" rows="6" style="width:100%;" placeholder="Paste localStorage JSON here"></textarea>
+  </div>
+
+
   <div class="table-container">
     <table>
       <thead>
@@ -204,6 +214,43 @@
         renderStorage();
       }
     }
+  function copyAll() {
+    const data = JSON.stringify(localStorage, null, 2);
+    navigator.clipboard.writeText(data).then(() => {
+      alert("localStorage copied to clipboard.");
+    }).catch(err => {
+      alert("Failed to copy: " + err);
+    });
+  }
+
+  function importAll() {
+    const input = document.getElementById('importTextarea').value;
+    if (!input.trim()) {
+      alert("Textarea is empty.");
+      return;
+    }
+    let data;
+    try {
+      data = JSON.parse(input);
+    } catch (e) {
+      alert("Invalid JSON format.");
+      return;
+    }
+    if (typeof data !== 'object' || Array.isArray(data)) {
+      alert("JSON must be an object with key-value pairs.");
+      return;
+    }
+    if (!confirm("This will overwrite existing keys. Continue?")) return;
+    for (const key in data) {
+      if (typeof data[key] !== 'string') {
+        alert(`Value for key "${key}" must be a string.`);
+        return;
+      }
+      localStorage.setItem(key, data[key]);
+    }
+    renderStorage();
+    alert("Import completed.");
+  }
 
     renderStorage();
   </script>
