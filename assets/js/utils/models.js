@@ -597,6 +597,12 @@ class Item {
                 this.pokemon.tokens[key] += this._item.tokens[key]
             }
         }
+        
+        if ("tokensPercent" in  this._item) {
+            for (const key in this._item.tokens) {
+                this.pokemon.tokens[key] += this.pokemon.stats[key] * (this._item.tokensPercent[key] / 100)
+            }
+        }
     }
 }
 
