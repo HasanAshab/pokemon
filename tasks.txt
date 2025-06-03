@@ -1,8 +1,9 @@
 * Tasks
 moves sharingan, mayangan
-tailNbeast
+tailNbeast, golem jin
 physical strength on take weapon
 summon 
+voice, gentics, auto-genetics
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
