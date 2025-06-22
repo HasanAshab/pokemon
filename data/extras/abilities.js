@@ -52,7 +52,8 @@ export default {
       for (let i in boost) {
         boost[i] *= -1
       }
-    }
+    },
+    retreat: 2
   },
   mayangan2: {
     healthBoost: [2, 8],

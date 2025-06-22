@@ -241,4 +241,47 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-
+startBattle([
+  {
+    "id": "rookie",
+    "name": "Omi sensei",
+    "xp": 1700,
+    "nature": "calm",
+    "retreat": 5.5,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "kunai",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "isSelected": true
+      },
+      {
+        "id": "vinewhip",
+        "isSelected": true
+      },
+      {
+        "id": "ember",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "isSelected": true
+      },
+      {
+        "id": "detect",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "multiple")

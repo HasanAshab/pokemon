@@ -159,7 +159,7 @@ function loadPokemonData(playerTag) {
     const pokemon = pokemonMap[playerTag]
     const hp = pokemon.state.stats.get("hp")
     const oldHp = pokemon.state.stats.prev.get("hp")
-
+    
     loadVeryCloseBtn()
     setCurrentRetreat(pokemon.state.retreat, playerTag)
     setStatChanges(pokemon.state.stats._statChanges, playerTag)
@@ -184,6 +184,7 @@ function loadPokemonData(playerTag) {
 
 function loadEffects(playerTag) {
   const pokemon = pokemonMap[playerTag]
+  console.log(pokemon.id, pokemon.name, pokemon.state.effects.all())
   setEffects(pokemon.state.effects.all(), playerTag)
 }
 function setBattleStateListeners(playerTag) {
@@ -318,7 +319,7 @@ function setupPokemonForDom(playerTag) {
     setBattleStateListeners(playerTag)
     loadRetreat(playerTag)
     loadPokemonData(playerTag)
- 
+    loadEffects(playerTag)
 }
 
 //todo

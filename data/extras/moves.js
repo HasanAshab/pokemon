@@ -268,7 +268,7 @@ kunai: {
 ninjastar: {
       num: 100002,
       accuracy: 100,
-      basePower: 50,
+      basePower: 15,
       category: "Physical",
       name: "Ninja Star",
       pp: 15 * 3,
@@ -280,7 +280,8 @@ ninjastar: {
       contestType: "Tough",
       tokenChanges: {
         spe: -6
-      }
+      },
+      multihit: [2 ,5],
     },
  
 bamboo: {
