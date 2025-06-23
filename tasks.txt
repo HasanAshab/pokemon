@@ -12,7 +12,6 @@ phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
 
 bugs:
-ninjastar vs buble
 
 * Bugs
 counter
