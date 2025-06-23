@@ -119,12 +119,10 @@ class BaseBattle extends EventEmitter {
     undo() {
         const data = this._history.pop()
         this.sync(data)
-        console.log("Undo")
     }
     redo() {
         const data = this._history.pop()
         this.sync(data)
-        console.log("Redo")
     }
 
     opponentOf(pokemon) {
@@ -208,10 +206,11 @@ class BaseBattle extends EventEmitter {
 
         // weapon effects
         if(
-          move1.flags.weapon !== move2.flags.weapon
+          move2.flags.contact
+          && move1.flags.weapon !== move2.flags.weapon
           && move1.flags.offensive === move2.flags.offensive
           && move1.priority === move2.priority
-        ) {
+        ) {          
             const bareTypes = ["Normal", "Fighting"]
             const armed = move1.flags.weapon
               ? this.pokemon1
@@ -352,6 +351,7 @@ class BaseBattle extends EventEmitter {
         }
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
+            
             if (damage > 0) {
                 await this._tryDodge(this.pokemon1, senario)
                 move1 = senario.get(this.pokemon1)
@@ -374,6 +374,7 @@ class BaseBattle extends EventEmitter {
         let d2 = "damage" in move1
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))
+                
 
         if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
             this.pokemon1.state.emit("contacted", this.pokemon2)

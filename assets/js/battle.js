@@ -50,7 +50,6 @@ globalThis.doubleTeamDataClickHandler = (playerTag)=>{
    const oldDoubleTeamsCount = pokemonMap[playerTag].state.manCount
    const newVal = parseInt(window.prompt(`Set the double team data of ${playerTag}`,oldDoubleTeamsCount))
    setDoubleTeamData(newVal, playerTag)
-   console.log(newVal)
    pokemonMap[playerTag].state.manCount = newVal
 }
 globalThis.closePlayerSettingsForm = function ({currentTarget}) {
@@ -184,7 +183,6 @@ function loadPokemonData(playerTag) {
 
 function loadEffects(playerTag) {
   const pokemon = pokemonMap[playerTag]
-  console.log(pokemon.id, pokemon.name, pokemon.state.effects.all())
   setEffects(pokemon.state.effects.all(), playerTag)
 }
 function setBattleStateListeners(playerTag) {

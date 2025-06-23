@@ -273,7 +273,7 @@ ninjastar: {
       name: "Ninja Star",
       pp: 15 * 3,
       priority: 0,
-      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1},
       secondary: null,
       target: "normal",
       type: "Rock",
@@ -327,7 +327,7 @@ kohgastar: {
       name: "Kohga Star",
       pp: 15 * 3,
       priority: 0,
-      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1},
       secondary: null,
       target: "normal",
       type: "Steel",
@@ -383,7 +383,7 @@ Shuriken: {
       name: "Shuriken",
       pp: 2 * 3,
       priority: 0,
-      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+      flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },
       statChanges:{
         self:{
           atk:-1
@@ -480,7 +480,7 @@ Shuriken: {
       name: "Dirt",
       pp: 15 * 3,
       priority: 0,
-      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1, weapon: 1},
+      flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1},
       secondary: {
         chance: 80,
         status: "psn"
@@ -582,7 +582,7 @@ Shuriken: {
       name: "Rasen Shuriken",
       pp: 2 * 3,
       priority: 0,
-      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1 },
+      flags: { protect: 1, mirror: 1, metronome: 1 },
       statChanges:{
         self:{
           atk:-2
@@ -619,7 +619,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -640,7 +640,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -661,7 +661,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -682,7 +682,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -703,7 +703,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -724,7 +724,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -745,7 +745,7 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        contact: 0, 
+        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
