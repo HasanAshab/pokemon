@@ -48,12 +48,11 @@ export default {
 
   mayangan1: {
     onTryBoost(boost, target, source, effect) {
-      if (source && target === source) return
       for (let i in boost) {
         boost[i] *= -1
       }
     },
-    retreat: 2
+    retreat: 1
   },
   mayangan2: {
     healthBoost: [2, 8],

@@ -1,36 +1,48 @@
-[
-  {
-    "id": "rookie",
-    "name": "Tapu",
-    "xp": 1100,
-    "nature": "adamant",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "kunai",
-        "isSelected": true
-      },
-      {
-        "id": "ninjastar",
-        "isSelected": true
-      },
-      {
-        "id": "watergun",
-        "isSelected": true
-      },
-      {
-        "id": "rapidspin",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
+[{
+  "nature": "adamant",
+  "id": "rookie",
+  "name": "tapu",
+  "xp": 1200,
+  "retreat": 4,
+  "types": [
+    "Normal"
+  ],
+  "abilities": [],
+  "items": [],
+  "moves": [
+    {
+      "id": "kunai",
+      "isSelected": true
     },
-    "stats": {},
-    "token_used": {}
-  }
-]
+    {
+      "id": "ninjastar",
+      "isSelected": true
+    },
+    {
+      "id": "rapidspin",
+      "isSelected": true
+    },
+    {
+      "id": "bubble"
+    },
+    {
+      "id": "takeweapon"
+    }
+  ],
+  "mega": {
+    "moves": [],
+    "suffix": "mega"
+  },
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "isSelectedForMultiBattle": false,
+  "loses-count": "0",
+  "wins-count": "0"
+}]

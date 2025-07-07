@@ -243,12 +243,12 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 startBattle([
   {
-    "id": "rookie",
-    "name": "Omi sensei",
-    "xp": 1700,
-    "nature": "calm",
-    "retreat": 5.5,
-    "types": [],
+    "id": "chunin",
+    "name": "Unknown",
+    "xp": 3600,
+    "nature": "bold",
+    "retreat": 7,
+    "types": ["Grass", "Steel"],
     "abilities": [],
     "items": [],
     "moves": [
@@ -261,19 +261,31 @@ startBattle([
         "isSelected": true
       },
       {
+        "id": "ninjablade",
+        "isSelected": true
+      },
+      {
+        "id": "substitute",
+        "isSelected": true
+      },
+      {
+        "id": "scaryface",
+        "isSelected": true
+      },
+      {
+        "id": "takeweapon",
+        "isSelected": true
+      },
+      {
+        "id": "razorleaf",
+        "isSelected": true
+      },
+      {
         "id": "vinewhip",
         "isSelected": true
       },
       {
-        "id": "ember",
-        "isSelected": true
-      },
-      {
-        "id": "poweruppunch",
-        "isSelected": true
-      },
-      {
-        "id": "detect",
+        "id": "absorb",
         "isSelected": true
       }
     ],

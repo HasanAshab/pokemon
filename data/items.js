@@ -33,5 +33,24 @@ export default {
       "spa": 3,
       "spd": 3
     }
-  }
+  },
+  "gen-age-18": {
+    tokensPercent: {
+      "hp": 10,
+      "def": 5,
+      "atk": 5,
+      "spa": 5,
+      "spd": 5,
+      "spe": 5
+    }
+  },
+  "gen-age-25": {
+    tokensPercent: {
+      "hp": 20,
+      "def": 10,
+      "atk": 15,
+      "spa": 15,
+      "spd": 10,
+    }
+  },
 }
