@@ -749,7 +749,12 @@ function loadAbilities(playerTag) {
     }
 }
 function loadTokenStats(playerTag) {
-   const tokenStats = pokemonMap[playerTag].tokens
+   const pokemon = pokemonMap[playerTag]
+   const tokenStats = structuredClone(pokemon.tokens)
+
+   for (const [key, value] of Object.entries(tokenStats)) {
+    tokenStats[key] = `${pokemon.state.stats.get(key)} (+ ${value})` 
+   }
 
     const  playerSettingsForm = document.querySelector('.player-settings-form')
     const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats')
