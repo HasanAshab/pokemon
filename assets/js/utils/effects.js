@@ -133,7 +133,8 @@ class BurnEffect extends Effect {
     static effectName = "brn"
     
     onScene() {
-        this.state.stats.chainModify("atk", 0.5);
+        const atkMod = this.pokemon.abilities.isActive(/mayangan.*/) ? 2 : 0.5
+        this.state.stats.chainModify("atk", atkMod);
     }
 
     onTurn() {
@@ -265,7 +266,8 @@ class ParalyzeEffect extends Effect {
     static effectName = "par"
 
     onScene() {
-        this.state.stats.chainModify("spe", 0.5); // Speed halved
+        const speMod = this.pokemon.abilities.isActive(/mayangan.*/) ? 2 : 0.5
+        this.state.stats.chainModify("spe", speMod);
     }
 
     onTurn() {

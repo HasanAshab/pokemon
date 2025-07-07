@@ -545,6 +545,10 @@ class AbilityManager {
         return this.pokemon.level >= 36
     }
 
+    isActive(nameOrRegex) {
+        return this.actives().some(ab => ab.name === nameOrRegex || ab.name.match(nameOrRegex))
+    }
+
     retreatCost() {
         return this.actives().reduce((acc, ability) => acc + ability._ability.retreat, 0)
     }
