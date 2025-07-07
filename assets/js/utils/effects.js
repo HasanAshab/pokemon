@@ -133,9 +133,7 @@ class BurnEffect extends Effect {
     static effectName = "brn"
     
     onScene() {
-        const atkMod = this.state.pokemon.abilities.isActive(/mayangan.*/) ? 2 : 0.5
-        console.log(atkMod);
-        
+        const atkMod = this.state.pokemon.abilities.isActive(/mayangan.*/) ? 2 : 0.5        
         this.state.stats.chainModify("atk", atkMod);
     }
 
