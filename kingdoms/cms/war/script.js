@@ -32,7 +32,6 @@ function renderKingdomSelects() {
   defenderSelect.appendChild(defenderOption);
   
   kingdomsList.forEach(kingdom => {
-    if (kingdom === name) return;
     const attackerOption = document.createElement('option');
     attackerOption.value = kingdom;
     attackerOption.textContent = kingdom;
