@@ -512,7 +512,29 @@ function loadMoves(playerTag) {
     const opponentPokemon = pokemonMap[opponentTag(playerTag)]
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
     moveCardsContainer.innerHTML = ''
-  for (const move of pokemon.state.moves) {
+const veryClose = battle.ctx.veryClose === true;
+const moves = [...pokemon.state.moves].sort((a, b) => {
+  const aUsable = battle.canUseMove(pokemon, a.id);
+  const bUsable = battle.canUseMove(pokemon, b.id);
+  if (aUsable !== bUsable) return aUsable ? -1 : 1;
+
+  if (veryClose) {
+    const aContact = a.flags.contact === 1;
+    const bContact = b.flags.contact === 1;
+    if (aContact !== bContact) return aContact ? -1 : 1;
+  }
+
+  const aPower = a.basePower || 0;
+  const bPower = b.basePower || 0;
+  if (aPower !== bPower) return bPower - aPower;
+
+  const aDefault = a._meta?.isDefault === true;
+  const bDefault = b._meta?.isDefault === true;
+  if (aDefault !== bDefault) return aDefault ? 1 : -1;
+
+  return 0;
+});
+  for (const move of moves) {
       const mod = pokemon.state.damage.powerModifier(move.id)
       const effectiveness = opponentPokemon.effectiveness(move.type)
       const damage = new Damage(pokemon, move)

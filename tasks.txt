@@ -1,8 +1,6 @@
 * Tasks
-moves sharingan, mayangan
-tailNbeast, golem jin
-physical strength on take weapon
-summon 
+moves sharingan, mayangan, susano
+filter moves
 voice, gentics, auto-genetics
 
 * Scenario
