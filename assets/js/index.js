@@ -241,51 +241,36 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
+
 startBattle([
   {
-    "id": "chunin",
-    "name": "Unknown",
-    "xp": 3600,
-    "nature": "bold",
-    "retreat": 7,
-    "types": ["Grass", "Steel"],
+    "id": "rookie",
+    "name": "Pola1",
+    "xp": 1500,
+    "nature": "brave",
+    "retreat": 5.5,
+    "types": [],
     "abilities": [],
-    "items": [],
+    "items": ["gen-age-25", "gen-bulk"],
     "moves": [
-      {
-        "id": "kunai",
-        "isSelected": true
-      },
-      {
-        "id": "ninjastar",
-        "isSelected": true
-      },
       {
         "id": "ninjablade",
         "isSelected": true
       },
       {
-        "id": "substitute",
+        "id": "bodyslam",
         "isSelected": true
       },
       {
-        "id": "scaryface",
+        "id": "lowsweep",
         "isSelected": true
       },
       {
-        "id": "takeweapon",
+        "id": "harden",
         "isSelected": true
       },
       {
-        "id": "razorleaf",
-        "isSelected": true
-      },
-      {
-        "id": "vinewhip",
-        "isSelected": true
-      },
-      {
-        "id": "absorb",
+        "id": "ninjastar",
         "isSelected": true
       }
     ],
@@ -296,4 +281,4 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], [], "multiple")
+], [], "single")

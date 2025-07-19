@@ -53,4 +53,13 @@ export default {
       "spd": 10,
     }
   },
+  "gen-bulk": {
+    tokensPercent: {
+      "hp": 20,
+      "def": 10,
+      "atk": 30,
+      "spd": -10,
+      "spe": -40
+    }
+  },
 }

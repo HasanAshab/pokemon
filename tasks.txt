@@ -2,7 +2,7 @@
 moves sharingan, mayangan, susano
 filter moves
 voice, gentics, auto-genetics
-
+stat show on battle
 * Scenario
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 
