@@ -1,8 +1,9 @@
 export default {
-  latherarmor: {
-    armor: {
-      hp: 30,
-      covers: 20
+  latherarmor1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      def: 20
     }
   },
 

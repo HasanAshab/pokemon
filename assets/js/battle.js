@@ -775,7 +775,7 @@ function loadTokenStats(playerTag) {
    const tokenStats = structuredClone(pokemon.tokens)
 
    for (const [key, value] of Object.entries(tokenStats)) {
-    tokenStats[key] = `${pokemon.state.stats.get(key)} (${value < 0 ? '' : '+'}${value})` 
+    tokenStats[key] = `${pokemon.state.stats.get(key)} (${value < 0 ? '' : '+'}${value})`
    }
 
     const  playerSettingsForm = document.querySelector('.player-settings-form')

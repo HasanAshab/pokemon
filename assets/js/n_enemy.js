@@ -1,6 +1,7 @@
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, getUserPokemonsMeta, startBattle, startUserBattle } from "./utils/dom.js";
+import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
+import { objToFlags,flagsToObj } from "./utils/helpers.js";
 
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
@@ -60,7 +61,14 @@ function getEnemyForm(index) {
     </select>
     <br>
     <label>Token Used</label>
-    <textarea class="token-inp" onblur="showStats(event)"></textarea>
+    <textarea class="token-inp" onblur="showStats(event)">${objToFlags({
+          hp:0,
+          spe:0,
+          atk:0,
+          def:0,
+          spa:0,
+          spd:0
+        })}</textarea>
     <br>
     <label>Types (comma-separated)</label>
     <input type="text" class="types-inp">
@@ -165,7 +173,7 @@ function makeEnemiesMeta() {
         suffix: megaSuffix
       },
       stats: {},
-      token_used: tokenUsed ? { id: tokenUsed } : {}
+      token_used: flagsToObj(tokenUsed)
     };
 
     enemiesMeta.push(enemyMeta);
