@@ -2,7 +2,6 @@
 moves sharingan, mayangan, susano
 filter moves advanced
 gentics, auto-genetics
-stat show on battle
 fix armor
   1. battle
   2. war
