@@ -1,6 +1,7 @@
 * Tasks
 moves sharingan, mayangan, susano
 filter moves advanced
+incremental humans.js
 gentics, auto-genetics
 fix armor
   1. battle
