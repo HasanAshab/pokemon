@@ -86,7 +86,7 @@
     <div class="results" id="result"></div>
   </div>
   <script type="module">
-    import pokemons from "./data/pokemons"
+    import pokemons from "./data/pokemons.js"
     import { loadPokemonsDatalist } from "./assets/js/utils/dom.js";
     
     window.onload = () => {
@@ -133,6 +133,8 @@
       });
       return html;
     }
+
+    globalThis.compareObjects = compareObjects
   </script>
 </body>
 </html>
