@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Object Comparator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9fafb;
+      color: #111;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .panel {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 0.5rem;
+      font-family: monospace;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .results {
+      white-space: pre-wrap;
+      font-family: monospace;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1rem;
+    }
+    .green { color: green; }
+    .red { color: red; }
+    .gray { color: gray; }
+    .collapsible {
+      margin-left: 1rem;
+      padding-left: 1rem;
+      border-left: 2px dashed #ddd;
+    }
+    @media (min-width: 600px) {
+      .object-inputs {
+        display: flex;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <datalist id="pokemon-data-list"></datalist>
+  <div class="container">
+    <div class="object-inputs">
+      <div class="panel">
+        <h3>Object Foo</h3>
+        <input id="fooInput" list="pokemon-data-list">
+      </div>
+      <div class="panel">
+        <h3>Object Bar</h3>
+        <input id="barInput" list="pokemon-data-list">
+      </div>
+    </div>
+    <button onclick="compareObjects()">Compare</button>
+    <div class="results" id="result"></div>
+  </div>
+  <script type="module">
+    import pokemons from "./data/pokemons"
+    import { loadPokemonsDatalist } from "./assets/js/utils/dom.js";
+    
+    window.onload = () => {
+        loadPokemonsDatalist("pokemon-data-list")
+    }
+
+
+    function compareObjects() {
+      const fooId = document.getElementById('fooInput').value
+      const barId = document.getElementById('barInput').value
+      const foo = pokemons[fooId];
+      const bar = pokemons[barId];
+      const result = compare(foo, bar);
+      document.getElementById('result').innerHTML = result;
+    }
+
+    function compare(obj1, obj2, path = '') {
+      let html = '';
+      const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
+      keys.forEach(key => {
+        const val1 = obj1[key];
+        const val2 = obj2[key];
+        const type1 = typeof val1;
+        const type2 = typeof val2;
+
+        if (val1 !== undefined && val2 !== undefined && type1 === 'object' && !Array.isArray(val1) && !Array.isArray(val2)) {
+          html += `<div><strong>${key}:</strong></div>`;
+          html += `<div class="collapsible">${compare(val1, val2, path + key + '.')}</div>`;
+        } else if (Array.isArray(val1) && Array.isArray(val2)) {
+          const added = val2.filter(x => !val1.includes(x));
+          const removed = val1.filter(x => !val2.includes(x));
+          html += `<div><strong>${key}:</strong> <span class="green">+${added.join(', ')}</span> <span class="red">-${removed.join(', ')}</span></div>`;
+        } else if (type1 === 'number' && type2 === 'number') {
+          const diff = val2 - val1;
+          const perc = val1 !== 0 ? ((diff / val1) * 100).toFixed(1) : '∞';
+          const cls = diff > 0 ? 'green' : (diff < 0 ? 'red' : '');
+          const arrow = diff > 0 ? '▲' : (diff < 0 ? '▼' : '→');
+          html += `<div><strong>${key}:</strong> <span class="${cls}">${arrow} ${diff} (${perc}%)</span></div>`;
+        } else if (val1 !== val2) {
+          html += `<div><strong>${key}:</strong> <span class="red">${JSON.stringify(val1)}</span> → <span class="green">${JSON.stringify(val2)}</span></div>`;
+        } else {
+          html += `<div><strong>${key}:</strong> ${JSON.stringify(val1)}</div>`;
+        }
+      });
+      return html;
+    }
+  </script>
+</body>
+</html>

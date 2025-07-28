@@ -196,7 +196,7 @@ export function canDodge(attacker, defender, move) {
     const defenderEvasion = defender.state.stats.get("evasion")
 
     // Base dodge chance using a modified speed ratio
-    const speedRatio = defenderSpd / attackerSpd;
+    const speedRatio = Math.abs(defenderSpd / attackerSpd);
     const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.7)); // Clamp between 5% and 70%
 
     // Accuracy and evasion modifiers
@@ -204,7 +204,7 @@ export function canDodge(attacker, defender, move) {
 
     // Calculate final hit chance
     const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.75;
-    console.log(defender.id, Math.round(finalHitChance))
+    console.log(defender.name, Math.round(finalHitChance))
 
     // Simulate random factor for dodge mechanics
     const randomFactor = Math.random() * 100;

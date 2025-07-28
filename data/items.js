@@ -63,4 +63,22 @@ export default {
       "spe": -40
     }
   },
+  "gen-fat": {
+tokensPercent: {
+      "hp": 10,
+      "def": 5,
+      "atk": 5,
+      "spd": -5,
+      "spe": -15
+    }
+  },
+    "gen-thik": {
+tokensPercent: {
+      "hp": -10,
+      "def": -5,
+      "atk": -5,
+      "spd": 5,
+      "spe": 15
+    }
+  }
 }

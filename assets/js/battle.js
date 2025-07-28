@@ -513,7 +513,7 @@ function loadMoves(playerTag) {
     const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
     moveCardsContainer.innerHTML = ''
 const veryClose = battle.ctx.veryClose === true;
-const moves = [...pokemon.state.moves].sort((a, b) => {
+let moves = [...pokemon.state.moves].sort((a, b) => {
   const aUsable = battle.canUseMove(pokemon, a.id);
   const bUsable = battle.canUseMove(pokemon, b.id);
   if (aUsable !== bUsable) return aUsable ? -1 : 1;
@@ -534,6 +534,8 @@ const moves = [...pokemon.state.moves].sort((a, b) => {
 
   return 0;
 });
+
+moves = pokemon.state.moves
   for (const move of moves) {
       const mod = pokemon.state.damage.powerModifier(move.id)
       const effectiveness = opponentPokemon.effectiveness(move.type)
