@@ -218,8 +218,11 @@ function setBattleStateListeners(playerTag) {
         
     })
     
-    // critical pop up
+    // critical pop up + refresh retreat
     pokemon.state.tailListener("used-move", move => {
+        const pokemon = pokemonMap[playerTag]
+        setCurrentRetreat(pokemon.state.retreat, playerTag)
+        
         if (!move.hit) return
         if (move.hit.damage() <= 0) return;   
         let msg = null
@@ -722,7 +725,7 @@ function handleMoveCardSelect(card, playerTag) {
     runScene({
         [playerTag]: card.dataset.moveId,
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
-    })
+    }).catch(console.log)
   }else{
     card.parentElement.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")

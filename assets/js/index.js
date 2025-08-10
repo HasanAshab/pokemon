@@ -242,3 +242,55 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
+// Bug: Ninja star vs thunder
+startBattle([
+  {
+    "id": "rookie",
+    "name": "rahul akatomi",
+    "xp": 1900,
+    "nature": "serious",
+    "retreat": 12,
+    "types": [] ,
+    "abilities": [],
+    "items": ["gen-food-mid","gen-thik"],
+    "moves": [
+      {
+        "id": "kunai",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "isSelected": true
+      },
+      {
+        "id": "doubleteam",
+        "isSelected": true
+      },
+      {
+        "id": "thundershock",
+        "isSelected": true
+      },
+      {
+        "id": "doublekick",
+        "isSelected": true
+      },
+      {
+        "id": "bulletpunch",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
+], [], "single")

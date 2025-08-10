@@ -45,6 +45,7 @@ export class EventEmitter {
         });
     }
 
+    // BUG: Unconsistent CTX
     emit(event, ...args) {
         if (this._events[event]) {
             const ctx = {
@@ -57,10 +58,8 @@ export class EventEmitter {
             this._onceEvents[event].forEach(listener => listener.apply(this, args));
             delete this._onceEvents[event];
         }
-
         if (this._tailListeners[event]) {
             this._tailListeners[event].forEach(listener => listener.apply(this, args));
-            delete this._tailListeners[event];
         }
     }
 

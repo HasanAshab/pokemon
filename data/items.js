@@ -63,6 +63,16 @@ export default {
       "spe": -40
     }
   },
+  
+  "gen-food-mid": {
+tokensPercent: {
+      "hp": 2,
+      "def": 2,
+      "atk": 2,
+      "spd": 2,
+      "spe": 2
+    }
+  },
   "gen-fat": {
 tokensPercent: {
       "hp": 10,
