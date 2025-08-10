@@ -4,6 +4,7 @@ filter moves advanced
 incremental humans.js
 Shadow clone
   effects + stat changes protection
+  bug when dodge attack
 * Bugs
 fix armor
   1. battle
@@ -14,3 +15,7 @@ phy 1 -> phy 1 = x - y d
 phy 1 -> phy 0 = x(10%) dx 
 phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
+
+
+* UI
+fully clear  

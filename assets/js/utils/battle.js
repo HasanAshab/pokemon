@@ -458,56 +458,115 @@ class BaseBattle extends EventEmitter {
         // Shadow Clone Support
         const sc1 = this.pokemon1.state.effects.has("shadowclone")
         const sc2 = this.pokemon2.state.effects.has("shadowclone")
-        if (clonemode1 || clonemode2 || move1.id === "shadowclone" || move2.id === "shadowclone") {}
-        else if (sc1 && sc2) {
+        
+        if ((sc1 || sc2) && move1.id !== "shadowclone" && move2.id !== "shadowclone" && !(clonemode1 || clonemode2)) {
+            const cloneMoves1 = []
+            const cloneMoves2 = []
+              if (sc1 && sc2) {
+                  for (let i = 0; i < this.pokemon1.state.manCount - 1; i++) {
+                      const usableMoves = this.pokemon1.state.moves
+                          .filter(m =>
+                              m.flags.offensive !== 0
+                              && m.target !== "self"
+                              && m.retreat <= move1.retreat
+                              && m.retreat <= chakra - new Move("dodge").retreat
+                          )
+                      const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)]
+                      if (!cloneMove) break
+                      cloneMoves1.push(cloneMove) 
+                      chakra -= cloneMove.retreat
+                  }
+                  for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
+                      const usableMoves = this.pokemon2.state.moves
+                          .filter(m =>
+                              m.flags.offensive !== 0
+                              && m.target !== "self"
+                              && m.retreat <= move2.retreat
+                              && m.retreat <= chakra - new Move("dodge").retreat
+                          )
+                      const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
+                      if (!cloneMove) break
+                      cloneMoves2.push(cloneMove) 
+                      chakra -= cloneMove.retreat
+                  }
+                  for (let i = 0; i < Math.max(cloneMoves1.length, cloneMoves2.length); i++) {
+                      const cloneScene = new Map([
+                          [this.pokemon1, cloneMoves1[i] || new Move("staythere")],
+                          [this.pokemon2, cloneMoves2[i] || new Move("staythere")]
+                      ])
+                      await this.run(cloneScene, true, true)
+                  }
+              }
+              else if (sc1) {
+                  let allHitMove = null
+                  const cloneMoves = []
+                  let chakra = this.pokemon1.state.retreat
+                  for (let i = 0; i < this.pokemon1.state.manCount - 1; i++) {
+                      const usableMoves = this.pokemon1.state.moves
+                          .filter(m =>
+                              m.flags.offensive !== 0
+                              && m.target !== "self"
+                              && m.retreat <= move1.retreat
+                              && m.retreat <= chakra - new Move("dodge").retreat
+                          )
+                      const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)]
+                      if (!cloneMove) break
+                      cloneMoves.push(cloneMove) 
+                      chakra -= cloneMove.retreat
+                  }
 
-        }
-        else if (sc1) {
+                  for (const [i, cloneMove] of cloneMoves.entries()) {
+                      const opponentMove = allHitMove || await this.prompt(this.pokemon2).ask("counterclone", cloneMove)
+                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
+                          opponentMove.basePower /= cloneMoves.length - i
+                          allHitMove = opponentMove
+                      }
+                      const cloneScene = new Map([
+                        [this.pokemon1, cloneMove],
+                        [this.pokemon2, opponentMove]
+                      ])
+                      this.run(cloneScene, true, false)
+                  }
+              }
+              else if (sc2) {
+                  let allHitMove = null
+                  const cloneMoves = []
+                  let chakra = this.pokemon2.state.retreat
+                  for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
+                      const usableMoves = this.pokemon2.state.moves
+                          .filter(m =>
+                              m.flags.offensive !== 0
+                              && m.target !== "self"
+                              && m.retreat <= move2.retreat
+                              && m.retreat <= chakra - new Move("dodge").retreat
+                          )
+                      const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
+                      if (!cloneMove) break
+                      cloneMoves.push(cloneMove) 
+                      chakra -= cloneMove.retreat
+                  }
+                  
+                  for (const [i, cloneMove] of cloneMoves.entries()) {
+                      const opponentMove = allHitMove || await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
+                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
+                          opponentMove.basePower /= cloneMoves.length - i
+                          allHitMove = opponentMove
+                      }
+                      const cloneScene = new Map([
+                        [this.pokemon2, cloneMove],
+                        [this.pokemon1, opponentMove]
+                      ])
+                      this.run(cloneScene, false, true)
+                  }
+              }
+          this.emit("$counterclonecomplete", cloneMoves1, cloneMoves2)
 
-        }
-        else if (sc2) {
-            let allHitMove = null
-            const cloneMoves = []
-            let chakra = this.pokemon2.state.retreat
-            for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
-              
-                const usableMoves = this.pokemon2.state.moves
-                    .filter(m =>
-                        m.flags.offensive !== 0
-                        && m.target !== "self"
-                        && m.retreat <= move2.retreat
-                        && m.retreat <= chakra - new Move("dodge").retreat
-                    )
-                const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
-                if (!cloneMove) break
-                cloneMoves.push(cloneMove) 
-                chakra -= cloneMove.retreat
-            }
-
-            console.log(cloneMoves);
-
-            for (const [i, cloneMove] of cloneMoves.entries()) {
-                const opponentMove = allHitMove || await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
-                if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
-                    console.log("remain", cloneMoves.length - i);
-                    opponentMove.basePower /= cloneMoves.length - i
-                    allHitMove = opponentMove
-                }
-                const cloneScene = new Map([
-                  [this.pokemon2, cloneMove],
-                  [this.pokemon1, opponentMove]
-                ])
-
-                console.log(cloneMove, opponentMove);
-
-                this.run(cloneScene, false, true)
-            }
         }
         if (clonemode1 || clonemode2) {
           this.ctx.waveLocked = false
         }
     }
-    
+
     _checkFailure(pokemon, senario) {
         const opponent = this.opponentOf(pokemon)
         const move = senario.get(pokemon)

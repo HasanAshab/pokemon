@@ -5,6 +5,7 @@ import { Damage } from "./utils/damage.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import {loadMovesDatalist } from "./utils/dom.js";
+import moves from "../../data/default/moves.js"
 
 const eventEmitter = new EventEmitter()
 const system = getParam("system") || "single"
@@ -128,11 +129,18 @@ function syncStatsMeta(pokemon) {
     pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
     setPokemonMeta(pokemon.id, pokemon.meta)
 }
- 
+
 function setBattleListeners() {
     battle.on(["wave", "turn"], function() {
         if (system === "single" && this._event === "turn") return
         popupQueue.add(`New ${this._event}!`, "you")
+    })
+
+    battle.on("$counterclonecomplete", (moves1, moves2) => {
+      if (moves1.length === 0 || moves2.length === 0) {
+        return setTimeout(() => hideShadowCloneSceneController(), 1000)
+      }
+      showShadowCloneAutoSceneController(moves1, moves2)
     })
 }
 
@@ -246,14 +254,9 @@ function setBattleStateListeners(playerTag) {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
     })
 
-    let cleanupAdded = false
     battle.prompt(pokemon).reply("counterclone", (cloneMove) => {
         showShadowCloneSceneController(playerTag)
         addShadowCloneScene(cloneMove.id)
-        !cleanupAdded && pokemon.state.once("scene-end", () => {
-          console.log("cleanup");
-        })
-        cleanupAdded = true
         return new Promise((resolve, _) => {
             eventEmitter.on("move-card-select", (card, tag) => {
                 if (playerTag !== tag) return
@@ -400,11 +403,20 @@ nothingBtn.onclick = ()=>{
   
 }
 
+
+function showShadowCloneAutoSceneController(moves1, moves2) {
+  //
+}
+
 function showShadowCloneSceneController(playerTag) {
   const shadowCloneSceneController = document.querySelector(".shadow-clone-scene-controller")
   shadowCloneSceneController.classList.add("active")
   const title = shadowCloneSceneController.querySelector(".title")
   title.textContent = `Shadow Clone Scene Controller ( ${playerTag} )`
+}
+function hideShadowCloneSceneController() {
+  const shadowCloneSceneController = document.querySelector(".shadow-clone-scene-controller")
+  shadowCloneSceneController.classList.remove("active")
 }
 
 function addShadowCloneScene(cloneMoveId) {

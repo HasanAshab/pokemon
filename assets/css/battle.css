@@ -383,9 +383,9 @@ flex-direction: column;
 /* shadow clone controller */
 .shadow-clone-scene-controller{
   width: 90vw;
-  height: 55vh;
+  height: 50vh;
   left: 5vw;
-  top: 40vw;
+  top: 25%;
   z-index: 1000;
   position: fixed;
   display: none;
