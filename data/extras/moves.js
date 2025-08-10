@@ -101,6 +101,30 @@ export default {
       },
       retreat: 5,
     },
+    shadowclone: {
+      num: 1000001,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Shadow Clone",
+      pp: 15,
+      priority: 1,
+      flags: { snatch: 1, metronome: 1 },
+      secondary: null,
+      target: "self",
+      type: "Dark",
+      contestType: "Cool",
+      effects: {
+        self: [{
+          name: "shadowclone",
+          chance: 100,
+          isVolatile: true 
+        }],
+        target: []
+      },
+      retreat: 0
+    },
+
     focusenergy: {
       num: 116,
       accuracy: true,

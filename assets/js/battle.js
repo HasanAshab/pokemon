@@ -443,6 +443,10 @@ function setEffects(effects, playerTag) {
         "name": "Double Team",
         "color": "Normal"
     },
+    "shadowclone": {
+        "name": "Shadow Clone",
+        "color": "Dark"
+    },
     "aquaring": {
         "name": "Aqua Ring",
         "color": "Water"

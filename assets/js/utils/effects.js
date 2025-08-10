@@ -446,7 +446,6 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 
     _calculateDTManCount() {
-        console.log(this.state.stats.get("spe"))
         return Math.round(
             this.state.stats.get("spe") * this.state.pokemon.level * (0.06 * 0.17)
         )
@@ -482,36 +481,21 @@ class DoubleTeamEffect extends ExpirableEffect {
 }
 
 
-//TODO
-class ShadowCloneEffect extends ExpirableEffect {
+class ShadowCloneEffect extends Effect {
     static effectName = "shadowclone"
-
-    static isPre() {
-        return true
-    }
-
-    lifetime = { waves: 1 }
+    static COST_PER_CLONE = 2
     meta = {}
 
     setup() {
         super.setup()
-        this.state.manCount = this._calculateDTManCount()
+        this.state.manCount = this._calculateManCount()
+        this.state.retreat -= this.state.manCount * this.constructor.COST_PER_CLONE
     }
 
     teardown() {
         super.teardown()
         this.state.manCount = 1
         this.state.unfreeze()
-    }
-
-    onScene(move, senario) {
-        move = this._modifyMove(move)
-        senario.set(this.state.pokemon, move)
-
-        // Double Team Defence Devided To Each
-        const modifier = 1 / this.state.manCount
-        this.state.stats.chainModify("def", modifier)
-        this.state.stats.chainModify("spd", modifier)
     }
 
     onSceneEnd() {
@@ -541,22 +525,12 @@ class ShadowCloneEffect extends ExpirableEffect {
             : ''
     }
 
-    _calculateDTManCount() {
-        console.log(this.state.stats.get("spe"))
-        return Math.round(
-            this.state.stats.get("spe") * this.state.pokemon.level * (0.06 * 0.1)
-        )
+    _calculateManCount() {
+        const maxChakra = Math.floor(this.state.retreat * 0.5)
+        const count = Math.floor(maxChakra / this.constructor.COST_PER_CLONE)
+        return count
     }
 
-    _modifyMove(move) {
-        const contactModifier = move.flags.contact ? 0.4 : 1
-        move.basePower = move.basePower / (this.state.manCount * contactModifier)
-        move.multihit = Array.from({ length: this.state.manCount }).reduce((acc, i) => {
-            return acc + move.multiHit()
-        }, 0)
-        return move
-    }
-    
     _totalManHittee(move) {
         const isMainManHittee = manCount => Math.random() < ((1 / manCount) * 1.5)
         const manCount = this.state.manCount
