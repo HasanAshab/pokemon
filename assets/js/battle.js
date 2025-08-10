@@ -248,8 +248,8 @@ function setBattleStateListeners(playerTag) {
 
     let cleanupAdded = false
     battle.prompt(pokemon).reply("counterclone", (cloneMove) => {
-        // showShadowCloneSceneController(playerTag)
-        // addShadowCloneScene(cloneMove.id)
+        showShadowCloneSceneController(playerTag)
+        addShadowCloneScene(cloneMove.id)
         !cleanupAdded && pokemon.state.once("scene-end", () => {
           console.log("cleanup");
         })
@@ -257,7 +257,7 @@ function setBattleStateListeners(playerTag) {
         return new Promise((resolve, _) => {
             eventEmitter.on("move-card-select", (card, tag) => {
                 if (playerTag !== tag) return
-                // setShadowCloneSceneTargetMove(card.dataset.moveId, false)
+                setShadowCloneSceneTargetMove(card.dataset.moveId, false)
                 resolve(new Move(card.dataset.moveId))
             })
         })

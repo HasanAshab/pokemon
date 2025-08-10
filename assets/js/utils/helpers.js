@@ -204,14 +204,13 @@ export function canDodge(attacker, defender, move) {
 
     // Calculate final hit chance
     const finalHitChance = move.accuracy * accuracyModifier * (1 - dodgeChance) * 0.75;
-    console.log(defender.name, Math.round(finalHitChance))
 
     // Simulate random factor for dodge mechanics
     const randomFactor = Math.random() * 100;
 
     // Return true if defender dodges, false if the move hits
     const dodged = randomFactor > finalHitChance;
-
+    console.log(defender.name, Math.round(finalHitChance), dodged)
     return dodged
 }
 

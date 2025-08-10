@@ -3,7 +3,7 @@ moves sharingan, mayangan, susano
 filter moves advanced
 incremental humans.js
 Shadow clone
-
+  effects + stat changes protection
 * Bugs
 fix armor
   1. battle

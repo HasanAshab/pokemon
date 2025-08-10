@@ -466,23 +466,41 @@ class BaseBattle extends EventEmitter {
 
         }
         else if (sc2) {
+            let allHitMove = null
+            const cloneMoves = []
+            let chakra = this.pokemon2.state.retreat
             for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
+              
                 const usableMoves = this.pokemon2.state.moves
                     .filter(m =>
                         m.flags.offensive !== 0
                         && m.target !== "self"
                         && m.retreat <= move2.retreat
-                        && m.retreat <= this.pokemon2.state.retreat
+                        && m.retreat <= chakra - new Move("dodge").retreat
                     )
                 const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
-                if (!cloneMove) continue
-                const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
+                if (!cloneMove) break
+                cloneMoves.push(cloneMove) 
+                chakra -= cloneMove.retreat
+            }
+
+            console.log(cloneMoves);
+
+            for (const [i, cloneMove] of cloneMoves.entries()) {
+                const opponentMove = allHitMove || await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
+                if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
+                    console.log("remain", cloneMoves.length - i);
+                    opponentMove.basePower /= cloneMoves.length - i
+                    allHitMove = opponentMove
+                }
                 const cloneScene = new Map([
                   [this.pokemon2, cloneMove],
                   [this.pokemon1, opponentMove]
                 ])
-                this.run(cloneScene, true)
-                console.log(cloneMove, opponentMove)
+
+                console.log(cloneMove, opponentMove);
+
+                this.run(cloneScene, false, true)
             }
         }
         if (clonemode1 || clonemode2) {
