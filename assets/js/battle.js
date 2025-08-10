@@ -218,8 +218,11 @@ function setBattleStateListeners(playerTag) {
         
     })
     
-    // critical pop up
+    // critical pop up + refresh retreat
     pokemon.state.tailListener("used-move", move => {
+        const pokemon = pokemonMap[playerTag]
+        setCurrentRetreat(pokemon.state.retreat, playerTag)
+        
         if (!move.hit) return
         if (move.hit.damage() <= 0) return;   
         let msg = null
@@ -377,6 +380,46 @@ nothingBtn.onclick = ()=>{
   
 }
 
+function showShadowCloneSceneController(playerTag) {
+  const shadowCloneSceneController = document.querySelector(".shadow-clone-scene-controller")
+  shadowCloneSceneController.classList.add("active")
+  const title = shadowCloneSceneController.querySelector(".title")
+  title.textContent = `Shadow Clone Scene Controller ( ${playerTag} )`
+}
+
+function addShadowCloneScene(cloneMoveId) {
+  const cloneMove = new Move(cloneMoveId)
+  
+  const shadowCloneSceneList = document.querySelector(".shadow-clone-scene-controller .shadow-clone-scene-list")
+  const currentCloneIndex = shadowCloneSceneList.querySelectorAll(".shadow-clone-scene").length
+  
+  const shadowCloneScene = document.createElement("div")
+  shadowCloneScene.classList.add("shadow-clone-scene")
+  shadowCloneScene.innerHTML = `
+    <span style="color: var(--${cloneMove.type}-type-color);" class="clone-move-name" data-clone-index="${currentCloneIndex}">${cloneMove.name}</span>
+    <strong>VS</strong>
+    <span class="target-move-name">?</span>
+  `
+  shadowCloneSceneList.appendChild(shadowCloneScene)
+}
+showShadowCloneSceneController("you")
+addShadowCloneScene("quickattack")
+// addShadowCloneScene("tackle")
+// addShadowCloneScene("ember")
+// addShadowCloneScene("thundershock")
+
+function setShadowCloneSceneTargetMove(targetMoveId,isDodged) {
+  const targetMove = new Move(targetMoveId)
+  const cloneMoveName = document.querySelector(".shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene:last-child .clone-move-name")
+  if (isDodged) {
+  cloneMoveName.parentElement.classList.add("dodged")
+
+  }
+  const targetMoveName = document.querySelector(".shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene:last-child .target-move-name")
+  targetMoveName.style.color = `var(--${targetMove.type}-type-color)`
+  targetMoveName.textContent = targetMove.name
+}
+setShadowCloneSceneTargetMove("kick",false)
 
 function setEffects(effects, playerTag) {
   const effectsMap = {
@@ -722,7 +765,7 @@ function handleMoveCardSelect(card, playerTag) {
     runScene({
         [playerTag]: card.dataset.moveId,
         [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
-    })
+    }).catch(console.log)
   }else{
     card.parentElement.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
@@ -790,6 +833,17 @@ globalThis.toggleAbility = function({currentTarget},playerTag, ability_name){
    loadPokemonData(playerTag)
    loadPokemonData(opponentTag(playerTag))
 }
+
+
+
+function clickOnFirstPokemonSwitch() {
+  const enemyPokemonSwitchControler = document.querySelector(".enemy-controle-cont .pokemon-switch-controler")
+  enemyPokemonSwitchControler.querySelector(".pokemon").click()
+
+  const youPokemonSwitchControler = document.querySelector(".you-controle-cont .pokemon-switch-controler")
+  youPokemonSwitchControler.querySelector(".pokemon").click()
+  
+}
 window.onload = () => {
     globalThis.pokemonMap = {}
     globalThis.fields = getParam("fields")?.split(',') ?? []
@@ -799,15 +853,8 @@ window.onload = () => {
     loadChoosePokemon("you") 
     loadChoosePokemon("enemy") 
     loadMovesDatalist("moves-data-list")
+    clickOnFirstPokemonSwitch()
 }
 
 
 
-// for development 
-
-function clickOnFirstEnemyPokemonSwitch() {
-  const enemyPokemonSwitch = document.querySelector(".enemy-controle-cont .pokemon-switch-controler")
-  enemyPokemonSwitch.querySelector(".pokemon").click()
-  console.log(enemyPokemonSwitch);
-  
-}

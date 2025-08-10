@@ -207,10 +207,11 @@ class BaseBattle extends EventEmitter {
         // weapon effects
         if(
           move2.flags.contact
+          && move1.flags.contact
           && move1.flags.weapon !== move2.flags.weapon
           && move1.flags.offensive === move2.flags.offensive
           && move1.priority === move2.priority
-        ) {          
+        ) {         
             const bareTypes = ["Normal", "Fighting"]
             const armed = move1.flags.weapon
               ? this.pokemon1
@@ -472,8 +473,8 @@ class BaseBattle extends EventEmitter {
             move = new Move("dodge")
             senario.set(pokemon, move)
             move.onBeforeMove?.(pokemon, opponent, opponentMove)
-            pokemon.state.emit("used-move", move)
-        }
+            pokemon.state.emit("used-move", move, opponentMove)
+          }
     }
 
     _setWaveTurns() {
@@ -488,7 +489,7 @@ class SingleBattle extends BaseBattle {
         return !this._waveAfterTurns ||
             (!this.pokemon1.state.usableOffensiveMoves().length && !this.pokemon2.state.usableOffensiveMoves().length)
     }
-    
+
     groundedPokemons() {
         return this.actives()
     }

@@ -380,3 +380,68 @@ flex-direction: column;
   font-weight: bold;
 }
 
+/* shadow clone controller */
+.shadow-clone-scene-controller{
+  width: 90vw;
+  height: 55vh;
+  left: 5vw;
+  top: 40vw;
+  z-index: 1000;
+  position: fixed;
+  display: none;
+  background-color: white;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 5px 10px rgba(0,0,0,0.5);
+}
+.shadow-clone-scene-controller.active{
+  display: flex;
+}
+
+.shadow-clone-scene-controller.enemy{
+  transform: rotate(180deg);
+}
+.shadow-clone-scene-controller .shadow-clone-scene-list{
+  width: 90%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;  
+}
+.shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: large;
+}
+
+.shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene .clone-move-name::before{
+  content: attr(data-clone-index) ".";
+  margin-right: 4px;
+  font-weight: bold;
+  color: black;
+}
+
+.shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene .clone-move-name::after{
+  content: " ";
+  display: inline-block;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: grey;
+}
+
+
+.shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene.dodged .clone-move-name::after{
+  background-color: green;
+}

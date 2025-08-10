@@ -779,6 +779,7 @@ Shuriken: {
 
         }
       },
+       target: "normal",
       type: "Fire",
     }
 }

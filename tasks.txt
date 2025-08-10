@@ -2,7 +2,9 @@
 moves sharingan, mayangan, susano
 filter moves advanced
 incremental humans.js
-gentics, auto-genetics
+Shadow clone
+
+* Bugs
 fix armor
   1. battle
   2. war
@@ -12,18 +14,3 @@ phy 1 -> phy 1 = x - y d
 phy 1 -> phy 0 = x(10%) dx 
 phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
-
-bugs:
-
-* Bugs
-counter
-priority die
-detect bug on sleep
-acc, evas stat bug
-semi-invuln
-abilities effects (eg guts)
-effect remove
-double vs powder type moves
-dodge status
-magnitude
-confusion hit self KO (move category ditection)
