@@ -163,8 +163,8 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode = false) {
-        if (clonemode) {
+    async run(senario, clonemode1 = false, clonemode2 = false) {
+        if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true
         }
         let move1 = senario.get(this.pokemon1)
@@ -308,12 +308,12 @@ class BaseBattle extends EventEmitter {
             instantDamages.set(this.pokemon1, thornsDamage * pokeEffect1)
 
             if (damage > 0) {
-                await this._tryDodge(this.pokemon1, senario, clonemode)
+                await this._tryDodge(this.pokemon1, senario, clonemode1)
                 move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
-                await this._tryDodge(this.pokemon2, senario, clonemode)
+                await this._tryDodge(this.pokemon2, senario, clonemode2)
                 move2 = senario.get(this.pokemon2)
                 !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect2);
             }
@@ -324,12 +324,12 @@ class BaseBattle extends EventEmitter {
             instantDamages.set(this.pokemon2, thornsDamage * pokeEffect2)
             
             if (damage > 0) {
-                await this._tryDodge(this.pokemon1, senario, clonemode)
+                await this._tryDodge(this.pokemon1, senario, clonemode1)
                 move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
-                await this._tryDodge(this.pokemon2, senario, clonemode)
+                await this._tryDodge(this.pokemon2, senario, clonemode2)
                 move2 = senario.get(this.pokemon2)
                 !isDodged2() &&damages.set(this.pokemon2, -damage * pokeEffect2);
             }
@@ -340,14 +340,14 @@ class BaseBattle extends EventEmitter {
             && move1.flags.contact !== move2.flags.contact
         ) {
             if (move2.flags.contact) {
-                await this._tryDodge(this.pokemon2, senario, clonemode)
+                await this._tryDodge(this.pokemon2, senario, clonemode2)
                 move2 = senario.get(this.pokemon2)
                 isDodged2()
                     ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
                     : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
             }
             else {
-                await this._tryDodge(this.pokemon1, senario, clonemode)
+                await this._tryDodge(this.pokemon1, senario, clonemode1)
                 move1 = senario.get(this.pokemon1)
                 isDodged1()
                     ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
@@ -358,12 +358,12 @@ class BaseBattle extends EventEmitter {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             
             if (damage > 0) {
-                await this._tryDodge(this.pokemon1, senario, clonemode)
+                await this._tryDodge(this.pokemon1, senario, clonemode1)
                 move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect2)
             }
             else {
-                await this._tryDodge(this.pokemon2, senario, clonemode)
+                await this._tryDodge(this.pokemon2, senario, clonemode2)
                 move2 = senario.get(this.pokemon2)
                 !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect1)
             }
@@ -413,26 +413,26 @@ class BaseBattle extends EventEmitter {
 
         if(move2.priority > move1.priority) {
             if (d1) {
-                this.pokemon1.state.decreaseHealth(d1)
-                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1))
-                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1))
+                this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
+                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
+                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1), false, clonemode2)
             }
             if (d2) {
-                this.pokemon2.state.decreaseHealth(d2)
-                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
-                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2))
+                this.pokemon2.state.decreaseHealth(d2, false, clonemode2)
+                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2), false, clonemode1)
+                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2), false, clonemode1)
             }
         }
         else {
             if (d2) {
-                this.pokemon2.state.decreaseHealth(d2)
-                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2))
-                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2))
+                this.pokemon2.state.decreaseHealth(d2, false, clonemode2)
+                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2), false, clonemode1)
+                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2), false, clonemode1)
             }
             if (d1) {
-                this.pokemon1.state.decreaseHealth(d1)
-                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1))
-                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1))
+                this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
+                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
+                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1), false, clonemode2)
             }
         }
 
@@ -458,9 +458,9 @@ class BaseBattle extends EventEmitter {
         // Shadow Clone Support
         const sc1 = this.pokemon1.state.effects.has("shadowclone")
         const sc2 = this.pokemon2.state.effects.has("shadowclone")
-        if (clonemode || move1.id === "shadowclone" || move2.id === "shadowclone") {}
+        if (clonemode1 || clonemode2 || move1.id === "shadowclone" || move2.id === "shadowclone") {}
         else if (sc1 && sc2) {
-          
+
         }
         else if (sc1) {
 
@@ -474,7 +474,8 @@ class BaseBattle extends EventEmitter {
                         && m.retreat <= move2.retreat
                         && m.retreat <= this.pokemon2.state.retreat
                     )
-                const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] ?? new Move("staythere")
+                const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
+                if (!cloneMove) continue
                 const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
                 const cloneScene = new Map([
                   [this.pokemon2, cloneMove],
@@ -484,7 +485,7 @@ class BaseBattle extends EventEmitter {
                 console.log(cloneMove, opponentMove)
             }
         }
-        if (clonemode) {
+        if (clonemode1 || clonemode2) {
           this.ctx.waveLocked = false
         }
     }
@@ -586,7 +587,6 @@ class BattleState extends EventEmitter {
 
         this.on("wave", () => {
             this.addWaveRetreat()
-            this.manCount = 1
         })
 
         this.on("used-move", move => {
@@ -658,7 +658,7 @@ class BattleState extends EventEmitter {
             move.pp = moveData.pp
         })
     }
-    
+
     clone() {
         return new BattleState(this.battle, this.pokemon)
         
@@ -725,7 +725,12 @@ class BattleState extends EventEmitter {
         return this.flags.attackSelf || this.effects.attackSelf()
     }
 
-    decreaseHealth(amount, isInternal = false) {
+    decreaseHealth(amount, isInternal = false, clonemode = false) {
+        if (clonemode) {
+          this.manCount--
+          amount = amount * 0.2
+          isInternal = true
+        }
         if (!isInternal) {
             amount = this.armor.consume(amount)
         }        

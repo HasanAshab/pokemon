@@ -493,6 +493,8 @@ class ShadowCloneEffect extends Effect {
     }
 
     teardown() {
+      console.log("teardown", this.state.manCount);
+      
         super.teardown()
         this.state.manCount = 1
         this.state.unfreeze()
@@ -505,22 +507,6 @@ class ShadowCloneEffect extends Effect {
             return this.remove()
         }
     }
-    
-    onOpponentScene(move) {
-        this.meta.totalManHittee = this._totalManHittee(move)
-    }
-
-    onContacted(contactor) {
-        const isMainManHittee = this.meta.totalManHittee === this.state.manCount
-            || contactor === this.state.pokemon
-
-        if (isMainManHittee) {
-            return this.remove()
-        }
-
-        this.state.manCount -= this.meta.totalManHittee
-        this.state.freeze()
-    }
 
     displayMeta() {
         return this.meta.totalManHittee 
@@ -532,25 +518,6 @@ class ShadowCloneEffect extends Effect {
         const maxChakra = Math.floor(this.state.retreat * 0.5)
         const count = Math.floor(maxChakra / this.constructor.COST_PER_CLONE)
         return count
-    }
-
-    _totalManHittee(move) {
-        const isMainManHittee = manCount => Math.random() < ((1 / manCount) * 1.5)
-        const manCount = this.state.manCount
-        if (move.target.startsWith("allAdjacent")) {
-            for (let i = 0; i < manCount; i++) {
-                if (!isMainManHittee(manCount - i)) {
-                    move.basePower = move.basePower / 2
-                }
-            }
-            return manCount
-        }
-        for (let i = 0; i < move.hit; i++) {
-            if (isMainManHittee(manCount - i)) {
-                return manCount
-            }
-        }
-        return Math.min(manCount, move.hits)
     }
 }
 
