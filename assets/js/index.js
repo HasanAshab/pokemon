@@ -242,60 +242,6 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-window.location = "http://localhost:5917/battle.html?enemy=eyJpZCI6InJvb2tpZSIsIm1ldGEiOnsibmF0dXJlIjoiYWRhbWFudCIsImlkIjoicm9va2llIiwibmFtZSI6InRhcHUiLCJ4cCI6MTIwMCwicmV0cmVhdCI6NCwidHlwZXMiOlsiTm9ybWFsIl0sImFiaWxpdGllcyI6W10sIml0ZW1zIjpbXSwibW92ZXMiOlt7ImlkIjoia3VuYWkiLCJpc1NlbGVjdGVkIjp0cnVlfSx7ImlkIjoibmluamFzdGFyIiwiaXNTZWxlY3RlZCI6dHJ1ZX0seyJpZCI6InJhcGlkc3BpbiIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJidWJibGUifSx7ImlkIjoidGFrZXdlYXBvbiJ9XSwibWVnYSI6eyJtb3ZlcyI6W10sInN1ZmZpeCI6Im1lZ2EifSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7ImhwIjowLCJzcGUiOjAsImF0ayI6MCwiZGVmIjowLCJzcGEiOjAsInNwZCI6MH0sImlzU2VsZWN0ZWRGb3JNdWx0aUJhdHRsZSI6ZmFsc2UsImxvc2VzLWNvdW50IjoiMCIsIndpbnMtY291bnQiOiIwIn19&fields="
-
-// Bug: Ninja star vs thunder
-// startBattle([
-//   {
-//     "id": "rookie",
-//     "name": "rahul akatomi",
-//     "xp": 1900,
-//     "nature": "serious",
-//     "retreat": 12,
-//     "types": [] ,
-//     "abilities": [],
-//     "items": ["gen-food-mid","gen-thik"],
-//     "moves": [
-//       {
-//         "id": "kunai",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "ninjastar",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "doubleteam",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "thundershock",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "doublekick",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "bulletpunch",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   }
-// ], [], "single")
 
 // Bug: Ninja star vs thunder
 startBattle([
