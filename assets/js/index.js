@@ -310,6 +310,10 @@ startBattle([
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {
+        "id": "shadowclone",
+        "isSelected": true
+      },
+      {
         "id": "kunai",
         "isSelected": true
       },
@@ -332,7 +336,7 @@ startBattle([
       {
         "id": "bulletpunch",
         "isSelected": true
-      }
+      },
     ],
     "mega": {
       "moves": [],

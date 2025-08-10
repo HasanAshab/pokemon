@@ -162,7 +162,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario) {
+    async run(senario, clonemode = false) {
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
         const isDodged1 = () => move1.id === "dodge" && move1._dodgeMatrix.every(Boolean)
@@ -304,12 +304,12 @@ class BaseBattle extends EventEmitter {
             instantDamages.set(this.pokemon1, thornsDamage * pokeEffect1)
 
             if (damage > 0) {
-                await this._tryDodge(this.pokemon1, senario)
+                await this._tryDodge(this.pokemon1, senario, clonemode)
                 move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
-                await this._tryDodge(this.pokemon2, senario)
+                await this._tryDodge(this.pokemon2, senario, clonemode)
                 move2 = senario.get(this.pokemon2)
                 !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect2);
             }
@@ -320,12 +320,12 @@ class BaseBattle extends EventEmitter {
             instantDamages.set(this.pokemon2, thornsDamage * pokeEffect2)
             
             if (damage > 0) {
-                await this._tryDodge(this.pokemon1, senario)
+                await this._tryDodge(this.pokemon1, senario, clonemode)
                 move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect1)
             }
             else {
-                await this._tryDodge(this.pokemon2, senario)
+                await this._tryDodge(this.pokemon2, senario, clonemode)
                 move2 = senario.get(this.pokemon2)
                 !isDodged2() &&damages.set(this.pokemon2, -damage * pokeEffect2);
             }
@@ -336,14 +336,14 @@ class BaseBattle extends EventEmitter {
             && move1.flags.contact !== move2.flags.contact
         ) {
             if (move2.flags.contact) {
-                await this._tryDodge(this.pokemon2, senario)
+                await this._tryDodge(this.pokemon2, senario, clonemode)
                 move2 = senario.get(this.pokemon2)
                 isDodged2()
                     ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
                     : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
             }
             else {
-                await this._tryDodge(this.pokemon1, senario)
+                await this._tryDodge(this.pokemon1, senario, clonemode)
                 move1 = senario.get(this.pokemon1)
                 isDodged1()
                     ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
@@ -354,12 +354,12 @@ class BaseBattle extends EventEmitter {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             
             if (damage > 0) {
-                await this._tryDodge(this.pokemon1, senario)
+                await this._tryDodge(this.pokemon1, senario, clonemode)
                 move1 = senario.get(this.pokemon1)
                 !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect2)
             }
             else {
-                await this._tryDodge(this.pokemon2, senario)
+                await this._tryDodge(this.pokemon2, senario, clonemode)
                 move2 = senario.get(this.pokemon2)
                 !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect1)
             }
@@ -444,6 +444,32 @@ class BaseBattle extends EventEmitter {
         if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
             this.ctx.veryClose = true
         }
+        
+        // Shadow Clone Support
+        const sc1 = this.pokemon1.state.effects.has("shadowclone")
+        const sc2 = this.pokemon2.state.effects.has("shadowclone")
+        
+        if (sc1 && sc2) {
+          
+        }
+        else if (sc1) {
+          
+        }
+        else if (sc2) {
+            for (let i = 0; i < this.pokemon2.state.manCount; i++) {
+                const usableMoves = this.pokemon2.state.moves
+                    .filter(m =>
+                        m.flags.offensive !== 0
+                        && m.target !== "self"
+                        && m.retreat <= move2.retreat
+                        && m.retreat <= this.pokemon2.state.retreat
+                    )
+                const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] ?? new Move("staythere")
+                const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove)
+                this.pokemon2.state.emit("used-move", cloneMove, opponentMove)
+                console.log(cloneMove, opponentMove)
+            }
+        }
 
         const hitsMap = new Map([
             [this.pokemon1, hit1], 
@@ -462,12 +488,12 @@ class BaseBattle extends EventEmitter {
         senario.set(pokemon, new Move("staythere"))
     }
 
-    async _tryDodge(pokemon, senario) {
+    async _tryDodge(pokemon, senario, clonemode = false) {
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
         const wantDodge = !["staythere", "dodge"].includes(move.id) && !(move.flags.contact && opponentMove.flags.contact) 
-            && await this.prompt(pokemon).ask("dodge")
+            && (clonemode || await this.prompt(pokemon).ask("dodge"))
 
         if (wantDodge) {
             move = new Move("dodge")
@@ -1018,10 +1044,10 @@ class ArmorManager {
 class BattlePrompt {
     _repliers = {};
 
-    async ask(tag) {
+    async ask(tag, ...args) {
         const replier = this._repliers[tag]
         if (!replier) throw new Error(`No replier for tag ${tag}`)
-        return await replier()
+        return await replier(...args)
     }
 
     reply(tag, cb) {
