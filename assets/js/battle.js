@@ -1,3 +1,4 @@
+import { EventEmitter } from "./utils/event.js"
 import { Pokemon, Move } from "./utils/models.js"
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
@@ -5,7 +6,7 @@ import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDa
 import { PopupMsgQueue } from "./utils/dom.js"
 import {loadMovesDatalist } from "./utils/dom.js";
 
-
+const eventEmitter = new EventEmitter()
 const system = getParam("system") || "single"
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.abilitiesPopupQueue = new PopupMsgQueue("abilities-msg-cont", 4, 3000);
@@ -244,6 +245,23 @@ function setBattleStateListeners(playerTag) {
     battle.prompt(pokemon).reply("dodge", () => {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
     })
+
+    let cleanupAdded = false
+    battle.prompt(pokemon).reply("counterclone", (cloneMove) => {
+        // showShadowCloneSceneController(playerTag)
+        // addShadowCloneScene(cloneMove.id)
+        !cleanupAdded && pokemon.state.once("scene-end", () => {
+          console.log("cleanup");
+        })
+        cleanupAdded = true
+        return new Promise((resolve, _) => {
+            eventEmitter.on("move-card-select", (card, tag) => {
+                if (playerTag !== tag) return
+                // setShadowCloneSceneTargetMove(card.dataset.moveId, false)
+                resolve(new Move(card.dataset.moveId))
+            })
+        })
+    })
 }
 
 function loadChoosePokemon(playerTag){
@@ -304,9 +322,11 @@ function switchPokemon(playerTag, index) {
         setupCurrentBattle(playerTag)
     }
     
-    const diff = pokemon.cp() - enemyPokemon.cp()
-    popupQueue.add(`CP: ${pokemon.cp()} ${diff > 0 ? `  ↑${diff}` : ''}`, "you", 2000)
-    popupQueue.add(`CP: ${enemyPokemon.cp()} ${diff < 0 ? `  ↑${diff}` : ''} `, "enemy", 2000)
+    if (globalThis.pokemon && globalThis.enemyPokemon) {
+      const diff = pokemon.cp() - enemyPokemon.cp()
+      popupQueue.add(`CP: ${pokemon.cp()} ${diff > 0 ? `  ↑${diff}` : ''}`, "you", 2000)
+      popupQueue.add(`CP: ${enemyPokemon.cp()} ${diff < 0 ? `  ↑${diff}` : ''} `, "enemy", 2000)
+    }
 }
 
 function setupCurrentBattle(switcher) {
@@ -396,17 +416,13 @@ function addShadowCloneScene(cloneMoveId) {
   const shadowCloneScene = document.createElement("div")
   shadowCloneScene.classList.add("shadow-clone-scene")
   shadowCloneScene.innerHTML = `
-    <span style="color: var(--${cloneMove.type}-type-color);" class="clone-move-name" data-clone-index="${currentCloneIndex}">${cloneMove.name}</span>
+    <span style="color: var(--${cloneMove.type}-type-color);" class="clone-move-name" data-clone-index="${currentCloneIndex + 1}">${cloneMove.name}</span>
     <strong>VS</strong>
     <span class="target-move-name">?</span>
   `
   shadowCloneSceneList.appendChild(shadowCloneScene)
 }
-showShadowCloneSceneController("you")
-addShadowCloneScene("quickattack")
-// addShadowCloneScene("tackle")
-// addShadowCloneScene("ember")
-// addShadowCloneScene("thundershock")
+
 
 function setShadowCloneSceneTargetMove(targetMoveId,isDodged) {
   const targetMove = new Move(targetMoveId)
@@ -419,7 +435,8 @@ function setShadowCloneSceneTargetMove(targetMoveId,isDodged) {
   targetMoveName.style.color = `var(--${targetMove.type}-type-color)`
   targetMoveName.textContent = targetMove.name
 }
-setShadowCloneSceneTargetMove("kick",false)
+
+
 
 function setEffects(effects, playerTag) {
   const effectsMap = {
@@ -760,7 +777,8 @@ globalThis.showFieldMoveForm = (playerTag)=> {
 
   }
 }
-function handleMoveCardSelect(card, playerTag) {
+
+eventEmitter.on("move-card-select", (card, playerTag) => {
   if (card.classList.contains("disabled")) return
   const oponentPlayerTag = playerTag === "you" ? "enemy": "you"
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
@@ -774,12 +792,12 @@ function handleMoveCardSelect(card, playerTag) {
     card.parentElement.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")
   }
-  }
+})
  
 globalThis.moveCardClickHandler = function( {
   currentTarget
 }, playerTag) {
-  handleMoveCardSelect(currentTarget, playerTag)
+  eventEmitter.emit("move-card-select", currentTarget, playerTag)
 }
 
 function runScene(moveIds) {

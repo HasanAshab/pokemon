@@ -28,6 +28,7 @@ export class EventEmitter {
             if (!this._onceEvents[event]) {
                 this._onceEvents[event] = [];
             }
+            
             this._onceEvents[event].push(listener);
         });
     }

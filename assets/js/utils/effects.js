@@ -488,8 +488,8 @@ class ShadowCloneEffect extends Effect {
 
     setup() {
         super.setup()
-        this.state.manCount = this._calculateManCount()
-        this.state.retreat -= this.state.manCount * this.constructor.COST_PER_CLONE
+        this.state.manCount = this._calculateManCount() + 1
+        this.state.retreat -= (this.state.manCount - 1)  * this.constructor.COST_PER_CLONE
     }
 
     teardown() {
@@ -501,6 +501,9 @@ class ShadowCloneEffect extends Effect {
     onSceneEnd() {
         this.meta = {}
         this.state.unfreeze()
+        if (this.state.manCount === 1) {
+            return this.remove()
+        }
     }
     
     onOpponentScene(move) {

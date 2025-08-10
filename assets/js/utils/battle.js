@@ -4,6 +4,7 @@ import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj } from "./helpers.js"
+import move from "../../../data/processors/move.js";
 
 
 class BaseBattle extends EventEmitter {
@@ -67,7 +68,7 @@ class BaseBattle extends EventEmitter {
             }
 
             this.turnNo++
-            this._waveAfterTurns--
+            !this.ctx.waveLocked && this._waveAfterTurns--
         })
         
         this.on("turn-end", () => {
@@ -163,6 +164,9 @@ class BaseBattle extends EventEmitter {
     }
 
     async run(senario, clonemode = false) {
+        if (clonemode) {
+            this.ctx.waveLocked = true
+        }
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
         const isDodged1 = () => move1.id === "dodge" && move1._dodgeMatrix.every(Boolean)
@@ -444,19 +448,25 @@ class BaseBattle extends EventEmitter {
         if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
             this.ctx.veryClose = true
         }
+
+        const hitsMap = new Map([
+            [this.pokemon1, hit1], 
+            [this.pokemon2, hit2]
+        ])
+        this.emit("scene-end", hitsMap)
         
         // Shadow Clone Support
         const sc1 = this.pokemon1.state.effects.has("shadowclone")
         const sc2 = this.pokemon2.state.effects.has("shadowclone")
-        
-        if (sc1 && sc2) {
+        if (clonemode || move1.id === "shadowclone" || move2.id === "shadowclone") {}
+        else if (sc1 && sc2) {
           
         }
         else if (sc1) {
-          
+
         }
         else if (sc2) {
-            for (let i = 0; i < this.pokemon2.state.manCount; i++) {
+            for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
                 const usableMoves = this.pokemon2.state.moves
                     .filter(m =>
                         m.flags.offensive !== 0
@@ -465,17 +475,18 @@ class BaseBattle extends EventEmitter {
                         && m.retreat <= this.pokemon2.state.retreat
                     )
                 const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] ?? new Move("staythere")
-                const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove)
-                this.pokemon2.state.emit("used-move", cloneMove, opponentMove)
+                const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
+                const cloneScene = new Map([
+                  [this.pokemon2, cloneMove],
+                  [this.pokemon1, opponentMove]
+                ])
+                this.run(cloneScene, true)
                 console.log(cloneMove, opponentMove)
             }
         }
-
-        const hitsMap = new Map([
-            [this.pokemon1, hit1], 
-            [this.pokemon2, hit2]
-        ])
-        this.emit("scene-end", hitsMap)
+        if (clonemode) {
+          this.ctx.waveLocked = false
+        }
     }
     
     _checkFailure(pokemon, senario) {

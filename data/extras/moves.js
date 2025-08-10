@@ -199,7 +199,7 @@ export default {
       num: 100015,
       accuracy: true,
       basePower: 0,
-      category: "Normal",
+      category: "Physical",
       name: "Take Weapon",
       pp: null,
       priority: 0,
