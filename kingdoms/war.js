@@ -233,7 +233,7 @@ class War {
     const manPowerModifier = this._calcManPowerMod(w1)
     const phyScore = w1.statOf('def') - w2.statOf('atk')
     const spScore = w1.statOf('spd') - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()    
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') //+ w1.soldiers.armorScore()    
     return (phyScore + spScore + otherScore) * manPowerModifier
   }
   

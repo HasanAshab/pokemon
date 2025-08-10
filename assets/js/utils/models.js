@@ -518,7 +518,7 @@ class Ability {
 }
 
 class AbilityManager {
-    constructor(pokemon) {
+    constructor(pokemon) {      
         this.pokemon = pokemon
         this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };                
         this._setAbilities(this._rawAbilities)

@@ -736,7 +736,7 @@ Shuriken: {
       contestType: "Tough",
     },
    shadowsoul: {
-      num: 10002,
+      num: 100026,
       accuracy: true,
       multihit:[2,10],
       basePower: 20,
@@ -756,4 +756,29 @@ Shuriken: {
       type: "Dark",
       contestType: "Tough",
     },
+    furysmoke: {
+      num: 100027,
+      basePower: 20,
+      category: "Special",
+      name: "Fury Smoke",
+      pp: 5 * 3,
+      priority: 0,
+      flags: {
+        
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 0
+      },
+      secondary: null,
+      statChanges:{
+        self:{
+        },
+        target:{
+          accuracy:-1,
+
+        }
+      },
+      type: "Fire",
+    }
 }

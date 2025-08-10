@@ -800,3 +800,14 @@ window.onload = () => {
     loadChoosePokemon("enemy") 
     loadMovesDatalist("moves-data-list")
 }
+
+
+
+// for development 
+
+function clickOnFirstEnemyPokemonSwitch() {
+  const enemyPokemonSwitch = document.querySelector(".enemy-controle-cont .pokemon-switch-controler")
+  enemyPokemonSwitch.querySelector(".pokemon").click()
+  console.log(enemyPokemonSwitch);
+  
+}

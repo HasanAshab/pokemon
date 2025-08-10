@@ -1,3 +1,135 @@
+use SoldierStack class to show soldiers might per shift and total one ( use new SoldierStack().cp())
+
+
+here is SoldierStack class 
+
+export class SoldierStack extends Map {
+  constructor(data = []) {
+    if (data instanceof Map)
+      data = [...data.entries()]
+    data = data.map(([imageMeta, quantity]) => {
+      const image = imageMeta instanceof Pokemon
+        ? imageMeta
+        : new Pokemon(imageMeta.id, imageMeta)
+      return [image, quantity]
+    })
+    super(data)
+  }
+  
+  find(id) {
+    const stack = this.entries().find(([image]) => image.id === id) ?? [0]
+    return stack[1]
+  }
+  
+  reduce() {
+    return Array.from(this.entries()).reduce(...arguments)
+  }
+  
+  cp() {
+    return this.reduce((sum, [image, quantity]) => {
+      return sum + image.cp() * quantity;
+    }, 0);
+  }
+  
+  count() {
+    return this.reduce((sum, [image, quantity]) => {
+      return sum + quantity;
+    }, 0);
+  }
+  
+  statOf(stat) {
+    return this.reduce((sum, [image, quantity]) => {
+      return sum + (image.stats[stat] * quantity);
+    }, 0);
+  }
+  
+  armorScore() {
+    return this.reduce((score, [image, quantity]) => {
+      const ahp = image.items._items.reduce((ahp, item) => {
+        if ("armor" in item)
+          ahp += item.armor.hp * (item.armor.covers / 100)
+        return ahp
+      }, 0)
+      return score + (ahp * quantity)
+    }, 0)
+  }
+  
+  resize(percent) {
+    const result = new SoldierStack();
+    const mod = percent / 100
+    for (const [image, quantity] of this.entries()) {
+      result.set(image, Math.ceil(quantity * mod));
+    }
+    return result;
+  }
+}
+
+
+here is js see might parts 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Barrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1 id="barrackTitle">Barrack</h1>
+
+  <section id="academySection">
+    <h2>Academy</h2>
+    <div>
+      <span>Level:</span>
+      <button id="decrAcademy">-</button>
+      <span id="academyLevel">1</span>
+      <button id="incrAcademy">+</button>
+    </div>
+    <div>Monthly Cost: <span id="academyCost">100</span> coins</div>
+  </section>
+
+  <section id="hospitalSection">
+    <h2>Hospital</h2>
+    <div>
+      <span>Level:</span>
+      <button id="decrHospital">-</button>
+      <span id="hospitalLevel">1</span>
+      <button id="incrHospital">+</button>
+    </div>
+    <div>Monthly Cost: <span id="hospitalCost">100</span> coins</div>
+    <div>Unit Capacity: <span id="hospitalCapacity">10</span> units</div>
+  </section>
+  <section><h2>Total Might: <span id="soldiersMight">0</span></h2></section>
+  <section id="daySoldiersSection">
+    <h2>Day Soldiers</h2>
+    <h4>Might: <span id="daySoldiersMight">0</span></h4>
+    <button id="addDaySoldierBtn">+ Add Day Soldier</button>
+    <div id="daySoldiersContainer"></div>
+  </section>
+
+  <section id="nightSoldiersSection">
+    <h2>Night Soldiers</h2>
+    <h4>Might: <span id="nightSoldiersMight">0</span></h4>
+    <button id="addNightSoldierBtn">+ Add Night Soldier</button>
+    <div id="nightSoldiersContainer"></div>
+  </section>
+
+  <section id="emergencySoldiersSection">
+    <h2>Emergency Soldiers</h2>
+    <h4>Might: <span id="emergencySoldiersMight">0</span></h4>
+    <button id="addEmergencySoldierBtn">+ Add Emergency Soldier</button>
+    <div id="emergencySoldiersContainer"></div>
+  </section>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
+
+
+
+here is the js
+
 import pokemons from "../../../../data/pokemons.js";
 import {
   calcAcademyCost,
@@ -69,16 +201,6 @@ const createField = (labelText, inputEl) => {
 
   return wrapper;
 };
-
-function getSoldierStack(soldiers) {  
-  const stackData = soldiers.map((soldier) => {
-    const image = pokemons[soldier.image.id];    
-    image.xp = soldier.image.xp;
-    return [image, soldier.quantity];
-  });
-  return new SoldierStack(stackData);
-}
-
 
 function calcTypeSalary(soldiers) {
   return soldiers.reduce((total, soldier) => {
@@ -168,12 +290,6 @@ function renderSoldierSection(type) {
   typeTotalEl.className = "type-total-salary";
   typeTotalEl.textContent = `Total ${type.charAt(0).toUpperCase() + type.slice(1)} Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
   container.appendChild(typeTotalEl);
-  console.log(type);
-  
-  const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
-  const might = stack.cp();
-  const mightEl = document.getElementById(`${type}SoldiersMight`);
-  mightEl.textContent = might.toLocaleString();
 }
 
 function renderAllSoldiers() {
@@ -193,16 +309,9 @@ function renderAllSoldiers() {
   totalSalaryEl.textContent = `Total Army Salary: ${totalSalary.toLocaleString()}$`;
 
   document.querySelector("body").appendChild(totalSalaryEl);
-
-  // Calculate Total Might across all shifts
-  let totalMight = 0;
-  ["day", "night", "emergency"].forEach((type) => {
-    const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
-    totalMight += stack.cp();
-  });
-
-  const totalMightEl = document.getElementById("soldiersMight");
-  totalMightEl.textContent = totalMight.toLocaleString();
+  renderSoldierSection("day");
+  renderSoldierSection("night");
+  renderSoldierSection("emergency");
 }
 
 document.getElementById("addDaySoldierBtn").onclick = () => {
