@@ -138,7 +138,7 @@ function setBattleListeners() {
 
     battle.on("$counterclonecomplete", (moves1, moves2) => {
       if (moves1.length === 0 || moves2.length === 0) {
-        return setTimeout(() => hideShadowCloneSceneController(), 1000)
+        return setTimeout(() => hideShadowCloneSceneController(), 3000)
       }
       showShadowCloneAutoSceneController(moves1, moves2)
     })
@@ -254,14 +254,21 @@ function setBattleStateListeners(playerTag) {
         return showDodgeBattlePrompt("Want to Dodge?", playerTag)
     })
 
-    battle.prompt(pokemon).reply("counterclone", (cloneMove) => {
+    battle.prompt(pokemon).reply("counterclone", (cloneMove, counterMove) => {
+      console.log(counterMove);
+      
         showShadowCloneSceneController(playerTag)
         addShadowCloneScene(cloneMove.id)
+        if (counterMove) {
+          setShadowCloneSceneTargetMove(counterMove.id, false)
+          return counterMove
+        }
         return new Promise((resolve, _) => {
             eventEmitter.on("move-card-select", (card, tag) => {
                 if (playerTag !== tag) return
-                setShadowCloneSceneTargetMove(card.dataset.moveId, false)
-                resolve(new Move(card.dataset.moveId))
+                const move = new Move(card.dataset.moveId)
+                setShadowCloneSceneTargetMove(move.id, false)
+                resolve(move)
             })
         })
     })

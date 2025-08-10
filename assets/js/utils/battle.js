@@ -166,6 +166,8 @@ class BaseBattle extends EventEmitter {
     async run(senario, clonemode1 = false, clonemode2 = false) {
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true
+            clonemode1 && this.pokemon1.state.freeze()
+            clonemode2 && this.pokemon2.state.freeze()
         }
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
@@ -516,7 +518,7 @@ class BaseBattle extends EventEmitter {
                   }
 
                   for (const [i, cloneMove] of cloneMoves.entries()) {
-                      const opponentMove = allHitMove || await this.prompt(this.pokemon2).ask("counterclone", cloneMove)
+                      const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove, allHitMove)
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
                           opponentMove.basePower /= cloneMoves.length - i
                           allHitMove = opponentMove
@@ -547,7 +549,7 @@ class BaseBattle extends EventEmitter {
                   }
                   
                   for (const [i, cloneMove] of cloneMoves.entries()) {
-                      const opponentMove = allHitMove || await this.prompt(this.pokemon1).ask("counterclone", cloneMove)
+                      const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove)
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
                           opponentMove.basePower /= cloneMoves.length - i
                           allHitMove = opponentMove
@@ -560,10 +562,11 @@ class BaseBattle extends EventEmitter {
                   }
               }
           this.emit("$counterclonecomplete", cloneMoves1, cloneMoves2)
-
         }
         if (clonemode1 || clonemode2) {
           this.ctx.waveLocked = false
+          clonemode1 && this.pokemon1.state.unfreeze()
+          clonemode2 && this.pokemon2.state.unfreeze()
         }
     }
 
