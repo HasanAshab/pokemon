@@ -948,12 +948,14 @@ class StatsManager {
         if (!statChanged) return
         if(on === "self") {
             this.state.pokemon.abilities.onTryBoost(move.statChanges.self, attacker, attacker)
+            attacker.abilities.onTryBoostOpponent(move.statChanges.self, attacker, attacker)
             for (const [stat, change] of Object.entries(move.statChanges.self)) {
                 attacker.state.stats.applyStatChange(stat, change)
             }
         }
         else if (on === "target") {
             this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker)
+            attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker)
             for (const [stat, change] of Object.entries(move.statChanges.target)) {
                 this.applyStatChange(stat, change)
             }

@@ -63,6 +63,11 @@ export default {
         boost[i] *= -1
       }
     },
+    onTryBoostOpponent(boost, target, source, effect) {
+      for (let i in boost) {
+        boost[i] *= -1
+      }
+    },
     retreat: 1
   },
   mayangan2: {

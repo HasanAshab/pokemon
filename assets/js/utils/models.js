@@ -570,6 +570,9 @@ class AbilityManager {
     onTryBoost() {
         return this.actives().forEach(ability => ability._ability.onTryBoost?.(...arguments))
     }
+    onTryBoostOpponent() {
+        return this.actives().forEach(ability => ability._ability.onTryBoostOpponent?.(...arguments))
+    }
 
     _setAbilities(abilities) {
       this._abilities = []
