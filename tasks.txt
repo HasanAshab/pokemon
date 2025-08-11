@@ -4,8 +4,6 @@ filter moves advanced
 incremental humans.js
 
 * Bugs
-shadow clone
-  1. clone dodge + smokescreen stat not change
 fix armor
   1. battle
   2. war

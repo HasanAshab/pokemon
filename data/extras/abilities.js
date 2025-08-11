@@ -63,6 +63,14 @@ export default {
         boost[i] *= -1
       }
     },
+    retreat: 0.5
+  },
+  mayangan2: {
+    onTryBoost(boost, target, source, effect) {
+      for (let i in boost) {
+        boost[i] *= -1
+      }
+    },
     onTryBoostOpponent(boost, target, source, effect) {
       for (let i in boost) {
         boost[i] *= -1
@@ -70,7 +78,7 @@ export default {
     },
     retreat: 1
   },
-  mayangan2: {
+  mayangan3: {
     healthBoost: [2, 8],
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
@@ -91,7 +99,7 @@ export default {
       pokemon.state.increaseHealth(hp);
     }
   },
-  mayangan3: {
+  mayangan4: {
     healthBoost: [5, 15],
     attackSelfChance: 30,
     onTryBoost(boost, target, source, effect) {

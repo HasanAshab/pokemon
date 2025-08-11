@@ -384,16 +384,21 @@ class BaseBattle extends EventEmitter {
         }
         else {
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
-            
             if (damage > 0) {
                 await this._tryDodge(this.pokemon1, senario, clonemode1)
+                const oldm = move1
                 move1 = senario.get(this.pokemon1)
-                !isDodged1() && damages.set(this.pokemon1, damage * pokeEffect2)
+                if (isDodged1())
+                    move1 = oldm
+                else damages.set(this.pokemon1, damage * pokeEffect2)
             }
             else {
                 await this._tryDodge(this.pokemon2, senario, clonemode2)
+                const oldm = move2
                 move2 = senario.get(this.pokemon2)
-                !isDodged2() && damages.set(this.pokemon2, -damage * pokeEffect1)
+                if (isDodged2())
+                    move2 = oldm
+                else damages.set(this.pokemon2, -damage * pokeEffect1)
             }
         }
 
