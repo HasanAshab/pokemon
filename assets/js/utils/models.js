@@ -22,7 +22,7 @@ class PSPokemon {
     }
 
     hasAbility(ability) {
-        return this.abilities.has(ability)
+        return this.state.abilities.isActive(ability)
     }
 
     getWeight() {
@@ -533,7 +533,7 @@ class AbilityManager {
     }
     
     has(name) {
-        return this._abilities.includes(name)
+        return this._abilities.some(ab => ab.name === name)
     }
 
     toggle(name) {

@@ -57,28 +57,7 @@ export default {
     },
     retreat: 0
   },
-  mayangan1: {
-    onTryBoost(boost, target, source, effect) {
-      for (let i in boost) {
-        boost[i] *= -1
-      }
-    },
-    retreat: 0.5
-  },
-  mayangan2: {
-    onTryBoost(boost, target, source, effect) {
-      for (let i in boost) {
-        boost[i] *= -1
-      }
-    },
-    onTryBoostOpponent(boost, target, source, effect) {
-      for (let i in boost) {
-        boost[i] *= -1
-      }
-    },
-    retreat: 1
-  },
-  mayangan3: {
+    mayangan1: {
     healthBoost: [2, 8],
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return
@@ -99,7 +78,7 @@ export default {
       pokemon.state.increaseHealth(hp);
     }
   },
-  mayangan4: {
+  mayangan2: {
     healthBoost: [5, 15],
     attackSelfChance: 30,
     onTryBoost(boost, target, source, effect) {
@@ -130,6 +109,24 @@ export default {
         this.popup("opponent attack self", pokemon);
       }
     }
+  },
+  "mayangan:silver-eye": {
+    onTryBoost(boost, target, source, effect) {
+      const hasIntelligentEye = target.hasAbility("mayangan2");
+      for (let i in boost) {
+        boost[i] = hasIntelligentEye && boost[i] < 0 ? -boost[i] : -boost[i];
+      }
+    },
+    retreat: 0.5
+  },
+  "mayangan:golden-eye": {
+    onTryBoostOpponent(boost, target, source, effect) {
+      const hasIntelligentEye = target.hasAbility("mayangan2");
+      for (let i in boost) {
+        boost[i] = hasIntelligentEye && boost[i] > 0 ? -boost[i] : -boost[i];
+      }
+    },
+    retreat: 1
   },
 
   shadow: {
