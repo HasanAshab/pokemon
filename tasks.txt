@@ -2,18 +2,16 @@
 moves sharingan, mayangan, susano
 filter moves advanced
 incremental humans.js
-Shadow clone
-  show dodge
 
 * Bugs
 shadow clone
-  status and stat not works
+  1. clone dodge + smokescreen stat not change
 fix armor
   1. battle
   2. war
 
-
 * UI
+
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

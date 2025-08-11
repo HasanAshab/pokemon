@@ -136,36 +136,42 @@ function setBattleListeners() {
     popupQueue.add(`New ${this._event}!`, "you")
   })
 
-  const dodgeDataCollector = (playerTag) => {
+  const dodgeDataCollector = (data) => {
     let i = 1
     return (move) => {
-      console.log(playerTag, "i", i, move.id);
-      
       if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) {
-        setShadowCloneSceneTargetDodged(i / 2, playerTag, true)
-        console.log(playerTag, "ii", i, move.id);
+        data[i/2] = true        
       }
       i++
     }
   }
+  let dodgeData = {}
+  let enemyDodgeData = {}
 
-  battle.on("$counterclonestart", () => {
-    pokemonMap["you"].state.on("used-move", dodgeDataCollector("you"), "dodge-data-collector")
-    pokemonMap["enemy"].state.on("used-move", dodgeDataCollector("enemy"), "dodge-data-collector")
+  battle.on("$counterclonestart", (sc1, sc2) => {    
+    if (!sc1 || !sc2) return
+    pokemonMap["you"].state.on("used-move", dodgeDataCollector(dodgeData), "dodge-data-collector")
+    pokemonMap["enemy"].state.on("used-move", dodgeDataCollector(enemyDodgeData), "dodge-data-collector")
   })
 
-  battle.on("$counterclonecomplete", (moves1, moves2) => {
+  battle.on("$counterclonecomplete", (moves1, moves2) => {    
     if (moves1.length === 0 || moves2.length === 0) {
       setTimeout(() => hideShadowCloneSceneController(), 3000)
     }
     else {
-      const data1 = moves1.map(m => ({ move: m, isDodged: false }))
-      const data2 = moves2.map(m => ({ move: m, isDodged: false }))
+      const data1 = moves1.map((m, i) => ({ move: m, isDodged: dodgeData[i+1] ?? false }))
+      const data2 = moves2.map((m, i) => ({ move: m, isDodged: enemyDodgeData[i+1] ?? false }))
+      
       showShadowCloneAutoSceneController(data1, data2)
+      dodgeData = {}
+      enemyDodgeData = {}
     }
-    
-    pokemonMap["you"].state.removeListener("used-move", "dodge-data-collector")
-    pokemonMap["enemy"].state.removeListener("used-move", "dodge-data-collector")
+
+    const cleanTags = ["dodge-data-collector", "dodge-detector"]
+    cleanTags.forEach(tag => {
+      pokemonMap["you"].state.removeListener("used-move", tag)
+      pokemonMap["enemy"].state.removeListener("used-move", tag)
+    })
   })
 }
 
@@ -281,7 +287,7 @@ function setBattleStateListeners(playerTag) {
     return showDodgeBattlePrompt("Want to Dodge?", playerTag)
   })
 
-  battle.prompt(pokemon).reply("counterclone", (cloneMove, counterMove, i) => {
+  battle.prompt(pokemon).reply("counterclone", (cloneMove, counterMove) => {
     showShadowCloneSceneController(playerTag)
     addShadowCloneScene(cloneMove.id)
     if (counterMove) {
@@ -289,16 +295,17 @@ function setBattleStateListeners(playerTag) {
       return counterMove
     }
     return new Promise((resolve, _) => {
-      eventEmitter.on("move-card-select", (card, tag) => {
+      eventEmitter.once("move-card-select", (card, tag) => {
         if (playerTag !== tag) return
         const move = new Move(card.dataset.moveId)
         setShadowCloneSceneTargetMove(move.id)
         resolve(move)
+        let i = 1
         opponent.state.on("used-move", move => {
           if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) {
-            setShadowCloneSceneTargetDodged(i, opponentTag(playerTag))
-            opponent.state.removeListener("used-move", "move-detector")
+            setShadowCloneSceneTargetDodged(i/2, opponentTag(playerTag))
           }
+          i++
         }, "dodge-detector")
       })
     })
@@ -447,7 +454,7 @@ function showShadowCloneAutoSceneController(moves1, moves2) {
   shadowCloneSceneController.classList.add("active")
   shadowCloneSceneController.classList.add("auto")
   const title = shadowCloneSceneController.querySelector(".title")
-  title.textContent = `Shadow Clone Auto Scene ( both )`
+  title.textContent = `Shadow Clone Auto Scene ( You vs Enemy )`
 
   for (let i = 0; i < moves1.length; i++) {
     // for "you"
@@ -516,7 +523,6 @@ function setShadowCloneSceneTargetDodged(i, playerTag, both = false) {
   const shadowCloneSceneList = shadowCloneSceneController.querySelector(".shadow-clone-scene-list")
 
   const shadowCloneScene = shadowCloneSceneList.querySelectorAll(".shadow-clone-scene")[i - 1]
-  console.log(shadowCloneScene, i, playerTag);
   // return 0
   if (both) {
     if (playerTag === "enemy")

@@ -492,9 +492,7 @@ class ShadowCloneEffect extends Effect {
         this.state.retreat -= (this.state.manCount - 1)  * this.constructor.COST_PER_CLONE
     }
 
-    teardown() {
-      console.log("teardown", this.state.manCount);
-      
+    teardown() {      
         super.teardown()
         this.state.manCount = 1
         this.state.unfreeze()

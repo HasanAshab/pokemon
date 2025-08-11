@@ -84,16 +84,11 @@ export class EventEmitter {
                     }
                 }
             });
-        };
-
-        console.log(this._events[events[0]]);
-        
+        };        
 
         removeFrom(this._events);
         removeFrom(this._onceEvents);
         removeFrom(this._tailListeners);
-                console.log(this._events[events[0]]);
-
     }
 }
 

@@ -231,7 +231,7 @@ class BaseBattle extends EventEmitter {
           && move1.flags.weapon !== move2.flags.weapon
           && move1.flags.offensive === move2.flags.offensive
           && move1.priority === move2.priority
-        ) {      
+        ) {
             const bareTypes = ["Normal", "Fighting"]
             const armed = move1.flags.weapon
               ? this.pokemon1
@@ -326,8 +326,10 @@ class BaseBattle extends EventEmitter {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
             damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
         }
-        else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {
-            const thornsDamage = hit2.damage() * 0.10
+        else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {            
+            const thornsDamage = move1.flags.weapon
+                ? hit2.damage() * 0.10
+                : 0
             const damage = ((hit2.damage() - thornsDamage) * moveEffect2) - (hit1.damage() * moveEffect1)
             instantDamages.set(this.pokemon1, thornsDamage * pokeEffect1)
 
@@ -343,7 +345,9 @@ class BaseBattle extends EventEmitter {
             }
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move2.flags.contact && !move1.flags.contact) {
-            const thornsDamage = hit1.damage() * 0.10
+            const thornsDamage = move2.flags.weapon
+                ? hit1.damage() * 0.10
+                : 0
             const damage = (hit2.damage() * moveEffect2) - ((hit1.damage() - thornsDamage) * moveEffect1)
             instantDamages.set(this.pokemon2, thornsDamage * pokeEffect2)
             
@@ -1185,7 +1189,7 @@ class BattlePrompt {
         return await replier(...args)
     }
 
-    reply(tag, cb) {
+    reply(tag, cb) {      
         this._repliers[tag] = cb
         return this
     }
