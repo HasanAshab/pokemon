@@ -464,15 +464,17 @@ class BaseBattle extends EventEmitter {
         if ((sc1 || sc2) && move1.id !== "shadowclone" && move2.id !== "shadowclone" && !(clonemode1 || clonemode2)) {
           const autoCM1 = []
           const autoCM2 = []
+          const cloneSceneCount = Math.min(this.pokemon2.state.manCount - 1, this.pokemon1.state.manCount - 1)
           if (sc1 && sc2) {
                 const cloneMoves1 = []
                 const cloneMoves2 = []
                   let chakra = this.pokemon1.state.retreat
-                  for (let i = 0; i < this.pokemon1.state.manCount - 1; i++) {
+                  for (let i = 0; i < cloneSceneCount; i++) {
                       const usableMoves = this.pokemon1.state.moves
                           .filter(m =>
                               m.flags.offensive !== 0
                               && m.target !== "self"
+                              && m.category !== "Status"
                               && m.retreat <= move1.retreat
                               && m.retreat <= chakra - new Move("dodge").retreat
                           )
@@ -482,11 +484,12 @@ class BaseBattle extends EventEmitter {
                       chakra -= cloneMove.retreat
                   }
                   chakra = this.pokemon2.state.retreat
-                  for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
+                  for (let i = 0; i < cloneSceneCount; i++) {
                       const usableMoves = this.pokemon2.state.moves
                           .filter(m =>
                               m.flags.offensive !== 0
                               && m.target !== "self"
+                              && m.category !== "Status"
                               && m.retreat <= move2.retreat
                               && m.retreat <= chakra - new Move("dodge").retreat
                           )
@@ -569,9 +572,8 @@ class BaseBattle extends EventEmitter {
                       this.run(cloneScene, false, true)
                   }
               }
-              console.log("clone", cloneMoves1, cloneMoves2);
               
-          this.emit("$counterclonecomplete", cloneMoves1, cloneMoves2)
+          this.emit("$counterclonecomplete", autoCM1, autoCM2)
         }
         if (clonemode1 || clonemode2) {
           this.ctx.waveLocked = false
