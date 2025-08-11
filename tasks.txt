@@ -4,6 +4,7 @@ filter moves advanced
 incremental humans.js
 Shadow clone
   show dodge
+
 * Bugs
 fix armor
   1. battle

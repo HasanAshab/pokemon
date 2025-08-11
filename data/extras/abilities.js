@@ -46,6 +46,17 @@ export default {
     }
   },
 
+  mayangan0: {
+    flags: { autoenable: 1 },
+    onHit(pokemon, opponent, move) {
+      if (move.hit.criticalCount()) {
+        pokemon.state.stats._statChanges.atk += 2
+        pokemon.state.stats._statChanges.accuracy -= 1
+        this.popup(`Shaking by ANGER`, pokemon);
+      }
+    },
+    retreat: 0
+  },
   mayangan1: {
     onTryBoost(boost, target, source, effect) {
       for (let i in boost) {

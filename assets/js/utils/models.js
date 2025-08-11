@@ -389,12 +389,12 @@ export class Move {
 class Ability {
     constructor(name, isHidden, manager) {
         this.name = name
+        this._ability = abilities[this.id]
+        this._listeners = {}
         this.isHidden = isHidden
         this.manager = manager
         this.pokemon = manager.pokemon
-        this.active = false
-        this._ability = abilities[this.id]
-        this._listeners = {}
+        this.active = this._ability.flags?.autoenable === 1
     }
     
     get id() {
