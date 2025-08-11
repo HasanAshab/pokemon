@@ -198,6 +198,8 @@ function loadEffects(playerTag) {
 }
 function setBattleStateListeners(playerTag) {
   const pokemon = pokemonMap[playerTag]
+  const opponent = pokemonMap[opponentTag(playerTag)]
+
   pokemon.state.on(["scene-end", "wave"], () => {
     loadPokemonData(playerTag)
   })
@@ -256,9 +258,7 @@ function setBattleStateListeners(playerTag) {
     return showDodgeBattlePrompt("Want to Dodge?", playerTag)
   })
 
-  battle.prompt(pokemon).reply("counterclone", (cloneMove, counterMove) => {
-    console.log(counterMove);
-
+  battle.prompt(pokemon).reply("counterclone", (cloneMove, counterMove, i) => {
     showShadowCloneSceneController(playerTag)
     addShadowCloneScene(cloneMove.id)
     if (counterMove) {
@@ -266,12 +266,20 @@ function setBattleStateListeners(playerTag) {
       return counterMove
     }
     return new Promise((resolve, _) => {
-      eventEmitter.on("move-card-select", (card, tag) => {
-        if (playerTag !== tag) return
-        const move = new Move(card.dataset.moveId)
-        setShadowCloneSceneTargetMove(move.id, false)
-        resolve(move)
-      })
+        eventEmitter.on("move-card-select", (card, tag) => {
+          if (playerTag !== tag) return
+          const move = new Move(card.dataset.moveId)
+          setShadowCloneSceneTargetMove(move.id)
+          resolve(move)
+          console.log("aftyer resolve");
+          
+          opponent.state.on("used-move", move => {
+            if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) 
+                setShadowCloneSceneTargetDodged(i)
+            console.log(move.id);
+            console.log(move.id === "dodge" && move._dodgeMatrix.every(Boolean));
+          })
+        })
     })
   })
 }
@@ -477,12 +485,13 @@ function setShadowCloneSceneTargetMove(targetMoveId, isDodged=false, isAutoScene
   const targetMoveName = document.querySelector(".shadow-clone-scene-controller .shadow-clone-scene-list .shadow-clone-scene:last-child .target-move-name")
   targetMoveName.style.color = `var(--${targetMove.type}-type-color)`
   targetMoveName.textContent = targetMove.name
-  if (isAutoScene) {
-   if (isDodged) targetMoveName.classList.add("dodged")
-  } else {
-    cloneMoveName.parentElement.classList.add("dodged")
-
+  if (isDodged) {
+   isAutoScene ? cloneMoveName.classList.add("dodged") : targetMoveName.classList.add("dodged")
   }
+}
+
+function setShadowCloneSceneTargetDodged(i, playerTag = null) {
+  
 }
 
 
