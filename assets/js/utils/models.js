@@ -22,7 +22,7 @@ class PSPokemon {
     }
 
     hasAbility(ability) {
-        return this.state.abilities.isActive(ability)
+        return this.abilities.isActive(ability)
     }
 
     getWeight() {
