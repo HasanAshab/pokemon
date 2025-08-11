@@ -2,7 +2,7 @@
 moves sharingan, mayangan, susano
 filter moves advanced
 incremental humans.js
-
+mayangan golden eye
 * Bugs
 fix armor
   1. battle
