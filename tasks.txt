@@ -6,6 +6,8 @@ Shadow clone
   show dodge
 
 * Bugs
+shadow clone
+  status and stat not works
 fix armor
   1. battle
   2. war

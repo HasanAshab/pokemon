@@ -164,8 +164,10 @@ class BaseBattle extends EventEmitter {
     }
 
     async run(senario, clonemode1 = false, clonemode2 = false) {
+        const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
-            this.ctx.waveLocked = true
+            this.ctx.waveLocked = true          
+            this.ctx.veryClose = false
             clonemode1 && this.pokemon1.state.freeze()
             clonemode2 && this.pokemon2.state.freeze()
         }
@@ -189,7 +191,7 @@ class BaseBattle extends EventEmitter {
         this._checkFailure(this.pokemon2, senario)
         
         this.emit("scene", senario)
-        
+
         // TEMP: move power management
         this.pokemon1.state.damage.chainModifyPower('*', this.pokemon1.state.stats._statChanges["pow"] || 1)
         this.pokemon2.state.damage.chainModifyPower('*', this.pokemon2.state.stats._statChanges["pow"] || 1)
@@ -210,37 +212,6 @@ class BaseBattle extends EventEmitter {
         this.pokemon1.state.emit("using-move", move1, move2)
         this.pokemon2.state.emit("using-move", move2, move1)
 
-        // weapon effects
-        if(
-          move2.flags.contact
-          && move1.flags.contact
-          && move1.flags.weapon !== move2.flags.weapon
-          && move1.flags.offensive === move2.flags.offensive
-          && move1.priority === move2.priority
-        ) {         
-            const bareTypes = ["Normal", "Fighting"]
-            const armed = move1.flags.weapon
-              ? this.pokemon1
-              : this.pokemon2
-            const bare = this.opponentOf(armed)
-            const armedMove = senario.get(armed)
-            const bareMove = senario.get(bare)
-
-            if (bareTypes.includes(bareMove.type)) {
-                armed.state.damage.chainModifyPower(armedMove.id, 1.3)
-                senario.set(bare, new Move("staythere"))
-                if (
-                  !armedMove.flags.bodypart
-                  && move1.flags.contact === move2.flags.contact
-                ) {
-                  armed.state.removeMove(armedMove.id)
-                }
-            }
-            else {
-              bareMove.recoil = [3, 10]
-            }
-        }
-
         move1.hit = new Hit(this.pokemon1, move1, this.pokemon2)
         move2.hit = new Hit(this.pokemon2, move2, this.pokemon1)
 
@@ -252,6 +223,57 @@ class BaseBattle extends EventEmitter {
 
         this.pokemon1.state.emit("used-move", move1, move2)
         this.pokemon2.state.emit("used-move", move2, move1)
+
+        // weapon effects
+        if (
+          move2.flags.contact
+          && move1.flags.contact
+          && move1.flags.weapon !== move2.flags.weapon
+          && move1.flags.offensive === move2.flags.offensive
+          && move1.priority === move2.priority
+        ) {      
+            const bareTypes = ["Normal", "Fighting"]
+            const armed = move1.flags.weapon
+              ? this.pokemon1
+              : this.pokemon2
+            const bare = this.opponentOf(armed)
+            const clonemode = bare === this.pokemon1 ? clonemode1 : clonemode2
+            
+            const isDodged = bare === this.pokemon1 ? isDodged1 : isDodged2
+            const armedMove = senario.get(armed)
+            const bareMove = senario.get(bare)
+
+            if (bareTypes.includes(bareMove.type)) {
+                await this._tryDodge(bare, senario, clonemode)
+                if (bareMove === move1) {
+                  move1 = senario.get(bare)
+                }
+                else {
+                  move2 = senario.get(bare)
+                }
+
+                if (!isDodged()) {
+                    armed.state.damage.chainModifyPower(armedMove.id, 1.3)
+                    senario.set(bare, new Move("staythere"))                    
+                    if (
+                      !armedMove.flags.bodypart
+                      && bareMove.flags.contact === armedMove.flags.contact
+                      && !clonemode
+                    ) {
+                      armed.state.removeMove(armedMove.id)
+                    }
+                    if (bareMove === move1) {
+                      move1 = senario.get(bare)
+                    }
+                    else {
+                      move2 = senario.get(bare)
+                    }
+                }
+            }
+            else {
+              bareMove.recoil = [3, 10]
+            }
+        }
 
         const canMove1 = this.pokemon1.state.effects.canMove()
         const canMove2 = this.pokemon2.state.effects.canMove()
@@ -340,7 +362,7 @@ class BaseBattle extends EventEmitter {
             !["None", "Status"].includes(move1.category)
             && !["None", "Status"].includes(move2.category)
             && move1.flags.contact !== move2.flags.contact
-        ) {
+        ) { 
             if (move2.flags.contact) {
                 await this._tryDodge(this.pokemon2, senario, clonemode2)
                 move2 = senario.get(this.pokemon2)
@@ -460,8 +482,10 @@ class BaseBattle extends EventEmitter {
         // Shadow Clone Support
         const sc1 = this.pokemon1.state.effects.has("shadowclone")
         const sc2 = this.pokemon2.state.effects.has("shadowclone")
-        
+
         if ((sc1 || sc2) && move1.id !== "shadowclone" && move2.id !== "shadowclone" && !(clonemode1 || clonemode2)) {
+          this.emit("$counterclonestart", sc1, sc2)
+
           const autoCM1 = []
           const autoCM2 = []
           const cloneSceneCount = Math.min(this.pokemon2.state.manCount - 1, this.pokemon1.state.manCount - 1)
@@ -529,7 +553,7 @@ class BaseBattle extends EventEmitter {
                   }
 
                   for (const [i, cloneMove] of cloneMoves.entries()) {
-                      const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove, allHitMove)
+                      const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove, allHitMove, i + 1)
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
                           opponentMove.basePower /= cloneMoves.length - i
                           allHitMove = opponentMove
@@ -560,7 +584,7 @@ class BaseBattle extends EventEmitter {
                   }
                   
                   for (const [i, cloneMove] of cloneMoves.entries()) {
-                      const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove)
+                      const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove, i + 1)
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
                           opponentMove.basePower /= cloneMoves.length - i
                           allHitMove = opponentMove
@@ -572,11 +596,11 @@ class BaseBattle extends EventEmitter {
                       this.run(cloneScene, false, true)
                   }
               }
-              
           this.emit("$counterclonecomplete", autoCM1, autoCM2)
         }
         if (clonemode1 || clonemode2) {
           this.ctx.waveLocked = false
+          this.ctx.veryClose = oldVeryClose
           clonemode1 && this.pokemon1.state.unfreeze()
           clonemode2 && this.pokemon2.state.unfreeze()
         }
@@ -592,19 +616,20 @@ class BaseBattle extends EventEmitter {
         senario.set(pokemon, new Move("staythere"))
     }
 
-    async _tryDodge(pokemon, senario, clonemode = false) {
+    async _tryDodge(pokemon, senario, clonemode = false) {        
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
-        const wantDodge = !["staythere", "dodge"].includes(move.id) && !(move.flags.contact && opponentMove.flags.contact) 
+        
+        const wantDodge = !["staythere", "dodge"].includes(move.id) && ((move.flags.weapon !== opponentMove.flags.weapon) || !(move.flags.contact && opponentMove.flags.contact)) 
             && (clonemode || await this.prompt(pokemon).ask("dodge"))
-
+        
         if (wantDodge) {
             move = new Move("dodge")
             senario.set(pokemon, move)
             move.onBeforeMove?.(pokemon, opponent, opponentMove)
             pokemon.state.emit("used-move", move, opponentMove)
-          }
+        }
     }
 
     _setWaveTurns() {

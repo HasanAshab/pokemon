@@ -6,61 +6,51 @@ export class EventEmitter {
         this._tailListeners = {};
     }
 
-    on(events, listener) {
+    _addListener(storage, events, listener, tag) {
         if (!Array.isArray(events)) {
-            events = [events]; // Convert single event to an array
+            events = [events];
         }
 
         events.forEach(event => {
-            if (!this._events[event]) {
-                this._events[event] = [];
+            if (!storage[event]) {
+                storage[event] = [];
             }
-            this._events[event].push(listener);
+
+            // Avoid duplicate tag
+            if (tag && storage[event].some(l => l.tag === tag)) {
+                return;
+            }
+
+            storage[event].push({ fn: listener, tag });
         });
     }
 
-    once(events, listener) {
-        if (!Array.isArray(events)) {
-            events = [events]; // Convert single event to an array
-        }
-
-        events.forEach(event => {
-            if (!this._onceEvents[event]) {
-                this._onceEvents[event] = [];
-            }
-            
-            this._onceEvents[event].push(listener);
-        });
+    on(events, listener, tag = null) {
+        this._addListener(this._events, events, listener, tag);
     }
 
-    tailListener(events, listener) {
-        if (!Array.isArray(events)) {
-            events = [events]; // Convert single event to an array
-        }
-
-        events.forEach(event => {
-            if (!this._tailListeners[event]) {
-                this._tailListeners[event] = [];
-            }
-            this._tailListeners[event].push(listener);
-        });
+    once(events, listener, tag = null) {
+        this._addListener(this._onceEvents, events, listener, tag);
     }
 
-    // BUG: Unconsistent CTX
+    tailListener(events, listener, tag = null) {
+        this._addListener(this._tailListeners, events, listener, tag);
+    }
+
     emit(event, ...args) {
+        const ctx = { _event: event };
+
         if (this._events[event]) {
-            const ctx = {
-                _event: event,
-            }
-            this._events[event].forEach(listener => listener.apply(ctx, args));
+            this._events[event].forEach(({ fn }) => fn.apply(ctx, args));
         }
 
         if (this._onceEvents[event]) {
-            this._onceEvents[event].forEach(listener => listener.apply(this, args));
+            this._onceEvents[event].forEach(({ fn }) => fn.apply(ctx, args));
             delete this._onceEvents[event];
         }
+
         if (this._tailListeners[event]) {
-            this._tailListeners[event].forEach(listener => listener.apply(this, args));
+            this._tailListeners[event].forEach(({ fn }) => fn.apply(ctx, args));
         }
     }
 
@@ -75,24 +65,38 @@ export class EventEmitter {
         }, delay);
     }
 
-    removeListener(events, listener) {
+    removeListener(events, tagOrFn) {
         if (!Array.isArray(events)) {
-            events = [events]; // Convert single event to an array
+            events = [events];
         }
 
-        events.forEach(event => {
-            if (this._events[event]) {
-                this._events[event] = this._events[event].filter(fn => fn !== listener);
-            }
-            if (this._onceEvents[event]) {
-                this._onceEvents[event] = this._onceEvents[event].filter(fn => fn !== listener);
-            }
-            if (this._tailListeners[event]) {
-                this._tailListeners[event] = this._tailListeners[event].filter(fn => fn !== listener);
-            }
-        });
+        const isTag = typeof tagOrFn === "string";
+        const isFn = typeof tagOrFn === "function";
+
+        const removeFrom = store => {
+            events.forEach(event => {
+                if (store[event]) {
+                    store[event] = store[event].filter(l =>
+                        isTag ? l.tag !== tagOrFn : l.fn !== tagOrFn
+                    );
+                    if (store[event].length === 0) {
+                        delete store[event];
+                    }
+                }
+            });
+        };
+
+        console.log(this._events[events[0]]);
+        
+
+        removeFrom(this._events);
+        removeFrom(this._onceEvents);
+        removeFrom(this._tailListeners);
+                console.log(this._events[events[0]]);
+
     }
 }
+
 
 export class Observable extends EventEmitter {
     constructor() {
