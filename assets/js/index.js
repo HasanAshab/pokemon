@@ -251,7 +251,7 @@ startBattle([
     "nature": "serious",
     "retreat": 12,
     "types": [] ,
-    "abilities": ["shikagubeast"],
+    "abilities": ["kuramabeast"],
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {

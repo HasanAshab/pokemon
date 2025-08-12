@@ -335,6 +335,24 @@ export default {
     },
   },
 
+  kuramabeast: {
+    type: 'beast',
+    beastImage: 'kurama',
+    onWave(pokemon) {
+      const chance = Math.random() * 100
+      
+      if (chance >= 85) {
+        pokemon.state.retreat += pokemon.level
+      }
+      else if (chance >= 65) {
+        pokemon.state.retreat += pokemon.level / 1.5
+      }
+      else if (chance >= 50) {
+        pokemon.state.retreat += pokemon.level / 3
+      }
+    }
+  },
+
   charizardbeast: {
     type: 'beast',
     beastImage: 'charizard',
