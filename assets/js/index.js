@@ -244,7 +244,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
 // Bug: Ninja star vs thunder
-startBattle([
+/*startBattle([
   {
     "id": "rookie",
     "name": "rahul akatomi",
@@ -298,4 +298,4 @@ startBattle([
       "spd": 0
     }
   }
-], [], "single")
+], [], "single")*/
