@@ -441,9 +441,7 @@ class BaseBattle extends EventEmitter {
         // TEMP: block move support
         if (move1.priority === move2.priority) {
             d1 -= d1 * this.pokemon1.state.damage.blockModifier()
-            d2 -=  d2 * this.pokemon2.state.damage.blockModifier()
-            console.log(this.pokemon1.state.damage.blockModifier());
-            
+            d2 -=  d2 * this.pokemon2.state.damage.blockModifier()            
         }
 
         if(move2.priority > move1.priority) {

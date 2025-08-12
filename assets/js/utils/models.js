@@ -128,24 +128,23 @@ export class Pokemon extends PSPokemon {
     }
 
     effectiveness(type) {
-      if (type instanceof Move) {
-        if (type.damage) return 1
-        type = type.type
-      }
-      
-      if (this.types.some(tType => typeChart[type]?.[tType] === 0.25))
-        return 0
-      return 1
-      
-      // no effects ...
-
+        if (type instanceof Move) {
+          if (type.damage) return 1
+          type = type.type
+        }
+        
+        const jinchuriki = this.abilities.jinchuriki()
+        if (!jinchuriki)
+            return 1
+    
         if (!type) return 1
         let effectiveness = 1;
-        this.types.forEach(tType => {
+        jinchuriki._beast.types.forEach(tType => {
             if (typeChart[type] && typeChart[type][tType]) {
                 effectiveness *= typeChart[type][tType];
             }
         });
+        
         return effectiveness;
     }
     
@@ -604,6 +603,10 @@ class AbilityManager {
         })
     }
     
+    jinchuriki() {
+        return this.actives().find(ab => !!ab._beast)
+    }
+
     onTryBoost() {
         return this.actives().forEach(ability => ability._ability.onTryBoost?.(...arguments))
     }

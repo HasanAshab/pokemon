@@ -218,10 +218,8 @@ export default {
           const min = 0.1
           const max = 0.5
           const modifier = min + Math.random() * (max - min)
-          console.log(modifier);
-
           pokemon.state.damage.chainAddBlock(modifier)
-          this.popup(`hand beast blocked more ${modifier * 100}% of damage`, pokemon);
+          // this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
       }
       else if (move.type === "Ground") {
           move.accuracy = true

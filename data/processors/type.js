@@ -4,7 +4,7 @@ const IMPACTOR = 0.75
 const CHART_MAP = {
     "double": IMPACTOR * 2,
     "half": IMPACTOR * 0.5,
-    "immune": 0.25
+    "immune": 0
 }
 
 

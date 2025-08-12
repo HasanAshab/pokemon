@@ -950,6 +950,7 @@ function loadTokenStats(playerTag) {
 globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name) {
   currentTarget.classList.toggle("active")
   pokemonMap[playerTag].abilities.toggle(ability_name);
+  loadTokenStats(playerTag)
   loadPokemonData(playerTag)
   loadPokemonData(opponentTag(playerTag))
 }

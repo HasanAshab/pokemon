@@ -1,9 +1,12 @@
 export default {
   latherarmor1: {
     type: "armor",
-    covers: 50,
+    covers: 20,
     stats: {
       def: 20
+    },
+    tokens: {
+      spe: -3
     }
   },
   locket1: {
