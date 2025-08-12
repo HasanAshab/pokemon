@@ -1,7 +1,7 @@
 export default {
   kurama: {
     num: 1,
-    name: "Student",
+    name: "Kurama",
     types: [],
     baseStats: { hp: 30, atk: 20, def: 20, spa: 15, spd: 15, spe: 25 },
     abilities: {},
