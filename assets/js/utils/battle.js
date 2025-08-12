@@ -859,7 +859,7 @@ class BattleState extends EventEmitter {
         }
         if (!isInternal) {
             amount = this.armor.consume(amount)
-        }        
+        }
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
@@ -1150,10 +1150,13 @@ class ArmorManager {
     constructor(state) {
         this.state = state
         this._items = this.state.pokemon.items._items.filter(item => {
-          return "armor" in item
+          return item.type === "armor"
         })
         this._items.forEach(item => {
-          return item.armor._hp = item.armor.hp
+          item.armor = {
+            hp: 100,
+            _hp: 100
+          }
         })
     }
     
@@ -1170,17 +1173,39 @@ class ArmorManager {
     }
 
     consume(amount) {
-        this._triggeredArmors().forEach(item => {
-            if (amount <= 0) return;
-            amount -= item.armor._hp
-            item.armor._hp = Math.max(Math.abs(amount), 0)
-        })
+        const id = this.state._data.armorUsed        
+        if (!id) return amount
+        const armor = this._items.find(item => item.id === id)
+        armor.armor._hp -= amount
+        if (armor.armor._hp < 0) {
+            amount = Math.abs(armor.armor._hp)
+            armor.armor._hp = 0
+        }
+        else amount = 0
         return Math.max(amount, 0)
     }
-    
+
+    forCategory(category) {
+        const statMap = {
+            "Physical": "def",
+            "Special": "spd"
+        }
+        for (const item of this._triggeredArmors()) {
+            const defStat = item.stats[statMap[category]]
+
+            if (defStat > 0 && item.armor._hp > 0) {
+                return {
+                    id: item.id,
+                    defStat
+                } 
+            }
+        }
+        return null
+    }
+
     _triggeredArmors() {
         return this._items.filter(item => {
-            return Math.random() < (item.armor.covers / 100)
+            return Math.random() < (item.covers / 100)
         })
     }
 }

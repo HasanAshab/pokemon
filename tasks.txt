@@ -5,7 +5,6 @@ incremental humans.js
 
 * Bugs
 fix armor
-  1. battle
   2. war
 
 * UI
