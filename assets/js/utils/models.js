@@ -311,6 +311,15 @@ export class Move {
     get hits() {
         return 'hit' in this ? this.hit.hitCount() : 1
     }
+
+    get retreat() {
+        const mod = this._user?.state?.retreatModifier(this) ?? 1
+        return this._ref.retreat * mod
+    }
+
+    set retreat(value) {
+        this._ref.retreat = value
+    }
     
     exists() {
       return !!this._move
@@ -471,6 +480,7 @@ class Ability {
               this._beastInheritedStats[stat] = this._beast.stats[stat] * Ability.BEAST_STATS_INHERIT_PERCENTAGE / 100
           }
           this.pokemon.tokens = sumObj(this.pokemon.tokens, this._beastInheritedStats)
+          "hp" in this._beastInheritedStats && this.pokemon.state.increaseHealth(this._beastInheritedStats.hp)
 
           for (const type of this._beast.types) {
               if (this.pokemon.hasType(type)) continue
@@ -481,6 +491,7 @@ class Ability {
     }
     onDeactivate() {
       if (this._beast) {
+          "hp" in this._beastInheritedStats && this.pokemon.state.decreaseHealth(this._beastInheritedStats.hp, true)
           this.pokemon.tokens = sumObj(this.pokemon.tokens, modObj(this._beastInheritedStats, -1))
           this.pokemon.meta.types = this.pokemon.meta.types.filter(t => !this._beastInheritedTypes.includes(t))
         }

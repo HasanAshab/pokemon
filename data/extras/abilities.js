@@ -3,12 +3,26 @@ import { Damage } from "../../assets/js/utils/damage.js"
 
 export default {
   sharingan1: {
-    statChanges: {
-      accuracy: 2
+    accuracyReduced: 0,
+    onActivate(pokemon) {
+      pokemon.state.removeListener("turn", "sharingan-recovery")
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.on("turn", () => {
+        if (this.ability.accuracyReduced <= 0) 
+          return pokemon.state.removeListener("turn", "sharingan-recovery")
+
+        pokemon.state.stats._statChanges.accuracy += 0.25
+        this.ability.accuracyReduced -= 0.25
+      }, "sharingan-recovery")
+    },
+    onTurn(pokemon) {
+      pokemon.state.stats._statChanges.accuracy -= 0.25
+      this.ability.accuracyReduced += 0.25
     },
     onTryAddVolatile(status, pokemon) {
       if (status.id === "confusion") return null
-    }
+    },
   },
   sharingan2: {
     onTryBoost(boost, target, source, effect) {
@@ -227,14 +241,11 @@ export default {
     },
   },
 
-  hand1beast: {
+  blacktaibeast: {
     type: 'beast',
+    beastImage: 'blacktai',
     beastAttackChance: 30,
     beastAttackCount: 1,
-    tokenChangesPercent: {
-      atk: 20,
-      spe: -10,
-    },
     onModifyAtk(_, target, source, move) {
       const rand = Math.random() * 100
       if (!move.flags.weapon && rand < this.ability.beastAttackChance) {
@@ -253,23 +264,19 @@ export default {
       beast.meta.name += " (Beast)"
       beast.tokens.atk += pokemon.stats.atk * 0.2
       beast.state = pokemon.state.clone()
-      
       return beast
     },
   },
   hand3beast: {
     type: 'beast',
+    beastImage: 'blacktai',
     beastAttackChance: 30,
     beastAttackCount: [1, 3],
-    tokenChangesPercent: {
-      atk: 30,
-      spe: -50,
-    },
     onModifyMove(move, pokemon) {
       if (move.id !== "block") return
       const modifier = Math.random() * 0.2
       pokemon.state.damage.chainAddBlock(modifier)
-      console.log(`hand beast blocked more ${modifier * 100}% of damage`);
+      this.popup(`hand beast blocked more ${modifier * 100}% of damage`, pokemon);
     },
     onModifyAtk(_, target, source, move) {
       const rand = Math.random() * 100
@@ -281,7 +288,7 @@ export default {
                 const damage = new Damage(beast, move, source)
                 move.hit.damages.push(damage)
             })
-            this.popup("beast also attacked", target);
+            this.popup(`beast also attacked (${beastAttackCount})`, target);
         })
       }
     },
@@ -296,17 +303,14 @@ export default {
   },
   hand6beast: {
     type: 'beast',
+    beastImage: '',
     beastAttackChance: 45,
     beastAttackCount: [2, 6],
-    tokenChangesPercent: {
-      atk: 50,
-      spe: -100,
-    },
     onModifyMove(move, pokemon) {
       if (move.id !== "block") return
       const modifier = Math.random() * 0.5
       pokemon.state.damage.chainAddBlock(modifier)
-      console.log(`hand beast blocked more ${modifier * 100}% of damage`);
+      this.popup(`hand beast blocked more ${modifier * 100}% of damage`, pokemon);
     },
     onModifyAtk(_, target, source, move) {
       const rand = Math.random() * 100
@@ -318,7 +322,7 @@ export default {
                 const damage = new Damage(beast, move, source)
                 move.hit.damages.push(damage)
             })
-            this.popup("beast also attacked", target);
+            this.popup(`beast also attacked (${beastAttackCount})`, target);
         })
       }
     },
@@ -329,6 +333,16 @@ export default {
       beast.state = pokemon.state.clone()
       
       return beast
+    },
+  },
+  charizardbeast: {
+    type: 'beast',
+    beastImage: 'shikagu', //todo
+    onActivate(pokemon) {
+        pokemon.state.chainModifyRetreat(0.5, move => move.type === "Fire")
+    },
+    onDeactivate(pokemon) {
+        pokemon.state.chainModifyRetreat(2, move => move.type === "Fire")
     },
   },
   tail1beast: {

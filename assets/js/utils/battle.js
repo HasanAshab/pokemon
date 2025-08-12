@@ -203,6 +203,8 @@ class BaseBattle extends EventEmitter {
         try {
           move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
           move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
+          move1._user = this.pokemon1
+          move2._user = this.pokemon2
         }
         catch (e) {
           move1._meta = {}
@@ -688,7 +690,6 @@ class BattleState extends EventEmitter {
     static DEFAULT_MOVES = [
         "staythere",
         "dodge",
-        "sagemode",
         "block",
         "punch",
         "kick"
@@ -697,11 +698,11 @@ class BattleState extends EventEmitter {
     flags = {}
     _manCount = 1
     _data = {}
+    _retreatModifiers = []
+
 
     constructor(battle, pokemon) {
         super()
-        const that = this
-
         this.battle = battle;
         this.pokemon = pokemon;
 
@@ -717,6 +718,7 @@ class BattleState extends EventEmitter {
 
         this.on("used-move", move => {
             const opponent = this.battle.opponentOf(this.pokemon)
+                        
             this.retreat -= move.retreat
             this.reducePP(move.id)
             
@@ -758,7 +760,20 @@ class BattleState extends EventEmitter {
         })
         pokemon.meta.moves && this.setMoves(pokemon.meta.moves)
     }
-    
+
+    retreatModifier(move) {
+        let mod = 1        
+        for (const { mod: m, conditionFn } of this._retreatModifiers) {
+            if (conditionFn(move)) {
+                mod *= m
+            }
+        }
+        return mod
+    }
+
+    chainModifyRetreat(mod, conditionFn) {
+        this._retreatModifiers.push({ mod, conditionFn })
+    }
     toJSON() {
         return {
             _manCount: this._manCount,
@@ -814,6 +829,7 @@ class BattleState extends EventEmitter {
     addMove(id, meta = {}) {
         const move = new Move(id)
         move._meta = meta
+        move._user = this.pokemon
         if(!this.hasMove(id)) {
             this.moves.push(move)
             this.emit("move-added", move)
