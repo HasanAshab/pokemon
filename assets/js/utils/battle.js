@@ -442,6 +442,8 @@ class BaseBattle extends EventEmitter {
         if (move1.priority === move2.priority) {
             d1 -= d1 * this.pokemon1.state.damage.blockModifier()
             d2 -=  d2 * this.pokemon2.state.damage.blockModifier()
+            console.log(this.pokemon1.state.damage.blockModifier());
+            
         }
 
         if(move2.priority > move1.priority) {
@@ -630,7 +632,7 @@ class BaseBattle extends EventEmitter {
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
         
-        const wantDodge = !["staythere", "dodge"].includes(move.id) && ((move.flags.weapon !== opponentMove.flags.weapon) || !(move.flags.contact && opponentMove.flags.contact)) 
+        const wantDodge = !["staythere", "dodge", "block"].includes(move.id) && ((move.flags.weapon !== opponentMove.flags.weapon) || !(move.flags.contact && opponentMove.flags.contact)) 
             && (clonemode || await this.prompt(pokemon).ask("dodge"))
         
         if (wantDodge) {
