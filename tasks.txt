@@ -4,8 +4,6 @@ filter moves advanced
 incremental humans.js
 
 * Bugs
-fix armor
-  2. war
 
 * UI
 

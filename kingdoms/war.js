@@ -44,8 +44,10 @@ export class SoldierStack extends Map {
   armorScore() {
     return this.reduce((score, [image, quantity]) => {
       const ahp = image.items._items.reduce((ahp, item) => {
-        if ("armor" in item)
-          ahp += item.armor.hp * (item.armor.covers / 100)
+        if (item.type === "armor") {
+          const totalStat = Object.values(item.stats).reduce((sum, stat) => sum + stat, 0)
+          ahp += totalStat * (item.armor.covers / 100)
+        }
         return ahp
       }, 0)
       return score + (ahp * quantity)
@@ -233,7 +235,7 @@ class War {
     const manPowerModifier = this._calcManPowerMod(w1)
     const phyScore = w1.statOf('def') - w2.statOf('atk')
     const spScore = w1.statOf('spd') - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') //+ w1.soldiers.armorScore()    
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()    
     return (phyScore + spScore + otherScore) * manPowerModifier
   }
   
