@@ -1,6 +1,5 @@
 import { Damage } from "../../assets/js/utils/damage.js"
 
-
 export default {
   sharingan1: {
     accuracyReduced: 0,
@@ -389,5 +388,79 @@ export default {
         actualMove.multihit = actualMove._ref.multihit
       })
     },
+  },
+
+
+  // paths
+  indrapath: {
+    type: 'path',
+    onTurn(pokemon) {
+      if (pokemon.state.flags.autoDodge) return
+      if (pokemon.state._data.autoDodgeCountDown === undefined) {
+        pokemon.state._data.autoDodgeCountDown = pokemon.abilities.hasSixPath() ? 2 : 3
+      }      
+
+      pokemon.state._data.autoDodgeCountDown--
+      if (pokemon.state._data.autoDodgeCountDown === 0) {
+        pokemon.state._data.autoDodgeCountDown = undefined
+        pokemon.state.flags.autoDodge = 1
+        this.popup("aquired auto dodge", pokemon);
+      }
+    },
+  },
+  asurapath: {
+    type: 'path',
+    onActivate(pokemon) {            
+        const statExchange = pokemon.state.stats.get("spe") * 0.5
+        pokemon.tokens.atk += statExchange
+        if (!pokemon.abilities.hasSixPath()) 
+          pokemon.tokens.spe -= statExchange
+    },
+    onDeactivate(pokemon) {
+        const statExchange = pokemon.state.stats.get("spe") * 0.5
+        pokemon.tokens.atk -= statExchange
+        if (!pokemon.abilities.hasSixPath())
+          pokemon.tokens.spe += statExchange
+    },
+  },
+  pretapath: {
+    type: 'path',
+    onHit(pokemon, opponent, move) {
+      const removeChance = pokemon.abilities.hasSixPath() ? 0.35 : 0.2
+      if (Math.random() < removeChance) {
+        opponent.state.moves.forEach(m => {
+          if (m.type === move.type) {
+            opponent.state.removeMove(m.id)
+          }
+        })
+        this.popup(`PRETA PRETA!`, pokemon);
+      }
+    },
+  },
+  innerpath: {
+    type: 'path',
+    onWave(pokemon, opponent) {
+      const drainPercent = pokemon.abilities.hasSixPath() ? 0.35 : 0.2
+      const drainRetreat = opponent.state.retreat * drainPercent
+      pokemon.state.retreat += drainRetreat
+      opponent.state.retreat -= drainRetreat      
+    }
+  },
+  animalpath: {
+    type: 'path',
+    onTurn(_, opponent) {
+      console.log(opponent.abilities.jinchuriki());
+      if (opponent.abilities.jinchuriki()) {
+        opponent.state.effects.add(null, "confusion")
+      }
+    }
+  },
+  devapath: { 
+    type: 'path',
+    onActivate(pokemon) {
+      if (pokemon.abilities.hasSixPath()) {
+        this.popup(`Six Path!`, pokemon);
+      }
+    }
   },
 }

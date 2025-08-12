@@ -512,6 +512,14 @@ class Ability {
         this._listeners["scene-end"] = () => {
             this._ability._shouldDeactivate && this.deactivate()
         }
+        this._listeners.wave = () => {
+            try {
+                this._ability.onWave?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+            }
+            catch (e) {
+              console.log(e)
+            }
+        }
         this._listeners.turn = (battle) => {
             try {
               const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
@@ -614,8 +622,12 @@ class AbilityManager {
         })
     }
     
-    jinchuriki() {
-        return this.actives().find(ab => !!ab._beast)
+    jinchuriki() {      
+        return this.actives().find(ab => !!ab._beast) ?? null
+    }
+
+    hasSixPath() {
+        return this.actives().filter(ab => ab._ability.type === "path").length >= 6
     }
 
     onTryBoost() {
