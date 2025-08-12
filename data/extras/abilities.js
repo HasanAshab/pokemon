@@ -335,9 +335,10 @@ export default {
       return beast
     },
   },
+
   charizardbeast: {
     type: 'beast',
-    beastImage: 'shikagu', //todo
+    beastImage: 'charizard',
     onActivate(pokemon) {
         pokemon.state.chainModifyRetreat(0.5, move => move.type === "Fire")
     },
@@ -345,6 +346,17 @@ export default {
         pokemon.state.chainModifyRetreat(2, move => move.type === "Fire")
     },
   },
+  charizardybeast: {
+    type: 'beast',
+    beastImage: 'charizardy',
+    onActivate(pokemon) {
+        pokemon.state.chainModifyRetreat(0.5, move => ["Fire", "Flying"].includes(move.type))
+    },
+    onDeactivate(pokemon) {
+        pokemon.state.chainModifyRetreat(2, move => ["Fire", "Flying"].includes(move.type))
+    },
+  },
+
   tail1beast: {
     type: 'beast',
     _tailsUsed: 0,
