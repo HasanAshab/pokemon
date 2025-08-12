@@ -212,6 +212,7 @@ export default {
 
   shikagubeast: {
     type: 'beast',
+    beastImage: 'shikagu',
     onModifyMove(move, pokemon) {
       if (move.id === "block") {
           const min = 0.1

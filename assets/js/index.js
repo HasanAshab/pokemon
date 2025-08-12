@@ -243,8 +243,7 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-// Bug: Ninja star vs thunder
-/*startBattle([
+startBattle([
   {
     "id": "rookie",
     "name": "rahul akatomi",
@@ -298,4 +297,4 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
       "spd": 0
     }
   }
-], [], "single")*/
+], [], "single")

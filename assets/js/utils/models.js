@@ -5,7 +5,7 @@ import items from "../../../data/items.js"
 import typeChart from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
-import { weightedRandom } from "./helpers.js";
+import { sumObj, modObj, weightedRandom } from "./helpers.js";
 
 
 class PSPokemon {
@@ -78,7 +78,7 @@ export class Pokemon extends PSPokemon {
         super()
         this.id = id;
         this.meta = Object.assign({
-          nature: 'calm',
+          nature: 'serious',
         }, meta);
         
         this.meta.token_used = Object.assign({
@@ -387,6 +387,8 @@ export class Move {
 }
 
 class Ability {
+    static BEAST_STATS_INHERIT_PERCENTAGE = 30
+
     constructor(name, isHidden, manager) {
         this.name = name
         this._ability = abilities[this.id]
@@ -395,6 +397,15 @@ class Ability {
         this.manager = manager
         this.pokemon = manager.pokemon
         this.active = this._ability.flags?.autoenable === 1
+        
+        if (this._ability.type === "beast") {
+            const beastMeta = structuredClone(this.pokemon.meta)            
+            beastMeta.name = `${this._ability.beastImage} (${this.pokemon.name})`
+            beastMeta.token_used = {}
+            beastMeta.items = []
+            beastMeta.abilities = []
+            this._beast = new Pokemon(this._ability.beastImage, beastMeta, this.pokemon._tag)
+        }
     }
     
     get id() {
@@ -404,6 +415,7 @@ class Ability {
     activate() {
         if (this.active) return
         this.active = true
+        this.onActivate()
         this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
         this._subscribeListeners()
     }
@@ -411,6 +423,7 @@ class Ability {
     deactivate() {
         if (!this.active) return
         this.active = false
+        this.onDeactivate()
         this._ability.onDeactivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
         this._unsubscribeListeners()
     }
@@ -448,6 +461,30 @@ class Ability {
         const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
         this._ability[handlers[move.category]]?.callWithExtraCtx(makeCtx(this.pokemon), null, this.pokemon, opponent, move)
         this._ability[oppHandlers[opponentMove.category]]?.callWithExtraCtx(makeCtx(opponent), null, opponent, this.pokemon, opponentMove)
+    }
+
+    onActivate() {
+      if (this._beast) {
+          this._beastInheritedStats = {}
+          this._beastInheritedTypes = []
+
+          for (const stat in this._beast.stats) {
+              this._beastInheritedStats[stat] = this._beast.stats[stat] * Ability.BEAST_STATS_INHERIT_PERCENTAGE / 100
+          }
+          this.pokemon.tokens = sumObj(this.pokemon.tokens, this._beastInheritedStats)
+
+          for (const type of this._beast.types) {
+              if (this.pokemon.hasType(type)) continue
+              this.pokemon.meta.types.push(type)
+              this._beastInheritedTypes.push(type)
+          }          
+      }
+    }
+    onDeactivate() {
+      if (this._beast) {
+          this.pokemon.tokens = sumObj(this.pokemon.tokens, modObj(this._beastInheritedStats, -1))
+          this.pokemon.meta.types = this.pokemon.meta.types.filter(t => !this._beastInheritedTypes.includes(t))
+        }
     }
 
     _subscribeListeners() {
