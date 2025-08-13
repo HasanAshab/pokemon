@@ -439,7 +439,7 @@ class Ability {
         if (this.active) return
         this.active = true
         this.onActivate()
-        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), this.pokemon.state.battle)
         this._subscribeListeners()
     }
 
@@ -529,7 +529,7 @@ class Ability {
         }
         this._listeners.wave = () => {
             try {
-                this._ability.onWave?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+                this._ability.onWave?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), battle)
             }
             catch (e) {
               console.log(e)

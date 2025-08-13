@@ -1,6 +1,3 @@
-import typeChart from "../../../data/types.js"
-
-
 class Field {
     constructor(battle) {
         this.battle = battle;
@@ -14,18 +11,10 @@ class GenericField extends Field {
         
         battle.on("scene", (...args) => this.onScene(...args))
     }
-    
+
     onScene(senario) {
         this.battle.actives().forEach(pokemon => {
             const move = senario.get(pokemon)
-            /*const effectiveness = typeChart[this.type][move.type] ?? 1
-            
-            if (effectiveness < 1) {
-                state.damage.chainModify(2)
-            }
-            else if (effectiveness > 1) {
-                state.damage.chainModify(1.15)
-            }*/
             if (pokemon.isTypeOf(this.type)) {
                 pokemon.state.stats.chainModify("spe", 1.15)
             }
