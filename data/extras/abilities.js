@@ -45,8 +45,11 @@ function SharinganAbility({ blind, copycat, retreat }) {
 }
 
 export default {
+  // gets 10 seconds
   sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 2 }),
+  // gets 15 seconds
   sharingan2: SharinganAbility({ blind: 0.25, copycat: 3, retreat: 3 }),
+  // gets 20 seconds
   sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),
   defsusano: {
     oldSpeedStat: null,
@@ -139,62 +142,16 @@ export default {
     },
     retreat: 0
   },
+  // opponents time half
   mayangan1: {
-    healthBoost: [2, 8],
-    onTryBoost(boost, target, source, effect) {
-      if (source && target === source) return
-      for (let i in boost) {
-        boost[i] *= -1
-      }
-    },
-    onTurn(pokemon, opponent) {
-      // Config
-      const [MIN, MAX] = this.ability.healthBoost;
-
-      // Revive
-      const maxHp = pokemon.maxhp;
-      const currentHp = pokemon.hp;
-      const missingHpRatio = 1 - (currentHp / maxHp);
-      const hpIncreasePercent = Math.min((MIN / 100) + missingHpRatio * 0.23, (MAX / 100)).toFixed(2);
-      const hp = maxHp * hpIncreasePercent;
-      pokemon.state.increaseHealth(hp);
-    }
+    retreat: 3
   },
-  mayangan2: {
-    healthBoost: [5, 15],
-    attackSelfChance: 30,
-    onTryBoost(boost, target, source, effect) {
-      if (source && target === source) return
-      for (let i in boost) {
-        boost[i] *= -1
-      }
-    },
-    onTurn(pokemon, opponent) {
-      // Config
-      const [MIN, MAX] = this.ability.healthBoost;
-      const ATTACK_SELF_CHANCE = this.ability.attackSelfChance;
-
-      // Cleanup
-      opponent.state.flags.attackSelf = 0;
-
-      // Revive
-      const maxHp = pokemon.maxhp;
-      const currentHp = pokemon.hp;
-      const missingHpRatio = 1 - (currentHp / maxHp);
-      const hpIncreasePercent = Math.min((MIN / 100) + missingHpRatio * 0.23, (MAX / 100)).toFixed(2);
-      const hp = maxHp * hpIncreasePercent;
-      pokemon.state.increaseHealth(hp);
-
-      // Opponent Attack Self
-      if (Math.random() * 100 < ATTACK_SELF_CHANCE) {
-        opponent.state.flags.attackSelf = 1;
-        this.popup("opponent attack self", pokemon);
-      }
-    }
+  "mayangan:selfish-scar": {
+    retreat: 5
   },
   "mayangan:silver-eye": {
     onTryBoost(boost, target, source, effect) {
-      const hasIntelligentEye = target.hasAbility("mayangan2");
+      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar");
       for (let i in boost) {
         boost[i] = hasIntelligentEye && boost[i] < 0 ? -boost[i] : -boost[i];
       }
@@ -203,7 +160,7 @@ export default {
   },
   "mayangan:golden-eye": {
     onTryBoostOpponent(boost, target, source, effect) {
-      const hasIntelligentEye = target.hasAbility("mayangan2");
+      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar");
       for (let i in boost) {
         boost[i] = hasIntelligentEye && boost[i] > 0 ? -boost[i] : -boost[i];
       }
@@ -350,9 +307,9 @@ export default {
       return beast
     },
   },
-  hand3beast: {
+  rocktribeast: {
     type: 'beast',
-    beastImage: 'blacktai',
+    beastImage: 'rocktri',
     beastAttackChance: 30,
     beastAttackCount: [1, 3],
     onModifyMove(move, pokemon) {

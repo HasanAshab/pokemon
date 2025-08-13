@@ -135,7 +135,7 @@ class BurnEffect extends Effect {
     onScene() {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const shouldReverse = this.state.pokemon.abilities.isActive("mayangan:silver-eye")
-            || (!opponent.abilities.isActive("mayangan2") && opponent.abilities.isActive("mayangan:golden-eye"))
+            || (!opponent.abilities.isActive("mayangan:selfish-scar") && opponent.abilities.isActive("mayangan:golden-eye"))
         const atkMod = shouldReverse ? 2 : 0.5        
         this.state.stats.chainModify("atk", atkMod);
     }
@@ -271,7 +271,7 @@ class ParalyzeEffect extends Effect {
     onScene() {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const shouldReverse = this.state.pokemon.abilities.isActive("mayangan:silver-eye")
-          || (!opponent.abilities.isActive("mayangan2") && opponent.abilities.isActive("mayangan:golden-eye"))
+          || (!opponent.abilities.isActive("mayangan:selfish-scar") && opponent.abilities.isActive("mayangan:golden-eye"))
         
         const speMod = shouldReverse ? 2 : 0.5
         this.state.stats.chainModify("spe", speMod);
