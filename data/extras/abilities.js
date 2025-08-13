@@ -59,8 +59,7 @@ export default {
         this.popup('Susano Failed', pokemon);
         return this.deactivate()
       }
-      this.ability.oldSpeedStat = pokemon.state.stats._statChanges.spe
-      pokemon.state.stats._statChanges.spe = -6 
+      this.ability._lockStatChanges(pokemon)
 
       const defStat = pokemon.state.stats.get("def") + pokemon.state.stats.get("spd")
       const armor = {
@@ -80,10 +79,17 @@ export default {
       pokemon.state.armor.remove("$susano")
     },
     onTurn(pokemon) {
-      pokemon.state.stats._statChanges.spe = -6 
+      this.ability._lockStatChanges(pokemon)
     },
+    onWave(pokemon) {
+      this.ability._lockStatChanges(pokemon)
+    }
     canUseMove(move) {
       return !move.flags.contact
+    },
+    _lockStatChanges(pokemon) {
+      this.ability.oldSpeedStat = pokemon.state.stats._statChanges.spe
+      pokemon.state.stats._statChanges.spe = -6
     }
   },
   offsusano: {
@@ -94,11 +100,7 @@ export default {
         this.popup('Susano Failed', pokemon);
         return this.deactivate()
       }
-      this.ability.oldSpeedStat = pokemon.state.stats._statChanges.spe
-      this.ability.oldAccuracyStat = pokemon.state.stats._statChanges.accuracy
-      pokemon.state.stats._statChanges.spe = -3 
-      pokemon.state.stats._statChanges.accuracy = -3 
-
+      this.ability._lockStatChanges(pokemon)
       const defStat = pokemon.state.stats.get("def") + pokemon.state.stats.get("spd")
       const armor = {
         id: "$susano",
@@ -121,11 +123,19 @@ export default {
       pokemon.state.removeMove("$susanosword")
     },
     onTurn(pokemon) {
-      pokemon.state.stats._statChanges.spe = -3
-      pokemon.state.stats._statChanges.accuracy = -3
+      this.ability._lockStatChanges(pokemon)
+    },
+    onWave(pokemon) {
+      this.ability._lockStatChanges(pokemon)
     },
     canUseMove(move) {
       return move.id === "$susanosword"
+    },
+    _lockStatChanges(pokemon) {
+      this.ability.oldSpeedStat = pokemon.state.stats._statChanges.spe
+      this.ability.oldAccuracyStat = pokemon.state.stats._statChanges.accuracy
+      pokemon.state.stats._statChanges.spe = -3
+      pokemon.state.stats._statChanges.accuracy = -3
     }
   },
 

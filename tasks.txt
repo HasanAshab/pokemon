@@ -1,6 +1,6 @@
 * Tasks
-void bombs data
 soul stick ( weapon ) 
+
 
 * Doubts
 
@@ -8,6 +8,10 @@ soul stick ( weapon )
 
 * UI
 settings open close error
+
+* Data
+void bomb
+ability retreat
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
