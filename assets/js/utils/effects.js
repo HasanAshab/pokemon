@@ -597,7 +597,7 @@ export class EffectManager {
     toJSON() {
         return this.names()
     }
-    
+
     sync(...effectNames) {
         this.names().forEach(e => !effectNames.includes(e) && this.remove(e))
         effectNames.forEach(e => {

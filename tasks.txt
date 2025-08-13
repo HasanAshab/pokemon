@@ -1,10 +1,6 @@
 * Tasks
-
-crit priority fail
 void bombs data
 soul stick ( weapon ) 
-
-
 
 * Doubts
 
