@@ -242,7 +242,7 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-/*
+
 
 startBattle([
   {
@@ -298,4 +298,4 @@ startBattle([
       "spd": 0
     }
   }
-], [], "single")*/
+], [], "single")

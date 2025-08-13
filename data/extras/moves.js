@@ -833,5 +833,46 @@ Shuriken: {
     target: "normal",
     type: "Normal",
     contestType: "Tough"
+  },
+  nakku: {
+    num: 100029,
+    accuracy: true,
+    basePower: 0,
+    category: "Status",
+    name: "Nakku",
+    pp: 2 * 3,
+    priority: 1,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+      contact: 1
+    },
+    secondary: {
+      chance: 100,
+      status: "confusion"
+    },
+    target: "normal",
+    type: "Normal",
+    contestType: "Tough",
+    retreat: 0
+  },
+  heit: {
+    num: 100030,
+    accuracy: true,
+    basePower: 0,
+    category: "Status",
+    name: "Heit",
+    pp: 2 * 3,
+    priority: 1,
+    flags: {},
+    secondary: {
+      chance: 100,
+      status: "flinch"
+    },
+    target: "normal",
+    type: "Normal",
+    contestType: "Tough",
+    retreat: 0
   }
 }

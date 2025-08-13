@@ -359,7 +359,7 @@ flex-direction: column;
   
 }
 
-.player-settings-form .settings-wrapper .settings.abilities .abilities-wrapper{
+.player-settings-form .settings-wrapper .settings:is(.abilities, .items) .wrapper{
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -367,17 +367,44 @@ flex-direction: column;
   gap: 7px;
   flex-wrap: wrap;
 }
-.player-settings-form .settings-wrapper .settings.abilities .abilities-wrapper .ability{
+.player-settings-form .settings-wrapper .settings.abilities .wrapper .ability{
   padding: 4px 8px;
   background-color: transparent;
   color: black;
   border-radius: 5px;
 }
-.player-settings-form .settings-wrapper .settings.abilities .abilities-wrapper .ability.active{
+.player-settings-form .settings-wrapper .settings.abilities .wrapper .ability.active{
   background-color: green;
   color: white;
   border-color: gold;
   font-weight: bold;
+}
+.player-settings-form .settings-wrapper .settings.items  .wrapper .item{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: transparent;
+  border-radius: 5px;
+ background-color: white;
+ gap: 4px;
+ font-weight: bold;
+}
+
+.player-settings-form .settings-wrapper .settings.items  .wrapper .item .remove-btn{
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: none;
+}
+.player-settings-form .settings-wrapper .settings.items  .wrapper .item .remove-btn:active{
+  background-color: gray;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: none;
 }
 
 /* shadow clone controller */
