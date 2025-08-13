@@ -2,7 +2,7 @@ import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
 import abilities from "../../../data/abilities.js"
 import items from "../../../data/items.js"
-import typeChart from "../../../data/types.js"
+import typeChart, { CHART_MAP } from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
 import { sumObj, modObj, weightedRandom } from "./helpers.js";
@@ -331,14 +331,17 @@ export class Move {
             type = type.type
         }
         if (!this.type) return 1
-        let effectiveness = typeChart[this.type][type] || 1
+        
+        let effectiveness = typeChart[this.type][type] ?? 1
         const abilitiesMap = {
           "Fire": "blueflame",
           "Electric": "purplethunder"
-        }
+        }        
 
         if (this._user.abilities.isActive(abilitiesMap[this.type]) && effectiveness < 1) {
-          effectiveness = 1
+          effectiveness = effectiveness === CHART_MAP.immune 
+            ? CHART_MAP.half
+            : 1
         }
         if (this._target.abilities.isActive(abilitiesMap[type]) && effectiveness > 1) {
           effectiveness = 1
