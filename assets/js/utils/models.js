@@ -467,8 +467,8 @@ class Ability {
             },
         })
         const opponent = this.pokemon.state.battle.opponentOf(this.pokemon)
-        this._ability[handlers[move.category]]?.callWithExtraCtx(makeCtx(this.pokemon), null, this.pokemon, opponent, move)
-        this._ability[oppHandlers[opponentMove.category]]?.callWithExtraCtx(makeCtx(opponent), null, opponent, this.pokemon, opponentMove)
+        this._ability[handlers[move.category]]?.callWithExtraCtx(makeCtx(this.pokemon), null, this.pokemon, opponent, move, opponentMove)
+        this._ability[oppHandlers[opponentMove.category]]?.callWithExtraCtx(makeCtx(opponent), null, opponent, this.pokemon, opponentMove, move)
     }
 
     onActivate() {
@@ -533,6 +533,7 @@ class Ability {
             try {
               this._ability.onModifyMove?.(move, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
               this._ability.onModifyOpponentMove?.(opponentMove, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+              this._ability.onUsingMove?.(move, opponentMove)
               this.setDamageModifiers(move, opponentMove)
             }
             catch (e) {
@@ -675,6 +676,20 @@ export class Item {
             }
         }
     }
+
+    _unappply() {
+        if ("tokens" in  this._item) {
+            for (const key in this._item.tokens) {
+                this.pokemon.tokens[key] -= this._item.tokens[key]
+            }
+        }
+        
+        if ("tokensPercent" in  this._item) {
+            for (const key in this._item.tokensPercent) {
+                this.pokemon.tokens[key] -= Math.round(this.pokemon.stats[key] * (this._item.tokensPercent[key] / 100))
+            }
+        }
+    }
 }
 
 class ItemManager {
@@ -691,6 +706,12 @@ class ItemManager {
     
     names() {
       return this._items.map(item => item.id)
+    }
+
+    remove(id) {
+        const item = this._items.find(item => item.id === id)
+        item._unappply()
+        this._items = this._items.filter(item => item.id !== id)
     }
 }
 

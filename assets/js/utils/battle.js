@@ -1198,7 +1198,6 @@ class ArmorManager {
 
     consume(amount) {
         const id = this.state._data.armorUsed  
-        console.log(id);
               
         if (!id) return amount
         const armor = this._items.find(item => item.id === id)

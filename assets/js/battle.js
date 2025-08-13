@@ -115,6 +115,7 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   playerSettingsForm.parentElement.classList.add("active")
   playerSettingsForm.querySelector(".header > .name").textContent = playerTag
   loadAbilities(playerTag)
+  loadItems(playerTag)
   loadTokenStats(playerTag)
 }
 
@@ -898,6 +899,15 @@ globalThis.moveCardClickHandler = function ({
   eventEmitter.emit("move-card-select", currentTarget, playerTag)
 }
 
+globalThis.removeItem = function (id, playerTag) {  
+  pokemonMap[playerTag].items.remove(id)
+
+  try {
+    pokemonMap[playerTag].state.armor.remove(id)
+  } catch (error) {}
+  loadItems(playerTag)
+}
+
 function runScene(moveIds) {
   const { you: moveId, enemy: enemyMoveId } = moveIds
   const move1 = new Move(moveId)
@@ -930,9 +940,26 @@ function loadAbilities(playerTag) {
   const abilities = pokemon.abilities._abilities
 
   const playerSettingsForm = document.querySelector('.player-settings-form')
-  const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .abilities-wrapper')
+  const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .wrapper')
+   abilitiesWrapper.innerHTML = ''
   for (const ability of abilities) {    
     abilitiesWrapper.innerHTML += ` <button type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
+  }
+}
+function loadItems(playerTag) {
+  const pokemon = pokemonMap[playerTag]
+  const items = pokemon.items._items
+  
+  const playerSettingsForm = document.querySelector('.player-settings-form')
+  const itemsWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.items .wrapper')
+  itemsWrapper.innerHTML = ''
+  for (const item of items) {
+    itemsWrapper.innerHTML += `         
+     <div class="item">
+                <span class="name">${item.id}</span>
+                <button onclick="removeItem('${item.id}', '${playerTag}')" class="remove-btn">x</button>
+              </div>
+`
   }
 }
 function loadTokenStats(playerTag) {

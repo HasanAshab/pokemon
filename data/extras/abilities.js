@@ -1,4 +1,5 @@
 import { Damage } from "../../assets/js/utils/damage.js"
+import types from "../types.js"
 
 function SharinganAbility({ blind, copycat, retreat }) {
   return {
@@ -186,6 +187,13 @@ export default {
       this.popup("immune to physical touch", source);
       return this.chainModify(0)
     }
+  },
+
+  blueflame: {
+    onUsingMove(move, opponentMove) {
+      if (move.priority !== opponentMove.priority) return null
+      console.log(types[move.type][opponentMove.type]);
+    },
   },
 
   mistmaster: {

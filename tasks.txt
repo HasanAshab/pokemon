@@ -1,5 +1,17 @@
 * Tasks
-nakku, heit
+purple thunder, blue flame (ability)
+crit priority fail
+
+6 path sage = sage bonus = 2 , void bombs
+  
+
+void bombs ( ability ) = if user use staythere and
+                         target is selected offensive 
+                         move (not status) . then void bomb will be thrown automatically
+                         damage = user.spa + user.atk
+soul stick ( weapon ) 
+
+
 
 * Doubts
 
