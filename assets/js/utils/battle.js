@@ -1163,17 +1163,13 @@ class DamageManager {
 }
 
 class ArmorManager {
+    _items = []
+
     constructor(state) {
         this.state = state
-        this._items = this.state.pokemon.items._items.filter(item => {
-          return item.type === "armor"
-        })
-        this._items.forEach(item => {
-          item.armor = {
-            hp: 100,
-            _hp: 100
-          }
-        })
+        this.state.pokemon.items._items
+          .filter(item => item.type === "armor")
+          .forEach(item => this.add(item))
     }
     
     maxhp() {
@@ -1188,8 +1184,22 @@ class ArmorManager {
         }, 0))
     }
 
+    add(item, toFront = false) {
+      item.armor = {
+        hp: 100,
+        _hp: 100
+      }
+      this._items[toFront ? "unshift" : "push"](item)
+    }
+
+    remove(id) {
+        this._items = this._items.filter(item => item.id !== id)
+    }
+
     consume(amount) {
-        const id = this.state._data.armorUsed        
+        const id = this.state._data.armorUsed  
+        console.log(id);
+              
         if (!id) return amount
         const armor = this._items.find(item => item.id === id)
         armor.armor._hp -= amount

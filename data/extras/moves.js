@@ -782,13 +782,13 @@ Shuriken: {
     },
     furysmoke: {
       num: 100027,
+      accuracy: 100,
       basePower: 20,
       category: "Special",
       name: "Fury Smoke",
       pp: 5 * 3,
       priority: 0,
       flags: {
-        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -805,5 +805,35 @@ Shuriken: {
       },
        target: "normal",
       type: "Fire",
-    }
+    },
+  "$susanosword": {
+    num: 100028,
+    accuracy: 100,
+    basePower: 120,
+    basePowerCallback(pokemon, target, move) {
+      const minPower = move.basePower;
+      const maxPower = 400;
+      const level = pokemon.level;
+      
+      // Calculate power scaling from minPower (at level 1) to maxPower (at level 100)
+      const scaledPower = minPower + (maxPower - minPower) * (level / 100);
+      
+      // Round to nearest multiple of 5 and enforce minimum
+      return Math.max(minPower, Math.round(scaledPower / 5) * 5);
+    },
+    category: "Special",
+    name: "Susano Sword",
+    pp: 10,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+      contact: 1
+    },
+    secondary: null,
+    target: "normal",
+    type: "Normal",
+    contestType: "Tough"
+  }
 }

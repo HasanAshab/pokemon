@@ -648,7 +648,7 @@ class AbilityManager {
     }
 }
 
-class Item {
+export class Item {
     static exists(id) {
       return id in items
     }

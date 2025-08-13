@@ -931,7 +931,7 @@ function loadAbilities(playerTag) {
 
   const playerSettingsForm = document.querySelector('.player-settings-form')
   const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .abilities-wrapper')
-  for (const ability of abilities) {
+  for (const ability of abilities) {    
     abilitiesWrapper.innerHTML += ` <button type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
   }
 }

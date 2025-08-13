@@ -26,7 +26,8 @@ function SharinganAbility({ blind, copycat, retreat }) {
       this.ability.accuracyReduced += blind
     },
     onModifyOpponentMove(move, pokemon) {
-      if (pokemon.state.hasMove(move.id)) return null
+      const unableToCopy = pokemon.state.hasMove(move.id) || move.flags.weapon
+      if (unableToCopy) return null
 
       const data = this.ability.copycat.data
       const min = this.ability.copycat.min
@@ -47,6 +48,85 @@ export default {
   sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 2 }),
   sharingan2: SharinganAbility({ blind: 0.25, copycat: 3, retreat: 3 }),
   sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),
+  defsusano: {
+    oldSpeedStat: null,
+    onActivate(pokemon) {
+      const requiresPercent = 30
+      const unable = !pokemon.abilities.isActive(/^sharingan\d*$/) || pokemon.hp / pokemon.maxhp > requiresPercent / 100
+      
+      if (unable) {
+        this.popup('Susano Failed', pokemon);
+        return this.deactivate()
+      }
+      this.ability.oldSpeedStat = pokemon.state.stats._statChanges.spe
+      pokemon.state.stats._statChanges.spe = -6 
+
+      const defStat = pokemon.state.stats.get("def") + pokemon.state.stats.get("spd")
+      const armor = {
+        id: "$susano",
+        type: "armor",
+        covers: 100,
+        stats: {
+          def: defStat,
+          spd: defStat
+        }
+      }
+      pokemon.state.armor.add(armor, true)
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.stats._statChanges.spe = this.ability.oldSpeedStat
+      pokemon.state.armor.remove("$susano")
+    },
+    onTurn(pokemon) {
+      pokemon.state.stats._statChanges.spe = -6 
+    },
+    canUseMove(move) {
+      return !move.flags.contact
+    }
+  },
+  offsusano: {
+    oldSpeedStat: null,
+    oldAccuracyStat: null,
+    onActivate(pokemon) {
+      const requiresPercent = 70
+      const unable = !pokemon.abilities.isActive("sharingan2") || pokemon.hp / pokemon.maxhp > requiresPercent / 100
+
+      if (unable) {
+        this.popup('Susano Failed', pokemon);
+        return this.deactivate()
+      }
+      this.ability.oldSpeedStat = pokemon.state.stats._statChanges.spe
+      this.ability.oldAccuracyStat = pokemon.state.stats._statChanges.accuracy
+      pokemon.state.stats._statChanges.spe = -3 
+      pokemon.state.stats._statChanges.accuracy = -3 
+
+      const defStat = pokemon.state.stats.get("def") + pokemon.state.stats.get("spd")
+      const armor = {
+        id: "$susano",
+        type: "armor",
+        covers: 100,
+        stats: {
+          def: defStat,
+          spd: defStat
+        }
+      }
+      pokemon.state.armor.add(armor, true)
+      pokemon.state.addMove("$susanosword")
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.stats._statChanges.spe = this.ability.oldSpeedStat
+      pokemon.state.stats._statChanges.accuracy = this.ability.oldAccuracyStat
+      pokemon.state.armor.remove("$susano")
+      pokemon.state.removeMove("$susanosword")
+    },
+    onTurn(pokemon) {
+      pokemon.state.stats._statChanges.spe = -3
+      pokemon.state.stats._statChanges.accuracy = -3
+    },
+    canUseMove(move) {
+      return move.id === "$susanosword"
+    }
+  },
 
   mayangan0: {
     flags: { autoenable: 1 },
