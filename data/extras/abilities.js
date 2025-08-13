@@ -1,8 +1,14 @@
 import { Damage } from "../../assets/js/utils/damage.js"
 
-export default {
-  sharingan1: {
+function SharinganAbility({ blind, copycat, retreat }) {
+  return {
+    retreat,
     accuracyReduced: 0,
+    copycat: {
+      data: {},
+      min: Array.isArray(copycat) ? copycat[0] : copycat,
+      max: Array.isArray(copycat) ? copycat[1] : copycat
+    },
     onActivate(pokemon) {
       pokemon.state.removeListener("turn", "sharingan-recovery")
     },
@@ -11,53 +17,36 @@ export default {
         if (this.ability.accuracyReduced <= 0) 
           return pokemon.state.removeListener("turn", "sharingan-recovery")
 
-        pokemon.state.stats._statChanges.accuracy += 0.25
-        this.ability.accuracyReduced -= 0.25
+        pokemon.state.stats._statChanges.accuracy += blind
+        this.ability.accuracyReduced -= blind
       }, "sharingan-recovery")
     },
     onTurn(pokemon) {
-      pokemon.state.stats._statChanges.accuracy -= 0.25
-      this.ability.accuracyReduced += 0.25
+      pokemon.state.stats._statChanges.accuracy -= blind
+      this.ability.accuracyReduced += blind
     },
-    onTryAddVolatile(status, pokemon) {
-      if (status.id === "confusion") return null
-    },
-  },
-  sharingan2: {
-    onTryBoost(boost, target, source, effect) {
-      if (source && target === source) return
-      if (boost.accuracy && boost.accuracy < 0) {
-        delete boost.accuracy
-      }
-    },
-    onTryAddVolatile(status, pokemon) {
-      if (status.id === "confusion") return null
-    }
-  },
-  sharingan3: {
-    onTurn(pokemon) {
-      if (pokemon.state.flags.autoDodge) return
-      if (pokemon.state._data.autoDodgeCountDown === undefined) {
-        pokemon.state._data.autoDodgeCountDown = 3
-      }      
+    onModifyOpponentMove(move, pokemon) {
+      if (pokemon.state.hasMove(move.id)) return null
 
-      pokemon.state._data.autoDodgeCountDown--
-      if (pokemon.state._data.autoDodgeCountDown === 0) {
-        pokemon.state._data.autoDodgeCountDown = undefined
-        pokemon.state.flags.autoDodge = 1
-        this.popup("ability aquired auto dodge", pokemon);
-      }
-    },
-    onTryBoost(boost, target, source, effect) {
-      if (source && target === source) return
-      if (boost.accuracy && boost.accuracy < 0) {
-        delete boost.accuracy
-      }
-    },
-    onTryAddVolatile(status, pokemon) {
-      if (status.id === "confusion") return null
+      const data = this.ability.copycat.data
+      const min = this.ability.copycat.min
+      const max = this.ability.copycat.max
+      const copycatAfter = Math.floor(Math.random() * (max - min + 1) + min)
+
+      if (!data[move.id])
+        data[move.id] = 0
+      data[move.id]++
+
+      if (data[move.id] === copycatAfter)
+        pokemon.state.addMove(move.id)
     }
-  },
+  }
+}
+
+export default {
+  sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 2 }),
+  sharingan2: SharinganAbility({ blind: 0.25, copycat: 3, retreat: 3 }),
+  sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),
 
   mayangan0: {
     flags: { autoenable: 1 },
@@ -70,7 +59,7 @@ export default {
     },
     retreat: 0
   },
-    mayangan1: {
+  mayangan1: {
     healthBoost: [2, 8],
     onTryBoost(boost, target, source, effect) {
       if (source && target === source) return

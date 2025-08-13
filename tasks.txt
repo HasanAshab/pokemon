@@ -1,11 +1,8 @@
 * Tasks
-kurama
+sharingan
+mayangan
 
 * Doubts
-sharingan use indrapath
-senju use asurapath
-paths auto activate
-paths takes retreat cost
 
 * Bugs
 sage mode
