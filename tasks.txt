@@ -14,7 +14,6 @@ soul stick ( weapon )
 
 
 * Doubts
-purpleth also breaks immune 
 
 * Bugs
 sage mode
