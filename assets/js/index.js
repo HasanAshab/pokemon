@@ -256,6 +256,22 @@ startBattle([
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {
+        "id": "watergun",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "isSelected": true
+      },
+      {
+        "id": "mudbomb",
+        "isSelected": true
+      },
+      {
+        "id": "razorleaf",
+        "isSelected": true
+      },
+      {
         "id": "shadowclone",
         "isSelected": true
       },

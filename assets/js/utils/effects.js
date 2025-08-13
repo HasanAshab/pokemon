@@ -597,7 +597,7 @@ export class EffectManager {
     toJSON() {
         return this.names()
     }
-    
+
     sync(...effectNames) {
         this.names().forEach(e => !effectNames.includes(e) && this.remove(e))
         effectNames.forEach(e => {
@@ -606,8 +606,12 @@ export class EffectManager {
     }
 
     apply(move, { on, pre = false }) {
+        const abilitiesMap = {
+          "brn": "blueflame",
+          "par": "purplethunder"
+        }
+        const attacker = this.state.battle.opponentOf(this.state.pokemon)
         if (on === "self") {
-            const attacker = this.state.battle.opponentOf(this.state.pokemon)
             move.effects.self
                 .forEach(effect => {
                     if (Math.random() < (effect.chance / 100)) {
@@ -618,8 +622,11 @@ export class EffectManager {
         else if(on === "target") {
             move.effects.target
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
-                .forEach(effect => {
-                    if (Math.random() < (effect.chance / 100)) {
+                .forEach(effect => {                  
+                    const chance = attacker.abilities.isActive(abilitiesMap[effect.name])
+                        ? 100
+                        : effect.chance
+                    if (Math.random() < (chance / 100)) {
                         this.add(move, effect.name)
                     }
                 })

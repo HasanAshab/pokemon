@@ -76,6 +76,7 @@ export default {
     },
     onDeactivate(pokemon) {
       pokemon.state.stats._statChanges.spe = this.ability.oldSpeedStat
+      this.ability.oldSpeedStat = null
       pokemon.state.armor.remove("$susano")
     },
     onTurn(pokemon) {
@@ -114,6 +115,8 @@ export default {
     onDeactivate(pokemon) {
       pokemon.state.stats._statChanges.spe = this.ability.oldSpeedStat
       pokemon.state.stats._statChanges.accuracy = this.ability.oldAccuracyStat
+      this.ability.oldSpeedStat = null
+      this.ability.oldAccuracyStat = null
       pokemon.state.armor.remove("$susano")
       pokemon.state.removeMove("$susanosword")
     },
@@ -164,16 +167,36 @@ export default {
   },
 
   // fushi
-  fishingan: {
-    onModifyMove(move, pokemon) {
-      if (move.id === "block") {
-          const min = 0.1
-          const max = 0.5
-          const modifier = min + Math.random() * (max - min)
-          pokemon.state.damage.chainAddBlock(modifier)
-          // this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
+  fishingan1: {
+    retreat: 1,
+    oldSpeStat: null,
+    onActivate(pokemon, opponent, battle) {
+      this.ability._lockSpeDown(battle, pokemon)
+    },
+    onWave(pokemon, opponent, battle) {
+      this.ability._lockSpeDown(battle, pokemon)
+    },
+    onTurn(pokemon, opponent, battle) {
+      this.ability._lockSpeDown(battle, pokemon)
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.stats._statChanges.spe = this.ability.oldSpeStat
+      this.ability.oldSpeStat = null
+    },
+    _lockSpeDown(battle, pokemon) {
+      if (
+        battle.fields.some(f => f.type === "Water")
+        && pokemon.state.stats._statChanges.spe < 3
+      ) {
+        this.ability.oldSpeStat = pokemon.state.stats._statChanges.spe
+        pokemon.state.stats._statChanges.spe = 3
       }
-      else if (move.type === "Ground") {
+    }
+  },
+  fishingan2: {
+    retreat: 2.5,
+    onModifyMove(move, pokemon) {
+      if (move.type === "Water") {
           move.accuracy = true
       }
     },
@@ -189,12 +212,9 @@ export default {
     }
   },
 
-  blueflame: {
-    onUsingMove(move, opponentMove) {
-      if (move.priority !== opponentMove.priority) return null
-      console.log(types[move.type][opponentMove.type]);
-    },
-  },
+  // no weakness and resistence for the type + effects 100% 
+  blueflame: { retreat: 2 },
+  purplethunder: { retreat: 2 },
 
   mistmaster: {
     statChanges: {

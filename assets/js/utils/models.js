@@ -2,7 +2,7 @@ import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
 import abilities from "../../../data/abilities.js"
 import items from "../../../data/items.js"
-import typeChart from "../../../data/types.js"
+import typeChart, { CHART_MAP } from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
 import { sumObj, modObj, weightedRandom } from "./helpers.js";
@@ -61,9 +61,9 @@ export class Pokemon extends PSPokemon {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
     }
 
-    static fromBase64(base64) {
+    static fromBase64(base64, tag = null) {
         const { id, meta } = JSON.parse(atob(base64));
-        return new this(id, meta);
+        return new this(id, meta, tag);
     }
 
     static natureModifierFor(statName, nature) {
@@ -195,8 +195,8 @@ export class Pokemon extends PSPokemon {
         return true
     }
     
-    toSageMode() {
-        const bonusRate = 0.5
+    toSageMode(sixPath = false) {
+        const bonusRate = sixPath ? 0.7 : 0.5
         const maping = {
             "hp": "spe",
             "spe": "hp",
@@ -214,6 +214,7 @@ export class Pokemon extends PSPokemon {
             this.tokens[stat1] += bonus
         }
         this.state.increaseHealth(hp)
+        sixPath && this.state.addMove("$voidbomb")
     }
 
     megaDevolve() {
@@ -331,7 +332,22 @@ export class Move {
             type = type.type
         }
         if (!this.type) return 1
-        return typeChart[this.type][type] || 1
+        
+        let effectiveness = typeChart[this.type][type] ?? 1
+        const abilitiesMap = {
+          "Fire": "blueflame",
+          "Electric": "purplethunder"
+        }        
+
+        if (this._user.abilities.isActive(abilitiesMap[this.type]) && effectiveness < 1) {
+          effectiveness = effectiveness === CHART_MAP.immune 
+            ? CHART_MAP.half
+            : 1
+        }
+        if (this._target.abilities.isActive(abilitiesMap[type]) && effectiveness > 1) {
+          effectiveness = 1
+        }        
+        return effectiveness
     }
 
     description(short = false) {
@@ -424,7 +440,7 @@ class Ability {
         if (this.active) return
         this.active = true
         this.onActivate()
-        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), this.pokemon.state.battle)
         this._subscribeListeners()
     }
 
@@ -514,7 +530,7 @@ class Ability {
         }
         this._listeners.wave = () => {
             try {
-                this._ability.onWave?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+                this._ability.onWave?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), battle)
             }
             catch (e) {
               console.log(e)

@@ -205,6 +205,8 @@ class BaseBattle extends EventEmitter {
           move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
           move1._user = this.pokemon1
           move2._user = this.pokemon2
+          move1._target = this.pokemon2
+          move2._target = this.pokemon1
         }
         catch (e) {
           move1._meta = {}
@@ -447,6 +449,10 @@ class BaseBattle extends EventEmitter {
         }
 
         if(move2.priority > move1.priority) {
+            if (pokeEffect2 > 1 || move2.hit.criticalCount()) {
+                d2 = 0
+            }
+
             if (d1) {
                 this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
                 move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
@@ -459,6 +465,9 @@ class BaseBattle extends EventEmitter {
             }
         }
         else {
+            if (pokeEffect1 > 1 || move1.hit.criticalCount()) {
+                d1 = 0
+            }
             if (d2) {
                 this.pokemon2.state.decreaseHealth(d2, false, clonemode2)
                 move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2), false, clonemode1)
