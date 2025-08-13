@@ -222,6 +222,21 @@ export default {
       }
     },
   },
+  senju1: {
+    onWave(pokemon) {
+      const chance = Math.random() * 100
+      
+      if (chance >= 85) {
+        pokemon.state.retreat += pokemon.level
+      }
+      else if (chance >= 65) {
+        pokemon.state.retreat += pokemon.level / 1.5
+      }
+      else if (chance >= 50) {
+        pokemon.state.retreat += pokemon.level / 3
+      }
+    }
+  },
 
   shikagubeast: {
     type: 'beast',
@@ -444,8 +459,9 @@ export default {
   pretapath: {
     type: 'path',
     onHit(pokemon, opponent, move) {
+      const safeTypes = ["normal", "fighting", "ghost"]
       const removeChance = pokemon.abilities.hasSixPath() ? 0.35 : 0.2
-      if (Math.random() < removeChance) {
+      if (!safeTypes.includes(move.type) && Math.random() < removeChance) {
         opponent.state.moves.forEach(m => {
           if (m.type === move.type) {
             opponent.state.removeMove(m.id)
