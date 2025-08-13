@@ -30,8 +30,6 @@ export default {
       flags: {},
       onBeforeMove(attacker) {
         attacker.toSageMode()
-        //const megaMoves = attacker.meta.mega.moves
-        //megaMoves && attacker.state.setMoves(megaMoves)
       }
     },
     dodge: {

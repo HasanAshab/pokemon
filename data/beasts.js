@@ -30,26 +30,24 @@ baseStats: { hp: 40, atk: 50, def: 30, spa: 10, spd: 10, spe: 10 },    abilities
     heightm: 1.3,
     desc:`Has 30% to repeat user used move if make contact = true.`  
    
-  }
+  },
   rocktri: {
-  num: 4,
-  name: "Rock Tri",
-  types: ["Fighting"],
-  baseStats: { hp: 70, atk: 85, def: 55, spa: 10, spd: 15, spe: 15 },
-  abilities: {},
-  heightm: 2.1,
-   desc:`Has 30% to repeat user used move if make contact = true.
-     it has 3 hands so it can repeat 3 times`
-}
-matatabi: {
-  num: 5,
-  name: "Matatabi",
-  types: ["Fire"],
-  baseStats: { hp: 55, atk: 65, def: 40, spa: 55, spd: 20, spe: 15 },
-  abilities: {},
-  heightm: 2.8,
-  desc:`Has blue flame ability`
-}
-
-
+    num: 4,
+    name: "Rock Tri",
+    types: ["Fighting"],
+    baseStats: { hp: 70, atk: 85, def: 55, spa: 10, spd: 15, spe: 15 },
+    abilities: {},
+    heightm: 2.1,
+    desc:`Has 30% to repeat user used move if make contact = true.
+      it has 3 hands so it can repeat 3 times`
+  },
+  matatabi: {
+    num: 5,
+    name: "Matatabi",
+    types: ["Fire"],
+    baseStats: { hp: 55, atk: 65, def: 40, spa: 55, spd: 20, spe: 15 },
+    abilities: {},
+    heightm: 2.8,
+    desc:`Has blue flame ability`
+  }
 }
