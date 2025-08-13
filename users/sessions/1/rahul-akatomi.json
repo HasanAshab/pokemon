@@ -1,0 +1,53 @@
+  {
+    "id": "rookie",
+    "name": "rahul akatomi",
+    "xp": 500,
+    "nature": "serious",
+    "retreat": 4,
+    "types": [] ,
+    "abilities": ["kuramabeast"],
+    "items": ["gen-food-mid","gen-thik"],
+    "moves": [
+      {
+        "id": "shadowclone",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "isSelected": true
+      },
+      {
+        "id": "doubleteam",
+        "isSelected": true
+      },
+      {
+        "id": "thundershock",
+        "isSelected": true
+      },
+      {
+        "id": "doublekick",
+        "isSelected": true
+      },
+      {
+        "id": "bulletpunch",
+        "isSelected": true
+      },
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
