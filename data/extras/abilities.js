@@ -53,11 +53,8 @@ export default {
   sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),
   defsusano: {
     oldSpeedStat: null,
-    onActivate(pokemon) {
-      const requiresPercent = 30
-      const unable = !pokemon.abilities.isActive(/^sharingan\d*$/) || pokemon.hp / pokemon.maxhp > requiresPercent / 100
-      
-      if (unable) {
+    onActivate(pokemon) {   
+      if (pokemon.hp / pokemon.maxhp > 0.3) {
         this.popup('Susano Failed', pokemon);
         return this.deactivate()
       }
@@ -91,10 +88,7 @@ export default {
     oldSpeedStat: null,
     oldAccuracyStat: null,
     onActivate(pokemon) {
-      const requiresPercent = 70
-      const unable = !pokemon.abilities.isActive("sharingan2") || pokemon.hp / pokemon.maxhp > requiresPercent / 100
-
-      if (unable) {
+      if (pokemon.hp / pokemon.maxhp > 0.7) {
         this.popup('Susano Failed', pokemon);
         return this.deactivate()
       }
@@ -166,6 +160,22 @@ export default {
       }
     },
     retreat: 1
+  },
+
+  // fushi
+  fishingan: {
+    onModifyMove(move, pokemon) {
+      if (move.id === "block") {
+          const min = 0.1
+          const max = 0.5
+          const modifier = min + Math.random() * (max - min)
+          pokemon.state.damage.chainAddBlock(modifier)
+          // this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
+      }
+      else if (move.type === "Ground") {
+          move.accuracy = true
+      }
+    },
   },
 
   shadow: {
