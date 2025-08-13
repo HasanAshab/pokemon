@@ -195,8 +195,8 @@ export class Pokemon extends PSPokemon {
         return true
     }
     
-    toSageMode() {
-        const bonusRate = 0.5
+    toSageMode(sixPath = false) {
+        const bonusRate = sixPath ? 0.7 : 0.5
         const maping = {
             "hp": "spe",
             "spe": "hp",
@@ -214,6 +214,7 @@ export class Pokemon extends PSPokemon {
             this.tokens[stat1] += bonus
         }
         this.state.increaseHealth(hp)
+        sixPath && this.state.addMove("$voidbomb")
     }
 
     megaDevolve() {

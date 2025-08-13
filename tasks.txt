@@ -1,14 +1,7 @@
 * Tasks
 
 crit priority fail
-
-6 path sage = sage bonus = 2 , void bombs
-  
-
-void bombs ( ability ) = if user use staythere and
-                         target is selected offensive 
-                         move (not status) . then void bomb will be thrown automatically
-                         damage = user.spa + user.atk
+void bombs data
 soul stick ( weapon ) 
 
 
@@ -16,7 +9,6 @@ soul stick ( weapon )
 * Doubts
 
 * Bugs
-sage mode
 
 * UI
 settings open close error
@@ -29,6 +21,5 @@ phy 0 -> sp = x - y d
 
 
 * Pending
-moves sharingan, mayangan, susano
 filter moves advanced
 incremental humans.js

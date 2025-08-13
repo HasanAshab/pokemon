@@ -314,4 +314,4 @@ startBattle([
       "spd": 0
     }
   }
-], ["Water"], "single")
+], [], "single")

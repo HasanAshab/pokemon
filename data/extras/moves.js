@@ -24,12 +24,29 @@ export default {
       pp: 1,
       priority: 2,
       secondary: null,
-      target: "normal",
+      target: "self",
       type: "Normal",
       retreat: 6,
       flags: {},
       onBeforeMove(attacker) {
         attacker.toSageMode()
+      }
+    },
+    sageofsixpaths: {
+      num: 100032,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Sage of Six Paths",
+      pp: 1,
+      priority: 2,
+      secondary: null,
+      target: "self",
+      type: "Normal",
+      retreat: 12,
+      flags: {},
+      onBeforeMove(attacker) {
+        attacker.toSageMode(true)
       }
     },
     dodge: {
@@ -833,6 +850,36 @@ Shuriken: {
     target: "normal",
     type: "Normal",
     contestType: "Tough"
+  },
+  "$voidbomb": {
+    num: 100031,
+    accuracy: 100,
+    basePower: 100,
+    basePowerCallback(pokemon, target, move) {
+      const minPower = move.basePower;
+      const maxPower = 250;
+      const level = pokemon.level;
+
+      // Calculate power scaling from minPower (at level 1) to maxPower (at level 100)
+      const scaledPower = minPower + (maxPower - minPower) * (level / 100);
+
+      // Round to nearest multiple of 5 and enforce minimum
+      return Math.max(minPower, Math.round(scaledPower / 5) * 5);
+    },
+    category: "Special",
+    name: "Void Bomb",
+    pp: 7 * 3,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+    },
+    critRatio: 2,
+    secondary: null,
+    target: "normal",
+    type: "Normal",
+    retreat: 0,
   },
   nakku: {
     num: 100029,
