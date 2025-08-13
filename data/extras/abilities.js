@@ -312,23 +312,6 @@ export default {
     }
   },
 
-  shikagubeast: {
-    type: 'beast',
-    beastImage: 'shikagu',
-    onModifyMove(move, pokemon) {
-      if (move.id === "block") {
-          const min = 0.1
-          const max = 0.5
-          const modifier = min + Math.random() * (max - min)
-          pokemon.state.damage.chainAddBlock(modifier)
-          // this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
-      }
-      else if (move.type === "Ground") {
-          move.accuracy = true
-      }
-    },
-  },
-
   blacktaibeast: {
     type: 'beast',
     beastImage: 'blacktai',
@@ -419,14 +402,34 @@ export default {
       beast.meta.name += " (Beast)"
       beast.tokens.atk += pokemon.stats.atk * 0.2
       beast.state = pokemon.state.clone()
-      
       return beast
     },
   },
 
-  kuramabeast: {
+  tails1beast: {
     type: 'beast',
-    beastImage: 'kurama',
+    beastImage: 'shikagu',
+    onModifyMove(move, pokemon) {
+      if (move.id === "block") {
+          const min = 0.1
+          const max = 0.5
+          const modifier = min + Math.random() * (max - min)
+          pokemon.state.damage.chainAddBlock(modifier)
+          // this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
+      }
+      else if (move.type === "Ground") {
+          move.accuracy = true
+      }
+    },
+  },
+  
+  tails2beast: {
+    type: 'beast',
+    beastImage: 'tails2',
+  },
+  tails9beast: {
+    type: 'beast',
+    beastImage: 'tails9',
     onWave(pokemon) {
       const chance = Math.random() * 100
       
@@ -462,41 +465,6 @@ export default {
         pokemon.state.chainModifyRetreat(2, move => ["Fire", "Flying"].includes(move.type))
     },
   },
-
-  tail1beast: {
-    type: 'beast',
-    _tailsUsed: 0,
-    retreat: 1,
-    beastTailsCount: 1,
-    onDeactivate() {
-      this.ability._tailsUsed = 0
-    },
-    canUseMove(move) {      
-      return !move.flags.weapon
-    },
-    onModifyMove(move, pokemon) {
-      move.flags.weapon = 1
-      move.flags.bodypart = 1
-      
-      if (move.id.includes("tail") && move.multihit) {
-          const bonus = Math.max(this.ability.beastTailsCount - this.ability._tailsUsed, 0)
-          
-          if (!Array.isArray(move.multihit))        
-            move.multihit += bonus;
-          else
-            move.multihit[1] += bonus;
-          this.ability._tailsUsed++
-      }
-
-      // TEMP: workaround to reset move
-      pokemon.state.once("used-move", move => {        
-        const actualMove = pokemon.state.moves.find(m => m.id === move.id)        
-        actualMove.flags = actualMove._ref.flags
-        actualMove.multihit = actualMove._ref.multihit
-      })
-    },
-  },
-
 
   // paths
   indrapath: {
