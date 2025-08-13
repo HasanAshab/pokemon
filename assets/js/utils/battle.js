@@ -205,6 +205,8 @@ class BaseBattle extends EventEmitter {
           move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
           move1._user = this.pokemon1
           move2._user = this.pokemon2
+          move1._target = this.pokemon2
+          move2._target = this.pokemon1
         }
         catch (e) {
           move1._meta = {}

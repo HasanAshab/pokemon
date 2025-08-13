@@ -189,12 +189,9 @@ export default {
     }
   },
 
-  blueflame: {
-    onUsingMove(move, opponentMove) {
-      if (move.priority !== opponentMove.priority) return null
-      console.log(types[move.type][opponentMove.type]);
-    },
-  },
+  // no weakness and resistence for the type + effects 100% 
+  blueflame: { retreat: 2 },
+  purplethunder: { retreat: 2 },
 
   mistmaster: {
     statChanges: {

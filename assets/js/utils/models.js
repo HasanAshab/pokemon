@@ -61,9 +61,9 @@ export class Pokemon extends PSPokemon {
         return Math.floor(xp / Pokemon.XP_PER_LEVEL) + 1;
     }
 
-    static fromBase64(base64) {
+    static fromBase64(base64, tag = null) {
         const { id, meta } = JSON.parse(atob(base64));
-        return new this(id, meta);
+        return new this(id, meta, tag);
     }
 
     static natureModifierFor(statName, nature) {
@@ -331,7 +331,19 @@ export class Move {
             type = type.type
         }
         if (!this.type) return 1
-        return typeChart[this.type][type] || 1
+        let effectiveness = typeChart[this.type][type] || 1
+        const abilitiesMap = {
+          "Fire": "blueflame",
+          "Electric": "purplethunder"
+        }
+
+        if (this._user.abilities.isActive(abilitiesMap[this.type]) && effectiveness < 1) {
+          effectiveness = 1
+        }
+        if (this._target.abilities.isActive(abilitiesMap[type]) && effectiveness > 1) {
+          effectiveness = 1
+        }        
+        return effectiveness
     }
 
     description(short = false) {
