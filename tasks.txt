@@ -1,8 +1,4 @@
 * Tasks
-soul stick ( weapon ) = eida dara joto damage dibo ta ar regenatare korte parbo na 
-                        * kintu uzumaki er ability heal je kore name bhuilla gesi
-                        * pp = infinite
-                        * power = 40 with spa ( not with atk)
 
 * Doubts
 

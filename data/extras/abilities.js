@@ -245,13 +245,23 @@ export default {
   recover: {
     retreat: 2,
     onTurn(pokemon) {
-      pokemon.increaseHP(pokemon.maxhp * 0.02)
+      pokemon.state.increaseHealth(pokemon.maxhp * 0.02)
     }
   },
   regeneration: {
     retreat: 3,
+    unrecoverableHP: 0,
     onTurn(pokemon) {
-      pokemon.increaseHP(pokemon.maxhp * 0.005)
+      if (this.ability.unrecoverableHP + pokemon.hp >= pokemon.maxhp) return
+      pokemon.state.increaseHealth(pokemon.maxhp * 0.005)
+    },
+    onModifyOpponentMove(move, pokemon, oppo) {
+      if (move.id !== "soulstick") return
+      const oldHp = pokemon.hp;
+      
+      pokemon.state.once("scene-end", () => {
+        this.ability.unrecoverableHP += oldHp - pokemon.hp;
+      })
     }
   },
 

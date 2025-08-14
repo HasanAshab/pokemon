@@ -838,7 +838,7 @@ Shuriken: {
     },
     category: "Special",
     name: "Susano Sword",
-    pp: 10,
+    pp: null,
     priority: 0,
     flags: {
       protect: 1,
@@ -921,5 +921,20 @@ Shuriken: {
     type: "Normal",
     contestType: "Tough",
     retreat: 0
+  },
+  soulstick: {
+    num: 100032,
+    accuracy: 100,
+    basePower: 40,
+    category: "Special",
+    name: "Soul Stick",
+    pp: null,
+    priority: 1,
+    flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+    secondary: null,
+    target: "normal",
+    type: "Steel",
+    contestType: "Tough",
+    retreat: 4.5
   }
 }
