@@ -240,6 +240,16 @@ export default {
       }
     }
   },
+  recover: {
+    onTurn(pokemon) {
+      pokemon.increaseHP(pokemon.maxhp * 0.02)
+    }
+  },
+  regeneration: {
+    onTurn(pokemon) {
+      pokemon.increaseHP(pokemon.maxhp * 0.005)
+    }
+  },
 
   mistmaster: {
     statChanges: {
@@ -430,10 +440,31 @@ export default {
     beastImage: 'tails2',
     dependencies: ['blueflame'],
   },
+  tails3beast: {
+    type: 'beast',
+    beastImage: 'tails3',
+    dependencies: ['roughskin'],
+  },
+  tails5beast: {
+    type: 'beast',
+    beastImage: 'tails5',
+    dependencies: ["regeneration"],
+  },
+  tails8: {
+    type: 'beast',
+    beastImage: 'tails8',
+    
+  },
   tails9beast: {
     type: 'beast',
     beastImage: 'tails9',
     dependencies: ['chakrafarm'],
+  },
+
+  tails10beast: {
+    type: 'beast',
+    beastImage: 'tails10',
+    dependencies: ["tails1", "tails2", "tails3", "tails5", "tails8", "tails9"],
   },
 
   charizardbeast: {
@@ -522,7 +553,11 @@ export default {
       }
     }
   },
-  devapath: { type: 'path' },
+  devapath: { 
+    type: 'path',
+    dependencies: ["regeneration"],
+  },
+
   rinnegan: {
     dependencies: ["devapath", "animalpath", "innerpath", "pretapath", "asurapath", "indrapath"],
   },

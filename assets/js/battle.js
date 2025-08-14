@@ -59,8 +59,12 @@ globalThis.closePlayerSettingsForm = function ({ currentTarget }) {
   playerSettingsForm.parentElement.classList.remove("active")
 
   // abilities cleanup
-  const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .abilities-wrapper')
+  const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .wrapper')
   abilitiesWrapper.innerHTML = ''
+
+  // items cleanup
+  const itemsWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.items .wrapper')
+  itemsWrapper.innerHTML = ''
 }
 globalThis.progressbarClickHandler = ({ currentTarget }, playerTag) => {
   if (currentTarget.classList.contains("health")) {
@@ -980,6 +984,7 @@ globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name)
   loadTokenStats(playerTag)
   loadPokemonData(playerTag)
   loadPokemonData(opponentTag(playerTag))
+  loadAbilities(playerTag)
 }
 
 

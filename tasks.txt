@@ -1,20 +1,23 @@
 * Tasks
-soul stick ( weapon ) 
+soul stick ( weapon ) = eida dara joto damage dibo ta ar regenatare korte parbo na 
+                        * kintu uzumaki er ability heal je kore name bhuilla gesi
+                        * pp = infinite
+                        * power = 40 with spa ( not with atk)
 
 8 tails make contact parwrappped 30
-3 tails rough skin
-5 tails recreation
+6 tails make contact spe += 0.25
 
 * Doubts
 
 * Bugs
 
-* UI
-settings open close error
-
 * Data
 void bomb
 ability retreat
+tails3
+tails5
+tails8
+hand6
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
