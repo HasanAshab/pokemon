@@ -299,8 +299,7 @@ export default {
     }
   },
   flamebody: {
-        retreat: 2,
-
+    retreat: 2,
     _totalSpeedDecrease: 0,
     onTurn(pokemon, opponent) {
       opponent.state.stats._statChanges.spe -= 0.25
@@ -492,7 +491,7 @@ export default {
 
   tails10beast: {
     type: 'beast',
-    beastImage: 'tails10',
+    beastImage: false,
     dependencies: ["tails1beast", "tails2beast", "tails3beast", "tails5beast", "tails6beast", "tails8beast", "tails9beast"],
   },
 

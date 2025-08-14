@@ -8,12 +8,8 @@ soul stick ( weapon ) = eida dara joto damage dibo ta ar regenatare korte parbo 
 
 * Bugs
 hand beasts block decrease
+
 * Data
-void bomb
-ability retreat
-tails3
-tails5
-tails8
 hand6
 
 * Scenario

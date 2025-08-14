@@ -95,10 +95,12 @@ function renderSoldierSection(type) {
     div.className = "soldier-card";
 
     const imageSelect = document.createElement("select");
-    const images = Object.keys(pokemons).splice(
+    const shinobiImages = Object.keys(pokemons).splice(
       0,
       kingdom.barrack.academyLevel + 1,
     );
+    const beastImages = Object.keys(pokemons).filter((id) => pokemons[id].type === "beast")
+    const images = [...shinobiImages, ...beastImages];
     images.forEach((opt) => {
       const option = document.createElement("option");
       option.value = opt;

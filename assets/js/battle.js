@@ -213,7 +213,7 @@ function loadPokemonData(playerTag) {
   setCurrentHealth("armor-hp", pokemon.state.armor.hp(), playerTag)
   setDoubleTeamData(pokemon.state.manCount, playerTag)
   loadMoves(playerTag)
-
+  setRetreatChargeForAbilities(pokemon.abilities.retreatCost(), playerTag)
   if (hp !== oldHp) {
     const hpDist = fixFloat(hp - oldHp)
     const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
@@ -644,6 +644,11 @@ function setRetreatPerWave(retreat, playerTag) {
   const retreatPerWave = document.querySelector(`.${playerTag}-controle-cont .retreat-per-wave`)
   retreatPerWave.textContent = retreat
 }
+function setRetreatChargeForAbilities(retreat, playerTag) { 
+     const retreatChargeForAbilities = document.querySelector(`.${playerTag}-controle-cont .retreat-charge-for-abilities`)
+  retreatChargeForAbilities.textContent = retreat
+}
+// retreat-charge-for-abilities
 function setCurrentRetreat(retreat, playerTag) {
   const currentRetreat = document.getElementById(`${playerTag}-current-retreat`)
   currentRetreat.innerText = retreat
