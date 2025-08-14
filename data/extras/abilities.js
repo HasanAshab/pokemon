@@ -482,6 +482,7 @@ export default {
       if (!this._contacted || rand > this.ability.wrapChance) return
       contactor.state.effects.add(new move.constructor("wrap"), "partiallytrapped")
     }
+  },
   tails9beast: {
     retreat: 10,
     type: 'beast',
