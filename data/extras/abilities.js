@@ -377,7 +377,7 @@ export default {
     beastAttackCount: [1, 3],
     onModifyMove(move, pokemon) {
       if (move.id !== "block") return
-      const modifier = Math.random() * 0.2
+      const modifier = Math.random() * 0.1
       pokemon.state.damage.chainAddBlock(modifier)
       this.popup(`hand beast blocked more ${modifier * 100}% of damage`, pokemon);
     },
@@ -412,7 +412,9 @@ export default {
     beastAttackCount: [2, 6],
     onModifyMove(move, pokemon) {
       if (move.id !== "block") return
-      const modifier = Math.random() * 0.5
+      const min = 0.1
+      const max = 0.3
+      const modifier = min + Math.random() * (max - min)
       pokemon.state.damage.chainAddBlock(modifier)
       this.popup(`hand beast blocked more ${modifier * 100}% of damage`, pokemon);
     },
