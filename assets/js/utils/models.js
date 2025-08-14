@@ -576,14 +576,14 @@ class Ability {
               console.log(e)
             }
         }
-        this._listeners["contacted"] = (contactor) => {
+        this._listeners["contacted"] = (contactor, move) => {
             try {
                 this._ability.onDamagingHit?.callWithExtraCtx(
                     { _contacted: true },
                     null,
                     this.pokemon,
                     contactor,
-                    null
+                    move
                 )
             }
             catch (e) {

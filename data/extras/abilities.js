@@ -450,10 +450,15 @@ export default {
     beastImage: 'tails5',
     dependencies: ["regeneration"],
   },
-  tails8: {
+  tails8beast: {
     type: 'beast',
     beastImage: 'tails8',
-    
+    wrapChance: 30,
+    onDamagingHit(_, pokemon, contactor, move) {
+      const rand = Math.random() * 100      
+      if (!this._contacted || rand > this.ability.wrapChance) return
+      contactor.state.effects.add(new move.constructor("wrap"), "partiallytrapped")
+    }
   },
   tails9beast: {
     type: 'beast',
@@ -464,7 +469,7 @@ export default {
   tails10beast: {
     type: 'beast',
     beastImage: 'tails10',
-    dependencies: ["tails1", "tails2", "tails3", "tails5", "tails8", "tails9"],
+    dependencies: ["tails1beast", "tails2beast", "tails3beast", "tails5beast", "tails8beast", "tails9beast"],
   },
 
   charizardbeast: {

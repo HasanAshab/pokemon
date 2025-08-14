@@ -1,5 +1,4 @@
 import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
-import { Move } from "./models.js"
 
 
 class Effect {
@@ -66,6 +65,14 @@ class Effect {
     
     displayMeta() {
         return ""
+    }
+
+    canUseMove(move) {
+        return true
+    }
+
+    canOpponentUseMove(move) {
+        return true
     }
 
     _subscribeTo(event) {
@@ -361,30 +368,19 @@ class PartiallyTrappedEffect extends ExpirableEffect {
         const lifetime = weightedRandom([2, 3, 4, 5], [0.20, 0.40, 0.30, 0.10])
         this.lifetime.turns = lifetime
     }
-    
+
     onTurn() {
         super.onTurn(...arguments)
         this.state.decreaseHealth(this._calculateEffectDamage())
     }
-    
-    onScene(move, senario) {
-        if (this.source && this.source.flags.contact) {
-            move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
-        }
-        else {
-            move.flags.contact && senario.set(this.state.pokemon, new Move("staythere"))
-        }
-    }
-    
-    onOpponentScene(move, senario) {
-        const opponent = this.state.battle.opponentOf(this.state.pokemon)
 
-        if (this.source && this.source.flags.contact) {
-            !move.flags.contact && senario.set(opponent, new Move("staythere"))
-        }
-        else {
-            move.flags.contact && senario.set(opponent, new Move("staythere"))
-        }
+    canUseMove(move) {
+      return !move.flags.contact
+    }
+
+    canOpponentUseMove(move) {
+      return (this.source && this.source.flags.contact && move.flags.contact)
+        || (!this.source?.flags.contact && !move.flags.contact)
     }
 
     _calculateEffectDamage() {
@@ -592,6 +588,14 @@ export class EffectManager {
         effect.teardown()
         this._removeEffectObj(effectName)
         return effect
+    }
+
+    canUseMove(move) {
+        return this._effects.every(effect => effect.canUseMove(move))
+    }
+    
+    canOpponentUseMove(move) {
+        return this._effects.every(effect => effect.canOpponentUseMove(move))
     }
     
     toJSON() {
