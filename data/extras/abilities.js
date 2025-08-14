@@ -213,6 +213,7 @@ export default {
   },
 
   shadow: {
+    retreat: 2,
     canUseMove(move) {      
       return move.category !== "Physical"
     },
@@ -226,6 +227,7 @@ export default {
   blueflame: { retreat: 2 },
   purplethunder: { retreat: 2 },
   chakrafarm: {
+    retreat: 0,
     onWave(pokemon) {
       const chance = Math.random() * 100
       
@@ -241,17 +243,20 @@ export default {
     }
   },
   recover: {
+    retreat: 2,
     onTurn(pokemon) {
       pokemon.increaseHP(pokemon.maxhp * 0.02)
     }
   },
   regeneration: {
+    retreat: 3,
     onTurn(pokemon) {
       pokemon.increaseHP(pokemon.maxhp * 0.005)
     }
   },
 
   mistmaster: {
+    retreat: 3,
     statChanges: {
       accuracy: 3
     },
@@ -264,6 +269,7 @@ export default {
   },
 
   flash: {
+    retreat: 2,
     _totalSpeedBoost: 0,
     onTurn(pokemon) {
       pokemon.state.stats._statChanges.spe += 0.25
@@ -293,6 +299,8 @@ export default {
     }
   },
   flamebody: {
+        retreat: 2,
+
     _totalSpeedDecrease: 0,
     onTurn(pokemon, opponent) {
       opponent.state.stats._statChanges.spe -= 0.25
@@ -326,6 +334,7 @@ export default {
   },
 
   hands1beast: {
+    retreat: 1.25,
     type: 'beast',
     beastImage: 'hands1',
     beastAttackChance: 30,
@@ -352,6 +361,7 @@ export default {
     },
   },
   hands3beast: {
+    retreat: 3,
     type: 'beast',
     beastImage: 'hands3',
     beastAttackChance: 30,
@@ -386,6 +396,7 @@ export default {
     },
   },
   hand6beast: {
+    retreat: 6,
     type: 'beast',
     beastImage: 'hands6',
     beastAttackChance: 45,
@@ -420,6 +431,7 @@ export default {
   },
 
   tails1beast: {
+    retreat: 1.5,
     type: 'beast',
     beastImage: 'tails1',
     onModifyMove(move, pokemon) {
@@ -436,26 +448,30 @@ export default {
     },
   },
   tails2beast: {
+    retreat: 1.5,
     type: 'beast',
     beastImage: 'tails2',
     dependencies: ['blueflame'],
   },
   tails3beast: {
+    retreat: 2,
     type: 'beast',
     beastImage: 'tails3',
     dependencies: ['roughskin'],
   },
   tails5beast: {
+    retreat: 1.5,
     type: 'beast',
     beastImage: 'tails5',
     dependencies: ["regeneration"],
   },
   tails8: {
+    retreat: 5,
     type: 'beast',
     beastImage: 'tails8',
-    
   },
   tails9beast: {
+    retreat: 10,
     type: 'beast',
     beastImage: 'tails9',
     dependencies: ['chakrafarm'],
@@ -468,6 +484,7 @@ export default {
   },
 
   charizardbeast: {
+    retreat: 2,
     type: 'beast',
     beastImage: 'charizard',
     onActivate(pokemon) {
@@ -478,6 +495,7 @@ export default {
     },
   },
   charizardybeast: {
+    retreat: 3.5,
     type: 'beast',
     beastImage: 'charizardy',
     onActivate(pokemon) {
@@ -490,6 +508,7 @@ export default {
 
   // paths
   indrapath: {
+    retreat: 2,
     type: 'path',
     onTurn(pokemon) {
       if (pokemon.state.flags.autoDodge) return
@@ -506,6 +525,7 @@ export default {
     },
   },
   asurapath: {
+    retreat: 0,
     type: 'path',
     onActivate(pokemon) {            
         const statExchange = pokemon.state.stats.get("spe") * 0.5
@@ -521,6 +541,7 @@ export default {
     },
   },
   pretapath: {
+        retreat: 2,
     type: 'path',
     onHit(pokemon, opponent, move) {
       const safeTypes = ["normal", "fighting", "ghost"]
@@ -536,6 +557,7 @@ export default {
     },
   },
   innerpath: {
+    retreat: 0,
     type: 'path',
     onWave(pokemon, opponent) {
       const drainPercent = pokemon.abilities.isActive("rinnegan") ? 0.35 : 0.2
@@ -545,6 +567,7 @@ export default {
     }
   },
   animalpath: {
+    retreat: 2,
     type: 'path',
     onTurn(_, opponent) {
       console.log(opponent.abilities.jinchuriki());
@@ -554,11 +577,14 @@ export default {
     }
   },
   devapath: { 
+        retreat: 0,
     type: 'path',
     dependencies: ["regeneration"],
   },
 
   rinnegan: {
+        retreat: 0,
+
     dependencies: ["devapath", "animalpath", "innerpath", "pretapath", "asurapath", "indrapath"],
   },
 }
