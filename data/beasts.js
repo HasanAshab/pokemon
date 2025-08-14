@@ -30,7 +30,7 @@ baseStats: { hp: 40, atk: 50, def: 30, spa: 10, spd: 10, spe: 10 },    abilities
       max( 15%) = lvl
     `
   },
-  blacktai:{
+  hands1:{
     num: 3,
     name: "Black tai",
     types: ["Fighing"],
@@ -40,7 +40,7 @@ baseStats: { hp: 40, atk: 50, def: 30, spa: 10, spd: 10, spe: 10 },    abilities
     desc:`Has 30% to repeat user used move if make contact = true.`  
    
   },
-  rocktri: {
+  hands3: {
     num: 4,
     name: "Rock Tri",
     types: ["Fighting"],

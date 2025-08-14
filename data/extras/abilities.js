@@ -83,7 +83,7 @@ export default {
     },
     onWave(pokemon) {
       this.ability._lockStatChanges(pokemon)
-    }
+    },
     canUseMove(move) {
       return !move.flags.contact
     },
@@ -312,9 +312,9 @@ export default {
     }
   },
 
-  blacktaibeast: {
+  hands1beast: {
     type: 'beast',
-    beastImage: 'blacktai',
+    beastImage: 'hands1',
     beastAttackChance: 30,
     beastAttackCount: 1,
     onModifyAtk(_, target, source, move) {
@@ -338,9 +338,9 @@ export default {
       return beast
     },
   },
-  rocktribeast: {
+  hands3beast: {
     type: 'beast',
-    beastImage: 'rocktri',
+    beastImage: 'hands3',
     beastAttackChance: 30,
     beastAttackCount: [1, 3],
     onModifyMove(move, pokemon) {
@@ -374,7 +374,7 @@ export default {
   },
   hand6beast: {
     type: 'beast',
-    beastImage: '',
+    beastImage: 'hands6',
     beastAttackChance: 45,
     beastAttackCount: [2, 6],
     onModifyMove(move, pokemon) {
@@ -408,7 +408,7 @@ export default {
 
   tails1beast: {
     type: 'beast',
-    beastImage: 'shikagu',
+    beastImage: 'tails1',
     onModifyMove(move, pokemon) {
       if (move.id === "block") {
           const min = 0.1
@@ -426,6 +426,7 @@ export default {
   tails2beast: {
     type: 'beast',
     beastImage: 'tails2',
+    dependencies: ['blueflame'],
   },
   tails9beast: {
     type: 'beast',
