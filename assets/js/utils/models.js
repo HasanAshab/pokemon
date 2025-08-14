@@ -94,6 +94,7 @@ export class Pokemon extends PSPokemon {
         
         this._pokemon = pokemons[id];
         this._tag = tag;
+        this._beastTypes = []
         this.tokens = this.meta.token_used
         this.items = new ItemManager(this)
         this.abilities = new AbilityManager(this)
@@ -132,14 +133,11 @@ export class Pokemon extends PSPokemon {
           if (type.damage) return 1
           type = type.type
         }
-        
-        const jinchuriki = this.abilities.jinchuriki()
-        if (!jinchuriki)
-            return 1
-    
+
         if (!type) return 1
+
         let effectiveness = 1;
-        jinchuriki._beast.types.forEach(tType => {
+        this._beastTypes.forEach(tType => {
             if (typeChart[type] && typeChart[type][tType]) {
                 effectiveness *= typeChart[type][tType];
             }
@@ -501,27 +499,30 @@ class Ability {
       if (this._beast) {
           this._beastInheritedStats = {}
           this._beastInheritedTypes = []
-
           for (const stat in this._beast.stats) {
               this._beastInheritedStats[stat] = this._beast.stats[stat] * Ability.BEAST_STATS_INHERIT_PERCENTAGE / 100
           }
           this.pokemon.tokens = sumObj(this.pokemon.tokens, this._beastInheritedStats)
-          "hp" in this._beastInheritedStats && this.pokemon.state.increaseHealth(this._beastInheritedStats.hp)
+          "hp" in this._beast.stats && this.pokemon.state.increaseHealth(this._beast.stats.hp)
 
           for (const type of this._beast.types) {
               if (this.pokemon.hasType(type)) continue
               this.pokemon.meta.types.push(type)
+              this.pokemon._beastTypes.push(type)
               this._beastInheritedTypes.push(type)
-          }          
+          }
       }
     }
 
     onDeactivate() {
       this._ability.dependencies?.forEach(dependency => this.pokemon.abilities.deactivate(dependency))
-      if (this._beastInheritedStats) {
+      if (this._beast) {
           "hp" in this._beastInheritedStats && this.pokemon.state.decreaseHealth(this._beastInheritedStats.hp, true)
           this.pokemon.tokens = sumObj(this.pokemon.tokens, modObj(this._beastInheritedStats, -1))
           this.pokemon.meta.types = this.pokemon.meta.types.filter(t => !this._beastInheritedTypes.includes(t))
+          this.pokemon._beastTypes = this.pokemon._beastTypes.filter(t => !this._beastInheritedTypes.includes(t))
+          this._beastInheritedStats = {}
+          this._beastInheritedTypes = []
         }
     }
 

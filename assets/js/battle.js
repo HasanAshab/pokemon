@@ -910,6 +910,7 @@ globalThis.removeItem = function (id, playerTag) {
     pokemonMap[playerTag].state.armor.remove(id)
   } catch (error) {}
   loadItems(playerTag)
+  loadTokenStats(playerTag)
 }
 
 function runScene(moveIds) {
