@@ -450,6 +450,14 @@ export default {
     beastImage: 'tails5',
     dependencies: ["regeneration"],
   },
+  tails6beast: {
+    type: 'beast',
+    beastImage: 'tails6',
+    onDamagingHit(_, pokemon, contactor, move) {
+      if (!this._contacted) return
+      contactor.state.stats._statChanges.spe -= 0.25
+    }
+  },
   tails8beast: {
     type: 'beast',
     beastImage: 'tails8',
@@ -469,7 +477,7 @@ export default {
   tails10beast: {
     type: 'beast',
     beastImage: 'tails10',
-    dependencies: ["tails1beast", "tails2beast", "tails3beast", "tails5beast", "tails8beast", "tails9beast"],
+    dependencies: ["tails1beast", "tails2beast", "tails3beast", "tails5beast", "tails6beast", "tails8beast", "tails9beast"],
   },
 
   charizardbeast: {

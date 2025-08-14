@@ -5,8 +5,6 @@ soul stick ( weapon ) = eida dara joto damage dibo ta ar regenatare korte parbo 
                         * pp = infinite
                         * power = 40 with spa ( not with atk)
 
-6 tails make contact spe += 0.25
-
 * Doubts
 
 * Bugs
