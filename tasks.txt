@@ -1,5 +1,4 @@
 * Tasks
-beast compose
 soul stick ( weapon ) = eida dara joto damage dibo ta ar regenatare korte parbo na 
                         * kintu uzumaki er ability heal je kore name bhuilla gesi
                         * pp = infinite
