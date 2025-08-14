@@ -4,7 +4,6 @@ import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj } from "./helpers.js"
-import move from "../../../data/processors/move.js";
 
 
 class BaseBattle extends EventEmitter {
@@ -152,6 +151,8 @@ class BaseBattle extends EventEmitter {
         return move.retreat <= pokemon.state.retreat 
           && (move.pp === null || move.pp > 0)
           && pokemon.abilities.canUseMove(move)
+          && pokemon.state.effects.canUseMove(move)
+          && this.opponentOf(pokemon).state.effects.canOpponentUseMove(move)
     }
 
     activate(pokemon) {
@@ -419,22 +420,22 @@ class BaseBattle extends EventEmitter {
                 
 
         if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
-            this.pokemon1.state.emit("contacted", this.pokemon2)
+            this.pokemon1.state.emit("contacted", this.pokemon2, move2)
             this.pokemon1.state.effects.apply(move2, { on: "target" })
             this.pokemon1.state.stats.apply("target", move2)
         }
         if (!attackSelf1 && canMove1 && !move1.flags.weapon && (d2 || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
-            this.pokemon2.state.emit("contacted", this.pokemon1)
+            this.pokemon2.state.emit("contacted", this.pokemon1, move1)
             this.pokemon2.state.effects.apply(move1, { on: "target" })
             this.pokemon2.state.stats.apply("target", move1)
         }
         if (attackSelf1) {
-            this.pokemon1.state.emit("contacted", this.pokemon1)
+            this.pokemon1.state.emit("contacted", this.pokemon1, move1)
             this.pokemon1.state.effects.apply(move1, { on: "target" })
             this.pokemon1.state.stats.apply("target", move1)
         }
         if (attackSelf2) {
-            this.pokemon2.state.emit("contacted", this.pokemon2)
+            this.pokemon2.state.emit("contacted", this.pokemon2, move2)
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
