@@ -488,6 +488,16 @@ class Ability {
     }
 
     onActivate() {
+      if (this._ability.dependencies) {
+          for (const dependency of this._ability.dependencies) {
+              if (!this.pokemon.abilities.has(dependency)) {
+                abilitiesPopupQueue.add(`${this.id}: requires ${dependency}`, this.pokemon._tag)
+                return this.deactivate()
+              }
+              else this.pokemon.abilities.activate(dependency)
+          }
+      }
+
       if (this._beast) {
           this._beastInheritedStats = {}
           this._beastInheritedTypes = []
@@ -505,8 +515,10 @@ class Ability {
           }          
       }
     }
+
     onDeactivate() {
-      if (this._beast) {
+      this._ability.dependencies?.forEach(dependency => this.pokemon.abilities.deactivate(dependency))
+      if (this._beastInheritedStats) {
           "hp" in this._beastInheritedStats && this.pokemon.state.decreaseHealth(this._beastInheritedStats.hp, true)
           this.pokemon.tokens = sumObj(this.pokemon.tokens, modObj(this._beastInheritedStats, -1))
           this.pokemon.meta.types = this.pokemon.meta.types.filter(t => !this._beastInheritedTypes.includes(t))
@@ -607,6 +619,14 @@ class AbilityManager {
     
     has(name) {
         return this._abilities.some(ab => ab.name === name)
+    }
+
+    activate(name) {
+        this._abilities.find(ab => ab.name === name).activate(name)
+    }
+
+    deactivate(name) {
+        this._abilities.find(ab => ab.name === name).deactivate(name)
     }
 
     toggle(name) {

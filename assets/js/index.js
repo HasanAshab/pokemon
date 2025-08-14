@@ -252,7 +252,7 @@ startBattle([
     "nature": "serious",
     "retreat": 12,
     "types": [] ,
-    "abilities": ["kuramabeast"],
+    "abilities": ["tails1beast"],
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {

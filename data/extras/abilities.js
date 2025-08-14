@@ -225,6 +225,21 @@ export default {
   // no weakness and resistence for the type + effects 100% 
   blueflame: { retreat: 2 },
   purplethunder: { retreat: 2 },
+  chakrafarm: {
+    onWave(pokemon) {
+      const chance = Math.random() * 100
+      
+      if (chance >= 85) {
+        pokemon.state.retreat += pokemon.level
+      }
+      else if (chance >= 65) {
+        pokemon.state.retreat += pokemon.level / 1.5
+      }
+      else if (chance >= 50) {
+        pokemon.state.retreat += pokemon.level / 3
+      }
+    }
+  },
 
   mistmaster: {
     statChanges: {
@@ -297,19 +312,7 @@ export default {
     },
   },
   senju1: {
-    onWave(pokemon) {
-      const chance = Math.random() * 100
-      
-      if (chance >= 85) {
-        pokemon.state.retreat += pokemon.level
-      }
-      else if (chance >= 65) {
-        pokemon.state.retreat += pokemon.level / 1.5
-      }
-      else if (chance >= 50) {
-        pokemon.state.retreat += pokemon.level / 3
-      }
-    }
+    dependencies: ["chakrafarm"],
   },
 
   hands1beast: {
@@ -422,7 +425,6 @@ export default {
       }
     },
   },
-  
   tails2beast: {
     type: 'beast',
     beastImage: 'tails2',
@@ -431,19 +433,7 @@ export default {
   tails9beast: {
     type: 'beast',
     beastImage: 'tails9',
-    onWave(pokemon) {
-      const chance = Math.random() * 100
-      
-      if (chance >= 85) {
-        pokemon.state.retreat += pokemon.level
-      }
-      else if (chance >= 65) {
-        pokemon.state.retreat += pokemon.level / 1.5
-      }
-      else if (chance >= 50) {
-        pokemon.state.retreat += pokemon.level / 3
-      }
-    }
+    dependencies: ['chakrafarm'],
   },
 
   charizardbeast: {
@@ -473,7 +463,7 @@ export default {
     onTurn(pokemon) {
       if (pokemon.state.flags.autoDodge) return
       if (pokemon.state._data.autoDodgeCountDown === undefined) {
-        pokemon.state._data.autoDodgeCountDown = pokemon.abilities.hasSixPath() ? 2 : 3
+        pokemon.state._data.autoDodgeCountDown = pokemon.abilities.isActive("rinnegan") ? 2 : 3
       }      
 
       pokemon.state._data.autoDodgeCountDown--
@@ -489,13 +479,13 @@ export default {
     onActivate(pokemon) {            
         const statExchange = pokemon.state.stats.get("spe") * 0.5
         pokemon.tokens.atk += statExchange
-        if (!pokemon.abilities.hasSixPath()) 
+        if (!pokemon.abilities.isActive("rinnegan")) 
           pokemon.tokens.spe -= statExchange
     },
     onDeactivate(pokemon) {
         const statExchange = pokemon.state.stats.get("spe") * 0.5
         pokemon.tokens.atk -= statExchange
-        if (!pokemon.abilities.hasSixPath())
+        if (!pokemon.abilities.isActive("rinnegan"))
           pokemon.tokens.spe += statExchange
     },
   },
@@ -503,7 +493,7 @@ export default {
     type: 'path',
     onHit(pokemon, opponent, move) {
       const safeTypes = ["normal", "fighting", "ghost"]
-      const removeChance = pokemon.abilities.hasSixPath() ? 0.35 : 0.2
+      const removeChance = pokemon.abilities.isActive("rinnegan") ? 0.35 : 0.2
       if (!safeTypes.includes(move.type) && Math.random() < removeChance) {
         opponent.state.moves.forEach(m => {
           if (m.type === move.type) {
@@ -517,7 +507,7 @@ export default {
   innerpath: {
     type: 'path',
     onWave(pokemon, opponent) {
-      const drainPercent = pokemon.abilities.hasSixPath() ? 0.35 : 0.2
+      const drainPercent = pokemon.abilities.isActive("rinnegan") ? 0.35 : 0.2
       const drainRetreat = opponent.state.retreat * drainPercent
       pokemon.state.retreat += drainRetreat
       opponent.state.retreat -= drainRetreat      
@@ -532,12 +522,8 @@ export default {
       }
     }
   },
-  devapath: { 
-    type: 'path',
-    onActivate(pokemon) {
-      if (pokemon.abilities.hasSixPath()) {
-        this.popup(`Six Path!`, pokemon);
-      }
-    }
+  devapath: { type: 'path' },
+  rinnegan: {
+    dependencies: ["devapath", "animalpath", "innerpath", "pretapath", "asurapath", "indrapath"],
   },
 }
