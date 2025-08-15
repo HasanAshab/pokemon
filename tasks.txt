@@ -4,7 +4,7 @@
 enemy create page enhance
 
 * Bugs
-
+all adjacent shadowclone
 * Data
 hand6
 
