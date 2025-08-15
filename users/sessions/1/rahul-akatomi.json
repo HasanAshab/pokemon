@@ -1,17 +1,13 @@
   {
     "id": "rookie",
     "name": "rahul akatomi",
-    "xp": 500,
+    "xp": 2000,
     "nature": "serious",
     "retreat": 4,
     "types": [] ,
-    "abilities": ["kuramabeast"],
+    "abilities": [],
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
-      {
-        "id": "shadowclone",
-        "isSelected": true
-      },
       {
         "id": "kunai",
         "isSelected": true

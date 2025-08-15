@@ -5124,7 +5124,7 @@ export default {
     rating: 4,
     num: 86
   },
-  skilllink: {
+  luckycharm: {
     onModifyMove(move) {
       if (
         move.multihit &&

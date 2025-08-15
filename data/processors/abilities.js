@@ -113,7 +113,7 @@ function addCtxMixer(ability) {
 
 function setRetreat(ability) {
     if ("retreat" in ability) return
-    ability.retreat = Math.max(ability.rating ?? 0, 0) * 0.6
+    ability.retreat = (Math.max(ability.rating ?? 0, 0) * 0.6).toFixed(2)
 }
 
 export default processor([
