@@ -248,7 +248,7 @@ startBattle([
   {
     "id": "rookie",
     "name": "rahul akatomi",
-    "xp": 500,
+    "xp": 1300,
     "nature": "serious",
     "retreat": 12,
     "types": [] ,
