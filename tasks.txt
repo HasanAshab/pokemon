@@ -1,6 +1,9 @@
 * Tasks
+save enemies
+add pokemon from json
 
-* Doubts
+* UI
+enemy create page enhance
 
 * Bugs
 

@@ -243,17 +243,14 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 startBattle([
   {
-    "id": "genin",
-    "name": "Lucky",
-    "xp": 2000,
-    "nature": "calm",
-    "retreat": 5.5,
-    "types": [],
-    "abilities": ["luckycharm"],
-    "items": [
-      "gen-thik",
-      "gen-food-mid"
-    ],
+    "id": "rookie",
+    "name": "rahul akatomi",
+    "xp": 1300,
+    "nature": "serious",
+    "retreat": 12,
+    "types": [] ,
+    "abilities": ["tails1beast"],
+    "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {
         "id": "kunai",

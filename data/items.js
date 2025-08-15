@@ -3,12 +3,169 @@ export default {
     type: "armor",
     covers: 20,
     stats: {
-      def: 20
+      def: 15
+    },
+    tokens: {
+      spe: -1
+    }
+  },
+  latherarmor2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      def: 15
+    },
+    tokens: {
+      spe: -4
+    }
+  },
+
+  latherarmor3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      def: 15
+    },
+    tokens: {
+      spe: -8
+    }
+  },
+
+  chainarmor1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      def: 25
     },
     tokens: {
       spe: -3
     }
   },
+
+  chainarmor2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      def: 25
+    },
+    tokens: {
+      spe: -7
+    }
+  },
+
+  chainarmor3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      def: 25
+    },
+    tokens: {
+      spe: -12
+    }
+  },
+
+  bronzearmor1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      def: 35
+    },
+    tokens: {
+      spe: -5
+    }
+  },
+
+  bronzearmor2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      def: 35
+    },
+    tokens: {
+      spe: -10
+    }
+  },
+
+  bronzearmor3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      def: 35
+    },
+    tokens: {
+      spe: -15
+    }
+  },
+  
+  steelarmor1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      def: 45
+    },
+    tokens: {
+      spe: -7
+    }
+  },
+
+  steelarmor2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      def: 45
+    },
+    tokens: {
+      spe: -14
+    }
+  },
+
+  steelarmor3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      def: 45
+    },
+    tokens: {
+      spe: -20
+    }
+  },
+
+  ironarmor1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      def: 55
+    },
+    tokens: {
+      spe: -9
+    }
+  },
+
+  ironarmor2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      def: 55
+    },
+    tokens: {
+      spe: -17
+    }
+  },
+
+  ironarmor3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      def: 55
+    },
+    tokens: {
+      spe: -25
+    }
+  },
+
+
+
+  
   locket1: {
     type: "armor",
     covers: 50,
