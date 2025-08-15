@@ -3,7 +3,6 @@
 * Doubts
 
 * Bugs
-hand beasts block decrease
 
 * Data
 hand6
