@@ -5137,8 +5137,20 @@ export default {
         delete move.multiaccuracy
       }
     },
+    onModifyOpponentMove(move) {
+      if (
+        move.multihit &&
+        Array.isArray(move.multihit) &&
+        move.multihit.length
+      ) {
+        move.multihit = move.multihit[0]
+      }
+      if (move.multiaccuracy) {
+        delete move.multiaccuracy
+      }
+    },
     flags: {},
-    name: "Skill Link",
+    name: "Lucky Charm",
     rating: 3,
     num: 92
   },

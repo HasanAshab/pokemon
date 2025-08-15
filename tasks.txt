@@ -1,7 +1,5 @@
 * Tasks
 save enemies
-add pokemon from json
-luckycharm: opponwent
 all adjacent
 
 * UI

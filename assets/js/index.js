@@ -147,6 +147,14 @@ globalThis.addPokeBtnClickHandler = function addPokeBtnClickHandler() {
   };
 };
 
+globalThis.addPokeJsonBtnClickHandler = function addPokeJsonBtnClickHandler() {
+  const prompt = JSON.parse(window.prompt("Paste the json here"))
+  const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {};
+  pokemonsMeta[prompt.name] = prompt;
+  localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta));
+  loadAllPokemons();
+}
+
 globalThis.deletePokemon = function deletePokemon(name) {
   const pokemonsMeta = JSON.parse(localStorage.getItem("pokemons-meta")) || {};
   const totalPokemonsCount =
@@ -241,7 +249,7 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-startBattle([
+startBattle(null, [
   {
     "id": "rookie",
     "name": "rahul akatomi",
