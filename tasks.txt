@@ -1,6 +1,4 @@
 * Tasks
-save enemies
-all adjacent
 
 * UI
 enemy create page enhance
@@ -18,5 +16,6 @@ phy 0 -> sp = x - y d
 
 
 * Pending
+all adjacent
 filter moves advanced
 incremental humans.js

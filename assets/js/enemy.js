@@ -10,6 +10,7 @@ window.onload = () => {
     loadNaturesDataList("natures-data-list")
     loadMovesDatalist("moves-data-list")
     loadBattleSystems()
+    loadHistory()
 }
 
 function loadBattleSystems() {
@@ -36,6 +37,8 @@ async function loadCharectersList(){
     charectersList.appendChild(btn)
    }
 }
+
+
 async function charecterBtnsClickHandler(charecter){
   const system = document.getElementById('sys-select')?.value;
    let popList = []
@@ -268,6 +271,35 @@ globalThis.startBattleBtnHandler = function() {
 
 globalThis.startLastBattle = function() {
     eval(localStorage.getItem("last-battle"))
+}
+
+
+function loadHistory() {
+    const history = JSON.parse(localStorage.getItem("battle-history")) || {};  
+    console.log(history);
+    
+    const historyList = document.querySelector(".history-list")
+    historyList.innerHTML = Object.entries(history).map(([name, meta]) => {
+        return `<button class="history-item" onclick="copyData('${name}')">${name}</button>`
+    }).join('')
+}
+globalThis.copyData = function(name) {
+    const meta = JSON.stringify(JSON.parse(localStorage.getItem("battle-history"))[name], null, 2)
+    navigator.clipboard.writeText(meta)
+    alert(meta)
+}
+globalThis.clearHistory = function() {
+    const name = window.prompt("Which one? ($all for clear everything)")
+    const history = JSON.parse(localStorage.getItem("battle-history")) || {};  
+    console.log(name);
+    
+    if (name === "$all")
+        localStorage.removeItem("battle-history")
+    else {
+        delete history[name]
+        localStorage.setItem("battle-history", JSON.stringify(history));
+    }
+    loadHistory()
 }
 
 // functionm
