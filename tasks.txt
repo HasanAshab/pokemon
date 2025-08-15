@@ -2,6 +2,8 @@
 save enemies
 add pokemon from json
 luckycharm: opponwent
+all adjacent
+
 * UI
 enemy create page enhance
 
