@@ -241,10 +241,7 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-
-
-
-startBattle(null,[
+startBattle([
   {
     "id": "rookie",
     "name": "rahul akatomi",
@@ -256,26 +253,6 @@ startBattle(null,[
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {
-        "id": "watergun",
-        "isSelected": true
-      },
-      {
-        "id": "rockthrow",
-        "isSelected": true
-      },
-      {
-        "id": "mudbomb",
-        "isSelected": true
-      },
-      {
-        "id": "razorleaf",
-        "isSelected": true
-      },
-      {
-        "id": "shadowclone",
-        "isSelected": true
-      },
-      {
         "id": "kunai",
         "isSelected": true
       },
@@ -284,21 +261,21 @@ startBattle(null,[
         "isSelected": true
       },
       {
-        "id": "doubleteam",
+        "id": "mudslap",
         "isSelected": true
       },
       {
-        "id": "thundershock",
+        "id": "ember",
         "isSelected": true
       },
       {
-        "id": "doublekick",
+        "id": "swagger",
         "isSelected": true
       },
       {
-        "id": "bulletpunch",
+        "id": "stoneedge",
         "isSelected": true
-      },
+      }
     ],
     "mega": {
       "moves": [],
@@ -314,4 +291,76 @@ startBattle(null,[
       "spd": 0
     }
   }
-], [], "single")
+], [], "multiple")
+
+// startBattle(null, [
+//   {
+//     "id": "rookie",
+//     "name": "rahul akatomi",
+//     "xp": 500,
+//     "nature": "serious",
+//     "retreat": 12,
+//     "types": [] ,
+//     "abilities": ["tails1beast"],
+//     "items": ["gen-food-mid","gen-thik"],
+//     "moves": [
+//       {
+//         "id": "watergun",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "rockthrow",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "mudbomb",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "razorleaf",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "shadowclone",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "kunai",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "ninjastar",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "doubleteam",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "thundershock",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "doublekick",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "bulletpunch",
+//         "isSelected": true
+//       },
+//     ],
+//     "mega": {
+//       "moves": [],
+//       "suffix": "mega"
+//     },
+//     "stats": {},
+//     "token_used": {
+//       "hp": 0,
+//       "spe": 0,
+//       "atk": 0,
+//       "def": 0,
+//       "spa": 0,
+//       "spd": 0
+//     }
+//   }
+// ], [], "single")
