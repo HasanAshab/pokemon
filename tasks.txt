@@ -1,7 +1,7 @@
 * Tasks
 save enemies
 add pokemon from json
-
+luckycharm: opponwent
 * UI
 enemy create page enhance
 
