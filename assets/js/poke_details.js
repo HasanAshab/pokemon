@@ -1,5 +1,5 @@
 import { BATTLE_SYSTEMS } from "./utils/battle.js";
-import { loadNaturesDataList, loadMovesDatalist ,loadPokemonsDatalist } from "./utils/dom.js";
+import {loadAbilitiesDataList,loadTypesDataList,loadItemsDataList, loadNaturesDataList, loadMovesDatalist ,loadPokemonsDatalist } from "./utils/dom.js";
 import { Pokemon, Move } from "./utils/models.js"
 import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 import { Damage } from "./utils/damage.js"
@@ -127,8 +127,12 @@ globalThis.statClickHandler = function( {
   statNameElm.textContent = currentTarget.querySelector("strong").textContent
 
   if (updatablePokemonMetaList.includes(statSlug)){
-    if (statSlug === "nature")
-   statValueInp.setAttribute('list',"natures-data-list")
+   console.log(statSlug)
+   const datalist = statUpdateForm.querySelector(`datalist[data-property-name="${statSlug}"]`);
+    if (datalist !== null)
+     statValueInp.setAttribute('list',`${statSlug}-data-list`)
+   
+    
   } else {
    attributeName = "data-token-used"
    document.getElementById("remaining-token").textContent = pokemon.tokensRemaining()
@@ -381,7 +385,11 @@ function loadPokemon() {
 
 function loadAll(){
     loadPokemon()
-    loadNaturesDataList("natures-data-list")
+    loadNaturesDataList("nature-data-list")
+    loadItemsDataList("items-data-list")
+    loadTypesDataList("types-data-list")
+    loadAbilitiesDataList("abilities-data-list")
+
     loadName()
     loadMoves()
     loadStats()

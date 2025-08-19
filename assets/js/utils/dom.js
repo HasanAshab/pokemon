@@ -1,6 +1,9 @@
 import pokemons from "../../../data/pokemons.js"
 import moves from "../../../data/moves.js"
 import natures from "../../../data/natures.js"
+import items from "../../../data/items.js"
+import types from "../../../data/types.js"
+import abilities from "../../../data/abilities.js"
 import { Pokemon } from "./models.js";
 
 
@@ -31,7 +34,28 @@ export function loadNaturesDataList(id){
     .join("")
   dataList.innerHTML =  html
 }
+export function loadItemsDataList(id){
+  const dataList = document.getElementById(id);
+  const html = Object.keys(items)
+    .map(id => `<option value="${id}">${items[id].name} | ${items[id].description}</option>`)
+    .join("")
+  dataList.innerHTML =  html
+}
 
+export function loadTypesDataList(id){
+  const dataList = document.getElementById(id);
+  const html = Object.keys(types)
+    .map(id => `<option value="${id}">${types[id].name} | ${types[id].description}</option>`)
+    .join("")
+  dataList.innerHTML =  html
+}
+export function loadAbilitiesDataList(id){
+  const dataList = document.getElementById(id);
+  const html = Object.keys(abilities)
+    .map(id => `<option value="${id}">${abilities[id].name} | ${abilities[id].description}</option>`)
+    .join("")
+  dataList.innerHTML =  html
+}
 
 export class PopupMsgQueue {
     queue = []
