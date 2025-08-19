@@ -1,6 +1,8 @@
 import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
+import { Move } from "./utils/models.js";
+
 import { objToFlags,flagsToObj } from "./utils/helpers.js";
 
 window.onload = () => {
@@ -120,8 +122,24 @@ function removeMove(event) {
   moveItem.remove();
 }
 
-function showMoveDetails(event) {
-  const details = MOVES[event.target.value];
+globalThis.showMoveDetails = function({currentTarget}){
+ const moveName = currentTarget.value
+  const move =  new Move(moveName)
+  if (move.exists()){
+    const moveDetails = document.querySelector(".move-details")
+    moveDetails.querySelector(".name").textContent = move.name
+    moveDetails.querySelector(".desc").textContent = move.description() + '\n' + JSON.stringify({
+        power: move.basePower,
+        category: move.category,
+        priority: move.priority
+    }, null, 2)
+    showMoveMoreDetails(moveName)
+ }
+ 
+}
+
+function showMoveMoreDetails(moveName) {
+  const details = MOVES[moveName];
   document.getElementById("details").textContent = JSON.stringify(details, null, 2);
 }
 
@@ -213,7 +231,6 @@ function startBattleBtnHandler() {
 globalThis.showStats = showStats
 globalThis.addMove = addMove
 globalThis.removeMove = removeMove
-globalThis.showMoveDetails = showMoveDetails
 globalThis.fieldClickHandler = function({currentTarget}){
     currentTarget.classList.toggle("active")
 }

@@ -12,7 +12,9 @@ window.onload = () => {
     loadBattleSystems()
     loadHistory()
 }
-
+globalThis.redirectToNewInterface = function (){
+  window.location = "m_enemy.html"
+}
 function loadBattleSystems() {
     const selectElement = document.getElementById('sys-select');
     Object.keys(BATTLE_SYSTEMS).forEach(optionText => {

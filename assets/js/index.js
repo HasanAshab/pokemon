@@ -223,6 +223,10 @@ function loadAllPokemons() {
 globalThis.openEnemyChooseInterface = function () {
   window.location = `enemy.html?name=${name}`;
 };
+globalThis.redirectToEnemyPage = function () {
+  window.location = `m_enemy.html`;
+};
+
 
 function loadTotalCP() {
   const pokemonsMeta = getPokemonsMeta();
