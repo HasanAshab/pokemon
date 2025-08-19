@@ -108,19 +108,19 @@ export function getHospitalCapacity(kingdom) {
 
 export function calcBuildProduction(kingdom) {
   return kingdom.buildings.reduce((prod, build) => {
-    return modObj(sumObj(prod, build.produces), build.quantity);
+    return sumObj(prod, modObj(build.produces, build.quantity));
   }, {});
 }
 
 export function calcBuildConsumtion(kingdom) {
-  return kingdom.buildings.reduce((prod, build) => {
-    return modObj(sumObj(prod, build.consumes), build.quantity);
+  return kingdom.buildings.reduce((cons, build) => {   
+    return sumObj(cons, modObj(build.consumes, build.quantity));
   }, {});
 }
 
 export function calcBuildNetProd(kingdom) {
   const prod = calcBuildProduction(kingdom);
-  const cons = modObj(calcBuildConsumtion(kingdom), -1);
+  const cons = modObj(calcBuildConsumtion(kingdom), -1);  
   return sumObj(prod, cons);
 }
 
@@ -138,6 +138,8 @@ export function calcNetProd(kingdom, localize = false) {
   const buildProd = calcBuildNetProd(kingdom);
   const prod = sumObj(sumObj(sysProd, buildProd), modObj(sysCons, -1));
 
+  console.log(sysProd, sysCons, buildProd);
+  
   if (!localize) return prod;
   return Object.keys(prod).reduce((acc, key) => {
     acc[key] = prod[key].toLocaleString();
