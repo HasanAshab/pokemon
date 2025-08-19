@@ -137,8 +137,6 @@ export function calcNetProd(kingdom, localize = false) {
   };
   const buildProd = calcBuildNetProd(kingdom);
   const prod = sumObj(sumObj(sysProd, buildProd), modObj(sysCons, -1));
-
-  console.log(sysProd, sysCons, buildProd);
   
   if (!localize) return prod;
   return Object.keys(prod).reduce((acc, key) => {
