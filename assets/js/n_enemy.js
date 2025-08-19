@@ -1,4 +1,4 @@
-import { loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
+import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
 import { Move } from "./utils/models.js";
@@ -34,6 +34,8 @@ function addEnemy() {
   div.innerHTML = getEnemyForm(enemyCount);
   container.appendChild(div);
   enemyCount++;
+      initAllMultyInputBox()
+
 }
 
 function getEnemyForm(index) {
@@ -72,15 +74,41 @@ function getEnemyForm(index) {
           spd:0
         })}</textarea>
     <br>
-    <label>Types (comma-separated)</label>
-    <input type="text" class="types-inp">
+    <h4>Types</h4>
+  <div class="multy-input-box" data-property="types" data-index=${index}>
+    <div class="inputs-wrapper">
+    </div>
+    <div class="controller">
+      
+      <datalist id="multy-input-box-datalist"></datalist>
+      <button class="add-input-btn">Add</button>
+    </div>
+    </div>
     <br>
-    <label>Abilities (comma-separated)</label>
-    <input type="text" class="abilities-inp">
+    <h4>Abilities</h4>
+  <div class="multy-input-box" data-property="abilities" data-index=${index}>
+    <div class="inputs-wrapper">
+    </div>
+    <div class="controller">
+      
+      <datalist id="multy-input-box-datalist"></datalist>
+      <button class="add-input-btn">Add</button>
+    </div>
+    </div>
     <br>
-    <label>Items (comma-separated)</label>
-    <input type="text" class="items-inp">
+    <h4>Items</h4>
+  <div class="multy-input-box" data-property="items" data-index=${index}>
+    <div class="inputs-wrapper">
+    </div>
+    <div class="controller">
+      
+      <datalist id="multy-input-box-datalist"></datalist>
+      <button class="add-input-btn">Add</button>
+    </div>
+    </div>
     <br>
+
+
 
     <pre class="enemy-stats">Stats will show here...</pre>
 
@@ -149,7 +177,7 @@ document.getElementById('start-battle-btn').addEventListener('click', startBattl
 function makeEnemiesMeta() {
   const enemiesMeta = [];
 
-  document.querySelectorAll('.pokemon-form').forEach(form => {
+  document.querySelectorAll('.pokemon-form').forEach((form,index) => {
     const enemyId = form.querySelector('.enemy')?.value || '';
     const name = form.querySelector('.name-inp')?.value;
     const xp = parseInt(form.querySelector('.level-inp')?.value || '1', 10) * 100; // Example XP logic
@@ -160,9 +188,9 @@ function makeEnemiesMeta() {
     const typesRaw = form.querySelector('.types-inp')?.value || '';
     const abilitiesRaw = form.querySelector('.abilities-inp')?.value || '';
     const itemsRaw = form.querySelector('.items-inp')?.value || '';
-    const types = typesRaw.split(',').map(item => item.trim()).filter(item => item);
-    const abilities = abilitiesRaw.split(',').map(item => item.trim()).filter(item => item);
-    const items = itemsRaw.split(',').map(item => item.trim()).filter(item => item);
+    const types = getMultyInputValues("types",index)//typesRaw.split(',').map(item => item.trim()).filter(item => item);
+    const abilities = getMultyInputValues("abilities",index)//abilitiesRaw.split(',').map(item => item.trim()).filter(item => item);
+    const items = getMultyInputValues("items",index)//itemsRaw.split(',').map(item => item.trim()).filter(item => item);
 
     const moves = [];
     form.querySelectorAll('.moves-list .move-input').forEach(input => {

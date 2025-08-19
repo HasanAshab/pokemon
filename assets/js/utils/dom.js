@@ -34,28 +34,107 @@ export function loadNaturesDataList(id){
     .join("")
   dataList.innerHTML =  html
 }
-export function loadItemsDataList(id){
+export function loadItemsDataList(id,elm){
   const dataList = document.getElementById(id);
+ dataList.innerHTML = ""
   const html = Object.keys(items)
     .map(id => `<option value="${id}">${items[id].name} | ${items[id].description}</option>`)
     .join("")
   dataList.innerHTML =  html
 }
 
-export function loadTypesDataList(id){
+export function loadTypesDataList(id,elm){
   const dataList = document.getElementById(id);
+ dataList.innerHTML = ""
   const html = Object.keys(types)
     .map(id => `<option value="${id}">${types[id].name} | ${types[id].description}</option>`)
     .join("")
   dataList.innerHTML =  html
 }
-export function loadAbilitiesDataList(id){
+export function loadAbilitiesDataList(id,elm){
   const dataList = document.getElementById(id);
+  dataList.innerHTML = ""
   const html = Object.keys(abilities)
     .map(id => `<option value="${id}">${abilities[id].name} | ${abilities[id].description}</option>`)
     .join("")
   dataList.innerHTML =  html
 }
+
+function loadDatalist(index,multyInputBox){
+  const propertyName = multyInputBox.getAttribute("data-property")
+  const datalistId = `multy-input-box-datalist-${index}`
+  switch (propertyName){
+    case "abilities" : loadAbilitiesDataList(datalistId);
+    break;
+    case "items" : loadItemsDataList(datalistId)
+    break;
+    case "types" : loadTypesDataList(datalistId)
+    break;
+  }
+}
+
+function removeInput (inputElm){
+  inputElm.parentElement.removeChild(inputElm)
+}
+
+function addInput(multyInputBox){
+  const valueInput = multyInputBox.querySelector(".controller > input")
+  console.log(valueInput.value)
+  const inputsWrapper = multyInputBox.querySelector(".inputs-wrapper")
+  const newInputElm = document.createElement("div") 
+  newInputElm.classList = "input"
+  newInputElm.innerHTML = `
+          <span class="value">${valueInput.value}</span>
+  `
+  const removeBtn = document.createElement("button")
+  removeBtn.classList = "remove-btn"
+  removeBtn.textContent = "x"
+  removeBtn.onclick = ()=> removeInput(newInputElm)
+  newInputElm.appendChild(removeBtn)
+   
+  inputsWrapper.appendChild(newInputElm)
+  valueInput.value = ""
+}
+function setIndex(index,multyInputBox){
+  const controller = multyInputBox.querySelector(".controller")
+  const datalist = controller.querySelector("datalist")
+  datalist.id = `multy-input-box-datalist-${index}`
+  if (!controller.querySelector("input")){
+  const valueInputHTML = `<input list="${datalist.id}" type="text" />`
+  controller.innerHTML = valueInputHTML + controller.innerHTML
+  }
+}
+export function getMultyInputValues(propertyName,index = null){
+  let multyInputBox = null
+  const values = []
+  if (index === null){
+    multyInputBox = document.querySelector(`.multy-input-box[data-property="${propertyName}"]`)
+  }else {
+    multyInputBox = document.querySelector(`.multy-input-box[data-property="${propertyName}"][data-index="${index}"]`)
+  }
+  
+ const inputElms = multyInputBox.querySelectorAll(".inputs-wrapper > .input")
+ 
+ for (const inputElm of inputElms){
+   values.push(inputElm.querySelector(".value").textContent)
+ }
+  return values
+}
+
+export function initAllMultyInputBox(){
+  const multyInputBoxes = document.querySelectorAll(".multy-input-box")
+  let index = 0;
+  for (const multyInputBox of multyInputBoxes){
+    setIndex(index,multyInputBox)
+    loadDatalist(index,multyInputBox)
+      const addInputBtn = multyInputBox.querySelector(".controller > .add-input-btn")
+    addInputBtn.onclick = ()=> addInput(multyInputBox)
+  
+    index++
+  }
+  
+}
+
 
 export class PopupMsgQueue {
     queue = []

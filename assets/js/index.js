@@ -253,58 +253,58 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-startBattle(null, [
-  {
-    "id": "rookie",
-    "name": "rahul akatomi",
-    "xp": 1300,
-    "nature": "serious",
-    "retreat": 12,
-    "types": [] ,
-    "abilities": ["tails1beast"],
-    "items": ["gen-food-mid","gen-thik"],
-    "moves": [
-      {
-        "id": "kunai",
-        "isSelected": true
-      },
-      {
-        "id": "ninjastar",
-        "isSelected": true
-      },
-      {
-        "id": "mudslap",
-        "isSelected": true
-      },
-      {
-        "id": "ember",
-        "isSelected": true
-      },
-      {
-        "id": "swagger",
-        "isSelected": true
-      },
-      {
-        "id": "stoneedge",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  }
-], [], "multiple")
-
+// startBattle( [
+//   {
+//     "id": "rookie",
+//     "name": "rahul akatomi",
+//     "xp": 1300,
+//     "nature": "serious",
+//     "retreat": 12,
+//     "types": [] ,
+//     "abilities": ["tails1beast"],
+//     "items": ["gen-food-mid","gen-thik"],
+//     "moves": [
+//       {
+//         "id": "kunai",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "ninjastar",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "mudslap",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "ember",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "swagger",
+//         "isSelected": true
+//       },
+//       {
+//         "id": "stoneedge",
+//         "isSelected": true
+//       }
+//     ],
+//     "mega": {
+//       "moves": [],
+//       "suffix": "mega"
+//     },
+//     "stats": {},
+//     "token_used": {
+//       "hp": 0,
+//       "spe": 0,
+//       "atk": 0,
+//       "def": 0,
+//       "spa": 0,
+//       "spd": 0
+//     }
+//   }
+// ], [], "multiple")
+// 
 // startBattle(null, [
 //   {
 //     "id": "rookie",
