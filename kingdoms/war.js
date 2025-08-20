@@ -5,7 +5,7 @@ export class SoldierStack extends Map {
   constructor(data = []) {
     if (data instanceof Map)
       data = [...data.entries()]
-    data = data.map(([imageMeta, quantity]) => {
+    data = data.map(([imageMeta, quantity]) => {      
       const image = imageMeta instanceof Pokemon
         ? imageMeta
         : new Pokemon(imageMeta.id, imageMeta)
@@ -14,8 +14,12 @@ export class SoldierStack extends Map {
     super(data)
   }
   
+  get (id) {
+    return this.entries().find(([image]) => image.id === id) ?? null
+  }
+
   find(id) {
-    const stack = this.entries().find(([image]) => image.id === id) ?? [0]
+    const stack = this.entries().find(([image]) => image.id === id) ?? [0, 0]
     return stack[1]
   }
   
@@ -46,7 +50,7 @@ export class SoldierStack extends Map {
       const ahp = image.items._items.reduce((ahp, item) => {
         if (item.type === "armor") {
           const totalStat = Object.values(item.stats).reduce((sum, stat) => sum + stat, 0)
-          ahp += totalStat * (item.armor.covers / 100)
+          ahp += totalStat * (item.covers / 100)
         }
         return ahp
       }, 0)

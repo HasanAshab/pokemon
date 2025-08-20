@@ -213,11 +213,17 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
   let hospitalCap = getHospitalCapacity(kingdom);
 
   kingdom.barrack.soldiers[shift] = kingdom.barrack.soldiers[shift].map((s) => {
-    const quantity = soldierStack.find(s.image.id);
+    const [image, quantity] = soldierStack.get(s.image.id);
     hospitalCap -= quantity;
     if (hospitalCap < 0) {
-      s.quantity -= Math.abs(hospitalCap);
-      reducePopulation(kingdom, Math.abs(hospitalCap));
+      const woundedCount = Math.abs(hospitalCap)
+      s.quantity -= woundedCount;
+      reducePopulation(kingdom, woundedCount);
+      image.items._items.forEach(item => {
+        console.log(item.id, "-", woundedCount);
+        if (!kingdom.storage[item.id]) return
+        kingdom.storage[item.id] -= woundedCount
+      });
       hospitalCap = 0;
     }
     return s;

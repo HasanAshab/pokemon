@@ -72,7 +72,8 @@ const createField = (labelText, inputEl) => {
 
 function getSoldierStack(soldiers) {  
   const stackData = soldiers.map((soldier) => {
-    const image = pokemons[soldier.image.id];    
+    const image = pokemons[soldier.image.id];
+    image.id = soldier.image.id;    
     image.xp = soldier.image.xp;
     return [image, soldier.quantity];
   });
