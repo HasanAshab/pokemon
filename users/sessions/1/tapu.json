@@ -1,32 +1,47 @@
 [{
-  "nature": "adamant",
-  "id": "rookie",
+  "nature": "serious",
+  "id": "genin",
   "name": "tapu",
-  "xp": 1200,
-  "retreat": 4,
+  "xp": 2000,
+  "retreat": 5,
   "types": [
-    "Normal"
+    "Normal",
+    "Rock",
+    "Water"
   ],
   "abilities": [],
-  "items": [],
+  "items": [
+    "gen-food-low"
+  ],
   "moves": [
     {
       "id": "kunai",
-      "isSelected": true
+      "isSelected": true,
+      "isDefault": true
     },
     {
       "id": "ninjastar",
-      "isSelected": true
+      "isSelected": true,
+      "isDefault": true
     },
     {
       "id": "rapidspin",
-      "isSelected": true
+      "isSelected": true,
+      "isDefault": true
     },
     {
-      "id": "bubble"
+      "id": "jetpunch",
+      "isDefault": true
     },
     {
-      "id": "takeweapon"
+      "id": "takeweapon",
+      "isDefault": true
+    },
+    {
+      "id": "aquajet"
+    },
+    {
+      "id": "bubblebeam"
     }
   ],
   "mega": {
