@@ -1,0 +1,55 @@
+{
+  "nature": "adamant",
+  "id": "chunin",
+  "xp": 3300,
+  "retreat": 5,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 0,
+  "loses-count": 0,
+  "moves": [
+    {
+      "id": "kunai"
+    },
+    {
+      "id": "ninjastar"
+    },
+    {
+      "id": "ember"
+    },
+    {
+      "id": "substitute"
+    },
+    {
+      "id": "cometpunch"
+    },
+    {
+      "id": "rockthrow"
+    }
+  ],
+  "types": [
+    "Normal",
+    "Rock",
+    "Steel"
+  ],
+  "items": [
+    "gen-age-25",
+    "gen-food-low"
+  ],
+  "abilities": [
+    "mayangan:golden-eye"
+  ],
+  "name": "kokola",
+  "isSelectedForMultiBattle": true
+}

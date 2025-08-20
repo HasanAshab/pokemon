@@ -3,7 +3,7 @@ export default {
     num: 1,
     name: "Student",
     types: [],
-    baseStats: { hp: 30, atk: 20, def: 20, spa: 15, spd: 15, spe: 25 },
+    baseStats: { hp: 30, atk: 20, def: 20, spa: 15, spd: 15, spe: 25 }, // total 125
     abilities: {},
     heightm: 1.4,
     weightkg: 45,
@@ -14,7 +14,7 @@ export default {
     num: 2,
     name: "Rookie",
     types: ["Normal"],
-    baseStats: { hp: 36, atk: 24, def: 22, spa: 18, spd: 19, spe: 32 },
+    baseStats: { hp: 50, atk: 40, def: 40, spa: 30, spd: 30, spe: 45 }, // total 235
     abilities: {},
     heightm: 1.45,
     weightkg: 47,
@@ -25,7 +25,7 @@ export default {
     num: 3,
     name: "Genin",
     types: ["Normal", "Rock"],
-    baseStats: { hp: 40, atk: 32, def: 28, spa: 22, spd: 24, spe: 38 },
+    baseStats: { hp: 75, atk: 60, def: 55, spa: 45, spd: 50, spe: 65 }, // total 350
     abilities: {},
     heightm: 1.5,
     weightkg: 50,
@@ -36,18 +36,29 @@ export default {
     num: 4,
     name: "Chunin",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 52, atk: 35, def: 33, spa: 28, spd: 30, spe: 41 },
+    baseStats: { hp: 95, atk: 80, def: 75, spa: 60, spd: 65, spe: 80 }, // total 455
     abilities: {},
     heightm: 1.55,
     weightkg: 55,
     color: "Green",
+    evos: ["Elite Chunin"]
+  },
+  eliteChunin: {
+    num: 5,
+    name: "Elite Chunin",
+    types: ["Normal", "Rock", "Steel"],
+    baseStats: { hp: 115, atk: 100, def: 95, spa: 80, spd: 85, spe: 100 }, // total 575
+    abilities: {},
+    heightm: 1.575,
+    weightkg: 57,
+    color: "Silver",
     evos: ["Jonin"]
   },
   jonin: {
-    num: 5,
+    num: 6,
     name: "Jonin",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 60, atk: 45, def: 40, spa: 36, spd: 38, spe: 53 },
+    baseStats: { hp: 140, atk: 120, def: 110, spa: 100, spd: 105, spe: 120 }, // total 695
     abilities: {},
     heightm: 1.6,
     weightkg: 60,
@@ -55,21 +66,21 @@ export default {
     evos: ["Rogue", "Anbu"]
   },
   rogue: {
-    num: 6,
+    num: 7,
     name: "Rogue",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 62, atk: 58, def: 30, spa: 48, spd: 31, spe: 66 },
+    baseStats: { hp: 165, atk: 145, def: 135, spa: 125, spd: 130, spe: 145 }, // total 845
     abilities: {},
     heightm: 1.65,
     weightkg: 58,
     color: "Red",
-    evos: ["Koga"]
+    evos: ["Ega"]
   },
-  anbu: {
-    num: 7,
-    name: "Anbu",
+  ega: {
+    num: 8,
+    name: "Ega",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 64, atk: 50, def: 50, spa: 42, spd: 42, spe: 68 },
+    baseStats: { hp: 190, atk: 170, def: 160, spa: 150, spd: 155, spe: 170 }, // total 995
     abilities: {},
     heightm: 1.65,
     weightkg: 62,
@@ -77,10 +88,10 @@ export default {
     evos: ["Koga"]
   },
   koga: {
-    num: 8,
+    num: 9,
     name: "Koga",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 70, atk: 65, def: 55, spa: 56, spd: 49, spe: 72 },
+    baseStats: { hp: 220, atk: 200, def: 190, spa: 180, spd: 185, spe: 200 }, // total 1175
     abilities: {},
     heightm: 1.7,
     weightkg: 65,
@@ -88,10 +99,10 @@ export default {
     evos: ["Sannin"]
   },
   sannin: {
-    num: 9,
+    num: 10,
     name: "Sannin",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 82, atk: 68, def: 61, spa: 69, spd: 60, spe: 76 },
+    baseStats: { hp: 250, atk: 230, def: 220, spa: 210, spd: 215, spe: 230 }, // total 1355
     abilities: {},
     heightm: 1.75,
     weightkg: 68,
@@ -99,10 +110,10 @@ export default {
     evos: ["Sage"]
   },
   sage: {
-    num: 10,
+    num: 11,
     name: "Sage",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 90, atk: 63, def: 67, spa: 88, spd: 70, spe: 74 },
+    baseStats: { hp: 280, atk: 260, def: 250, spa: 240, spd: 245, spe: 260 }, // total 1535
     abilities: {},
     heightm: 1.8,
     weightkg: 70,
@@ -110,10 +121,10 @@ export default {
     evos: ["Shadow"]
   },
   shadow: {
-    num: 11,
+    num: 12,
     name: "Shadow",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 94, atk: 70, def: 65, spa: 93, spd: 65, spe: 88 },
+    baseStats: { hp: 310, atk: 290, def: 280, spa: 270, spd: 275, spe: 290 }, // total 1715
     abilities: {},
     heightm: 1.85,
     weightkg: 75,
@@ -121,10 +132,10 @@ export default {
     evos: ["Kage"]
   },
   kage: {
-    num: 12,
+    num: 13,
     name: "Kage",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 106, atk: 80, def: 83, spa: 90, spd: 79, spe: 91 },
+    baseStats: { hp: 350, atk: 330, def: 320, spa: 310, spd: 315, spe: 330 }, // total 1955
     abilities: {},
     heightm: 1.9,
     weightkg: 80,
@@ -132,10 +143,10 @@ export default {
     evos: ["Hokage"]
   },
   hokage: {
-    num: 13,
+    num: 14,
     name: "Hokage",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 112, atk: 85, def: 89, spa: 104, spd: 88, spe: 92 },
+    baseStats: { hp: 390, atk: 370, def: 360, spa: 350, spd: 355, spe: 370 }, // total 2195
     abilities: {},
     heightm: 2.0,
     weightkg: 85,
@@ -143,10 +154,10 @@ export default {
     evos: ["Phantom"]
   },
   phantom: {
-    num: 14,
+    num: 15,
     name: "Phantom",
     types: ["Normal", "Rock", "Steel"],
-    baseStats: { hp: 115, atk: 98, def: 83, spa: 112, spd: 90, spe: 107 },
+    baseStats: { hp: 430, atk: 410, def: 400, spa: 390, spd: 395, spe: 410 }, // total 2435
     abilities: {},
     heightm: 2.1,
     weightkg: 90,
@@ -154,10 +165,10 @@ export default {
     evos: ["Otsutsuki"]
   },
   otsutsuki: {
-    num: 15,
+    num: 16,
     name: "Otsutsuki",
-    types: ["Normal", "Rock", "Fighting", "Psychic", "Steel", "Poison", "Flying", "Dark", "Ghost", "Fairy"],
     types: ["Normal", "Rock", "Steel"],
+    baseStats: { hp: 470, atk: 450, def: 440, spa: 430, spd: 435, spe: 450 }, // total 2675
     abilities: {},
     heightm: 2.2,
     weightkg: 95,
