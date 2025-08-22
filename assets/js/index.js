@@ -253,3 +253,37 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
+// startBattle(null, [
+//   {
+//     "id": "rookie",
+//     "nature": "tai",
+//     "name": "E1",
+//     "xp": 1700,
+//     "retreat": 4,
+//     "types": [],
+//     "abilities": [],
+//     "items": [
+//       "gen-food-low"
+//     ],
+//     "moves": [
+//       {
+//         "id": "kunai",
+//         "isSelected": true,
+//         "isDefault": true
+//       }
+//     ],
+//     "mega": {
+//       "moves": [],
+//       "suffix": "mega"
+//     },
+//     "stats": {},
+//     "token_used": {
+//       "hp": 0,
+//       "spe": 0,
+//       "atk": 0,
+//       "def": 0,
+//       "spa": 0,
+//       "spd": 0
+//     }
+//   }
+// ], [""])
