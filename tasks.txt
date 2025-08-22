@@ -1,10 +1,11 @@
 * Tasks
-war dead army item loose
 
 * UI
 
 * Bugs
+more stat more penalty
 all adjacent shadowclone
+
 
 * Data
 hand6

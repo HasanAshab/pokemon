@@ -43,7 +43,7 @@ export default {
     color: "Green",
     evos: ["Elite Chunin"],
   },
-  eliteChunin: {
+  elitechunin: {
     num: 5,
     name: "Elite Chunin",
     types: ["Normal", "Rock", "Steel"],
@@ -65,7 +65,7 @@ export default {
     color: "Red",
     evos: ["Elite Jonin"],
   },
-  eliteJonin: {
+  elitejonin: {
     num: 7,
     name: "Elite Jonin",
     types: ["Normal", "Rock", "Steel"],

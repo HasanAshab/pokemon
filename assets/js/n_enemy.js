@@ -180,7 +180,7 @@ function makeEnemiesMeta() {
   document.querySelectorAll('.pokemon-form').forEach((form,index) => {
     const enemyId = form.querySelector('.enemy')?.value || '';
     const name = form.querySelector('.name-inp')?.value;
-    const xp = parseInt(form.querySelector('.level-inp')?.value || '1', 10) * 100; // Example XP logic
+    const xp = (parseInt(form.querySelector('.level-inp')?.value || '1', 10) - 1) * 100; // Example XP logic
     const retreat = parseFloat(form.querySelector('.retreat-inp')?.value || '2');
     const nature = form.querySelector('.nature-inp')?.value || '';
     const megaSuffix = form.querySelector('.mega-suffix-select')?.value || '';

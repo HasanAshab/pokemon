@@ -69,8 +69,8 @@ export class Pokemon extends PSPokemon {
     static natureModifierFor(statName, nature) {
         if (!nature || !natures[nature]) return 1; // Neutral nature
         const natureEffects = natures[nature];
-        if (natureEffects.plus === statName) return 1.1; // Boosted stat
-        if (natureEffects.minus === statName) return 0.9; // Reduced stat
+        if (natureEffects.plus === statName) return 1.2; // Boosted stat
+        if (natureEffects.minus === statName) return 0.8; // Reduced stat
         return 1; // No effect
     }
 
@@ -78,8 +78,10 @@ export class Pokemon extends PSPokemon {
         super()
         this.id = id;
         this.meta = Object.assign({
-          nature: 'serious',
+          nature: 'none',
         }, meta);
+        console.log(this.meta.nature);
+        
         
         this.meta.token_used = Object.assign({
           "hp":0,
@@ -284,10 +286,12 @@ export class Pokemon extends PSPokemon {
         const tokenStats = this._calculateTokenStat();
         
         const totalStats = {};
+        
         Object.keys(baseStats).forEach(statName => {
           totalStats[statName] =
-            baseStats[statName] + levelStats[statName] + natureStats[statName] + tokenStats[statName];
+          baseStats[statName] + levelStats[statName] + natureStats[statName] + tokenStats[statName];
         });
+        console.log(this.name, natureStats["atk"]);
       
         return totalStats;
       }
