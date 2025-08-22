@@ -62,7 +62,7 @@ export class Pokemon extends PSPokemon {
     }
 
     static fromBase64(base64, tag = null) {
-        const { id, meta } = JSON.parse(atob(base64));
+        const { id, meta } = JSON.parse(atob(base64));        
         return new this(id, meta, tag);
     }
 
@@ -79,25 +79,30 @@ export class Pokemon extends PSPokemon {
         this.id = id;
         this.meta = Object.assign({
           nature: 'none',
-        }, meta);
-        console.log(this.meta.nature);
+        }, meta);   
+     
+        // Warning: Token_Used Feature is now Deprecated and removed
+        // this.meta.token_used = Object.assign({
+        //   "hp":0,
+        //   "spe":0,
+        //   "atk":0,
+        //   "def":0,
+        //   "spa":0,
+        //   "spd":0
+        // }, meta.token_used)
         
-        
-        this.meta.token_used = Object.assign({
+        this._pokemon = pokemons[id];
+        this._tag = tag;
+        this._beastTypes = []
+        this.tokens = {
           "hp":0,
           "spe":0,
           "atk":0,
           "def":0,
           "spa":0,
           "spd":0
-        }, meta.token_used)
-
+        }
         
-        
-        this._pokemon = pokemons[id];
-        this._tag = tag;
-        this._beastTypes = []
-        this.tokens = this.meta.token_used
         this.items = new ItemManager(this)
         this.abilities = new AbilityManager(this)
     }
@@ -170,6 +175,8 @@ export class Pokemon extends PSPokemon {
     }
 
     toBase64() {
+      console.log(this.id, this.meta);
+      
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
     
@@ -274,11 +281,12 @@ export class Pokemon extends PSPokemon {
 
     _calculateTokenStat() {
         const tokenStats = {};
+        
         Object.keys(this._pokemon.baseStats).forEach(statName => {
             tokenStats[statName] = this.tokens[statName]
         });
         return tokenStats;
-    }      
+    }
     get stats() {
         const baseStats = this._pokemon.baseStats;
         const levelStats = this._calculateLevelStat();
@@ -290,9 +298,7 @@ export class Pokemon extends PSPokemon {
         Object.keys(baseStats).forEach(statName => {
           totalStats[statName] =
           baseStats[statName] + levelStats[statName] + natureStats[statName] + tokenStats[statName];
-        });
-        console.log(this.name, natureStats["atk"]);
-      
+        });      
         return totalStats;
       }
 }
@@ -706,14 +712,14 @@ export class Item {
     
     _apply() {
         if ("tokens" in  this._item) {
-            for (const key in this._item.tokens) {
+            for (const key in this._item.tokens) {              
                 this.pokemon.tokens[key] += this._item.tokens[key]
             }
         }
-        
+        const oldStats = this.pokemon.stats
         if ("tokensPercent" in  this._item) {
-            for (const key in this._item.tokensPercent) {
-                this.pokemon.tokens[key] += Math.round(this.pokemon.stats[key] * (this._item.tokensPercent[key] / 100))
+            for (const key in this._item.tokensPercent) {              
+                this.pokemon.tokens[key] += Math.round(oldStats[key] * (this._item.tokensPercent[key] / 100))
             }
         }
     }

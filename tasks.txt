@@ -3,7 +3,6 @@
 * UI
 
 * Bugs
-more stat more penalty
 all adjacent shadowclone
 
 
