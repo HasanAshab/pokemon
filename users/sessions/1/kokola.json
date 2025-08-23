@@ -1,8 +1,8 @@
-{
-  "nature": "adamant",
+[{
+  "nature": "tai",
   "id": "chunin",
-  "xp": 3300,
-  "retreat": 5,
+  "xp": 3400,
+  "retreat": 15,
   "stats": {},
   "token_used": {
     "hp": 0,
@@ -20,36 +20,63 @@
   "loses-count": 0,
   "moves": [
     {
-      "id": "kunai"
+      "id": "brutalswing",
+      "isDefault": true
     },
     {
-      "id": "ninjastar"
+      "id": "dragonbreath",
+      "isDefault": true
+    },
+    {
+      "id": "aerialace",
+      "isDefault": true
+    },
+    {
+      "id": "rollingkick",
+      "isDefault": true
+    },
+    {
+      "id": "shadowclone",
+      "isDefault": true
+    },
+    {
+      "id": "firepunch",
+      "isDefault": true
+    },
+    {
+      "id": "substitute",
+      "isDefault": true
+    },
+    {
+      "id": "dragonrage",
+      "isDefault": true
+    },
+    {
+      "id": "detect"
     },
     {
       "id": "ember"
     },
     {
-      "id": "substitute"
+      "id": "poweruppunch"
+    },
+        {
+      "id": "scaryface"
+    },
+        {
+      "id": "ninjablade"
     },
     {
-      "id": "cometpunch"
-    },
-    {
-      "id": "rockthrow"
+      "id":"ninjastar"
     }
   ],
   "types": [
     "Normal",
     "Rock",
-    "Steel"
+    "Steel",
+    "Dragon"
   ],
-  "items": [
-    "gen-age-25",
-    "gen-food-low"
-  ],
-  "abilities": [
-    "mayangan:golden-eye"
-  ],
-  "name": "kokola",
-  "isSelectedForMultiBattle": true
-}
+  "items": [],
+  "abilities": ["mayangan:golden-eye"],
+  "name": "kokola munshi"
+}]

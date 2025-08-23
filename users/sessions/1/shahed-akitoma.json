@@ -1,0 +1,63 @@
+[{
+  "nature": "nin",
+  "id": "elitechunin",
+  "xp": 3900,
+  "retreat": 13,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 0,
+  "loses-count": 0,
+  "moves": [
+    {
+      "id": "bulletseed",
+      "isDefault": true
+    },
+    {
+      "id": "razorleaf",
+      "isDefault": true
+    },
+    {
+      "id": "sagemode",
+      "isDefault": true
+    },
+    {
+      "id": "leaftornado",
+      "isDefault": true
+    },
+    {
+      "id": "megadrain",
+      "isDefault": true
+    },
+    {
+      "id": "junglehealing",
+      "isDefault": true
+    },
+    {
+      "id": "jungletrap",
+      "isDefault": true
+    },
+    {
+      "id": "aurasphere"
+    }
+  ],
+  "types": [
+    "Normal",
+    "Rock",
+    "Steel",
+    "Grass"
+  ],
+  "items": [],
+  "abilities": [],
+  "name": "Shahid Akitoma"
+}]

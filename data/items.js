@@ -249,7 +249,7 @@ tokensPercent: {
     }
   },
   "gen-fat": {
-tokensPercent: {
+    tokensPercent: {
       "hp": 10,
       "def": 5,
       "atk": 5,
@@ -257,8 +257,8 @@ tokensPercent: {
       "spe": -15
     }
   },
-    "gen-thik": {
-tokensPercent: {
+  "gen-thik": {
+    tokensPercent: {
       "hp": -10,
       "def": -5,
       "atk": -5,
@@ -268,12 +268,12 @@ tokensPercent: {
   },
   "gen-food-low": {
     tokensPercent: {
-          "hp": -20,
-          "def": -5,
-          "atk": -5,
-          "spd": -5,
-          "spe": -5,
-          "spa": -5
-        }
-      }
+      "hp": -20,
+      "def": -5,
+      "atk": -5,
+      "spd": -5,
+      "spe": -5,
+      "spa": -5
+    }
+  }
 }

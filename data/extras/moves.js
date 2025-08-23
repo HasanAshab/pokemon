@@ -936,5 +936,20 @@ Shuriken: {
     type: "Steel",
     contestType: "Tough",
     retreat: 4.5
-  }
+  },
+      jungletrap: {
+      num: 100033,
+      accuracy: 65,
+      basePower: 10,
+      category: "Physical",
+      name: "Jungle Trap",
+      pp: 20,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1 },
+      volatileStatus: "partiallytrapped",
+      secondary: null,
+      target: "normal",
+      type: "Grass",
+      contestType: "Tough"
+    },
 }
