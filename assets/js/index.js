@@ -254,29 +254,3 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-startBattle([
-  {
-  "id": "rookie",
-  "name": "E1",
-  "xp": 1900,
-  "nature": "calm",
-  "retreat": 2,
-  "types": [],
-  "abilities": [],
-  "items": ["gen-food-low"],
-  "moves": [],
-  "mega": {
-    "moves": [],
-    "suffix": "mega"
-  },
-  "stats": {},
-  "token_used": {
-    "hp": 0,
-    "spe": 0,
-    "atk": 0,
-    "def": 0,
-    "spa": 0,
-    "spd": 0
-  }
-}
-]);
