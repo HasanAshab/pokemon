@@ -254,3 +254,42 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
+startBattle([
+  {
+    "id": "rookie",
+    "name": "Talha",
+    "xp": 900,
+    "nature": "nin",
+    "retreat": 6,
+    "types": [],
+    "abilities": ["tails1beast"],
+    "items": [],
+    "moves": [
+      {
+        "id": "mudslap",
+        "isSelected": true
+      },
+      {
+        "id": "mudshot",
+        "isSelected": true
+      },
+      {
+        "id": "sandtomb",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
+], [], "single")

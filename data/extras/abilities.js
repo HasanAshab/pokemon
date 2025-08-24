@@ -173,7 +173,7 @@ export default {
         boost[i] = hasIntelligentEye && boost[i] > 0 ? -boost[i] : -boost[i];
       }
     },
-    retreat: 1
+    retreat: 1.5
   },
 
   // fushi
