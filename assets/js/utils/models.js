@@ -683,6 +683,7 @@ class AbilityManager {
         return this.actives().forEach(ability => ability._ability.onTryBoost?.(...arguments))
     }
     onTryBoostOpponent() {
+        console.log(this.actives())
         return this.actives().forEach(ability => ability._ability.onTryBoostOpponent?.(...arguments))
     }
 
