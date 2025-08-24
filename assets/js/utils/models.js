@@ -430,7 +430,7 @@ class Ability {
         this.pokemon = manager.pokemon
         this.active = this._ability.flags?.autoenable === 1
         
-        if (this._ability.type === "beast" && this._ability.beastImage === false) {
+        if (this._ability.type === "beast" && this._ability.beastImage !== false) {
             const beastMeta = structuredClone(this.pokemon.meta)            
             beastMeta.name = `${this._ability.beastImage} (${this.pokemon.name})`
             beastMeta.token_used = {}

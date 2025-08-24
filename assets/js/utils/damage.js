@@ -3,7 +3,7 @@ import { fixFloat } from "./helpers.js";
 
 export class Damage {
     static STAB_MODIFIER = 1.3;
-    static CRIT_MULTIPLIER = 1.8;
+    static CRIT_MULTIPLIER = 1.5;
     static BASE_CRIT_CHANCE = 1 / 24;
     static RAND_MODIFIER_RANGE = [0.85, 0.15]
     
@@ -81,7 +81,8 @@ export class Damage {
             : this.attacker.stats[isSpecial ? "spa" : "atk"];
         
         //return stab * bp * attackStat * 0.416;
-        return stab * bp * attackStat * 0.65;
+        // return stab * bp * attackStat * 0.65;
+        return stab * bp * attackStat * 0.55;
     }
 
     _calculate() {
