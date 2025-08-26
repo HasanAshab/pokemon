@@ -1,5 +1,4 @@
 * Tasks
-mayangan opponent effect
 
 * UI
 
