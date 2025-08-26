@@ -1,10 +1,10 @@
 * Tasks
+mayangan opponent effect
 
 * UI
 
 * Bugs
 all adjacent shadowclone
-effects Bug
 
 * Data
 hand6

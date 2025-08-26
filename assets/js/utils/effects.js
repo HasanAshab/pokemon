@@ -165,7 +165,7 @@ class PoisonEffect extends Effect {
     onTurn() {
         this.state.decreaseHealth(this._calculateEffectDamage(), true)
     }
-    
+
     _calculateEffectDamage() {
         const maxHP = this.state.pokemon.stats.hp;
         const poisonDamage = Math.floor(maxHP / 8); // 1/8th HP loss
