@@ -1,8 +1,8 @@
-  {
+[  {
     "id": "rookie",
     "name": "rahul akatomi",
-    "xp": 2000,
-    "nature": "serious",
+    "xp": 1900,
+    "nature": "nin",
     "retreat": 4,
     "types": [] ,
     "abilities": [],
@@ -24,14 +24,15 @@
         "id": "thundershock",
         "isSelected": true
       },
-      {
-        "id": "doublekick",
-        "isSelected": true
-      },
+
       {
         "id": "bulletpunch",
         "isSelected": true
       },
+     {
+        "id": "thunderwave",
+        "isSelected": true
+      }
     ],
     "mega": {
       "moves": [],
@@ -47,3 +48,4 @@
       "spd": 0
     }
   }
+]

@@ -5,6 +5,7 @@
 * Bugs
 all adjacent shadowclone
 mayan:golden + silver = ekbar on korle oidar effect ar jaina
+effects Bug
 
 * Data
 hand6

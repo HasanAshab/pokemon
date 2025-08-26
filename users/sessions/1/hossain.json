@@ -1,0 +1,51 @@
+[{
+  "nature": "serious",
+  "id": "genin",
+  "xp": 2400,
+  "retreat": 6,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 0,
+  "loses-count": 0,
+  "moves": [
+    {
+      "id": "ninjastar",
+      "isDefault": true
+    },
+    {
+      "id": "watergun",
+      "isDefault": true
+    },
+    {
+      "id": "substitute",
+      "isDefault": true
+    },
+    {
+      "id": "takeweapon",
+      "isDefault": true
+    },
+    {
+      "id": "vinewhip",
+      "isDefault": true
+    }
+  ],
+  "types": [
+    "Normal",
+    "Rock",
+    "Water"
+  ],
+  "items": [],
+  "abilities": [],
+  "name": "Hossain"
+}]
