@@ -1,6 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
 import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers } from "../../utils.js";
-import {initAllMultyInputBox,getMultyInputValues} from "../../../../assets/js/utils/dom.js";
 
 var i = 0;
 var netWin = 0;
@@ -89,13 +88,13 @@ function renderWaves() {
             percentage: 0,
             items: [],
           },
-          index
+          index,
         );
 
         soldiersDiv.appendChild(soldierDiv);
         modal.remove();
-        initAllMultyInputBox()
       };
+
       modalContent.appendChild(soldierSelect);
       modalContent.appendChild(addBtn);
       modal.appendChild(modalContent);
@@ -123,23 +122,11 @@ function renderWaves() {
         const quantity = Math.ceil(total * (percentageInput.value / 100));
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
-   
-      const currentMultyInputBoxIndex = document.querySelectorAll("#wavesList .multy-input-box").length || 0
-      const h4 = document.createElement("h4")
-      h4.textContent = "Items - " + currentMultyInputBoxIndex
-      const multyInputBox = document.createElement("div");
-      multyInputBox.className = "multy-input-box"
-      multyInputBox.setAttribute("data-property","items")
-      multyInputBox.setAttribute("data-index",currentMultyInputBoxIndex)
-      multyInputBox.innerHTML = `
-           <div class="inputs-wrapper">
-    </div>
-    <div class="controller">
-      <datalist id="multy-input-box-datalist"></datalist>
-      <button class="add-input-btn">Add</button>
-    </div>
-      `   
 
+      const itemsInput = document.createElement("input");
+      itemsInput.type = "text";
+      itemsInput.placeholder = "Items (comma-separated)";
+      itemsInput.value = soldier.items?.join(",") || "";
 
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-soldier-btn";
@@ -151,17 +138,17 @@ function renderWaves() {
       soldierDiv.appendChild(percentageInput);
       soldierDiv.appendChild(percentageLabel);
       soldierDiv.appendChild(document.createElement("br"));
-      soldierDiv.appendChild(h4);
-      soldierDiv.appendChild(multyInputBox);
+      soldierDiv.appendChild(itemsInput);
       soldierDiv.appendChild(document.createElement("br"));
       soldierDiv.appendChild(removeBtn);
+
       return soldierDiv;
     }
 
     wave.soldiers.forEach((soldier) => {
       soldiersDiv.appendChild(createSoldierEntry(soldier, index));
     });
-    
+
     soldiersDiv.appendChild(addSoldierBtn);
 
     const saveBtn = document.createElement("button");
@@ -173,17 +160,14 @@ function renderWaves() {
       };
 
       const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
-      soldierEntries.forEach((entry,entryIndex) => {
+      soldierEntries.forEach((entry) => {
         const image = entry.querySelector("span").textContent;
         const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;
-        const items = getMultyInputValues("items",entryIndex)
-              alert(`entryIndex:${entryIndex}`)
-        alert(items.join(","))
-//         entry
-//           .querySelector('input[type="text"]')
-//           .value.split(",")
-//           .map((item) => item.trim())
-//           .filter((item) => item);
+        const items = entry
+          .querySelector('input[type="text"]')
+          .value.split(",")
+          .map((item) => item.trim())
+          .filter((item) => item);
 
         newWave.soldiers.push({ image, percentage, items });
       });
