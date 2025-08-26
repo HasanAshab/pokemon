@@ -3,7 +3,6 @@
 * UI
 
 * Bugs
-all adjacent shadowclone
 
 * Data
 hand6
