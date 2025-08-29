@@ -584,7 +584,8 @@ class BaseBattle extends EventEmitter {
                         [this.pokemon1, cloneMove],
                         [this.pokemon2, opponentMove]
                       ])
-                      this.pokemon2.state.retreat += allHitMove.retreat
+                      if (allHitMove)
+                        this.pokemon2.state.retreat += allHitMove.retreat
                       this.run(cloneScene, true, false)
                   }
               }
@@ -617,7 +618,8 @@ class BaseBattle extends EventEmitter {
                         [this.pokemon2, cloneMove],
                         [this.pokemon1, opponentMove]
                       ])
-                      this.pokemon1.state.retreat += allHitMove.retreat
+                      if (allHitMove)
+                        this.pokemon1.state.retreat += allHitMove.retreat
                       this.run(cloneScene, false, true)
                   }
               }
