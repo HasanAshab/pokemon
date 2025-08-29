@@ -449,36 +449,22 @@ class BaseBattle extends EventEmitter {
             d2 -=  d2 * this.pokemon2.state.damage.blockModifier()            
         }
 
-        if(move2.priority > move1.priority) {
-            if (pokeEffect2 > 1 || move2.hit.criticalCount()) {
-                d2 = 0
-            }
-
-            if (d1) {
-                this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
-                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
-                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1), false, clonemode2)
-            }
-            if (d2) {
-                this.pokemon2.state.decreaseHealth(d2, false, clonemode2)
-                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2), false, clonemode1)
-                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2), false, clonemode1)
-            }
+        if(move2.priority > move1.priority && (clonemode1 || pokeEffect2 > 1 || move2.hit.criticalCount())) {
+            d2 = 0
         }
-        else {
-            if (pokeEffect1 > 1 || move1.hit.criticalCount()) {
-                d1 = 0
-            }
-            if (d2) {
-                this.pokemon2.state.decreaseHealth(d2, false, clonemode2)
-                move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2), false, clonemode1)
-                move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2), false, clonemode1)
-            }
-            if (d1) {
-                this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
-                move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
-                move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1), false, clonemode2)
-            }
+        else if (move1.priority > move2.priority && (clonemode2 || pokeEffect1 > 1 || move1.hit.criticalCount())) {
+            d1 = 0
+        }
+        
+        if (d1) {
+            this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
+            move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
+            move2.recoil && this.pokemon2.state.decreaseHealth(move2.recoilDamage(d1), false, clonemode2)
+        }
+        if (d2) {
+            this.pokemon2.state.decreaseHealth(d2, false, clonemode2)
+            move1.drain && this.pokemon1.state.increaseHealth(move1.drainDamage(d2), false, clonemode1)
+            move1.recoil && this.pokemon1.state.decreaseHealth(move1.recoilDamage(d2), false, clonemode1)
         }
 
         if(move1.category === "Status" || d2 || instD2) {
