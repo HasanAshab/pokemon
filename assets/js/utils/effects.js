@@ -522,6 +522,22 @@ class ShadowCloneEffect extends Effect {
     }
 }
 
+class SageModeEffect extends ExpirableEffect {
+    static effectName = "sage"
+
+    setup() {
+        super.setup()
+        const sageTurns = weightedRandom([7, 12, 20], [0.20, 0.30, 0.50])
+        console.log(sageTurns)
+        this.lifetime.turns = sageTurns
+        this.state.pokemon.toSageMode()
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.pokemon.exitSageMode()
+    }
+}
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
@@ -537,6 +553,7 @@ export const EFFECTS = makeEffectsMap([
     PartiallyTrappedEffect,
     DoubleTeamEffect,
     ShadowCloneEffect,
+    SageModeEffect,
 ])
 
 
