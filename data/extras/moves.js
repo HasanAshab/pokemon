@@ -26,8 +26,16 @@ export default {
       secondary: null,
       target: "self",
       type: "Normal",
-      retreat: 6,
+      retreat: 8,
       flags: {},
+      effects: {
+        self: [{
+          name: "sage",
+          chance: 100,
+          isVolatile: true 
+        }],
+        target: []
+      },
       onBeforeMove(attacker) {
         attacker.toSageMode()
       }
@@ -208,7 +216,7 @@ export default {
       type: "Normal",
       zMove: { boost: { atk: 1 } },
       contestType: "Cool",
-      retreat: 2
+      retreat: 3.5
     },
     takeweapon: {
       num: 100015,
@@ -784,7 +792,6 @@ Shuriken: {
       pp: 5 * 3,
       priority: 0,
       flags: {
-        
         protect: 1,
         mirror: 1, 
         metronome: 1 ,
@@ -937,7 +944,7 @@ Shuriken: {
     contestType: "Tough",
     retreat: 4.5
   },
-      jungletrap: {
+  jungletrap: {
       num: 100033,
       accuracy: 65,
       basePower: 10,

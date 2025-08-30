@@ -368,3 +368,39 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 //     }
 //   }
 // ], [], "multiple")
+
+
+startBattle([
+  {
+  "nature": "none",
+  "id": "hokage",
+  "name": "Hokage",
+  "xp": 14900,
+  "retreat": 20,
+  "types": [
+    "Normal",
+    "Rock",
+    "Steel"
+  ],
+  "abilities": [],
+  "items": [],
+  "moves": [
+    {
+      "id": "sagemode"
+    }
+  ],
+  "mega": {
+    "moves": [],
+    "suffix": "mega"
+  },
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  }
+}
+], [], "single")

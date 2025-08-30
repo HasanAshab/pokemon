@@ -31,7 +31,7 @@ class BaseBattle extends EventEmitter {
         this.team2 = this.filterTeam(team2)
         this._all = [...this.team1, ...this.team2]
         this.fields = fieldTypes.map(f => makeField(this, f))
-        
+
         this._all.forEach(p => {
             if (!p.state) {
                 p.state = new BattleState(this, p)
@@ -190,13 +190,12 @@ class BaseBattle extends EventEmitter {
         // move failure
         this._checkFailure(this.pokemon1, senario)
         this._checkFailure(this.pokemon2, senario)
-        
+ 
         this.emit("scene", senario)
 
         // TEMP: move power management
         this.pokemon1.state.damage.chainModifyPower('*', this.pokemon1.state.stats._statChanges["pow"] || 1)
         this.pokemon2.state.damage.chainModifyPower('*', this.pokemon2.state.stats._statChanges["pow"] || 1)
-
 
         move1 = senario.get(this.pokemon1)
         move2 = senario.get(this.pokemon2)
@@ -455,7 +454,6 @@ class BaseBattle extends EventEmitter {
         else if (move1.priority > move2.priority && (clonemode2 || pokeEffect1 > 1 || move1.hit.criticalCount())) {
             d1 = 0
         }
-        
         if (d1) {
             this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
             move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)

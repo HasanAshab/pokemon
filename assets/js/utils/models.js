@@ -8,6 +8,16 @@ import movesText from "../../../data/moves_text.js"
 import { sumObj, modObj, weightedRandom } from "./helpers.js";
 
 
+const SAGE_MAPING = {
+    "hp": "spe",
+    "spe": "hp",
+    "atk": "spa",
+    "def": "spd",
+    "spa": "atk",
+    "spd": "def"
+}
+
+
 class PSPokemon {
     get maxhp() {
         return this.stats.hp
@@ -204,24 +214,21 @@ export class Pokemon extends PSPokemon {
     
     toSageMode(sixPath = false) {
         const bonusRate = sixPath ? 0.7 : 0.5
-        const maping = {
-            "hp": "spe",
-            "spe": "hp",
-            "atk": "spa",
-            "def": "spd",
-            "spa": "atk",
-            "spd": "def"
+        this._sageBonus = { hp: 0 }
+        for (const [stat1, stat2] of Object.entries(SAGE_MAPING)) {
+            this._sageBonus[stat1] = this.stats[stat2] * bonusRate
+            this.tokens[stat1] += this._sageBonus[stat1]
         }
-        let hp = 0
-        for (const [stat1, stat2] of Object.entries(maping)) {
-            const bonus = this.stats[stat2] * bonusRate
-            if (stat1 === "hp") {
-                hp = bonus
-            }
-            this.tokens[stat1] += bonus
-        }
-        this.state.increaseHealth(hp)
+        this.state.increaseHealth(this._sageBonus.hp)
         sixPath && this.state.addMove("$voidbomb")
+    }
+
+    exitSageMode() {
+        for (const [stat1, stat2] of Object.entries(SAGE_MAPING)) {
+            this.tokens[stat1] -= this._sageBonus[stat1]
+        }
+        this.state.decreaseHealth(this._sageBonus.hp, true)
+        this.state.removeMove("$voidbomb")
     }
 
     megaDevolve() {
