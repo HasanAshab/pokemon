@@ -271,7 +271,7 @@ export default {
     chakrablade: {
       num: 100000,
       accuracy: 100,
-      multihit:[2,5],
+      multihit: [2,5],
       basePower: 20,
       category: "Physical",
       name: "Chakra Blade",
@@ -422,7 +422,7 @@ katana: {
       },
       koRatio:1
     },
-Shuriken: {
+    Shuriken: {
       num: 100008,
       accuracy: 60,
       basePower: 130,
@@ -432,10 +432,9 @@ Shuriken: {
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },
       statChanges:{
-        self:{
-          atk:-1
-        },
-        target:{}
+        chance: 100,
+        self: { atk:-1 },
+        target: {}
       },
       critRatio: 2,
       secondary: null,
@@ -446,7 +445,7 @@ Shuriken: {
         spe: -45
       }
     },
- longsword: {
+    longsword: {
       num: 100009,
       accuracy: 60,
       basePower: 130,
@@ -461,6 +460,7 @@ Shuriken: {
       type: "Steel",
       contestType: "Tough",
       statChanges:{
+        chance: 100,
         self:{
           atk:-1
         },
@@ -631,7 +631,8 @@ Shuriken: {
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
       statChanges:{
-        self:{
+        chance: 100,
+        self: {
           atk:-2
         },
         target:{}
@@ -816,6 +817,7 @@ Shuriken: {
       },
       secondary: null,
       statChanges:{
+        chance: 100,
         self:{},
         target:{
           accuracy:-1,
@@ -964,17 +966,18 @@ Shuriken: {
       pp: 20,
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
-      onHit(user, opponent) {
-        const balancer = opponent.level * 0.2
-        const chakraAmmount = (2.5 / opponent.state.stats.get('spd')) * opponent.meta.retreat * balancer
-        console.log(balancer, chakraAmmount)
+      onBeforeMove(user, opponent, move) {
+        const balancer = 1//opponent.level * 0.2
+        const chakraAmmount = (opponent.state.stats.get('spd') / user.state.stats.get('spa')) * opponent.meta.retreat * balancer
         opponent.state.retreat -= chakraAmmount
         user.state.retreat += chakraAmmount
       },
       statChanges: {
+        chance: 100,
         self: {},
         target: { spd: -1 }
       },
+      type: "Normal",
       retreat: 0
     },
     kunaishurikin: {
@@ -1077,4 +1080,18 @@ Shuriken: {
       type: "Dragon",
       contestType: "Beautiful"
     },
+    paperbomb: {
+      num: 100039,
+      accuracy: 100,
+      basePower: 100,
+      category: "Physical",
+      name: "Paper Bomb",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      contestType: "Tough"
+    }
 }
