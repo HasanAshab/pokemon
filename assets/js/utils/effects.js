@@ -643,7 +643,7 @@ export class EffectManager {
         else if(on === "target") {
             move.effects.target
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
-                .forEach(effect => {                  
+                .forEach(effect => {     
                     const chance = attacker.abilities.isActive(abilitiesMap[effect.name])
                         ? 100
                         : effect.chance

@@ -740,7 +740,7 @@ class BattleState extends EventEmitter {
         this.on("hitted-move", move => {
             const opponent = this.battle.opponentOf(this.pokemon)
             try {
-            move.onHit?.(this.pokemon)
+            move.onHit?.(this.pokemon, opponent)
             move.onAfterMove(this.pokemon, opponent, move)
             }
             catch (e) {
@@ -802,8 +802,8 @@ class BattleState extends EventEmitter {
 
     clone() {
         return new BattleState(this.battle, this.pokemon)
-        
     }
+    
     get manCount() {
         return this._manCount
     }
@@ -811,7 +811,7 @@ class BattleState extends EventEmitter {
     set manCount(value) {
         this._manCount = Math.max(1, value)
     }
-    
+
     setMoves(moves) {
         this.moves = []
         BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
@@ -1008,6 +1008,7 @@ class StatsManager {
             this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker)
             attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker)
             for (const [stat, change] of Object.entries(move.statChanges.target)) {
+                console.log(stat, change)
                 this.applyStatChange(stat, change)
             }
         }

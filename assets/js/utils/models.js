@@ -185,8 +185,6 @@ export class Pokemon extends PSPokemon {
     }
 
     toBase64() {
-      console.log(this.id, this.meta);
-      
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
     
@@ -690,7 +688,6 @@ class AbilityManager {
         return this.actives().forEach(ability => ability._ability.onTryBoost?.(...arguments))
     }
     onTryBoostOpponent() {
-        console.log(this.actives())
         return this.actives().forEach(ability => ability._ability.onTryBoostOpponent?.(...arguments))
     }
 

@@ -372,11 +372,75 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 startBattle([
   {
+  "nature": "tai",
+  "id": "rookie",
+  "xp": 1900,
+  "retreat": 4.5,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 5,
+  "loses-count": 3,
+  "moves": [
+    {
+      "id": "chakraabsorb"
+    },
+    {
+      "id": "smokescreen",
+      "isDefault": true
+    },
+    {
+      "id": "furyattack",
+      "isDefault": true
+    },
+    {
+      "id": "takeweapon",
+      "isDefault": true
+    },
+    {
+      "id": "ninjastar",
+      "isDefault": true
+    },
+    {
+      "id": "kunai",
+      "isDefault": true
+    },
+    {
+      "id": "vacuumwave"
+    },
+    {
+      "id": "substitute"
+    }
+  ],
+  "name": "Hasan Munshi",
+  "items": [
+    "gen-food-low"
+  ],
+  "isSelectedForMultiBattle": true,
+  "types": [
+    "Normal",
+    "Rock"
+  ],
+  "abilities": [
+    "mayangan:silver-eye"
+  ]
+},
+  {
   "nature": "none",
   "id": "hokage",
   "name": "Hokage",
   "xp": 14900,
-  "retreat": 20,
+  "retreat": 38,
   "types": [
     "Normal",
     "Rock",
@@ -386,7 +450,7 @@ startBattle([
   "items": [],
   "moves": [
     {
-      "id": "sagemode"
+      "id": "chakraabsorb"
     }
   ],
   "mega": {

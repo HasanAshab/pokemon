@@ -147,7 +147,7 @@ export default {
       },
       retreat: 0
     },
-
+  
     focusenergy: {
       num: 116,
       accuracy: true,
@@ -818,11 +818,9 @@ Shuriken: {
       },
       secondary: null,
       statChanges:{
-        self:{
-        },
+        self:{},
         target:{
           accuracy:-1,
-
         }
       },
        target: "normal",
@@ -958,5 +956,30 @@ Shuriken: {
       target: "normal",
       type: "Grass",
       contestType: "Tough"
+    },
+  chakraabsorb: {
+      num: 100035,
+      accuracy: 50,
+      basePower: 1,
+      category: "Special",
+      name: "Chakra Absorb",
+      pp: 20,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      onHit(user, opponent) {
+        const balancer = opponent.level * 0.2
+        const chakraAmmount = (2.5 / opponent.state.stats.get('spd')) * opponent.meta.retreat * balancer
+        console.log(balancer, chakraAmmount)
+        opponent.state.retreat -= chakraAmmount
+        user.state.retreat += chakraAmmount
+      },
+      statChanges: {
+        self: {},
+        target: { spd: -1 }
+      },
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      retreat: 0
     },
 }

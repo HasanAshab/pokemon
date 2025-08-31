@@ -655,7 +655,7 @@ function setRetreatChargeForAbilities(retreat, playerTag) {
 // retreat-charge-for-abilities
 function setCurrentRetreat(retreat, playerTag) {
   const currentRetreat = document.getElementById(`${playerTag}-current-retreat`)
-  currentRetreat.innerText = retreat
+  currentRetreat.innerText = retreat.toFixed(2)
 }
 
 function setDoubleTeamData(count, playerTag) {
