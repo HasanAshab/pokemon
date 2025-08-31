@@ -967,8 +967,7 @@ katana: {
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
       onBeforeMove(user, opponent, move) {
-        const balancer = 1//opponent.level * 0.2
-        const chakraAmmount = (opponent.state.stats.get('spd') / user.state.stats.get('spa')) * opponent.meta.retreat * balancer
+        const chakraAmmount = (user.state.stats.get('spa') / opponent.state.stats.get('spd')) * opponent.meta.retreat * 0.2
         opponent.state.retreat -= chakraAmmount
         user.state.retreat += chakraAmmount
       },
@@ -978,7 +977,7 @@ katana: {
         target: { spd: -1 }
       },
       type: "Normal",
-      retreat: 0
+      retreat: 3
     },
     kunaishurikin: {
       num: 100034,
