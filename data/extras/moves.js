@@ -955,7 +955,6 @@ Shuriken: {
       type: "Grass",
       contestType: "Tough"
     },
-<<<<<<< HEAD
   chakraabsorb: {
       num: 100035,
       accuracy: 50,
@@ -975,7 +974,9 @@ Shuriken: {
       statChanges: {
         self: {},
         target: { spd: -1 }
-=======
+      },
+      retreat: 0
+    },
     kunaishurikin: {
       num: 100034,
       accuracy: true,
@@ -984,18 +985,12 @@ Shuriken: {
       name: "Kunai Shurikin",
       pp: 3 * 3,
       priority: 0,
-      flags: { contact: 0,  protect: 1, weapon: 1
->>>>>>> 9223f96673a77c6412ba3c8cbabd82cc33a0ef59
-      },
+      flags: { contact: 0,  protect: 1, weapon: 1},
       secondary: null,
       target: "normal",
       type: "Normal",
-<<<<<<< HEAD
-      retreat: 0
     },
-=======
-    },
-      moltressrage: {
+    moltressrage: {
       num: 100035,
       accuracy: 100,
       basePower: 30,
@@ -1030,7 +1025,7 @@ Shuriken: {
       type: "Water",
       contestType: "Beautiful"
     },
-     electricdragon: {
+    electricdragon: {
       num: 100037,
       accuracy: 100,
       basePower: 100,
@@ -1047,7 +1042,7 @@ Shuriken: {
       type: "Electric",
       contestType: "Beautiful"
     },
-     bluesharks: {
+    bluesharks: {
       num: 100038,
       accuracy: 100,
       basePower: 20,
@@ -1069,7 +1064,6 @@ Shuriken: {
       category: "Special",
       name: "Draco Meteor",
       multihit:[5,10],
-
       pp: 5,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
@@ -1083,6 +1077,4 @@ Shuriken: {
       type: "Dragon",
       contestType: "Beautiful"
     },
-  
->>>>>>> 9223f96673a77c6412ba3c8cbabd82cc33a0ef59
 }
