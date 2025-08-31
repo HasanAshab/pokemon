@@ -609,8 +609,8 @@ Shuriken: {
     },
   rasengan: {
       num: 100017,
-      accuracy: 80,
-      basePower: 90,
+      accuracy: 100,
+      basePower: 50,
       category: "Physical",
       name: "Rasengan",
       pp: 15 * 3,
@@ -623,11 +623,11 @@ Shuriken: {
     },
   rasenshuriken: {
       num: 100018,
-      accuracy: 60,
+      accuracy: 70,
       basePower: 130,
       category: "Physical",
       name: "Rasen Shuriken",
-      pp: 2 * 3,
+      pp: 3 * 3,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
       statChanges:{
@@ -636,10 +636,8 @@ Shuriken: {
         },
         target:{}
       },
-      critRatio: 1,
       secondary: null,
       target: "normal",
-      type: "Rock",
       type: "Flying",
       contestType: "Cool"
     },
@@ -957,6 +955,7 @@ Shuriken: {
       type: "Grass",
       contestType: "Tough"
     },
+<<<<<<< HEAD
   chakraabsorb: {
       num: 100035,
       accuracy: 50,
@@ -976,10 +975,114 @@ Shuriken: {
       statChanges: {
         self: {},
         target: { spd: -1 }
+=======
+    kunaishurikin: {
+      num: 100034,
+      accuracy: true,
+      basePower: 70,
+      category: "Physical",
+      name: "Kunai Shurikin",
+      pp: 3 * 3,
+      priority: 0,
+      flags: { contact: 0,  protect: 1, weapon: 1
+>>>>>>> 9223f96673a77c6412ba3c8cbabd82cc33a0ef59
       },
       secondary: null,
       target: "normal",
       type: "Normal",
+<<<<<<< HEAD
       retreat: 0
     },
+=======
+    },
+      moltressrage: {
+      num: 100035,
+      accuracy: 100,
+      basePower: 30,
+      multihit:[2,5],
+      category: "Special",
+      name: "Moltress Rage",
+      pp: 15,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 10,
+        status: "brn"
+      },
+      target: "normal",
+      type: "Fire",
+      contestType: "Beautiful"
+    },
+    waterdragon: {
+      num: 100036,
+      accuracy: 100,
+      basePower: 100,
+      category: "Special",
+      name: "Water Dragon",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+       secondary: {
+      chance: 50,
+      status: "flinch"
+    },
+      target: "normal",
+      type: "Water",
+      contestType: "Beautiful"
+    },
+     electricdragon: {
+      num: 100037,
+      accuracy: 100,
+      basePower: 100,
+      category: "Special",
+      name: "Electric Dragon",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+      chance: 50,
+      status: "flinch"
+    },
+      target: "normal",
+      type: "Electric",
+      contestType: "Beautiful"
+    },
+     bluesharks: {
+      num: 100038,
+      accuracy: 100,
+      basePower: 20,
+         multihit:[4],
+      category: "Special",
+      name: "Blue Sharks",
+      pp: 6 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      critRatio: 2,
+      target: "normal",
+      type: "Water",
+      contestType: "Beautiful"
+    },
+    dracometeor: {
+      num: 434,
+      accuracy: 50,
+      basePower: 30,
+      category: "Special",
+      name: "Draco Meteor",
+      multihit:[5,10],
+
+      pp: 5,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      self: {
+        boosts: {
+          spa: -2
+        }
+      },
+      secondary: null,
+      target: "normal",
+      type: "Dragon",
+      contestType: "Beautiful"
+    },
+  
+>>>>>>> 9223f96673a77c6412ba3c8cbabd82cc33a0ef59
 }
