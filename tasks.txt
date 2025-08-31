@@ -5,7 +5,7 @@ rolleout
 * UI
 
 * Bugs
-
+multihit + reversal = basepower 0
 * Data
 hand6
 

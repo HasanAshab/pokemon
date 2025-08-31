@@ -1050,7 +1050,7 @@ katana: {
       num: 100038,
       accuracy: 100,
       basePower: 20,
-         multihit:[4],
+         multihit:4,
       category: "Special",
       name: "Blue Sharks",
       pp: 6 * 3,
@@ -1098,7 +1098,9 @@ katana: {
     revengersoul: {
       num: 100040,
       accuracy: 100,
-        basePowerCallback(pokemon) {
+      basePower: 0,
+       
+      basePowerCallback(pokemon) {
         const ratio = Math.max(Math.floor((pokemon.hp * 48) / pokemon.maxhp), 1)
         let bp
         if (ratio < 2) {
