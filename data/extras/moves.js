@@ -1098,7 +1098,25 @@ katana: {
     revengersoul: {
       num: 100040,
       accuracy: 100,
-      basePower: 10,
+        basePowerCallback(pokemon) {
+        const ratio = Math.max(Math.floor((pokemon.hp * 48) / pokemon.maxhp), 1)
+        let bp
+        if (ratio < 2) {
+          bp = 150
+        } else if (ratio < 5) {
+          bp = 100
+        } else if (ratio < 10) {
+          bp = 80
+        } else if (ratio < 17) {
+          bp = 40
+        } else if (ratio < 33) {
+          bp = 20
+        } else {
+          bp = 10
+        }
+        this.debug("BP: " + bp)
+        return bp
+      },
       multihit:[2,5],
       category: "Special",
       name: "Revenger Soul",
@@ -1109,9 +1127,10 @@ katana: {
       chance: 20,
       status: "flinch"
     },
+
       target: "normal",
       type: "Ghost",
       contestType: "Beautiful"
-    }
-    
+    },
+
 }
