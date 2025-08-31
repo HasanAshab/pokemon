@@ -9,6 +9,38 @@ rolleout
 * Data
 hand6
 
+* Bottle neck
+Auto move selector
+inputs:
+Const:
+1. max power = level  
+
+example:
+lvl:20 
+count:5
+
+nature:tai
+50 < 40 ->
+40 ->
+40 ->
+20 >= X 
+status
+
+nature:nin
+50 < 40 ->
+40 X
+20 >= X 
+status
+status
+
+nature:none
+50 < 40 
+40 
+40 or status
+20 >= 
+status
+
+
 * Scenario
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 

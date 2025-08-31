@@ -1028,12 +1028,12 @@ katana: {
       type: "Water",
       contestType: "Beautiful"
     },
-    electricdragon: {
+    electrodragon: {
       num: 100037,
       accuracy: 100,
       basePower: 100,
       category: "Special",
-      name: "Electric Dragon",
+      name: "Electro Dragon",
       pp: 5 * 3,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
@@ -1045,6 +1045,7 @@ katana: {
       type: "Electric",
       contestType: "Beautiful"
     },
+
     bluesharks: {
       num: 100038,
       accuracy: 100,
@@ -1093,5 +1094,24 @@ katana: {
       target: "normal",
       type: "Normal",
       contestType: "Tough"
+    },
+    revengersoul: {
+      num: 100040,
+      accuracy: 100,
+      basePower: 10,
+      multihit:[2,5],
+      category: "Special",
+      name: "Revenger Soul",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1, contact: 1 },
+      secondary: {
+      chance: 20,
+      status: "flinch"
+    },
+      target: "normal",
+      type: "Ghost",
+      contestType: "Beautiful"
     }
+    
 }
