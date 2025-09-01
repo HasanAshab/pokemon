@@ -5,8 +5,7 @@ rolleout
 * UI
 
 * Bugs
-multihit + reversal = basepower 0
-staythere
+status vs all
 * Data
 hand6
 

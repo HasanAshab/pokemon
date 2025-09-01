@@ -150,10 +150,10 @@ export class Pokemon extends PSPokemon {
           if (type.damage) return 1
           type = type.type
         }
-
-        if (!type) return 1
-
+        
         let effectiveness = 1;
+        if (!type) return effectiveness
+        
         this._beastTypes.forEach(tType => {
             if (typeChart[type] && typeChart[type][tType]) {
                 effectiveness *= typeChart[type][tType];
@@ -344,7 +344,7 @@ export class Move {
             if(type.damage) return 1
             type = type.type
         }
-        if (!this.type) return 1
+        if (!this.type || type === "None" || this.type === "None") return 1
         
         let effectiveness = typeChart[this.type][type] ?? 1
         const abilitiesMap = {

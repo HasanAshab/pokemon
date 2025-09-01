@@ -12,7 +12,7 @@ export default {
       flags: {offensive: 0},
       secondary: null,
       target: "normal",
-      type: "Normal",
+      type: "None",
       retreat: 0,
     },
     sagemode: {
@@ -68,7 +68,7 @@ export default {
       flags: { offensive: 0 },
       secondary: null,
       target: "normal",
-      type: "Normal",
+      type: "None",
       isOffensive: false,
       retreat: 1,
       onBeforeMove(attacker, defender, move) {
@@ -97,7 +97,7 @@ export default {
         attacker.state.damage.chainAddBlock(0.5)
       },
       target: "normal",
-      type: "Normal",
+      type: "None",
       isOffensive: false,
       retreat: 1,
     },

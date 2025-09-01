@@ -387,7 +387,6 @@ class BaseBattle extends EventEmitter {
             }
         }
         else {
-            console.log(hit2.damage(), moveEffect2, hit1.damage(), moveEffect1)
             const damage = (hit2.damage() * moveEffect2) - (hit1.damage() * moveEffect1)
             if (damage > 0) {
                 await this._tryDodge(this.pokemon1, senario, clonemode1)
@@ -406,6 +405,8 @@ class BaseBattle extends EventEmitter {
                 else damages.set(this.pokemon2, -damage * pokeEffect1)
             }
         }
+        console.log(moveEffect1, moveEffect2);
+        
 
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
