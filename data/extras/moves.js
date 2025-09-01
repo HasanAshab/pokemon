@@ -1123,13 +1123,44 @@ katana: {
       pp: 5 * 3,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1, contact: 1 },
-//       secondary: {
-//         chance: 20,
-//         status: "flinch"
-//       },
+      secondary: {
+        chance: 20,
+        status: "flinch"
+      },
       target: "normal",
       type: "Ghost",
       contestType: "Beautiful"
     },
-
+   magmabomb: {
+      num: 100041,
+      accuracy: 100,
+      basePower: 300,
+      category: "Special",
+      name: "Magma Bomb",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Fire",
+      contestType: "Beautiful"
+    },
+    cactuspunch: {
+      num: 100042,
+      accuracy: 100,
+      basePower: 70,
+      category: "Physical",
+      name: "Cactus Punch",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 50,
+        status: "flinch"
+      },
+      target: "normal",
+      type: "Grass",
+      contestType: "Tough"
+    },
+  
 }
