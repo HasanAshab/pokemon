@@ -1,33 +1,82 @@
-make some armors data for my Magical Battle game. 
+complete this suggestMoves function
 
-here are some example armor data
-
-latherarmor1: {
-  type: "armor",
-  covers: 20, // this means how much percentage of the body this armor covers (technically armor trigger chance)
-  stats: {
-    // the stat value used to determine damage e.g pokemon games
-
-    def: 20 // this means can handle physical damage
-    spd: 1 // this armor can handle a very little special attack
+const MOVES = [
+  thundershock: {
+    num: 84,
+    accuracy: 100,
+    basePower: 40,
+    category: "Special",
+    name: "Thunder Shock",
+    pp: 30,
+    priority: 0,
+    flags: { protect: 1, mirror: 1, metronome: 1 },
+    secondary: {
+      chance: 10,
+      status: "par"
+    },
+    target: "normal",
+    type: "Electric",
+    contestType: "Cool"
   },
-  tokens: {
-    // how much stat will change to the user
+  punch: {
+    num: 100016,
+    accuracy: 100,
+    basePower: 20,
+    category: "Physical",
+    name: "Punch",
+    pp: 50 * 3,
+    priority: 0,
+    flags: {
+      contact: 1, 
+      protect: 1,
+      mirror: 1, 
+      metronome: 1
+    },
+    critRatio: 1,
+    secondary: null,
+    target: "normal",
+    type: "Normal",
+    contestType: "Tough",
+  },
+  //...
+]
 
-    spe: -1 // using this, a very little speed stat of user is decreased ( as lather armors are usally not heavy) 
-  }
-},
-locket1: {
-  type: "armor",
-  covers: 50,
-  stats: {
-    def: 0 // this means the locket can handle no physical attack (as it is magical)
-    spd: 20 // this magical locket can handle special damage
-  }
-},
+function suggestMoves(options) {
+  //...
+  
+  return moves // array of string
+}
 
-here are some notes:
-1. the data should be realistic that thrills the player.
-2. some armors can handle only phy atk some can only special atk and some can handle both,
- its completely dynamic but be reasistic
 
+//usage
+suggestMoves({
+  maxPower: 50 // only moves where move.basePower <= 50
+  mele: 3, // 3 mele moves (where move.flags.contact)
+  ranged: 2, // 2 ranged moves (where !move.flags.contact)
+  phyPer: 60, // 3 of 5 (mele + ranged) will be physical move (where move.category === "Physical")
+  spePer: 20, // 1 of 5 (mele + ranged) will be special move (where move.category === "Special")
+  statPer: 20, // 1 of 5 (mele + ranged) will be status move (where move.category === "Status")
+})
+
+
+
+update: now another input will be provided `pokemon`
+suggestMoves(options, {
+  level: 20,
+  types: ["Fire", ...]
+})
+
+based on that:
+1. give more priority to same type moves
+2. 20% moves will be high power,
+   50% will be mid power (status moves will also stay there even there power is 0) and
+   rest 20% percent will be low power
+
+Note: formula to detect high mid and low move for a level is:
+  Low: move.basePower <= LVL
+  Mid: LVL < move.basePower <= LVL * 2
+  High: LVL * 2 < move.basePower <= (LVL * 2) + 10
+Example: If pokemon level is 20
+  Low: move.basePower <= 20
+  Mid: 20 < move.basePower <= 40
+  High: 40 < move.basePower <= 50

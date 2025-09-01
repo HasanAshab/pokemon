@@ -151,21 +151,63 @@ function addMove(event, isMega = false) {
   `;
   list.appendChild(div);
 }
-function getAutomaticCreatedMoves(prompt) {
-  //
-  const moves = [
-    'tackle',
-    'ember',
-    'growl',
-    'tail whip',
-    'scratch'
-  ]
-  return moves
+
+function suggestMoves(options) {
+  const totalMoves = options.mele + options.ranged;
+  const physicalCount = Math.round((options.phyPer / 100) * totalMoves);
+  const specialCount = Math.round((options.spePer / 100) * totalMoves);
+  const statusCount = totalMoves - physicalCount - specialCount;
+
+  let allMoves = Object.values(MOVES);
+  if (options.maxPower) {
+    allMoves = allMoves.filter(move => move.basePower <= options.maxPower);
+  }
+
+  const melePhysical = allMoves.filter(move => move.flags?.contact && move.category === "Physical");
+  const meleSpecial = allMoves.filter(move => move.flags?.contact && move.category === "Special");
+  const meleStatus = allMoves.filter(move => move.flags?.contact && move.category === "Status");
+  const rangedPhysical = allMoves.filter(move => !move.flags?.contact && move.category === "Physical");
+  const rangedSpecial = allMoves.filter(move => !move.flags?.contact && move.category === "Special");
+  const rangedStatus = allMoves.filter(move => !move.flags?.contact && move.category === "Status");
+
+  if (
+    physicalCount > melePhysical.length + rangedPhysical.length ||
+    specialCount > meleSpecial.length + rangedSpecial.length ||
+    statusCount > meleStatus.length + rangedStatus.length ||
+    options.mele > melePhysical.length + meleSpecial.length + meleStatus.length ||
+    options.ranged > rangedPhysical.length + rangedSpecial.length + rangedStatus.length
+  ) {
+    return [];
+  }
+
+  const selectedMoves = [];
+  selectedMoves.push(...selectMoves(melePhysical, physicalCount, options.mele, meleSpecial, meleStatus));
+  selectedMoves.push(...selectMoves(meleSpecial, specialCount, options.mele - selectedMoves.length, melePhysical, meleStatus, selectedMoves));
+  selectedMoves.push(...selectMoves(meleStatus, statusCount, options.mele - selectedMoves.length, melePhysical, meleSpecial, selectedMoves));
+
+  selectedMoves.push(...selectMoves(rangedPhysical, physicalCount - countByCategory(selectedMoves, "Physical"), options.ranged, rangedSpecial, rangedStatus));
+  selectedMoves.push(...selectMoves(rangedSpecial, specialCount - countByCategory(selectedMoves, "Special"), options.ranged - selectedMoves.filter(m => !m.flags?.contact).length, rangedPhysical, rangedStatus, selectedMoves));
+  selectedMoves.push(...selectMoves(rangedStatus, statusCount - countByCategory(selectedMoves, "Status"), options.ranged - selectedMoves.filter(m => !m.flags?.contact).length, rangedPhysical, rangedSpecial, selectedMoves));
+
+  return selectedMoves.map(move => move.name.replace(' ', '').toLowerCase());
+}
+
+function selectMoves(pool, categoryNeeded, typeLimit, ...otherPools) {
+  const selected = [];
+  const available = Math.min(categoryNeeded, typeLimit, pool.length);
+  for (let i = 0; i < available; i++) {
+    selected.push(pool[i]);
+  }
+  return selected;
+}
+
+function countByCategory(moves, category) {
+  return moves.filter(move => move.category === category).length;
 }
 
 function getDefaultPrompt() {
   const level = 20
-  const nature = 'none'
+  const nature = 'tai'
   const count = level / 4
 
   const meleMap = {
@@ -173,31 +215,43 @@ function getDefaultPrompt() {
     'nin': 0.2,
     'none': 0.5,
   }
-  const noneStatusChoices = [0.2, 0.4]
-  const statusMap = {
-    'tai': 0.2,
-    'nin': 0.4,
-    'none': noneStatusChoices[Math.floor(Math.random() * noneStatusChoices.length)],
-  }
   const rangedMap = {
-    'tai': 0.2,
-    'nin': 0.4,
-    'none': 0.5 - statusMap.none,
+    'tai': 0.4,
+    'nin': 0.8,
+    'none': 0.5,
+  }
+
+  const phyPerMap = {
+    'tai': 60,
+    'nin': 20,
+    'none': 50,
+  }
+  const noneStatPerChoices = [20, 40]
+  const statPerMap = {
+    'tai': 20,
+    'nin': 40,
+    'none': noneStatPerChoices[Math.floor(Math.random() * noneStatPerChoices.length)],
+  }
+  const spePerMap = {
+    'tai': 20,
+    'nin': 40,
+    'none': 50 - statPerMap.none,
   }
 
   return {
-    count,
-    mele: Math.round(count * meleMap[nature]),
-    status: Math.round(count * statusMap[nature]),
-    ranged: Math.round(count * rangedMap[nature]),
     maxPower: (level * 2) + 10,
+    mele: Math[nature !== 'nin' ? 'ceil' : 'floor'](count * meleMap[nature]),
+    ranged: Math[nature === 'nin' ? 'ceil' : 'floor'](count * rangedMap[nature]),
+    phyPer: phyPerMap[nature],
+    statPer: statPerMap[nature],
+    spePer: spePerMap[nature],
   }
 }
 
 function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
   const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt()));
-  const automaticCreatedMoves = getAutomaticCreatedMoves(flagsToObj(prompt));
+  const automaticCreatedMoves = suggestMoves(flagsToObj(prompt));
   const list = form.querySelector('.moves-list');
   list.innerHTML = '';
   automaticCreatedMoves.forEach(move => {

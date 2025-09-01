@@ -315,7 +315,7 @@ export class Move {
     constructor(id, meta = {}) {
         this.id = id;
         this._meta = meta
-        this._move = moves[id];        
+        this._move = moves[id];                
         this._ref = JSON.parse(JSON.stringify(this._move))
         Object.assign(this, this._move)
     }
