@@ -10,6 +10,7 @@ window.onload = () => {
     loadNaturesDataList("natures-data-list")
     loadMovesDatalist("moves-data-list")
     loadBattleSystems()
+    addEnemy()
 }
 
 let enemyCount = 0;
@@ -34,7 +35,7 @@ function addEnemy() {
   div.innerHTML = getEnemyForm(enemyCount);
   container.appendChild(div);
   enemyCount++;
-      initAllMultyInputBox()
+  initAllMultyInputBox()
 
 }
 
@@ -116,14 +117,20 @@ function getEnemyForm(index) {
       <h4>Moves</h4>
       <div class="moves-list"></div>
       <button type="button" onclick="addMove(event)">Add Move</button>
-    </div>
+      <button class="set-auto-move-btn" type="button" onclick="setMoveAutomatic(event)" >Set Automatic</button>
+      </div>
 
-    <div class="move-section">
-      <h4>Mega Moves</h4>
-      <div class="mega-moves-list"></div>
-      <button type="button" onclick="addMove(event, true)">Add Mega Move</button>
-    </div>
+
   `;
+
+  // ###########################
+  // don't delete this
+  //   <div class="move-section">
+    //   <h4>Mega Moves</h4>
+    //   <div class="mega-moves-list"></div>
+    //   <button type="button" onclick="addMove(event, true)">Add Mega Move</button>
+    // </div>
+    // ###########################
 }
 
 function showStats(event) {
@@ -144,7 +151,32 @@ function addMove(event, isMega = false) {
   `;
   list.appendChild(div);
 }
-
+function getAutomaticCreatedMoves(prompt) {
+  const moves = [
+    'tackle',
+    'ember',
+    'growl',
+    'tail whip',
+    'scratch'
+  ]
+  return moves
+}
+function setMoveAutomatic(event) {
+  const form = event.target.closest('.pokemon-form');
+  const prompt = window.prompt("Edit the prompt here");
+  const automaticCreatedMoves = getAutomaticCreatedMoves(prompt);
+  const list = form.querySelector('.moves-list');
+  list.innerHTML = '';
+  automaticCreatedMoves.forEach(move => {
+    const div = document.createElement('div');
+    div.className = 'move-item';
+    div.innerHTML = `
+      <input type="text" list="moves-data-list" onblur="showMoveDetails(event)" class="move-input" value="${move}">
+      <button type="button" onclick="removeMove(event)">X</button>
+    `;
+    list.appendChild(div);
+  });
+}
 function removeMove(event) {
   const moveItem = event.target.closest('.move-item');
   moveItem.remove();
@@ -258,6 +290,7 @@ function startBattleBtnHandler() {
 
 globalThis.showStats = showStats
 globalThis.addMove = addMove
+globalThis.setMoveAutomatic  = setMoveAutomatic
 globalThis.removeMove = removeMove
 globalThis.fieldClickHandler = function({currentTarget}){
     currentTarget.classList.toggle("active")
