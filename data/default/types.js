@@ -2,7 +2,6 @@ export default {
     "Normal": {
         "Rock": "half",
         "Steel": "half",
-        "Ghost": "immune"
     },
     "Fighting": {
         "Normal": "double",
@@ -69,7 +68,6 @@ export default {
         "Ghost": "double",
         "Psychic": "double",
         "Dark": "half",
-        "Normal": "immune"
     },
     "Steel": {
         "Rock": "double",

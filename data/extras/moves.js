@@ -1098,7 +1098,6 @@ katana: {
       num: 100040,
       accuracy: 100,
       basePower: 0,
-       
       basePowerCallback(pokemon) {
         const ratio = Math.max(Math.floor((pokemon.hp * 48) / pokemon.maxhp), 1)
         let bp
@@ -1124,11 +1123,10 @@ katana: {
       pp: 5 * 3,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1, contact: 1 },
-      secondary: {
-      chance: 20,
-      status: "flinch"
-    },
-
+//       secondary: {
+//         chance: 20,
+//         status: "flinch"
+//       },
       target: "normal",
       type: "Ghost",
       contestType: "Beautiful"

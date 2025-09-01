@@ -6,6 +6,7 @@ rolleout
 
 * Bugs
 multihit + reversal = basepower 0
+staythere
 * Data
 hand6
 

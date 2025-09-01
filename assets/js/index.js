@@ -392,7 +392,7 @@ startBattle([
   "loses-count": 3,
   "moves": [
     {
-      "id": "chakraabsorb"
+      "id": "revengersoul"
     },
     {
       "id": "smokescreen",
@@ -421,7 +421,7 @@ startBattle([
       "id": "substitute"
     }
   ],
-  "name": "Hasan Munshi",
+  "name": "Hasan Munshi V2",
   "items": [
     "gen-food-low"
   ],
