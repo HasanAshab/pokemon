@@ -1082,15 +1082,22 @@ katana: {
     },
     paperbomb: {
       num: 100039,
-      accuracy: 100,
-      basePower: 100,
+      accuracy: 50,
+      basePower: 1,
       category: "Physical",
       name: "Paper Bomb",
       pp: 5 * 3,
       priority: 0,
-      flags: { protect: 1, mirror: 1, metronome: 1 },
-      secondary: null,
+      flags: { protect: 1, mirror: 1, metronome: 1, contact: 1 },
       target: "normal",
+      effects: {
+        self: [],
+        target: [{
+          name: "paperbomb",
+          chance: 100,
+          isVolatile: true
+        }]
+      },
       type: "Normal",
       contestType: "Tough"
     },
@@ -1189,5 +1196,24 @@ katana: {
       target: "allAdjacent",
       type: "Fighting",
       contestType: "Tough"
-    }
+    },
+  "$paperbomb:explode": {
+    num: 100045,
+    accuracy: true,
+    basePower: 100,
+    category: "Physical",
+    name: "Paper Bomb (Explode)",
+    pp: null,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+      contact: 1
+    },
+    critRatio: 2,
+    target: "normal",
+    type: "Normal",
+    retreat: 0,
+  },
 }

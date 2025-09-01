@@ -309,7 +309,8 @@ startBattle([
   ],
   "name": "Hasan Munshi V2",
   "items": [
-    "gen-food-low"
+    "gen-food-low",
+    "latherarmor1"
   ],
   "isSelectedForMultiBattle": true,
   "types": [

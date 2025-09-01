@@ -1,4 +1,6 @@
+import { Hit } from "./damage.js"
 import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
+import { Move } from "./models.js"
 
 
 class Effect {
@@ -539,6 +541,54 @@ class SageModeEffect extends ExpirableEffect {
     }
 }
 
+class PaperBombEffect extends Effect {
+    static effectName = "paperbomb"
+
+    setup() {
+        super.setup()
+        this._cachedArmors = this.state.armor._items.map(armor => armor.id)
+    }
+
+    onUsedMove(move) {
+        const lowMovement = this.state.pokemon.level 
+        const midMovement = lowMovement * 2
+        const armorRemoved = this._cachedArmors.some(id => !this.state.armor._items.some(armor => armor.id === id))
+        console.log(this.state.armor._items, this._cachedArmors);
+        
+        let explodeChance
+        if (move._bp > midMovement) {
+            explodeChance = 50
+        }
+        else if (move._bp > lowMovement) {
+            explodeChance = 20
+        }
+        else {
+            explodeChance = 2
+        }
+
+        if (armorRemoved) {
+            explodeChance += 30
+        }
+        console.log(explodeChance);
+        
+        if (Math.random() * 100 < explodeChance) {
+            this._explode()
+            this.remove()
+        }
+
+        armorRemoved && this.remove()
+    }
+  
+    _explode() {
+        const opponent = this.state.battle.opponentOf(this.state.pokemon)
+        const move = new Move("$paperbomb:explode")
+        const hit = new Hit(opponent, move, this.state.pokemon)
+        this.state.decreaseHealth(hit.damage())
+    }
+}
+
+
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -554,6 +604,7 @@ export const EFFECTS = makeEffectsMap([
     DoubleTeamEffect,
     ShadowCloneEffect,
     SageModeEffect,
+    PaperBombEffect,
 ])
 
 

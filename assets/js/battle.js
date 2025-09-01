@@ -616,6 +616,10 @@ function setEffects(effects, playerTag) {
       "name": "sage",
       "color": "Normal"
     },
+    "paperbomb": {
+      "name": "Paper Bomb",
+      "color": "Normal"
+    },
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const effectElements = effectsDataColumn.querySelectorAll(".effect")
