@@ -1153,7 +1153,7 @@ katana: {
       name: "Cactus Punch",
       pp: 5 * 3,
       priority: 0,
-      flags: { protect: 1, mirror: 1, metronome: 1 },
+      flags: { protect: 1, mirror: 1, metronome: 1, contact: 1 },
       secondary: {
         chance: 50,
         status: "flinch"
@@ -1162,5 +1162,32 @@ katana: {
       type: "Grass",
       contestType: "Tough"
     },
-  
+  cyclekick: {
+      num: 100043,
+      accuracy: 100,
+      basePower: 30,
+      category: "Physical",
+      name: "Cycle Kick",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1, contact: 1 },
+      secondary: null,
+      target: "allAdjacentFoes",
+      type: "Fighting",
+      contestType: "Tough"
+    },
+    seismicwave: {
+      num: 100044,
+      accuracy: 100,
+      basePower: 100,
+      category: "Physical",
+      name: "Seismic Wave",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "allAdjacent",
+      type: "Fighting",
+      contestType: "Tough"
+    }
 }
