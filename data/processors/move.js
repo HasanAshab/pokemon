@@ -226,7 +226,7 @@ function setRetreat(move) {
     : 0
     
   const targetBonus = move.target.startsWith("allAdjacent")
-    ? 0.5
+    ? 1.5
     : 0
 
   const multiplier = (
@@ -235,6 +235,7 @@ function setRetreat(move) {
       + selfStatEffectBonus
       + targetStatEffectBonus
       + critRatioBonus
+      + targetBonus
   )
   retreat += 0.5 * multiplier
   
@@ -271,6 +272,13 @@ function setRetreat(move) {
   move.retreat = retreat
 }
 
+function setCapacity(move) {
+  if ("capacity" in move) return
+  if (!move.target.startsWith("allAdjacent")) 
+      return move.capacity = 1
+  move.basePower *= 0.5
+  move.capacity = Math.round(move.basePower / 10)
+}
 
 function modifyAccuracy(move) {
     if (move.accuracy === true) return
@@ -309,6 +317,7 @@ export default processor([
     setEffects,
     setStatChanges,
     setRetreat,
+    setCapacity,
     modifyAccuracy,
     addKoHandler,
 ])
