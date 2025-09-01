@@ -152,57 +152,143 @@ function addMove(event, isMega = false) {
   list.appendChild(div);
 }
 
-function suggestMoves(options) {
+
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
+function suggestMoves(options, pokemon) {
   const totalMoves = options.mele + options.ranged;
   const physicalCount = Math.round((options.phyPer / 100) * totalMoves);
   const specialCount = Math.round((options.spePer / 100) * totalMoves);
   const statusCount = totalMoves - physicalCount - specialCount;
 
+  const highCount = Math.round(totalMoves * 0.2);
+  const midCount = Math.round(totalMoves * 0.5);
+  const lowCount = totalMoves - highCount - midCount;
+
   let allMoves = Object.values(MOVES);
+  shuffle(allMoves);
   if (options.maxPower) {
     allMoves = allMoves.filter(move => move.basePower <= options.maxPower);
   }
 
-  const melePhysical = allMoves.filter(move => move.flags?.contact && move.category === "Physical");
-  const meleSpecial = allMoves.filter(move => move.flags?.contact && move.category === "Special");
-  const meleStatus = allMoves.filter(move => move.flags?.contact && move.category === "Status");
-  const rangedPhysical = allMoves.filter(move => !move.flags?.contact && move.category === "Physical");
-  const rangedSpecial = allMoves.filter(move => !move.flags?.contact && move.category === "Special");
-  const rangedStatus = allMoves.filter(move => !move.flags?.contact && move.category === "Status");
+  const isSameType = (move) => pokemon.types.includes(move.type);
+  const getPowerCategory = (move) => {
+    let power = move.basePower;
+    if (move.multihit) {
+      const avgHits = Array.isArray(move.multihit)
+        ? (move.multihit[0] + move.multihit[1]) / 2
+        : move.multihit;
+      power *= avgHits;
+    }
+    
+    if (move.category === "Status") return "mid";
+    if (power <= pokemon.level) return "low";
+    if (power <= pokemon.level * 2) return "mid";
+    if (power <= (pokemon.level * 2) + 10) return "high";
+    return null;
+  };
 
-  if (
-    physicalCount > melePhysical.length + rangedPhysical.length ||
-    specialCount > meleSpecial.length + rangedSpecial.length ||
-    statusCount > meleStatus.length + rangedStatus.length ||
-    options.mele > melePhysical.length + meleSpecial.length + meleStatus.length ||
-    options.ranged > rangedPhysical.length + rangedSpecial.length + rangedStatus.length
-  ) {
-    return [];
-  }
+  const categorizeMoves = (moves) => {
+    const categorized = { high: [], mid: [], low: [] };
+    moves.forEach(move => {
+      const category = getPowerCategory(move);
+      category && categorized[category].push(move);
+    });
+    categorized.high.sort((a, b) => isSameType(b) - isSameType(a));
+    categorized.mid.sort((a, b) => isSameType(b) - isSameType(a));
+    categorized.low.sort((a, b) => isSameType(b) - isSameType(a));
+    return categorized;
+  };
+
+  const melePhysical = categorizeMoves(allMoves.filter(move => move.flags?.contact && move.category === "Physical"));
+  const meleSpecial = categorizeMoves(allMoves.filter(move => move.flags?.contact && move.category === "Special"));
+  const rangedPhysical = categorizeMoves(allMoves.filter(move => !move.flags?.contact && move.category === "Physical"));
+  const rangedSpecial = categorizeMoves(allMoves.filter(move => !move.flags?.contact && move.category === "Special"));
+  const rangedStatus = categorizeMoves(allMoves.filter(move => !move.flags?.contact && move.category === "Status"));
 
   const selectedMoves = [];
-  selectedMoves.push(...selectMoves(melePhysical, physicalCount, options.mele, meleSpecial, meleStatus));
-  selectedMoves.push(...selectMoves(meleSpecial, specialCount, options.mele - selectedMoves.length, melePhysical, meleStatus, selectedMoves));
-  selectedMoves.push(...selectMoves(meleStatus, statusCount, options.mele - selectedMoves.length, melePhysical, meleSpecial, selectedMoves));
+  const powerCounts = { high: 0, mid: 0, low: 0 };
 
-  selectedMoves.push(...selectMoves(rangedPhysical, physicalCount - countByCategory(selectedMoves, "Physical"), options.ranged, rangedSpecial, rangedStatus));
-  selectedMoves.push(...selectMoves(rangedSpecial, specialCount - countByCategory(selectedMoves, "Special"), options.ranged - selectedMoves.filter(m => !m.flags?.contact).length, rangedPhysical, rangedStatus, selectedMoves));
-  selectedMoves.push(...selectMoves(rangedStatus, statusCount - countByCategory(selectedMoves, "Status"), options.ranged - selectedMoves.filter(m => !m.flags?.contact).length, rangedPhysical, rangedSpecial, selectedMoves));
+  const selectFromCategory = (pool, category, limit) => {
+    const moves = pool[category].splice(0, Math.min(limit, pool[category].length));
+    moves.forEach(move => {
+      const powerCategory = getPowerCategory(move);
+      powerCounts[powerCategory]++;
+    });
+    console.log(moves);
+    
+    return moves;
+  };
 
-  return selectedMoves.map(move => move.name.replace(' ', '').toLowerCase());
-}
+  const selectMoves = (pool, categoryLimit, powerCategory) => {
+    const selected = [];
+    while (selected.length < categoryLimit && powerCounts[powerCategory] < (powerCategory === 'high' ? highCount : powerCategory === 'mid' ? midCount : lowCount)) {
+      if (pool[powerCategory].length > 0) {
+        const move = pool[powerCategory].shift();
+        selected.push(move);
+        powerCounts[powerCategory]++;
+      } else {
+        break;
+      }
+    }
+    return selected;
+  };
 
-function selectMoves(pool, categoryNeeded, typeLimit, ...otherPools) {
-  const selected = [];
-  const available = Math.min(categoryNeeded, typeLimit, pool.length);
-  for (let i = 0; i < available; i++) {
-    selected.push(pool[i]);
-  }
-  return selected;
-}
+  const balancePower = (moves, pool) => {
+    moves.forEach(move => {
+      const currentCategory = getPowerCategory(move);
+      if (powerCounts[currentCategory] > (currentCategory === 'high' ? highCount : currentCategory === 'mid' ? midCount : lowCount)) {
+        for (const category of ['high', 'mid', 'low']) {
+          if (powerCounts[category] < (category === 'high' ? highCount : category === 'mid' ? midCount : lowCount) && pool[category].length > 0) {
+            const newMove = pool[category].shift();
+            moves[moves.indexOf(move)] = newMove;
+            powerCounts[currentCategory]--;
+            powerCounts[category]++;
+            break;
+          }
+        }
+      }
+    });
+  };
 
-function countByCategory(moves, category) {
-  return moves.filter(move => move.category === category).length;
+  // Initial selection without power consideration
+  let meleSelected = 0;
+  const meleMoves = [];
+  meleMoves.push(...selectFromCategory(melePhysical, 'mid', physicalCount));
+  meleMoves.push(...selectFromCategory(meleSpecial, 'mid', specialCount));
+  meleSelected = meleMoves.length;
+
+  let rangedSelected = 0;
+  const rangedMoves = [];
+  rangedMoves.push(...selectFromCategory(rangedPhysical, 'mid', physicalCount - meleMoves.filter(m => m.category === "Physical").length));
+  rangedMoves.push(...selectFromCategory(rangedSpecial, 'mid', specialCount - meleMoves.filter(m => m.category === "Special").length));
+  rangedMoves.push(...selectFromCategory(rangedStatus, 'mid', statusCount - meleMoves.filter(m => m.category === "Status").length));
+  rangedSelected = rangedMoves.length;
+
+  // Balance power distribution
+  balancePower(meleMoves, melePhysical);
+  balancePower(meleMoves, meleSpecial);
+  balancePower(rangedMoves, rangedPhysical);
+  balancePower(rangedMoves, rangedSpecial);
+  balancePower(rangedMoves, rangedStatus);
+
+  selectedMoves.push(...meleMoves, ...rangedMoves);
+
+  return selectedMoves.map(move => move.name.toLowerCase().replace(' ', ''));
 }
 
 function getDefaultPrompt() {
@@ -251,7 +337,10 @@ function getDefaultPrompt() {
 function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
   const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt()));
-  const automaticCreatedMoves = suggestMoves(flagsToObj(prompt));
+  const automaticCreatedMoves = suggestMoves(flagsToObj(prompt), {
+    level: 20,
+    types: ["Normal", "Fighting"]
+  });
   const list = form.querySelector('.moves-list');
   list.innerHTML = '';
   automaticCreatedMoves.forEach(move => {
