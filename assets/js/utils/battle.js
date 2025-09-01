@@ -404,9 +404,7 @@ class BaseBattle extends EventEmitter {
                     move2 = oldm
                 else damages.set(this.pokemon2, -damage * pokeEffect1)
             }
-        }
-        console.log(moveEffect1, moveEffect2);
-        
+        }        
 
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))

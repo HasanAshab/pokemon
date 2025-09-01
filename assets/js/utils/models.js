@@ -341,10 +341,10 @@ export class Move {
 
     effectiveness(type) {
         if (type instanceof Move) {
-            if(type.damage) return 1
+            if(type.damage || type.flags.noeffect || type.category === "Status") return 1
             type = type.type
         }
-        if (!this.type || type === "None" || this.type === "None") return 1
+        if (!this.type) return 1
         
         let effectiveness = typeChart[this.type][type] ?? 1
         const abilitiesMap = {
