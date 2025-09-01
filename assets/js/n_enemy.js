@@ -291,8 +291,7 @@ function suggestMoves(options, pokemon) {
   return selectedMoves.map(move => move.name.toLowerCase().replace(' ', ''));
 }
 
-function getDefaultPrompt() {
-  const level = 20
+function getDefaultPrompt({ level, nature }) {
   const nature = 'tai'
   const count = level / 4
 
@@ -336,7 +335,10 @@ function getDefaultPrompt() {
 
 function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
-  const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt()));
+  const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt({
+    level: 20,
+    nature: 'tai'
+  })));
   const automaticCreatedMoves = suggestMoves(flagsToObj(prompt), {
     level: 20,
     types: ["Normal", "Fighting"]
