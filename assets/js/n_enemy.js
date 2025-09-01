@@ -152,6 +152,7 @@ function addMove(event, isMega = false) {
   list.appendChild(div);
 }
 function getAutomaticCreatedMoves(prompt) {
+  //
   const moves = [
     'tackle',
     'ember',
@@ -161,10 +162,42 @@ function getAutomaticCreatedMoves(prompt) {
   ]
   return moves
 }
+
+function getDefaultPrompt() {
+  const level = 20
+  const nature = 'none'
+  const count = level / 4
+
+  const meleMap = {
+    'tai': 0.6,
+    'nin': 0.2,
+    'none': 0.5,
+  }
+  const noneStatusChoices = [0.2, 0.4]
+  const statusMap = {
+    'tai': 0.2,
+    'nin': 0.4,
+    'none': noneStatusChoices[Math.floor(Math.random() * noneStatusChoices.length)],
+  }
+  const rangedMap = {
+    'tai': 0.2,
+    'nin': 0.4,
+    'none': 0.5 - statusMap.none,
+  }
+
+  return {
+    count,
+    mele: Math.round(count * meleMap[nature]),
+    status: Math.round(count * statusMap[nature]),
+    ranged: Math.round(count * rangedMap[nature]),
+    maxPower: (level * 2) + 10,
+  }
+}
+
 function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
-  const prompt = window.prompt("Edit the prompt here");
-  const automaticCreatedMoves = getAutomaticCreatedMoves(prompt);
+  const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt()));
+  const automaticCreatedMoves = getAutomaticCreatedMoves(flagsToObj(prompt));
   const list = form.querySelector('.moves-list');
   list.innerHTML = '';
   automaticCreatedMoves.forEach(move => {
