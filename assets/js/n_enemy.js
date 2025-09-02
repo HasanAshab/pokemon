@@ -1,7 +1,7 @@
 import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
-import { Move } from "./utils/models.js";
+import { Move , Pokemon } from "./utils/models.js";
 
 import { objToFlags,flagsToObj } from "./utils/helpers.js";
 
@@ -334,13 +334,15 @@ function getDefaultPrompt({ level, nature }) {
 function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
   const typesInputIndex = form.querySelector(".multy-input-box").dataset.index
+  const pokemon = new Pokemon(form.querySelector('.enemy').value);
   const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt({
     level: form.querySelector('.level-inp').value,
     nature: form.querySelector('.nature-inp').value
   })));
+  
   const automaticCreatedMoves = suggestMoves(flagsToObj(prompt), {
     level: form.querySelector('.level-inp').value,
-    types: getMultyInputValues("types",typesInputIndex),
+    types: getMultyInputValues("types",typesInputIndex).concat(pokemon._pokemon.types),
   });
 
   const list = form.querySelector('.moves-list');
@@ -358,11 +360,9 @@ function setMoveAutomatic(event) {
   });
 }else {
   moveItems.forEach(moveItem => {
-   
-    
     const moveInput = moveItem.querySelector('.move-input');
     if (moveInput.value === "") {
-      moveItem.value = automaticCreatedMoves.shift();
+      moveInput.value = automaticCreatedMoves.shift();
     }
      console.log(moveItem);
   })

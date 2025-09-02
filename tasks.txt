@@ -3,9 +3,9 @@ alladjacent
 rolleout 
 
 * UI
-change only unfilled moves
-* Bugs
 
+* Bugs
+tripple kick
 * Data
 armors
 hand6
