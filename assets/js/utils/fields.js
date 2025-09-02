@@ -9,7 +9,7 @@ class GenericField extends Field {
         super(battle)
         this.type = type
         
-        battle.on("scene", (...args) => this.onScene(...args))
+        battle.on("scene", (...args) => this.onScene(...args), 'field-' + type)
     }
 
     onScene(senario) {
@@ -22,6 +22,10 @@ class GenericField extends Field {
                 pokemon.state.damage.chainModifyCrit(1.5)
             }
         })
+    }
+
+    cleanup() {
+        this.battle.removeListener("scene", 'field-' + this.type)
     }
 }
 

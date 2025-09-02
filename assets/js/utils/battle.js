@@ -93,6 +93,16 @@ class BaseBattle extends EventEmitter {
             })
         })
     }
+
+    addField(type) {
+        this.fields.push(makeField(this, type))
+    }
+
+    removeField(type) {
+        const field = this.fields.find(f => f.type === type)
+        field.cleanup()
+        this.fields = this.fields.filter(f => f !== field)
+    }
     
     toJSON() {
         const states = []

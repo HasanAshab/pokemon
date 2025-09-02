@@ -1,9 +1,9 @@
 * Tasks
-alladjacent star
 rolleout 
 
 * UI
 add capacity icon on moves
+field management
 
 * Bugs
 tripple kick
