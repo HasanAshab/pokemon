@@ -420,4 +420,4 @@ startBattle([
   ]
 }
 
-], [], "multiple")
+], ["Water"], "multiple")

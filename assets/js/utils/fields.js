@@ -1,3 +1,5 @@
+import typeChart from "../../../data/types.js"
+
 class Field {
     constructor(battle) {
         this.battle = battle;
@@ -14,12 +16,20 @@ class GenericField extends Field {
 
     onScene(senario) {
         this.battle.actives().forEach(pokemon => {
+          
             const move = senario.get(pokemon)
+            const straightEffect = typeChart[this.type][move.type] ?? 1
+            const oppositeEffect = typeChart[move.type][this.type] ?? 1
+            console.log(move.id, straightEffect, oppositeEffect);
+            
             if (pokemon.isTypeOf(this.type)) {
-                pokemon.state.stats.chainModify("spe", 1.15)
+                pokemon.state.stats.chainModify("spe", 1.25)
             }
-            if (move.type === this.type) {
+            if (oppositeEffect > 1) {
                 pokemon.state.damage.chainModifyCrit(1.5)
+            }
+            if (straightEffect < 1) {
+                pokemon.state.damage.chainModifyPower(move.id, 0.80)
             }
         })
     }
