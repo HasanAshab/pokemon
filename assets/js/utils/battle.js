@@ -630,10 +630,14 @@ class BaseBattle extends EventEmitter {
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {                                                                            
                           allHitMove = opponentMove
                           this.pokemon1.state.retreat -= allHitMove.retreat
+                          this.pokemon1.state.reducePP(allHitMove.id)
+
                           move1 = allHitMove
                       }
                       if (allHitMove) {
                         this.pokemon1.state.retreat += allHitMove.retreat
+                        this.pokemon1.state.increasePP(allHitMove.id)
+
                         allHitMove.reduceCapacity()
                         if (allHitMove.capacity <= 1) {
                           allHitMove = null
@@ -672,6 +676,7 @@ class BaseBattle extends EventEmitter {
             ])
             this.activate(p)
             this.pokemon1.state.retreat += move1.retreat
+            this.pokemon1.state.increasePP(move1.id)
             await this.run(scene, false, false, true)
           }
         }
@@ -686,6 +691,7 @@ class BaseBattle extends EventEmitter {
             ])
             this.activate(p)
             this.pokemon2.state.retreat += move2.retreat
+            this.pokemon2.state.increasePP(move2.id)
             await this.run(scene, false, false, true)
           }
         }
@@ -970,6 +976,14 @@ class BattleState extends EventEmitter {
         if (move.pp !== null) move.pp++
         return move
     }
+
+    increasePP(moveId) {
+        const move = this.moves.find(m => m.id === moveId)
+        if(!move) return
+        if (move.pp !== null) move.pp++
+        return move
+    }
+    
     reducePP(moveId) {
         const move = this.moves.find(m => m.id === moveId)
         if(!move) return
