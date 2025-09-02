@@ -3,7 +3,7 @@ import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
 import { Move , Pokemon } from "./utils/models.js";
 
-import { objToFlags,flagsToObj } from "./utils/helpers.js";
+import { objToFlags,flagsToObj, shuffle } from "./utils/helpers.js";
 
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
@@ -152,22 +152,6 @@ function addMove(event, isMega = false) {
   list.appendChild(div);
 }
 
-
-function shuffle(array) {
-  let currentIndex = array.length;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-
-    // Pick a remaining element...
-    let randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
-}
 
 function suggestMoves(options, pokemon) {
   const totalMoves = options.mele + options.ranged;

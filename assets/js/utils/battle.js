@@ -3,7 +3,8 @@ import { Move } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
-import { fixFloat, weightedRandom, sumObj, modObj, sleep } from "./helpers.js"
+import { fixFloat, weightedRandom, sumObj, modObj, sleep, shuffle } from "./helpers.js"
+import move from "../../../data/processors/move.js";
 
 
 class BaseBattle extends EventEmitter {
@@ -617,16 +618,19 @@ class BaseBattle extends EventEmitter {
         // console.log(this.pokemon1.name, move1, this.pokemon2.name, move2);
         // console.log("yeah");
         if (capacity === 1) return
-        for (const p of this.team2.filter(p => p !== this.pokemon2)) {
-          await sleep(1200)
-          const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
-          const scene = new Map([
-            [this.pokemon1, move1],
-            [p, counterMove]
-          ])
+        if (move1.target.startsWith("allAdjacent")) {
+          const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity)
+          for (const p of team) {
+            await sleep(1200)
+            const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
+            const scene = new Map([
+              [this.pokemon1, move1],
+              [p, counterMove]
+            ])
 
-          this.activate(p)
-          await this.run(scene, false, false, 1)
+            this.activate(p)
+            await this.run(scene, false, false, 1)
+          }
         }
     }
 
