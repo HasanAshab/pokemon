@@ -336,9 +336,6 @@ export class Move {
         this._ref.retreat = value
     }
     
-    exists() {
-      return !!this._move
-    }
 
     effectiveness(type) {
         if (type instanceof Move) {

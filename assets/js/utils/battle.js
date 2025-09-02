@@ -29,6 +29,8 @@ class BaseBattle extends EventEmitter {
         this._turnAfterScenes = this.scenePerTurn
         this.team1 = this.filterTeam(team1)
         this.team2 = this.filterTeam(team2)
+        this.pokemon1 = this.team1[0]
+        this.pokemon2 = this.team2[0]
         this._all = [...this.team1, ...this.team2]
         this.fields = fieldTypes.map(f => makeField(this, f))
 
@@ -137,10 +139,6 @@ class BaseBattle extends EventEmitter {
         return this._prompts.get(pokemon);
     }
     
-    filterTeam(team) {
-        return team
-    }
-    
     actives() {
         return [this.pokemon1, this.pokemon2]
     }
@@ -155,7 +153,7 @@ class BaseBattle extends EventEmitter {
           && this.opponentOf(pokemon).state.effects.canOpponentUseMove(move)
     }
 
-    activate(pokemon) {
+    activate(pokemon) {      
         if (this.team1.includes(pokemon)) {
             this.pokemon1 = pokemon
         }
@@ -164,7 +162,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false) {
+    async run(senario, clonemode1 = false, clonemode2 = false, capacity = 2) {
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -615,6 +613,25 @@ class BaseBattle extends EventEmitter {
           clonemode1 && this.pokemon1.state.unfreeze()
           clonemode2 && this.pokemon2.state.unfreeze()
         }
+
+        // console.log(this.pokemon1.name, move1, this.pokemon2.name, move2);
+        // console.log("yeah");
+        
+        if (capacity === 1) return
+        for (const p of this.team2) {          
+          console.log(this.pokemon1.name, this.pokemon2.name);
+            if (p.name === this.pokemon2.name) continue
+            
+            const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
+            const scene = new Map([
+              [this.pokemon1, move1],
+              [p, counterMove]
+            ])
+            
+            this.activate(p)
+            await this.run(scene, false, false, 1)
+        }
+        
     }
 
     _checkFailure(pokemon, senario) {
@@ -651,6 +668,10 @@ class BaseBattle extends EventEmitter {
 }
 
 class SingleBattle extends BaseBattle {
+    filterTeam(team) {
+        return [team[0]]
+    }
+
     needNewWave() {
         return !this._waveAfterTurns ||
             (!this.pokemon1.state.usableOffensiveMoves().length && !this.pokemon2.state.usableOffensiveMoves().length)
@@ -674,7 +695,7 @@ class MultiBattle extends BaseBattle {
     }
     
     filterTeam(team) {
-        return team.filter(p => p.meta.isSelectedForMultiBattle === undefined || p.meta.isSelectedForMultiBattle === true)
+        return team.filter(p => p.meta.isSelectedForMultiBattle === undefined ||p.meta.isSelectedForMultiBattle === true)
     }
 
     needNewWave() {

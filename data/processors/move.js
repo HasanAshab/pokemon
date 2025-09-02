@@ -274,6 +274,7 @@ function setRetreat(move) {
 
 function setCapacity(move) {
   if ("capacity" in move) return
+  
   if (!move.target.startsWith("allAdjacent")) 
       return move.capacity = 1
   move.basePower *= 0.5

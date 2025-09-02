@@ -230,8 +230,9 @@ function loadEffects(playerTag) {
   const pokemon = pokemonMap[playerTag]
   setEffects(pokemon.state.effects.all(), playerTag)
 }
+
 function setBattleStateListeners(playerTag) {
-  const pokemon = pokemonMap[playerTag]
+  const pokemon = pokemonMap[playerTag]  
   const opponent = pokemonMap[opponentTag(playerTag)]
 
   pokemon.state.on(["scene-end", "wave"], () => {
@@ -315,6 +316,26 @@ function setBattleStateListeners(playerTag) {
       })
     })
   })
+  
+  battle.prompt(pokemon).reply("counteralladjacent", (adjacentMove) => {
+    return new Promise((resolve, _) => {
+      resolve(new Move("punch"))
+      return
+      eventEmitter.once("move-card-select", (card, tag) => {
+        if (playerTag !== tag) return
+        const move = new Move(card.dataset.moveId)
+        setShadowCloneSceneTargetMove(move.id)
+        resolve(move)
+        let i = 1
+        opponent.state.on("used-move", move => {
+          if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) {
+            setShadowCloneSceneTargetDodged(i/2, opponentTag(playerTag))
+          }
+          i++
+        }, "dodge-detector")
+      })
+    })
+  })
 }
 
 function loadChoosePokemon(playerTag) {
@@ -359,6 +380,23 @@ function loadTeams() {
 function registerBattle() {
   const Battle = BATTLE_SYSTEMS[system]
   globalThis.battle = new Battle(teams.you, teams.enemy, fields)
+
+  if (system === "multiple") {
+    pokemonMap = {
+      "you": teams.you.find(p => p.meta.isSelectedForMultiBattle),
+      "enemy": teams.enemy.find(p => p.meta.isSelectedForMultiBattle)
+    }
+    
+    Object.keys(teams).forEach(t => {
+      const oldP = pokemonMap[t]
+      teams[t].forEach(p => {        
+        if (!p.meta.isSelectedForMultiBattle) return
+        pokemonMap[t] = p
+        setupPokemonForDom(t)
+      })
+      pokemonMap[t] = oldP
+    })
+  }
 }
 
 function switchPokemon(playerTag, index) {

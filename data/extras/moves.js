@@ -977,6 +977,7 @@ katana: {
         target: { spd: -1 }
       },
       type: "Normal",
+      target: "normal",
       retreat: 3
     },
     kunaishurikin: {

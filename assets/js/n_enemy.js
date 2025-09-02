@@ -43,19 +43,19 @@ function getEnemyForm(index) {
   return `
     <h3>Enemy ${index + 1}</h3>
     <label>Choose Enemy Image</label>
-    <input list="enemy-data-list" class="enemy" onblur="showStats(event)">
+    <input list="enemy-data-list" class="enemy" onblur="showStats(event)" value="rookie">
     <br>
     <label>Name</label>
     <input type="text" class="name-inp" value="E${index + 1}">
     <br>
     <label>Level</label>
-    <input type="number" class="level-inp" value="1" onchange="showStats(event)">
+    <input type="number" class="level-inp" value="20" onchange="showStats(event)">
     <br>
     <label>Retreat</label>
-    <input type="number" class="retreat-inp" value="2">
+    <input type="number" class="retreat-inp" value="4">
     <br>
     <label>Nature</label>
-    <input list="natures-data-list" value="calm" type="text" onblur="showStats(event)" class="nature-inp">
+    <input list="natures-data-list" value="none" type="text" onblur="showStats(event)" class="nature-inp">
     <br>
     <label>Mega Suffix</label>
     <select class="mega-suffix-select">
@@ -229,7 +229,6 @@ function suggestMoves(options, pokemon) {
       const powerCategory = getPowerCategory(move);
       powerCounts[powerCategory]++;
     });
-    console.log(moves);
     
     return moves;
   };
@@ -292,7 +291,6 @@ function suggestMoves(options, pokemon) {
 }
 
 function getDefaultPrompt({ level, nature }) {
-  const nature = 'tai'
   const count = level / 4
 
   const meleMap = {
@@ -335,17 +333,21 @@ function getDefaultPrompt({ level, nature }) {
 
 function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
+  const typesInputIndex = form.querySelector(".multy-input-box").dataset.index
   const prompt = window.prompt("Edit the prompt here", objToFlags(getDefaultPrompt({
-    level: 20,
-    nature: 'tai'
+    level: form.querySelector('.level-inp').value,
+    nature: form.querySelector('.nature-inp').value
   })));
   const automaticCreatedMoves = suggestMoves(flagsToObj(prompt), {
-    level: 20,
-    types: ["Normal", "Fighting"]
+    level: form.querySelector('.level-inp').value,
+    types: getMultyInputValues("types",typesInputIndex),
   });
+
   const list = form.querySelector('.moves-list');
-  list.innerHTML = '';
+  const moveItems = list.querySelectorAll('.move-item');
+  if ( moveItems.length === 0){
   automaticCreatedMoves.forEach(move => {
+    
     const div = document.createElement('div');
     div.className = 'move-item';
     div.innerHTML = `
@@ -354,6 +356,17 @@ function setMoveAutomatic(event) {
     `;
     list.appendChild(div);
   });
+}else {
+  moveItems.forEach(moveItem => {
+   
+    
+    const moveInput = moveItem.querySelector('.move-input');
+    if (moveInput.value === "") {
+      moveItem.value = automaticCreatedMoves.shift();
+    }
+     console.log(moveItem);
+  })
+}
 }
 function removeMove(event) {
   const moveItem = event.target.closest('.move-item');
@@ -362,8 +375,9 @@ function removeMove(event) {
 
 globalThis.showMoveDetails = function({currentTarget}){
  const moveName = currentTarget.value
+
+  if (moveName in MOVES) {
   const move =  new Move(moveName)
-  if (move.exists()){
     const moveDetails = document.querySelector(".move-details")
     moveDetails.querySelector(".name").textContent = move.name
     moveDetails.querySelector(".desc").textContent = move.description() + '\n' + JSON.stringify({
@@ -378,7 +392,10 @@ globalThis.showMoveDetails = function({currentTarget}){
 
 function showMoveMoreDetails(moveName) {
   const details = MOVES[moveName];
+  if (details) {
   document.getElementById("details").textContent = JSON.stringify(details, null, 2);
+  }
+
 }
 
 
