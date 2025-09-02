@@ -7113,7 +7113,7 @@ export default {
       accuracy: 95,
       basePower: 40,
       basePowerCallback(pokemon, target, move) {
-        if (!pokemon.volatiles["furycutter"] || move.hit === 1) {
+        if (!pokemon.volatiles["furycutter"] || move._hitNo === 1) {
           pokemon.addVolatile("furycutter")
         }
         const bp = this.clampIntRange(
@@ -22636,7 +22636,7 @@ export default {
       accuracy: 90,
       basePower: 20,
       basePowerCallback(pokemon, target, move) {
-        return 20 * move.hit
+        return 20 * move._hitNo
       },
       category: "Physical",
       name: "Triple Axel",
@@ -22669,8 +22669,8 @@ export default {
       num: 167,
       accuracy: 90,
       basePower: 10,
-      basePowerCallback(pokemon, target, move) {
-        return 10 * move.hit
+      basePowerCallback(pokemon, target, move) {        
+        return 10 * move._hitNo
       },
       category: "Physical",
       name: "Triple Kick",

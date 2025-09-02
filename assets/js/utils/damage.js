@@ -9,10 +9,11 @@ export class Damage {
     
     criticalMultiplier = 1
 
-    constructor(attacker, move, target = null) {
+    constructor(attacker, move, target = null, hitNo = 1) {
         this.attacker = attacker
         this.target = target
         this.move = move
+        move._hitNo = hitNo
         this._calculate()
         this.count = fixFloat(this.count)
     }
@@ -111,7 +112,7 @@ export class Hit {
         this.target = target
         this.move = move
         this.damages = Array.from({ length: this.move.multiHit() }, (_, i) => {
-            return new Damage(attacker, move, target)
+            return new Damage(attacker, move, target, i + 1)
         })
     }
 
