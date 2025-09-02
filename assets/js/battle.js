@@ -303,7 +303,8 @@ function setBattleStateListeners(playerTag) {
     return new Promise((resolve, _) => {
       eventEmitter.once("move-card-select", (card, tag) => {
         if (playerTag !== tag) return
-        const move = new Move(card.dataset.moveId)
+        const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)
+        const move = new Move(card.dataset.moveId, storedMove._meta)        
         setShadowCloneSceneTargetMove(move.id)
         resolve(move)
         let i = 1
@@ -324,7 +325,8 @@ function setBattleStateListeners(playerTag) {
       
       eventEmitter.once("move-card-select", (card, tag) => {
         if (playerTag !== tag) return
-        const move = new Move(card.dataset.moveId)
+        const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)        
+        const move = new Move(card.dataset.moveId, storedMove._meta)
         resolve(move)
       })
     })
