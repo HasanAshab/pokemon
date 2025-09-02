@@ -5,8 +5,10 @@ rolleout
 add capacity icon on moves
 field management
 
+
 * Bugs
 tripple kick
+alldjust foo pp
 
 * Data
 armors
