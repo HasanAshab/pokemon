@@ -52,8 +52,7 @@ export class Damage {
             if(this.target || this.move.basePowerCallback.length === 1) {
                 try {
                     bp = this.move.basePowerCallback(this.attacker, this.target, this.move)
-                    console.log(this.move.id, 'CB BP: ', bp)
-
+                    // console.log(this.move.id, 'CB BP: ', bp)
                 }
                 catch(e) {
                     console.error(e)

@@ -272,7 +272,7 @@ startBattle([
   "isSelectedForMultiBattle": true,
   "moves": [
     {
-      "id": "chakraabsorb"
+      "id": "shadowclone",
     }
   ],
   "mega": {

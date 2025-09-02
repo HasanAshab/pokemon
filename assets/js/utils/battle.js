@@ -559,9 +559,10 @@ class BaseBattle extends EventEmitter {
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove, allHitMove, i + 1)
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
-                          opponentMove.basePower /= cloneMoves.length - i
+                          opponentMove.capacity -= cloneMoves.length - i
                           allHitMove = opponentMove
                           this.pokemon2.state.retreat -= opponentMove.retreat
+                          move2 = opponentMove
                       }
                       const cloneScene = new Map([
                         [this.pokemon1, cloneMove],
@@ -593,9 +594,10 @@ class BaseBattle extends EventEmitter {
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove, i + 1)
                       if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
-                          opponentMove.basePower /= cloneMoves.length - i
+                          opponentMove.capacity -= cloneMoves.length - i
                           allHitMove = opponentMove
                           this.pokemon1.state.retreat -= opponentMove.retreat
+                          move1 = opponentMove
                       }
                       const cloneScene = new Map([
                         [this.pokemon2, cloneMove],
@@ -619,7 +621,7 @@ class BaseBattle extends EventEmitter {
         const aj2 = move2.target.startsWith("allAdjacent")
 
         if (ajmode | (aj1 && aj2)) {}
-        else if (aj1) {
+        else if (aj1) {          
           const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity)
           for (const p of team) {
             await sleep(1200)
