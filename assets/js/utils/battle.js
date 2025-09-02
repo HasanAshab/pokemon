@@ -163,7 +163,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false, capacity = 2) {
+    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -615,10 +615,11 @@ class BaseBattle extends EventEmitter {
           clonemode2 && this.pokemon2.state.unfreeze()
         }
 
-        // console.log(this.pokemon1.name, move1, this.pokemon2.name, move2);
-        // console.log("yeah");
-        if (capacity === 1) return
-        if (move1.target.startsWith("allAdjacent")) {
+        const aj1 = move1.target.startsWith("allAdjacent")
+        const aj2 = move2.target.startsWith("allAdjacent")
+
+        if (ajmode | (aj1 && aj2)) {}
+        else if (aj1) {
           const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity)
           for (const p of team) {
             await sleep(1200)
@@ -627,9 +628,23 @@ class BaseBattle extends EventEmitter {
               [this.pokemon1, move1],
               [p, counterMove]
             ])
-
             this.activate(p)
-            await this.run(scene, false, false, 1)
+            this.pokemon1.state.retreat += move1.retreat
+            await this.run(scene, false, false, true)
+          }
+        }
+        else if (aj2) {
+          const team = shuffle(this.team1.filter(p => p !== this.pokemon1)).slice(0, move2.capacity)
+          for (const p of team) {
+            await sleep(1200)
+            const counterMove = await this.prompt(p).ask("counteralladjacent", move2)
+            const scene = new Map([
+              [this.pokemon2, move2],
+              [p, counterMove]
+            ])
+            this.activate(p)
+            this.pokemon2.state.retreat += move2.retreat
+            await this.run(scene, false, false, true)
           }
         }
     }
