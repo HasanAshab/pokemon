@@ -318,8 +318,17 @@ export class Move {
         this._move = moves[id];                
         this._ref = JSON.parse(JSON.stringify(this._move))
         Object.assign(this, this._move)
+        this._settedCapacity = 0
     }
-    
+
+    get capacity() {
+        return Math.round(this._move.capacity * Math.pow(1.5, this._meta.grade || 0)) + this._settedCapacity
+    }
+
+    set capacity(value) {
+        this._settedCapacity = value
+    }
+  
     get isNeverFails() {
         return this.accuracy === true || this.category === "Status" || !this.flags.twoturn
     }
@@ -335,7 +344,6 @@ export class Move {
     set retreat(value) {
         this._ref.retreat = value
     }
-    
 
     effectiveness(type) {
         if (type instanceof Move) {

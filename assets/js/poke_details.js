@@ -237,7 +237,7 @@ function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
     for (const moveMeta of pokemon.movesMeta()) {
-        const move = new Move(moveMeta.id)
+        const move = new Move(moveMeta.id, moveMeta)
         move._meta = moveMeta
         const damage = new Damage(pokemon, move)
    movesContainer.innerHTML +=   `

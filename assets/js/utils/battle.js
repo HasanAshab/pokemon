@@ -593,8 +593,8 @@ class BaseBattle extends EventEmitter {
                   
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove, i + 1)
-                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
-                          opponentMove.capacity -= cloneMoves.length - i
+                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {                          
+                          opponentMove.capacity -= cloneMoves.length - i                          
                           allHitMove = opponentMove
                           this.pokemon1.state.retreat -= opponentMove.retreat
                           move1 = opponentMove
@@ -865,8 +865,7 @@ class BattleState extends EventEmitter {
     }
     
     addMove(id, meta = {}) {
-        const move = new Move(id)
-        move._meta = meta
+        const move = new Move(id, meta)
         move._user = this.pokemon
         if(!this.hasMove(id)) {
             this.moves.push(move)

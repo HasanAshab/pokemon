@@ -3,6 +3,7 @@ alladjacent star
 rolleout 
 
 * UI
+add capacity icon on moves
 
 * Bugs
 tripple kick
