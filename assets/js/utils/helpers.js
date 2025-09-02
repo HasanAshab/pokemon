@@ -32,6 +32,10 @@ export function sliceObj(obj, start, end) {
     )
 }
 
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export function getParam(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);

@@ -319,20 +319,13 @@ function setBattleStateListeners(playerTag) {
   
   battle.prompt(pokemon).reply("counteralladjacent", (adjacentMove) => {
     return new Promise((resolve, _) => {
-      resolve(new Move("punch"))
-      return
+      const pokemonToSelect = document.querySelector(`.pokemon-switch-controler .pokemon[data-name="${pokemon.meta.name}"]`)
+      pokemonToSelect.click()
+      
       eventEmitter.once("move-card-select", (card, tag) => {
         if (playerTag !== tag) return
         const move = new Move(card.dataset.moveId)
-        setShadowCloneSceneTargetMove(move.id)
         resolve(move)
-        let i = 1
-        opponent.state.on("used-move", move => {
-          if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) {
-            setShadowCloneSceneTargetDodged(i/2, opponentTag(playerTag))
-          }
-          i++
-        }, "dodge-detector")
       })
     })
   })
@@ -345,7 +338,7 @@ function loadChoosePokemon(playerTag) {
   let i = 0
   for (const pokemon of teams[playerTag]) {
     pokemonSwitchControler.innerHTML += `
-          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
+          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
