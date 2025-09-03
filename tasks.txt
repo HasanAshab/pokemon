@@ -1,5 +1,4 @@
 * Tasks
-multihit effect chance increase
 
 * UI
 

@@ -384,9 +384,15 @@ export class Move {
 
     description(short = false) {
         const desc = movesText[this.id]
-        if (!desc) return "No description available"
         const key = short ? "shortDesc" : "desc"
-        return desc[key] ?? desc.shortDesc
+        let genMsg = "No description available" 
+        if (Array.isArray(this.multihit))
+            genMsg = `Hits ${this.multihit[0]} to ${this.multihit[1]} times.`
+        else if (this.multihit)
+            genMsg = `Hits ${this.multihit} times.`
+
+        const msg = desc?.[key] ?? desc?.shortDesc ?? genMsg
+        return msg
     }
 
     healRate() {

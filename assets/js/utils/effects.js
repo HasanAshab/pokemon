@@ -8,7 +8,9 @@ class Effect {
 
     static isImmune(pokemon) {
         const abilityTrigger = pokemon.abilities.isEnabled() && pokemon.abilities.isImmune(this.effectName)
-        return abilityTrigger || pokemon.types.some(t => this.immuneTo.includes(t))
+        const typeTrigger = (pokemon.isHuman ? pokemon._beastTypes : pokemon.types)
+          .some(t => this.immuneTo.includes(t))
+        return abilityTrigger || typeTrigger
     }
 
     static isPre() {
@@ -553,7 +555,6 @@ class PaperBombEffect extends Effect {
         const lowMovement = this.state.pokemon.level 
         const midMovement = lowMovement * 2
         const armorRemoved = this._cachedArmors.some(id => !this.state.armor._items.some(armor => armor.id === id))
-        console.log(this.state.armor._items, this._cachedArmors);
         
         let explodeChance
         if (move._bp > midMovement) {
@@ -569,7 +570,6 @@ class PaperBombEffect extends Effect {
         if (armorRemoved) {
             explodeChance += 30
         }
-        console.log(explodeChance);
         
         if (Math.random() * 100 < explodeChance) {
             this._explode()
@@ -638,7 +638,7 @@ export class EffectManager {
         return this._effects.filter(effect => effect instanceof ExpirableEffect && effect.isExpired())
     }
     
-    add(source, effectName) {
+    add(source, effectName) {      
         if (this._freezed) return null
         const EffectClass = EFFECTS[effectName]
         const isImmune = EffectClass?.isImmune(this.state.pokemon)
@@ -691,14 +691,15 @@ export class EffectManager {
                     }
                 })
         }
-        else if(on === "target") {
+        else if(on === "target") {            
             move.effects.target
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
-                .forEach(effect => {     
+                .forEach(effect => {
                     const chance = attacker.abilities.isActive(abilitiesMap[effect.name])
                         ? 100
-                        : effect.chance
-                    if (Math.random() < (chance / 100)) {
+                        : effect.chance * move.hits
+                    
+                    if (Math.random() < (chance / 100)) {                      
                         this.add(move, effect.name)
                     }
                 })
