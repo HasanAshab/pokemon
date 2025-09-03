@@ -1,7 +1,8 @@
 * Tasks
-beast
-entity
-summon
+beast entity
+  summon
+  level, stat
+  type effective
 
 * UI
 add capacity icon on moves

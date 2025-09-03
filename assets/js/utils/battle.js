@@ -771,10 +771,13 @@ class MultiBattle extends BaseBattle {
 }
 
 class BattleState extends EventEmitter {
-    static DEFAULT_MOVES = [
+    static SYS_MOVES = [
         "staythere",
         "dodge",
         "block",
+    ]
+    
+    static DEFAULT_MOVES = [
         "punch",
         "kick"
     ]
@@ -898,7 +901,12 @@ class BattleState extends EventEmitter {
 
     setMoves(moves) {
         this.moves = []
-        BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+
+        BattleState.SYS_MOVES.forEach(m => this.addMove(m))
+        "moves" in this.pokemon._pokemon
+          ? this.pokemon._pokemon.moves.forEach(m => this.addMove(m))
+          : BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+
         moves.filter(moveMeta => !moveMeta.isUnselected)
           .forEach(moveMeta => {
             moveMeta.isDefault = true
