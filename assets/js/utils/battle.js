@@ -970,6 +970,11 @@ class BattleState extends EventEmitter {
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
+    summon(id) {
+        console.log(id);
+        
+    }
+
     usableMoves() {
         return this.moves.filter(m => this.battle.canUseMove(this.pokemon, m.id))
     }

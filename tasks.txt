@@ -1,6 +1,6 @@
 * Tasks
 beast entity
-  summon
+  summon, fail 5 recoil of current hp
   level, stat
   type effective
 
