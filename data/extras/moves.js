@@ -1198,6 +1198,7 @@ katana: {
       type: "Fighting",
       contestType: "Tough"
     },
+
   "$paperbomb:explode": {
     num: 100045,
     accuracy: true,
@@ -1217,4 +1218,22 @@ katana: {
     type: "Normal",
     retreat: 0,
   },
+    snakegang: {
+      num: 100046,
+      accuracy: 100,
+      basePower: 20,
+      multihit: [2, 5],
+      category: "Physical",
+      name: "Snake Gang Bang",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 20,
+        status: "psn"
+      },
+      target: "normal",
+      type: "Poison",
+      contestType: "Tough" 
+    }
 }

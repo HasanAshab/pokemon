@@ -7,5 +7,5 @@ import summoningMoves from '../extras/summoning_moves.js'
 export default process({
     ...defaultMoves,
     ...extraMoves,
-    ...summoningMoves
+    ...summoningMoves,
 });

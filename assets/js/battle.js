@@ -298,14 +298,21 @@ function setBattleStateListeners(playerTag) {
   pokemon.state.on(["scene-end", "wave"], () => {
     loadPokemonData(playerTag)
   })
-
+  pokemon.state.on("wave", () => {
+    loadChoosePokemon(playerTag)
+  })
   pokemon.state.on("scene", () => {
     loadEffects(playerTag)
   })
   pokemon.state.on("scene-end", () => {
     setTimeout(() => {
+      globalThis.teams = {
+        "you": battle.team1,
+        "enemy": battle.team2
+      }
       loadEffects(playerTag)
       setStatChanges(pokemon.state.stats._statChanges, playerTag)
+      loadChoosePokemon(playerTag)
     }, 2000)
   })
 

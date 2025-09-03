@@ -1,8 +1,9 @@
 * Tasks
-beast entity
-  summon, fail 5 recoil of current hp
-  level, stat
-  type effective
+beast
+  level
+  stat
+  abilities
+multihit effect chance increase
 
 * UI
 
@@ -10,7 +11,6 @@ beast entity
 * Bugs
 
 * Data
-armors
 hand6
 
 * Bottle neck

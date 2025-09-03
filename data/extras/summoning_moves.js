@@ -18,15 +18,19 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
   MOVES[`summon:${id}`] = {
     accuracy: 50,
     basePower: 0,
-    category: "Special",
+    category: "Status",
     name: `Summon (${pokemon.name})`,
     pp: null,
     priority: 0,
     flags: {},
-    target: "normal",
+    target: "self",
     type: "Normal",
     retreat: calcRetreat(pokemon),
-    onAfterMove() {
+    onTryMove(pokemon) { 
+      pokemon.state.decreaseHealth(pokemon.hp * 0.05, true)
+      return null
+    },
+    onAfterMove(pokemon) {
       pokemon.state.summon(id)
     }
   }

@@ -141,6 +141,10 @@ export class Pokemon extends PSPokemon {
         return hp === 0
     }
 
+    get isHuman() {
+        return !["entity", "beast"].includes(this._pokemon.type)
+    }
+
     isTypeOf(type) {
         return this.types.includes(type);
     }
@@ -154,11 +158,15 @@ export class Pokemon extends PSPokemon {
         let effectiveness = 1;
         if (!type) return effectiveness
         
-        this._beastTypes.forEach(tType => {
+        const effectableTypes = this.isHuman 
+          ? this._beastTypes
+          : this.types
+
+        effectableTypes.forEach(tType => {
             if (typeChart[type] && typeChart[type][tType]) {
                 effectiveness *= typeChart[type][tType];
             }
-        });
+        });        
         
         return effectiveness;
     }
@@ -321,7 +329,8 @@ export class Move {
         this._reducedCapacity = 0
     }
 
-    get capacity() {      
+    get capacity() {
+        if (!this.target.startsWith("allAdjacent")) return 1    
         return Math.round(this._move.capacity * Math.pow(1.5, this._meta.grade || 0)) - this._reducedCapacity
     }
 
@@ -334,7 +343,7 @@ export class Move {
     }
   
     get isNeverFails() {
-        return this.accuracy === true || this.category === "Status" || !this.flags.twoturn
+        return this.accuracy === true || this.category !== "Status"
     }
     get hits() {
         return 'hit' in this ? this.hit.hitCount() : 1
@@ -409,7 +418,8 @@ export class Move {
             if (succeed) return true
             // Calculate the effective accuracy
             const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
-    
+            console.log(effectiveAccuracy);
+            
             // Generate a random number between 0 and 100
             const randomChance = Math.random() * 100;
     
