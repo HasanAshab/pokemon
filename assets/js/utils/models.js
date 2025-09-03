@@ -321,7 +321,8 @@ export class Move {
         this._reducedCapacity = 0
     }
 
-    get capacity() {      
+    get capacity() {
+        if (!this.target.startsWith("allAdjacent")) return 1    
         return Math.round(this._move.capacity * Math.pow(1.5, this._meta.grade || 0)) - this._reducedCapacity
     }
 

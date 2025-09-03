@@ -1,5 +1,5 @@
 import { EventEmitter } from "./event.js";
-import { Move } from "./models.js";
+import { Move, Pokemon } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
@@ -92,6 +92,19 @@ class BaseBattle extends EventEmitter {
                 p.state.emit(this._event, map.get(p), map)
             })
         })
+    }
+
+    addPokemon(pokemon) {
+        const team = pokemon._tag === "you" ? this.team1 : this.team2
+        team.push(pokemon)
+        this._all.push(pokemon)
+        this._prompts.set(pokemon, new BattlePrompt())
+        if (!pokemon.state) {
+            pokemon.state = new BattleState(this, pokemon)
+            this._states.set(pokemon, pokemon.state)
+            pokemon.state.emit("start")
+        }
+        console.log(pokemon.state.moves)
     }
 
     addField(type) {
@@ -768,6 +781,11 @@ class MultiBattle extends BaseBattle {
     groundedPokemons() {
         return this._all
     }
+
+    addPokemon(pokemon) {
+        pokemon.meta.isSelectedForMultiBattle = true
+        super.addPokemon(pokemon)
+    }
 }
 
 class BattleState extends EventEmitter {
@@ -784,6 +802,7 @@ class BattleState extends EventEmitter {
 
     flags = {}
     _manCount = 1
+    _summonNo = 1
     _data = {}
     _retreatModifiers = []
 
@@ -824,7 +843,7 @@ class BattleState extends EventEmitter {
             moveFailed && move.onMoveFail?.(opponent, this.pokemon, opponentMove)
         })
         
-        this.on("hitted-move", move => {
+        this.on("hitted-move", move => {            
             const opponent = this.battle.opponentOf(this.pokemon)
             try {
               move.onHit?.(this.pokemon, opponent)
@@ -845,7 +864,7 @@ class BattleState extends EventEmitter {
         this.on("turn-end", () => {          
             this.retreat -= this.pokemon.abilities.retreatCost()
         })
-        pokemon.meta.moves && this.setMoves(pokemon.meta.moves)
+        this.setMoves(pokemon.meta.moves || [])
     }
 
     retreatModifier(move) {
@@ -971,8 +990,14 @@ class BattleState extends EventEmitter {
     }
 
     summon(id) {
-        console.log(id);
-        
+        const sourceMove = this.moves.find(m => m.id === `summon:${id}`);
+        const level = (sourceMove._meta.grade || 0) * 3         
+        const summon = new Pokemon(id, {
+          xp: (level * 100) - 1,
+          retreat: Math.max(3, level)
+        }, this.pokemon._tag)
+        summon.meta.name = `${summon.name} (${this._summonNo++})`
+        this.battle.addPokemon(summon)
     }
 
     usableMoves() {

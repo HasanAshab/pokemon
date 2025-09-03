@@ -260,7 +260,12 @@ function setBattleStateListeners(playerTag) {
   const opponent = pokemonMap[opponentTag(playerTag)]
 
   pokemon.state.on(["scene-end", "wave"], () => {
+    globalThis.teams = {
+      "you": battle.team1,
+      "enemy": battle.team2
+    }
     loadPokemonData(playerTag)
+    loadChoosePokemon(playerTag)
   })
 
   pokemon.state.on("scene", () => {

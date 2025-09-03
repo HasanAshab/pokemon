@@ -1,8 +1,9 @@
 * Tasks
 beast entity
-  summon, fail 5 recoil of current hp
   level, stat
   type effective
+
+multihit effect chance increase
 
 * UI
 
