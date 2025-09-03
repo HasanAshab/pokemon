@@ -103,6 +103,9 @@ globalThis.showStatEditForm = function (playerTag) {
 
   setStatChanges(pokemon.state.stats._statChanges, playerTag)
 }
+
+
+
 globalThis.showEffectsEditForm = function (playerTag) {
   const pokemon = pokemonMap[playerTag]
   const oldEffects = pokemon.state.effects.names().join(', ')
@@ -120,6 +123,7 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   playerSettingsForm.querySelector(".header > .name").textContent = playerTag
   loadAbilities(playerTag)
   loadItems(playerTag)
+  loadEasyStats(playerTag)
   loadTokenStats(playerTag)
   // global
   loadActiveFeilds()
@@ -145,6 +149,39 @@ globalThis.fieldClickHandler = function({currentTarget}){
  else   
     battle.addField(fieldType)
  loadActiveFeilds()
+}
+function loadEasyStats(playerTag){
+  const pokemon = pokemonMap[playerTag]
+  const stats = pokemon.state.stats._statChanges
+  const statsWrapper = document.querySelector(".player-settings-form .settings.stats")
+ statsWrapper.innerHTML = ""
+ for (const stat in stats){
+  const statElm = document.createElement("div")
+ statElm.className = "stat"
+ statElm.setAttribute("data-stat-name",stat)
+ statElm.innerHTML = `
+                 <p data-value="${stats[stat]}" class="stat-name">${stat.toUpperCase()}:</p>
+             <div class="button-wrapper">
+           <svg class="increase-btn" onclick="increaseStat('${playerTag}','${stat}')"   width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#009c1a"></path> </g></svg>
+            <svg class="decrease-btn" onclick="decreaseStat('${playerTag}','${stat}')"  width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ff1212"></path> </g></svg>
+             </div>
+  `
+  statsWrapper.appendChild(statElm)
+ }
+}
+globalThis.increaseStat = function(playerTag,statName){
+   const pokemon = pokemonMap[playerTag]
+   pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] + 0.5 
+    setStatChanges(pokemon.state.stats._statChanges, playerTag)
+   loadEasyStats(playerTag)
+  
+}
+globalThis.decreaseStat = function(playerTag,statName){
+   const pokemon = pokemonMap[playerTag]
+   pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] - 0.5 
+  setStatChanges(pokemon.state.stats._statChanges, playerTag)
+   loadEasyStats(playerTag)
+
 }
 function loadVeryCloseBtn() {
   const btn = document.getElementById("very-close-btn")

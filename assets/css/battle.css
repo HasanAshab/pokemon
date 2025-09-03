@@ -367,7 +367,7 @@ flex-direction: column;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   gap: 4px;
 }
 
@@ -426,6 +426,38 @@ flex-direction: column;
   border: none;
 }
 
+.player-settings-form .settings-wrapper .settings.stats{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-height:300px;
+  overflow-y:scroll;
+}
+
+.player-settings-form .settings-wrapper .settings.stats > .stat{
+display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  width: calc(100% - 4vw);
+  font-size: large;
+  padding: 1vw 2vw;
+  transition: background-color .3s;
+}
+.player-settings-form .settings-wrapper .settings.stats > .stat > .stat-name:after{
+ content: " " attr(data-value);
+ font-weight: bold;
+   font-size: large;
+}
+
+./* player-settings-form .settings-wrapper .settings.stats > .stat:has(.increase-btn:active) {
+    background-color: #9cff91;
+}
+.player-settings-form .settings-wrapper .settings.stats > .stat:has(.decrease-btn:active) {
+    background-color: #ff9999;
+
+} */
 /* shadow clone controller */
 .shadow-clone-scene-controller{
   width: 90vw;
