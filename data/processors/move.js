@@ -1,23 +1,4 @@
 import { processor, setKeyIfNotExists } from "./helpers.js"
-import { capitalizeFirstLetter } from "../../assets/js/utils/helpers.js"
-
-function supportSummon(move, id) {  
-  if (!move.isSummoningJutsu) return
-  const entityImage = id.split(':')[1]
-  const summonMove = {
-    accuracy: true,
-    basePower: 0,
-    category: "Special",
-    name: `Summon ${capitalizeFirstLetter(entityImage)}`,
-    pp: null,
-    priority: 0,
-    flags: {},
-    target: "normal",
-    type: "Normal",
-    retreat: 0
-  }
-  Object.assign(move, summonMove, move)
-}
 
 
 function isTwoTurnMove(move) {
@@ -330,7 +311,6 @@ function addKoHandler(move) {
 }
 
 export default processor([
-    supportSummon,
     mergeDefault,
     bindMethods,
     addFlags,
