@@ -80,6 +80,9 @@ class BaseBattle extends EventEmitter {
         this.on("wave", (...args) => {
             this.waveNo++
             this._waveAfterTurns = 0
+            this._all
+              .filter(p => p.isFainted)
+              .forEach(p => this.removePokemon(p))
         })
         
         this.on(["turn", "turn-end", "wave"], function(...args) {
@@ -104,6 +107,14 @@ class BaseBattle extends EventEmitter {
             this._states.set(pokemon, pokemon.state)
             pokemon.state.emit("start")
         }
+    }
+
+    removePokemon(pokemon) {
+        const team = pokemon._tag === "you" ? this.team1 : this.team2
+        team.splice(team.indexOf(pokemon), 1)
+        this._all.splice(this._all.indexOf(pokemon), 1)
+        this._prompts.delete(pokemon)
+        this._states.delete(pokemon)
     }
 
     addField(type) {

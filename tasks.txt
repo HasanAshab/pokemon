@@ -2,7 +2,7 @@
 beast entity
   level, stat
   type effective
-stash fainted
+
 multihit effect chance increase
 
 * UI
