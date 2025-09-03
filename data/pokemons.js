@@ -14,7 +14,6 @@ for (const beast of Object.values(beasts)) {
   beast.type = "beast"
 }
 
-
 export default {
   ...humans,
   ...entities,

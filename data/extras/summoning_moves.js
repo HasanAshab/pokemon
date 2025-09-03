@@ -2,12 +2,12 @@ import pokemons from "../pokemons.js"
 
 const MOVES = {}
 
-for (const pokemon of Object.values(pokemons)) {
+for (const [id, pokemon] of Object.entries(pokemons)) {
   if (!["beast", "entity"].includes(pokemon.type)) continue
   console.log(pokemon.name);
-  console.log(pokemon.id);
+  console.log(id);
   
-  MOVES[`summon:${pokemon.id}`] = {
+  MOVES[`summon:${id}`] = {
     accuracy: true,
     basePower: 0,
     category: "Special",

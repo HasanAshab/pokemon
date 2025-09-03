@@ -593,7 +593,7 @@ class BaseBattle extends EventEmitter {
                       if (allHitMove) {
                         this.pokemon2.state.retreat += allHitMove.retreat
                         allHitMove.reduceCapacity()
-                        if (allHitMove.capacity <= 1) {
+                        if (allHitMove.capacity <= 0) {
                           allHitMove = null
                           move2 = oldMove2
                         }
@@ -639,7 +639,7 @@ class BaseBattle extends EventEmitter {
                         this.pokemon1.state.increasePP(allHitMove.id)
 
                         allHitMove.reduceCapacity()
-                        if (allHitMove.capacity <= 1) {
+                        if (allHitMove.capacity <= 0) {
                           allHitMove = null
                           move1 = oldMove1
                         }
