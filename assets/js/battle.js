@@ -8,7 +8,7 @@ import { loadMovesDatalist } from "./utils/dom.js";
 
 
 const eventEmitter = new EventEmitter()
-const system = getParam("system") || "single"
+const system = getParam("system") || "multiple"
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.abilitiesPopupQueue = new PopupMsgQueue("abilities-msg-cont", 4, 3000);
 globalThis.toggleMoveInfo = function (info) {
@@ -382,7 +382,9 @@ function loadChoosePokemon(playerTag) {
 
 function makeMyPokemons() {
   const pokemonsMeta = getPokemonsMeta()
-  return Object.keys(pokemonsMeta).map(id => new Pokemon(pokemonsMeta[id].id, pokemonsMeta[id], "you"))
+  return Object.keys(pokemonsMeta)
+    .map(id => new Pokemon(pokemonsMeta[id].id, pokemonsMeta[id], "you"))
+    .filter(p => system !== "multiple" || p.meta.isSelectedForMultiBattle)
 }
 
 function makeEnemyPokemons() {
