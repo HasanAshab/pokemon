@@ -17274,7 +17274,8 @@ export default {
         mirror: 1,
         metronome: 1,
         failinstruct: 1,
-        noparentalbond: 1
+        noparentalbond: 1,
+        combo: 1
       },
       onModifyMove(move, pokemon, target) {
         if (pokemon.volatiles["rollout"] || pokemon.status === "slp" || !target)

@@ -1,8 +1,20 @@
 import { processor, setKeyIfNotExists } from "./helpers.js"
 
 
-function handleComboMoves(move) {
-  // const old
+function handleComboMoves(move, id) {  
+  if (!move.flags.combo) return
+  move.basePowerCallback = function(pokemon, target) {
+    const pastFiveMoves = pokemon.state._data.movesHistory.slice(-4)
+
+    let hitCount = 0
+    for (let i = pastFiveMoves.length - 1; i >= 0; i--) {
+      if (pastFiveMoves[i] !== id) break
+      hitCount++
+    }
+
+    return move.basePower * Math.pow(2, hitCount)
+  };
+  delete move.onAfterMove
 }
 
 
@@ -316,6 +328,7 @@ function addKoHandler(move) {
 }
 
 export default processor([
+    handleComboMoves,
     mergeDefault,
     bindMethods,
     addFlags,

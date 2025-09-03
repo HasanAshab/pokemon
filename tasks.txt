@@ -1,11 +1,10 @@
 * Tasks
-rolleout 
 
 * UI
 
-
 * Bugs
 status alladjacent capacity 
+
 * Data
 hand6
 charizard basestat

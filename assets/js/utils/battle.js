@@ -812,7 +812,9 @@ class BattleState extends EventEmitter {
     flags = {}
     _manCount = 1
     _summonNo = 1
-    _data = {}
+    _data = {
+      movesHistory: []
+    }
     _retreatModifiers = []
 
 
@@ -846,10 +848,14 @@ class BattleState extends EventEmitter {
             }
         })
         
-        this.on("used-move", (move, opponentMove) => {
+        this.on("used-move", (move, opponentMove) => {          
             const opponent = this.battle.opponentOf(this.pokemon)
             const moveFailed = !move.succeed || (opponentMove.id === "dodge" && opponentMove._dodgeMatrix?.[0])
             moveFailed && move.onMoveFail?.(opponent, this.pokemon, opponentMove)
+        })
+
+        this.on("used-move", (move) => {          
+            this._data.movesHistory.push(move.id)
         })
         
         this.on("hitted-move", move => {            
