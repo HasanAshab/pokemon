@@ -7,7 +7,7 @@ function calcRetreat(pokemon) {
   const totalBaseStats = Object.values(pokemon.baseStats).reduce((a, b) => a + b)
   const X1 = 198, Y1 = 5
   const X2 = 700, Y2 = 100
-  const result = Y1 * Math.pow(Y2 / Y1, (totalBaseStats - X1) / (X2 - X1))
+  const result = Y1 * Math.pow(Y2 / Y1, (totalBaseStats - X1) / (X2 - X1))  
   return Math.round(result)
 }
 

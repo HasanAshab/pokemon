@@ -1,7 +1,5 @@
 * Tasks
 beast
-  level
-  stat
   abilities
 multihit effect chance increase
 
@@ -12,6 +10,7 @@ multihit effect chance increase
 
 * Data
 hand6
+charizard basestat
 
 * Bottle neck
 

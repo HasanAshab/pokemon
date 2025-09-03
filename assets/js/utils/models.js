@@ -418,7 +418,6 @@ export class Move {
             if (succeed) return true
             // Calculate the effective accuracy
             const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
-            console.log(effectiveAccuracy);
             
             // Generate a random number between 0 and 100
             const randomChance = Math.random() * 100;
@@ -454,15 +453,6 @@ class Ability {
         this.manager = manager
         this.pokemon = manager.pokemon
         this.active = this._ability.flags?.autoenable === 1
-        
-        if (this._ability.type === "beast" && this._ability.beastImage !== false) {
-            const beastMeta = structuredClone(this.pokemon.meta)            
-            beastMeta.name = `${this._ability.beastImage} (${this.pokemon.name})`
-            beastMeta.token_used = {}
-            beastMeta.items = []
-            beastMeta.abilities = []
-            this._beast = new Pokemon(this._ability.beastImage, beastMeta, this.pokemon._tag)
-        }
     }
     
     get id() {
@@ -528,6 +518,24 @@ class Ability {
                 return this.deactivate()
               }
               else this.pokemon.abilities.activate(dependency)
+          }
+      }
+
+      if (!this._beast) {
+          if (this._ability.type === "beast" && this._ability.beastImage !== false) {
+              const summoningMove = this.pokemon.state.moves.find(m => m.id === `summon:${this._ability.beastImage}`)
+              if (!summoningMove) {
+                throw new Error(`Beast summoning move ${this._ability.beastImage} not found`)
+              }
+              const level = (summoningMove._meta.grade || 0) * 3
+              const xp = (level * 100) - 1
+              const beastMeta = structuredClone(this.pokemon.meta)  
+              beastMeta.xp = xp          
+              beastMeta.name = `${this._ability.beastImage} (${this.pokemon.name})`
+              beastMeta.token_used = {}
+              beastMeta.items = []
+              beastMeta.abilities = []              
+              this._beast = new Pokemon(this._ability.beastImage, beastMeta, this.pokemon._tag)
           }
       }
 

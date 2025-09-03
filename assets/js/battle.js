@@ -130,7 +130,6 @@ function loadActiveFeilds(){
   for (const {type} of battle.fields){
     activeFieldsTypeList.push(type)
   }
-  console.log(activeFieldsTypeList)
   for (const fieldElm of fieldElmList){
     const currentFieldType = fieldElm.classList[1]
     if (activeFieldsTypeList.includes(currentFieldType))
