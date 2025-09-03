@@ -7128,7 +7128,7 @@ export default {
       name: "Fury Cutter",
       pp: 20,
       priority: 0,
-      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, slicing: 1 },
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, slicing: 1, combo: 1 },
       condition: {
         duration: 2,
         onStart() {
@@ -10355,7 +10355,8 @@ export default {
         metronome: 1,
         failinstruct: 1,
         bullet: 1,
-        noparentalbond: 1
+        noparentalbond: 1,
+        combo: 1,
       },
       onModifyMove(move, pokemon, target) {
         if (pokemon.volatiles["iceball"] || pokemon.status === "slp" || !target)

@@ -5,6 +5,7 @@ import beasts from "./beasts.js";
 
 for (const entity of Object.values(entities)) {
   entity.type = "entity"
+  entity.abilities = {}
   for (const stat in entity.baseStats) {
     entity.baseStats[stat] = Math.floor(entity.baseStats[stat] * 0.65)
   }

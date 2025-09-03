@@ -1,4 +1,5 @@
 * Tasks
+rolleout 
 
 * UI
 
@@ -19,6 +20,5 @@ phy 0 -> sp = x - y d
 
 
 * Pending
-rolleout 
 filter moves advanced
 incremental humans.js
