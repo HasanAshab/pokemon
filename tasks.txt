@@ -1,8 +1,8 @@
 * Tasks
-beast entity
-  level, stat
-  type effective
-
+beast
+  level
+  stat
+  abilities
 multihit effect chance increase
 
 * UI

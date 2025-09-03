@@ -931,7 +931,7 @@ class BattleState extends EventEmitter {
     setMoves(moves) {
         this.moves = []
         BattleState.SYS_MOVES.forEach(m => this.addMove(m))
-        !["beast", "entity"].includes(this.pokemon._pokemon.type) && BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+        this.pokemon.isHuman && BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
         "moves" in this.pokemon._pokemon && this.pokemon._pokemon.moves.forEach(m => this.addMove(m))
 
         moves.filter(moveMeta => !moveMeta.isUnselected)

@@ -141,6 +141,10 @@ export class Pokemon extends PSPokemon {
         return hp === 0
     }
 
+    get isHuman() {
+        return !["entity", "beast"].includes(this._pokemon.type)
+    }
+
     isTypeOf(type) {
         return this.types.includes(type);
     }
@@ -154,11 +158,15 @@ export class Pokemon extends PSPokemon {
         let effectiveness = 1;
         if (!type) return effectiveness
         
-        this._beastTypes.forEach(tType => {
+        const effectableTypes = this.isHuman 
+          ? this._beastTypes
+          : this.types
+
+        effectableTypes.forEach(tType => {
             if (typeChart[type] && typeChart[type][tType]) {
                 effectiveness *= typeChart[type][tType];
             }
-        });
+        });        
         
         return effectiveness;
     }
