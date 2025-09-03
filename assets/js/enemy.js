@@ -229,7 +229,7 @@ globalThis.setDefaultMoves = async ({currentTarget})=>{
 }
 
 
-export function makeStartBattleCode(meta, fields, system = "single") {
+export function makeStartBattleCode(meta, fields, system = "multiple") {
     fields = fields.map(f => `"${f}"`).join(', ')
     return `startBattle(${JSON.stringify(meta, null, 2)}, [${fields}], "${system}")`;
 }

@@ -438,7 +438,7 @@ function makeEnemiesMeta() {
   return enemiesMeta
 }
 
-function makeStartBattleCode(meta, fields, system = "single") {
+function makeStartBattleCode(meta, fields, system = "multiple") {
     fields = fields.map(f => `"${f}"`).join(', ')
     return `startBattle(${JSON.stringify(meta, null, 2)}, [${fields}], "${system}")`;
 }
