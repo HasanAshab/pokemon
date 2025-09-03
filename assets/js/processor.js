@@ -111,7 +111,7 @@ globalThis.generateEnemy = async function() {
   const fullText = result.response.text();
   const lines = fullText.split('\n');
   const trimmedText = lines.slice(1, -1).join('\n');
-  resultEl.textContent = `startBattle([${JSON.stringify(JSON.parse(trimmedText), null, 2)}], [], 'single')`;
+  resultEl.textContent = `startBattle([${JSON.stringify(JSON.parse(trimmedText), null, 2)}], [], 'multiple');`;
 }
 
 globalThis.syncChar = async function() {

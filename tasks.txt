@@ -1,6 +1,8 @@
 * Tasks
-Improve Field
-rolleout 
+beast entity
+  summon
+  level, stat
+  type effective
 
 * UI
 add capacity icon on moves
@@ -23,5 +25,6 @@ phy 0 -> sp = x - y d
 
 
 * Pending
+rolleout 
 filter moves advanced
 incremental humans.js

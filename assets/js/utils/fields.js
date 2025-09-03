@@ -11,7 +11,7 @@ class GenericField extends Field {
         super(battle)
         this.type = type
         
-        battle.on("scene", (...args) => this.onScene(...args), 'field-' + type)
+        battle.tailListener("scene", (...args) => this.onScene(...args), 'field-' + type)
     }
 
     onScene(senario) {
@@ -20,7 +20,6 @@ class GenericField extends Field {
             const move = senario.get(pokemon)
             const straightEffect = typeChart[this.type][move.type] ?? 1
             const oppositeEffect = typeChart[move.type][this.type] ?? 1
-            console.log(move.id, straightEffect, oppositeEffect);
             
             if (pokemon.isTypeOf(this.type)) {
                 pokemon.state.stats.chainModify("spe", 1.25)
@@ -28,8 +27,11 @@ class GenericField extends Field {
             if (oppositeEffect > 1) {
                 pokemon.state.damage.chainModifyCrit(1.5)
             }
-            if (straightEffect < 1) {
-                pokemon.state.damage.chainModifyPower(move.id, 0.80)
+            if (oppositeEffect < 1) {
+                pokemon.state.damage.chainModifyPower(move.id, 1 - 0.15)
+            }
+            if (straightEffect > 1) {                
+                pokemon.state.damage.chainModifyPower(move.id, 1 - 0.15)
             }
         })
     }
