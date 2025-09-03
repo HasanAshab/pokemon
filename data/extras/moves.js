@@ -1217,7 +1217,4 @@ katana: {
     type: "Normal",
     retreat: 0,
   },
-  "summon:charmander": {
-    isSummoningJutsu: true,
-  }
 }
