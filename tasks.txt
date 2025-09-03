@@ -1,6 +1,4 @@
 * Tasks
-beast
-  abilities
 multihit effect chance increase
 
 * UI

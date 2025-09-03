@@ -93,7 +93,7 @@ hands2: {
   name: "charizard",
   types: ["Fire"],
   baseStats: { hp: 40, atk: 35, def: 25, spa: 50, spd: 25, spe: 25 }, // total = 200
-  abilities: {},
+  abilities: { 0: "charizardbeast" },
   heightm: 1.7,
   animeName: "charizard"
 },

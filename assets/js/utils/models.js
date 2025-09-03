@@ -452,7 +452,12 @@ class Ability {
         this.isHidden = isHidden
         this.manager = manager
         this.pokemon = manager.pokemon
-        this.active = this._ability.flags?.autoenable === 1
+        this.active = false
+        setTimeout(() => {
+          if (this._ability.flags?.autoenable === 1 || !this.pokemon.isHuman) { 
+              this.activate()
+          }
+        }, 200)
     }
     
     get id() {
@@ -521,7 +526,7 @@ class Ability {
           }
       }
 
-      if (!this._beast) {
+      if (!this._beast && this.pokemon.isHuman) {
           if (this._ability.type === "beast" && this._ability.beastImage !== false) {
               const summoningMove = this.pokemon.state.moves.find(m => m.id === `summon:${this._ability.beastImage}`)
               if (!summoningMove) {
