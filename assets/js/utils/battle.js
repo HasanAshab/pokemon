@@ -104,7 +104,6 @@ class BaseBattle extends EventEmitter {
             this._states.set(pokemon, pokemon.state)
             pokemon.state.emit("start")
         }
-        console.log(pokemon.state.moves)
     }
 
     addField(type) {
@@ -920,11 +919,9 @@ class BattleState extends EventEmitter {
 
     setMoves(moves) {
         this.moves = []
-
         BattleState.SYS_MOVES.forEach(m => this.addMove(m))
-        "moves" in this.pokemon._pokemon
-          ? this.pokemon._pokemon.moves.forEach(m => this.addMove(m))
-          : BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+        !["beast", "entity"].includes(this.pokemon._pokemon.type) && BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
+        "moves" in this.pokemon._pokemon && this.pokemon._pokemon.moves.forEach(m => this.addMove(m))
 
         moves.filter(moveMeta => !moveMeta.isUnselected)
           .forEach(moveMeta => {
@@ -996,7 +993,11 @@ class BattleState extends EventEmitter {
           xp: (level * 100) - 1,
           retreat: Math.max(3, level)
         }, this.pokemon._tag)
+
         summon.meta.name = `${summon.name} (${this._summonNo++})`
+        summon.meta.moves = [
+          { id: "ember" }
+        ]
         this.battle.addPokemon(summon)
     }
 
