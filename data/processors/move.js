@@ -243,7 +243,7 @@ function setRetreat(move) {
     : 0
     
   const targetBonus = move.target.startsWith("allAdjacent")
-    ? 1.5
+    ? 2
     : 0
 
   const multiplier = (
@@ -294,8 +294,9 @@ function setCapacity(move) {
   
   if (!move.target.startsWith("allAdjacent")) 
       return move.capacity = 1
+  
   move.basePower *= 0.5
-  move.capacity = Math.round(move.basePower / 10)
+  move.capacity = move.category === "Status" ? Infinity : Math.round(move.basePower / 10)
 }
 
 function modifyAccuracy(move) {
