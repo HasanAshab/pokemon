@@ -121,8 +121,32 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   loadAbilities(playerTag)
   loadItems(playerTag)
   loadTokenStats(playerTag)
+  // global
+  loadActiveFeilds()
 }
-
+function loadActiveFeilds(){
+  const fieldElmList = document.querySelectorAll(".player-settings-form .fields-cont .field")
+  const activeFieldsTypeList = []
+  for (const {type} of battle.fields){
+    activeFieldsTypeList.push(type)
+  }
+  console.log(activeFieldsTypeList)
+  for (const fieldElm of fieldElmList){
+    const currentFieldType = fieldElm.classList[1]
+    if (activeFieldsTypeList.includes(currentFieldType))
+    fieldElm.classList.add("active")
+    else 
+    fieldElm.classList.remove("active")
+  }
+}
+globalThis.fieldClickHandler = function({currentTarget}){
+ const fieldType = currentTarget.classList[1]
+ if (currentTarget.classList.contains("active"))
+    battle.removeField(fieldType)
+ else   
+    battle.addField(fieldType)
+ loadActiveFeilds()
+}
 function loadVeryCloseBtn() {
   const btn = document.getElementById("very-close-btn")
   battle.ctx.veryClose
@@ -971,6 +995,7 @@ function runScene(moveIds) {
   ])
   return battle.run(senario)
 }
+
 
 
 function loadRetreat(playerTag) {
