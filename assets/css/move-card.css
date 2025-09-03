@@ -142,7 +142,7 @@
 .card[data-makes-contact="true"] .card-body > .secondary .bow-icon {
   display: none;
 }
-.card-body > .secondary .retreat-data {
+.card-body > .secondary > .data-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
