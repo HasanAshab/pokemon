@@ -5,8 +5,6 @@ beast entity
   type effective
 
 * UI
-add capacity icon on moves
-field management
 
 
 * Bugs
