@@ -986,7 +986,7 @@ class BattleState extends EventEmitter {
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
-    summon(id) {
+    async summon(id) {
         const sourceMove = this.moves.find(m => m.id === `summon:${id}`);
         const level = (sourceMove._meta.grade || 0) * 3         
         const summon = new Pokemon(id, {
@@ -995,10 +995,13 @@ class BattleState extends EventEmitter {
         }, this.pokemon._tag)
 
         summon.meta.name = `${summon.name} (${this._summonNo++})`
-        summon.meta.moves = [
-          { id: "ember" }
-        ]
-        this.battle.addPokemon(summon)
+
+        const { default: learnset } = await import(`../../../data/learnsets/${id}.js`)
+        
+        summon.meta.moves = learnset
+          .filter(ls => ls.required_level <= level && ls.source === "level")
+          .map(ls => ({ id: ls.name }))        
+        this.battle.addPokemon(summon)  
     }
 
     usableMoves() {

@@ -16,7 +16,7 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
   if (!["beast", "entity"].includes(pokemon.type)) continue
   
   MOVES[`summon:${id}`] = {
-    accuracy: true,
+    accuracy: 50,
     basePower: 0,
     category: "Status",
     name: `Summon (${pokemon.name})`,
@@ -26,8 +26,11 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
     target: "self",
     type: "Normal",
     retreat: calcRetreat(pokemon),
-    onAfterMove(pokemon) {
+    onTryMove(pokemon) { 
       pokemon.state.decreaseHealth(pokemon.hp * 0.05, true)
+      return null
+    },
+    onAfterMove(pokemon) {
       pokemon.state.summon(id)
     }
   }

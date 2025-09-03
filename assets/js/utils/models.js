@@ -335,7 +335,7 @@ export class Move {
     }
   
     get isNeverFails() {
-        return this.accuracy === true || this.category === "Status" || !this.flags.twoturn
+        return this.accuracy === true || this.category !== "Status"
     }
     get hits() {
         return 'hit' in this ? this.hit.hitCount() : 1
@@ -410,7 +410,8 @@ export class Move {
             if (succeed) return true
             // Calculate the effective accuracy
             const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
-    
+            console.log(effectiveAccuracy);
+            
             // Generate a random number between 0 and 100
             const randomChance = Math.random() * 100;
     
