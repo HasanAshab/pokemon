@@ -456,7 +456,7 @@ function registerBattle() {
       teams[t].forEach(p => {        
         if (!p.meta.isSelectedForMultiBattle) return
         pokemonMap[t] = p
-        setupPokemonForDom(t)
+        setBattleStateListeners(t)
       })
       pokemonMap[t] = oldP
     })
@@ -854,7 +854,7 @@ function loadMoves(playerTag) {
             </div>
             <div class="secondary">
             ${move.basePower && !["None", "Status"].includes(move.category)
-        ? `  <div class="power-data">
+        ? `  <div class="power-data data-wrapper">
                 ${move.flags.contact !== 1
           ? ` <svg
                   class="bow-icon"
@@ -1127,7 +1127,7 @@ function clickOnFirstPokemonSwitch() {
 }
 window.onload = () => {
   globalThis.pokemonMap = {}
-  globalThis.fields = getParam("fields")?.split(',') ?? []
+  globalThis.fields = getParam("fields")?.split(',').filter(Boolean) ?? []
   loadTeams()
   registerBattle()
   loadChoosePokemon("you")

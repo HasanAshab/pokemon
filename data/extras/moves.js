@@ -935,7 +935,7 @@ katana: {
     name: "Soul Stick",
     pp: null,
     priority: 1,
-    flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+    flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
     secondary: null,
     target: "normal",
     type: "Steel",

@@ -277,9 +277,7 @@ globalThis.startLastBattle = function() {
 
 
 function loadHistory() {
-    const history = JSON.parse(localStorage.getItem("battle-history")) || {};  
-    console.log(history);
-    
+    const history = JSON.parse(localStorage.getItem("battle-history")) || {};      
     const historyList = document.querySelector(".history-list")
     historyList.innerHTML = Object.entries(history).map(([name, meta]) => {
         return `<button class="history-item" onclick="copyData('${name}')">${name}</button>`

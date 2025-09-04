@@ -24,7 +24,7 @@ export default {
   genin: {
     num: 3,
     name: "Genin",
-    types: ["Normal", "Rock"],
+    types: ["Normal"],
     baseStats: { hp: 28, atk: 34, def: 28, spa: 42, spd: 28, spe: 46 },
     abilities: {},
     heightm: 1.5,
@@ -35,7 +35,7 @@ export default {
   chunin: {
     num: 4,
     name: "Chunin",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 32, atk: 38, def: 32, spa: 48, spd: 32, spe: 55 },
     abilities: {},
     heightm: 1.55,
@@ -46,7 +46,7 @@ export default {
   elitechunin: {
     num: 5,
     name: "Elite Chunin",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 36, atk: 44, def: 36, spa: 55, spd: 36, spe: 63 },
     abilities: {},
     heightm: 1.6,
@@ -57,7 +57,7 @@ export default {
   jonin: {
     num: 6,
     name: "Jonin",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 38, atk: 50, def: 34, spa: 62, spd: 34, spe: 72 },
     abilities: {},
     heightm: 1.65,
@@ -68,7 +68,7 @@ export default {
   elitejonin: {
     num: 7,
     name: "Elite Jonin",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 42, atk: 56, def: 38, spa: 70, spd: 38, spe: 80 },
     abilities: {},
     heightm: 1.68,
@@ -79,7 +79,7 @@ export default {
   rogue: {
     num: 8,
     name: "Rogue",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 46, atk: 62, def: 42, spa: 78, spd: 42, spe: 88 },
     abilities: {},
     heightm: 1.7,
@@ -90,7 +90,7 @@ export default {
   ega: {
     num: 9,
     name: "Ega",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 50, atk: 69, def: 46, spa: 86, spd: 46, spe: 95 },
     abilities: {},
     heightm: 1.75,
@@ -101,7 +101,7 @@ export default {
   koga: {
     num: 10,
     name: "Koga",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 54, atk: 75, def: 50, spa: 94, spd: 50, spe: 103 },
     abilities: {},
     heightm: 1.8,
@@ -112,7 +112,7 @@ export default {
   sannin: {
     num: 11,
     name: "Sannin",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 58, atk: 82, def: 54, spa: 102, spd: 54, spe: 110 },
     abilities: {},
     heightm: 1.85,
@@ -123,7 +123,7 @@ export default {
   sage: {
     num: 12,
     name: "Sage",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 62, atk: 88, def: 58, spa: 110, spd: 58, spe: 118 },
     abilities: {},
     heightm: 1.9,
@@ -134,7 +134,7 @@ export default {
     kage: {
     num: 14,
     name: "Kage",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats:{ hp: 66, atk: 94, def: 62, spa: 118, spd: 62, spe: 126 },
     abilities: {},
     heightm: 2.0,
@@ -145,7 +145,7 @@ export default {
   shadow: {
     num: 13,
     name: "Shadow",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats:  { hp: 70, atk: 101, def: 66, spa: 126, spd: 66, spe: 134 } ,
     abilities: {},
     heightm: 1.95,
@@ -157,7 +157,7 @@ export default {
   hokage: {
     num: 15,
     name: "Hokage",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 74, atk: 107, def: 70, spa: 134, spd: 70, spe: 142 },
     abilities: {},
     heightm: 2.05,
@@ -168,7 +168,7 @@ export default {
   phantom: {
     num: 16,
     name: "Phantom",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 78, atk: 114, def: 74, spa: 142, spd: 74, spe: 149 },
     abilities: {},
     heightm: 2.1,
@@ -179,7 +179,7 @@ export default {
   otsutsuki: {
     num: 17,
     name: "Otsutsuki",
-    types: ["Normal", "Rock", "Steel"],
+    types: ["Normal"],
     baseStats: { hp: 82, atk: 120, def: 78, spa: 150, spd: 78, spe: 156 },
     abilities: {},
     heightm: 2.2,

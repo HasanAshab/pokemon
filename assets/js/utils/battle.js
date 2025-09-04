@@ -23,7 +23,7 @@ class BaseBattle extends EventEmitter {
     _states = new Map()
     _history = []
 
-    constructor(team1, team2, fieldTypes = []) {
+    constructor(team1, team2, fieldTypes = []) {      
         super()
         const that = this
         this._turnAfterScenes = this.scenePerTurn

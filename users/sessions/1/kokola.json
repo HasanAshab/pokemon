@@ -20,10 +20,6 @@
   "loses-count": 0,
   "moves": [
     {
-      "id": "brutalswing",
-      "isDefault": true
-    },
-    {
       "id": "dragonbreath",
       "isDefault": true
     },
@@ -52,31 +48,44 @@
       "isDefault": true
     },
     {
-      "id": "detect"
+      "id": "ember",
+      "isDefault": true
     },
     {
-      "id": "ember"
+      "id": "scaryface",
+      "isDefault": true
     },
     {
-      "id": "poweruppunch"
-    },
-        {
-      "id": "scaryface"
-    },
-        {
-      "id": "ninjablade"
+      "id": "ninjablade",
+      "isDefault": true
     },
     {
-      "id":"ninjastar"
+      "id": "ninjastar",
+      "isDefault": true
+    },
+    {
+      "id": "twister",
+      "isDefault": true
+    },
+    {
+      "id": "firespin",
+      "isDefault": true
+    },
+    {
+      "id": "summon:rattataalola",
+      "grade": 2,
+      "isDefault": true
     }
   ],
   "types": [
     "Normal",
-    "Rock",
-    "Steel",
     "Dragon"
   ],
   "items": [],
-  "abilities": ["mayangan:golden-eye"],
-  "name": "kokola munshi"
+  "abilities": [
+    "mayangan:silver-eye",
+    "mayangan:golden-eye"
+  ],
+  "name": "kokola munshi",
+  "isSelectedForMultiBattle": false
 }]

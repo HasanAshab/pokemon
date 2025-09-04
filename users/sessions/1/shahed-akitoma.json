@@ -47,8 +47,9 @@
       "id": "jungletrap",
       "isDefault": true
     },
-    {
-      "id": "aurasphere"
+        {
+      "id": "summon:lotad",
+      "grade": 2
     }
   ],
   "types": [

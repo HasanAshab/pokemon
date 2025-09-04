@@ -3,8 +3,8 @@
 * UI
 
 * Bugs
-status alladjacent capacity 
-
+weapon,summon not in auto
+retreat status for auto
 * Data
 hand6
 charizard basestat
