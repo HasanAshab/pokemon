@@ -47,15 +47,21 @@
       "id": "jungletrap",
       "isDefault": true
     },
-        {
+    {
       "id": "summon:lotad",
-      "grade": 2
+      "grade": 2,
+      "isDefault": true
+    },
+    {
+      "id": "doubleteam",
+      "isDefault": true
+    },
+    {
+      "id": "grassfield"
     }
   ],
   "types": [
     "Normal",
-    "Rock",
-    "Steel",
     "Grass"
   ],
   "items": [],

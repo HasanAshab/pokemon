@@ -1235,5 +1235,64 @@ katana: {
       target: "normal",
       type: "Poison",
       contestType: "Tough" 
-    }
+    },
+  grassfield: FieldAddingMove("Grass", 2, "Grass Field"),
+  removegrassfield: FieldRemovingMove("Grass", "Remove Grass Field")
+
+}
+
+function FieldAddingMove(type,duration,name) {
+  return {
+    accuracy: true,
+    basePower: 0,
+    category: "Status",
+    name: name,
+    pp: 5 * 3,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+    },
+    secondary: null,
+    target: "normal",
+    type: type,
+    contestType: "Cool",
+    onHit(pokemon) {
+      const battle = pokemon.state.battle
+      const expiresOn = battle.turnNo + duration
+      battle.addField(type)
+      battle.tailListener("turn", () => {
+        console.log("turn", battle.turnNo, expiresOn);
+        
+        if (battle.turnNo >= expiresOn) {
+          battle.removeField(type)
+          battle.removeListener("turn", "field-move-" + type)
+        }
+      }, "field-move-" + type)
+    } 
+  }
+}
+
+function FieldRemovingMove(type,name) {
+  return {
+    accuracy: 50,
+    basePower: 0,
+    category: "Status",
+    name: name,
+    pp: 5 * 3,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+    },
+    secondary: null,
+    target: "normal",
+    type: type,
+    contestType: "Cool",
+    onHit(pokemon) {
+      pokemon.state.battle.removeField(type)
+    } 
+  }
 }

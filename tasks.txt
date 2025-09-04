@@ -1,13 +1,13 @@
 * Tasks
-
+jungle healing
 * UI
 
 * Bugs
 weapon,summon not in auto
 retreat status for auto
+all adjusten 
 * Data
-hand6
-charizard basestat
+
 
 * Bottle neck
 
@@ -21,3 +21,10 @@ phy 0 -> sp = x - y d
 * Pending
 filter moves advanced
 incremental humans.js
+
+
+
+*ovi 
+hand6
+charizard basestat
+kingdoms build maintains
