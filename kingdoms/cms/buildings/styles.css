@@ -71,15 +71,20 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.building input {
+.building > :is(input, label, div) {
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
   font-size: 16px;
   width: 100%;
+}
+.building input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .building button {

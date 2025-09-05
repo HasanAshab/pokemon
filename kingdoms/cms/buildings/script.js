@@ -1,3 +1,4 @@
+import { objToFlags } from '../../../assets/js/utils/helpers.js';
 import { calculateSize, upgradePrice } from '../../utils.js'
 
 
@@ -43,6 +44,12 @@ function renderBuildings() {
 
     const sizeDisplay = document.createElement("div");
     sizeDisplay.textContent = `${calculateSize(building.baseSize, building.currentLevel)} sq.m`;
+    
+    const MaintainsLabel = document.createElement("label");
+    MaintainsLabel.textContent = "Maintains";
+
+    const MaintainsDisplay = document.createElement("div");
+    MaintainsDisplay.textContent = building.baseMaintains
 
     const quantityLabel = document.createElement("label");
     quantityLabel.textContent = "Quantity: " + building.quantity || 1;
@@ -55,13 +62,21 @@ function renderBuildings() {
 
     const basePriceInput = document.createElement("input");
     basePriceInput.value = building.basePrice;
-    basePriceInput.className = "editable";
+    basePriceInput.className = "editable price-input";
+    basePriceInput.style.setProperty("border-color", "gold");
+    basePriceInput.style.setProperty("border-radius", "3vw");
+    
     basePriceInput.style.display = "none";
 
     const baseSizeInput = document.createElement("input");
     baseSizeInput.value = building.baseSize;
     baseSizeInput.className = "editable";
     baseSizeInput.style.display = "none";
+
+    const baseMaintainsInput = document.createElement("input");
+    baseMaintainsInput.value = building.baseMaintains;
+    baseMaintainsInput.className = "editable";
+    baseMaintainsInput.style.display = "none";
 
     function renderKeyValueSection(container, items, label) {
       container.innerHTML = "";
@@ -141,13 +156,15 @@ function renderBuildings() {
       nameInput.disabled = false;
       basePriceInput.style.display = "block";
       baseSizeInput.style.display = "block";
+      baseMaintainsInput.style.display = "block";
       quantityInput.style.display = "block";
-
+      
       editBtn.textContent = "Save";
       editBtn.onclick = () => {
         building.name = nameInput.value.trim();
         building.basePrice = parseFloat(basePriceInput.value);
         building.baseSize = parseFloat(baseSizeInput.value);
+        building.baseMaintains =  baseMaintainsInput.value;
         building.quantity = parseInt(quantityInput.value) || 1;
 
         const extractValues = (container) => {
@@ -180,14 +197,23 @@ function renderBuildings() {
 
     div.appendChild(nameLabel);
     div.appendChild(nameInput);
+
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
+
     div.appendChild(sizeLabel);
     div.appendChild(sizeDisplay);
+     div.appendChild(baseSizeInput);
+
+    div.appendChild(MaintainsLabel);
+    div.appendChild(MaintainsDisplay);
+    div.appendChild(baseMaintainsInput);
+
     div.appendChild(quantityLabel);
     div.appendChild(quantityInput);
+    div.appendChild(document.createElement("br"));
     div.appendChild(basePriceInput);
-    div.appendChild(baseSizeInput);
+   
     div.appendChild(producesLabel);
     div.appendChild(producesContainer);
     div.appendChild(consumesLabel);
@@ -204,6 +230,7 @@ addBuildingBtn.onclick = () => {
     name: "New Building",
     basePrice: 100,
     baseSize: 50,
+    baseMaintains: objToFlags({defenceScore: 0}),
     currentLevel: 1,
     quantity: 1,
     produces: {},
