@@ -86,10 +86,6 @@ button:hover {
   border: 1px solid #ddd;
   border-radius: 4px;
 }
-.building input.price-input:before {
-  content: "$";
- 
-}
 
 .building button {
   align-self: flex-start;

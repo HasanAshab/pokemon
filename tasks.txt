@@ -5,7 +5,10 @@ jungle healing
 * Bugs
 weapon,summon not in auto
 retreat status for auto
-all adjusten 
+all adjusten + alies
+"war.js" start war error  
+academy level should not force stop to add any rank of army
+intity in military
 * Data
 
 

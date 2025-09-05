@@ -125,8 +125,15 @@ function renderWaves() {
 
       const itemsInput = document.createElement("input");
       itemsInput.type = "text";
+      itemsInput.className = "items-inp";
       itemsInput.placeholder = "Items (comma-separated)";
       itemsInput.value = soldier.items?.join(",") || "";
+
+     const abilitiesInput = document.createElement("input");
+      abilitiesInput.type = "text";
+      abilitiesInput.className = "abilities-inp";
+      abilitiesInput.placeholder = "Abilities (comma-separated)";
+      abilitiesInput.value = soldier.abilities?.join(",") || "";
 
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-soldier-btn";
@@ -139,6 +146,8 @@ function renderWaves() {
       soldierDiv.appendChild(percentageLabel);
       soldierDiv.appendChild(document.createElement("br"));
       soldierDiv.appendChild(itemsInput);
+      soldierDiv.appendChild(document.createElement("br"));
+      soldierDiv.appendChild(abilitiesInput);
       soldierDiv.appendChild(document.createElement("br"));
       soldierDiv.appendChild(removeBtn);
 
@@ -164,12 +173,17 @@ function renderWaves() {
         const image = entry.querySelector("span").textContent;
         const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;
         const items = entry
-          .querySelector('input[type="text"]')
+          .querySelector('input.items-inp')
           .value.split(",")
           .map((item) => item.trim())
           .filter((item) => item);
+        const abilities = entry
+          .querySelector('input.abilities-inp')
+          .value.split(",")
+          .map((ability) => ability.trim())
+          .filter((ability) => ability);
 
-        newWave.soldiers.push({ image, percentage, items });
+        newWave.soldiers.push({ image, percentage, items, abilities });
       });
 
       attackWaves[index] = newWave;
@@ -209,7 +223,10 @@ function generateDefendersReport(expLvl = 0) {
     reportLines.push(`Wave ${(index + 1)}:`);
     expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${defenders.commander.iq.defensive})`);
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
+      
       const items = image.items.names().join(", ");
+ 
+      
       const level = `(lvl ${image.level})`;
       const moreData = `${level} ${items && (" with " + items)}`
       reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
