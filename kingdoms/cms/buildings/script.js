@@ -113,6 +113,8 @@ function renderBuildings() {
     const consumesContainer = document.createElement("div");
     renderKeyValueSection(consumesContainer, building.consumes, "Consume");
 
+
+    
     const upgradeBtn = document.createElement("button");
     upgradeBtn.className = "btn primary-btn";
     const upgradeCost = upgradePrice(building.basePrice, building.currentLevel);

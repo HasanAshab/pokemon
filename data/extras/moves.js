@@ -1259,6 +1259,8 @@ function FieldAddingMove(type,duration,name) {
     type: type,
     contestType: "Cool",
     onHit(pokemon) {
+      // console.log(pokemon.state.moves[]._meta.grade);
+
       const battle = pokemon.state.battle
       const expiresOn = battle.turnNo + duration
       battle.addField(type)
@@ -1266,6 +1268,7 @@ function FieldAddingMove(type,duration,name) {
         console.log("turn", battle.turnNo, expiresOn);
         
         if (battle.turnNo >= expiresOn) {
+
           battle.removeField(type)
           battle.removeListener("turn", "field-move-" + type)
         }
@@ -1292,6 +1295,7 @@ function FieldRemovingMove(type,name) {
     type: type,
     contestType: "Cool",
     onHit(pokemon) {
+      
       pokemon.state.battle.removeField(type)
     } 
   }
