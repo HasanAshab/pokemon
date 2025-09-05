@@ -1,3 +1,4 @@
+import { loadPokemonsDatalist } from "../../../../assets/js/utils/dom.js";
 import pokemons from "../../../../data/pokemons.js";
 import {
   calcAcademyCost,
@@ -72,6 +73,8 @@ const createField = (labelText, inputEl) => {
 
 function getSoldierStack(soldiers) {  
   const stackData = soldiers.map((soldier) => {
+    console.log(soldier.image);
+    
     const image = pokemons[soldier.image.id];
     image.id = soldier.image.id;    
     image.xp = soldier.image.xp;
@@ -94,21 +97,25 @@ function renderSoldierSection(type) {
   kingdoms[name].barrack.soldiers[type].forEach((soldier, index) => {
     const div = document.createElement("div");
     div.className = "soldier-card";
-
-    const imageSelect = document.createElement("select");
-    const shinobiImages = Object.keys(pokemons).splice(
-      0,
-      kingdom.barrack.academyLevel + 1,
-    );
-    const beastImages = Object.keys(pokemons).filter((id) => pokemons[id].type === "beast")
-    const images = [...shinobiImages, ...beastImages];
-    images.forEach((opt) => {
-      const option = document.createElement("option");
-      option.value = opt;
-      option.textContent = opt.split(".")[0];
-      if (soldier.image.id === opt) option.selected = true;
-      imageSelect.appendChild(option);
-    });
+    // console.log(soldier);
+    
+    const imageSelect = document.createElement("input");
+    imageSelect.type = "text";
+    imageSelect.setAttribute("list", "pokemon-data-list");
+    imageSelect.value = soldier.image.id;
+    // const shinobiImages = Object.keys(pokemons).splice(
+    //   0,
+    //   kingdom.barrack.academyLevel + 1,
+    // );
+    // const beastImages = Object.keys(pokemons).filter((id) => pokemons[id].type === "beast")
+    // const images = [...shinobiImages, ...beastImages];
+    // images.forEach((opt) => {
+    //   const option = document.createElement("option");
+    //   option.value = opt;
+    //   option.textContent = opt.split(".")[0];
+    //   if (soldier.image.id === opt) option.selected = true;
+    //   imageSelect.appendChild(option);
+    // });
     imageSelect.onblur = () => {
       soldier.image.id = imageSelect.value;
       save();
@@ -261,3 +268,5 @@ document.getElementById("decrHospital").onclick = () => {
 renderAcademy();
 renderHospital();
 renderAllSoldiers();
+
+loadPokemonsDatalist("pokemon-data-list");
