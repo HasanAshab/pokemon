@@ -823,7 +823,17 @@ function loadMoves(playerTag) {
     const mod = pokemon.state.damage.powerModifier(move.id)
     const effectiveness = opponentPokemon.effectiveness(move.type)
     const damage = new Damage(pokemon, move)
-    const capacityColor = move.target === "allAdjacent" ? "#ff0000" : "#0000"
+    let capacityColor = "black"
+    let basePowerColor = "black"
+    if (move.target === "allAdjacent" || move.target === "all") {
+       capacityColor = "darkred" 
+      if (move.target === "all") 
+        basePowerColor = "darkred"
+    }
+    else if (move.target === "allySide" || move.target === "allies"){
+       capacityColor = "darkgreen"
+    }
+    
     const cardHtml = `
     <div class="single-card-wrapper">
       <div class="card ${battle.canUseMove(pokemon, move.id) ? "" : "disabled"}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" onclick="moveCardClickHandler(event, '${playerTag}')" data-makes-contact="${!!move.flags.contact}">
@@ -876,7 +886,7 @@ function loadMoves(playerTag) {
                       fill-rule="evenodd"
                       clip-rule="evenodd"
                       d="M23.9806 1.19613C24.0462 0.868272 23.9436 0.529333 23.7071 0.292909C23.4707 0.056486 23.1318 -0.0461365 22.8039 0.0194355L17.8039 1.01944C17.2624 1.12775 16.9111 1.65457 17.0194 2.19613C17.1278 2.73769 17.6546 3.08891 18.1961 2.9806L19.9575 2.62832L16.8761 5.70976C14.2376 3.39988 10.7823 2.00002 7.00003 2.00002H1.00003C0.447744 2.00002 2.91966e-05 2.44773 2.91966e-05 3.00002C2.91966e-05 3.5523 0.447744 4.00002 1.00003 4.00002C1.00003 4.25594 1.09766 4.51186 1.29292 4.70712L9.58582 13L8.58582 14H5.00003C4.73481 14 4.48046 14.1054 4.29292 14.2929L0.292922 18.2929C0.00692444 18.5789 -0.0786313 19.009 0.0761497 19.3827C0.230931 19.7564 0.595567 20 1.00003 20H4.00003V23C4.00003 23.4045 4.24367 23.7691 4.61735 23.9239C4.99102 24.0787 5.42114 23.9931 5.70714 23.7071L9.70714 19.7071C9.89467 19.5196 10 19.2652 10 19V15.4142L11 14.4142L19.2929 22.7071C19.4882 22.9024 19.7441 23 20 23C20 23.5523 20.4477 24 21 24C21.5523 24 22 23.5523 22 23V17C22 13.2178 20.6002 9.76247 18.2903 7.12397L21.3717 4.04254L21.0194 5.8039C20.9111 6.34546 21.2624 6.87228 21.8039 6.9806C22.3455 7.08891 22.8723 6.73769 22.9806 6.19613L23.9806 1.19613ZM15.4582 7.12759C13.1847 5.17792 10.2299 4.00002 7.00003 4.00002H3.41424L11 11.5858L15.4582 7.12759ZM12.4142 13L16.8725 8.5418C18.8221 10.8153 20 13.7701 20 17V20.5858L12.4142 13ZM5.41424 16H6.58582L4.58581 18H3.41424L5.41424 16ZM8.00003 18.5858L6.00003 20.5858V19.4142L8.00003 17.4142V18.5858Z"
-                      fill="#000000"
+                      fill="${basePowerColor}"
                     ></path>
                   </g>
                 </svg>
@@ -898,7 +908,7 @@ function loadMoves(playerTag) {
                   <g id="SVGRepo_iconCarrier">
                     <path
                       d="M16 0H13L3.70711 9.29289L2.20711 7.79289L0.792893 9.20711L3.08579 11.5L1.5835 13.0023C1.55586 13.0008 1.52802 13 1.5 13C0.671573 13 0 13.6716 0 14.5C0 15.3284 0.671573 16 1.5 16C2.32843 16 3 15.3284 3 14.5C3 14.472 2.99923 14.4441 2.99771 14.4165L4.5 12.9142L6.79289 15.2071L8.20711 13.7929L6.70711 12.2929L16 3V0Z"
-                      fill="#000000"
+                      fill="${basePowerColor}"
                     ></path>
                   </g>
                 </svg>`}

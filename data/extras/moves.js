@@ -1229,7 +1229,7 @@ katana: {
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
       secondary: {
-        chance: 20,
+        chance: 10,
         status: "psn"
       },
       target: "normal",
@@ -1259,7 +1259,7 @@ function FieldAddingMove(type,duration,name) {
     type: type,
     contestType: "Cool",
     onHit(pokemon) {
-      // console.log(pokemon.state.moves[]._meta.grade);
+    //   console.log(pokemon.state.moves[]._meta.grade);
 
       const battle = pokemon.state.battle
       const expiresOn = battle.turnNo + duration

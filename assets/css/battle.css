@@ -10,7 +10,7 @@
     border-radius: 5px;
     font-size: 14px;
     font-weight: bold;
-    color: white;
+    color: white ;
     filter: brightness(30%);
 }
 .field.active {
