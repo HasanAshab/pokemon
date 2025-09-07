@@ -343,12 +343,11 @@ function setMoveAutomatic(event) {
     list.appendChild(div);
   });
 }else {
-  moveItems.forEach(moveItem => {
+  moveItems.forEach((moveItem,index) => {
     const moveInput = moveItem.querySelector('.move-input');
     if (moveInput.value === "") {
-      moveInput.value = automaticCreatedMoves.shift();
+      moveInput.value = automaticCreatedMoves[index];
     }
-     console.log(moveItem);
   })
 }
 }

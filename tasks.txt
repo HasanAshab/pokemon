@@ -3,8 +3,13 @@ jungle healing
 * UI
 
 * Bugs
-weapon,summon not in auto
-auto move: check retreat for status
+auto move: 
+  check retreat for status
+  weapon,summon not
+  move count
+  notimplemented flag
+  (ovi) move blank use same index
+
 fix all target
 "war.js" start war error  
 academy level should not force stop to add any rank of army

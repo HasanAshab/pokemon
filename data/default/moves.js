@@ -60,7 +60,7 @@ export default {
           spd: -1
         }
       },
-      target: "allAdjacentFoes",
+      target: "normal",//"allAdjacentFoes",
       type: "Poison",
       contestType: "Clever"
     },
@@ -2877,11 +2877,15 @@ export default {
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
       onHit(target) {
-        target.clearBoosts()
-        this.add("-clearboost", target)
+     //   target.clearBoosts()
+       // this.add("-clearboost", target)
       },
-      secondary: null,
-      target: "normal",
+      secondary: {
+        chance: 20,
+        boosts: {
+          spd: -6
+        }
+      },      target: "normal",
       type: "Poison",
       contestType: "Beautiful"
     },
