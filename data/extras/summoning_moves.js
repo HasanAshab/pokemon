@@ -22,7 +22,7 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
     name: `Summon (${pokemon.name})`,
     pp: null,
     priority: 0,
-    flags: {},
+    flags: { summon: 1 },
     target: "self",
     type: "Normal",
     retreat: calcRetreat(pokemon),

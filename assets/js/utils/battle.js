@@ -860,13 +860,8 @@ class BattleState extends EventEmitter {
         
         this.on("hitted-move", move => {            
             const opponent = this.battle.opponentOf(this.pokemon)
-            try {
-              move.onHit?.(this.pokemon, opponent)
-              move.onAfterMove(this.pokemon, opponent, move)
-            }
-            catch (e) {
-              console.log(e) 
-            }
+            move.onHit?.(this.pokemon, opponent)
+            move.onAfterMove(this.pokemon, opponent, move)
         })
 
         this.on("move-added", move => {

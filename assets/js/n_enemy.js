@@ -4,6 +4,7 @@ import MOVES from "../../data/moves.js"
 import { Move , Pokemon } from "./utils/models.js";
 
 import { objToFlags,flagsToObj, shuffle } from "./utils/helpers.js";
+import { EFFECTS } from "./utils/effects.js";
 
 window.onload = () => {
     loadPokemonsDatalist("enemy-data-list")
@@ -153,7 +154,7 @@ function addMove(event, isMega = false) {
 }
 
 
-function suggestMoves(options, pokemon) {
+async function suggestMoves(options, pokemon) {
   const totalMoves = options.mele + options.ranged;
   const physicalCount = Math.round((options.phyPer / 100) * totalMoves);
   const specialCount = Math.round((options.spePer / 100) * totalMoves);
@@ -163,7 +164,46 @@ function suggestMoves(options, pokemon) {
   const midCount = Math.round(totalMoves * 0.5);
   const lowCount = totalMoves - highCount - midCount;
 
-  let allMoves = Object.values(MOVES);
+  let allMoves = []
+  
+  const dummyMeta = { xp: 900, retreat: 50 }
+  const dummy1 = new Pokemon('rookie', structuredClone(dummyMeta),'you')
+  const dummy2 = new Pokemon('rookie', structuredClone(dummyMeta),'enemy')
+  const battle = new BATTLE_SYSTEMS["single"]([dummy1], [dummy2])
+  for (const [id, move] of Object.entries(MOVES)) {
+    if (move.flags.weapon || move.flags.summon) continue
+
+    // test if the move is implemented and healthy
+    try {
+      // test1: check if effects implemented
+      move.effects.self.forEach(effect => {
+        if (!EFFECTS[effect.name]) 
+          throw new Error()
+      })
+      
+      move.effects.target.forEach(effect => {
+        if (!EFFECTS[effect.name]) 
+          throw new Error()
+      })
+
+      // test 2: E2E
+      const m1 = new Move(id)
+      m1._user = dummy1
+      m1._target = dummy2
+
+      const m2 = new Move("staythere");
+      m2._user = dummy2
+      m2._target = dummy1
+      
+      await battle.run(new Map([
+        [dummy1, m1],
+        [dummy2, m2],
+      ]))
+      allMoves.push(move)
+    } catch (e) {}
+  }
+  
+  
   shuffle(allMoves);
   if (options.maxPower) {
     allMoves = allMoves.filter(move => move.basePower <= options.maxPower);
@@ -315,7 +355,7 @@ function getDefaultPrompt({ level, nature }) {
   }
 }
 
-function setMoveAutomatic(event) {
+async function setMoveAutomatic(event) {
   const form = event.target.closest('.pokemon-form');
   const typesInputIndex = form.querySelector(".multy-input-box").dataset.index
   const pokemon = new Pokemon(form.querySelector('.enemy').value);
@@ -324,7 +364,7 @@ function setMoveAutomatic(event) {
     nature: form.querySelector('.nature-inp').value
   })));
   
-  const automaticCreatedMoves = suggestMoves(flagsToObj(prompt), {
+  const automaticCreatedMoves = await suggestMoves(flagsToObj(prompt), {
     level: form.querySelector('.level-inp').value,
     types: getMultyInputValues("types",typesInputIndex).concat(pokemon._pokemon.types),
   });

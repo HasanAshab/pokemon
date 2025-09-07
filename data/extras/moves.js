@@ -1238,10 +1238,9 @@ katana: {
     },
   grassfield: FieldAddingMove("Grass", 2, "Grass Field"),
   removegrassfield: FieldRemovingMove("Grass", "Remove Grass Field")
-
 }
 
-function FieldAddingMove(type,duration,name) {
+function FieldAddingMove(type, duration, name) {
   return {
     accuracy: true,
     basePower: 0,
@@ -1259,14 +1258,10 @@ function FieldAddingMove(type,duration,name) {
     type: type,
     contestType: "Cool",
     onHit(pokemon) {
-    //   console.log(pokemon.state.moves[]._meta.grade);
-
       const battle = pokemon.state.battle
       const expiresOn = battle.turnNo + duration
       battle.addField(type)
-      battle.tailListener("turn", () => {
-        console.log("turn", battle.turnNo, expiresOn);
-        
+      battle.tailListener("turn", () => {        
         if (battle.turnNo >= expiresOn) {
 
           battle.removeField(type)

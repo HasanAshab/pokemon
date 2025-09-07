@@ -4,10 +4,8 @@ jungle healing
 
 * Bugs
 auto move: 
-  check retreat for status
-  weapon,summon not
-  move count
   notimplemented flag
+  check retreat for status
   (ovi) move blank use same index
 
 fix all target
