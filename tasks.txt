@@ -13,7 +13,11 @@ fix all target
 academy level should not force stop to add any rank of army
 intity in military
 add summoned entities to adjusten list
-retreat for all adjusten
+
+allAdjacent:
+  retreat penalty only for status
+  increase damage on grade
+  more damage less target
 
 * Data
 
