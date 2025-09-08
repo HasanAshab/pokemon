@@ -1224,6 +1224,24 @@ katana: {
       basePower: 20,
       multihit: [2, 5],
       category: "Physical",
+      name: "Snake Gang",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 10,
+        status: "psn"
+      },
+      target: "normal",
+      type: "Poison",
+      contestType: "Tough" 
+    },
+    snakegangbang: {
+      num: 100047,
+      accuracy: 100,
+      basePower: 20,
+      multihit: [5, 15],
+      category: "Physical",
       name: "Snake Gang Bang",
       pp: 5 * 3,
       priority: 0,
@@ -1236,6 +1254,9 @@ katana: {
       type: "Poison",
       contestType: "Tough" 
     },
+    // auragloves: {
+
+    // }
   grassfield: FieldAddingMove("Grass", 2, "Grass Field"),
   removegrassfield: FieldRemovingMove("Grass", "Remove Grass Field")
 }
