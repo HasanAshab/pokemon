@@ -38,6 +38,10 @@ startBattle([
       {
         "id": "clearsmog",
         "isSelected": true
+      },
+      {
+        "id": "pound",
+        "isSelected": true
       }
     ],
     "mega": {
@@ -233,4 +237,210 @@ startBattle([
 
 
 
+], [], "multiple")
+
+
+startBattle([
+  {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+    {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+    {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+    {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+    {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+    {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },  {
+    "id": "student",
+    "name": "E1",
+    "xp": 1200,
+    "nature": "nin",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "ember",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
 ], [], "multiple")
