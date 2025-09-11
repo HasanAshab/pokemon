@@ -8,11 +8,6 @@ new move interface (acc)
 fix all target
 add summoned entities to adjusten list
 
-allAdjacent:
-  retreat penalty only for status
-  increase damage on grade
-  more damage less target
-
 * Data
 
 

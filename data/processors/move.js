@@ -241,19 +241,19 @@ function setRetreat(move) {
   const critRatioBonus = move.critRatio > 1 
     ? move.critRatio * 0.5
     : 0
-    
-  const targetBonus = move.target.startsWith("allAdjacent")
-    ? 2
-    : 0
 
-  const multiplier = (
+  let multiplier = (
       move.effects.target.length
   //  - move.effects.self.length
       + selfStatEffectBonus
       + targetStatEffectBonus
       + critRatioBonus
-      + targetBonus
   )
+  if (move.category === "Status" && move.target === "allAdjacentFoes")
+      multiplier += 2
+  if (move.category === "Status" && move.target === "allAdjacent")
+      multiplier += 1.5
+
   retreat += 0.5 * multiplier
   
   if("multihit" in move) {
@@ -295,8 +295,8 @@ function setCapacity(move) {
   if (!move.target.startsWith("allAdjacent")) 
       return move.capacity = 1
   
-  move.basePower *= 0.5
-  move.capacity = move.category === "Status" ? Infinity : Math.round(move.basePower / 10)
+  move.basePower = Math.round(move.basePower * 0.66668)
+  move.capacity = move.category === "Status" ? Infinity : Math.max(Math.round(move.basePower / 10), 2)
 }
 
 function modifyAccuracy(move) {
