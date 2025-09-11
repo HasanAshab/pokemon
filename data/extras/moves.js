@@ -1,6 +1,77 @@
 import { canDodge } from "../../assets/js/utils/helpers.js"
+import typeChart from "../default/types.js"
+
+function FieldAddingMove(type, name) {
+  return {
+    accuracy: true,
+    basePower: 0,
+    category: "Status",
+    name: name,
+    pp: 5 * 3,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+    },
+    secondary: null,
+    target: "normal",
+    type: type,
+    contestType: "Cool",
+    onHit(pokemon) {
+      const duration = ((pokemon.state.moves.find(m => m.name === name)._meta.grade || 0) + 1) * 2 
+      console.log(duration);
+      
+      const battle = pokemon.state.battle
+      const expiresOn = battle.turnNo + duration
+      battle.addField(type)
+      battle.tailListener("turn", () => {        
+        if (battle.turnNo >= expiresOn) {
+
+          battle.removeField(type)
+          battle.removeListener("turn", "field-move-" + type)
+        }
+      }, "field-move-" + type)
+    } 
+  }
+}
+
+function FieldRemovingMove(type, name) {
+  return {
+    accuracy: 50,
+    basePower: 0,
+    category: "Status",
+    name: name,
+    pp: 5 * 3,
+    priority: 0,
+    flags: {
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+    },
+    secondary: null,
+    target: "normal",
+    type: type,
+    contestType: "Cool",
+    onHit(pokemon) {
+      pokemon.state.battle.removeField(type)
+    } 
+  }
+}
+
+function makeFieldMoves(type) {
+    const types = Object.keys(typeChart)
+    const fieldMoves = {}
+    types.forEach(type => {
+        fieldMoves[`field:${type}`] = FieldAddingMove(type, `${type} Field`)
+        fieldMoves[`field-rm:${type}`] = FieldRemovingMove(type, `Remove ${type} Field`)
+    })
+    return fieldMoves
+}
+
 
 export default {
+    ...makeFieldMoves(),
     staythere: {
       num: 100001,
       accuracy: true,
@@ -1271,58 +1342,3 @@ katana: {
   removegrassfield: FieldRemovingMove("Grass", "Remove Grass Field")
 }
 
-function FieldAddingMove(type, duration, name) {
-  return {
-    accuracy: true,
-    basePower: 0,
-    category: "Status",
-    name: name,
-    pp: 5 * 3,
-    priority: 0,
-    flags: {
-      protect: 1,
-      mirror: 1,
-      metronome: 1,
-    },
-    secondary: null,
-    target: "normal",
-    type: type,
-    contestType: "Cool",
-    onHit(pokemon) {
-      const battle = pokemon.state.battle
-      const expiresOn = battle.turnNo + duration
-      battle.addField(type)
-      battle.tailListener("turn", () => {        
-        if (battle.turnNo >= expiresOn) {
-
-          battle.removeField(type)
-          battle.removeListener("turn", "field-move-" + type)
-        }
-      }, "field-move-" + type)
-    } 
-  }
-}
-
-function FieldRemovingMove(type,name) {
-  return {
-    accuracy: 50,
-    basePower: 0,
-    category: "Status",
-    name: name,
-    pp: 5 * 3,
-    priority: 0,
-    flags: {
-      protect: 1,
-      mirror: 1,
-      metronome: 1,
-    },
-    secondary: null,
-    target: "normal",
-    type: type,
-    contestType: "Cool",
-    onHit(pokemon) {
-      
-      pokemon.state.battle.removeField(type)
-    } 
-  }
-}

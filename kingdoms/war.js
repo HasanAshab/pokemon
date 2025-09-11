@@ -40,7 +40,7 @@ export class SoldierStack extends Map {
   }
   
   statOf(stat) {
-    return this.reduce((sum, [image, quantity]) => {
+    return this.reduce((sum, [image, quantity]) => {      
       return sum + (image.stats[stat] * quantity);
     }, 0);
   }
@@ -85,10 +85,8 @@ class Wave {
     return this.commander.image.cp() + this.soldiers.cp()
   }
 
-  statOf(stat) {
-    const commanderStat = this.commander.image.stats[stat]
-    const totalCp = commanderStat + this.soldiers.statOf(stat)    
-    return totalCp * this.cpModifier()
+  statOf(stat) {    
+    return this.soldiers.statOf(stat) * this.cpModifier()
   }
   
   cpModifier() {
@@ -116,6 +114,8 @@ export class AttackWave extends Wave {
   }
   
   _setIqModifier() {
+    if (!this.commander.iq.offensive)
+      throw new Error('This commander is unable to attack!')
     this.meta.iqModifier = 1 + (this.commander.iq.offensive / 10)
     this._cpModifiers.push(this.meta.iqModifier)
   }
@@ -128,6 +128,8 @@ export class DefenseWave extends Wave {
   }
   
   _setIqModifier() {
+     if (!this.commander.iq.defensive)
+      throw new Error('This commander is unable to defend!')
     this.meta.iqModifier = 1 + (this.commander.iq.defensive / 10)
     this._cpModifiers.push(this.meta.iqModifier)
   }
@@ -194,7 +196,7 @@ class War {
   
   _generateResult() {
     this.result.scores.atk = this._calcScore(this.attackers);
-    this.result.scores.def = this._calcScore(this.defenders);
+    this.result.scores.def = this._calcScore(this.defenders);    
     this.result.raisedWhiteFlag = this._raisedWhiteFlag()
     this.result.win = this.result.raisedWhiteFlag || this._canWin()
     this.result.wounded = this._calcWounded()
@@ -239,7 +241,7 @@ class War {
     const manPowerModifier = this._calcManPowerMod(w1)
     const phyScore = w1.statOf('def') - w2.statOf('atk')
     const spScore = w1.statOf('spd') - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()    
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()        
     return (phyScore + spScore + otherScore) * manPowerModifier
   }
   

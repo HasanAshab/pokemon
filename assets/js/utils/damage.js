@@ -41,11 +41,13 @@ export class Damage {
     
 
     _calculateBase() {
-        if (this.move.damage) {
+        if (this.move.damage || this.move.damageCallback) {
             if (typeof this.move.damage === "number") 
                 return this.move.damage
             if (this.move.damage === "level")
                 return this.attacker.level * 1.5
+            if (this.move.damageCallback && this.target)
+                return this.move.damageCallback(this.attacker, this.target)
         }
         
         let bp = null

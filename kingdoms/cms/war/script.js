@@ -70,7 +70,7 @@ function renderWaves() {
       modalContent.className = "modal-content";
 
       const soldierSelect = document.createElement("select");
-      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers.emergency || [];
+      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers.emergency || [];      
       soldiers.forEach((soldier) => {
         const option = document.createElement("option");
         option.value = soldier.image.id;
