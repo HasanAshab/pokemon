@@ -242,7 +242,7 @@ async function suggestMoves(options, pokemon) {
   const meleSpecial = categorizeMoves(allMoves.filter(move => move.flags?.contact && move.category === "Special"));
   const rangedPhysical = categorizeMoves(allMoves.filter(move => !move.flags?.contact && move.category === "Physical"));
   const rangedSpecial = categorizeMoves(allMoves.filter(move => !move.flags?.contact && move.category === "Special"));
-  const rangedStatus = categorizeMoves(allMoves.filter(move => !move.flags?.contact && move.category === "Status"));
+  const rangedStatus = categorizeMoves(allMoves.filter(move => move.category === "Status" && move.retreat <= pokemon.retreat * 0.7 ));
 
   const selectedMoves = [];
   const powerCounts = { high: 0, mid: 0, low: 0 };
@@ -367,6 +367,7 @@ async function setMoveAutomatic(event) {
   const automaticCreatedMoves = await suggestMoves(flagsToObj(prompt), {
     level: form.querySelector('.level-inp').value,
     types: getMultyInputValues("types",typesInputIndex).concat(pokemon._pokemon.types),
+    retreat: form.querySelector('.retreat-inp').value
   });
 
   const list = form.querySelector('.moves-list');

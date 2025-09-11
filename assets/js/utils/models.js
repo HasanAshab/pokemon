@@ -424,7 +424,7 @@ export class Move {
     try(user, target, move) { 
         if (this.isNeverFails)
           return true        
-          
+
         if (this.onTryMove && this.onTryMove(user, target, move) === null)
           return false
           

@@ -5,11 +5,6 @@ jungle healing
 new move interface (acc)
 
 * Bugs
-pokeball unselect automatically
-auto move: 
-  check retreat for status
-  (ovi) move blank use same index
-
 fix all target
 add summoned entities to adjusten list
 
