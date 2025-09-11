@@ -1,6 +1,31 @@
 import { processor, setKeyIfNotExists } from "./helpers.js"
 
 
+function generalizeTarget(move) {
+  const targetMapping = {
+    "self": "self",
+
+    "normal": "normal",
+    "any": "normal",
+    "scripted": "normal",
+    "adjacentFoe": "normal",
+    "randomNormal": "normal",
+
+    "allAdjacent": "allAdjacent",
+    "all": "allAdjacent",
+    
+    "allySide": "allySide",
+    "adjacentAllyOrSelf": "allySide",
+    "allyTeam": "allySide",
+    "adjacentAlly": "allySide",
+    "allies": "allySide",
+    
+    "foeSide": "foeSide",
+    "allAdjacentFoes": "foeSide",
+  }  
+  move.target = targetMapping[move.target]
+}
+
 function handleComboMoves(move, id) {  
   if (!move.flags.combo) return
   move.basePowerCallback = function(pokemon, target) {
@@ -249,7 +274,7 @@ function setRetreat(move) {
       + targetStatEffectBonus
       + critRatioBonus
   )
-  if (move.category === "Status" && move.target === "allAdjacentFoes")
+  if (move.category === "Status" && move.target === "foeSide")
       multiplier += 2
   if (move.category === "Status" && move.target === "allAdjacent")
       multiplier += 1.5
@@ -329,6 +354,7 @@ function addKoHandler(move) {
 }
 
 export default processor([
+    generalizeTarget,
     handleComboMoves,
     mergeDefault,
     bindMethods,
