@@ -145,7 +145,10 @@ export function calcNetProd(kingdom, localize = false) {
   }, {});
 }
 
-export function prepareCommander(kingdom, commanderName) {  
+export function prepareCommander(kingdom, commanderName) {
+  if (!commanderName) 
+    throw new Error(`Defender may need to prepare defence wave first`);
+    
   const commander = structuredClone(kingdom.commanders[commanderName]);
   commander.name = commanderName;
   commander.image = new Pokemon(commander.image);

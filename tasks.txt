@@ -10,9 +10,6 @@ auto move:
   (ovi) move blank use same index
 
 fix all target
-"war.js" start war error  
-academy level should not force stop to add any rank of army
-intity in military
 add summoned entities to adjusten list
 
 allAdjacent:
