@@ -61,6 +61,10 @@ class PSPokemon {
             crit: !!move.hit?.criticalCount(),
         }
     }
+
+    getUndynamaxedHP() {
+        return this.hp
+    }
 }
 
 export class Pokemon extends PSPokemon {
