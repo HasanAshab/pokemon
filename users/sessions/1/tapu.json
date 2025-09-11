@@ -1,12 +1,11 @@
 [{
-  "nature": "serious",
+  "nature": "none",
   "id": "genin",
   "name": "tapu",
   "xp": 2000,
   "retreat": 5,
   "types": [
     "Normal",
-    "Rock",
     "Water"
   ],
   "abilities": [],
@@ -30,18 +29,21 @@
       "isDefault": true
     },
     {
-      "id": "jetpunch",
-      "isDefault": true
-    },
-    {
       "id": "takeweapon",
       "isDefault": true
     },
     {
-      "id": "aquajet"
+      "id": "aquajet",
+      "isDefault": true
     },
     {
-      "id": "bubblebeam"
+      "id": "whirlpool"
+    },
+    {
+      "id": "bubble"
+    },
+    {
+      "id": "iceshard"
     }
   ],
   "mega": {
@@ -57,7 +59,7 @@
     "spa": 0,
     "spd": 0
   },
-  "isSelectedForMultiBattle": false,
+  "isSelectedForMultiBattle": true,
   "loses-count": "0",
   "wins-count": "0"
 }]
