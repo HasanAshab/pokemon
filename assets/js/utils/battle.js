@@ -456,11 +456,11 @@ class BaseBattle extends EventEmitter {
         const instD1 = hit2.toContactDamage(instantDamages.get(this.pokemon1))
         const instD2 = hit1.toContactDamage(instantDamages.get(this.pokemon2))
 
-        let d1 = "damage" in move2
+        let d1 = "damage" in move2 || "damageCallback" in move2
             ? hit2.damage()
             : hit2.toContactDamage(damages.get(this.pokemon1))
 
-        let d2 = "damage" in move1
+        let d2 = "damage" in move1 || "damageCallback" in move1
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))
           
@@ -1014,7 +1014,7 @@ class BattleState extends EventEmitter {
         summon.meta.moves = learnset
           .filter(ls => ls.required_level <= level && ls.source === "level")
           .map(ls => ({ id: ls.name }))
-                  
+
         this.battle.addPokemon(summon)  
     }
 

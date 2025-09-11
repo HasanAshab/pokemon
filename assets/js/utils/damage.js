@@ -84,7 +84,7 @@ export class Damage {
 
     _calculate() {
         this.count = this._calculateBase();
-        if (!this.target || this.move.damage) {
+        if (!this.target || this.move.damage || this.move.damageCallback) {          
             return this.count
         }
 

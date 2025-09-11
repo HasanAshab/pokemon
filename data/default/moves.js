@@ -5446,6 +5446,8 @@ export default {
         noparentalbond: 1
       },
       onTryImmunity(target, pokemon) {
+        console.log(target.hp, pokemon.hp);
+        console.log(target.hp > pokemon.hp);
         return pokemon.hp < target.hp
       },
       secondary: null,

@@ -1,11 +1,12 @@
 * Tasks
 jungle healing
+
 * UI
 new move interface (acc)
+
 * Bugs
 pokeball unselect automatically
 auto move: 
-  notimplemented flag
   check retreat for status
   (ovi) move blank use same index
 
