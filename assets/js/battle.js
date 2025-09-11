@@ -403,11 +403,12 @@ function setBattleStateListeners(playerTag) {
 function loadChoosePokemon(playerTag) {
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
   pokemonSwitchControler.innerHTML = ""
-
+  const activePokemon = playerTag === "you" ? globalThis.pokemon : globalThis.enemyPokemon
+  
   let i = 0
   for (const pokemon of teams[playerTag]) {
     pokemonSwitchControler.innerHTML += `
-          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""}" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
+          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""} ${pokemon.meta.name === activePokemon?.meta.name ? "active" : ""}" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
