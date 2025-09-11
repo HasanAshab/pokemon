@@ -3,6 +3,7 @@ jungle healing
 * UI
 
 * Bugs
+pokeball unselect automatically
 auto move: 
   notimplemented flag
   check retreat for status
