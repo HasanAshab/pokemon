@@ -1014,7 +1014,6 @@ class BattleState extends EventEmitter {
         summon.meta.moves = learnset
           .filter(ls => ls.required_level <= level && ls.source === "level")
           .map(ls => ({ id: ls.name }))
-          console.log(summon.meta.moves);
                   
         this.battle.addPokemon(summon)  
     }

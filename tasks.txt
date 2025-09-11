@@ -1,7 +1,7 @@
 * Tasks
 jungle healing
 * UI
-
+new move interface (acc)
 * Bugs
 pokeball unselect automatically
 auto move: 
