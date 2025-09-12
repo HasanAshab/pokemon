@@ -698,26 +698,26 @@ class BaseBattle extends EventEmitter {
         }
 
 
-        !ajmode && this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
-        !ajmode && this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
+        !ajmode && await this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
+        !ajmode && await this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
 
 
-        // if (move1.target === "allAdjacent" && move2.target === "allAdjacent") {}
-        // else if (move1.target === "foeSide") {
-        //   const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity - 1)          
-        //   for (const p of team) {
-        //     await sleep(3000)
-        //     const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
-        //     const scene = new Map([
-        //       [this.pokemon1, move1],
-        //       [p, counterMove]
-        //     ])
-        //     this.activate(p)
-        //     this.pokemon1.state.retreat += move1.retreat
-        //     this.pokemon1.state.increasePP(move1.id)
-        //     await this.run(scene, false, false, true)
-        //   }
-        // }
+        if (move1.target === "allAdjacent" && move2.target === "allAdjacent") {}
+        else if (move1.target === "foeSide") {
+          const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity - 1)          
+          for (const p of team) {
+            await sleep(3000)
+            const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
+            const scene = new Map([
+              [this.pokemon1, move1],
+              [p, counterMove]
+            ])
+            this.activate(p)
+            this.pokemon1.state.retreat += move1.retreat
+            this.pokemon1.state.increasePP(move1.id)
+            await this.run(scene, false, false, true)
+          }
+        }
 
         return
         const aj1 = move1.target.startsWith("allAdjacent")
@@ -771,6 +771,7 @@ class BaseBattle extends EventEmitter {
         }
 
         for (const p of team.filter(p => p !== defender)) {
+          console.log(p.name, move.name);
           let atk = attacker
           if (attacker === p) {
             atk = attacker.clone()
