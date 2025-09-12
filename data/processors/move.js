@@ -318,10 +318,13 @@ function setRetreat(move) {
 function setCapacity(move) {
   if ("capacity" in move) return
   
-  if (!move.target.startsWith("allAdjacent")) 
-      return move.capacity = 1
+  const multiTarget = ["allAdjacent", "allySide", "foeSide"]
   
+  if (!multiTarget.includes(move.target)) 
+      return move.capacity = 1
+
   move.basePower = Math.round(move.basePower * 0.66668)
+  
   move.capacity = move.category === "Status" ? Infinity : Math.max(Math.round(move.basePower / 10), 2)
 }
 

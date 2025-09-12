@@ -232,11 +232,6 @@ startBattle([
       "spd": 0
     }
   }
-
-
-
-
-
 ], [], "multiple")
 
 

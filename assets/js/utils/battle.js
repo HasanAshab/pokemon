@@ -683,6 +683,29 @@ class BaseBattle extends EventEmitter {
           clonemode2 && this.pokemon2.state.unfreeze()
         }
 
+
+        this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
+        this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
+
+
+        // if (move1.target === "allAdjacent" && move2.target === "allAdjacent") {}
+        // else if (move1.target === "foeSide") {
+        //   const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity - 1)          
+        //   for (const p of team) {
+        //     await sleep(3000)
+        //     const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
+        //     const scene = new Map([
+        //       [this.pokemon1, move1],
+        //       [p, counterMove]
+        //     ])
+        //     this.activate(p)
+        //     this.pokemon1.state.retreat += move1.retreat
+        //     this.pokemon1.state.increasePP(move1.id)
+        //     await this.run(scene, false, false, true)
+        //   }
+        // }
+
+
         const aj1 = move1.target.startsWith("allAdjacent")
         const aj2 = move2.target.startsWith("allAdjacent")
 
@@ -716,6 +739,30 @@ class BaseBattle extends EventEmitter {
             this.pokemon2.state.increasePP(move2.id)
             await this.run(scene, false, false, true)
           }
+        }
+    }
+
+    _handleStatusCapacity(attacker, defender, move) {
+        if (!move.category === "Status" || move.capacity !== Infinity) return
+        let team
+        if (move.target === "foeSide") {
+          team = attacker._tag === "you" ? this.team2 : this.team1
+        }
+        else if (move.target === "allySide") {
+          team = attacker._tag === "you" ? this.team1 : this.team2
+        }
+        else if (move.target === "allAdjacent") {
+          team = [...this.team1, ...this.team2]
+        }
+        for (const p of team.filter(p => p !== defender && p !== attacker)) {
+          const scene = new Map([
+            [attacker, move],
+            [p, new Move("staythere")]
+          ])
+          this.run(scene, false, false, true).then(() => {
+            attacker.state.retreat += move.retreat
+            attacker.state.increasePP(move.id)
+          })
         }
     }
 
