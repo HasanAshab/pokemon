@@ -65,6 +65,7 @@ function mergeDefault(move) {
         tokenChanges: {},
         onAfterMove(pokemon, target, move) {
             move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
+            move.selfdestruct === "always" && pokemon.state.decreaseHealth(pokemon.hp)
         },
     }
     
