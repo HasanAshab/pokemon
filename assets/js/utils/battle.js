@@ -474,16 +474,20 @@ class BaseBattle extends EventEmitter {
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))
           
-
-        if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {            
-            this.pokemon1.state.emit("contacted", this.pokemon2, move2)
-            this.pokemon1.state.effects.apply(move2, { on: "target" })            
-            this.pokemon1.state.stats.apply("target", move2)
+        
+        if (ajmode || move2.target !== "allySide") {
+            if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {            
+                this.pokemon1.state.emit("contacted", this.pokemon2, move2)
+                this.pokemon1.state.effects.apply(move2, { on: "target" })            
+                this.pokemon1.state.stats.apply("target", move2)
+            }
         }
-        if (!attackSelf1 && canMove1 && !move1.flags.weapon && (d2 || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
-            this.pokemon2.state.emit("contacted", this.pokemon1, move1)
-            this.pokemon2.state.effects.apply(move1, { on: "target" })
-            this.pokemon2.state.stats.apply("target", move1)
+        if (ajmode || move1.target !== "allySide") {
+            if (!attackSelf1 && canMove1 && !move1.flags.weapon && (d2 || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
+                this.pokemon2.state.emit("contacted", this.pokemon1, move1)
+                this.pokemon2.state.effects.apply(move1, { on: "target" })
+                this.pokemon2.state.stats.apply("target", move1)
+            }
         }
         if (attackSelf1) {
             this.pokemon1.state.emit("contacted", this.pokemon1, move1)
@@ -763,20 +767,28 @@ class BaseBattle extends EventEmitter {
         }
         else if (move.target === "allAdjacent") {
           team = [...this.team1, ...this.team2]
+            .filter(p => p !== attacker)
         }
 
-        for (const p of team.filter(p => p !== defender && p !== attacker)) {          
+        for (const p of team.filter(p => p !== defender)) {
+          let atk = attacker
+          if (attacker === p) {
+            atk = attacker.clone()
+            atk.state = attacker.state
+          }
           const scene = new Map([
-            [attacker, move],
+            [atk, move],
             [p, new Move("staythere")]
           ])
           const opponentTag = attacker._tag === "you" ? "enemy" : "you"
           const oldActive = this.getActive(opponentTag)
+          this.activate(atk, attacker._tag)
           this.activate(p, opponentTag)
           
           await this.run(scene, false, false, true)
 
           this.activate(oldActive, opponentTag)
+          this.activate(attacker, attacker._tag)
           attacker.state.retreat += move.retreat
           attacker.state.increasePP(move.id)
         }
@@ -1231,6 +1243,9 @@ class StatsManager {
         if (!this._statChanges[stat]) {
             this._statChanges[stat] = 0;
         }
+        
+        console.log(stat, stages, this.state.pokemon.name);
+        
 
         // Stat stage clamping (-6 to +6)
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
