@@ -128,13 +128,11 @@
   align-items: center;
   gap: 7px;
   font-size: small;
+  width: 120px;
+  flex-wrap: wrap;
+  align-self: center;
+}
 
-}
-.card-body > .secondary .power-data {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .card[data-makes-contact="false"] .card-body > .secondary .sword-icon {
   display: none;
