@@ -186,8 +186,18 @@ class BaseBattle extends EventEmitter {
           && this.opponentOf(pokemon).state.effects.canOpponentUseMove(move)
     }
 
-    activate(pokemon) {      
-        if (this.team1.includes(pokemon)) {
+    getActive(tag) {
+        return tag === this.pokemon1._tag ? this.pokemon1 : this.pokemon2
+    }
+
+    activate(pokemon, tag = null) {
+        if (tag === "you") {
+            this.pokemon1 = pokemon
+        }      
+        else if (tag === "enemy") {
+            this.pokemon2 = pokemon
+        }
+        else if (this.team1.includes(pokemon)) {
             this.pokemon1 = pokemon
         }
         else if (this.team2.includes(pokemon)) {
@@ -684,8 +694,8 @@ class BaseBattle extends EventEmitter {
         }
 
 
-        this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
-        this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
+        !ajmode && this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
+        !ajmode && this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
 
 
         // if (move1.target === "allAdjacent" && move2.target === "allAdjacent") {}
@@ -705,7 +715,7 @@ class BaseBattle extends EventEmitter {
         //   }
         // }
 
-
+        return
         const aj1 = move1.target.startsWith("allAdjacent")
         const aj2 = move2.target.startsWith("allAdjacent")
 
@@ -742,7 +752,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    _handleStatusCapacity(attacker, defender, move) {
+    async _handleStatusCapacity(attacker, defender, move) {
         if (!move.category === "Status" || move.capacity !== Infinity) return
         let team
         if (move.target === "foeSide") {
@@ -754,15 +764,21 @@ class BaseBattle extends EventEmitter {
         else if (move.target === "allAdjacent") {
           team = [...this.team1, ...this.team2]
         }
-        for (const p of team.filter(p => p !== defender && p !== attacker)) {
+
+        for (const p of team.filter(p => p !== defender && p !== attacker)) {          
           const scene = new Map([
             [attacker, move],
             [p, new Move("staythere")]
           ])
-          this.run(scene, false, false, true).then(() => {
-            attacker.state.retreat += move.retreat
-            attacker.state.increasePP(move.id)
-          })
+          const opponentTag = attacker._tag === "you" ? "enemy" : "you"
+          const oldActive = this.getActive(opponentTag)
+          this.activate(p, opponentTag)
+          
+          await this.run(scene, false, false, true)
+
+          this.activate(oldActive, opponentTag)
+          attacker.state.retreat += move.retreat
+          attacker.state.increasePP(move.id)
         }
     }
 
