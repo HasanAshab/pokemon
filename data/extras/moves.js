@@ -61,7 +61,7 @@ function FieldRemovingMove(type, name) {
   }
 }
 
-function EntitySageMove(entityId) {
+function EntitySageMove(entity) {
     return {
       accuracy: true,
       basePower: 0,
@@ -110,7 +110,7 @@ function makeEntitySageMoves() {
 
 export default {
     ...makeFieldMoves(),
-    // ...makeEntitySageMoves(),
+  //  ...makeEntitySageMoves(),
     staythere: {
       num: 100001,
       accuracy: true,

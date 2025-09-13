@@ -128,6 +128,7 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   // global
   loadActiveFeilds()
 }
+
 function loadActiveFeilds(){
   const fieldElmList = document.querySelectorAll(".player-settings-form .fields-cont .field")
   const activeFieldsTypeList = []
@@ -169,6 +170,7 @@ function loadEasyStats(playerTag){
   statsWrapper.appendChild(statElm)
  }
 }
+
 globalThis.increaseStat = function(playerTag,statName){
    const pokemon = pokemonMap[playerTag]
    pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] + 0.5 
@@ -182,6 +184,20 @@ globalThis.decreaseStat = function(playerTag,statName){
   setStatChanges(pokemon.state.stats._statChanges, playerTag)
    loadEasyStats(playerTag)
 
+}
+function updateAllAdjFlag(isActive,capacity){
+  console.log(isActive,capacity)
+  const allAdjElm = document.getElementById("all-adj-data")
+  if (isActive) {
+  allAdjElm.classList.add("active")
+  allAdjElm.textContent = `Adjasten ( ${capacity} )`
+  }
+  else {
+    allAdjElm.classList.remove("active")
+    allAdjElm.textContent = "Adjasten"
+    
+  }
+  
 }
 function loadVeryCloseBtn() {
   const btn = document.getElementById("very-close-btn")
