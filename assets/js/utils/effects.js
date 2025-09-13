@@ -587,12 +587,23 @@ class PaperBombEffect extends Effect {
     }
 }
 
-class TrueDragonPowerEffect extends Effect {
-    static effectName = "true-dragon-power"
+class AncientDragoPowerEffect extends ExpirableEffect {
+    static effectName = "ancientdragopower"
+
     setup() {
         super.setup()
-        
+        const turns = 4
+        console.log(turns)
+        this.lifetime.turns = turns
+        console.log(this.state.pokemon)
     }
+
+    teardown() {
+        super.teardown()
+
+    }
+   
+    
 }
 
 export const EFFECTS = makeEffectsMap([
@@ -611,6 +622,7 @@ export const EFFECTS = makeEffectsMap([
     ShadowCloneEffect,
     SageModeEffect,
     PaperBombEffect,
+    AncientDragoPowerEffect
 ])
 
 

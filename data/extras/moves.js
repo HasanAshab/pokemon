@@ -1377,6 +1377,31 @@ katana: {
       type: "Fighting",
       contestType: "Tough" 
      },
+     ancientdragopower:{
+      num: 100049,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Ancient Dragon Power",
+      pp: 3 * 3,
+      priority: 0,
+      secondary: null,
+      target: "self",
+      type: "Dragon",
+      retreat: 4,
+      flags: {},
+      effects: {
+        self: [{
+          name: "ancientdragopower",
+          chance: 100,
+        }],
+        target: []
+      },
+      onBeforeMove(attacker) {
+        console.log({attacker})
+       // attacker.toSageMode()
+      }
+     },
   grassfield: FieldAddingMove("Grass", 2, "Grass Field"),
   removegrassfield: FieldRemovingMove("Grass", "Remove Grass Field")
 }

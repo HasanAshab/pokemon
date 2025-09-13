@@ -757,6 +757,10 @@ function setEffects(effects, playerTag) {
       "name": "Paper Bomb",
       "color": "Normal"
     },
+    "ancientdragopower":{
+       "name": "Ancient Drago Power",
+      "color": "Dragon"     
+    }
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const effectElements = effectsDataColumn.querySelectorAll(".effect")
