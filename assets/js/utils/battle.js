@@ -1267,7 +1267,7 @@ class StatsManager {
     }
 
     all() {
-        return Object.keys(this._stats).reduce((acc, stat) => {
+        return Object.keys(this.state.pokemon.stats).reduce((acc, stat) => {
             acc[stat] = this.get(stat)
             return acc
         }, {});
