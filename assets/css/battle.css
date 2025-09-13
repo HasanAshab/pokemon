@@ -132,6 +132,17 @@ flex-direction: column;
 #very-close-btn.active {
   filter: brightness(100%);
 }
+#all-adj-data {
+  padding: 4px 17px;
+  background-color: gold;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  filter: brightness(20%);
+}
+#all-adj-data.active {
+  filter: brightness(100%);
+}
 .you-controle-cont {
   height: 47.50%;
   display: flex;
