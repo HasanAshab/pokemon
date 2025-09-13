@@ -1,5 +1,4 @@
 * Tasks
-flags.shield
 jungle healing
 
 * UI
