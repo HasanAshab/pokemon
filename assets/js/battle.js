@@ -328,7 +328,8 @@ function setBattleStateListeners(playerTag) {
       loadEffects(playerTag)
       setStatChanges(pokemon.state.stats._statChanges, playerTag)
       loadChoosePokemon(playerTag)
-    }, 2000)
+      loadPokemonData(playerTag)
+    }, 1100)
   })
 
   // dodge pop up

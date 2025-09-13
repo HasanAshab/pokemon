@@ -1,4 +1,4 @@
-import { canDodge } from "../../assets/js/utils/helpers.js"
+import { canDodge, modObj, sumObj } from "../../assets/js/utils/helpers.js"
 import typeChart from "../default/types.js"
 import entities from "../default/entities.js"
 
@@ -72,27 +72,41 @@ function EntitySageMove(id) {
   
     const entity = entities[id]
     return {
-      accuracy: true,
-      basePower: 0,
-      category: "Status",
-      name: `${entity.name} Sage`,
-      pp: 1,
-      priority: 0,
-      flags: { summon: 1 },
-      target: "self",
-      type: entity.types[0],
-      retreat: calcRetreat(entity),
-      async onAfterMove(pokemon) {
-        const entity = await pokemon.state.summon(id)
-        entity.state.on('fainted', () => {
-          this._removeMoveEffect()
-        })
-        
-        
-      },
-      _removeMoveEffect() {
-        
-      }
+        accuracy: true,
+        basePower: 0,
+        category: "Status",
+        name: `${entity.name} Sage`,
+        pp: 1,
+        priority: 0,
+        flags: { summon: 1 },
+        target: "self",
+        type: entity.types[0],
+        retreat: calcRetreat(entity),
+        async onAfterMove(pokemon) {
+            const entity = await pokemon.state.summon(id)
+            
+            const STATS_INHERIT_PERCENTAGE = 10
+            const SAGE_MAPING = {
+              "hp": "spe",
+              "spe": "hp",
+              "atk": "spa",
+              "def": "spd",
+              "spa": "atk",
+              "spd": "def"
+            }
+            this._stats = {}
+            for (const stat in entity.stats) {
+              this._stats[stat] = Math.round(entity.stats[SAGE_MAPING[stat]] * STATS_INHERIT_PERCENTAGE / 100)
+            }
+            
+            pokemon.tokens = sumObj(pokemon.tokens, this._stats)
+            pokemon.state.increaseHealth(this._stats.hp)
+            
+            entity.state.on('fainted', () => {
+                pokemon.tokens = sumObj(pokemon.tokens, modObj(this._stats, -1))
+                pokemon.state.decreaseHealth(this._stats.hp)
+            })
+        }
     }
 }
 
