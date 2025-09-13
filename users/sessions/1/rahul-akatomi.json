@@ -9,6 +9,10 @@
     "items": ["gen-food-mid","gen-thik"],
     "moves": [
       {
+                "id": "ancientmode",
+        "isSelected": true
+      },
+      {
         "id": "kunai",
         "isSelected": true
       },
