@@ -5,8 +5,6 @@ jungle healing
 new move interface (acc)
 
 * Bugs
-fix all target
-add summoned entities to adjusten list
 
 * Data
 

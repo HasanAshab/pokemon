@@ -817,6 +817,7 @@ class BaseBattle extends EventEmitter {
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
         
         const isAlly = team.includes(p)
+        
         const oldOppo = this.getActive(opponentTag)
         if (isAlly) {
           this.activate(attacker, attacker._tag)
