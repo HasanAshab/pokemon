@@ -206,7 +206,9 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {              
+    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
+      console.log(this.pokemon1.name, this.pokemon2.name);
+      
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -347,9 +349,7 @@ class BaseBattle extends EventEmitter {
         const instantDamages = new Map([
             [this.pokemon1, 0],
             [this.pokemon2, 0]
-        ])
-        console.log(move1.id, move2.id);
-        
+        ])        
         
         if (!canMove1) {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
@@ -812,21 +812,17 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async _handleFoeSideCapacity(attacker, move) {
-      console.log(this.pokemon1.name, this.pokemon2.name);
-                
-      const opponentTag = attacker._tag === "you" ? "enemy" : "you"      
-      const oldActive = this.getActive(opponentTag)
-      const oldActiveAtk = this.getActive(attacker._tag)
+    async _handleFoeSideCapacity(attacker, move) {                
+      const opponentTag = attacker._tag === "you" ? "enemy" : "you"
+      const team = attacker._tag === "you" ? this.team1 : this.team2
+      
       while (0 < move.capacity) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
         
-        const team = attacker._tag === "you" ? this.team1 : this.team2
         const isAlly = team.includes(p)
-        console.log(isAlly);
-        
         const oldOppo = this.getActive(opponentTag)
         if (isAlly) {
+          this.activate(attacker, attacker._tag)
           this.activate(p, opponentTag)
         }
 
@@ -836,19 +832,16 @@ class BaseBattle extends EventEmitter {
         ])
         
         await this.run(scene, false, false, true)
-
-        // await sleep(1500)
+        
         attacker.state.retreat += move.retreat
         attacker.state.increasePP(move.id)
         move.reduceCapacity()
-
+        
         if (isAlly) {
+          this.activate(p, attacker._tag)
           this.activate(oldOppo, opponentTag)
         }
       }
-      // this.activate(oldActive, opponentTag)
-      // this.activate(oldActiveAtk, attacker._tag)
-      console.log(this.pokemon1.name, this.pokemon2.name);
     }
 
     _checkFailure(pokemon, senario) {
@@ -1139,10 +1132,7 @@ class BattleState extends EventEmitter {
 
         summon.meta.name = `${summon.name} (${this._summonNo++})`
 
-        const { default: learnset } = await import(`../../../data/learnsets/${id}.js`)
-        console.log(level);
-        
-        
+        const { default: learnset } = await import(`../../../data/learnsets/${id}.js`)        
         summon.meta.moves = learnset
           .filter(ls => ls.required_level <= level && ls.source === "level")
           .map(ls => ({ id: ls.name }))
@@ -1299,10 +1289,7 @@ class StatsManager {
   
         if (!this._statChanges[stat]) {
             this._statChanges[stat] = 0;
-        }
-        
-        console.log(stat, stages, this.state.pokemon.name);
-        
+        }        
 
         // Stat stage clamping (-6 to +6)
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
