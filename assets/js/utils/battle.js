@@ -723,11 +723,13 @@ class BaseBattle extends EventEmitter {
         ) {}
         else {
             if (move1.category !== "Status") {
+                move1.capacity--
                 if (move1.target === "foeSide")
                     await this._handleFoeSideCapacity(this.pokemon1, move1)   
             }
 
             if (move2.category !== "Status") {
+                move2.capacity--
                 if (move2.target === "foeSide")
                     await this._handleFoeSideCapacity(this.pokemon2, move2)   
             }
@@ -812,7 +814,7 @@ class BaseBattle extends EventEmitter {
       const opponentTag = attacker._tag === "you" ? "enemy" : "you"      
       const oldActive = this.getActive(opponentTag)
       const oldActiveAtk = this.getActive(attacker._tag)
-      while (0 < move.capacity - 1) {            
+      while (0 < move.capacity) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
         this.activate(p, opponentTag)
         this.activate(oldActiveAtk, attacker._tag)
@@ -823,9 +825,9 @@ class BaseBattle extends EventEmitter {
         ])
         
         await this.run(scene, false, false, true)
-        await sleep(1500)
+        // await sleep(1500)
         attacker.state.retreat += move.retreat
-        this.pokemon1.state.increasePP(move.id)
+        attacker.state.increasePP(move.id)
         this.activate(oldActive, opponentTag)
         move.capacity--
       }
