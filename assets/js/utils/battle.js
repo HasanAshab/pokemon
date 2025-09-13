@@ -632,7 +632,7 @@ class BaseBattle extends EventEmitter {
 
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove, allHitMove, i + 1)
-                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
+                      if (!allHitMove && ["allAdjacent", "foeSide"].includes(opponentMove.target)) {
                           allHitMove = opponentMove
                           this.pokemon2.state.retreat -= allHitMove.retreat
                           move2 = allHitMove
@@ -674,7 +674,7 @@ class BaseBattle extends EventEmitter {
                   
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove, i + 1)
-                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {                                                                            
+                      if (!allHitMove && ["allAdjacent", "foeSide"].includes(opponentMove.target)) {                                                                            
                           allHitMove = opponentMove
                           this.pokemon1.state.retreat -= allHitMove.retreat
                           this.pokemon1.state.reducePP(allHitMove.id)
@@ -716,26 +716,20 @@ class BaseBattle extends EventEmitter {
         
 
         if (
-          ajmode ||
+          ajmode || clonemode1 || clonemode2 ||
           (move1.category !== "Status" && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
           (move1.category !== "Status" && move2.category !== "Status" && move1.target === "foeSide" && move2.target === "foeSide")
         ) {}
         else {
-            if (move1.category !== "Status") {
+            if (move1.category !== "Status" && ["foeSide", "allySide", "allAdjacent"].includes(move1.target)) {
                 move1.reduceCapacity()
-                if (move1.target === "foeSide")
-                    await this._handleFoeSideCapacity(this.pokemon1, move1)
-                if (move1.target === "allySide")
-                    await this._handleAllySideCapacity(this.pokemon1, move1)
+                await this._handleCapacityMove(this.pokemon1, move1)
                 move1.resetCapacity() 
             }
 
-            if (move2.category !== "Status") {
+            if (move2.category !== "Status" && ["foeSide", "allySide", "allAdjacent"].includes(move2.target)) {
                 move2.reduceCapacity()
-                if (move2.target === "foeSide")
-                    await this._handleFoeSideCapacity(this.pokemon2, move2)
-                if (move2.target === "allySide")
-                    await this._handleAllySideCapacity(this.pokemon2, move2)
+                await this._handleCapacityMove(this.pokemon2, move2)
                 move2.resetCapacity()
             }
         }
@@ -815,7 +809,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async _handleFoeSideCapacity(attacker, move) {                
+    async _handleCapacityMove(attacker, move) {                
       const opponentTag = attacker._tag === "you" ? "enemy" : "you"
       const team = attacker._tag === "you" ? this.team1 : this.team2
       
