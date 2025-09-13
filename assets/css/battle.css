@@ -115,7 +115,6 @@ flex-direction: column;
   color: white;
   border-radius: 5px;
   border: none;
-  position: absolute;
 }
 #new-wave-btn:active {
   background-color: gray;

@@ -587,7 +587,13 @@ class PaperBombEffect extends Effect {
     }
 }
 
-
+class TrueDragonPowerEffect extends Effect {
+    static effectName = "true-dragon-power"
+    setup() {
+        super.setup()
+        
+    }
+}
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
