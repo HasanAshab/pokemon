@@ -1422,10 +1422,6 @@ katana: {
           chance: 100,
         }],
         target: []
-      },
-      onBeforeMove(attacker) {
-        console.log({attacker})
-       // attacker.toSageMode()
       }
      },
   grassfield: FieldAddingMove("Grass", 2, "Grass Field"),

@@ -594,7 +594,6 @@ class AncientModeEffect extends ExpirableEffect {
 
         const grade = this.state.moves.find(move => move.id === "ancientmode")._meta.grade || 0
         const gradeStatBonusPercent = (grade * 5) / 100
-        console.log(grade);
 
         this.lifetime.turns = 4 + (grade * 2)
         
@@ -612,7 +611,13 @@ class AncientModeEffect extends ExpirableEffect {
 
         this._stats.hp += this.state.pokemon.stats.hp * gradeStatBonusPercent
         this._stats.atk += this.state.pokemon.stats.atk * gradeStatBonusPercent
-        
+                
+        this.state.moves.forEach(move => {
+            if (move.tokenChanges?.spe && move.tokenChanges?.spe < 0) {
+                this._stats.spe += Math.abs(move.tokenChanges.spe)
+            }
+        })
+
         this.state.pokemon.tokens = sumObj(this.state.pokemon.tokens, this._stats)
         this.state.increaseHealth(this._stats.hp)
     }
