@@ -206,7 +206,8 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {              
+    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
+      
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -347,9 +348,7 @@ class BaseBattle extends EventEmitter {
         const instantDamages = new Map([
             [this.pokemon1, 0],
             [this.pokemon2, 0]
-        ])
-        console.log(move1.id, move2.id);
-        
+        ])        
         
         if (!canMove1) {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
@@ -633,7 +632,7 @@ class BaseBattle extends EventEmitter {
 
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon2).ask("counterclone", cloneMove, allHitMove, i + 1)
-                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {
+                      if (!allHitMove && ["allAdjacent", "foeSide"].includes(opponentMove.target)) {
                           allHitMove = opponentMove
                           this.pokemon2.state.retreat -= allHitMove.retreat
                           move2 = allHitMove
@@ -675,7 +674,7 @@ class BaseBattle extends EventEmitter {
                   
                   for (const [i, cloneMove] of cloneMoves.entries()) {
                       const opponentMove = await this.prompt(this.pokemon1).ask("counterclone", cloneMove, allHitMove, i + 1)
-                      if (!allHitMove && opponentMove.target.startsWith("allAdjacent")) {                                                                            
+                      if (!allHitMove && ["allAdjacent", "foeSide"].includes(opponentMove.target)) {                                                                            
                           allHitMove = opponentMove
                           this.pokemon1.state.retreat -= allHitMove.retreat
                           this.pokemon1.state.reducePP(allHitMove.id)
@@ -717,22 +716,20 @@ class BaseBattle extends EventEmitter {
         
 
         if (
-          ajmode ||
+          ajmode || clonemode1 || clonemode2 ||
           (move1.category !== "Status" && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
           (move1.category !== "Status" && move2.category !== "Status" && move1.target === "foeSide" && move2.target === "foeSide")
         ) {}
         else {
-            if (move1.category !== "Status") {
+            if (move1.category !== "Status" && ["foeSide", "allySide", "allAdjacent"].includes(move1.target)) {
                 move1.reduceCapacity()
-                if (move1.target === "foeSide")
-                    await this._handleFoeSideCapacity(this.pokemon1, move1)
+                await this._handleCapacityMove(this.pokemon1, move1)
                 move1.resetCapacity() 
             }
 
-            if (move2.category !== "Status") {
+            if (move2.category !== "Status" && ["foeSide", "allySide", "allAdjacent"].includes(move2.target)) {
                 move2.reduceCapacity()
-                if (move2.target === "foeSide")
-                    await this._handleFoeSideCapacity(this.pokemon2, move2)   
+                await this._handleCapacityMove(this.pokemon2, move2)
                 move2.resetCapacity()
             }
         }
@@ -802,31 +799,28 @@ class BaseBattle extends EventEmitter {
           const oldActive = this.getActive(opponentTag)
           this.activate(atk, attacker._tag)
           this.activate(p, opponentTag)
-          
+
+          attacker.state.retreat += move.retreat
+          attacker.state.increasePP(move.id)
           await this.run(scene, false, false, true)
 
           this.activate(oldActive, opponentTag)
-          this.activate(attacker, attacker._tag)
-          attacker.state.retreat += move.retreat
-          attacker.state.increasePP(move.id)
+          this.activate(attacker, attacker._tag)          
         }
     }
 
-    async _handleFoeSideCapacity(attacker, move) {
-      console.log(this.pokemon1.name, this.pokemon2.name);
-                
-      const opponentTag = attacker._tag === "you" ? "enemy" : "you"      
-      const oldActive = this.getActive(opponentTag)
-      const oldActiveAtk = this.getActive(attacker._tag)
+    async _handleCapacityMove(attacker, move) {                
+      const opponentTag = attacker._tag === "you" ? "enemy" : "you"
+      const team = attacker._tag === "you" ? this.team1 : this.team2
+      
       while (0 < move.capacity) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
         
-        const team = attacker._tag === "you" ? this.team1 : this.team2
         const isAlly = team.includes(p)
-        console.log(isAlly);
         
         const oldOppo = this.getActive(opponentTag)
         if (isAlly) {
+          this.activate(attacker, attacker._tag)
           this.activate(p, opponentTag)
         }
 
@@ -836,19 +830,16 @@ class BaseBattle extends EventEmitter {
         ])
         
         await this.run(scene, false, false, true)
-
-        // await sleep(1500)
+        
         attacker.state.retreat += move.retreat
         attacker.state.increasePP(move.id)
         move.reduceCapacity()
-
+        
         if (isAlly) {
+          this.activate(p, attacker._tag)
           this.activate(oldOppo, opponentTag)
         }
       }
-      // this.activate(oldActive, opponentTag)
-      // this.activate(oldActiveAtk, attacker._tag)
-      console.log(this.pokemon1.name, this.pokemon2.name);
     }
 
     _checkFailure(pokemon, senario) {
@@ -1060,6 +1051,18 @@ class BattleState extends EventEmitter {
         this._manCount = Math.max(1, value)
     }
 
+    get team() {
+        return this.battle[this.pokemon._tag === "you" ? "team1" : "team2"]
+    }
+
+    isAlly(pokemon) {
+        return this.team.includes(pokemon)
+    }
+
+    isFoe(pokemon) {
+        return pokemon.state.team.includes(this.pokemon)
+    }
+
     setMoves(moves) {
         this.moves = []
         BattleState.SYS_MOVES.forEach(m => this.addMove(m))
@@ -1139,10 +1142,7 @@ class BattleState extends EventEmitter {
 
         summon.meta.name = `${summon.name} (${this._summonNo++})`
 
-        const { default: learnset } = await import(`../../../data/learnsets/${id}.js`)
-        console.log(level);
-        
-        
+        const { default: learnset } = await import(`../../../data/learnsets/${id}.js`)        
         summon.meta.moves = learnset
           .filter(ls => ls.required_level <= level && ls.source === "level")
           .map(ls => ({ id: ls.name }))
@@ -1299,10 +1299,7 @@ class StatsManager {
   
         if (!this._statChanges[stat]) {
             this._statChanges[stat] = 0;
-        }
-        
-        console.log(stat, stages, this.state.pokemon.name);
-        
+        }        
 
         // Stat stage clamping (-6 to +6)
         const newStage = Math.max(-6, Math.min(6, this._statChanges[stat] + stages));
