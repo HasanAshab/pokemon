@@ -1,5 +1,7 @@
 import { canDodge } from "../../assets/js/utils/helpers.js"
 import typeChart from "../default/types.js"
+import entities from "../default/entities.js"
+import { capitalizeFirstLetter } from "../../assets/js"
 
 function FieldAddingMove(type, name) {
   return {
@@ -59,6 +61,29 @@ function FieldRemovingMove(type, name) {
   }
 }
 
+function EntitySageMove(entity) {
+    return {
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: `${entityId} Sage`,
+      pp: 5 * 3,
+      priority: 0,
+      flags: {
+        protect: 1,
+        mirror: 1,
+        metronome: 1,
+      },
+      secondary: null,
+      target: "normal",
+      type: type,
+      contestType: "Cool",
+      onHit(pokemon) {
+        pokemon.state.battle.removeField(type)
+      } 
+    }
+}
+
 function makeFieldMoves(type) {
     const types = Object.keys(typeChart)
     const fieldMoves = {}
@@ -69,9 +94,23 @@ function makeFieldMoves(type) {
     return fieldMoves
 }
 
+function makeEntitySageMoves() {
+    const moves = {}
+    for (const entityId of Object.keys(entities)) {
+        const isMega = entityId.endsWith('mega') || 
+            entityId.endsWith('megax') || 
+            entityId.endsWith('megay')
+        if (!isMega) continue
+        const id = `sage:${entityId}`
+        moves[id] = EntitySageMove(entityId)
+    }
+    return moves
+}
+
 
 export default {
     ...makeFieldMoves(),
+    ...makeEntitySageMoves(),
     staythere: {
       num: 100001,
       accuracy: true,
