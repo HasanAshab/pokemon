@@ -595,9 +595,14 @@ class AncientModeEffect extends ExpirableEffect {
         const grade = pokemon.meta.moves.filter(move=>move.id === "ancientmode").grade || 0
         this.lifetime.turns = 4 + (grade * 2)   //turns
        // console.log()
-        const stats =  this.state.pokemon.stats//.chainModify("spe", speMod);
-      
-          console.log(stats)
+        const stats =  this.state.stats.all()//.chainModify("spe", speMod);
+        const boostStat = (stats.spe * 0.3)
+        const gradeBonusStat = (grade * 3)
+        this.state.pokemon.tokens.spe -=  boostStat
+        this.state.pokemon.tokens.hp = boostStat / 2  
+        this.state.pokemon.tokens.atk = boostStat / 2
+    
+        console.log(this.state.pokemon.tokens.spe,stats.spe,boostStat)
 
     }
 displayMeta() {
