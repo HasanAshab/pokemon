@@ -380,17 +380,23 @@ class BaseBattle extends EventEmitter {
         else if ((["allAdjacent", "foeSide"].includes(move1.target)) !== (["allAdjacent", "foeSide"].includes(move2.target))) {             
             if (["allAdjacent", "foeSide"].includes(move1.target)) {
                 await this._tryDodge(this.pokemon2, senario, clonemode2)
+                const oldm = move2
                 move2 = senario.get(this.pokemon2)
                 isDodged2()
                     ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
                     : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+                if (isDodged2())
+                    move2 = oldm
             }
             else {
                 await this._tryDodge(this.pokemon1, senario, clonemode1)
+                const oldm = move1
                 move1 = senario.get(this.pokemon1)
                 isDodged1()
                     ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
                     : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+                if (isDodged1())
+                    move1 = oldm
             }
         }
         else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {            
@@ -703,12 +709,11 @@ class BaseBattle extends EventEmitter {
           clonemode2 && this.pokemon2.state.unfreeze()
         }
 
-
-        console.log(move1.id, move2.id);
         
+        // Adjacent Support
+
         !ajmode && await this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
         !ajmode && await this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
-        console.log(move1.id, move2.id);
         
 
         if (
@@ -716,11 +721,16 @@ class BaseBattle extends EventEmitter {
           (move1.category !== "Status" && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
           (move1.category !== "Status" && move2.category !== "Status" && move1.target === "foeSide" && move2.target === "foeSide")
         ) {}
-        else if (move1.category !== "Status" && move1.target === "foeSide") {
-          await this._handleFoeSideCapacity(this.pokemon1, move1)
-        }
-        else if (move2.category !== "Status" && move2.target === "foeSide") {
-          await this._handleFoeSideCapacity(this.pokemon2, move2)
+        else {
+            if (move1.category !== "Status") {
+                if (move1.target === "foeSide")
+                    await this._handleFoeSideCapacity(this.pokemon1, move1)   
+            }
+
+            if (move2.category !== "Status") {
+                if (move2.target === "foeSide")
+                    await this._handleFoeSideCapacity(this.pokemon2, move2)   
+            }
         }
 
         return
@@ -798,13 +808,11 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async _handleFoeSideCapacity(attacker, move) {
-      console.log("handle foe side capacity", attacker.name, move.id);
-          
+    async _handleFoeSideCapacity(attacker, move) {          
       const opponentTag = attacker._tag === "you" ? "enemy" : "you"      
       const oldActive = this.getActive(opponentTag)
       const oldActiveAtk = this.getActive(attacker._tag)
-      for (let i = 0; i < move.capacity - 1; i++) {            
+      while (0 < move.capacity - 1) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
         this.activate(p, opponentTag)
         this.activate(oldActiveAtk, attacker._tag)
@@ -819,6 +827,7 @@ class BaseBattle extends EventEmitter {
         attacker.state.retreat += move.retreat
         this.pokemon1.state.increasePP(move.id)
         this.activate(oldActive, opponentTag)
+        move.capacity--
       }
       this.activate(oldActiveAtk, attacker._tag)
     }
