@@ -4,6 +4,7 @@ import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj, sleep, shuffle } from "./helpers.js"
+import move from "../../../data/processors/move.js";
 
 
 class BaseBattle extends EventEmitter {
@@ -205,13 +206,16 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
+    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {              
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
             this.ctx.veryClose = false
             clonemode1 && this.pokemon1.state.freeze()
             clonemode2 && this.pokemon2.state.freeze()
+        }
+        if (ajmode) {
+            this.waveLocked = true
         }
         let move1 = senario.get(this.pokemon1)
         let move2 = senario.get(this.pokemon2)
@@ -344,6 +348,8 @@ class BaseBattle extends EventEmitter {
             [this.pokemon1, 0],
             [this.pokemon2, 0]
         ])
+        console.log(move1.id, move2.id);
+        
         
         if (!canMove1) {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
@@ -371,8 +377,8 @@ class BaseBattle extends EventEmitter {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
             damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
         }
-        else if (move1.target.startsWith("allAdjacent") !== move2.target.startsWith("allAdjacent")) {           
-            if (move1.target.startsWith("allAdjacent")) {
+        else if ((["allAdjacent", "foeSide"].includes(move1.target)) !== (["allAdjacent", "foeSide"].includes(move2.target))) {             
+            if (["allAdjacent", "foeSide"].includes(move1.target)) {
                 await this._tryDodge(this.pokemon2, senario, clonemode2)
                 move2 = senario.get(this.pokemon2)
                 isDodged2()
@@ -473,7 +479,7 @@ class BaseBattle extends EventEmitter {
         let d2 = "damage" in move1 || "damageCallback" in move1
             ? hit1.damage()
             : hit1.toContactDamage(damages.get(this.pokemon2))
-          
+
         
         if (ajmode || move2.target !== "allySide") {
             if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {            
@@ -698,25 +704,23 @@ class BaseBattle extends EventEmitter {
         }
 
 
+        console.log(move1.id, move2.id);
+        
         !ajmode && await this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
         !ajmode && await this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
+        console.log(move1.id, move2.id);
+        
 
-
-        if (move1.target === "allAdjacent" && move2.target === "allAdjacent") {}
-        else if (move1.target === "foeSide") {
-          const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity - 1)          
-          for (const p of team) {
-            await sleep(3000)
-            const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
-            const scene = new Map([
-              [this.pokemon1, move1],
-              [p, counterMove]
-            ])
-            this.activate(p)
-            this.pokemon1.state.retreat += move1.retreat
-            this.pokemon1.state.increasePP(move1.id)
-            await this.run(scene, false, false, true)
-          }
+        if (
+          ajmode ||
+          (move1.category !== "Status" && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
+          (move1.category !== "Status" && move2.category !== "Status" && move1.target === "foeSide" && move2.target === "foeSide")
+        ) {}
+        else if (move1.category !== "Status" && move1.target === "foeSide") {
+          await this._handleFoeSideCapacity(this.pokemon1, move1)
+        }
+        else if (move2.category !== "Status" && move2.target === "foeSide") {
+          await this._handleFoeSideCapacity(this.pokemon2, move2)
         }
 
         return
@@ -757,7 +761,7 @@ class BaseBattle extends EventEmitter {
     }
 
     async _handleStatusCapacity(attacker, defender, move) {
-        if (!move.category === "Status" || move.capacity !== Infinity) return
+        if (move.category !== "Status" || move.capacity !== Infinity) return
         let team
         if (move.target === "foeSide") {
           team = attacker._tag === "you" ? this.team2 : this.team1
@@ -771,7 +775,6 @@ class BaseBattle extends EventEmitter {
         }
 
         for (const p of team.filter(p => p !== defender)) {
-          console.log(p.name, move.name);
           let atk = attacker
           if (attacker === p) {
             atk = attacker.clone()
@@ -793,6 +796,31 @@ class BaseBattle extends EventEmitter {
           attacker.state.retreat += move.retreat
           attacker.state.increasePP(move.id)
         }
+    }
+
+    async _handleFoeSideCapacity(attacker, move) {
+      console.log("handle foe side capacity", attacker.name, move.id);
+          
+      const opponentTag = attacker._tag === "you" ? "enemy" : "you"      
+      const oldActive = this.getActive(opponentTag)
+      const oldActiveAtk = this.getActive(attacker._tag)
+      for (let i = 0; i < move.capacity - 1; i++) {            
+        const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
+        this.activate(p, opponentTag)
+        this.activate(oldActiveAtk, attacker._tag)
+
+        const scene = new Map([
+          [attacker, move],
+          [p, counterMove]
+        ])
+        
+        await this.run(scene, false, false, true)
+        await sleep(1500)
+        attacker.state.retreat += move.retreat
+        this.pokemon1.state.increasePP(move.id)
+        this.activate(oldActive, opponentTag)
+      }
+      this.activate(oldActiveAtk, attacker._tag)
     }
 
     _checkFailure(pokemon, senario) {

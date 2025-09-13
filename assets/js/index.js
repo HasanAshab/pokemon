@@ -259,9 +259,9 @@ startBattle([
   {
     "id": "rookie",
     "name": "Co venom",
-    "xp": 2400,
+    "xp": 500,
     "nature": "none",
-    "retreat": 4.5,
+    "retreat": 20,
     "types": [
       "Poison"
     ],
@@ -269,35 +269,7 @@ startBattle([
     "items": [],
     "moves": [
       {
-        "id": "poisonsting",
-        "isSelected": true
-      },
-      {
-        "id": "acidspray",
-        "isSelected": true
-      },
-      {
-        "id": "takeweapon",
-        "isSelected": true
-      },
-      {
-        "id": "poisonfang",
-        "isSelected": true
-      },
-      {
-        "id": "chakrablade",
-        "isSelected": true
-      },
-      {
-        "id": "ninjastar",
-        "isSelected": true
-      },
-      {
-        "id": "clearsmog",
-        "isSelected": true
-      },
-      {
-        "id": "pound",
+        "id": "heatwave",
         "isSelected": true
       }
     ],

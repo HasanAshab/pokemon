@@ -385,16 +385,33 @@ function setBattleStateListeners(playerTag) {
     })
   })
   
-  battle.prompt(pokemon).reply("counteralladjacent", (adjacentMove) => {
+  // battle.prompt(pokemon).reply("counteralladjacent", (adjacentMove) => {
+  //   return new Promise((resolve, _) => {
+  //     const pokemonToSelect = document.querySelector(`.pokemon-switch-controler .pokemon[data-name="${pokemon.meta.name}"]`)
+  //     pokemonToSelect.click()
+      
+  //     eventEmitter.once("move-card-select", (card, tag) => {
+  //       if (playerTag !== tag) return
+  //       const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)        
+  //       const move = new Move(card.dataset.moveId, storedMove._meta)
+  //       resolve(move)
+  //     })
+  //   })
+  // })
+
+  battle.prompt(pokemon).reply("adjacent_counter_stack", (adjacentMove) => {
     return new Promise((resolve, _) => {
+      updateAllAdjFlag(true, adjacentMove.capacity - 1)
       const pokemonToSelect = document.querySelector(`.pokemon-switch-controler .pokemon[data-name="${pokemon.meta.name}"]`)
       pokemonToSelect.click()
-      
+
       eventEmitter.once("move-card-select", (card, tag) => {
-        if (playerTag !== tag) return
-        const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)        
+        updateAllAdjFlag(adjacentMove.capacity - 1 > 0, adjacentMove.capacity - 1)
+        const selectedPokemonName = document.querySelector(`.${tag}-controle-cont .pokemon-switch-controler .pokemon.active`)?.dataset.name
+        const p = teams[tag].find(p => p.name === selectedPokemonName)
+        const storedMove = p.state.moves.find(move => move.id === card.dataset.moveId)        
         const move = new Move(card.dataset.moveId, storedMove._meta)
-        resolve(move)
+        resolve([p, move])
       })
     })
   })
