@@ -61,26 +61,38 @@ function FieldRemovingMove(type, name) {
   }
 }
 
-function EntitySageMove(entity) {
+function EntitySageMove(id) {
+    function calcRetreat(pokemon) {
+      const totalBaseStats = Object.values(pokemon.baseStats).reduce((a, b) => a + b)
+      const X1 = 198, Y1 = 5
+      const X2 = 700, Y2 = 100
+      const result = Y1 * Math.pow(Y2 / Y1, (totalBaseStats - X1) / (X2 - X1))  
+      return Math.round(result + 3)
+    }
+  
+    const entity = entities[id]
     return {
       accuracy: true,
       basePower: 0,
       category: "Status",
-      name: `${entityId} Sage`,
-      pp: 5 * 3,
+      name: `${entity.name} Sage`,
+      pp: 1,
       priority: 0,
-      flags: {
-        protect: 1,
-        mirror: 1,
-        metronome: 1,
+      flags: { summon: 1 },
+      target: "self",
+      type: entity.types[0],
+      retreat: calcRetreat(entity),
+      async onAfterMove(pokemon) {
+        const entity = await pokemon.state.summon(id)
+        entity.state.on('fainted', () => {
+          this._removeMoveEffect()
+        })
+        
+        
       },
-      secondary: null,
-      target: "normal",
-      type: type,
-      contestType: "Cool",
-      onHit(pokemon) {
-        pokemon.state.battle.removeField(type)
-      } 
+      _removeMoveEffect() {
+        
+      }
     }
 }
 
@@ -110,7 +122,7 @@ function makeEntitySageMoves() {
 
 export default {
     ...makeFieldMoves(),
-  //  ...makeEntitySageMoves(),
+    ...makeEntitySageMoves(),
     staythere: {
       num: 100001,
       accuracy: true,
@@ -280,7 +292,7 @@ export default {
       zMove: { boost: { accuracy: 1 } },
       contestType: "Cool"
     },
-    substitute: {
+substitute: {
       num: 164,
       accuracy: true,
       basePower: 0,

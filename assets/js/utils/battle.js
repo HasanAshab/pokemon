@@ -1147,7 +1147,8 @@ class BattleState extends EventEmitter {
           .filter(ls => ls.required_level <= level && ls.source === "level")
           .map(ls => ({ id: ls.name }))
 
-        this.battle.addPokemon(summon)  
+        this.battle.addPokemon(summon)
+        return summon
     }
 
     usableMoves() {

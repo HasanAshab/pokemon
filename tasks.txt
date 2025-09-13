@@ -1,13 +1,13 @@
 * Tasks
+flags.shield
 jungle healing
 
 * UI
-new move interface (acc)
 
 * Bugs
+shadowclone box
 
 * Data
-
 
 * Bottle neck
 
