@@ -1,7 +1,7 @@
 import { canDodge } from "../../assets/js/utils/helpers.js"
 import typeChart from "../default/types.js"
 import entities from "../default/entities.js"
-import { capitalizeFirstLetter } from "../../assets/js"
+
 
 function FieldAddingMove(type, name) {
   return {
@@ -61,7 +61,7 @@ function FieldRemovingMove(type, name) {
   }
 }
 
-function EntitySageMove(entity) {
+function EntitySageMove(entityId) {
     return {
       accuracy: true,
       basePower: 0,
@@ -84,7 +84,7 @@ function EntitySageMove(entity) {
     }
 }
 
-function makeFieldMoves(type) {
+function makeFieldMoves() {
     const types = Object.keys(typeChart)
     const fieldMoves = {}
     types.forEach(type => {
@@ -110,7 +110,7 @@ function makeEntitySageMoves() {
 
 export default {
     ...makeFieldMoves(),
-    ...makeEntitySageMoves(),
+    // ...makeEntitySageMoves(),
     staythere: {
       num: 100001,
       accuracy: true,
