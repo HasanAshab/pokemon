@@ -378,7 +378,13 @@ export class Move {
         const abilitiesMap = {
           "Fire": "blueflame",
           "Electric": "purplethunder"
-        }        
+        }
+
+        if (!this._user || !this._target) {
+          const noProb = ["staythere", "dodge", "block"]
+          !noProb.includes(this.id) && console.warn(this.id + ": Move has no user or target. Some features may not work properly.");
+          return effectiveness
+        }
 
         if (this._user.abilities.isActive(abilitiesMap[this.type]) && effectiveness < 1) {
           effectiveness = effectiveness === CHART_MAP.immune 
