@@ -1,5 +1,5 @@
 import { Hit } from "./damage.js"
-import { capitalizeFirstLetter, camelize, weightedRandom } from "./helpers.js"
+import { capitalizeFirstLetter, camelize, weightedRandom, modObj, sumObj } from "./helpers.js"
 import { Move } from "./models.js"
 
 
@@ -591,20 +591,39 @@ class AncientModeEffect extends ExpirableEffect {
 
     setup() {
         super.setup()
-        const pokemon = this.state.pokemon
-        const grade = pokemon.meta.moves.filter(move=>move.id === "ancientmode").grade || 0
+
+        const grade = this.state.moves.find(move => move.id === "ancientmode")._meta.grade || 0
+        const gradeStatBonusPercent = (grade * 5) / 100
+        console.log(grade);
+
         this.lifetime.turns = 4 + (grade * 2)
+        
+        this.state.pokemon._beastTypes.push("Dragon")
+        this._stats = {
+            hp: 0,
+            atk: 0,
+            spe: 0
+        }
 
-        const stats =  this.state.stats.all()
-        const boostStat = (stats.spe * 0.3)
-        const gradeBonusStat = (grade * 3)
-        this.state.pokemon.tokens.spe -=  boostStat
-        this.state.pokemon.tokens.hp = boostStat / 2  
-        this.state.pokemon.tokens.atk = boostStat / 2
-    
-        console.log(this.state.pokemon.tokens.spe,stats.spe,boostStat)
+        const boostStat = this.state.pokemon.stats.spe * 0.3
+        this._stats.spe -= boostStat
+        this._stats.hp = boostStat / 2  
+        this._stats.atk = boostStat / 2
 
+        this._stats.hp += this.state.pokemon.stats.hp * gradeStatBonusPercent
+        this._stats.atk += this.state.pokemon.stats.atk * gradeStatBonusPercent
+        
+        this.state.pokemon.tokens = sumObj(this.state.pokemon.tokens, this._stats)
+        this.state.increaseHealth(this._stats.hp)
     }
+    
+    teardown() {
+        super.teardown()
+        this.state.pokemon._beastTypes = this.state.pokemon._beastTypes.filter(t => t !== "Dragon")
+        this.state.pokemon.tokens = sumObj(this.state.pokemon.tokens, modObj(this._stats, -1))
+        this.state.decreaseHealth(this._stats.hp)
+    }
+
     displayMeta() {
         return this.lifetime.turns
     }
@@ -618,12 +637,6 @@ class AncientModeEffect extends ExpirableEffect {
         this._oldFlags = structuredClone(this._move.flags)
         this._move.flags.shield = 1
     }
-
-    teardown() {
-        super.teardown()
-        console.log("yeh")
-    }
-        
 }
 
 export const EFFECTS = makeEffectsMap([
