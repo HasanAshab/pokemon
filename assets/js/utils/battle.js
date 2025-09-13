@@ -95,6 +95,10 @@ class BaseBattle extends EventEmitter {
                 p.state.emit(this._event, map.get(p), map)
             })
         })
+
+
+        console.log(`1 Turn = ${this.scenePerTurn} scenes`);
+        console.log(`1 Wave = ${JSON.stringify(this.turnsPerWave.map(i => i[0]))} turns`);
     }
 
     addPokemon(pokemon) {
@@ -897,9 +901,6 @@ class MultiBattle extends BaseBattle {
         const avgPokePerSide = Math.round(this._all.length / 2)
         
         this.scenePerTurn = this.scenePerTurn * avgPokePerSide
-        this.turnsPerWave = this.turnsPerWave.map(([turns, prob]) => {
-            return [turns * avgPokePerSide, prob]
-        })
     }
     
     filterTeam(team) {
@@ -1266,7 +1267,7 @@ class StatsManager {
     }
 
     all() {
-        return Object.keys(this._stats).reduce((acc, stat) => {
+        return Object.keys(this.state.pokemon.stats).reduce((acc, stat) => {
             acc[stat] = this.get(stat)
             return acc
         }, {});
