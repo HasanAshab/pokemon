@@ -723,15 +723,17 @@ class BaseBattle extends EventEmitter {
         ) {}
         else {
             if (move1.category !== "Status") {
-                move1.capacity--
+                move1.reduceCapacity()
                 if (move1.target === "foeSide")
-                    await this._handleFoeSideCapacity(this.pokemon1, move1)   
+                    await this._handleFoeSideCapacity(this.pokemon1, move1)
+                move1.resetCapacity() 
             }
 
             if (move2.category !== "Status") {
-                move2.capacity--
+                move2.reduceCapacity()
                 if (move2.target === "foeSide")
                     await this._handleFoeSideCapacity(this.pokemon2, move2)   
+                move2.resetCapacity()
             }
         }
 
@@ -810,14 +812,23 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async _handleFoeSideCapacity(attacker, move) {          
+    async _handleFoeSideCapacity(attacker, move) {
+      console.log(this.pokemon1.name, this.pokemon2.name);
+                
       const opponentTag = attacker._tag === "you" ? "enemy" : "you"      
       const oldActive = this.getActive(opponentTag)
       const oldActiveAtk = this.getActive(attacker._tag)
       while (0 < move.capacity) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
-        this.activate(p, opponentTag)
-        this.activate(oldActiveAtk, attacker._tag)
+        
+        const team = attacker._tag === "you" ? this.team1 : this.team2
+        const isAlly = team.includes(p)
+        console.log(isAlly);
+        
+        const oldOppo = this.getActive(opponentTag)
+        if (isAlly) {
+          this.activate(p, opponentTag)
+        }
 
         const scene = new Map([
           [attacker, move],
@@ -825,13 +836,19 @@ class BaseBattle extends EventEmitter {
         ])
         
         await this.run(scene, false, false, true)
+
         // await sleep(1500)
         attacker.state.retreat += move.retreat
         attacker.state.increasePP(move.id)
-        this.activate(oldActive, opponentTag)
-        move.capacity--
+        move.reduceCapacity()
+
+        if (isAlly) {
+          this.activate(oldOppo, opponentTag)
+        }
       }
-      this.activate(oldActiveAtk, attacker._tag)
+      // this.activate(oldActive, opponentTag)
+      // this.activate(oldActiveAtk, attacker._tag)
+      console.log(this.pokemon1.name, this.pokemon2.name);
     }
 
     _checkFailure(pokemon, senario) {

@@ -333,7 +333,7 @@ export class Move {
         this._reducedCapacity = 0
     }
 
-    get capacity() {
+    get capacity() {      
         return Math.round(this._move.capacity * Math.pow(1.5, this._meta.grade || 0)) - this._reducedCapacity
     }
 
@@ -342,7 +342,11 @@ export class Move {
     }
 
     reduceCapacity(value = 1) {
-      this._reducedCapacity += value
+        this._reducedCapacity += value
+    }
+    
+    resetCapacity() {
+        this._reducedCapacity = 0
     }
   
     get isNeverFails() {      

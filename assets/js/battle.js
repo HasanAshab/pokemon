@@ -1090,7 +1090,7 @@ globalThis.removeItem = function (id, playerTag) {
   loadTokenStats(playerTag)
 }
 
-function runScene(moveIds) {
+function runScene(moveIds) {  
   const { you: moveId, enemy: enemyMoveId } = moveIds
   const move1 = new Move(moveId)
   const move2 = new Move(enemyMoveId)
