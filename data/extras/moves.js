@@ -1389,12 +1389,12 @@ katana: {
       type: "Fighting",
       contestType: "Tough" 
      },
-     ancientdragopower:{
+     ancientmode:{
       num: 100049,
       accuracy: true,
       basePower: 0,
       category: "Status",
-      name: "Ancient Dragon Power",
+      name: "Ancient Mode",
       pp: 3 * 3,
       priority: 0,
       secondary: null,
@@ -1404,7 +1404,7 @@ katana: {
       flags: {},
       effects: {
         self: [{
-          name: "ancientdragopower",
+          name: "ancientmode",
           chance: 100,
         }],
         target: []

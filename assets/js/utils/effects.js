@@ -587,23 +587,35 @@ class PaperBombEffect extends Effect {
     }
 }
 
-class AncientDragoPowerEffect extends ExpirableEffect {
-    static effectName = "ancientdragopower"
+class AncientModeEffect extends ExpirableEffect {
+    static effectName = "ancientmode"
 
     setup() {
         super.setup()
-        const turns = 4
-        console.log(turns)
-        this.lifetime.turns = turns
-        console.log(this.state.pokemon)
+        const pokemon = this.state.pokemon
+        const grade = pokemon.meta.moves.filter(move=>move.id === "ancientmode").grade || 0
+        this.lifetime.turns = 4 + (grade * 2)   //turns
+       // console.log()
+        const stats =  this.state.pokemon.stats//.chainModify("spe", speMod);
+      
+          console.log(stats)
+
+    }
+displayMeta() {
+        return this.lifetime.turns
+    }
+       onTurn() {
+        const stats =  this.state.stats.all()//.chainModify("spe", speMod);
+      
+          console.log(stats)
+
     }
 
     teardown() {
         super.teardown()
-
+        console.log("yeh")
     }
-   
-    
+        
 }
 
 export const EFFECTS = makeEffectsMap([
@@ -622,7 +634,7 @@ export const EFFECTS = makeEffectsMap([
     ShadowCloneEffect,
     SageModeEffect,
     PaperBombEffect,
-    AncientDragoPowerEffect
+    AncientModeEffect
 ])
 
 
