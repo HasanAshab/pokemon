@@ -64,7 +64,21 @@ function mergeDefault(move) {
     const defaultProps = {
         tokenChanges: {},
         onAfterMove(pokemon, target, move) {
-            move.heal && pokemon.state.increaseHealth(pokemon.maxhp * move.healRate())
+            if ('heal' in move) {
+                let healTarget
+                if (move.target === "normal")
+                    healTarget = pokemon
+                else if (move.target === "allySide" && pokemon.state.isAlly(target))
+                    healTarget = target
+                else if (move.target === "allySide" && pokemon.state.isFoe(target))
+                    healTarget = pokemon
+                else if (move.target === "foeSide" && pokemon.state.isFoe(target))
+                    healTarget = target
+
+                console.log(healTarget?.name);
+
+                healTarget?.state.increaseHealth(pokemon.maxhp * move.healRate())
+            }
             move.selfdestruct === "always" && pokemon.state.decreaseHealth(pokemon.hp)
         },
     }

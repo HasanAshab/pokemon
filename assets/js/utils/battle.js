@@ -207,7 +207,6 @@ class BaseBattle extends EventEmitter {
     }
 
     async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
-      console.log(this.pokemon1.name, this.pokemon2.name);
       
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
@@ -726,13 +725,17 @@ class BaseBattle extends EventEmitter {
                 move1.reduceCapacity()
                 if (move1.target === "foeSide")
                     await this._handleFoeSideCapacity(this.pokemon1, move1)
+                if (move1.target === "allySide")
+                    await this._handleAllySideCapacity(this.pokemon1, move1)
                 move1.resetCapacity() 
             }
 
             if (move2.category !== "Status") {
                 move2.reduceCapacity()
                 if (move2.target === "foeSide")
-                    await this._handleFoeSideCapacity(this.pokemon2, move2)   
+                    await this._handleFoeSideCapacity(this.pokemon2, move2)
+                if (move2.target === "allySide")
+                    await this._handleAllySideCapacity(this.pokemon2, move2)
                 move2.resetCapacity()
             }
         }
@@ -802,13 +805,13 @@ class BaseBattle extends EventEmitter {
           const oldActive = this.getActive(opponentTag)
           this.activate(atk, attacker._tag)
           this.activate(p, opponentTag)
-          
+
+          attacker.state.retreat += move.retreat
+          attacker.state.increasePP(move.id)
           await this.run(scene, false, false, true)
 
           this.activate(oldActive, opponentTag)
-          this.activate(attacker, attacker._tag)
-          attacker.state.retreat += move.retreat
-          attacker.state.increasePP(move.id)
+          this.activate(attacker, attacker._tag)          
         }
     }
 
@@ -1051,6 +1054,18 @@ class BattleState extends EventEmitter {
 
     set manCount(value) {
         this._manCount = Math.max(1, value)
+    }
+
+    get team() {
+        return this.battle[this.pokemon._tag === "you" ? "team1" : "team2"]
+    }
+
+    isAlly(pokemon) {
+        return this.team.includes(pokemon)
+    }
+
+    isFoe(pokemon) {
+        return pokemon.state.team.includes(this.pokemon)
     }
 
     setMoves(moves) {
