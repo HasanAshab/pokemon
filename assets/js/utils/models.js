@@ -223,7 +223,14 @@ export class Pokemon extends PSPokemon {
     }
     
     toSageMode(sixPath = false) {
-        const bonusRate = sixPath ? 0.7 : 0.5
+        let bonusRate = sixPath ? 0.4 : 0.15
+        
+        const sourceMove = this.moves.find(m => m.id === (sixPath ? 'sageofsixpaths' : 'sagemode'));
+        if (!sourceMove)
+          throw new Error(`${this.name} can't be sage.`);
+
+        bonusRate += ((sourceMove._meta.grade || 0) * 5) / 100  
+
         this._sageBonus = { hp: 0 }
         for (const [stat1, stat2] of Object.entries(SAGE_MAPING)) {
             this._sageBonus[stat1] = this.stats[stat2] * bonusRate

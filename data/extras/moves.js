@@ -172,9 +172,6 @@ export default {
         }],
         target: []
       },
-      onBeforeMove(attacker) {
-        attacker.toSageMode()
-      }
     },
     sageofsixpaths: {
       num: 100032,
