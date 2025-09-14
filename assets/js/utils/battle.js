@@ -51,17 +51,13 @@ class BaseBattle extends EventEmitter {
         // })
 
         
-        this.on("scene", () => {
-            console.log(this._turnAfterScenes);
-            
+        this.on("scene", () => {            
             this._turnAfterScenes--
             !this._turnAfterScenes && this.emit("turn", this)
         })
 
 
         this.on("scene-end", () => {
-          console.log(this._turnAfterScenes);
-          
             if (!this._turnAfterScenes) {
                 this.emit("turn-end", this)
                 this._turnAfterScenes = this.scenePerTurn
@@ -99,10 +95,6 @@ class BaseBattle extends EventEmitter {
                 p.state.emit(this._event, map.get(p), map)
             })
         })
-
-
-        console.log(`1 Turn = ${this.scenePerTurn} scenes`);
-        console.log(`1 Wave = ${JSON.stringify(this.turnsPerWave.map(i => i[0]))} turns`);
     }
 
     addPokemon(pokemon) {
@@ -290,9 +282,7 @@ class BaseBattle extends EventEmitter {
           && ((move1.flags.weapon && !move2.flags.shield) || (move2.flags.weapon && !move1.flags.shield))
           && move1.flags.offensive === move2.flags.offensive
           && move1.priority === move2.priority
-        ) {
-          console.log("weapon effect");
-          
+        ) {          
             const bareTypes = ["Normal", "Fighting"]
             const armed = move1.flags.weapon
               ? this.pokemon1
@@ -908,8 +898,11 @@ class MultiBattle extends BaseBattle {
         super(...args)
         
         const avgPokePerSide = Math.round(this._all.length / 2)
-        
         this.scenePerTurn = this.scenePerTurn * avgPokePerSide
+        this._turnAfterScenes = this.scenePerTurn
+
+        console.log(`1 Turn = ${this.scenePerTurn} scenes`);
+        console.log(`1 Wave = ${JSON.stringify(this.turnsPerWave.map(i => i[0]))} turns`);
     }
     
     filterTeam(team) {
