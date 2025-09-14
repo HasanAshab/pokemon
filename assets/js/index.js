@@ -257,36 +257,115 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 startBattle(null,[
   {
-    "id": "rookie",
-    "name": "Co venom",
-    "xp": 500,
-    "nature": "none",
-    "retreat": 20,
-    "types": [
-      "Poison"
-    ],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "heatwave",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
+  "nature": "nin",
+  "id": "rookie",
+  "name": "rahul akatomi",
+  "xp": 1900,
+  "retreat": 10,
+  "types": [
+    "Normal"
+  ],
+  "abilities": [
+    "killerbeebeast"
+  ],
+  "items": [
+    "gen-food-mid",
+    "gen-thik"
+  ],
+  "moves": [
+    {
+      "id": "kunai",
+      "isSelected": true,
+      "isDefault": true
     },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
+    {
+      "id": "ninjastar",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "doubleteam",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "thundershock",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "doublekick",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "bulletpunch",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "thunderwave",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "cyclekick",
+      "grade": 2,
+      "isDefault": true
+    },
+    {
+      "id": "summon:killerbee"
+    },
+    {
+      "id": "summon:suicidebee"
     }
+  ],
+  "mega": {
+    "moves": [],
+    "suffix": "mega"
   },
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  }
+  
+}
+  // {
+  //   "id": "rookie",
+  //   "name": "Co venom",
+  //   "xp": 500,
+  //   "nature": "none",
+  //   "retreat": 20,
+  //   "types": [
+  //     "Poison"
+  //   ],
+  //   "abilities": [],
+  //   "items": [],
+  //   "moves": [
+  //     {
+  //       "id": "heatwave",
+  //       "isSelected": true
+  //     }
+  //   ],
+  //   "mega": {
+  //     "moves": [],
+  //     "suffix": "mega"
+  //   },
+  //   "stats": {},
+  //   "token_used": {
+  //     "hp": 0,
+  //     "spe": 0,
+  //     "atk": 0,
+  //     "def": 0,
+  //     "spa": 0,
+  //     "spd": 0
+  //   }
+  // },
 //   {
 //     "id": "rookie",
 //     "name": "E1",

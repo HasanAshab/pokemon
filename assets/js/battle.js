@@ -5,6 +5,7 @@ import { Damage } from "./utils/damage.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
+import pokemons from "../../data/pokemons.js"
 
 
 const eventEmitter = new EventEmitter()
@@ -372,6 +373,14 @@ function setBattleStateListeners(playerTag) {
       popupQueue.add("K.O!", opponentTag(playerTag), 3500)
   })
 
+  pokemon.state.on('fainted', () => {
+      
+    const pokemonSwitchBtn =  document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler .pokemon:not(.disabled)`)
+    pokemonSwitchBtn?.click()
+    
+      
+  })
+
   battle.prompt(pokemon).reply("dodge", () => {
     return showDodgeBattlePrompt("Want to Dodge?", playerTag)
   })
@@ -401,19 +410,6 @@ function setBattleStateListeners(playerTag) {
     })
   })
   
-  // battle.prompt(pokemon).reply("counteralladjacent", (adjacentMove) => {
-  //   return new Promise((resolve, _) => {
-  //     const pokemonToSelect = document.querySelector(`.pokemon-switch-controler .pokemon[data-name="${pokemon.meta.name}"]`)
-  //     pokemonToSelect.click()
-      
-  //     eventEmitter.once("move-card-select", (card, tag) => {
-  //       if (playerTag !== tag) return
-  //       const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)        
-  //       const move = new Move(card.dataset.moveId, storedMove._meta)
-  //       resolve(move)
-  //     })
-  //   })
-  // })
 
   battle.prompt(pokemon).reply("adjacent_counter_stack", (adjacentMove) => {
     return new Promise((resolve, _) => {

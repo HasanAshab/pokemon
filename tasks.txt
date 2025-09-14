@@ -2,8 +2,10 @@
 killerbee beast
   1 - 3 turn summon suicidebee ($paperbomb:explode)
 
-
-
+* bug 
+ morar next turn e clear korte oibo 
+summon hoina move dia
+suside blast (selfDestruct) miss hoya gele user morbo
 * Bottle neck
 
 
@@ -15,7 +17,6 @@ fix retreat of beast abilities
 jungle healing
 shadowclone box
 hand6
-charizard basestat
 kingdoms build maintains
 
 

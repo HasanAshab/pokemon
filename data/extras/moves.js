@@ -1431,7 +1431,7 @@ katana: {
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
      secondary: {
-        chance: 10,
+        chance: 100,
         status: "par"
       },
       recoil: [5,100],
@@ -1465,7 +1465,41 @@ katana: {
       multihit: [2 ,5],
     },
 
-
+    suicideblast: {
+       num: 100052,
+      accuracy: 100,
+      basePower: 100,
+      category: "Physical",
+      name: "Suicide Blast",
+      pp: 5,
+      priority: 1,
+      flags: { protect: 1, mirror: 1, metronome: 1, noparentalbond: 1 ,contact: 1},
+      selfdestruct: "always",
+      secondary: null,
+      target: "normal",
+      type: "Normal",
+      contestType: "Beautiful"
+    },
+   firesword: {
+      num: 1000000000,
+      accuracy: 100,
+      basePower: 50,
+      category: "Physical",
+      name: "Fire Sword",
+      pp: 10 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+      secondary: {
+        chance: 90,
+        status: "brn"
+      },
+      target: "normal",
+      type: "Fire",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -6
+      },
+   }
      
    
   

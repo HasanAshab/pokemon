@@ -531,7 +531,7 @@ export default {
   },
 
   killerbeebeast: {
-    retreat: 0,
+    retreat: 2,
     type: 'beast',
     beastImage: 'killerbee',
     onTurn(pokemon) {

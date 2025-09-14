@@ -18830,6 +18830,19 @@ export default {
       tags: ["Mythical"],
       eggGroups: ["Undiscovered"]
     },
+    suicidebee: {
+      num: 1026,
+      name: "Suicidebee",
+      types: ["Bug"],
+      gender: "N",
+      baseStats: { hp: 5, atk: 5, def: 5, spa: 5, spd: 5, spe: 25 },
+      abilities: {},
+      heightm: 0.3,
+      weightkg: 0.3,
+      color: "Purple",
+      tags: ["Insect"],
+      eggGroups: ["Undiscovered"]
+    },
     missingno: {
       num: 0,
       name: "MissingNo.",

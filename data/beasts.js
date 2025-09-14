@@ -88,6 +88,15 @@ hands2: {
   desc:`Has 30% to repeat user used move if make contact = true.
     it has 3 hands so it can repeat 3 times`
 },
+killerbee: {
+  num: 13,
+  name: "killerbee",
+  types: ["Bug"],
+  baseStats: { hp: 10, atk: 10, def: 5, spa: 20, spd: 20, spe: 35 }, // total = 150
+  abilities: {},
+  heightm: 1.8,
+  desc:`summons a swarm of bees that attack the target.`
+},
  charizard: {
   num: 13,
   name: "charizard",
