@@ -115,6 +115,7 @@ flex-direction: column;
   color: white;
   border-radius: 5px;
   border: none;
+ 
 }
 #new-wave-btn:active {
   background-color: gray;
@@ -464,7 +465,7 @@ display: flex;
    font-size: large;
 }
 
-./* player-settings-form .settings-wrapper .settings.stats > .stat:has(.increase-btn:active) {
+/* player-settings-form .settings-wrapper .settings.stats > .stat:has(.increase-btn:active) {
     background-color: #9cff91;
 }
 .player-settings-form .settings-wrapper .settings.stats > .stat:has(.decrease-btn:active) {

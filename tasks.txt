@@ -6,6 +6,11 @@ killerbee beast
  morar next turn e clear korte oibo 
 summon hoina move dia
 suside blast (selfDestruct) miss hoya gele user morbo
+shadow clone alladj mare
+
+* omi
+kingdoms build maintains storage
+
 * Bottle neck
 
 
@@ -15,9 +20,7 @@ suside blast (selfDestruct) miss hoya gele user morbo
 *ovi
 fix retreat of beast abilities
 jungle healing
-shadowclone box
 hand6
-kingdoms build maintains
 
 
 

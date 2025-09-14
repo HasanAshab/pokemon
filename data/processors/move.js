@@ -343,6 +343,7 @@ function setCapacity(move) {
 }
 
 function modifyAccuracy(move) {
+    if (move.accuracy === true) return 
     if (move.category === "Status") {
         move.accuracy -= Math.round(move.accuracy * 0.10)
     }
