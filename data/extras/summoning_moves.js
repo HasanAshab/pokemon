@@ -25,7 +25,7 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
     flags: { summon: 1 },
     target: "self",
     type: "Normal",
-    retreat: calcRetreat(pokemon),
+    retreat: calcRetreat(pokemon) * (pokemon.type === "beast" ? 1.2 : 1),
     onTryMove(pokemon) { 
       pokemon.state.decreaseHealth(pokemon.hp * 0.05, true)
       return null

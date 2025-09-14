@@ -52,12 +52,16 @@ class BaseBattle extends EventEmitter {
 
         
         this.on("scene", () => {
+            console.log(this._turnAfterScenes);
+            
             this._turnAfterScenes--
             !this._turnAfterScenes && this.emit("turn", this)
         })
 
 
         this.on("scene-end", () => {
+          console.log(this._turnAfterScenes);
+          
             if (!this._turnAfterScenes) {
                 this.emit("turn-end", this)
                 this._turnAfterScenes = this.scenePerTurn
@@ -1140,6 +1144,9 @@ class BattleState extends EventEmitter {
 
     async summon(id) {
         const sourceMove = this.moves.find(m => m.id === `summon:${id}`);
+        if (!sourceMove)
+          throw new Error(`${this.pokemon.name} cannot summon ${id}.`);
+
         const level = ((sourceMove._meta.grade || 0) * 3) || 1         
         const summon = new Pokemon(id, {
           xp: (level - 1) * 100,

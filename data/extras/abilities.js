@@ -530,6 +530,21 @@ export default {
     },
   },
 
+  killerbeebeast: {
+    retreat: 0,
+    type: 'beast',
+    beastImage: 'charizard',
+    onTurn(pokemon) {        
+        if (!this._summonAfterTurns)
+            this._summonAfterTurns = 1
+        this._summonAfterTurns--
+        if (this._summonAfterTurns === 0) {
+            console.log("summon charmander");
+            pokemon.state.summon("charmander")
+        }
+    }
+  },
+
   // paths
   indrapath: {
     retreat: 2,

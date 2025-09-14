@@ -333,7 +333,9 @@ export class Move {
         this._reducedCapacity = 0
     }
 
-    get capacity() {      
+    get capacity() {
+        if (this._move.capacity === Infinity || this._move.capacity === 1)
+            return this._move.capacity
         return Math.round(this._move.capacity * Math.pow(1.5, this._meta.grade || 0)) - this._reducedCapacity
     }
 
@@ -478,7 +480,7 @@ class Ability {
         this.active = false
         setTimeout(() => {
           if (this._ability.flags?.autoenable === 1 || !this.pokemon.isHuman) { 
-              this.activate()
+              'state' in this.pokemon && this.activate()
           }
         }, 200)
     }
@@ -488,7 +490,7 @@ class Ability {
     }
 
     activate() {
-        if (this.active) return
+        if (this.active) return        
         this.active = true
         this.onActivate()
         this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), this.pokemon.state.battle)

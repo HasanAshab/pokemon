@@ -1,29 +1,28 @@
 * Tasks
-jungle healing
+killerbee beast
+  1 - 3 turn summon suicidebee ($paperbomb:explode)
 
-* UI
 
-* Bugs
-shadowclone box
-
-* Data
 
 * Bottle neck
+
+
+* Pending
+
+
+*ovi
+fix retreat of beast abilities
+jungle healing
+shadowclone box
+hand6
+charizard basestat
+kingdoms build maintains
+
+
+
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 
 phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
-
-
-* Pending
-filter moves advanced
-incremental humans.js
-
-
-
-*ovi 
-hand6
-charizard basestat
-kingdoms build maintains
