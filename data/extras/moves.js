@@ -405,7 +405,7 @@ substitute: {
       num: 100000,
       accuracy: 100,
       multihit: [2,5],
-      basePower: 20,
+      basePower: 15,
       category: "Physical",
       name: "Chakra Blade",
       pp: 15 * 3,
@@ -1421,7 +1421,53 @@ katana: {
         target: []
       }
      },
-  grassfield: FieldAddingMove("Grass", 2, "Grass Field"),
-  removegrassfield: FieldRemovingMove("Grass", "Remove Grass Field")
+   lightningkunai:{
+      num: 100050,
+      accuracy: 100,
+      basePower: 50,
+      category: "Physical",
+      name: "Lightning Kunai",
+      pp: 10 * 3,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+     secondary: {
+        chance: 10,
+        status: "par"
+      },
+      recoil: [5,100],
+      target: "normal",
+      type: "Electric",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -6
+      },
+   },
+      lightningninjastar: {
+      num: 100051,
+      accuracy: 100,
+      basePower: 15,
+      category: "Physical",
+      name: "Lightning Ninja Star",
+      pp: 5 * 3,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1},
+     secondary: {
+        chance: 3,
+        status: "par"
+      },
+      target: "normal",
+      type: "Electric",
+      contestType: "Tough",
+      tokenChanges: {
+        spe: -6
+      },
+      recoil: [5,100],
+      multihit: [2 ,5],
+    },
+
+
+     
+   
+  
 }
 
