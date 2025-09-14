@@ -51,7 +51,7 @@ class BaseBattle extends EventEmitter {
         // })
 
         
-        this.on("scene", () => {
+        this.on("scene", () => {            
             this._turnAfterScenes--
             !this._turnAfterScenes && this.emit("turn", this)
         })
@@ -95,10 +95,6 @@ class BaseBattle extends EventEmitter {
                 p.state.emit(this._event, map.get(p), map)
             })
         })
-
-
-        console.log(`1 Turn = ${this.scenePerTurn} scenes`);
-        console.log(`1 Wave = ${JSON.stringify(this.turnsPerWave.map(i => i[0]))} turns`);
     }
 
     addPokemon(pokemon) {
@@ -286,9 +282,7 @@ class BaseBattle extends EventEmitter {
           && ((move1.flags.weapon && !move2.flags.shield) || (move2.flags.weapon && !move1.flags.shield))
           && move1.flags.offensive === move2.flags.offensive
           && move1.priority === move2.priority
-        ) {
-          console.log("weapon effect");
-          
+        ) {          
             const bareTypes = ["Normal", "Fighting"]
             const armed = move1.flags.weapon
               ? this.pokemon1
@@ -904,8 +898,11 @@ class MultiBattle extends BaseBattle {
         super(...args)
         
         const avgPokePerSide = Math.round(this._all.length / 2)
-        
         this.scenePerTurn = this.scenePerTurn * avgPokePerSide
+        this._turnAfterScenes = this.scenePerTurn
+
+        console.log(`1 Turn = ${this.scenePerTurn} scenes`);
+        console.log(`1 Wave = ${JSON.stringify(this.turnsPerWave.map(i => i[0]))} turns`);
     }
     
     filterTeam(team) {
@@ -1140,6 +1137,9 @@ class BattleState extends EventEmitter {
 
     async summon(id) {
         const sourceMove = this.moves.find(m => m.id === `summon:${id}`);
+        if (!sourceMove)
+          throw new Error(`${this.pokemon.name} cannot summon ${id}.`);
+
         const level = ((sourceMove._meta.grade || 0) * 3) || 1         
         const summon = new Pokemon(id, {
           xp: (level - 1) * 100,

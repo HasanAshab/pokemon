@@ -530,6 +530,23 @@ export default {
     },
   },
 
+  killerbeebeast: {
+    retreat: 0,
+    type: 'beast',
+    beastImage: 'killerbee',
+    onTurn(pokemon) {
+        if (!this._summonAfterTurns) {
+            this._summonAfterTurns = this._summonAfterTurns === undefined
+                ? 1
+                : Math.floor(Math.random() * 3) + 1
+        }
+        this._summonAfterTurns--
+        if (this._summonAfterTurns === 0) {
+            pokemon.state.summon("suicidebee")
+        }
+    }
+  },
+
   // paths
   indrapath: {
     retreat: 2,
@@ -594,7 +611,6 @@ export default {
     retreat: 2,
     type: 'path',
     onTurn(_, opponent) {
-      console.log(opponent.abilities.jinchuriki());
       if (opponent.abilities.jinchuriki()) {
         opponent.state.effects.add(null, "confusion")
       }
