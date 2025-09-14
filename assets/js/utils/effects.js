@@ -588,14 +588,13 @@ class PaperBombEffect extends Effect {
 
 class AncientModeEffect extends ExpirableEffect {
     static effectName = "ancientmode"
-
     setup() {
         super.setup()
 
         const grade = this.state.moves.find(move => move.id === "ancientmode")._meta.grade || 0
-        const gradeStatBonusPercent = (grade * 5) / 100
+        const gradeStatBonusPercent = (grade * 8) / 100
 
-        this.lifetime.turns = 4 + (grade * 2)
+        this.lifetime.turns = 3 + Math.floor(grade * 1.5)
         
         this.state.pokemon._beastTypes.push("Dragon")
         this._stats = {
@@ -605,13 +604,12 @@ class AncientModeEffect extends ExpirableEffect {
         }
 
         const boostStat = this.state.pokemon.stats.spe * 0.3
+
         this._stats.spe -= boostStat
         this._stats.hp = boostStat / 2  
         this._stats.atk = boostStat / 2
-
         this._stats.hp += this.state.pokemon.stats.hp * gradeStatBonusPercent
         this._stats.atk += this.state.pokemon.stats.atk * gradeStatBonusPercent
-                
         this.state.moves.forEach(move => {
             if (move.tokenChanges?.spe && move.tokenChanges?.spe < 0) {
                 this._stats.spe += Math.abs(move.tokenChanges.spe)
@@ -630,7 +628,8 @@ class AncientModeEffect extends ExpirableEffect {
     }
 
     displayMeta() {
-        return this.lifetime.turns
+      const totalStatBoosted = this._stats.hp + this._stats.atk
+        return `(${Math.floor(totalStatBoosted / 10)}.inch) - ${this.lifetime.turns}`
     }
     
     onScene(move) {
