@@ -343,12 +343,8 @@ function setCapacity(move) {
 }
 
 function modifyAccuracy(move) {
-    if (move.accuracy === true) return
-    else if (move.flags.twoturn) {
-        move.accuracy -= move.accuracy * 0.30
-    }
-    else if (move.category === "Status") {
-        move.accuracy -= move.accuracy * 0.15
+    if (move.category === "Status") {
+        move.accuracy -= Math.round(move.accuracy * 0.10)
     }
 }
 
