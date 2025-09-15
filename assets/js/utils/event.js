@@ -90,6 +90,13 @@ export class EventEmitter {
         removeFrom(this._onceEvents);
         removeFrom(this._tailListeners);
     }
+    
+    removeListeners() {
+        this._events = {};
+        this._debouncedEmitters = {};
+        this._onceEvents = {};
+        this._tailListeners = {};
+    }
 }
 
 

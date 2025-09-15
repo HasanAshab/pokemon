@@ -1237,8 +1237,6 @@ class StatsManager {
     }
 
     apply(on, move) {
-        console.log("apply", on, move.id);
-        
         const attacker = this.state.battle.opponentOf(this.state.pokemon);
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return
