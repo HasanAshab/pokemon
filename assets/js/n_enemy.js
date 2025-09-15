@@ -140,14 +140,15 @@ function showStats(event) {
   stats.textContent = `Enemy: ${form.querySelector('.enemy').value}\nLevel: ${form.querySelector('.level-inp').value}`;
 }
 
-function addMove(event, isMega = false) {
+function addMove(event, moveId = '' , grade =0 , isMega = false) {
   const form = event.target.closest('.pokemon-form');
   const list = isMega ? form.querySelector('.mega-moves-list') : form.querySelector('.moves-list');
 
   const div = document.createElement('div');
   div.className = 'move-item';
   div.innerHTML = `
-    <input type="text" list="moves-data-list" onblur="showMoveDetails(event)" class="${isMega ? 'mega-move-input' : 'move-input'}">
+    <input type="text" value="${moveId}" list="moves-data-list" onblur="showMoveDetails(event)" class="${isMega ? 'mega-move-input' : 'move-input'}">
+    <input type="number"  class="move-grade-input" value="${grade}" style="width: 40px">
     <button type="button" onclick="removeMove(event)">X</button>
   `;
   list.appendChild(div);
@@ -395,16 +396,7 @@ async function setMoveAutomatic(event) {
   const list = form.querySelector('.moves-list');
   const moveItems = list.querySelectorAll('.move-item');
   if ( moveItems.length === 0){
-  automaticCreatedMoves.forEach(move => {
-    
-    const div = document.createElement('div');
-    div.className = 'move-item';
-    div.innerHTML = `
-      <input type="text" list="moves-data-list" onblur="showMoveDetails(event)" class="move-input" value="${move}">
-      <button type="button" onclick="removeMove(event)">X</button>
-    `;
-    list.appendChild(div);
-  });
+  automaticCreatedMoves.forEach(moveId => addMove(event, moveId));
 }else {
   moveItems.forEach((moveItem,index) => {
     const moveInput = moveItem.querySelector('.move-input');
@@ -466,16 +458,20 @@ function makeEnemiesMeta() {
     const items = getMultyInputValues("items",index)//itemsRaw.split(',').map(item => item.trim()).filter(item => item);
 
     const moves = [];
-    form.querySelectorAll('.moves-list .move-input').forEach(input => {
-      const id = input.value.trim();
-      if (id) moves.push({ id, isSelected: true });
+    form.querySelectorAll('.move-item').forEach(moveItem => {
+      const id = moveItem.querySelector('.move-input').value.trim();
+      const grade = moveItem.querySelector('.move-grade-input').value.trim();
+      
+      if (id) moves.push({ id, grade, isSelected: true });
     });
 
+   
+
     const megaMoves = [];
-    form.querySelectorAll('.mega-moves-list .mega-move-input').forEach(input => {
-      const id = input.value.trim();
-      if (id) megaMoves.push({ id, isSelected: true });
-    });
+    // form.querySelectorAll('.mega-moves-list .mega-move-input').forEach(input => {
+    //   const id = input.value.trim();
+    //   if (id) megaMoves.push({ id, isSelected: true });
+    // });
 
     const enemyMeta = {
       id: enemyId,

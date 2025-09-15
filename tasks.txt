@@ -2,7 +2,17 @@
 kingdoms build maintains storage
 
 * bug 
-
+sage mode error : TypeError: Cannot read properties of undefined (reading 'find')
+    at Pokemon.toSageMode (models.js:228:39)
+    at SageModeEffect.setup (effects.js:557:28)
+    at EffectManager.add (effects.js:724:20)
+    at effects.js:767:48
+    at Array.forEach (<anonymous>)
+    at EffectManager.apply (effects.js:765:18)
+    at Object.<anonymous> (battle.js:923:40)
+    at event.js:44:56
+    at Array.forEach (<anonymous>)
+    at BattleState.emit (event.js:44:33)
 * Bottle neck
 
 
