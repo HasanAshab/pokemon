@@ -2,8 +2,6 @@
 kingdoms build maintains storage
 
 * bug 
- morar next turn e clear korte oibo 
-summon hoina move dia
 suside blast (selfDestruct) miss hoya gele user morbo
 shadow clone alladj mare
 
