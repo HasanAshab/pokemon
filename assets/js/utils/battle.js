@@ -929,8 +929,10 @@ class BattleState extends EventEmitter {
             moveFailed && move.onMoveFail?.(opponent, this.pokemon, opponentMove)
         })
 
-        this.on("used-move", (move) => {          
+        this.on("used-move", (move) => {    
+            const opponent = this.battle.opponentOf(this.pokemon)      
             this._data.movesHistory.push(move.id)
+            move.finally?.(this.pokemon, opponent, move)
         })
 
         this.on("hitted-move", move => {            
@@ -950,11 +952,11 @@ class BattleState extends EventEmitter {
             this.retreat -= this.pokemon.abilities.retreatCost()
         })
         
-        this.on("fainted", () => {
+        this.once("fainted", () => {
             if (confirm(`${this.pokemon.meta.name} fainted. Clear him?`)) {
                 this.battle.removePokemon(this.pokemon)
             }
-        })
+        }, "clear-fainted")
 
         this.setMoves(pokemon.meta.moves || [])
     }

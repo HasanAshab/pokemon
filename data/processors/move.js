@@ -79,6 +79,9 @@ function mergeDefault(move) {
 
                 healTarget?.state.increaseHealth(healTarget.maxhp * move.healRate())
             }
+            move.selfdestruct === "ifHit" && pokemon.state.decreaseHealth(pokemon.hp)
+        },
+        finally(pokemon, target, move) {
             move.selfdestruct === "always" && pokemon.state.decreaseHealth(pokemon.hp)
         },
     }
