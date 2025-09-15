@@ -2,8 +2,7 @@
 kingdoms build maintains storage
 
 * bug 
-suside blast (selfDestruct) miss hoya gele user morbo
-weapon not give effect brn
+suside blast (selfDestruct) miss hoya gele user morbo(ifHit)
 
 * Bottle neck
 
