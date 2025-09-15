@@ -1,6 +1,6 @@
 * Tasks
 kingdoms build maintains storage
-auto move come from learnsets if not human  
+
 * bug 
 
 * Bottle neck

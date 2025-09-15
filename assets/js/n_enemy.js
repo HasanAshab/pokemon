@@ -154,7 +154,15 @@ function addMove(event, isMega = false) {
 }
 
 
-async function suggestMoves(options, pokemon) {
+async function suggestFromLearnset(pokemon) {
+  const { default: learnset } = await import(`../../data/learnsets/${pokemon.image}.js`)
+  console.log(learnset)
+  return learnset
+    .filter(ls => ls.required_level <= pokemon.level && ls.source === "level")
+    .map(ls => ls.name)
+}
+
+async function suggestUsingOptions(options, pokemon) {
   const totalMoves = options.mele + options.ranged;
   const physicalCount = Math.round((options.phyPer / 100) * totalMoves);
   const specialCount = Math.round((options.spePer / 100) * totalMoves);
@@ -170,6 +178,9 @@ async function suggestMoves(options, pokemon) {
   const dummy1 = new Pokemon('rookie', structuredClone(dummyMeta),'you')
   const dummy2 = new Pokemon('rookie', structuredClone(dummyMeta),'enemy')
   const battle = new BATTLE_SYSTEMS["single"]([dummy1], [dummy2])
+  dummy1.state.removeListeners()
+  dummy2.state.removeListeners()
+  
   for (const [id, move] of Object.entries(MOVES)) {
     if (move.flags.weapon || move.flags.summon) continue
 
@@ -314,6 +325,16 @@ async function suggestMoves(options, pokemon) {
   return selectedMoves.map(move => move.name.toLowerCase().replace(' ', ''));
 }
 
+
+async function suggestMoves(options, pokemon) {
+  try {
+    return await suggestFromLearnset(pokemon)
+  }
+  catch (e) {
+    console.log(e)
+    return await suggestUsingOptions(options, pokemon)
+  }
+}
 function getDefaultPrompt({ level, nature }) {
   const count = level / 4
 
@@ -365,6 +386,7 @@ async function setMoveAutomatic(event) {
   })));
   
   const automaticCreatedMoves = await suggestMoves(flagsToObj(prompt), {
+    image: form.querySelector('.enemy').value,
     level: form.querySelector('.level-inp').value,
     types: getMultyInputValues("types",typesInputIndex).concat(pokemon._pokemon.types),
     retreat: form.querySelector('.retreat-inp').value
