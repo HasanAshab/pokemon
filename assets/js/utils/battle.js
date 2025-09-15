@@ -4,7 +4,6 @@ import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj, sleep, shuffle } from "./helpers.js"
-import move from "../../../data/processors/move.js";
 
 
 class BaseBattle extends EventEmitter {
@@ -80,9 +79,6 @@ class BaseBattle extends EventEmitter {
         this.on("wave", (...args) => {
             this.waveNo++
             this._waveAfterTurns = 0
-            this._all
-              .filter(p => p.isFainted)
-              .forEach(p => this.removePokemon(p))
         })
         
         this.on(["turn", "turn-end", "wave"], function(...args) {
@@ -1000,6 +996,13 @@ class BattleState extends EventEmitter {
         this.on("turn-end", () => {          
             this.retreat -= this.pokemon.abilities.retreatCost()
         })
+        
+        this.on("fainted", () => {
+            if (confirm(`${this.pokemon.meta.name} fainted. Clear him?`)) {
+                this.battle.removePokemon(this.pokemon)
+            }
+        })
+
         this.setMoves(pokemon.meta.moves || [])
     }
 
