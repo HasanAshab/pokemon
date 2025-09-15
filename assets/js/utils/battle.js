@@ -461,7 +461,7 @@ class BaseBattle extends EventEmitter {
                     move1 = oldm
                 else damages.set(this.pokemon1, damage * pokeEffect2)
             }
-            else {
+            else if (damage < 0) {
                 await this._tryDodge(this.pokemon2, senario, clonemode2)
                 const oldm = move2
                 move2 = senario.get(this.pokemon2)
@@ -484,7 +484,11 @@ class BaseBattle extends EventEmitter {
 
         
         if (ajmode || move2.target !== "allySide") {
-            if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {            
+            console.log(ajmode, move2);
+          
+            if (!attackSelf2 && canMove2 && !move2.flags.weapon && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
+              console.log("yes");
+                          
                 this.pokemon1.state.emit("contacted", this.pokemon2, move2)
                 this.pokemon1.state.effects.apply(move2, { on: "target" })            
                 this.pokemon1.state.stats.apply("target", move2)
@@ -562,6 +566,16 @@ class BaseBattle extends EventEmitter {
 
           const autoCM1 = []
           const autoCM2 = []
+          const filterCloneUsableMove = (chakra, idleMove, bothSideClone = false) => (
+            m => (
+                m.flags.offensive !== 0
+                && (!bothSideClone || m.category !== "Status")
+                && !["self", "allySide", "foeSide", "allAdjacent"].includes(m.target)
+                && m.retreat <= idleMove.retreat
+                && m.retreat <= chakra - new Move("dodge").retreat
+            )
+          )
+                          
           const cloneSceneCount = Math.min(this.pokemon2.state.manCount - 1, this.pokemon1.state.manCount - 1)
           if (sc1 && sc2) {
                 const cloneMoves1 = []
@@ -569,13 +583,7 @@ class BaseBattle extends EventEmitter {
                   let chakra = this.pokemon1.state.retreat
                   for (let i = 0; i < cloneSceneCount; i++) {
                       const usableMoves = this.pokemon1.state.moves
-                          .filter(m =>
-                              m.flags.offensive !== 0
-                              && m.target !== "self"
-                              && m.category !== "Status"
-                              && m.retreat <= move1.retreat
-                              && m.retreat <= chakra - new Move("dodge").retreat
-                          )
+                          .filter(filterCloneUsableMove(chakra, move1, true))
                       const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)]
                       if (!cloneMove) break
                       cloneMoves1.push(cloneMove) 
@@ -584,13 +592,7 @@ class BaseBattle extends EventEmitter {
                   chakra = this.pokemon2.state.retreat
                   for (let i = 0; i < cloneSceneCount; i++) {
                       const usableMoves = this.pokemon2.state.moves
-                          .filter(m =>
-                              m.flags.offensive !== 0
-                              && m.target !== "self"
-                              && m.category !== "Status"
-                              && m.retreat <= move2.retreat
-                              && m.retreat <= chakra - new Move("dodge").retreat
-                          )
+                          .filter(filterCloneUsableMove(chakra, move2, true))
                       const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
                       if (!cloneMove) break
                       cloneMoves2.push(cloneMove) 
@@ -615,12 +617,7 @@ class BaseBattle extends EventEmitter {
                   let chakra = this.pokemon1.state.retreat
                   for (let i = 0; i < this.pokemon1.state.manCount - 1; i++) {
                       const usableMoves = this.pokemon1.state.moves
-                          .filter(m =>
-                              m.flags.offensive !== 0
-                              && m.target !== "self"
-                              && m.retreat <= move1.retreat
-                              && m.retreat <= chakra - new Move("dodge").retreat
-                          )
+                          .filter(filterCloneUsableMove(chakra, move1))
                       const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)]
                       if (!cloneMove) break
                       cloneMoves.push(cloneMove) 
@@ -657,12 +654,7 @@ class BaseBattle extends EventEmitter {
                   let chakra = this.pokemon2.state.retreat
                   for (let i = 0; i < this.pokemon2.state.manCount - 1; i++) {
                       const usableMoves = this.pokemon2.state.moves
-                          .filter(m =>
-                              m.flags.offensive !== 0
-                              && m.target !== "self"
-                              && m.retreat <= move2.retreat
-                              && m.retreat <= chakra - new Move("dodge").retreat
-                          )
+                          .filter(filterCloneUsableMove(chakra, move2))
                       const cloneMove = usableMoves[Math.floor(Math.random() * usableMoves.length)] // ?? new Move("staythere")
                       if (!cloneMove) break
                       cloneMoves.push(cloneMove) 
@@ -729,42 +721,6 @@ class BaseBattle extends EventEmitter {
                 await this._handleCapacityMove(this.pokemon2, move2)
                 move2.resetCapacity()
             }
-        }
-
-        return
-        const aj1 = move1.target.startsWith("allAdjacent")
-        const aj2 = move2.target.startsWith("allAdjacent")
-
-        if (ajmode || (aj1 && aj2) || clonemode1 || clonemode2) {}
-        else if (aj1) {          
-          const team = shuffle(this.team2.filter(p => p !== this.pokemon2)).slice(0, move1.capacity - 1)          
-          for (const p of team) {
-            await sleep(3000)
-            const counterMove = await this.prompt(p).ask("counteralladjacent", move1)
-            const scene = new Map([
-              [this.pokemon1, move1],
-              [p, counterMove]
-            ])
-            this.activate(p)
-            this.pokemon1.state.retreat += move1.retreat
-            this.pokemon1.state.increasePP(move1.id)
-            await this.run(scene, false, false, true)
-          }
-        }
-        else if (aj2) {
-          const team = shuffle(this.team1.filter(p => p !== this.pokemon1)).slice(0, move2.capacity - 1)
-          for (const p of team) {
-            await sleep(3000)
-            const counterMove = await this.prompt(p).ask("counteralladjacent", move2)
-            const scene = new Map([
-              [this.pokemon2, move2],
-              [p, counterMove]
-            ])
-            this.activate(p)
-            this.pokemon2.state.retreat += move2.retreat
-            this.pokemon2.state.increasePP(move2.id)
-            await this.run(scene, false, false, true)
-          }
         }
     }
 
@@ -849,7 +805,8 @@ class BaseBattle extends EventEmitter {
         senario.set(pokemon, new Move("staythere"))
     }
 
-    async _tryDodge(pokemon, senario, clonemode = false) {        
+    async _tryDodge(pokemon, senario, clonemode = false) {
+      console.trace(`Try dodge for ${pokemon.name}`)
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
@@ -979,7 +936,7 @@ class BattleState extends EventEmitter {
         this.on("used-move", (move) => {          
             this._data.movesHistory.push(move.id)
         })
-        
+
         this.on("hitted-move", move => {            
             const opponent = this.battle.opponentOf(this.pokemon)
             move.onHit?.(this.pokemon, opponent)
@@ -1282,6 +1239,8 @@ class StatsManager {
     }
 
     apply(on, move) {
+        console.log("apply", on, move.id);
+        
         const attacker = this.state.battle.opponentOf(this.state.pokemon);
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return

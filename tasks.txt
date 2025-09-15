@@ -3,8 +3,7 @@ kingdoms build maintains storage
 
 * bug 
 suside blast (selfDestruct) miss hoya gele user morbo
-shadow clone alladj mare
-
+weapon not give effect brn
 
 * Bottle neck
 
