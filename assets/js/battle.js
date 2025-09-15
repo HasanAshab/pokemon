@@ -746,6 +746,10 @@ function setEffects(effects, playerTag) {
       "name": "Aqua Ring",
       "color": "Water"
     },
+    "naturehealing": {
+      "name": "Nature Healing",
+      "color": "Grass"
+    },
     "sage": {
       "name": "sage",
       "color": "Normal"

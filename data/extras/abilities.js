@@ -46,9 +46,9 @@ function SharinganAbility({ blind, copycat, retreat }) {
 }
 
 export default {
-  // gets 10 seconds
-  sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 2 }),
-  // gets 15 seconds
+  // gets 6 seconds
+  sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 1.5 }),
+  // gets 12 seconds
   sharingan2: SharinganAbility({ blind: 0.25, copycat: 3, retreat: 3 }),
   // gets 20 seconds
   sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),

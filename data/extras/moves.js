@@ -1480,27 +1480,28 @@ katana: {
       type: "Normal",
       contestType: "Beautiful"
     },
-   firesword: {
-      num: 1000000000,
-      accuracy: 100,
-      basePower: 50,
-      category: "Physical",
-      name: "Fire Sword",
-      pp: 10 * 3,
+
+    naturehealing: {
+      num: 100053,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Nature Healing",
+      pp: 1 * 3,
       priority: 0,
-      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-      secondary: {
-        chance: 20,
-        status: "brn"
-      },
-      target: "normal",
-      type: "Fire",
-      contestType: "Tough",
-      tokenChanges: {
-        spe: -6
-      },
-   }
-     
+      secondary: null,
+      target: "self",
+      type: "Grass",
+      flags: {},
+      effects: {
+        self: [{
+          name: "naturehealing",
+          chance: 100,
+        }],
+        target: []
+      }
+    }
+    
    
   
 }

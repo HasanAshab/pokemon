@@ -40,14 +40,6 @@
       "isDefault": true
     },
     {
-      "id": "junglehealing",
-      "isDefault": true
-    },
-    {
-      "id": "jungletrap",
-      "isDefault": true
-    },
-    {
       "id": "summon:lotad",
       "grade": 2,
       "isDefault": true
@@ -55,8 +47,18 @@
     {
       "id": "doubleteam",
       "isDefault": true
+    },
+    {
+      "id": "naturehealing",
+      "isDefault": true
+    },
+    {
+      "id": "field:Grass",
+      "isDefault": true
+    },
+    {
+      "id": "cactuspunch"
     }
-
   ],
   "types": [
     "Normal",

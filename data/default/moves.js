@@ -500,7 +500,7 @@ export default {
       basePower: 0,
       category: "Status",
       name: "Aqua Ring",
-      pp: 20,
+      pp: 1 * 3,
       priority: 0,
       flags: { snatch: 1, metronome: 1 },
       volatileStatus: "aquaring",

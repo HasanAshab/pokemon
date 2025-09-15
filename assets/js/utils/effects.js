@@ -188,8 +188,29 @@ class AquaRingEffect extends Effect {
     }
     
     _increaseHealth() {
-        const hp = Math.floor(this.state.pokemon.stats.hp / 16)
-        this.state.increaseHealth(hp)
+      const effectType = "Water" 
+       const isFieldActive = this.state.battle.fields.filter(f => f.type === effectType).length > 0
+       const hp = Math.floor(this.state.pokemon.maxhp * (isFieldActive ? 0.13 : 0.03))
+       this.state.increaseHealth(hp)
+    }
+}
+
+class NatureHealingEffect extends Effect {
+    static effectName = "naturehealing"
+
+    onTurn() {
+        this._increaseHealth()
+    }
+    
+    onWave() {
+        this._increaseHealth()
+    }
+    
+    _increaseHealth() {
+      const effectType = "Grass" 
+       const isFieldActive = this.state.battle.fields.filter(f => f.type === effectType).length > 0
+       const hp = Math.floor(this.state.pokemon.maxhp * (isFieldActive ? 0.13 : 0.03))       
+       this.state.increaseHealth(hp)
     }
 }
 
@@ -647,6 +668,7 @@ export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
     AquaRingEffect,
+    NatureHealingEffect,
     SleepEffect,
     FreezeEffect,
     FlinchEffect,

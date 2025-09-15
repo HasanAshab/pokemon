@@ -1,5 +1,5 @@
 [{
-  "nature": "tai",
+  "nature": "none",
   "id": "chunin",
   "xp": 3400,
   "retreat": 15,
@@ -75,17 +75,24 @@
       "id": "summon:rattataalola",
       "grade": 2,
       "isDefault": true
+    },
+    {
+      "id": "flamecharge",
+      "isDefault": true
+    },
+    {
+      "id": "chakraabsorb"
     }
   ],
   "types": [
     "Normal",
-    "Dragon"
+    "Dragon",
+    "Fire"
   ],
   "items": [],
   "abilities": [
     "mayangan:silver-eye",
     "mayangan:golden-eye"
   ],
-  "name": "kokola munshi",
-  "isSelectedForMultiBattle": true
+  "name": "kokola munshi"
 }]

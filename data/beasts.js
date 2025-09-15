@@ -21,7 +21,6 @@ tails1: {
   heightm: 1.7,
   animeName: "shikagu"
 },
-
 tails2: {
   num: 3,
   name: "tails2",
