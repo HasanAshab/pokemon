@@ -40,6 +40,14 @@ export function calculateSize(baseSize, level) {
   return Math.round(baseSize * Math.pow(1.2, level - 1));
 }
 
+export function calculateMaintains(baseMaintains, level) {
+  const maintains = {};
+  for (const item in baseMaintains) {
+      maintains[item] = Math.round(baseMaintains[item] * Math.pow(1.5, level - 1));      
+  }
+  return maintains
+}
+
 export function upgradePrice(basePrice, level, rate = 1.5) {
   return Math.round(basePrice * Math.pow(rate, level - 1));
 }
@@ -122,6 +130,17 @@ export function calcBuildNetProd(kingdom) {
   const prod = calcBuildProduction(kingdom);
   const cons = modObj(calcBuildConsumtion(kingdom), -1);  
   return sumObj(prod, cons);
+}
+
+export function getStorage(kingdom) {
+  const buildMaintains = kingdom.buildings.reduce((acc, build) => {
+    const maintains = build.baseMaintains
+      ? calculateMaintains(build.baseMaintains, build.currentLevel)
+      : {};
+    return sumObj(acc, modObj(maintains, build.quantity));
+  }, {});
+  
+  return sumObj(buildMaintains, kingdom.storage);
 }
 
 export function calcNetProd(kingdom, localize = false) {

@@ -1,4 +1,4 @@
-import { sumObj, calcNetProd } from '../../utils.js';
+import { sumObj, calcNetProd, getStorage } from '../../utils.js';
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -18,7 +18,7 @@ function saveAndRefresh() {
 }
 
 function renderItems() {
-  const storage = kingdoms[name].storage;
+  const storage = getStorage(kingdoms[name]);
   const netProd = calcNetProd(kingdoms[name]);
 
   // Add missing netProd items to storage with 0 quantity

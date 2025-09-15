@@ -1,5 +1,5 @@
-import { objToFlags } from '../../../assets/js/utils/helpers.js';
-import { calculateSize, upgradePrice } from '../../utils.js'
+import { flagsToObj, objToFlags } from '../../../assets/js/utils/helpers.js';
+import { calculateMaintains, calculateSize, upgradePrice } from '../../utils.js'
 
 
 const params = new URLSearchParams(window.location.search);
@@ -49,7 +49,7 @@ function renderBuildings() {
     MaintainsLabel.textContent = "Maintains";
 
     const MaintainsDisplay = document.createElement("div");
-    MaintainsDisplay.textContent = building.baseMaintains
+    MaintainsDisplay.textContent = objToFlags(calculateMaintains(building.baseMaintains || {}, building.currentLevel));
 
     const quantityLabel = document.createElement("label");
     quantityLabel.textContent = "Quantity: " + building.quantity || 1;
@@ -74,7 +74,7 @@ function renderBuildings() {
     baseSizeInput.style.display = "none";
 
     const baseMaintainsInput = document.createElement("input");
-    baseMaintainsInput.value = building.baseMaintains;
+    baseMaintainsInput.value = objToFlags(building.baseMaintains || {});
     baseMaintainsInput.className = "editable";
     baseMaintainsInput.style.display = "none";
 
@@ -164,7 +164,7 @@ function renderBuildings() {
         building.name = nameInput.value.trim();
         building.basePrice = parseFloat(basePriceInput.value);
         building.baseSize = parseFloat(baseSizeInput.value);
-        building.baseMaintains =  baseMaintainsInput.value;
+        building.baseMaintains =  flagsToObj(baseMaintainsInput.value);
         building.quantity = parseInt(quantityInput.value) || 1;
 
         const extractValues = (container) => {
@@ -230,7 +230,7 @@ addBuildingBtn.onclick = () => {
     name: "New Building",
     basePrice: 100,
     baseSize: 50,
-    baseMaintains: objToFlags({defenceScore: 0}),
+    baseMaintains: { defence: 0 },
     currentLevel: 1,
     quantity: 1,
     produces: {},
