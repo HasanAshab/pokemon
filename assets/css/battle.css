@@ -143,6 +143,37 @@ flex-direction: column;
 #all-adj-data.active {
   filter: brightness(100%);
 }
+
+.show-active-fields-btn {
+  padding: 4px 17px;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  filter: brightness(50%);
+}
+.show-active-fields-btn.active {
+  filter: brightness(100%);
+}
+
+.show-active-fields-btn.active ~ .only-active-fields-wrapper {
+  display: flex;
+}
+.only-active-fields-wrapper {
+  display: none;
+  position: absolute;
+  width: calc(50% - 6vw);
+  left: 1vw;
+  box-shadow:  0 0 5px 10px rgba(0,0,0,0.5);
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 3vw;
+}
+
+
 .you-controle-cont {
   height: 47.50%;
   display: flex;
