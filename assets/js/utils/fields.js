@@ -7,11 +7,13 @@ class Field {
 }
 
 class GenericField extends Field {
-    constructor(battle, type) {
+    constructor(battle, type, lifetime = null) {
         super(battle)
         this.type = type
+        this.lifetime = lifetime
         
-        battle.tailListener("scene", (...args) => this.onScene(...args), 'field-' + type)
+        battle.tailListener("scene", (...args) => this.onScene(...args), 'field-scene-' + type)
+        battle.tailListener("turn", (...args) => this.onTurn(...args), 'field-scene-' + type)
     }
 
     onScene(senario) {
@@ -36,8 +38,22 @@ class GenericField extends Field {
         })
     }
 
+    onTurn() {
+        if (!this.lifetime) return
+        this.lifetime.turns--
+        if (this.lifetime.turns === 0) {
+            this.remove()
+        }
+    }
+
     cleanup() {
         this.battle.removeListener("scene", 'field-' + this.type)
+        this.battle.removeListener("turn", 'field-' + this.type)
+    }
+
+    remove() {
+      this.battle.removeField(this.type)
+      this.cleanup()
     }
 }
 
@@ -46,8 +62,8 @@ export const FIELDS = {
 }
 
 
-export function makeField(battle, type) {
+export function makeField(battle, type, lifetime = null) {
     const FieldClass = FIELDS[type] ?? FIELDS._default
-    const field = new FieldClass(battle, type)
+    const field = new FieldClass(battle, type, lifetime)
     return field
 }

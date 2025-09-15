@@ -113,8 +113,13 @@ class BaseBattle extends EventEmitter {
         this._states.delete(pokemon)
     }
 
-    addField(type) {
-        this.fields.push(makeField(this, type))
+    hasField(type) {
+        return this.fields.some(f => f.type === type)
+    }
+
+    addField(type, lifetime = null) {
+        if (this.hasField(type)) return
+        this.fields.push(makeField(this, type, lifetime))
     }
 
     removeField(type) {

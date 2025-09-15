@@ -21,20 +21,9 @@ function FieldAddingMove(type, name) {
     type: type,
     contestType: "Cool",
     onHit(pokemon) {
-      const duration = ((pokemon.state.moves.find(m => m.name === name)._meta.grade || 0) + 1) * 2 
-      console.log(duration);
-      
-      const battle = pokemon.state.battle
-      const expiresOn = battle.turnNo + duration
-      battle.addField(type)
-      battle.tailListener("turn", () => {        
-        if (battle.turnNo >= expiresOn) {
-
-          battle.removeField(type)
-          battle.removeListener("turn", "field-move-" + type)
-        }
-      }, "field-move-" + type)
-    } 
+      const lifetimeTurns = ((pokemon.state.moves.find(m => m.name === name)._meta.grade || 0) + 1) * 2       
+      battle.addField(type, { turns: lifetimeTurns })
+    }
   }
 }
 
