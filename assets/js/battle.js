@@ -160,12 +160,12 @@ globalThis.showActiveFieldsBtnClickHandler = function({currentTarget}){
   // loading all active fields
    for (const field of battle.fields){
      const fieldElm = document.createElement("strong")
-     fieldElm.classList.add("field")
+     fieldElm.className = "field active"
      fieldElm.classList.add(field.type)
-     fieldElm.textContent = `${field.type} (${field.lifetime.turns})`
-     fieldElm.style.color = `var(--${field.type}-type-color)`
+     fieldElm.textContent = `${field.type} (${field.lifetime?.turns || "*" })`
      onlyActiveFieldsWrapper.appendChild(fieldElm)
-     
+       fieldElm.style.backgroundColor = `var(--${field.type}-type-color)`
+   
    }
    //battle
 }
