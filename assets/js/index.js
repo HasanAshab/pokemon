@@ -255,7 +255,7 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-startBattle(null,[
+startBattle([
   {
   "nature": "nin",
   "id": "rookie",
