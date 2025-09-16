@@ -551,7 +551,7 @@ class SageModeEffect extends ExpirableEffect {
 
     setup() {
         super.setup()
-        const sageTurns = weightedRandom([7, 12, 20], [0.20, 0.30, 0.50])
+        const sageTurns = weightedRandom([5, 7, 12], [0.20, 0.50, 0.30])
 
         this.lifetime.turns = sageTurns
         this.state.pokemon.toSageMode()

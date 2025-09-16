@@ -212,7 +212,7 @@ export class Pokemon extends PSPokemon {
     tokensRemaining() {
         return (this.level * Pokemon.TOKEN_PER_LEVEL) - this.tokensUsed()
     }
-    
+
     megaEvolve() {
         if (!this.hasMegaForm()) return false
         this._pokemon = pokemons[this.megaId];
@@ -221,11 +221,11 @@ export class Pokemon extends PSPokemon {
         }
         return true
     }
-    
+
     toSageMode(sixPath = false) {
         let bonusRate = sixPath ? 0.4 : 0.15
-        
-        const sourceMove = this.moves.find(m => m.id === (sixPath ? 'sageofsixpaths' : 'sagemode'));
+
+        const sourceMove = this.state.moves.find(m => m.id === (sixPath ? 'sageofsixpaths' : 'sagemode'));
         if (!sourceMove)
           throw new Error(`${this.name} can't be sage.`);
 
