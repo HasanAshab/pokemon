@@ -10,9 +10,8 @@ helpinghand
 
 
 *ovi
-improve retreat showing
 enemy.js  
-  duplicate replica
+  duplicate , replica
 fix retreat of beast abilities
 hand3
 

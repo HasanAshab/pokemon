@@ -16,7 +16,7 @@ window.onload = () => {
 
 let enemyCount = 0;
 
-document.getElementById('add-enemy-btn').addEventListener('click', addEnemy);
+
 
 function loadBattleSystems() {
     const selectElement = document.getElementById('sys-select');
@@ -28,21 +28,25 @@ function loadBattleSystems() {
     });
 }
 
-function addEnemy() {
+globalThis.addEnemy =  function addEnemy(isDuplicate = false) {
   const container = document.getElementById('enemies-container');
   const div = document.createElement('div');
   div.className = 'pokemon-form';
   div.dataset.index = enemyCount;
-  div.innerHTML = getEnemyForm(enemyCount);
+  div.innerHTML = getEnemyForm(enemyCount,isDuplicate);
   container.appendChild(div);
   enemyCount++;
   initAllMultyInputBox()
 
 }
 
-function getEnemyForm(index) {
+function getEnemyForm(index,isDuplicate) {
+  let enemyName =  `E${index + 1}`
+  if (isDuplicate){
+    enemyName = "here you go"
+  }
   return `
-    <h3>Enemy ${index + 1}</h3>
+    <h3>Enemy ${enemyName}</h3>
     <label>Choose Enemy Image</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(event)" value="rookie">
     <br>
