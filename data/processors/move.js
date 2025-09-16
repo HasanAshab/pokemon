@@ -336,10 +336,10 @@ function setRetreat(move) {
 
 function setCapacity(move) {
   if ("capacity" in move) return
-  
+
   const multiTarget = ["allAdjacent", "allySide", "foeSide"]
-  
-  if (!multiTarget.includes(move.target)) 
+
+  if (!multiTarget.includes(move.target))
       return move.capacity = 1
 
   move.basePower = Math.round(move.basePower * 0.66668)
