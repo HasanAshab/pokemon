@@ -1499,14 +1499,13 @@ katana: {
       name: "Healing Palm",
       pp: 10 * 3,
       priority: 0,
-      secondary: null,
       target: "normal",
       type: "Fairy",
       flags: {contact: 1},
-      heal: [1, 4],
-
+      healTarget: [1, 4],
     },
-    trihealing: {
+    circlehealing: {
+      capacity: 3,
       num: 100055,
       accuracy: 70,
       basePower: 0,
@@ -1514,10 +1513,10 @@ katana: {
       name: "Tri Healing",
       pp: 5 * 3,
       priority: 0,
-      secondary: null,
       target: "normal",
       type: "Fairy",
       flags: {},
+      heal: [1, 10],
     }
 }
 
