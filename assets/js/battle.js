@@ -120,11 +120,18 @@ globalThis.showEffectsEditForm = function (playerTag) {
 globalThis.toggleMirror = function (playerTag,{currentTarget}) {
   currentTarget.classList.toggle("active")
   const team = pokemonMap[playerTag].state.team
-  const opponentControleCont = document.querySelector(`.${opponentTag(playerTag)}-controle-cont`)
+  const mainContainer = document.querySelector(`.container`)
+  const _opponentTag = opponentTag(playerTag)
+  const myControleContInnerHTML = document.querySelector(`.${playerTag}-controle-cont`).innerHTML
+  const opponentControleCont = document.querySelector(`.${_opponentTag}-controle-cont`)
   
   if (currentTarget.classList.contains("active")){
       opponentControleCont.style.display = "none"
-
+      const mirrorControleCont = document.createElement("div")
+      mirrorControleCont.className = `${playerTag}-controle-cont mirror`
+      mirrorControleCont.style.transform = "rotate(180deg)"
+      mainContainer.insertBefore(mirrorControleCont, mainContainer.querySelector(".center"))
+      mirrorControleCont.innerHTML = myControleContInnerHTML
 
   }
 
