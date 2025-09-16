@@ -263,7 +263,7 @@ flex-direction: column;
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 50%;
+  width: 60%;
   gap: 7px;
 }
 .primary-data-nav > .left-items-wrapper > .left-item{
@@ -288,7 +288,9 @@ flex-direction: column;
   border-radius: 7px;
   font-weight: bold;
   padding: 3px 6px;
-  font-size: 12px;
+  gap: 4px;
+  border: 1px solid black;
+  background-color: white;
 }
 .primary-data-nav .retreat > .primary{
   display: flex;
@@ -300,7 +302,7 @@ flex-direction: column;
 }
 
 .primary-data-nav > .progressbars-wrapper{
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: right;
