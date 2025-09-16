@@ -284,13 +284,16 @@ flex-direction: column;
  filter: brightness(100%);
 }
 .primary-data-nav .retreat {
-  background-color: darkblue;
-  color: white;
   border: none;
   border-radius: 7px;
   font-weight: bold;
   padding: 3px 6px;
   font-size: 12px;
+}
+.primary-data-nav .retreat > .primary{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .enemy-controle-cont .primary-data-nav {
   transform: rotate(180deg);
