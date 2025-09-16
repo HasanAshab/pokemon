@@ -117,27 +117,29 @@ globalThis.showEffectsEditForm = function (playerTag) {
   pokemon.state.effects.sync(...newEffects)
   setEffects(pokemon.state.effects.all(), playerTag)
 }
-globalThis.toggleMirror = function (playerTag,{currentTarget}) {
+globalThis.toggleMirror = function (playerTag, { currentTarget }) {
   currentTarget.classList.toggle("active")
-  const team = pokemonMap[playerTag].state.team
-  const mainContainer = document.querySelector(`.container`)
-  const _opponentTag = opponentTag(playerTag)
-  const myControleContInnerHTML = document.querySelector(`.${playerTag}-controle-cont`).innerHTML
-  const opponentControleCont = document.querySelector(`.${_opponentTag}-controle-cont`)
-  
-  if (currentTarget.classList.contains("active")){
-      opponentControleCont.style.display = "none"
-      const mirrorControleCont = document.createElement("div")
-      mirrorControleCont.className = `${playerTag}-controle-cont mirror`
-      mirrorControleCont.style.transform = "rotate(180deg)"
-      mainContainer.insertBefore(mirrorControleCont, mainContainer.querySelector(".center"))
-      mirrorControleCont.innerHTML = myControleContInnerHTML
+  let opponentTeam = teams[opponentTag(playerTag)]
+
+  if (currentTarget.classList.contains("active")) {
+    toggleMirrorChoosePokemons(playerTag)
+    teams[playerTag].forEach(p => {
+      p.meta.mirror = true
+      opponentTeam.push(p)
+    })
+
 
   }
 
-  else 
-      opponentControleCont.style.display = ""
-  
+  else {
+    toggleMirrorChoosePokemons(playerTag)
+    teams[opponentTag(playerTag)] = opponentTeam.filter(p => !p.meta.mirror)
+    
+    teams[playerTag].forEach(p => {
+      p.meta.mirror = false
+    })
+  }
+
 }
 globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
@@ -151,91 +153,91 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   loadActiveFeilds()
 }
 
-function loadActiveFeilds(){
+function loadActiveFeilds() {
   const fieldElmList = document.querySelectorAll(".player-settings-form .fields-cont .field")
   const activeFieldsTypeList = []
-  for (const {type} of battle.fields){
+  for (const { type } of battle.fields) {
     activeFieldsTypeList.push(type)
   }
-  for (const fieldElm of fieldElmList){
+  for (const fieldElm of fieldElmList) {
     const currentFieldType = fieldElm.classList[1]
     if (activeFieldsTypeList.includes(currentFieldType))
-    fieldElm.classList.add("active")
-    else 
-    fieldElm.classList.remove("active")
+      fieldElm.classList.add("active")
+    else
+      fieldElm.classList.remove("active")
   }
 }
-globalThis.fieldClickHandler = function({currentTarget}){
- const fieldType = currentTarget.classList[1]
- if (currentTarget.classList.contains("active"))
+globalThis.fieldClickHandler = function ({ currentTarget }) {
+  const fieldType = currentTarget.classList[1]
+  if (currentTarget.classList.contains("active"))
     battle.removeField(fieldType)
- else   
+  else
     battle.addField(fieldType)
- loadActiveFeilds()
+  loadActiveFeilds()
 }
 
-globalThis.showActiveFieldsBtnClickHandler = function({currentTarget}){
+globalThis.showActiveFieldsBtnClickHandler = function ({ currentTarget }) {
   currentTarget.classList.toggle("active")
-  const onlyActiveFieldsWrapper = currentTarget.parentElement.querySelector(".only-active-fields-wrapper") 
+  const onlyActiveFieldsWrapper = currentTarget.parentElement.querySelector(".only-active-fields-wrapper")
   onlyActiveFieldsWrapper.innerHTML = ""
   // loading all active fields
-   for (const field of battle.fields){
-     const fieldElm = document.createElement("strong")
-     fieldElm.className = "field active"
-     fieldElm.classList.add(field.type)
-     fieldElm.textContent = `${field.type} (${field.lifetime?.turns || "*" })`
-     onlyActiveFieldsWrapper.appendChild(fieldElm)
-       fieldElm.style.backgroundColor = `var(--${field.type}-type-color)`
-   
-   }
-   //battle
+  for (const field of battle.fields) {
+    const fieldElm = document.createElement("strong")
+    fieldElm.className = "field active"
+    fieldElm.classList.add(field.type)
+    fieldElm.textContent = `${field.type} (${field.lifetime?.turns || "*"})`
+    onlyActiveFieldsWrapper.appendChild(fieldElm)
+    fieldElm.style.backgroundColor = `var(--${field.type}-type-color)`
+
+  }
+  //battle
 }
-function loadEasyStats(playerTag){
+function loadEasyStats(playerTag) {
   const pokemon = pokemonMap[playerTag]
   const stats = pokemon.state.stats._statChanges
   const statsWrapper = document.querySelector(".player-settings-form .settings.stats")
- statsWrapper.innerHTML = ""
- for (const stat in stats){
-  const statElm = document.createElement("div")
- statElm.className = "stat"
- statElm.setAttribute("data-stat-name",stat)
- statElm.innerHTML = `
+  statsWrapper.innerHTML = ""
+  for (const stat in stats) {
+    const statElm = document.createElement("div")
+    statElm.className = "stat"
+    statElm.setAttribute("data-stat-name", stat)
+    statElm.innerHTML = `
                  <p data-value="${stats[stat]}" class="stat-name">${stat.toUpperCase()}:</p>
              <div class="button-wrapper">
            <svg class="increase-btn" onclick="increaseStat('${playerTag}','${stat}')"   width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#009c1a"></path> </g></svg>
             <svg class="decrease-btn" onclick="decreaseStat('${playerTag}','${stat}')"  width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ff1212"></path> </g></svg>
              </div>
   `
-  statsWrapper.appendChild(statElm)
- }
+    statsWrapper.appendChild(statElm)
+  }
 }
 
-globalThis.increaseStat = function(playerTag,statName){
-   const pokemon = pokemonMap[playerTag]
-   pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] + 0.5 
-    setStatChanges(pokemon.state.stats._statChanges, playerTag)
-   loadEasyStats(playerTag)
-  
-}
-globalThis.decreaseStat = function(playerTag,statName){
-   const pokemon = pokemonMap[playerTag]
-   pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] - 0.5 
+globalThis.increaseStat = function (playerTag, statName) {
+  const pokemon = pokemonMap[playerTag]
+  pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] + 0.5
   setStatChanges(pokemon.state.stats._statChanges, playerTag)
-   loadEasyStats(playerTag)
+  loadEasyStats(playerTag)
 
 }
-function updateAllAdjFlag(isActive,capacity){
+globalThis.decreaseStat = function (playerTag, statName) {
+  const pokemon = pokemonMap[playerTag]
+  pokemon.state.stats._statChanges[statName] = pokemon.state.stats._statChanges[statName] - 0.5
+  setStatChanges(pokemon.state.stats._statChanges, playerTag)
+  loadEasyStats(playerTag)
+
+}
+function updateAllAdjFlag(isActive, capacity) {
   const allAdjElm = document.getElementById("all-adj-data")
   if (isActive) {
-  allAdjElm.classList.add("active")
-  allAdjElm.textContent = `Adjasten ( ${capacity} )`
+    allAdjElm.classList.add("active")
+    allAdjElm.textContent = `Adjasten ( ${capacity} )`
   }
   else {
     allAdjElm.classList.remove("active")
     allAdjElm.textContent = "Adjasten"
-    
+
   }
-  
+
 }
 function loadVeryCloseBtn() {
   const btn = document.getElementById("very-close-btn")
@@ -259,7 +261,7 @@ function setBattleListeners() {
     let i = 1
     return (move) => {
       if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) {
-        data[i/2] = true        
+        data[i / 2] = true
       }
       i++
     }
@@ -267,20 +269,20 @@ function setBattleListeners() {
   let dodgeData = {}
   let enemyDodgeData = {}
 
-  battle.on("$counterclonestart", (sc1, sc2) => {    
+  battle.on("$counterclonestart", (sc1, sc2) => {
     if (!sc1 || !sc2) return
     pokemonMap["you"].state.on("used-move", dodgeDataCollector(dodgeData), "dodge-data-collector")
     pokemonMap["enemy"].state.on("used-move", dodgeDataCollector(enemyDodgeData), "dodge-data-collector")
   })
 
-  battle.on("$counterclonecomplete", (moves1, moves2) => {    
+  battle.on("$counterclonecomplete", (moves1, moves2) => {
     if (moves1.length === 0 || moves2.length === 0) {
       setTimeout(() => hideShadowCloneSceneController(), 3000)
     }
     else {
-      const data1 = moves1.map((m, i) => ({ move: m, isDodged: dodgeData[i+1] ?? false }))
-      const data2 = moves2.map((m, i) => ({ move: m, isDodged: enemyDodgeData[i+1] ?? false }))
-      
+      const data1 = moves1.map((m, i) => ({ move: m, isDodged: dodgeData[i + 1] ?? false }))
+      const data2 = moves2.map((m, i) => ({ move: m, isDodged: enemyDodgeData[i + 1] ?? false }))
+
       showShadowCloneAutoSceneController(data1, data2)
       dodgeData = {}
       enemyDodgeData = {}
@@ -314,6 +316,7 @@ globalThis.removeMove = function (playerTag, moveId) {
 
 
 function loadPokemonData(playerTag) {
+
   const pokemon = pokemonMap[playerTag]
   const hp = pokemon.state.stats.get("hp")
   const oldHp = pokemon.state.stats.prev.get("hp")
@@ -346,7 +349,7 @@ function loadEffects(playerTag) {
 }
 
 function setBattleStateListeners(playerTag) {
-  const pokemon = pokemonMap[playerTag]  
+  const pokemon = pokemonMap[playerTag]
   const opponent = pokemonMap[opponentTag(playerTag)]
 
   pokemon.state.on(["scene-end", "wave"], () => {
@@ -412,11 +415,11 @@ function setBattleStateListeners(playerTag) {
   })
 
   pokemon.state.on('fainted', () => {
-      
-    const pokemonSwitchBtn =  document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler .pokemon:not(.disabled)`)
+
+    const pokemonSwitchBtn = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler .pokemon:not(.disabled)`)
     pokemonSwitchBtn?.click()
-    
-      
+
+
   })
 
   battle.prompt(pokemon).reply("dodge", () => {
@@ -434,20 +437,20 @@ function setBattleStateListeners(playerTag) {
       eventEmitter.once("move-card-select", (card, tag) => {
         if (playerTag !== tag) return
         const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)
-        const move = new Move(card.dataset.moveId, storedMove._meta)        
+        const move = new Move(card.dataset.moveId, storedMove._meta)
         setShadowCloneSceneTargetMove(move.id)
         resolve(move)
         let i = 1
         opponent.state.on("used-move", move => {
           if (move.id === "dodge" && move._dodgeMatrix.every(Boolean)) {
-            setShadowCloneSceneTargetDodged(i/2, opponentTag(playerTag))
+            setShadowCloneSceneTargetDodged(i / 2, opponentTag(playerTag))
           }
           i++
         }, "dodge-detector")
       })
     })
   })
-  
+
 
   battle.prompt(pokemon).reply("adjacent_counter_stack", (adjacentMove) => {
     return new Promise((resolve, _) => {
@@ -457,23 +460,52 @@ function setBattleStateListeners(playerTag) {
 
       eventEmitter.once("move-card-select", (card, tag) => {
         console.log(adjacentMove.capacity - 1);
-        
+
         updateAllAdjFlag(adjacentMove.capacity - 1 > 0, adjacentMove.capacity - 1)
         const selectedPokemonName = document.querySelector(`.${tag}-controle-cont .pokemon-switch-controler .pokemon.active`)?.dataset.name
         const p = teams[tag].find(p => p.name === selectedPokemonName)
-        const storedMove = p.state.moves.find(move => move.id === card.dataset.moveId)        
+        const storedMove = p.state.moves.find(move => move.id === card.dataset.moveId)
         const move = new Move(card.dataset.moveId, storedMove._meta)
         resolve([p, move])
       })
     })
   })
 }
+function toggleMirrorChoosePokemons(playerTag) {
+  const pokemonSwitchControler = document.querySelector(`.${opponentTag(playerTag)}-controle-cont .pokemon-switch-controler`)
+  let i = teams[opponentTag(playerTag)].length
+  pokemonSwitchControler.classList.toggle("mirror-mode")
+ 
+  if (pokemonSwitchControler.classList.contains("mirror-mode")) {
+    for (const pokemon of teams[playerTag]) {
+      pokemonSwitchControler.innerHTML += `
+          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""} mirror" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${opponentTag(playerTag)}')" data-index="${i}">
+                  <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="grey">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path style="fill:black;" d="M491.859,156.348c-12.891-30.483-31.342-57.865-54.842-81.372 c-23.516-23.5-50.904-41.96-81.373-54.85c-31.56-13.351-65.091-20.125-99.652-20.125c-34.554,0-68.083,6.773-99.645,20.125 c-30.483,12.89-57.865,31.351-81.373,54.85c-23.499,23.507-41.959,50.889-54.85,81.372C6.774,187.91,0,221.44,0,255.993 c0,34.56,6.773,68.091,20.125,99.652c12.89,30.469,31.351,57.857,54.85,81.357c23.507,23.516,50.889,41.967,81.373,54.857 c31.562,13.344,65.091,20.125,99.645,20.125c34.561,0,68.092-6.781,99.652-20.125c30.469-12.891,57.857-31.342,81.373-54.857 c23.5-23.5,41.951-50.889,54.842-81.357c13.344-31.561,20.125-65.092,20.125-99.652C511.984,221.44,505.203,187.91,491.859,156.348z "></path>
+          <path style="fill:#E6E9ED;" d="M0.102,263.18c0.875,32.014,7.593,63.092,20.023,92.465c12.89,30.469,31.351,57.857,54.85,81.357 c23.507,23.516,50.889,41.967,81.373,54.857c31.562,13.344,65.091,20.125,99.645,20.125c34.561,0,68.092-6.781,99.652-20.125 c30.469-12.891,57.857-31.342,81.373-54.857c23.5-23.5,41.951-50.889,54.842-81.357c12.438-29.373,19.156-60.451,20.031-92.465 H0.102z"></path> <path style="fill:#434A54;" d="M510.765,281.211c0.812-8.344,1.219-16.75,1.219-25.218c0-9.516-0.516-18.953-1.531-28.289 c-12.719,1.961-30.984,4.516-53.998,7.054c-43.688,4.82-113.904,10.57-200.463,10.57c-86.552,0-156.776-5.75-200.455-10.57 c-23.022-2.539-41.28-5.093-53.998-7.054C0.516,237.04,0,246.478,0,255.993c0,8.468,0.406,16.875,1.219,25.218 c41.53,6.25,133.027,17.436,254.773,17.436S469.234,287.461,510.765,281.211z"></path> <path style="fill:#E6E9ED;" d="M309.334,266.656c0,29.459-23.891,53.334-53.342,53.334c-29.452,0-53.334-23.875-53.334-53.334 c0-29.453,23.882-53.327,53.334-53.327C285.443,213.33,309.334,237.204,309.334,266.656z"></path> <path style="fill:#434A54;" d="M255.992,170.66c-52.936,0-95.997,43.069-95.997,95.997s43.062,95.988,95.997,95.988 s95.996-43.061,95.996-95.988C351.988,213.729,308.928,170.66,255.992,170.66z M255.992,309.335 c-23.522,0-42.663-19.156-42.663-42.678c0-23.523,19.14-42.663,42.663-42.663c23.531,0,42.654,19.14,42.654,42.663 C298.646,290.178,279.523,309.335,255.992,309.335z"></path> <path style="opacity:0.2;fill:#FFFFFF;enable-background:new ;" d="M491.859,156.348c-12.891-30.483-31.342-57.865-54.842-81.372 c-23.516-23.5-50.904-41.96-81.373-54.85c-31.56-13.351-65.091-20.125-99.652-20.125c-3.57,0-7.125,0.078-10.664,0.219 c30.789,1.25,60.662,7.93,88.974,19.906c30.498,12.89,57.873,31.351,81.371,54.85c23.5,23.507,41.969,50.889,54.857,81.372 c13.359,31.562,20.109,65.092,20.109,99.646c0,34.56-6.75,68.091-20.109,99.652c-12.889,30.469-31.357,57.857-54.857,81.357 c-23.498,23.516-50.873,41.967-81.371,54.857c-28.312,11.969-58.186,18.656-88.974,19.906c3.539,0.141,7.093,0.219,10.664,0.219 c34.561,0,68.092-6.781,99.652-20.125c30.469-12.891,57.857-31.342,81.373-54.857c23.5-23.5,41.951-50.889,54.842-81.357 c13.344-31.561,20.125-65.092,20.125-99.652C511.984,221.44,505.203,187.91,491.859,156.348z"></path> <path style="opacity:0.1;enable-background:new ;" d="M20.125,355.645c12.89,30.469,31.351,57.857,54.85,81.357 c23.507,23.516,50.889,41.967,81.373,54.857c31.562,13.344,65.091,20.125,99.645,20.125c3.57,0,7.125-0.078,10.664-0.219 c-30.789-1.25-60.67-7.938-88.982-19.906c-30.483-12.891-57.857-31.342-81.364-54.857c-23.507-23.5-41.96-50.889-54.858-81.357 c-13.352-31.56-20.117-65.091-20.117-99.652c0-34.554,6.765-68.084,20.116-99.646C54.35,125.864,72.803,98.481,96.31,74.983 c23.507-23.507,50.881-41.968,81.364-54.858c28.312-11.976,58.193-18.656,88.982-19.906c-3.539-0.14-7.094-0.218-10.664-0.218 c-34.554,0-68.083,6.773-99.645,20.125c-30.483,12.89-57.865,31.351-81.373,54.858c-23.499,23.499-41.959,50.881-54.85,81.364 C6.774,187.91,0,221.44,0,255.993C0,290.553,6.774,324.085,20.125,355.645z"></path>
+        </g>
+      </svg>
+            <span class="name">${pokemon.meta.name ?? pokemon.name}</span>
+          </div>
+    `
+      i++
+    }
+   
+  } else {
+     pokemonSwitchControler.querySelectorAll(".pokemon").forEach(pokemon => {
+      if (pokemon.classList.contains("mirror") )
+      pokemonSwitchControler.removeChild(pokemon)
+     })
 
+  }
+}
 function loadChoosePokemon(playerTag) {
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
   pokemonSwitchControler.innerHTML = ""
   const activePokemon = playerTag === "you" ? globalThis.pokemon : globalThis.enemyPokemon
-  
   let i = 0
   for (const pokemon of teams[playerTag]) {
     pokemonSwitchControler.innerHTML += `
@@ -520,10 +552,10 @@ function registerBattle() {
       "you": teams.you.find(p => p.meta.isSelectedForMultiBattle),
       "enemy": teams.enemy.find(p => p.meta.isSelectedForMultiBattle)
     }
-    
+
     Object.keys(teams).forEach(t => {
       const oldP = pokemonMap[t]
-      teams[t].forEach(p => {        
+      teams[t].forEach(p => {
         if (!p.meta.isSelectedForMultiBattle) return
         pokemonMap[t] = p
         setBattleStateListeners(t)
@@ -534,12 +566,16 @@ function registerBattle() {
 }
 
 function switchPokemon(playerTag, index) {
+  console.log(playerTag, index);
+
   if (playerTag === "you") {
     globalThis.pokemon = teams.you[index]
     globalThis.pokemonMap["you"] = pokemon
   }
   else {
+
     globalThis.enemyPokemon = teams.enemy[index]
+
     globalThis.pokemonMap["enemy"] = enemyPokemon
   }
 
@@ -796,9 +832,9 @@ function setEffects(effects, playerTag) {
       "name": "Paper Bomb",
       "color": "Normal"
     },
-    "ancientmode":{
-       "name": "Ancient Mode",
-      "color": "Dragon"     
+    "ancientmode": {
+      "name": "Ancient Mode",
+      "color": "Dragon"
     }
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
@@ -832,8 +868,8 @@ function setRetreatPerWave(retreat, playerTag) {
   const retreatPerWave = document.querySelector(`.${playerTag}-controle-cont .retreat-per-wave`)
   retreatPerWave.textContent = retreat
 }
-function setRetreatChargeForAbilities(retreat, playerTag) { 
-     const retreatChargeForAbilities = document.querySelector(`.${playerTag}-controle-cont .retreat-charge-for-abilities`)
+function setRetreatChargeForAbilities(retreat, playerTag) {
+  const retreatChargeForAbilities = document.querySelector(`.${playerTag}-controle-cont .retreat-charge-for-abilities`)
   retreatChargeForAbilities.textContent = retreat
 }
 // retreat-charge-for-abilities
@@ -904,14 +940,14 @@ function loadMoves(playerTag) {
     let capacityColor = "black"
     let basePowerColor = "black"
     if (move.target === "allAdjacent" || move.target === "all") {
-       capacityColor = "darkred" 
-      if (move.target === "all") 
+      capacityColor = "darkred"
+      if (move.target === "all")
         basePowerColor = "darkred"
     }
-    else if (move.target === "allySide" || move.target === "allies"){
-       capacityColor = "darkgreen"
+    else if (move.target === "allySide" || move.target === "allies") {
+      capacityColor = "darkgreen"
     }
-    
+
     const cardHtml = `
     <div class="single-card-wrapper">
       <div class="card ${battle.canUseMove(pokemon, move.id) ? "" : "disabled"}"  data-move-id="${move.id}" style="outline:1px solid var(--${move.type || "Normal"}-type-color)" onclick="moveCardClickHandler(event, '${playerTag}')" data-makes-contact="${!!move.flags.contact}">
@@ -994,17 +1030,16 @@ function loadMoves(playerTag) {
                 <span class="data">${move.basePower} ${mod !== 1 ? `(${mod > 1 ? '+' : ''}${Math.round((mod - 1) * 100)}%)` : ''}</span>
               </div>` : ``
       }
-     ${
-      move.capacity > 1 
-    ? `
+     ${move.capacity > 1
+        ? `
          <div class="capacity-data data-wrapper">
 <svg width="17px" height="17px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="${capacityColor}"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>target [#81]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-340.000000, -7839.000000)" fill="${capacityColor}"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M298,7689 C298,7688.448 298.448,7688 299,7688 L299.91,7688 C299.486,7685.493 297.507,7683.514 295,7683.09 L295,7684 C295,7684.552 294.552,7685 294,7685 C293.448,7685 293,7684.552 293,7684 L293,7683.09 C290.493,7683.514 288.514,7685.493 288.09,7688 L289,7688 C289.552,7688 290,7688.448 290,7689 C290,7689.552 289.552,7690 289,7690 L288.09,7690 C288.514,7692.507 290.493,7694.486 293,7694.91 L293,7694 C293,7693.448 293.448,7693 294,7693 C294.552,7693 295,7693.448 295,7694 L295,7694.91 C297.507,7694.486 299.486,7692.507 299.91,7690 L299,7690 C298.448,7690 298,7689.552 298,7689 M304,7689 C304,7689.552 303.552,7690 303,7690 L301.931,7690 C301.479,7693.617 298.617,7696.479 295,7696.931 L295,7698 C295,7698.552 294.552,7699 294,7699 C293.448,7699 293,7698.552 293,7698 L293,7696.931 C289.383,7696.479 286.521,7693.617 286.069,7690 L285,7690 C284.448,7690 284,7689.552 284,7689 C284,7688.448 284.448,7688 285,7688 L286.069,7688 C286.521,7684.383 289.383,7681.521 293,7681.069 L293,7680 C293,7679.448 293.448,7679 294,7679 C294.552,7679 295,7679.448 295,7680 L295,7681.069 C298.617,7681.521 301.479,7684.383 301.931,7688 L303,7688 C303.552,7688 304,7688.448 304,7689 M297,7689 C297,7689.552 296.552,7690 296,7690 L295,7690 L295,7691 C295,7691.552 294.552,7692 294,7692 C293.448,7692 293,7691.552 293,7691 L293,7690 L292,7690 C291.448,7690 291,7689.552 291,7689 C291,7688.448 291.448,7688 292,7688 L293,7688 L293,7687 C293,7686.448 293.448,7686 294,7686 C294.552,7686 295,7686.448 295,7687 L295,7688 L296,7688 C296.552,7688 297,7688.448 297,7689" id="target-[#81]"> </path> </g> </g> </g> </g></svg>
  
                 : <span class="data">${move.capacity}</span>
               </div>
               `
-              : ""
-     }
+        : ""
+      }
         <div class="accuracy-data data-wrapper">
 
 <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21px" height="21px" viewBox="0 0 72 72" enable-background="new 0 0 72 72" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M36.001,63.75C24.233,63.75,2.5,54.883,2.5,42.25c0-12.634,21.733-21.5,33.501-21.5c11.766,0,33.5,8.866,33.5,21.5 C69.501,54.883,47.767,63.75,36.001,63.75z M36.001,24.75C24.886,24.75,6.5,32.929,6.5,42.25c0,9.32,18.387,17.5,29.501,17.5 c11.113,0,29.5-8.18,29.5-17.5C65.501,32.929,47.114,24.75,36.001,24.75z"></path> </g> <g> <path d="M36.001,52.917c-5.791,0-10.501-4.709-10.501-10.5c0-5.79,4.711-10.5,10.501-10.5c5.789,0,10.5,4.71,10.5,10.5 C46.501,48.208,41.79,52.917,36.001,52.917z M36.001,33.917c-4.688,0-8.501,3.814-8.501,8.5c0,4.688,3.813,8.5,8.501,8.5 c4.686,0,8.5-3.813,8.5-8.5C44.501,37.731,40.687,33.917,36.001,33.917z"></path> </g> <g> <path d="M32.073,39.809c-0.242,0-0.484-0.088-0.677-0.264c-0.406-0.375-0.433-1.008-0.059-1.414 c0.2-0.217,0.415-0.422,0.644-0.609c0.428-0.352,1.058-0.291,1.408,0.137c0.352,0.426,0.29,1.057-0.136,1.408 c-0.158,0.129-0.307,0.27-0.444,0.418C32.612,39.7,32.342,39.809,32.073,39.809z"></path> </g> <g> <path d="M36.001,48.75c-3.494,0-6.335-2.842-6.335-6.334c0-0.553,0.448-1,1-1c0.553,0,1,0.447,1,1 c0,2.391,1.945,4.334,4.335,4.334c0.553,0,1,0.447,1,1S36.554,48.75,36.001,48.75z"></path> </g> <g> <path d="M35.876,18.25c-1.105,0-2-0.896-2-2v-6c0-1.104,0.895-2,2-2c1.104,0,2,0.896,2,2v6 C37.876,17.354,36.979,18.25,35.876,18.25z"></path> </g> <g> <path d="M24.353,18.93c-0.732,0-1.437-0.402-1.788-1.101l-1.852-3.68c-0.497-0.987-0.1-2.189,0.888-2.686 c0.985-0.498,2.188-0.101,2.686,0.887l1.852,3.68c0.496,0.987,0.099,2.189-0.888,2.686C24.962,18.861,24.655,18.93,24.353,18.93z"></path> </g> <g> <path d="M12.684,23.567c-0.548,0-1.094-0.224-1.488-0.663l-2.6-2.894c-0.738-0.822-0.671-2.087,0.151-2.824 c0.82-0.74,2.085-0.672,2.824,0.15l2.6,2.894c0.738,0.822,0.67,2.087-0.151,2.824C13.638,23.398,13.16,23.567,12.684,23.567z"></path> </g> <g> <path d="M46.581,18.93c-0.303,0-0.609-0.068-0.898-0.214c-0.986-0.496-1.383-1.698-0.887-2.686l1.852-3.68 c0.494-0.985,1.695-1.386,2.686-0.887c0.986,0.496,1.385,1.698,0.887,2.686l-1.852,3.68C48.019,18.527,47.313,18.93,46.581,18.93z "></path> </g> <g> <path d="M58.249,23.567c-0.475,0-0.953-0.169-1.336-0.513c-0.82-0.737-0.889-2.002-0.15-2.824l2.6-2.894 c0.738-0.82,2.002-0.89,2.824-0.15c0.822,0.737,0.889,2.002,0.15,2.824l-2.6,2.894C59.343,23.344,58.798,23.567,58.249,23.567z"></path> </g> </g> </g></svg>             
@@ -1124,20 +1159,22 @@ globalThis.moveCardClickHandler = function ({
   eventEmitter.emit("move-card-select", currentTarget, playerTag)
 }
 
-globalThis.removeItem = function (id, playerTag) {  
+globalThis.removeItem = function (id, playerTag) {
   pokemonMap[playerTag].items.remove(id)
 
   try {
     pokemonMap[playerTag].state.armor.remove(id)
-  } catch (error) {}
+  } catch (error) { }
   loadItems(playerTag)
   loadTokenStats(playerTag)
 }
 
-function runScene(moveIds) {  
+function runScene(moveIds) {
   const { you: moveId, enemy: enemyMoveId } = moveIds
   const move1 = new Move(moveId)
   const move2 = new Move(enemyMoveId)
+  console.log({ pokemon, move1, enemyPokemon, move2 });
+
   const senario = new Map([
     [pokemon, move1],
     [enemyPokemon, move2],
@@ -1168,15 +1205,15 @@ function loadAbilities(playerTag) {
 
   const playerSettingsForm = document.querySelector('.player-settings-form')
   const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .wrapper')
-   abilitiesWrapper.innerHTML = ''
-  for (const ability of abilities) {    
+  abilitiesWrapper.innerHTML = ''
+  for (const ability of abilities) {
     abilitiesWrapper.innerHTML += ` <button type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
   }
 }
 function loadItems(playerTag) {
   const pokemon = pokemonMap[playerTag]
   const items = pokemon.items._items
-  
+
   const playerSettingsForm = document.querySelector('.player-settings-form')
   const itemsWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.items .wrapper')
   itemsWrapper.innerHTML = ''

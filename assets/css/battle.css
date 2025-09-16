@@ -198,6 +198,9 @@ flex-direction: column;
 
   
 }
+.pokemon-switch-controler.mirror-mode > .pokemon:not(.mirror) {
+  display: none;
+}
 
 .pokemon-switch-controler > .pokemon {
   display: flex;
