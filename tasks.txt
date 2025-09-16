@@ -20,6 +20,8 @@ sage mode error : TypeError: Cannot read properties of undefined (reading 'find'
 
 
 *ovi
+improve retreat showing
+mirror auto select (when turned on / off)
 enemy.js  
   duplicate replica
 fix retreat of beast abilities

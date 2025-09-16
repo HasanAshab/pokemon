@@ -127,8 +127,6 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
       p.meta.mirror = true
       opponentTeam.push(p)
     })
-
-
   }
 
   else {
@@ -504,6 +502,8 @@ function toggleMirrorChoosePokemons(playerTag) {
 }
 function loadChoosePokemon(playerTag) {
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
+  if (pokemonSwitchControler.classList.contains("mirror-mode")) return null
+ 
   pokemonSwitchControler.innerHTML = ""
   const activePokemon = playerTag === "you" ? globalThis.pokemon : globalThis.enemyPokemon
   let i = 0
@@ -566,8 +566,6 @@ function registerBattle() {
 }
 
 function switchPokemon(playerTag, index) {
-  console.log(playerTag, index);
-
   if (playerTag === "you") {
     globalThis.pokemon = teams.you[index]
     globalThis.pokemonMap["you"] = pokemon
@@ -1169,17 +1167,30 @@ globalThis.removeItem = function (id, playerTag) {
   loadTokenStats(playerTag)
 }
 
-function runScene(moveIds) {
+async function runScene(moveIds) {
   const { you: moveId, enemy: enemyMoveId } = moveIds
   const move1 = new Move(moveId)
   const move2 = new Move(enemyMoveId)
-  console.log({ pokemon, move1, enemyPokemon, move2 });
+  const isAlly = pokemon.state.isAlly(enemyPokemon)
+  
+  const oldActive = battle.getActive("you")
+  const oldOppo = battle.getActive("enemy")
+  
+  if (isAlly) {
+    battle.activate(pokemon, "you")
+    battle.activate(enemyPokemon, "enemy")
+  }
 
   const senario = new Map([
     [pokemon, move1],
     [enemyPokemon, move2],
   ])
-  return battle.run(senario)
+  await battle.run(senario)
+
+  if (isAlly) {
+    battle.activate(oldActive, "you")
+    battle.activate(oldOppo, "enemy")
+  }
 }
 
 

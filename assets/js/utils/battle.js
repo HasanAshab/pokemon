@@ -807,7 +807,6 @@ class BaseBattle extends EventEmitter {
     }
 
     async _tryDodge(pokemon, senario, clonemode = false) {
-      console.trace(`Try dodge for ${pokemon.name}`)
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
