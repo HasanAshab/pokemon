@@ -1489,9 +1489,35 @@ katana: {
         }],
         target: []
       }
-    }
+    },
     
-   
-  
+    healingpalm: {
+      num: 100054,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Healing Palm",
+      pp: 10 * 3,
+      priority: 0,
+      secondary: null,
+      target: "normal",
+      type: "Fairy",
+      flags: {contact: 1},
+      heal: [1, 4],
+
+    },
+    trihealing: {
+      num: 100055,
+      accuracy: 70,
+      basePower: 0,
+      category: "Status",
+      name: "Tri Healing",
+      pp: 5 * 3,
+      priority: 0,
+      secondary: null,
+      target: "normal",
+      type: "Fairy",
+      flags: {},
+    }
 }
 

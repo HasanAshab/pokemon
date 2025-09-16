@@ -117,7 +117,21 @@ globalThis.showEffectsEditForm = function (playerTag) {
   pokemon.state.effects.sync(...newEffects)
   setEffects(pokemon.state.effects.all(), playerTag)
 }
+globalThis.toggleMirror = function (playerTag,{currentTarget}) {
+  currentTarget.classList.toggle("active")
+  const team = pokemonMap[playerTag].state.team
+  const opponentControleCont = document.querySelector(`.${opponentTag(playerTag)}-controle-cont`)
+  
+  if (currentTarget.classList.contains("active")){
+      opponentControleCont.style.display = "none"
 
+
+  }
+
+  else 
+      opponentControleCont.style.display = ""
+  
+}
 globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
   playerSettingsForm.parentElement.classList.add("active")

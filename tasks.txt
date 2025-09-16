@@ -20,6 +20,8 @@ sage mode error : TypeError: Cannot read properties of undefined (reading 'find'
 
 
 *ovi
+enemy.js  
+  duplicate replica
 fix retreat of beast abilities
 hand3
 

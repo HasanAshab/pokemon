@@ -260,6 +260,24 @@ flex-direction: column;
   justify-content: start;
   align-items: center;
   width: 50%;
+  gap: 7px;
+}
+.primary-data-nav > .left-items-wrapper > .left-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.primary-data-nav > .left-items-wrapper > button.left-item{
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  padding: 0;
+}
+.primary-data-nav > .left-items-wrapper > button.mirror-btn{
+ filter: brightness(50%);
+}
+.primary-data-nav > .left-items-wrapper > button.mirror-btn.active{
+ filter: brightness(100%);
 }
 .primary-data-nav .retreat {
   background-color: darkblue;
@@ -273,20 +291,7 @@ flex-direction: column;
 .enemy-controle-cont .primary-data-nav {
   transform: rotate(180deg);
 }
-.primary-data-nav  .double-team-data{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 10px;
-}
-.primary-data-nav .left-items-wrapper .settings-btn {
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 .primary-data-nav > .progressbars-wrapper{
   width: 50%;
   display: flex;
