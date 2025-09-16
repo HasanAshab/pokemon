@@ -127,6 +127,7 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
       p.meta.mirror = true
       opponentTeam.push(p)
     })
+    clickOnFirstPokemonSwitch(opponentTag(playerTag))
   }
 
   else {
@@ -136,6 +137,8 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
     teams[playerTag].forEach(p => {
       p.meta.mirror = false
     })
+        clickOnFirstPokemonSwitch(opponentTag(playerTag))
+
   }
 
 }
@@ -1262,10 +1265,12 @@ globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name)
 
 function clickOnFirstPokemonSwitch() {
   const enemyPokemonSwitchControler = document.querySelector(".enemy-controle-cont .pokemon-switch-controler")
-  enemyPokemonSwitchControler.querySelector(".pokemon").click()
+ let isMirrorActive = enemyPokemonSwitchControler.classList.contains("mirror-mode")
+  enemyPokemonSwitchControler.querySelector(`.pokemon${isMirrorActive ? '.mirror' : ''}`).click()
 
   const youPokemonSwitchControler = document.querySelector(".you-controle-cont .pokemon-switch-controler")
-  youPokemonSwitchControler.querySelector(".pokemon").click()
+  isMirrorActive = youPokemonSwitchControler.classList.contains("mirror-mode")
+  youPokemonSwitchControler.querySelector(`.pokemon${isMirrorActive ? '.mirror' : ''}`).click()
 
 }
 window.onload = () => {

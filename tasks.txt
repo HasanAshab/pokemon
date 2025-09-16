@@ -11,12 +11,10 @@ kingdoms build maintains storage
 
 *ovi
 improve retreat showing
-mirror auto select (when turned on / off)
 enemy.js  
   duplicate replica
 fix retreat of beast abilities
 hand3
-
 
 
 * Scenario
