@@ -334,7 +334,11 @@ export class Move {
     constructor(id, meta = {}) {
         this.id = id;
         this._meta = meta
-        this._move = moves[id];                
+        this._move = moves[id];
+        if (!this._move) {
+            console.log(`Invalid move: ${id}`);
+            this._move = moves["staythere"];
+        }
         this._ref = JSON.parse(JSON.stringify(this._move))
         Object.assign(this, this._move)
         this._reducedCapacity = 0
@@ -358,7 +362,7 @@ export class Move {
         this._reducedCapacity = 0
     }
   
-    get isNeverFails() {      
+    get isNeverFails() {     
         if ('onTryMove' in this || 'onTryImmunity' in this)
             return false
         return this.accuracy === true || this.category !== "Status"
@@ -443,7 +447,7 @@ export class Move {
         return Math.max(1, damage * this.recoilRate())
     }
 
-    try(user, target, move) { 
+    _try(user, target, move) { 
         if (this.isNeverFails)
           return true        
 
@@ -461,6 +465,12 @@ export class Move {
 
         // Check if the move succeeds
         return randomChance <= effectiveAccuracy;
+    }
+
+    try(user, target, move) {
+        const succeed = this._try(user, target, move)
+        !succeed && console.log(`${user.name}: ${move.name} failed!`)
+        return succeed
     }
     
     multiHit() {

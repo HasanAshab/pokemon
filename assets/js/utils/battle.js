@@ -707,20 +707,16 @@ class BaseBattle extends EventEmitter {
 
         if (
           ajmode || clonemode1 || clonemode2 ||
-          (move1.category !== "Status" && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
-          (move1.category !== "Status" && move2.category !== "Status" && move1.target === "foeSide" && move2.target === "foeSide")
+          (move1.capacity !== Infinity && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
+          (move1.capacity !== Infinity && move2.category !== "Status" && move1.target === "foeSide" && move2.target === "foeSide")
         ) {}
         else {
-            if (move1.category !== "Status" && ["foeSide", "allySide", "allAdjacent"].includes(move1.target)) {
-                move1.reduceCapacity()
+            if (move1.capacity !== Infinity && ["foeSide", "allySide", "allAdjacent"].includes(move1.target)) {
                 await this._handleCapacityMove(this.pokemon1, move1)
-                move1.resetCapacity() 
             }
 
-            if (move2.category !== "Status" && ["foeSide", "allySide", "allAdjacent"].includes(move2.target)) {
-                move2.reduceCapacity()
+            if (move2.capacity !== Infinity && ["foeSide", "allySide", "allAdjacent"].includes(move2.target)) {
                 await this._handleCapacityMove(this.pokemon2, move2)
-                move2.resetCapacity()
             }
         }
     }
@@ -737,7 +733,7 @@ class BaseBattle extends EventEmitter {
         else if (move.target === "allAdjacent") {
           team = [...this.team1, ...this.team2]
             .filter(p => p !== attacker)
-        }
+        }        
 
         for (const p of team.filter(p => p !== defender)) {
           let atk = attacker
@@ -763,13 +759,15 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async _handleCapacityMove(attacker, move) {                
+    async _handleCapacityMove(attacker, move) {
+      if (move.category !== "Status")
+          move.reduceCapacity()
+
       const opponentTag = attacker._tag === "you" ? "enemy" : "you"
       const team = attacker._tag === "you" ? this.team1 : this.team2
-      
+
       while (0 < move.capacity) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
-        
         const isAlly = team.includes(p)
         
         const oldOppo = this.getActive(opponentTag)
@@ -788,12 +786,14 @@ class BaseBattle extends EventEmitter {
         attacker.state.retreat += move.retreat
         attacker.state.increasePP(move.id)
         move.reduceCapacity()
-        
+
         if (isAlly) {
           this.activate(p, attacker._tag)
           this.activate(oldOppo, opponentTag)
         }
       }
+
+      move.resetCapacity()
     }
 
     _checkFailure(pokemon, senario) {
