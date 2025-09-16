@@ -277,11 +277,12 @@ flex-direction: column;
   font-weight: bold;
   padding: 0;
 }
-.primary-data-nav > .left-items-wrapper > button.mirror-btn{
- filter: brightness(50%);
+
+.primary-data-nav > .left-items-wrapper > button.mirror-btn.active > svg path.white{
+ fill: #DFEDFF;
 }
-.primary-data-nav > .left-items-wrapper > button.mirror-btn.active{
- filter: brightness(100%);
+.primary-data-nav > .left-items-wrapper > button.mirror-btn.active > svg path.black{
+  fill: #66A9F7
 }
 .primary-data-nav .retreat {
   border: none;
