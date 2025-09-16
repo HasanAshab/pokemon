@@ -422,6 +422,10 @@ export class Move {
     healRate() {
         return this.heal[0] / this.heal[1]
     }
+    
+    targetHealRate() {
+        return this.healTarget[0] / this.healTarget[1]
+    }
 
     drainRate() {
         return this.drain[0] / this.drain[1]

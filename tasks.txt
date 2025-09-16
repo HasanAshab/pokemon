@@ -1,6 +1,6 @@
 * Tasks
 kingdoms build maintains storage
-
+healing move
 * bug 
 
 * Bottle neck
@@ -15,7 +15,6 @@ enemy.js
   duplicate replica
 fix retreat of beast abilities
 hand3
-
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

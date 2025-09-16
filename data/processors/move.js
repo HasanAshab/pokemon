@@ -75,10 +75,12 @@ function mergeDefault(move) {
                 else if (move.target === "foeSide" && pokemon.state.isFoe(target))
                     healTarget = target
 
-                console.log(healTarget?.name);
-
                 healTarget?.state.increaseHealth(healTarget.maxhp * move.healRate())
             }
+            if ('healTarget' in move) {
+                target.state.increaseHealth(target.maxhp * move.targetHealRate())
+            }
+
             move.selfdestruct === "ifHit" && pokemon.state.decreaseHealth(pokemon.hp)
         },
         finally(pokemon, target, move) {
