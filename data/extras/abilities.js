@@ -231,7 +231,7 @@ export default {
     },
   },
   bhuiyakugan3: {
-    retreat: 4,
+    retreat: 0,
     onScene(pokemon) {      
       const possibleQuantities = [1, 2, 3]
       const weights = [0.35, 0.40, 0.25]
@@ -240,6 +240,9 @@ export default {
     onSceneEnd(pokemon) {
       pokemon.state._data.summonQuantity = 1
     }
+  },
+  bhuiyakugan4: {
+    retreat: 0
   },
 
   shadow: {
