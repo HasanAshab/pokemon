@@ -1,4 +1,15 @@
 export default {
+  $blackbeastlayer: {
+    type: "armor",
+    covers: 100,
+    stats: {
+      def: 100,
+      spd: 100
+    },
+    tokens: {
+      spe: -50
+    }
+  },
   latherarmor1: {
     type: "armor",
     covers: 20,

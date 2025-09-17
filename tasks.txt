@@ -11,7 +11,7 @@ kingdoms build maintains storage
 *ovi
 show retreat cost of abilities on settings
 enemy.js  
-  duplicate , replica
+    replica
 fix retreat of beast abilities
 hand3
 
