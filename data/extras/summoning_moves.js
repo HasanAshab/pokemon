@@ -30,8 +30,12 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
     onTryMove(pokemon) { 
       pokemon.state.decreaseHealth(pokemon.hp * 0.05, true)
     },
-    onAfterMove(pokemon) {      
-      pokemon.state.summon(id)
+    async onAfterMove(pokemon) {
+      const quantity = pokemon.type === "beast" ? 1 : pokemon.state._data.summonQuantity 
+      
+      for (let i = 0; i < quantity; i++) {
+        await pokemon.state.summon(id)
+      }
     }
   }
 }

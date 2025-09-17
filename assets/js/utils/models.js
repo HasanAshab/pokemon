@@ -637,6 +637,7 @@ class Ability {
         }
         this._listeners["scene-end"] = () => {
             this._ability._shouldDeactivate && this.deactivate()
+            this._ability.onSceneEnd?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
         }
         this._listeners.wave = () => {
             try {
@@ -654,6 +655,9 @@ class Ability {
             catch (e) {
               console.log(e)
             }
+        }
+        this._listeners.scene = () => {
+            this._ability.onScene?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
         }
         this._listeners["using-move"] = (move, opponentMove) => {
             try {

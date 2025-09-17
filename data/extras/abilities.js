@@ -1,4 +1,5 @@
 import { Damage } from "../../assets/js/utils/damage.js"
+import { weightedRandom } from "../../assets/js/utils/helpers.js"
 import types from "../types.js"
 
 function SharinganAbility({ blind, copycat, retreat, dependencies = [] }) {
@@ -228,6 +229,17 @@ export default {
         }
       })
     },
+  },
+  bhuiyakugan3: {
+    retreat: 4,
+    onScene(pokemon) {      
+      const possibleQuantities = [1, 2, 3]
+      const weights = [0.35, 0.40, 0.25]
+      pokemon.state._data.summonQuantity = weightedRandom(possibleQuantities, weights)
+    },
+    onSceneEnd(pokemon) {
+      pokemon.state._data.summonQuantity = 1
+    }
   },
 
   shadow: {

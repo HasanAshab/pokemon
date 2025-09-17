@@ -912,7 +912,8 @@ class BattleState extends EventEmitter {
     _manCount = 1
     _summonNo = 1
     _data = {
-      movesHistory: []
+      movesHistory: [],
+      summonQuantity: 1
     }
     _retreatModifiers = []
 
