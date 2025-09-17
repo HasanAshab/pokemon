@@ -27,7 +27,7 @@ function loadBattleSystems() {
       selectElement.appendChild(option);
     });
 }
-
+globalThis.addInput = null
 globalThis.addEnemy =  function addEnemy(isDuplicate = false) {
   const container = document.getElementById('enemies-container');
   const div = document.createElement('div');
@@ -36,21 +36,36 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false) {
   div.innerHTML = getEnemyForm(enemyCount,container,isDuplicate);
   container.appendChild(div);
   enemyCount++;
-  initAllMultyInputBox()
-
+  // add input is just a small gift from  the function. ignore it
+  globalThis.addInput = initAllMultyInputBox().addInput
+  if (isDuplicate){
+    const enemyFormToDuplicate = container.querySelector(`.pokemon-form[data-index="${enemyCount - 1}"]`)
+    // const enemyTypesMultyInputBox = enemyFormToDuplicate.querySelector(".multy-input-box[data-property='types']")
+    const enemyTypes = getMultyInputValues("types",enemyCount - 1)
+    console.log(enemyTypes);
+    
+  }
 }
 
 function getEnemyForm(index,enemiesContainer,isDuplicate) {
+  let heading = `Enemy ${index + 1}`
   let name =  `E${index + 1}`
   let enemyImage = "rookie"
   let level = 20
   let retreat = 4
   let nature = "none"
   if (isDuplicate){
-    enemyImage = enemiesContainer.querySelector("nth")
+    const enemyFormToDuplicate = enemiesContainer.querySelector(`.pokemon-form[data-index="${index - 1}"]`)
+    heading = `Enemy ${index + 1} ( Copied from Enemy ${index} )`
+    enemyImage = enemyFormToDuplicate.querySelector('.enemy').value
+    name = enemyFormToDuplicate.querySelector('.name-inp').value
+    level = enemyFormToDuplicate.querySelector('.level-inp').value
+    retreat = enemyFormToDuplicate.querySelector('.retreat-inp').value
+    nature = enemyFormToDuplicate.querySelector('.nature-inp').value
+  
   }
   return `
-    <h3>Enemy ${index + 1}</h3>
+    <h3>${heading}</h3>
     <label>Choose Enemy Image</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(event)" value="${enemyImage}">
     <br>
