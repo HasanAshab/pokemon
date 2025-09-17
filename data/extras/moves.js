@@ -1517,6 +1517,31 @@ katana: {
       type: "Fairy",
       flags: {},
       heal: [1, 10],
-    }
+    },
+    helpinghand: {
+      num: 270,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Helping Hand",
+      pp: 20,
+      priority: 5,
+      flags: { bypasssub: 1, noassist: 1, failcopycat: 1 },
+      volatileStatus: "helpinghand",
+      target: "normal",
+      type: "Normal",
+      onHit(pokemon, opponent) {
+        const per = 0.15
+        const stats = {
+          atk: pokemon.stats.atk * per,
+          spa: pokemon.stats.spa * per,
+        }
+        opponent.tokens = sumObj(opponent.tokens, stats)
+        
+        opponent.state.once('scene-end', () => {
+          opponent.tokens = sumObj(opponent.tokens, modObj(stats, -1))
+        })
+      }
+    },
 }
 
