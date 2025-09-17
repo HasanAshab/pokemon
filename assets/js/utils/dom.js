@@ -77,14 +77,13 @@ function removeInput (inputElm){
   inputElm.parentElement.removeChild(inputElm)
 }
 
-function addInput(multyInputBox){
+function addInput(multyInputBox,value){
   const valueInput = multyInputBox.querySelector(".controller > input")
-  console.log(valueInput.value)
   const inputsWrapper = multyInputBox.querySelector(".inputs-wrapper")
   const newInputElm = document.createElement("div") 
   newInputElm.classList = "input"
   newInputElm.innerHTML = `
-          <span class="value">${valueInput.value}</span>
+          <span class="value">${value ? value : valueInput.value}</span>
   `
   const removeBtn = document.createElement("button")
   removeBtn.classList = "remove-btn"
@@ -132,7 +131,7 @@ export function initAllMultyInputBox(){
   
     index++
   }
-  
+  return {addInput}
 }
 
 
