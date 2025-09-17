@@ -45,7 +45,17 @@
   padding: 10px;
   margin-bottom: 10px;
 }
-
+.duplicate-enemy-btn {
+  background-color: green;
+  color: white;
+  font-weight: bold;
+}
+.remove-enemy-btn {
+  background-color: darkred;
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+}
 .move-section {
   margin-top: 10px;
 }

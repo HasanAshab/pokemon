@@ -28,26 +28,45 @@ function loadBattleSystems() {
     });
 }
 globalThis.addInput = null
-globalThis.addEnemy =  function addEnemy(isDuplicate = false) {
+globalThis.addEnemy =  function addEnemy(isDuplicate = false,formIndex = null) {
   const container = document.getElementById('enemies-container');
   const div = document.createElement('div');
   div.className = 'pokemon-form';
   div.dataset.index = enemyCount;
-  div.innerHTML = getEnemyForm(enemyCount,container,isDuplicate);
+  div.innerHTML = getEnemyForm(enemyCount,container,isDuplicate,formIndex);
   container.appendChild(div);
-  enemyCount++;
   // add input is just a small gift from  the function. ignore it
   globalThis.addInput = initAllMultyInputBox().addInput
   if (isDuplicate){
-    const enemyFormToDuplicate = container.querySelector(`.pokemon-form[data-index="${enemyCount - 1}"]`)
-    // const enemyTypesMultyInputBox = enemyFormToDuplicate.querySelector(".multy-input-box[data-property='types']")
-    const enemyTypes = getMultyInputValues("types",enemyCount - 1)
-    console.log(enemyTypes);
+    const enemyFormToDuplicate = container.querySelector(`.pokemon-form[data-index="${formIndex}"]`)
+    const typesMultiInputBox = div.querySelector('.multy-input-box[data-property="types"]')
+    const abilitiesMultiInputBox = div.querySelector('.multy-input-box[data-property="abilities"]')
+    const itemsMultiInputBox = div.querySelector('.multy-input-box[data-property="items"]')
+    const types = getMultyInputValues("types",formIndex)
+    const abilities = getMultyInputValues("abilities",formIndex)
+    const items = getMultyInputValues("items",formIndex)
+    const enemyMoveItems = enemyFormToDuplicate.querySelectorAll('.moves-list .move-item')
+   console.log(types,abilities,items);
+   
+
+    types.forEach(type => addInput(typesMultiInputBox,type))
+    abilities.forEach(ability => addInput(abilitiesMultiInputBox,ability))
+    items.forEach(item => addInput(itemsMultiInputBox,item))
+
+    enemyMoveItems.forEach(item => {
+      addMove(null,item.querySelector('.move-input').value, item.querySelector('.move-grade-input').value,div)
+    })
     
   }
+  enemyCount++;
+
+}
+globalThis.removeEnemy = function removeEnemy(index) {
+  const container = document.getElementById('enemies-container');
+  container.querySelector(`.pokemon-form[data-index="${index}"]`).remove();
 }
 
-function getEnemyForm(index,enemiesContainer,isDuplicate) {
+function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
   let heading = `Enemy ${index + 1}`
   let name =  `E${index + 1}`
   let enemyImage = "rookie"
@@ -55,10 +74,10 @@ function getEnemyForm(index,enemiesContainer,isDuplicate) {
   let retreat = 4
   let nature = "none"
   if (isDuplicate){
-    const enemyFormToDuplicate = enemiesContainer.querySelector(`.pokemon-form[data-index="${index - 1}"]`)
-    heading = `Enemy ${index + 1} ( Copied from Enemy ${index} )`
+    const enemyFormToDuplicate = enemiesContainer.querySelector(`.pokemon-form[data-index="${formIndex}"]`)
+    heading = `Enemy ${index + 1} ( Copied from Enemy ${formIndex + 1} )`
     enemyImage = enemyFormToDuplicate.querySelector('.enemy').value
-    name = enemyFormToDuplicate.querySelector('.name-inp').value
+    // name = enemyFormToDuplicate.querySelector('.name-inp').value
     level = enemyFormToDuplicate.querySelector('.level-inp').value
     retreat = enemyFormToDuplicate.querySelector('.retreat-inp').value
     nature = enemyFormToDuplicate.querySelector('.nature-inp').value
@@ -136,8 +155,9 @@ function getEnemyForm(index,enemiesContainer,isDuplicate) {
       <button type="button" onclick="addMove(event)">Add Move</button>
       <button class="set-auto-move-btn" type="button" onclick="setMoveAutomatic(event)" >Set Automatic</button>
       </div>
-
-
+ <br>
+ <button onclick="addEnemy(true,${index})" class="duplicate-enemy-btn">Duplicate This Enemy</button>
+ <button onclick="removeEnemy(${index})" class="remove-enemy-btn">Remove This Enemy</button>
   `;
 
   // ###########################
@@ -164,8 +184,9 @@ function showStats(event) {
   stats.textContent = `Enemy: ${form.querySelector('.enemy').value}\nLevel: ${form.querySelector('.level-inp').value}`;
 }
 
-function addMove(event, moveId = '' , grade =0 , isMega = false) {
-  const form = event.target.closest('.pokemon-form');
+function addMove(event, moveId = '' , grade =0 , form , isMega = false) {
+  if (!form)
+   form = event.target.closest('.pokemon-form');
   const list = isMega ? form.querySelector('.mega-moves-list') : form.querySelector('.moves-list');
 
   const div = document.createElement('div');

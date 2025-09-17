@@ -78,6 +78,8 @@ function removeInput (inputElm){
 }
 
 function addInput(multyInputBox,value){
+  console.log(multyInputBox,value);
+  
   const valueInput = multyInputBox.querySelector(".controller > input")
   const inputsWrapper = multyInputBox.querySelector(".inputs-wrapper")
   const newInputElm = document.createElement("div") 
