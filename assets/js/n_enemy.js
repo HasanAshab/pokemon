@@ -33,43 +33,40 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false) {
   const div = document.createElement('div');
   div.className = 'pokemon-form';
   div.dataset.index = enemyCount;
-  div.innerHTML = getEnemyForm(enemyCount,isDuplicate);
+  div.innerHTML = getEnemyForm(enemyCount,container,isDuplicate);
   container.appendChild(div);
   enemyCount++;
   initAllMultyInputBox()
 
 }
 
-function getEnemyForm(index,isDuplicate) {
-  let enemyName =  `E${index + 1}`
+function getEnemyForm(index,enemiesContainer,isDuplicate) {
+  let name =  `E${index + 1}`
+  let enemyImage = "rookie"
+  let level = 20
+  let retreat = 4
+  let nature = "none"
   if (isDuplicate){
-    enemyName = "here you go"
+    enemyImage = enemiesContainer.querySelector("nth")
   }
   return `
-    <h3>Enemy ${enemyName}</h3>
+    <h3>Enemy ${index + 1}</h3>
     <label>Choose Enemy Image</label>
-    <input list="enemy-data-list" class="enemy" onblur="showStats(event)" value="rookie">
+    <input list="enemy-data-list" class="enemy" onblur="showStats(event)" value="${enemyImage}">
     <br>
     <label>Name</label>
-    <input type="text" class="name-inp" value="E${index + 1}">
+    <input type="text" class="name-inp" value="${name}">
     <br>
     <label>Level</label>
-    <input type="number" class="level-inp" value="20" onchange="showStats(event)">
+    <input type="number" class="level-inp" value="${level}" onchange="showStats(event)">
     <br>
     <label>Retreat</label>
-    <input type="number" class="retreat-inp" value="4">
+    <input type="number" class="retreat-inp" value="${retreat}">
     <br>
     <label>Nature</label>
-    <input list="natures-data-list" value="none" type="text" onblur="showStats(event)" class="nature-inp">
+    <input list="natures-data-list" value="${nature}" type="text" onblur="showStats(event)" class="nature-inp">
     <br>
-    <label>Mega Suffix</label>
-    <select class="mega-suffix-select">
-      <option value="mega">Mega</option>
-      <option value="megax">X</option>
-      <option value="megay">Y</option>
-      <option value="megaz">Z</option>
-    </select>
-    <br>
+
     <label>Token Used</label>
     <textarea class="token-inp" onblur="showStats(event)">${objToFlags({
           hp:0,
@@ -130,6 +127,14 @@ function getEnemyForm(index,isDuplicate) {
 
   // ###########################
   // don't delete this
+//       <label>Mega Suffix</label>
+//     <select class="mega-suffix-select">
+//       <option value="mega">Mega</option>
+//       <option value="megax">X</option>
+//       <option value="megay">Y</option>
+//       <option value="megaz">Z</option>
+//     </select>
+//     <br>
   //   <div class="move-section">
     //   <h4>Mega Moves</h4>
     //   <div class="mega-moves-list"></div>
