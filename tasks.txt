@@ -1,6 +1,5 @@
 * Tasks
 kingdoms build maintains storage
-helpinghand
 * bug 
 
 * Bottle neck
