@@ -1,5 +1,5 @@
 * Tasks
-kingdoms build maintains storage
+kingdoms build maintains war
 * bug 
 
 * Bottle neck
@@ -10,8 +10,6 @@ kingdoms build maintains storage
 
 *ovi
 show retreat cost of abilities on settings
-enemy.js  
-    replica
 fix retreat of beast abilities
 hand3
 
@@ -20,18 +18,4 @@ phy 1 -> phy 1 = x - y d
 phy 1 -> phy 0 = x(10%) dx 
 phy 1 -> sp = x 100% dx
 phy 0 -> sp = x - y d
-
-bhuiyakugan: 
-             1: 50% retreat cost for beast or entity summoning
-
-             2: accuracy true for summoning
-
-             3: summon can be [1 - 3] 
-                * 40 % chance for summon only 1
-                * 35 %  for  summon 2
-                * 25 % for 3
-                * 40 + 35 + 25 = 100 
-
-             4(Black Summoning path): entity or beast will summon with "$blackbeastlayer"  
-
 

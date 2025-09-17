@@ -7,7 +7,7 @@ export default {
       spd: 100
     },
     tokens: {
-      spe: -50
+      spe: -30
     }
   },
   latherarmor1: {
