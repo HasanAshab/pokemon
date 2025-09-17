@@ -362,7 +362,7 @@ export class Move {
         this._reducedCapacity = 0
     }
   
-    get isNeverFails() {     
+    get isNeverFails() {       
         if ('onTryMove' in this || 'onTryImmunity' in this)
             return false
         return this.accuracy === true || this.category !== "Status"
@@ -447,7 +447,7 @@ export class Move {
         return Math.max(1, damage * this.recoilRate())
     }
 
-    _try(user, target, move) { 
+    _try(user, target, move) {
         if (this.isNeverFails)
           return true        
 
@@ -455,7 +455,10 @@ export class Move {
           return false
           
         if (this.onTryImmunity?.(user, target) === true)
-          return false  
+          return false
+        
+        if (this.accuracy === true)
+          return true
            
         // Calculate the effective accuracy
         const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
@@ -469,7 +472,7 @@ export class Move {
 
     try(user, target, move) {
         const succeed = this._try(user, target, move)
-        !succeed && console.log(`${user.name}: ${move.name} failed!`)
+        !succeed && console.log(`${user.name}: ${this.name} failed!`)
         return succeed
     }
     

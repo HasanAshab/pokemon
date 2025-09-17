@@ -235,6 +235,22 @@ class BaseBattle extends EventEmitter {
         }
 
         // move failure
+        try {
+          const ref1 = this.pokemon1.state.moves.find(m => m.id === move1.id)
+          const ref2 = this.pokemon2.state.moves.find(m => m.id === move2.id)
+          move1._meta = ref1._meta
+          move2._meta = ref2._meta
+          move1.accuracy = ref1.accuracy
+          move2.accuracy = ref2.accuracy
+          move1._user = this.pokemon1
+          move2._user = this.pokemon2
+          move1._target = this.pokemon2
+          move2._target = this.pokemon1
+        }
+        catch (e) {
+          move1._meta = {}
+          move2._meta = {}
+        }
         this._checkFailure(this.pokemon1, senario)
         this._checkFailure(this.pokemon2, senario)
  
@@ -248,8 +264,12 @@ class BaseBattle extends EventEmitter {
         move2 = senario.get(this.pokemon2)
 
         try {
-          move1._meta = this.pokemon1.state.moves.find(m => m.id === move1.id)._meta
-          move2._meta = this.pokemon2.state.moves.find(m => m.id === move2.id)._meta
+          const ref1 = this.pokemon1.state.moves.find(m => m.id === move1.id)
+          const ref2 = this.pokemon2.state.moves.find(m => m.id === move2.id)
+          move1._meta = ref1._meta
+          move2._meta = ref2._meta
+          move1.accuracy = ref1.accuracy
+          move2.accuracy = ref2.accuracy
           move1._user = this.pokemon1
           move2._user = this.pokemon2
           move1._target = this.pokemon2

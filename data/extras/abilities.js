@@ -203,7 +203,31 @@ export default {
   },
 
   bhuiyakugan1: {
-    
+    retreat: 0.5,
+    onActivate(pokemon) {
+        pokemon.state.chainModifyRetreat(0.5, move => move.flags.summon)
+    },
+    onDeactivate(pokemon) {
+        pokemon.state.chainModifyRetreat(2, move => move.flags.summon)
+    },
+  },
+
+  bhuiyakugan2: {
+    retreat: 2,
+    onActivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.flags.summon) {
+          move.accuracy = true
+        }
+      })
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.flags.summon) {
+          move.accuracy = move._ref.accuracy
+        }
+      })
+    },
   },
 
   shadow: {
