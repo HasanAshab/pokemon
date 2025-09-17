@@ -1,5 +1,5 @@
 import { EventEmitter } from "./event.js";
-import { Move, Pokemon } from "./models.js";
+import { Item, Move, Pokemon } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
@@ -1137,6 +1137,11 @@ class BattleState extends EventEmitter {
           .map(ls => ({ id: ls.name }))
 
         this.battle.addPokemon(summon)
+
+        if (this.pokemon.abilities.isActive('bhuiyakugan4')) {
+          summon.state.armor.add("$blackbeastlayer")
+        }
+
         return summon
     }
 
@@ -1457,6 +1462,10 @@ class ArmorManager {
     }
 
     add(item, toFront = false) {
+      if (typeof item === "string") {
+        item = new Item(item, this.state.pokemon.items)
+      }
+
       item.armor = {
         hp: 100,
         _hp: 100
