@@ -1223,7 +1223,7 @@ function loadAbilities(playerTag) {
   const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .wrapper')
   abilitiesWrapper.innerHTML = ''
   for (const ability of abilities) {
-    abilitiesWrapper.innerHTML += ` <button type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
+    abilitiesWrapper.innerHTML += ` <button data-retreat="${ability._ability.retreat}" type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
   }
 }
 function loadItems(playerTag) {

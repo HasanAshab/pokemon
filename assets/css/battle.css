@@ -443,7 +443,7 @@ flex-direction: column;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 7px;
+  gap: 15px;
   flex-wrap: wrap;
 }
 .player-settings-form .settings-wrapper .settings.abilities .wrapper .ability{
@@ -451,7 +451,21 @@ flex-direction: column;
   background-color: transparent;
   color: black;
   border-radius: 5px;
+  position: relative;
 }
+.player-settings-form .settings-wrapper .settings.abilities .wrapper .ability::after{
+  content: attr(data-retreat);
+  font-weight: bold;
+  position: absolute;
+  background-color: green;
+  padding: 2px 6px;
+  border-radius: 50%;
+  bottom: -8px;
+  right: -12px;
+  color: white;
+  z-index: 1;
+}
+
 .player-settings-form .settings-wrapper .settings.abilities .wrapper .ability.active{
   background-color: green;
   color: white;
