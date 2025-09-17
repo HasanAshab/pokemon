@@ -1,10 +1,11 @@
 import { Damage } from "../../assets/js/utils/damage.js"
 import types from "../types.js"
 
-function SharinganAbility({ blind, copycat, retreat }) {
+function SharinganAbility({ blind, copycat, retreat, dependencies = [] }) {
   return {
     retreat,
     accuracyReduced: 0,
+    dependencies,
     copycat: {
       data: {},
       min: Array.isArray(copycat) ? copycat[0] : copycat,
@@ -139,17 +140,6 @@ export default {
     }
   },
 
-  mayangan0: {
-    flags: { autoenable: 1 },
-    onHit(pokemon, opponent, move) {
-      if (move.hit.criticalCount()) {
-        pokemon.state.stats._statChanges.atk += 2
-        pokemon.state.stats._statChanges.accuracy -= 1
-        this.popup(`Shaking by ANGER`, pokemon);
-      }
-    },
-    retreat: 0
-  },
   // opponents time half
   mayangan1: {
     retreat: 3
@@ -210,6 +200,10 @@ export default {
           move.accuracy = true
       }
     },
+  },
+
+  bhuiyakugan1: {
+    
   },
 
   shadow: {
