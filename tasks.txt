@@ -33,6 +33,6 @@ bhuiyakugan:
                 * 25 % for 3
                 * 40 + 35 + 25 = 100 
 
-             4(Black Summoning path): entity or beast will summon with "$black-beast-armor"  
+             4(Black Summoning path): entity or beast will summon with "$blackbeastlayer"  
 
 
