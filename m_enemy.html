@@ -5,12 +5,24 @@
   <title>Dynamic Enemies & Moves</title>
   <link rel="stylesheet" href="./assets/css/n_enemy.css">
   <link rel="stylesheet" href="./assets/css/multy-input-box.css">
+  <link rel="stylesheet" href="./assets/css/global.css">
 </head>
 <body>
     <datalist id="enemy-data-list"></datalist>
   <datalist id="moves-data-list"></datalist>
   <datalist id="natures-data-list"></datalist>
+ <div class="blur-bg active">
+   <div class="move-details-popup">
+      
+         <strong class="name">name</strong>
+        <p class="desc"></p>
+          <details>
+  <summary> More details.. </summary>
+  <pre class="more-details">....</pre>
+ </details>
 
+  </div>
+ </div>
     <div class="fields-cont">
         <div style="background-color:var(--Fire-type-color)"  onclick="fieldClickHandler(event)" class="field fire">
           Fire
@@ -76,7 +88,7 @@
   </div>
   <details>
   <summary> More details.. </summary>
-  <pre id="details">....</pre>
+  <pre class="more-details">....</pre>
  </details>
   <select id="sys-select"></select>
   <div id="enemies-container"></div>

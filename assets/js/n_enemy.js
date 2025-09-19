@@ -192,7 +192,10 @@ function addMove(event, moveId = '' , grade =0 , form , isMega = false) {
   const div = document.createElement('div');
   div.className = 'move-item';
   div.innerHTML = `
-    <input type="text" value="${moveId}" list="moves-data-list" onblur="showMoveDetails(event)" class="${isMega ? 'mega-move-input' : 'move-input'}">
+    <button class="info-btn" type="button" onclick="showMoveDetails(event,true)">
+     <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 416.979 416.979" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M356.004,61.156c-81.37-81.47-213.377-81.551-294.848-0.182c-81.47,81.371-81.552,213.379-0.181,294.85 c81.369,81.47,213.378,81.551,294.849,0.181C437.293,274.636,437.375,142.626,356.004,61.156z M237.6,340.786 c0,3.217-2.607,5.822-5.822,5.822h-46.576c-3.215,0-5.822-2.605-5.822-5.822V167.885c0-3.217,2.607-5.822,5.822-5.822h46.576 c3.215,0,5.822,2.604,5.822,5.822V340.786z M208.49,137.901c-18.618,0-33.766-15.146-33.766-33.765 c0-18.617,15.147-33.766,33.766-33.766c18.619,0,33.766,15.148,33.766,33.766C242.256,122.755,227.107,137.901,208.49,137.901z"></path> </g> </g></svg>
+    </button>
+    <input type="text" value="${moveId}" list="moves-data-list" onblur="showMoveDetails(event)" class="move-input">
     <input type="number"  class="move-grade-input" value="${grade}" style="width: 40px">
     <button type="button" onclick="removeMove(event)">X</button>
   `;
@@ -456,8 +459,11 @@ function removeMove(event) {
   moveItem.remove();
 }
 
-globalThis.showMoveDetails = function({currentTarget}){
- const moveName = currentTarget.value
+globalThis.showMoveDetails = function({currentTarget},popup = false){
+  console.log(popup)
+
+ const moveName = popup ? currentTarget.parentElement.querySelector(".move-input").value : currentTarget.value
+  console.log(moveName)
 
   if (moveName in MOVES) {
   const move =  new Move(moveName)
@@ -476,7 +482,7 @@ globalThis.showMoveDetails = function({currentTarget}){
 function showMoveMoreDetails(moveName) {
   const details = MOVES[moveName];
   if (details) {
-  document.getElementById("details").textContent = JSON.stringify(details, null, 2);
+  document.querySelector("body > details  pre.more-details").textContent = JSON.stringify(details, null, 2);
   }
 
 }

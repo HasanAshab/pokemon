@@ -1067,15 +1067,15 @@ katana: {
   jungletrap: {
       num: 100033,
       accuracy: 65,
-      basePower: 10,
+      basePower: 30,
       category: "Physical",
       name: "Jungle Trap",
-      pp: 20,
+      pp: 8 * 3,
       priority: 0,
       flags: { contact: 0, protect: 1, mirror: 1, metronome: 1 },
       volatileStatus: "partiallytrapped",
       secondary: null,
-      target: "normal",
+      target: "allAdjacentFoes",
       type: "Grass",
       contestType: "Tough"
     },
@@ -1085,7 +1085,7 @@ katana: {
       basePower: 1,
       category: "Special",
       name: "Chakra Absorb",
-      pp: 20,
+      pp: 6 * 3,
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
       onBeforeMove(user, opponent, move) {
@@ -1518,6 +1518,21 @@ katana: {
       flags: {},
       heal: [1, 10],
     },
+    leaftrap: {
+      num: 100056,
+      accuracy: 65,
+      basePower: 10,
+      category: "Physical",
+      name: "Leaf Trap",
+      pp: 14 * 3,
+      priority: 0,
+      flags: { contact: 0, protect: 1, mirror: 1, metronome: 1 },
+      volatileStatus: "partiallytrapped",
+      secondary: null,
+      target: "normal",
+      type: "Grass",
+      contestType: "Tough"
+    },
     helpinghand: {
       num: 270,
       accuracy: true,
@@ -1543,5 +1558,6 @@ katana: {
         })
       }
     },
+    
 }
 

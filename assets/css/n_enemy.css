@@ -1,25 +1,3 @@
-:root {
-  --Normal-type-color: #9FA19F;
-  --Fire-type-color: #E62829;
-  --Water-type-color: #2980EF;
-  --Electric-type-color: #FAC000;
-  --Grass-type-color: #3FA129;
-  --Ice-type-color: #3CCDF2;
-  --Fighting-type-color: #FF8002;
-  --Poison-type-color: #9141CB;
-  --Ground-type-color: #925221;
-  --Flying-type-color: #81B9F0;
-  --Psychic-type-color: #EF4179;
-  --Bug-type-color: #91A11A;
-  --Rock-type-color: #AFA981;
-  --Ghost-type-color: #704170;
-  --Dragon-type-color: #5060E0;
-  --Dark-type-color: #634E4F;
-  --Steel-type-color: #60A1B7;
-  --Fairy-type-color: #EE6FEE;
-  --Stellar-type-color: #40B5A5;
-  --Unknown-type-color: #68A090;
-}
 
 .fields-cont {
     display: flex;
