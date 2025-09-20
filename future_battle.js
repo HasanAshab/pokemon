@@ -1,52 +1,98 @@
 startBattle([
   {
     "id": "rookie",
-    "name": "Co venom",
-    "xp": 2400,
-    "nature": "none",
+    "name": "Tai",
+    "xp": 1900,
+    "nature": "tai",
     "retreat": 4.5,
-    "types": [
-      "Poison"
-    ],
+    "types": [],
     "abilities": [],
-    "items": [],
+    "items": [
+      "latherarmor1",
+      "gen-fat",
+      "gen-age-18",
+      "gen-food-mid"
+    ],
     "moves": [
       {
-        "id": "poisonsting",
+        "id": "kunai",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "acidspray",
+        "id": "rollout",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "takeweapon",
+        "id": "accelerock",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "poisonfang",
+        "id": "rockpolish",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "Nin",
+    "xp": 1900,
+    "nature": "nin",
+    "retreat": 4.75,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor1",
+      "gen-age-18",
+      "gen-thik",
+      "gen-food-mid"
+    ],
+    "moves": [
+      {
+        "id": "haze",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "chakrablade",
+        "id": "iceshard",
+        "grade": "0",
         "isSelected": true
       },
       {
         "id": "ninjastar",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "clearsmog",
+        "id": "bubble",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "pound",
+        "id": "protect",
+        "grade": "0",
         "isSelected": true
       }
     ],
     "mega": {
       "moves": [],
-      "suffix": "mega"
+      "suffix": ""
     },
     "stats": {},
     "token_used": {
@@ -60,373 +106,33 @@ startBattle([
   },
   {
     "id": "rookie",
-    "name": "E1",
-    "xp": 900,
+    "name": "none",
+    "xp": 1900,
     "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "acid",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "rookie",
-    "name": "E2",
-    "xp": 900,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "acid",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "rookie",
-    "name": "E3",
-    "xp": 900,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "acid",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "rookie",
-    "name": "E4",
-    "xp": 900,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "acid",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "rookie",
-    "name": "E5",
-    "xp": 900,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "acid",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "rookie",
-    "name": "E6",
-    "xp": 900,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "acid",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  }
-], [], "multiple")
-
-
-startBattle([
-  {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
     "retreat": 4,
     "types": [],
     "abilities": [],
-    "items": [],
+    "items": [
+      "latherarmor1",
+      "gen-age-18",
+      "gen-thik",
+      "gen-food-mid"
+    ],
     "moves": [
       {
-        "id": "ember",
+        "id": "healingpalm",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "fairywind",
+        "grade": "0",
         "isSelected": true
       }
     ],
     "mega": {
       "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-    {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },  {
-    "id": "student",
-    "name": "E1",
-    "xp": 1200,
-    "nature": "nin",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "ember",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "mega"
+      "suffix": ""
     },
     "stats": {},
     "token_used": {
