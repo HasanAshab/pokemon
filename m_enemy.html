@@ -11,10 +11,13 @@
     <datalist id="enemy-data-list"></datalist>
   <datalist id="moves-data-list"></datalist>
   <datalist id="natures-data-list"></datalist>
- <div class="blur-bg active">
+ <div class="blur-bg">
    <div class="move-details-popup">
-      
-         <strong class="name">name</strong>
+      <div class="header">
+           <strong class="name">name</strong>
+           <button class="close-btn" onclick="hideMoveDetailsPopup(event)">x</button>
+      </div>
+
         <p class="desc"></p>
           <details>
   <summary> More details.. </summary>

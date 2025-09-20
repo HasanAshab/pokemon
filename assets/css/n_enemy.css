@@ -1,4 +1,20 @@
-
+.move-details-popup{
+  width: 70%;
+  height: 50%;
+  overflow-y: scroll;
+  background-color: white;
+}
+.move-details-popup > .header{
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: lightgray;
+}
+.move-details-popup > .header .close-btn{
+color: white;
+background-color: red;
+}
 .fields-cont {
     display: flex;
     flex-wrap: wrap;

@@ -467,22 +467,28 @@ globalThis.showMoveDetails = function({currentTarget},popup = false){
 
   if (moveName in MOVES) {
   const move =  new Move(moveName)
-    const moveDetails = document.querySelector(".move-details")
+    const moveDetails = document.querySelector(`.move-details${popup ? "-popup" : ""}`)
+    moveDetails.parentElement.classList.add("active")
     moveDetails.querySelector(".name").textContent = move.name
     moveDetails.querySelector(".desc").textContent = move.description() + '\n' + JSON.stringify({
         power: move.basePower,
         category: move.category,
         priority: move.priority
     }, null, 2)
-    showMoveMoreDetails(moveName)
+    showMoveMoreDetails(moveName,popup)
  }
  
 }
-
-function showMoveMoreDetails(moveName) {
+globalThis.hideMoveDetailsPopup = ({currentTarget})=>{
+  currentTarget.parentElement.parentElement.parentElement.classList.remove('active')
+console.log(currentTarget.parentElement.parentElement.parentElement)
+  
+}
+function showMoveMoreDetails(moveName,popup) {
   const details = MOVES[moveName];
   if (details) {
-  document.querySelector("body > details  pre.more-details").textContent = JSON.stringify(details, null, 2);
+    const queryPrefix = 
+  document.querySelector(`${popup ? ".move-details-popup" : "body"} > details  pre.more-details`).textContent = JSON.stringify(details, null, 2);
   }
 
 }
