@@ -520,7 +520,7 @@ sword: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -30
+        spe: -20
       },
     },
 
@@ -540,7 +540,7 @@ katana: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -30
+        spe: -25
       },
       koRatio:1
     },
@@ -570,7 +570,7 @@ katana: {
     longsword: {
       num: 100009,
       accuracy: 60,
-      basePower: 130,
+      basePower: 140,
       category: "Physical",
       name: "Katana",
       pp: 15 * 3,
@@ -595,8 +595,15 @@ katana: {
  ninechaku:{
       num: 100010,
       accuracy: 100,
-      multihit:[2,5],
-      basePower: 20,
+      multihit:[1,4],
+      basePower: 0,
+      basePowerCallback(pokemon, target) {
+        let ratio = Math.floor(pokemon.getStat("spe") / target.getStat("spe"))
+        if (!isFinite(ratio)) ratio = 0
+        const bp = [10, 20, 30, 40, 50][Math.min(ratio, 4)]
+        this.debug("BP: " + bp)
+        return bp
+      },
       category: "Physical",
       name: "Nine Chaku",
       pp: 15 * 3,
@@ -613,14 +620,21 @@ katana: {
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -6
+        spe: -8
       }
     },
   ninechakublade:{
       num: 100011,
       accuracy: 100,
-      multihit:[2,5],
-      basePower: 35,
+      multihit:[1,4],
+      basePower: 0,
+      basePowerCallback(pokemon, target) {
+        let ratio = Math.floor(pokemon.getStat("spe") / target.getStat("spe"))
+        if (!isFinite(ratio)) ratio = 0
+        const bp = [17, 27, 37, 47, 57][Math.min(ratio, 4)]
+        this.debug("BP: " + bp)
+        return bp
+      },
       category: "Physical",
       name: "Nine Chaku(Blade)",
       pp: 15 * 3,
@@ -636,9 +650,9 @@ katana: {
       target: "normal",
       type: "Steel",
       contestType: "Tough",
-      recoil: [10, 100],
+      recoil: [2, 100],
       tokenChanges: {
-        spe: -6
+        spe: -10
       }
     },
   dirt: {
