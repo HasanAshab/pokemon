@@ -10,7 +10,7 @@ startBattle([
     "items": [
       "latherarmor1",
       "gen-fat",
-      "gen-age-18",
+      
       "gen-food-mid"
     ],
     "moves": [
@@ -32,6 +32,11 @@ startBattle([
       {
         "id": "rockpolish",
         "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "summon:geodude",
+         "grade": "0",
         "isSelected": true
       }
     ],
@@ -59,7 +64,7 @@ startBattle([
     "abilities": [],
     "items": [
       "latherarmor1",
-      "gen-age-18",
+      
       "gen-thik",
       "gen-food-mid"
     ],
@@ -114,7 +119,7 @@ startBattle([
     "abilities": [],
     "items": [
       "latherarmor1",
-      "gen-age-18",
+      
       "gen-thik",
       "gen-food-mid"
     ],
