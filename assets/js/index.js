@@ -255,74 +255,128 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-startBattle(null,[
+startBattle([
   {
-  "nature": "nin",
+    "id": "rookie",
+    "name": "Tai",
+    "xp": 1900,
+    "nature": "tai",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor1",
+      "gen-fat",
+      
+      "gen-food-mid"
+    ],
+    "moves": [
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rollout",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "accelerock",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockpolish",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "summon:geodude",
+         "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+{
+  "nature": "tai",
   "id": "rookie",
-  "name": "rahul akatomi",
+  "name": "ice",
   "xp": 1900,
-  "retreat": 10,
+  "retreat": 4.5,
   "types": [
     "Normal"
   ],
-  "abilities": [
-    "killerbeebeast"
-  ],
+  "abilities": [],
   "items": [
-    "gen-food-mid",
-    "gen-thik"
+    "latherarmor1",
+    "gen-fat",
+    "gen-food-mid"
   ],
   "moves": [
     {
-      "id": "kunai",
+      "id": "haze",
+      "grade": "0",
+      "isSelected": true,
+      "isDefault": true
+    },
+    {
+      "id": "iceshard",
+      "grade": "0",
       "isSelected": true,
       "isDefault": true
     },
     {
       "id": "ninjastar",
+      "grade": "0",
       "isSelected": true,
       "isDefault": true
     },
     {
-      "id": "doubleteam",
+      "id": "bubble",
+      "grade": "0",
       "isSelected": true,
       "isDefault": true
     },
     {
-      "id": "thundershock",
+      "id": "protect",
+      "grade": "0",
       "isSelected": true,
       "isDefault": true
-    },
-    {
-      "id": "doublekick",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "bulletpunch",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "thunderwave",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "cyclekick",
-      "grade": 2,
-      "isDefault": true
-    },
-    {
-      "id": "summon:killerbee"
-    },
-    {
-      "id": "summon:suicidebee"
     }
   ],
   "mega": {
-    "moves": [],
-    "suffix": "mega"
+    "moves": [
+      {
+        "id": "kunai"
+      },
+      {
+        "id": "ninjastar"
+      },
+      {
+        "id": "iceball"
+      },
+      {
+        "id": "aquajet"
+      },
+      {
+        "id": "freeze"
+      }
+    ],
+    "suffix": ""
   },
   "stats": {},
   "token_used": {
@@ -332,352 +386,47 @@ startBattle(null,[
     "def": 0,
     "spa": 0,
     "spd": 0
+  }},  {
+    "id": "rookie",
+    "name": "none",
+    "xp": 1900,
+    "nature": "none",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor1",
+      
+      "gen-thik",
+      "gen-food-mid"
+    ],
+    "moves": [
+      {
+        "id": "healingpalm",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "helpinghand",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
   }
-  
-}
-  // {
-  //   "id": "rookie",
-  //   "name": "Co venom",
-  //   "xp": 500,
-  //   "nature": "none",
-  //   "retreat": 20,
-  //   "types": [
-  //     "Poison"
-  //   ],
-  //   "abilities": [],
-  //   "items": [],
-  //   "moves": [
-  //     {
-  //       "id": "heatwave",
-  //       "isSelected": true
-  //     }
-  //   ],
-  //   "mega": {
-  //     "moves": [],
-  //     "suffix": "mega"
-  //   },
-  //   "stats": {},
-  //   "token_used": {
-  //     "hp": 0,
-  //     "spe": 0,
-  //     "atk": 0,
-  //     "def": 0,
-  //     "spa": 0,
-  //     "spd": 0
-  //   }
-  // },
-//   {
-//     "id": "rookie",
-//     "name": "E1",
-//     "xp": 900,
-//     "nature": "none",
-//     "retreat": 3,
-//     "types": [],
-//     "abilities": [],
-//     "items": [],
-//     "moves": [
-//       {
-//         "id": "acid",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   },
-//     {
-//     "id": "rookie",
-//     "name": "E2",
-//     "xp": 900,
-//     "nature": "none",
-//     "retreat": 3,
-//     "types": [],
-//     "abilities": [],
-//     "items": [],
-//     "moves": [
-//       {
-//         "id": "acid",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   },
-//     {
-//     "id": "rookie",
-//     "name": "E3",
-//     "xp": 900,
-//     "nature": "none",
-//     "retreat": 3,
-//     "types": [],
-//     "abilities": [],
-//     "items": [],
-//     "moves": [
-//       {
-//         "id": "acid",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   },
-//     {
-//     "id": "rookie",
-//     "name": "E4",
-//     "xp": 900,
-//     "nature": "none",
-//     "retreat": 3,
-//     "types": [],
-//     "abilities": [],
-//     "items": [],
-//     "moves": [
-//       {
-//         "id": "acid",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   },
-//     {
-//     "id": "rookie",
-//     "name": "E5",
-//     "xp": 900,
-//     "nature": "none",
-//     "retreat": 3,
-//     "types": [],
-//     "abilities": [],
-//     "items": [],
-//     "moves": [
-//       {
-//         "id": "acid",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   }
 ], [], "multiple")
 
 
 
-// // startBattle([
-//     {
-//   "nature": "none",
-//   "id": "hokage",
-//   "name": "Hokage",
-//   "xp": 14900,
-//   "retreat": 38,
-//   "types": [
-//     "Normal",
-//     "Rock",
-//     "Steel"
-//   ],
-//   "abilities": [],
-//   "items": [],
-//   "isSelectedForMultiBattle": true,
-//   "moves": [
-//     {
-//       "id": "shadowclone",
-//     }
-//   ],
-//   "mega": {
-//     "moves": [],
-//     "suffix": "mega"
-//   },
-//   "stats": {},
-//   "token_used": {
-//     "hp": 0,
-//     "spe": 0,
-//     "atk": 0,
-//     "def": 0,
-//     "spa": 0,
-//     "spd": 0
-//   }
-// },
-// {
-//   "nature": "tai",
-//   "id": "rookie",
-//   "xp": 1900,
-//   "retreat": 4.5,
-//   "stats": {},
-//   "token_used": {
-//     "hp": 0,
-//     "spe": 0,
-//     "atk": 0,
-//     "def": 0,
-//     "spa": 0,
-//     "spd": 0
-//   },
-//   "mega": {
-//     "suffix": "mega",
-//     "moves": []
-//   },
-//   "wins-count": 5,
-//   "loses-count": 3,
-//   "moves": [
-//     {
-//       "id": "revengersoul"
-//     },
-//     {
-//       "id": "smokescreen",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "furyattack",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "takeweapon",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "ninjastar",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "kunai",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "vacuumwave"
-//     },
-//     {
-//       "id": "substitute"
-//     }
-//   ],
-//   "name": "Changu",
-//   "items": [
-//     "gen-food-low",
-//     "latherarmor1"
-//   ],
-//   "isSelectedForMultiBattle": true,
-//   "types": [
-//     "Normal",
-//     "Rock"
-//   ],
-//   "abilities": [
-//     "mayangan:silver-eye"
-//   ]
-// },
-// {
-//   "nature": "tai",
-//   "id": "rookie",
-//   "xp": 1900,
-//   "retreat": 4.5,
-//   "stats": {},
-//   "token_used": {
-//     "hp": 0,
-//     "spe": 0,
-//     "atk": 0,
-//     "def": 0,
-//     "spa": 0,
-//     "spd": 0
-//   },
-//   "mega": {
-//     "suffix": "mega",
-//     "moves": []
-//   },
-//   "wins-count": 5,
-//   "loses-count": 3,
-//   "moves": [
-//     {
-//       "id": "revengersoul"
-//     },
-//     {
-//       "id": "smokescreen",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "furyattack",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "takeweapon",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "ninjastar",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "kunai",
-//       "isDefault": true
-//     },
-//     {
-//       "id": "vacuumwave"
-//     },
-//     {
-//       "id": "substitute"
-//     }
-//   ],
-//   "name": "Pangu",
-//   "items": [
-//     "gen-food-low",
-//     "latherarmor1"
-//   ],
-//   "isSelectedForMultiBattle": true,
-//   "types": [
-//     "Normal",
-//     "Rock"
-//   ],
-//   "abilities": [
-//     "mayangan:silver-eye"
-//   ]
-// }
-
-// ], ["Water"], "multiple")

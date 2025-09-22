@@ -20158,5 +20158,18 @@ export default {
       color: "White",
       eggGroups: ["Undiscovered"],
       gen: 5
-    }
+    },
+    scyby: {
+      num: 10004,
+      name: "Scyby",
+      types: ["Bug", "Flying"],
+      baseStats: { hp: 50, atk: 50, def: 50, spa: 50, spd: 50, spe: 50 },
+      abilities: { 0: "Swarm" },
+      heightm: 0.5,
+      weightkg: 3,
+      color: "Green",
+      evos: ["Scyblade"],
+      eggGroups: ["Bug"]
+    },
+    
   }

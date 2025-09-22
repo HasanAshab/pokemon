@@ -1511,12 +1511,13 @@ katana: {
       basePower: 0,
       category: "Status",
       name: "Healing Palm",
-      pp: 10 * 3,
+      pp: 20 * 3,
       priority: 0,
       target: "normal",
       type: "Fairy",
       flags: {contact: 1},
-      healTarget: [1, 4],
+      healTarget: [1, 7],
+      retreat:1
     },
     healingcircle: {
       capacity: 3,
@@ -1571,6 +1572,25 @@ katana: {
           opponent.tokens = sumObj(opponent.tokens, modObj(stats, -1))
         })
       }
+    },
+      freeze: {
+      num: 100057,
+      accuracy: 100,
+      basePower: 0,
+      category: "Status",
+      name: "Freeze",
+      pp: 15,
+      priority: 0,
+      flags: { snatch: 1, metronome: 1 },
+      secondary: {
+        chance: 100,
+        status: "frz"
+      },
+
+      target: "normal",
+      type: "Ice",
+      contestType: "Cool",
+      
     },
     
 }
