@@ -12,7 +12,8 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].storage) kingdoms[name].storage = {};
 
-function saveAndRefresh() {
+function saveAndRefresh(storage) {
+  kingdoms[name].storage = storage;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   renderItems();
 }
@@ -66,7 +67,7 @@ function renderItems() {
         delete storage[itemName];
       }
       storage[newName] = quantity;
-      saveAndRefresh();
+      saveAndRefresh(storage);
     };
 
     const delBtn = document.createElement("button");
@@ -74,7 +75,7 @@ function renderItems() {
     delBtn.textContent = "Delete";
     delBtn.onclick = () => {
       delete storage[itemName];
-      saveAndRefresh();
+      saveAndRefresh(storage);
     };
 
     itemActions.appendChild(saveBtn);
@@ -93,14 +94,14 @@ function renderItems() {
 
 addItemBtn.onclick = () => {
   kingdoms[name].storage["New Item"] = 0;
-  saveAndRefresh();
+  saveAndRefresh(kingdoms[name].storage);
 };
 
 const newMonthBtn = document.getElementById("newMonthBtn");
 newMonthBtn.onclick = () => {
   const netProd = calcNetProd(kingdoms[name]);
   kingdoms[name].storage = sumObj(kingdoms[name].storage, netProd)
-  saveAndRefresh()
+  saveAndRefresh(kingdoms[name].storage);
 };
 
 
