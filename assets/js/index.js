@@ -256,66 +256,11 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
 startBattle([
-  {
-    "id": "rookie",
-    "name": "Tai",
-    "xp": 1900,
-    "nature": "tai",
-    "retreat": 4.5,
-    "types": [],
-    "abilities": [],
-    "items": [
-      "latherarmor1",
-      "gen-fat",
-      
-      "gen-food-mid"
-    ],
-    "moves": [
-      {
-        "id": "kunai",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "rollout",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "accelerock",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "rockpolish",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "summon:geodude",
-         "grade": "0",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": ""
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
 {
   "nature": "tai",
   "id": "rookie",
-  "name": "ice",
-  "xp": 1900,
+  "name": "Rock",
+  "xp": 2000,
   "retreat": 4.5,
   "types": [
     "Normal"
@@ -326,39 +271,53 @@ startBattle([
     "gen-fat",
     "gen-food-mid"
   ],
-  "moves": [
-    {
-      "id": "haze",
-      "grade": "0",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "iceshard",
-      "grade": "0",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "ninjastar",
-      "grade": "0",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "bubble",
-      "grade": "0",
-      "isSelected": true,
-      "isDefault": true
-    },
-    {
-      "id": "protect",
-      "grade": "0",
-      "isSelected": true,
-      "isDefault": true
-    }
+    "moves": [
+      {
+        "id": "kunai"
+      },
+      {
+        "id": "ninjastar"
+      },
+      {
+        "id": "accelerock"
+      },
+      {
+        "id": "growl"
+      },
+      {
+        "id": "summon:geodude",
+        "grade":0
+      },
+      {
+        "id": "rollout"
+      }
+    ],
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  }
+  
+},
+  {
+  "nature": "tai",
+  "id": "rookie",
+  "name": "ice",
+  "xp": 2000,
+  "retreat": 4.5,
+  "types": [
+    "Normal"
   ],
-  "mega": {
+  "abilities": [],
+  "items": [
+    "latherarmor1",
+    "gen-fat",
+    "gen-food-mid"
+  ],
     "moves": [
       {
         "id": "kunai"
@@ -376,8 +335,6 @@ startBattle([
         "id": "freeze"
       }
     ],
-    "suffix": ""
-  },
   "stats": {},
   "token_used": {
     "hp": 0,

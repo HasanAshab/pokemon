@@ -311,7 +311,7 @@ flex-direction: column;
 }
 .primary-data-nav  .progress-bar {
   border: 1px solid black;
-  width: 170px;
+  width: 130px;
   display: flex;
   justify-content: center;
   align-items: center;
