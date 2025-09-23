@@ -1267,11 +1267,14 @@ globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name)
 
 
 
-function clickOnFirstPokemonSwitch(playerTag) {
-  console.log(playerTag);
-  
+function clickOnFirstPokemonSwitch(playerTag,mirror = false) {
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
+  if (mirror) {
+    pokemonSwitchControler.querySelector(`.pokemon.mirror`).click()
+  }else {
   pokemonSwitchControler.querySelector(`.pokemon`).click()
+    
+  }
   // log
 }
 window.onload = () => {
