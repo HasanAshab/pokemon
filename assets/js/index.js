@@ -255,135 +255,135 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-// startBattle([
-// {
-//   "nature": "tai",
-//   "id": "rookie",
-//   "name": "Rock",
-//   "xp": 2000,
-//   "retreat": 4.5,
-//   "types": [
-//     "Normal"
-//   ],
-//   "abilities": [],
-//   "items": [
-//     "latherarmor1",
-//     "gen-fat",
-//     "gen-food-mid"
-//   ],
-//     "moves": [
-//       {
-//         "id": "kunai"
-//       },
-//       {
-//         "id": "ninjastar"
-//       },
-//       {
-//         "id": "accelerock"
-//       },
-//       {
-//         "id": "growl"
-//       },
-//       {
-//         "id": "summon:geodude",
-//         "grade":0
-//       },
-//       {
-//         "id": "rollout"
-//       }
-//     ],
-//   "stats": {},
-//   "token_used": {
-//     "hp": 0,
-//     "spe": 0,
-//     "atk": 0,
-//     "def": 0,
-//     "spa": 0,
-//     "spd": 0
-//   }
-//   
-// },
-//   {
-//   "nature": "tai",
-//   "id": "rookie",
-//   "name": "ice",
-//   "xp": 2000,
-//   "retreat": 4.5,
-//   "types": [
-//     "Normal"
-//   ],
-//   "abilities": [],
-//   "items": [
-//     "latherarmor1",
-//     "gen-fat",
-//     "gen-food-mid"
-//   ],
-//     "moves": [
-//       {
-//         "id": "kunai"
-//       },
-//       {
-//         "id": "ninjastar"
-//       },
-//       {
-//         "id": "iceball"
-//       },
-//       {
-//         "id": "aquajet"
-//       },
-//       {
-//         "id": "freeze"
-//       }
-//     ],
-//   "stats": {},
-//   "token_used": {
-//     "hp": 0,
-//     "spe": 0,
-//     "atk": 0,
-//     "def": 0,
-//     "spa": 0,
-//     "spd": 0
-//   }},  {
-//     "id": "rookie",
-//     "name": "none",
-//     "xp": 1900,
-//     "nature": "none",
-//     "retreat": 4,
-//     "types": [],
-//     "abilities": [],
-//     "items": [
-//       "latherarmor1",
-//       
-//       "gen-thik",
-//       "gen-food-mid"
-//     ],
-//     "moves": [
-//       {
-//         "id": "healingpalm",
-//         "grade": "0",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "helpinghand",
-//         "grade": "0",
-//         "isSelected": true
-//       }
-//     ],
-//     "mega": {
-//       "moves": [],
-//       "suffix": ""
-//     },
-//     "stats": {},
-//     "token_used": {
-//       "hp": 0,
-//       "spe": 0,
-//       "atk": 0,
-//       "def": 0,
-//       "spa": 0,
-//       "spd": 0
-//     }
-//   }
-// ], [], "multiple")
-// 
+startBattle([
+{
+  "nature": "tai",
+  "id": "rookie",
+  "name": "Rock",
+  "xp": 2000,
+  "retreat": 4.5,
+  "types": [
+    "Normal"
+  ],
+  "abilities": [],
+  "items": [
+    "latherarmor1",
+    "gen-fat",
+    "gen-food-mid"
+  ],
+    "moves": [
+      {
+        "id": "kunai"
+      },
+      {
+        "id": "ninjastar"
+      },
+      {
+        "id": "accelerock"
+      },
+      {
+        "id": "growl"
+      },
+      {
+        "id": "summon:geodude",
+        "grade":0
+      },
+      {
+        "id": "rollout"
+      }
+    ],
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  }
+  
+},
+  {
+  "nature": "tai",
+  "id": "rookie",
+  "name": "ice",
+  "xp": 2000,
+  "retreat": 4.5,
+  "types": [
+    "Normal"
+  ],
+  "abilities": [],
+  "items": [
+    "latherarmor1",
+    "gen-fat",
+    "gen-food-mid"
+  ],
+    "moves": [
+      {
+        "id": "kunai"
+      },
+      {
+        "id": "ninjastar"
+      },
+      {
+        "id": "iceball"
+      },
+      {
+        "id": "aquajet"
+      },
+      {
+        "id": "freeze"
+      }
+    ],
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  }},  {
+    "id": "rookie",
+    "name": "none",
+    "xp": 1900,
+    "nature": "none",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor1",
+      
+      "gen-thik",
+      "gen-food-mid"
+    ],
+    "moves": [
+      {
+        "id": "healingpalm",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "helpinghand",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
+], [], "multiple")
+
 
 

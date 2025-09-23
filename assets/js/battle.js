@@ -127,7 +127,7 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
       p.meta.mirror = true
       opponentTeam.push(p)
     })
-    clickOnFirstPokemonSwitch(opponentTag(playerTag))
+    clickOnFirstPokemonSwitch(opponentTag(playerTag),true)
   }
 
   else {
@@ -504,14 +504,19 @@ function toggleMirrorChoosePokemons(playerTag) {
 
   }
 }
+
 function loadChoosePokemon(playerTag) {
+  const team = teams[playerTag]
+   if (team[0].meta.mirror) 
+     return null
+
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
   if (pokemonSwitchControler.classList.contains("mirror-mode")) return null
  
   pokemonSwitchControler.innerHTML = ""
   const activePokemon = playerTag === "you" ? globalThis.pokemon : globalThis.enemyPokemon
   let i = 0
-  for (const pokemon of teams[playerTag]) {
+  for (const pokemon of team) {
     pokemonSwitchControler.innerHTML += `
           <div class="pokemon ${pokemon.isFainted ? "disabled" : ""} ${pokemon.meta.name === activePokemon?.meta.name ? "active" : ""}" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
                   <svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
@@ -1265,15 +1270,12 @@ globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name)
 
 
 
-function clickOnFirstPokemonSwitch() {
-  const enemyPokemonSwitchControler = document.querySelector(".enemy-controle-cont .pokemon-switch-controler")
- let isMirrorActive = enemyPokemonSwitchControler.classList.contains("mirror-mode")
-  enemyPokemonSwitchControler.querySelector(`.pokemon${isMirrorActive ? '.mirror' : ''}`).click()
-
-  const youPokemonSwitchControler = document.querySelector(".you-controle-cont .pokemon-switch-controler")
-  isMirrorActive = youPokemonSwitchControler.classList.contains("mirror-mode")
-  youPokemonSwitchControler.querySelector(`.pokemon${isMirrorActive ? '.mirror' : ''}`).click()
-
+function clickOnFirstPokemonSwitch(playerTag) {
+  console.log(playerTag);
+  
+  const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
+  pokemonSwitchControler.querySelector(`.pokemon`).click()
+  // log
 }
 window.onload = () => {
   globalThis.pokemonMap = {}
@@ -1283,7 +1285,8 @@ window.onload = () => {
   loadChoosePokemon("you")
   loadChoosePokemon("enemy")
   loadMovesDatalist("moves-data-list")
-  clickOnFirstPokemonSwitch()
+  clickOnFirstPokemonSwitch("you")
+  clickOnFirstPokemonSwitch("enemy")
   setBattleListeners()
 }
 

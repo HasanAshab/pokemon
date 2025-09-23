@@ -1,9 +1,11 @@
 * Tasks
+battle page : disable all buttons when events are running
 7 lakh , 2 month
 kingdoms build maintains war
 * bug 
 perfomance 
 mirror
+  clones
 * Bottle neck
 
 
@@ -11,7 +13,6 @@ mirror
 
 
 *ovi
-show retreat cost of abilities on settings
 fix retreat of beast abilities
 hand3
 
