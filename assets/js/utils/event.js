@@ -40,17 +40,23 @@ export class EventEmitter {
     emit(event, ...args) {
         const ctx = { _event: event };
 
+        const send = ({ fn }) => {
+          fn.apply(ctx, args);
+          fn.toString().includes('async')
+            && console.log('Async reciever detected:', fn);
+        };
+
         if (this._events[event]) {
-            this._events[event].forEach(({ fn }) => fn.apply(ctx, args));
+            this._events[event].forEach(send);
         }
 
         if (this._onceEvents[event]) {
-            this._onceEvents[event].forEach(({ fn }) => fn.apply(ctx, args));
+            this._onceEvents[event].forEach(send);
             delete this._onceEvents[event];
         }
 
         if (this._tailListeners[event]) {
-            this._tailListeners[event].forEach(({ fn }) => fn.apply(ctx, args));
+            this._tailListeners[event].forEach(send);
         }
     }
 

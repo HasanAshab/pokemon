@@ -357,9 +357,6 @@ function setBattleStateListeners(playerTag) {
   pokemon.state.on(["scene-end", "wave"], () => {
     loadPokemonData(playerTag)
   })
-  pokemon.state.on("wave", () => {
-    loadChoosePokemon(playerTag)
-  })
   pokemon.state.on("scene", () => {
     loadEffects(playerTag)
   })
