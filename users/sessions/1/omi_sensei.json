@@ -1,0 +1,43 @@
+[{
+  "nature": "none",
+  "id": "rookie",
+  "name": "Sensei",
+  "xp": 1700,
+  "retreat": 4.5,
+  "types": [
+    "Normal"
+  ],
+  "abilities": [],
+  "items": [
+    "gen-age-25",
+    "gen-food-low",
+    "gen-thik"
+  ],
+  "moves": [
+    {
+      "id": "kunai"
+    },
+    {
+      "id": "substitute"
+    },
+    {
+      "id": "supersonic"
+    },
+    {
+      "id": "watergun"
+    },
+    {
+      "id": "helpinghand"
+    }
+  ],
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "isSelectedForMultiBattle": true
+}]
