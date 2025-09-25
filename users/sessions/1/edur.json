@@ -8,7 +8,8 @@
     "abilities": [],
     "items": [
       "gen-age-25",
-      "gen-food-low"
+      "gen-food-low",
+      "gen-thik"
     ],
     "moves": [
       {
@@ -28,7 +29,7 @@
         "isSelected": true
       },
       {
-        "id": "sagemode",
+        "id": "summon:ratata",
         "isSelected": true
       }
     ],

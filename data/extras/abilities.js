@@ -46,8 +46,33 @@ function SharinganAbility({ blind, copycat, retreat, dependencies = [] }) {
     }
   }
 }
+function SharedEyeAbility({ blind, retreat, dependencies = [] }) {
+  return {
+    retreat,
+    accuracyReduced: 0,
+    dependencies,
+    onActivate(pokemon) {
+      pokemon.state.removeListener("turn", "sharedeye-recovery")
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.on("turn", () => {
+        if (this.ability.accuracyReduced <= 0) 
+          return pokemon.state.removeListener("turn", "sharedeye-recovery")
+
+        pokemon.state.stats._statChanges.accuracy += blind
+        this.ability.accuracyReduced -= blind
+      }, "sharedeye-recovery")
+    },
+    onTurn(pokemon) {
+      pokemon.state.stats._statChanges.accuracy -= blind
+      this.ability.accuracyReduced += blind
+    },
+  }
+}
 
 export default {
+  // secret
+  sharedeye: SharedEyeAbility({blind: 0.25, retreat: 0}),
   // gets 6 seconds
   sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 1.5 }),
   // gets 12 seconds
