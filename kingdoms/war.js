@@ -173,7 +173,7 @@ class War {
     } else {
       commentLines.push("Defender has stronger units");
     }
-  
+    
     // Units advantage
     if (attackersScore > defendersScore !== attackersCP > defendersCP) {
       if (attackersScore > defendersScore) {

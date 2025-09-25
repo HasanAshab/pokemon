@@ -174,15 +174,16 @@ class War {
     } else {
       commentLines.push("Defender has stronger units");
     }
-  
+
+
     // Units advantage
-    if (attackersScore > defendersScore !== attackersCP > defendersCP) {
-      if (attackersScore > defendersScore) {
-        commentLines.push("Attacker units got advantage");
-      } else {
-        commentLines.push("Defender units got advantage");
-      }
-    }
+    // if (attackersScore > defendersScore !== attackersCP > defendersCP) {
+    //   if (attackersScore > defendersScore) {
+    //     commentLines.push("Attacker units got advantage");
+    //   } else {
+    //     commentLines.push("Defender units got advantage");
+    //   }
+    // }
   
     // Better luck
     if (luckDiff > 0) {
@@ -190,11 +191,13 @@ class War {
     } else {
       commentLines.push("Defender has better luck");
     }
-  
+    
+    
     // Better commander IQ
     if (iqDiff > 0) {
       commentLines.push("Attacker has better commander");
-    } else {
+    } 
+    else if (iqDiff < 0) {
       commentLines.push("Defender has better commander");
     }
     return commentLines
@@ -307,9 +310,14 @@ class HarvestingWar extends War {
 }
 
 
-let student = new Pokemon("rookie", {
+let student = new Pokemon("student", {
+    "xp": 500,
+    // "items": ["ironarmor"]
+})
+
+let rookie = new Pokemon("rookie", {
     "xp": 1000,
-    "items": ["ironarmor"]
+    // "items": ["ironarmor"]
 })
 
 let genin = new Pokemon("genin", {
@@ -325,7 +333,7 @@ const com1 = {
   }
 }
 const com2 = {
-  image: student, // image means assume another student the commander
+  image: genin, // image means assume another student the commander
   iq: {
     // 10 is max iq for any kind
     offensive: 1,
@@ -333,19 +341,31 @@ const com2 = {
   }
 }
 
-const wave1 = new AttackWave(com1, new SoldierStack([
-  [genin, 40],
-  // [student, 100],
-]))
-
-const wave2 = new DefenseWave(com2, new SoldierStack([
-  [genin, 40],
-]))
-
+let wave1 = new AttackWave(com1, new SoldierStack([
+  // [genin, 40],
+  [rookie, 3],
+]), {luck: 1})
+let wave2 = new DefenseWave(com2, new SoldierStack([
+  [genin, 1],
+]), {luck: 1})
 
 
-const war = new HarvestingWar(wave1, wave2)
-console.log(war.result)
+let war = new HarvestingWar(wave1, wave2)
+console.log(war.result.scores.atk, war.result.scores.def)
+console.log(war.comments())
+
+
+wave1 = new AttackWave(com1, new SoldierStack([
+  // [genin, 40],
+  [rookie, 8],
+]), {luck: 1})
+wave2 = new DefenseWave(com2, new SoldierStack([
+  [genin, 2],
+]), {luck: 1})
+
+
+war = new HarvestingWar(wave1, wave2)
+console.log(war.result.scores.atk, war.result.scores.def)
 console.log(war.comments())
 
 // console.log('atk')

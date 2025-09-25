@@ -10,6 +10,7 @@ war score logic
 
 
 *ovi
+War: show good and bad details
 fix retreat of beast abilities
 hand3
 
