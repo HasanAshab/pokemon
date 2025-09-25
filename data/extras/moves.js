@@ -1561,16 +1561,14 @@ katana: {
       target: "normal",
       type: "Normal",
       onHit(pokemon, opponent) {
-        const per = 1
+        const per = 0.15
         const stats = {
           atk: pokemon.stats.atk * per,
           spa: pokemon.stats.spa * per,
         }
-        console.log(pokemon.stats,stats)
-        console.log(opponent.tokens)
         opponent.tokens = sumObj(opponent.tokens, stats)
-        console.log(opponent.tokens)
-        opponent.state.once('scene-end', () => {
+        
+        opponent.state.once('used-move', () => {
           opponent.tokens = sumObj(opponent.tokens, modObj(stats, -1))
         })
       }

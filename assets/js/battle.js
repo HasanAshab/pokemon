@@ -354,13 +354,13 @@ function setBattleStateListeners(playerTag) {
   const pokemon = pokemonMap[playerTag]
   const opponent = pokemonMap[opponentTag(playerTag)]
 
-  pokemon.state.on(["scene-end", "wave"], () => {
+  pokemon.state.on("wave", () => {
     loadPokemonData(playerTag)
   })
   pokemon.state.on("scene", () => {
     loadEffects(playerTag)
   })
-  pokemon.state.on("scene-end", () => {
+  pokemon.state.tailListener("scene-end", () => {
     setTimeout(() => {
       globalThis.teams = {
         "you": battle.team1,
@@ -370,7 +370,7 @@ function setBattleStateListeners(playerTag) {
       setStatChanges(pokemon.state.stats._statChanges, playerTag)
       loadChoosePokemon(playerTag)
       loadPokemonData(playerTag)
-    }, 1100)
+    }, 100)
   })
 
   // dodge pop up
