@@ -1,6 +1,6 @@
 * Tasks
 kingdoms build maintains war
-
+war score logic
 * bug 
 
 * Bottle neck

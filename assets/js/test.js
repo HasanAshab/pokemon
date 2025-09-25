@@ -1,18 +1,11 @@
 import { Pokemon, Move } from "./utils/models.js";
 
 
-let student = new Pokemon("student", {
-    "xp": 500,
-    "items": ["ironarmor"]
-})
-
-let genin = new Pokemon("genin", {
-    "xp": 3000,
-})
-
-class SoldierStack extends Map {
+export class SoldierStack extends Map {
   constructor(data = []) {
-    data = data.map(([imageMeta, quantity]) => {
+    if (data instanceof Map)
+      data = [...data.entries()]
+    data = data.map(([imageMeta, quantity]) => {      
       const image = imageMeta instanceof Pokemon
         ? imageMeta
         : new Pokemon(imageMeta.id, imageMeta)
@@ -21,8 +14,12 @@ class SoldierStack extends Map {
     super(data)
   }
   
+  get (id) {
+    return this.entries().find(([image]) => image.id === id) ?? null
+  }
+
   find(id) {
-    const stack = this.entries().find(([image]) => image.id === id)
+    const stack = this.entries().find(([image]) => image.id === id) ?? [0, 0]
     return stack[1]
   }
   
@@ -43,7 +40,7 @@ class SoldierStack extends Map {
   }
   
   statOf(stat) {
-    return this.reduce((sum, [image, quantity]) => {
+    return this.reduce((sum, [image, quantity]) => {      
       return sum + (image.stats[stat] * quantity);
     }, 0);
   }
@@ -51,8 +48,10 @@ class SoldierStack extends Map {
   armorScore() {
     return this.reduce((score, [image, quantity]) => {
       const ahp = image.items._items.reduce((ahp, item) => {
-        if ("armor" in item)
-          ahp += item.armor.hp * (item.armor.covers / 100)
+        if (item.type === "armor") {
+          const totalStat = Object.values(item.stats).reduce((sum, stat) => sum + stat, 0)
+          ahp += totalStat * (item.covers / 100)
+        }
         return ahp
       }, 0)
       return score + (ahp * quantity)
@@ -68,6 +67,7 @@ class SoldierStack extends Map {
     return result;
   }
 }
+
 
 class Wave {
   constructor(commander, soldiers, options = {}) {
@@ -85,10 +85,8 @@ class Wave {
     return this.commander.image.cp() + this.soldiers.cp()
   }
 
-  statOf(stat) {
-    const commanderStat = this.commander.image.stats[stat]
-    const totalCp = commanderStat + this.soldiers.statOf(stat)
-    return totalCp * this.cpModifier()
+  statOf(stat) {    
+    return this.soldiers.statOf(stat) * this.cpModifier()
   }
   
   cpModifier() {
@@ -109,31 +107,42 @@ class Wave {
   }
 }
 
-class AttackWave extends Wave {
+export class AttackWave extends Wave {
   constructor() {
     super(...arguments)
     this._setIqModifier()
   }
   
   _setIqModifier() {
+    if (!this.commander.iq.offensive)
+      throw new Error('This commander is unable to attack!')
     this.meta.iqModifier = 1 + (this.commander.iq.offensive / 10)
     this._cpModifiers.push(this.meta.iqModifier)
   }
 }
 
-class DefenseWave extends Wave {
+export class DefenseWave extends Wave {
   constructor() {
     super(...arguments)
     this._setIqModifier()
   }
   
   _setIqModifier() {
+     if (!this.commander.iq.defensive)
+      throw new Error('This commander is unable to defend!')
     this.meta.iqModifier = 1 + (this.commander.iq.defensive / 10)
     this._cpModifiers.push(this.meta.iqModifier)
   }
 }
 
+
+
 class War {
+  static details = {
+    good: `Destruct as much as possible`,
+    bad: `No profit`
+  }
+
   constructor(attackers, defenders) {
     if (!(attackers instanceof AttackWave && defenders instanceof DefenseWave))
       throw new Error('Invalid waves!')
@@ -193,7 +202,7 @@ class War {
   
   _generateResult() {
     this.result.scores.atk = this._calcScore(this.attackers);
-    this.result.scores.def = this._calcScore(this.defenders);
+    this.result.scores.def = this._calcScore(this.defenders);    
     this.result.raisedWhiteFlag = this._raisedWhiteFlag()
     this.result.win = this.result.raisedWhiteFlag || this._canWin()
     this.result.wounded = this._calcWounded()
@@ -209,18 +218,18 @@ class War {
   
   _calcWounded() {
     const wounded = {
-      atk: new Map(),
-      def: new Map()
+      atk: new SoldierStack(),
+      def: new SoldierStack()
     }
     if (this.result.raisedWhiteFlag)
       return wounded
-    
+
     if (this.result.win) {
-      const per = (this.result.scores.def * 100) / this.result.scores.atk;
+      const per = Math.max((this.result.scores.def * 100) / this.result.scores.atk, 0);      
       wounded.atk = this.attackers.soldiers.resize(per);
       wounded.def = this.defenders.soldiers;
     } else {
-      const per = (attackersScore * 100) / defendersScore;
+      const per = Math.max((this.result.scores.atk * 100) / this.result.scores.def, 0);
       wounded.def = this.defenders.soldiers.resize(per);
       wounded.atk = this.attackers.soldiers;
     }
@@ -238,7 +247,7 @@ class War {
     const manPowerModifier = this._calcManPowerMod(w1)
     const phyScore = w1.statOf('def') - w2.statOf('atk')
     const spScore = w1.statOf('spd') - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()        
     return (phyScore + spScore + otherScore) * manPowerModifier
   }
   
@@ -268,14 +277,23 @@ class War {
   }
 }
 
-
 class OccupationWar extends War {
+  static details = {
+    good: `Occupy the attacked land`,
+    bad: `Have to send 30% stronger might`
+  }
+
   _canWin() {
     return this.result.scores.atk * 0.7 > this.result.scores.def
   }
 }
 
 class HarvestingWar extends War {
+  static details = {
+    good: `Sending large amount of might than opponent results peaceful win`,
+    bad: `Sending almost equal might results war`
+  }
+
   _raisedWhiteFlag() {
     const whiteFlagChance = Math.min(
       Math.max(
@@ -288,38 +306,41 @@ class HarvestingWar extends War {
   }
 }
 
-const WAR_SYSTEMS = {
-  "sabotage": War,
-  "occupy": OccupationWar,
-  "harvest": HarvestingWar,
-}
 
+let student = new Pokemon("rookie", {
+    "xp": 1000,
+    "items": ["ironarmor"]
+})
+
+let genin = new Pokemon("genin", {
+    "xp": 2000,
+})
 
 const com1 = {
-    image: genin, // image means assume another genin the commander
-    iq: {
-      // 10 is max iq for any kind
-      offensive: 3,
-      defensive: 1.5,
-    }
+  image: genin, // image means assume another genin the commander
+  iq: {
+    // 10 is max iq for any kind
+    offensive: 3,
+    defensive: 1.5,
+  }
 }
 const com2 = {
-    image: student, // image means assume another student the commander
-    iq: {
-      // 10 is max iq for any kind
-      offensive: 1,
-      defensive: 5,
-    }
+  image: student, // image means assume another student the commander
+  iq: {
+    // 10 is max iq for any kind
+    offensive: 1,
+    defensive: 3,
   }
+}
 
 const wave1 = new AttackWave(com1, new SoldierStack([
-  [genin, 10],
-  [student, 100],
+  [genin, 40],
+  // [student, 100],
 ]))
 
 const wave2 = new DefenseWave(com2, new SoldierStack([
   [genin, 40],
-]), { morality: 70 })
+]))
 
 
 
@@ -335,27 +356,3 @@ console.log(war.comments())
 
 //wave1.resize(10)
 //wave1.soldiers.forEach(console.log)
-
-
-
-function prepareSoldiers(total, percentMap) {
-  const data = percentMap.map(([image, per]) => {
-    const quantity = Math.ceil(total.find(image.id) * (per / 100))
-    return [image, quantity]
-  })
-  return new SoldierStack(data)
-}
-
-genin.meta.id = 'genin'
-student.meta.id = 'student'
-const militia = new SoldierStack([
-  [student.meta, 20],
-  [genin.meta, 5],
-])
-const p = [
-    [student, 80],
-    [genin, 80]
-  ]
-//prepareSoldiers(militia, p).resize(10).forEach(console.log)
-
-

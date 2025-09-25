@@ -137,6 +137,11 @@ export class DefenseWave extends Wave {
 
 
 class War {
+  static details = {
+    good: `Destruct as much as possible`,
+    bad: `No profit`
+  }
+
   constructor(attackers, defenders) {
     if (!(attackers instanceof AttackWave && defenders instanceof DefenseWave))
       throw new Error('Invalid waves!')
@@ -272,12 +277,22 @@ class War {
 }
 
 class OccupationWar extends War {
+  static details = {
+    good: `Occupy the attacked land`,
+    bad: `Have to send 30% stronger might`
+  }
+
   _canWin() {
     return this.result.scores.atk * 0.7 > this.result.scores.def
   }
 }
 
 class HarvestingWar extends War {
+  static details = {
+    good: `Sending large amount of might than opponent results peaceful win`,
+    bad: `Sending almost equal might results war`
+  }
+
   _raisedWhiteFlag() {
     const whiteFlagChance = Math.min(
       Math.max(
