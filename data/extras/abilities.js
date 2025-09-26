@@ -396,6 +396,15 @@ export default {
       }
     },
   },
+  swordmanship: {
+    retreat: 0,
+    onModifyMove(move, pokemon) {
+      if (move.type === "Water") {
+          move.accuracy = true
+      }
+    },
+    flags: { autoenable: 1 }
+  }
   senju1: {
     dependencies: ["chakrafarm"],
   },
