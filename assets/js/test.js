@@ -247,22 +247,10 @@ class War {
 
   _calcScore(w1) {
     const w2 = this._opponentOf(w1)
-    const manPowerModifier = this._calcManPowerMod(w1)
     const phyScore = w1.statOf('def') - w2.statOf('atk')
     const spScore = w1.statOf('spd') - w2.statOf('spa')
     const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()        
-    return (phyScore + spScore + otherScore) * manPowerModifier
-  }
-  
-  _calcManPowerMod(w1) {
-    const w2 = this._opponentOf(w1)
-    const MP_BONUS_FACTOR = 0.07;
-    const w1Count = w1.soldiers.count();
-    const w2Count = w2.soldiers.count();
-  
-    return w1Count > w2Count
-      ? 1 + ((w1Count - w2Count) / w2Count) * MP_BONUS_FACTOR
-      : 1;
+    return (phyScore + spScore + otherScore)
   }
   
   _vsQuantStr() {

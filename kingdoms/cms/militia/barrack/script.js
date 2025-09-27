@@ -135,7 +135,7 @@ function renderSoldierSection(type) {
     quantityInput.type = "number";
     quantityInput.value = soldier.quantity;
     quantityInput.onblur = () => {
-      soldier.quantity = parseInt(quantityInput.value) || 0;
+      soldier.quantity = Math.min((parseInt(quantityInput.value) || 0), 100);
       save();
       renderAllSoldiers();
     };

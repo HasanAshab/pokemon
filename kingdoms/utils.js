@@ -2,20 +2,33 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 
-export function getAcademyData(encodedKingdomName){
-  if (!localStorage.getItem(`${encodedKingdomName}-soldiers-academy`)){
-    const data = {}
-   for (const key in humans ){
-        data[key] = 0
-    }
-    localStorage.setItem(`${encodedKingdomName}-soldiers-academy`,JSON.stringify(getDefaultAcademyData())) 
-  }
 
- return JSON.parse(localStorage.getItem(`${encodedKingdomName}-soldiers-academy`))
-  
+export function saveKingdoms(kingdoms) {
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 }
-export function setAcademyData(encodedKingdomName,data){
-  localStorage.setItem(`${encodedKingdomName}-soldiers-academy`,JSON.stringify(data)) 
+
+export const soldiersAcademy = {
+  getDefaultData:  function getDefaultData(){
+  const data = {}
+  for (const key in humans ){
+      if (key !== "student")
+       data[key] = 0
+   }
+  return data
+},
+  getSoldierCost: function(lvl,index){
+  return lvl <= 0 ? 0 : 1000 * lvl * Math.pow(index,2)
+  },
+  getAcademyCost: function(kingdom){
+    const academyData = kingdom.barrack.academyData
+   let cost = 0
+  let index = 2
+  for (const key in academyData){
+    const lvl = academyData[key]
+   cost += this.getSoldierCost(lvl,index++)
+  }
+  return cost
+  }
 }
 
 export const sumObj = (obj1, obj2) => {
@@ -114,9 +127,8 @@ export function calcSoldiersSalary(kingdom, type) {
   );
 }
 
-export function calcAcademyCost(kingdom) {
-  const level = kingdom.barrack.academyLevel;
-  return 0 //upgradePrice(30_000, level, 3);
+export function calcAcademyCost(kingdom) {  
+  return soldiersAcademy.getAcademyCost(kingdom)
 }
 
 export function calcHospitalCost(kingdom) {
@@ -171,6 +183,7 @@ export function calcNetProd(kingdom, localize = false) {
       calcHospitalCost(kingdom) +
       calcCommandersSalary(kingdom),
   };
+  
   const buildProd = calcBuildNetProd(kingdom);
   const prod = sumObj(sumObj(sysProd, buildProd), modObj(sysCons, -1));
   
