@@ -1,9 +1,9 @@
 * Tasks
 kingdoms build maintains war
-war score logic
+war score logic (better image better score)
 
 * bug 
-tail1beast, fishingan acc true
+
 * Bottle neck
 
 
