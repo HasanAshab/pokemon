@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers } from "../../utils.js";
+import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore } from "../../utils.js";
 
 var i = 0;
 var netWin = 0;
@@ -312,7 +312,10 @@ startWarBtn.onclick = () => {
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers, 100, "emergency");
     const commander = prepareCommander(kingdom, wave.commander);    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
-    const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts);
+    const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value));
+    console.log(buildDefenceScore);
+    
+    const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts, buildDefenceScore);
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;

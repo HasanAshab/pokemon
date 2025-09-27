@@ -23,7 +23,7 @@ export class SoldierStack extends Map {
     return stack[1]
   }
   
-  reduce() {
+  reduce() {    
     return Array.from(this.entries()).reduce(...arguments)
   }
   
@@ -70,12 +70,13 @@ export class SoldierStack extends Map {
 
 
 class Wave {
-  constructor(commander, soldiers, options = {}) {
+  constructor(commander, soldiers, options = {}, extraScore) {
     this.commander = commander
     this.soldiers = soldiers
+    this._extraScore = extraScore
     this._processOptions(options)
   }
-  
+
   resize(percent) {
     const soldiers = this.soldiers.resize(percent)
     return new Wave(this.commander, soldiers, this.options)
@@ -98,7 +99,7 @@ class Wave {
     this._cpModifiers = options.cpModifiers || []
     this.meta = {}
     
-    this.meta.luckModifier = options?.luck ?? (0.9 + Math.random() * 0.2)
+    this.meta.luckModifier = options?.luck ?? (0.9 + Math.random() * 0.5)
     this._cpModifiers.push(this.meta.luckModifier)
     
     this.meta.morality = options.morality ?? 100;
@@ -138,10 +139,11 @@ export class DefenseWave extends Wave {
 
 class War {
   static details = {
-    good: `Destruct as much as possible`,
-    bad: `No profit`
+    good: `Maximum destruction`,
+    bad: `No direct profit`
   }
-
+  
+  
   constructor(attackers, defenders) {
     if (!(attackers instanceof AttackWave && defenders instanceof DefenseWave))
       throw new Error('Invalid waves!')
@@ -155,8 +157,8 @@ class War {
 
   comments() {
     const commentLines = [];
-    const attackersScore = this.result.scores.atk;
-    const defendersScore = this.result.scores.def;
+    // const attackersScore = this.result.scores.atk;
+    // const defendersScore = this.result.scores.def;
     const attackersCP = this.attackers.soldiers.cp();
     const defendersCP = this.defenders.soldiers.cp();
     const luckDiff = this.attackers.meta.luckModifier - this.defenders.meta.luckModifier;
@@ -173,15 +175,16 @@ class War {
     } else {
       commentLines.push("Defender has stronger units");
     }
-    
+
+
     // Units advantage
-    if (attackersScore > defendersScore !== attackersCP > defendersCP) {
-      if (attackersScore > defendersScore) {
-        commentLines.push("Attacker units got advantage");
-      } else {
-        commentLines.push("Defender units got advantage");
-      }
-    }
+    // if (attackersScore > defendersScore !== attackersCP > defendersCP) {
+    //   if (attackersScore > defendersScore) {
+    //     commentLines.push("Attacker units got advantage");
+    //   } else {
+    //     commentLines.push("Defender units got advantage");
+    //   }
+    // }
   
     // Better luck
     if (luckDiff > 0) {
@@ -189,11 +192,13 @@ class War {
     } else {
       commentLines.push("Defender has better luck");
     }
-  
+    
+    
     // Better commander IQ
     if (iqDiff > 0) {
       commentLines.push("Attacker has better commander");
-    } else {
+    } 
+    else if (iqDiff < 0) {
       commentLines.push("Defender has better commander");
     }
     return commentLines
@@ -243,22 +248,33 @@ class War {
 
   _calcScore(w1) {
     const w2 = this._opponentOf(w1)
-    const manPowerModifier = this._calcManPowerMod(w1)
-    const phyScore = w1.statOf('def') - w2.statOf('atk')
-    const spScore = w1.statOf('spd') - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()        
-    return (phyScore + spScore + otherScore) * manPowerModifier
+    const imageBonusMod = this._getImageBonusMod(w1)
+    console.log(imageBonusMod, w1.constructor.name);
+    
+    const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
+    const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore() + w1._extraScore
+    return phyScore + spScore + otherScore
   }
-  
-  _calcManPowerMod(w1) {
+
+  _getImageBonusMod(w1) {
     const w2 = this._opponentOf(w1)
-    const MP_BONUS_FACTOR = 0.07;
-    const w1Count = w1.soldiers.count();
-    const w2Count = w2.soldiers.count();
-  
-    return w1Count > w2Count
-      ? 1 + ((w1Count - w2Count) / w2Count) * MP_BONUS_FACTOR
-      : 1;
+
+    return w1.soldiers.reduce((mod, [image1, quantity1]) => {
+        const baseCP1 = image1.baseCP()
+
+        return mod * w2.soldiers.reduce((mod, [image2, quantity2]) => {
+          const baseCP2 = image2.baseCP()
+          let ratio = (baseCP1 / baseCP2)
+          if (ratio > 1) {
+            ratio *= Math.pow(quantity1 * 3.6, 1.1)
+          }
+          else {
+            ratio *= Math.pow(quantity2 * 0.8, 0.6)
+          }
+          return mod * ratio
+        }, 1)
+    }, 1)
   }
   
   _vsQuantStr() {

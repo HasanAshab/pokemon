@@ -69,6 +69,12 @@ export const sumMap = (map1, map2) => {
   return result;
 };
 
+export const calculateBuildDefenceScore = (kingdom, areaPercentage) => {
+  const buildDefence = (getStorage(kingdom).defence || 0) * (areaPercentage / 100);
+  return buildDefence;
+}
+
+
 export const modObj = (obj, mod) => {
   return Object.keys(obj).reduce((acc, key) => {
     acc[key] = obj[key] * mod;

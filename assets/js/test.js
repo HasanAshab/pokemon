@@ -1,4 +1,4 @@
-import { Pokemon, Move } from "./utils/models.js";
+import { Pokemon } from "./utils/models.js";
 
 
 export class SoldierStack extends Map {
@@ -98,7 +98,7 @@ class Wave {
     this._cpModifiers = options.cpModifiers || []
     this.meta = {}
     
-    this.meta.luckModifier = options?.luck ?? (0.9 + Math.random() * 0.2)
+    this.meta.luckModifier = options?.luck ?? (0.9 + Math.random() * 0.5)
     this._cpModifiers.push(this.meta.luckModifier)
     
     this.meta.morality = options.morality ?? 100;
@@ -134,7 +134,6 @@ export class DefenseWave extends Wave {
     this._cpModifiers.push(this.meta.iqModifier)
   }
 }
-
 
 
 class War {
