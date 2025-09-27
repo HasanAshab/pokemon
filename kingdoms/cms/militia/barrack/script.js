@@ -4,6 +4,7 @@ import {
   calcAcademyCost,
   calcHospitalCost,
   getHospitalCapacity,
+  soldiersAcademy,
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
@@ -73,7 +74,6 @@ const createField = (labelText, inputEl) => {
 
 function getSoldierStack(soldiers) {  
   const stackData = soldiers.map((soldier) => {
-    console.log(soldier.image);
     
     const image = pokemons[soldier.image.id];
     image.id = soldier.image.id;    
@@ -97,6 +97,7 @@ function renderSoldierSection(type) {
   kingdoms[name].barrack.soldiers[type].forEach((soldier, index) => {
     const div = document.createElement("div");
     div.className = "soldier-card";
+    soldiersAcademy.isRankValid(pokemons[soldier.image.id].num,type,kingdom)
     // console.log(soldier);
     
     const imageSelect = document.createElement("input");
@@ -135,7 +136,9 @@ function renderSoldierSection(type) {
     quantityInput.type = "number";
     quantityInput.value = soldier.quantity;
     quantityInput.onblur = () => {
-      soldier.quantity = Math.min((parseInt(quantityInput.value) || 0), 100);
+      const imageCapacity =  kingdom.barrack.academyData[soldier.image.id] * 30;
+      
+      soldier.quantity = Math.min((parseInt(quantityInput.value) || 0), imageCapacity);
       save();
       renderAllSoldiers();
     };
@@ -178,7 +181,6 @@ function renderSoldierSection(type) {
   typeTotalEl.className = "type-total-salary";
   typeTotalEl.textContent = `Total ${type.charAt(0).toUpperCase() + type.slice(1)} Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
   container.appendChild(typeTotalEl);
-  console.log(type);
   
   const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
   const might = stack.cp();

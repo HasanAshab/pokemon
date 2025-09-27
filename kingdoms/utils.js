@@ -28,6 +28,19 @@ export const soldiersAcademy = {
    cost += this.getSoldierCost(lvl,index++)
   }
   return cost
+  },
+  isRankValid: function(rankNum,type,kingdom){
+    // const senseiRankId = humans[]
+    // console.log(senseiRankId);
+    
+    // console.log(index,type);
+    // console.log(kingdom.barrack.soldiers[type]);
+    
+    // for (const soldier of kingdom.barrack.soldiers[type]){
+    //   console.log(soldier);
+      
+    // }
+
   }
 }
 
