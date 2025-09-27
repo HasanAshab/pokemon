@@ -1,6 +1,6 @@
 * Tasks
 kingdoms build maintains war
-war score logic (better image better score)
+war score penalty for bad comando and commander ratio
 
 * bug 
 

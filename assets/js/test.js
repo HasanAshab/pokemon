@@ -23,7 +23,7 @@ export class SoldierStack extends Map {
     return stack[1]
   }
   
-  reduce() {
+  reduce() {    
     return Array.from(this.entries()).reduce(...arguments)
   }
   
@@ -139,8 +139,8 @@ export class DefenseWave extends Wave {
 
 class War {
   static details = {
-    good: `Destruct as much as possible`,
-    bad: `No profit`
+    good: `Maximum destruction`,
+    bad: `No direct profit`
   }
 
   constructor(attackers, defenders) {
@@ -156,8 +156,8 @@ class War {
 
   comments() {
     const commentLines = [];
-    const attackersScore = this.result.scores.atk;
-    const defendersScore = this.result.scores.def;
+    // const attackersScore = this.result.scores.atk;
+    // const defendersScore = this.result.scores.def;
     const attackersCP = this.attackers.soldiers.cp();
     const defendersCP = this.defenders.soldiers.cp();
     const luckDiff = this.attackers.meta.luckModifier - this.defenders.meta.luckModifier;
@@ -247,10 +247,34 @@ class War {
 
   _calcScore(w1) {
     const w2 = this._opponentOf(w1)
-    const phyScore = w1.statOf('def') - w2.statOf('atk')
-    const spScore = w1.statOf('spd') - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()        
-    return (phyScore + spScore + otherScore)
+    const imageBonusMod = this._getImageBonusMod(w1)
+    console.log(imageBonusMod, w1.constructor.name);
+    
+    const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
+    const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore()
+    
+    return phyScore + spScore + otherScore
+  }
+
+  _getImageBonusMod(w1) {
+    const w2 = this._opponentOf(w1)
+
+    return w1.soldiers.reduce((mod, [image1, quantity1]) => {
+        const baseCP1 = image1.baseCP()
+
+        return mod * w2.soldiers.reduce((mod, [image2, quantity2]) => {
+          const baseCP2 = image2.baseCP()
+          let ratio = (baseCP1 / baseCP2)
+          if (ratio > 1) {
+            ratio *= Math.pow(quantity1 * 3.6, 1.1)
+          }
+          else {
+            ratio *= Math.pow(quantity2 * 0.8, 0.6)
+          }
+          return mod * ratio
+        }, 1)
+    }, 1)
   }
   
   _vsQuantStr() {
@@ -340,7 +364,7 @@ let wave2 = new DefenseWave(com2, new SoldierStack([
 
 let war = new HarvestingWar(wave1, wave2)
 console.log(war.result.scores.atk, war.result.scores.def)
-console.log(war.comments())
+// console.log(war.comments())
 
 
 wave1 = new AttackWave(com1, new SoldierStack([
@@ -354,7 +378,7 @@ wave2 = new DefenseWave(com2, new SoldierStack([
 
 war = new HarvestingWar(wave1, wave2)
 console.log(war.result.scores.atk, war.result.scores.def)
-console.log(war.comments())
+// console.log(war.comments())
 
 // console.log('atk')
 // res.wounded.atk.forEach(console.log)

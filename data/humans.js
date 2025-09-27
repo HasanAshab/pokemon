@@ -132,7 +132,7 @@ export default {
     evos: ["Shadow"],
   },
     kage: {
-    num: 14,
+    num: 13,
     name: "Kage",
     types: ["Normal"],
     baseStats:{ hp: 66, atk: 94, def: 62, spa: 118, spd: 62, spe: 126 },
@@ -143,7 +143,7 @@ export default {
     evos: ["Hokage"],
   },
   shadow: {
-    num: 13,
+    num: 14,
     name: "Shadow",
     types: ["Normal"],
     baseStats:  { hp: 70, atk: 101, def: 66, spa: 126, spd: 66, spe: 134 } ,

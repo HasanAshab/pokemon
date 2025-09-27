@@ -187,6 +187,15 @@ export class Pokemon extends PSPokemon {
       }
       return Math.round(total)
     }
+
+    baseCP() {
+      let total = 0
+      for (const stat in this._pokemon.baseStats) {
+        const statValue = this._pokemon.baseStats[stat]
+        total += statValue
+      }
+      return Math.round(total)
+    }
     
     hasMegaForm() {
         return this.megaId in pokemons
@@ -255,6 +264,15 @@ export class Pokemon extends PSPokemon {
             this.state.stats.refresh()
         }
         return true
+    }
+
+    prevImage() {
+        for (const id in pokemons) {
+            const pokemon = pokemons[id]
+            if (pokemon.evos.includes(this.name))
+                return id
+        }
+        return null
     }
     
     movesMeta() {
