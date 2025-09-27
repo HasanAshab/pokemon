@@ -13,6 +13,7 @@ tail1beast, fishingan acc true
 *ovi
 War: show good and bad details
 fix retreat of beast abilities
+fix shinobi images
 hand3
 
 * Scenario
