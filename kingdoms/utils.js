@@ -1,5 +1,22 @@
 import { Pokemon } from "../assets/js/utils/models.js";
+import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
+
+export function getAcademyData(encodedKingdomName){
+  if (!localStorage.getItem(`${encodedKingdomName}-soldiers-academy`)){
+    const data = {}
+   for (const key in humans ){
+        data[key] = 0
+    }
+    localStorage.setItem(`${encodedKingdomName}-soldiers-academy`,JSON.stringify(getDefaultAcademyData())) 
+  }
+
+ return JSON.parse(localStorage.getItem(`${encodedKingdomName}-soldiers-academy`))
+  
+}
+export function setAcademyData(encodedKingdomName,data){
+  localStorage.setItem(`${encodedKingdomName}-soldiers-academy`,JSON.stringify(data)) 
+}
 
 export const sumObj = (obj1, obj2) => {
   const obj = Object.assign({}, obj2);

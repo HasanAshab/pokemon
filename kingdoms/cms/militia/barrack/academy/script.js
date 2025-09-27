@@ -1,39 +1,30 @@
 import humans from "../../../../../data/humans.js";
+import { getAcademyData, setAcademyData } from "../../../../utils.js";
 
+delete humans["student"]
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
- const encodedName =  encodeURIComponent(name);
-const academyData =  JSON.parse(localStorage.getItem(`${encodedName}-soldiers-academy`))
-
+const encodedName =  encodeURIComponent(name);
+const academyData = getAcademyData(encodedName)
 function loadMainHeading(){
 document.getElementById("main-heading")
 .textContent = `${encodedName}'s Academy`
 }
 function loadTotalAcademyCost(){
   let cost = 0
-  let index = 1
+  let index = 2
   for (const key in academyData){
     const lvl = academyData[key]
+    
    cost += getSoldierCost(lvl,index++)
   }
   document.getElementById("total-academy-cost")
   .textContent = `Total Academy Cost - ${cost}`
 }
-function getDefaultAcademyData(){
-   const data = {}
-   for (const key in humans ){
-     data[key] = 0
-    }
-    return data
-}
 
-function getSoldierLevel(id){
- const academyData =  JSON.parse(localStorage.getItem(`${encodedName}-soldiers-academy`))
- return Number(academyData[id])
-}
 function getSoldierCost(lvl,index){
   
-  return lvl <= 0 ? 0 : 2000 * lvl * index
+  return lvl <= 0 ? 0 : 1000 * lvl * Math.pow(index,2)
 }
 function loadSoldiers(){
   const soldiersContainer = document.querySelector(".soldiers-container")
@@ -62,16 +53,14 @@ function loadSoldiers(){
 }
 globalThis.gradeSoldier = (id,value)=>{
    academyData[id] = academyData[id] + value
-   localStorage.setItem(`${encodedName}-soldiers-academy`,JSON.stringify(academyData)) 
+   setAcademyData(encodedName,academyData)
    loadSoldiers()
    loadTotalAcademyCost()
 }
 
 
 window.onload = ()=>{
- if (!localStorage.getItem(`${encodedName}-soldiers-academy`)){
-   localStorage.setItem(`${encodedName}-soldiers-academy`,JSON.stringify(getDefaultAcademyData())) 
-  }
+
   
   loadMainHeading()
   loadSoldiers()
