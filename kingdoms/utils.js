@@ -99,7 +99,7 @@ export function calcSoldiersSalary(kingdom, type) {
 
 export function calcAcademyCost(kingdom) {
   const level = kingdom.barrack.academyLevel;
-  return upgradePrice(30_000, level, 3);
+  return 0 //upgradePrice(30_000, level, 3);
 }
 
 export function calcHospitalCost(kingdom) {

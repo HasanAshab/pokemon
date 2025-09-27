@@ -404,7 +404,7 @@ export default {
       }
     },
     flags: { autoenable: 1 }
-  }
+  },
   senju1: {
     dependencies: ["chakrafarm"],
   },

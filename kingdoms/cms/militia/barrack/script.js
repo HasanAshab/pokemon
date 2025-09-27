@@ -270,3 +270,11 @@ renderHospital();
 renderAllSoldiers();
 
 loadPokemonsDatalist("pokemon-data-list");
+
+
+globalThis.redirectToAcademyPage = ()=>{  
+  const encoded = encodeURIComponent(name);
+    window.location.href = `/kingdoms/cms/militia/barrack/academy/?name=${encoded}`;
+    
+}
+
