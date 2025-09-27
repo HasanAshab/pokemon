@@ -30,16 +30,23 @@ export const soldiersAcademy = {
   return cost
   },
   isRankValid: function(rankNum,type,kingdom){
-    // const senseiRankId = humans[]
-    // console.log(senseiRankId);
+     let senseiRankImage = null
+     for (const key in humans){
+       if (humans[key].num === rankNum + 1){
+         senseiRankImage = humans[key]
+         break;
+       }
+     }
+     
+     //alert(senseiRankImage.num);
     
     // console.log(index,type);
-    // console.log(kingdom.barrack.soldiers[type]);
+     console.log(kingdom.barrack.soldiers[type]);
     
-    // for (const soldier of kingdom.barrack.soldiers[type]){
-    //   console.log(soldier);
+     for (const soldier of kingdom.barrack.soldiers[type]){
+      console.log(soldier.id);
       
-    // }
+     }
 
   }
 }
