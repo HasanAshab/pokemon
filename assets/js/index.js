@@ -256,11 +256,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 import './test.js'
 
-<<<<<<< HEAD
 // window.location = "http://localhost:5917/kingdoms/cms/militia/barrack/?name=Bengolia"
-=======
-window.location = "http://localhost:8158/kingdoms/cms/militia/barrack/?name=Bengolia"
->>>>>>> cb8cc601180981154f3f888aeab4a9e6789d6eb8
 
 
 
