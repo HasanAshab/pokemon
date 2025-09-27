@@ -221,10 +221,19 @@ export default {
   },
   fishingan2: {
     retreat: 2.5,
-    onModifyMove(move, pokemon) {
-      if (move.type === "Water") {
+    onActivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.type === "Water") {
           move.accuracy = true
-      }
+        }
+      })
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.type === "Water") {
+          move.accuracy = move._ref.accuracy
+        }
+      })
     },
   },
 
@@ -398,10 +407,19 @@ export default {
   },
   swordmanship: {
     retreat: 0,
-    onModifyMove(move, pokemon) {
-      if (move.type === "Water") {
+    onActivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.flags.weapon) {
           move.accuracy = true
-      }
+        }
+      })
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.flags.weapon) {
+          move.accuracy = move._ref.accuracy
+        }
+      })
     },
     flags: { autoenable: 1 }
   },
@@ -512,16 +530,27 @@ export default {
     retreat: 1.5,
     type: 'beast',
     beastImage: 'tails1',
+    onActivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.type === "Ground") {
+          move.accuracy = true
+        }
+      })
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+        if (move.type === "Ground") {
+          move.accuracy = move._ref.accuracy
+        }
+      })
+    },
     onModifyMove(move, pokemon) {
       if (move.id === "block") {
           const min = 0.1
           const max = 0.5
           const modifier = min + Math.random() * (max - min)
           pokemon.state.damage.chainAddBlock(modifier)
-          // this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
-      }
-      else if (move.type === "Ground") {
-          move.accuracy = true
+          this.popup(`shikagu blocked more ${modifier * 100}% of damage`, pokemon);
       }
     },
   },

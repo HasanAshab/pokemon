@@ -1,9 +1,9 @@
 * Tasks
 kingdoms build maintains war
-war score logic
+war score logic (better image better score)
 
 * bug 
-tail1beast, fishingan acc true
+
 * Bottle neck
 
 
@@ -13,6 +13,7 @@ tail1beast, fishingan acc true
 *ovi
 War: show good and bad details
 fix retreat of beast abilities
+fix shinobi images
 hand3
 
 * Scenario
