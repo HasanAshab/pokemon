@@ -29,24 +29,32 @@ export const soldiersAcademy = {
   }
   return cost
   },
-  isRankValid: function(rankNum,type,kingdom){
-     let senseiRankImage = null
-     for (const key in humans){
-       if (humans[key].num === rankNum + 1){
-         senseiRankImage = humans[key]
-         break;
-       }
-     }
+  isRankValid: function(rankNum,kingdom){
+    const ranksIdMap = new Map()
+    for (const key in humans){
+      ranksIdMap.set(humans[key].num,key)
+    }
+
+
+    console.log(ranksIdMap.get(rankNum + 1));
+    
+    // console.log(kingdom.barrack.soldiers[type]);
+    
+    //  let senseiRankImage = null
+    //  for (const key in humans){
+    //    if (humans[key].num === rankNum + 1){
+    //      senseiRankImage = humans[key]
+    //      break;
+    //    }
+    //  }
      
-     //alert(senseiRankImage.num);
     
-    // console.log(index,type);
-     console.log(kingdom.barrack.soldiers[type]);
+    //  console.log(kingdom.barrack.soldiers[type]);
     
-     for (const soldier of kingdom.barrack.soldiers[type]){
-      console.log(soldier.id);
+    //  for (const soldier of kingdom.barrack.soldiers[type]){
+    //   console.log(soldier.id);
       
-     }
+    //  }
 
   }
 }
