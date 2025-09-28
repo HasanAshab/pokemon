@@ -166,13 +166,14 @@ export default {
     }
   },
 
-  // opponents time half
+  // opponents time half , never flinch, heit
   mayangan1: {
     retreat: 3
   },
   "mayangan:selfish-scar": {
-    retreat: 5
+    retreat: 3
   },
+
   "mayangan:silver-eye": {
     onTryBoost(boost, target, source, effect) {
       const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar");
@@ -182,6 +183,7 @@ export default {
     },
     retreat: 0.5
   },
+  // nakku
   "mayangan:golden-eye": {
     onTryBoostOpponent(boost, target, source, effect) {
       const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar");

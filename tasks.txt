@@ -2,6 +2,7 @@
 war score penalty for bad comando and commander ratio
 
 * bug 
+armour should get damage from parsialy traped
 
 * Bottle neck
 
@@ -10,9 +11,11 @@ war score penalty for bad comando and commander ratio
 
 
 *ovi
+imbalance:
+  option a & b
+  imbalance percentage
 War: show good and bad details
 fix retreat of beast abilities
-fix shinobi images
 hand3
 
 * Scenario
