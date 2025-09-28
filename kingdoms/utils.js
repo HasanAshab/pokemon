@@ -29,14 +29,14 @@ export const soldiersAcademy = {
   }
   return cost
   },
-  isRankValid: function(rankNum,kingdom){
+  isRankValid: function(rankNum,soldierslist){
     const ranksIdMap = new Map()
     for (const key in humans){
       ranksIdMap.set(humans[key].num,key)
     }
 
 
-    console.log(ranksIdMap.get(rankNum + 1));
+    console.log(ranksIdMap.get(rankNum + 1),soldierslist);
     
     // console.log(kingdom.barrack.soldiers[type]);
     

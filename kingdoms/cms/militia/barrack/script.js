@@ -97,7 +97,7 @@ function renderSoldierSection(type) {
   kingdoms[name].barrack.soldiers[type].forEach((soldier, index) => {
     const div = document.createElement("div");
     div.className = "soldier-card";
-    soldiersAcademy.isRankValid(pokemons[soldier.image.id].num,kingdom)
+    soldiersAcademy.isRankValid(pokemons[soldier.image.id].num, kingdom)
     // console.log(soldier);
     
     const imageSelect = document.createElement("input");
