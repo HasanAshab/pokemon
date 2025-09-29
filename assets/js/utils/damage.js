@@ -144,6 +144,7 @@ export class Hit {
             )
         
         const armor = this.target.state.armor.forCategory(this.move.category)
+        console.log(armor, this.move);
         
         if (armor) {
             defStat = armor.defStat

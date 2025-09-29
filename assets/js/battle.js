@@ -902,11 +902,12 @@ function setCurrentHealth(className, hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".current-hp").textContent = hp
+  // if (className === "health")
+  //   healthProgressBar.querySelector(".current-hp").textContent += `(${Math.round((hp * 100) / pokemon.maxhp)}%)`
   const progress = className === "health"
     ? (hp / pokemon.maxhp) * 100
     : (hp / pokemon.state.armor.maxhp()) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0 : progress}%`
-  //playerTag === "you" && syncStatsMeta(pokemon)
 }
 
 function loadMoves(playerTag) {

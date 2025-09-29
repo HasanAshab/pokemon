@@ -1,8 +1,9 @@
 * Tasks
 war score penalty for bad comando and commander ratio
-
+hospital new logic
 * bug 
 armour should get damage from parsialy traped
+fishingan susano on water
 
 * Bottle neck
 

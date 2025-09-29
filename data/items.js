@@ -12,7 +12,7 @@ export default {
   },
   latherarmor1: {
     type: "armor",
-    covers: 20,
+    covers: 100,
     stats: {
       def: 15
     },

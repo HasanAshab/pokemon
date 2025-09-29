@@ -81,11 +81,7 @@ export default {
   sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),
   defsusano: {
     oldSpeedStat: null,
-    onActivate(pokemon) {   
-      if (pokemon.hp / pokemon.maxhp > 0.3) {
-        this.popup('Susano Failed', pokemon);
-        return this.deactivate()
-      }
+    onActivate(pokemon) {
       this.ability._lockStatChanges(pokemon)
 
       const defStat = pokemon.state.stats.get("def") + pokemon.state.stats.get("spd")
