@@ -80,6 +80,7 @@ export default {
   // gets 20 seconds
   sharingan3: SharinganAbility({ blind: 0, copycat: [1, 2], retreat: 5 }),
   defsusano: {
+    retreat: 1,
     oldSpeedStat: null,
     onActivate(pokemon) {
       this.ability._lockStatChanges(pokemon)
@@ -208,12 +209,14 @@ export default {
       this.ability.oldSpeStat = null
     },
     _lockSpeDown(battle, pokemon) {
-      if (
-        battle.fields.some(f => f.type === "Water")
-        && pokemon.state.stats._statChanges.spe < 3
-      ) {
-        this.ability.oldSpeStat = pokemon.state.stats._statChanges.spe
-        pokemon.state.stats._statChanges.spe = 3
+      if (battle.fields.some(f => f.type === "Water")) {
+        if (pokemon.state.stats._statChanges.spe < 3) {
+          this.ability.oldSpeStat = pokemon.state.stats._statChanges.spe
+          pokemon.state.stats._statChanges.spe = 3
+        }
+      }
+      else if (this.ability.oldSpeStat !== null) {
+        pokemon.state.stats._statChanges.spe = this.ability.oldSpeStat
       }
     }
   },
