@@ -1,11 +1,6 @@
 import { loadPokemonsDatalist } from "../../../../assets/js/utils/dom.js";
 import pokemons from "../../../../data/pokemons.js";
-import {
-  calcAcademyCost,
-  calcHospitalCost,
-  getHospitalCapacity,
-  soldiersAcademy,
-} from "../../../utils.js";
+import { calcAcademyCost, soldiersAcademy } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
 const params = new URLSearchParams(window.location.search);
@@ -247,28 +242,8 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
   renderSoldierSection("emergency");
 };
 
-function renderHospital() {
-  const level = kingdoms[name].barrack.hospitalLevel;
-  hospitalLevelEl.textContent = level;
-  hospitalCostEl.textContent = calcHospitalCost(kingdom).toLocaleString();
-  hospitalCapacityEl.textContent =
-    getHospitalCapacity(kingdom).toLocaleString();
-}
-
-document.getElementById("incrHospital").onclick = () => {
-  kingdoms[name].barrack.hospitalLevel++;
-  renderHospital();
-  save();
-};
-
-document.getElementById("decrHospital").onclick = () => {
-  kingdoms[name].barrack.hospitalLevel--;
-  renderHospital();
-  save();
-};
 
 renderAcademy();
-renderHospital();
 renderAllSoldiers();
 
 loadPokemonsDatalist("pokemon-data-list");

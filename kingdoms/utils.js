@@ -107,7 +107,11 @@ export function calculateSize(baseSize, level) {
 export function calculateMaintains(baseMaintains, level) {
   const maintains = {};
   for (const item in baseMaintains) {
-      maintains[item] = Math.round(baseMaintains[item] * Math.pow(1.5, level - 1));      
+      const amount = baseMaintains[item] * Math.pow(1.5, level - 1)
+
+      maintains[item] = amount > 10
+        ? Math.round(amount)
+        : parseFloat(amount.toFixed(2));      
   }
   return maintains
 }
@@ -165,16 +169,9 @@ export function calcAcademyCost(kingdom) {
   return soldiersAcademy.getAcademyCost(kingdom)
 }
 
-export function calcHospitalCost(kingdom) {
-  const level = kingdom.barrack.hospitalLevel;
-  if (level === 0) return 0;
-  return upgradePrice(20_000, level, 2.5);
-}
-
 export function getHospitalCapacity(kingdom) {
-  const level = kingdom.barrack.hospitalLevel;
-  if (level === 0) return 0;
-  return Math.round(100 * Math.pow(1.5, level - 1));
+  const reviveCapacity = getStorage(kingdom).revive || 0;
+  return Math.floor(reviveCapacity);
 }
 
 export function calcBuildProduction(kingdom) {
@@ -214,7 +211,6 @@ export function calcNetProd(kingdom, localize = false) {
     coins:
       calcSoldiersSalary(kingdom) +
       calcAcademyCost(kingdom) +
-      calcHospitalCost(kingdom) +
       calcCommandersSalary(kingdom),
   };
   
@@ -257,7 +253,7 @@ export function prepareSoldiers(
 }
 
 export function prepareDefenceCommanders(kingdom) {
-  return kingdom.defenceWaves.map((wave) => {    
+  return kingdom.defenceWaves.map((wave) => {
     return prepareCommander(kingdom, wave.commander);
   });
 }

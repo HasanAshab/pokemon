@@ -313,7 +313,6 @@ startWarBtn.onclick = () => {
     const commander = prepareCommander(kingdom, wave.commander);    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value));
-    console.log(buildDefenceScore);
     
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts, buildDefenceScore);
     
@@ -330,7 +329,11 @@ startWarBtn.onclick = () => {
           <br>
           <h5>Outcome: <span style="color: ${war.result.win ? "green" : "red"}">${war.result.win ? "Success" : "Failour"}</span></h5><br>
           ${war.result.raisedWhiteFlag ? "Defender raised White Flag!<br>" : ""}
-          Score Diff (DEF - ATK): ${war.result.scores.def - war.result.scores.atk} (${parseInt((war.result.scores.atk * 100) / war.result.scores.def)}%) <br>
+          Scores: <br>
+          Attacker: ${war.result.scores.atk}<br>
+          Defender: ${war.result.scores.def}<br>
+          Defence Build: ${buildDefenceScore}<br>
+          Diff (DEF - ATK): ${war.result.scores.def - war.result.scores.atk} (${parseInt((war.result.scores.atk * 100) / war.result.scores.def)}%) <br>
           Wounded Units: <br>
           Attacker:<br>
           ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
