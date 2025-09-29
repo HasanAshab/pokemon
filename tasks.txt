@@ -12,6 +12,7 @@ fishingan susano on water
 
 
 *ovi
+hp percent
 imbalance:
   option a & b
   imbalance percentage
