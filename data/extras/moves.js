@@ -93,7 +93,7 @@ function EntitySageMove(id) {
             
             entity.state.on('fainted', () => {
                 pokemon.tokens = sumObj(pokemon.tokens, modObj(this._stats, -1))
-                pokemon.state.decreaseHealth(this._stats.hp)
+                pokemon.state.decreaseHealth(this._stats.hp, true)
             })
         }
     }

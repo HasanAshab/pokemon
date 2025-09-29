@@ -142,10 +142,9 @@ export class Hit {
         let defStat = this.target.state.stats.get(
                 statMap[this.move.category] ?? "def"
             )
-        
+
         const armor = this.target.state.armor.forCategory(this.move.category)
-        console.log(armor, this.move);
-        
+
         if (armor) {
             defStat = armor.defStat
             this.target.state._data.armorUsed = armor.id
@@ -156,5 +155,9 @@ export class Hit {
 
         const defModifier = 1 / defStat
         return damage * defModifier
+    }
+
+    contactDamage() {
+      return this.toContactDamage(this.damage())
     }
 }

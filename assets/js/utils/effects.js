@@ -152,7 +152,7 @@ class BurnEffect extends Effect {
     }
 
     onTurn() {
-        this.state.decreaseHealth(this._calculateEffectDamage(), true)
+        this.state.decreaseHealthNonContact(this._calculateEffectDamage(), "Physical")
     }
     
     _calculateEffectDamage() {
@@ -395,7 +395,7 @@ class PartiallyTrappedEffect extends ExpirableEffect {
 
     onTurn() {
         super.onTurn(...arguments)
-        this.state.decreaseHealth(this._calculateEffectDamage())
+        this.state.decreaseHealthNonContact(this._calculateEffectDamage(), "Physical")
     }
 
     canUseMove(move) {
@@ -602,8 +602,8 @@ class PaperBombEffect extends Effect {
     _explode() {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const move = new Move("$paperbomb:explode")
-        const hit = new Hit(opponent, move, this.state.pokemon)
-        this.state.decreaseHealth(hit.damage())
+        const hit = new Hit(opponent, move, this.state.pokemon)        
+        this.state.decreaseHealth(hit.contactDamage())
     }
 }
 
@@ -645,7 +645,7 @@ class AncientModeEffect extends ExpirableEffect {
         super.teardown()
         this.state.pokemon._beastTypes = this.state.pokemon._beastTypes.filter(t => t !== "Dragon")
         this.state.pokemon.tokens = sumObj(this.state.pokemon.tokens, modObj(this._stats, -1))
-        this.state.decreaseHealth(this._stats.hp)
+        this.state.decreaseHealth(this._stats.hp, true)
     }
 
     displayMeta() {

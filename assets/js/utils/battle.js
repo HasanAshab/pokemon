@@ -1118,6 +1118,17 @@ class BattleState extends EventEmitter {
         return this.stats.set("hp", Math.max(this.stats.get("hp") - amount, 0));
     }
 
+    decreaseHealthNonContact(amount, category) {
+        const armor = this.armor.forCategory(category)
+        if (armor) {
+            this._data.armorUsed = armor.id
+            this.once("scene", () => {
+                delete this._data.armorUsed
+            })
+        }        
+        return this.decreaseHealth(amount)
+    }
+
     async summon(id) {
         const sourceMove = this.moves.find(m => m.id === `summon:${id}`);
         if (!sourceMove)
