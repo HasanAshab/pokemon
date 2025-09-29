@@ -260,3 +260,64 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
 
+
+startBattle([
+  {
+    "id": "genin",
+    "name": "Hatano fushi (18 years)",
+    "xp": 2100,
+    "nature": "none",
+    "retreat": 6,
+    "types": [],
+    "abilities": [
+      "fishingan1",
+      "defsusano"
+    ],
+    "items": ["gen-age-18"],
+    "moves": [
+      {
+        "id": "cut",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "return",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "watergun",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "whirlpool",
+        "grade": "0",
+        "isSelected": true
+      },
+            {
+        "id": "field:Water",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
+], [], "multiple")
