@@ -1,6 +1,12 @@
 import { loadPokemonsDatalist } from "../../../../assets/js/utils/dom.js";
 import pokemons from "../../../../data/pokemons.js";
-import { calcAcademyCost, soldiersAcademy } from "../../../utils.js";
+import humans from "../../../../data/humans.js";
+import {
+  calcAcademyCost,
+  // calcHospitalCost,
+  getHospitalCapacity,
+  soldiersAcademy,
+} from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
 const params = new URLSearchParams(window.location.search);
@@ -67,17 +73,71 @@ const createField = (labelText, inputEl) => {
   return wrapper;
 };
 
-function getSoldierStack(soldiers) {  
+function getSoldierStack(soldiers) {
   const stackData = soldiers.map((soldier) => {
-    
     const image = pokemons[soldier.image.id];
-    image.id = soldier.image.id;    
+    image.id = soldier.image.id;
     image.xp = soldier.image.xp;
     return [image, soldier.quantity];
   });
   return new SoldierStack(stackData);
 }
 
+globalThis.showImbalanceData = () => {
+  const ranksIdList = Object.keys(humans).slice(1);
+  
+    const shiftsDataWrapper = document.querySelector(
+      "#imbalance-section  .shifts-data-wrapper",
+    );
+shiftsDataWrapper.innerHTML = "";
+  for (const type in kingdom.barrack.soldiers) {
+    const soldierList = kingdom.barrack.soldiers[type];
+    if (soldierList.length === 0) continue;
+    const quantityMap = new Map();
+    const imbalanceData = [];
+
+    for (const rankId of ranksIdList) {
+      const q = soldierList.reduce(
+        (sum, s) => sum + (s.image.id === rankId ? s.quantity : 0),
+        0,
+      );
+      quantityMap.set(rankId, q);
+    }
+
+    quantityMap.forEach((q, rankId) => {
+      if (q > 0) {
+        const rankIndex = ranksIdList.indexOf(rankId);
+        const senseiRankId = ranksIdList[rankIndex + 1];
+        const senseiQ = quantityMap.get(senseiRankId);
+        const extraSensei = q - senseiQ * 3;
+
+        if (senseiQ > 0 && extraSensei !== 0) {
+          console.log(rankId, true);
+          imbalanceData.push({ extraSensei, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
+        }
+      }
+    });
+
+    const shiftData = document.createElement("div");
+    shiftData.className = `shift-data ${imbalanceData.length > 0 ? "imbalance" : ""}`;
+    shiftData.innerHTML = `<h2 >${type}:</h2>`;
+    if (imbalanceData.length === 0) {
+      shiftData.innerHTML += "<h3>everything is balanced </h3>";
+    } else {
+      console.log(imbalanceData);
+      shiftData.innerHTML += `
+       <h4>ranks causing imbalance: ${imbalanceData.map((d) => `(${d.student.rankId}, ${d.sensei.rankId})`).join(", ")}</h4>
+       <h4>Options:</h4>
+        <ol>
+         <li>remove  from ${type}</li>
+        </ol>
+       
+     `;
+    }
+
+    shiftsDataWrapper.appendChild(shiftData);
+  }
+};
 
 function calcTypeSalary(soldiers) {
   return soldiers.reduce((total, soldier) => {
@@ -92,26 +152,11 @@ function renderSoldierSection(type) {
   kingdoms[name].barrack.soldiers[type].forEach((soldier, index) => {
     const div = document.createElement("div");
     div.className = "soldier-card";
-    soldiersAcademy.isRankValid(pokemons[soldier.image.id].num, kingdom)
-    // console.log(soldier);
-    
+
     const imageSelect = document.createElement("input");
     imageSelect.type = "text";
     imageSelect.setAttribute("list", "pokemon-data-list");
     imageSelect.value = soldier.image.id;
-    // const shinobiImages = Object.keys(pokemons).splice(
-    //   0,
-    //   kingdom.barrack.academyLevel + 1,
-    // );
-    // const beastImages = Object.keys(pokemons).filter((id) => pokemons[id].type === "beast")
-    // const images = [...shinobiImages, ...beastImages];
-    // images.forEach((opt) => {
-    //   const option = document.createElement("option");
-    //   option.value = opt;
-    //   option.textContent = opt.split(".")[0];
-    //   if (soldier.image.id === opt) option.selected = true;
-    //   imageSelect.appendChild(option);
-    // });
     imageSelect.onblur = () => {
       soldier.image.id = imageSelect.value;
       save();
@@ -131,9 +176,12 @@ function renderSoldierSection(type) {
     quantityInput.type = "number";
     quantityInput.value = soldier.quantity;
     quantityInput.onblur = () => {
-      const imageCapacity =  kingdom.barrack.academyData[soldier.image.id] * 30;
-      
-      soldier.quantity = Math.min((parseInt(quantityInput.value) || 0), imageCapacity);
+      const imageCapacity =
+        kingdom.barrack.academyData[soldier.image.id] * 30;
+      soldier.quantity = Math.min(
+        parseInt(quantityInput.value) || 0,
+        imageCapacity,
+      );
       save();
       renderAllSoldiers();
     };
@@ -148,7 +196,6 @@ function renderSoldierSection(type) {
     };
 
     const totalSalary = soldier.quantity * soldier.ivSalary;
-
     const totalSalaryEl = document.createElement("div");
     totalSalaryEl.className = "total-salary";
     totalSalaryEl.textContent = `Total Salary: ${totalSalary.toLocaleString()}$`;
@@ -174,9 +221,11 @@ function renderSoldierSection(type) {
   const typeTotalSalary = calcTypeSalary(kingdoms[name].barrack.soldiers[type]);
   const typeTotalEl = document.createElement("div");
   typeTotalEl.className = "type-total-salary";
-  typeTotalEl.textContent = `Total ${type.charAt(0).toUpperCase() + type.slice(1)} Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
+  typeTotalEl.textContent = `Total ${
+    type.charAt(0).toUpperCase() + type.slice(1)
+  } Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
   container.appendChild(typeTotalEl);
-  
+
   const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
   const might = stack.cp();
   const mightEl = document.getElementById(`${type}SoldiersMight`);
@@ -201,7 +250,6 @@ function renderAllSoldiers() {
 
   document.querySelector("body").appendChild(totalSalaryEl);
 
-  // Calculate Total Might across all shifts
   let totalMight = 0;
   ["day", "night", "emergency"].forEach((type) => {
     const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
@@ -242,16 +290,33 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
   renderSoldierSection("emergency");
 };
 
+function renderHospital() {
+  const level = kingdoms[name].barrack.hospitalLevel;
+  hospitalLevelEl.textContent = level;
+  hospitalCostEl.textContent = "00" //calcHospitalCost(kingdom).toLocaleString();
+  hospitalCapacityEl.textContent =
+    getHospitalCapacity(kingdom).toLocaleString();
+}
+
+// document.getElementById("incrHospital").onclick = () => {
+//   kingdoms[name].barrack.hospitalLevel++;
+//   renderHospital();
+//   save();
+// };
+
+// document.getElementById("decrHospital").onclick = () => {
+//   kingdoms[name].barrack.hospitalLevel--;
+//   renderHospital();
+//   save();
+// };
 
 renderAcademy();
+// renderHospital();
 renderAllSoldiers();
 
 loadPokemonsDatalist("pokemon-data-list");
 
-
-globalThis.redirectToAcademyPage = ()=>{  
+globalThis.redirectToAcademyPage = () => {
   const encoded = encodeURIComponent(name);
-    window.location.href = `/kingdoms/cms/militia/barrack/academy/?name=${encoded}`;
-    
-}
-
+  window.location.href = `/kingdoms/cms/militia/barrack/academy/?name=${encoded}`;
+};
