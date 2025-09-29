@@ -3,7 +3,6 @@ war score penalty for bad comando and commander ratio
 hospital new logic
 
 * bug 
-fishingan susano on water
 
 * Bottle neck
 
