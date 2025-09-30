@@ -295,6 +295,10 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
   let hospitalCap = getHospitalCapacity(kingdom);
 
   kingdom.barrack.soldiers[shift] = kingdom.barrack.soldiers[shift].map((s) => {
+    
+    if (!soldierStack.has(s.image.id))
+      return s
+    
     const [image, quantity] = soldierStack.get(s.image.id);
     hospitalCap -= quantity;
     if (hospitalCap < 0) {
@@ -313,7 +317,7 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 }
 
 
-export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent) {
+export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent = null) {
  if (totalExtraStudent === null){
   const ranksIdList = Object.keys(humans).slice(1);
    const soldierList = kingdom.barrack.soldiers[type];

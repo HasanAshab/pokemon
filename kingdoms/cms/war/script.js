@@ -26,17 +26,18 @@ function renderStrategySelect() {
 
 function renderKingdomSelects() {
   const kingdomsList = Object.keys(kingdoms);
-  const defenderOption = document.createElement('option');
-  defenderOption.value = name;
-  defenderOption.textContent = name;
-  defenderSelect.appendChild(defenderOption);
-  
-  kingdomsList.forEach(kingdom => {
+  kingdomsList.toReversed().forEach(kingdom => {
     const attackerOption = document.createElement('option');
     attackerOption.value = kingdom;
     attackerOption.textContent = kingdom;
     attackerSelect.appendChild(attackerOption);
   });
+  kingdomsList.forEach(kingdom => {
+    const defenderOption = document.createElement('option');
+    defenderOption.value = kingdom;
+    defenderOption.textContent = kingdom;
+    defenderSelect.appendChild(defenderOption);
+  })
 }
 
 function renderWaves() {

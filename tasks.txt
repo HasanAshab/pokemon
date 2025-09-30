@@ -2,7 +2,7 @@
 war score penalty for bad comando and commander ratio
 
 * bug 
-
+mirror bug: for event
 * Bottle neck
 
 
