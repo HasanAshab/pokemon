@@ -5,6 +5,7 @@ import {
   calcAcademyCost,
   // calcHospitalCost,
   getHospitalCapacity,
+  getSoldierImbalanceRate,
   soldiersAcademy,
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
@@ -141,8 +142,9 @@ shiftsDataWrapper.innerHTML = "";
 
     if (imbalanceDataList.length > 0) {
        const shiftData = document.createElement("div");
-       const totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
-       const imbalanceRate = Math.abs((totalExtraStudent / soldierList.reduce((sum, s) => sum + s.quantity, 0)) * 100 )
+       const extraStudentsCount = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
+      
+       const imbalanceRate = getSoldierImbalanceRate(extraStudentsCount,soldierList)
        
        
     shiftData.className = "shift-data"
@@ -354,7 +356,7 @@ renderAcademy();
 renderAllSoldiers();
 
 loadPokemonsDatalist("pokemon-data-list");
-
+showImbalanceData();
 globalThis.redirectToAcademyPage = () => {
   const encoded = encodeURIComponent(name);
   window.location.href = `/kingdoms/cms/militia/barrack/academy/?name=${encoded}`;

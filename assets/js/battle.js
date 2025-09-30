@@ -146,6 +146,7 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
   playerSettingsForm.parentElement.classList.add("active")
   playerSettingsForm.querySelector(".header > .name").textContent = playerTag
+  loadCurrentHealthPercentage(playerTag)
   loadAbilities(playerTag)
   loadItems(playerTag)
   loadEasyStats(playerTag)
@@ -153,7 +154,11 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   // global
   loadActiveFeilds()
 }
-
+function loadCurrentHealthPercentage(playerTag) {
+  const healthElm = document.querySelector(".player-settings-form .settings-wrapper .extra-data .health-percent > .value") 
+  healthElm.textContent = `${Math.floor((pokemonMap[playerTag].hp/pokemonMap[playerTag].maxhp)*100)} % `;
+  
+}
 function loadActiveFeilds() {
   const fieldElmList = document.querySelectorAll(".player-settings-form .fields-cont .field")
   const activeFieldsTypeList = []

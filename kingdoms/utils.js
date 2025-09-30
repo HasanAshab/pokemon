@@ -313,8 +313,9 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 }
 
 
-export function getSoldierImbalanceRate(kingdom, shift) {
-  // ovi task 
+export function getSoldierImbalanceRate(totalExtraStudent, soldierList) {
+    return Math.abs((totalExtraStudent / soldierList.reduce((sum, s) => sum + s.quantity, 0)) * 100 )
+   
 }
 
 export function getSoldierImbalancePenalty(kingdom, shift) {
