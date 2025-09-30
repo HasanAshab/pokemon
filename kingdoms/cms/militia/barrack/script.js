@@ -142,10 +142,11 @@ shiftsDataWrapper.innerHTML = "";
     if (imbalanceDataList.length > 0) {
        const shiftData = document.createElement("div");
        const totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
-       console.log((totalExtraStudent / 100) * 100);
-     
+       const imbalanceRate = Math.abs((totalExtraStudent / soldierList.reduce((sum, s) => sum + s.quantity, 0)) * 100 )
+       
+       
     shiftData.className = "shift-data"
-    shiftData.innerHTML = `<h2 >${type}:</h2>`;
+    shiftData.innerHTML = `<h2 >${type}: ${imbalanceRate.toFixed(2)}%</h2>`;
       shiftData.innerHTML += `
        <h4>ranks causing imbalance: ${imbalanceDataList.map((d) => `(${d.student.rankId}, ${d.sensei.rankId})`).join(", ")}</h4>
        <h4>Actions to Balance:</h4>
@@ -157,7 +158,8 @@ shiftsDataWrapper.innerHTML = "";
      const studentAmount = Math.abs(extraStudent)
      const senseiAmount = Math.round(Math.abs(extraStudent / 3))  
      ol.innerHTML +=   `
-         <li><strong style="color:${actionForStudent === "Add" ? "green" : "red"}" onclick="balanceSoldiers('${actionForStudent}',${studentAmount}, '${type}', '${student.rankId}') ">${actionForStudent}</strong> ${studentAmount} ${student.rankId}s or <strong  onclick="balanceSoldiers('${actionForSensei}',${senseiAmount}, '${type}', '${sensei.rankId}') " style="color:${actionForSensei === "Add" ? "green" : "red"}">${actionForSensei}</strong> ${senseiAmount} ${sensei.rankId}s in ${type} shift</li>
+         <li><strong style="color:${actionForStudent === "Add" ? "green" : "red"}" onclick="balanceSoldiers('${actionForStudent}',${studentAmount}, '${type}', '${student.rankId}') ">${actionForStudent}</strong> ${studentAmount} <strong>${student.rankId}s</strong> or <strong  onclick="balanceSoldiers('${actionForSensei}',${senseiAmount}, '${type}', '${sensei.rankId}') " style="color:${actionForSensei === "Add" ? "green" : "red"}">${actionForSensei}</strong> ${senseiAmount} <strong>${sensei.rankId}s</strong> in ${type} shift</li>
+          <br>
          `;
      }
      shiftData.appendChild(ol)
@@ -220,6 +222,7 @@ function renderSoldierSection(type) {
       );
       save();
       renderAllSoldiers();
+      showImbalanceData();
     };
 
     const ivSalaryInput = document.createElement("input");
