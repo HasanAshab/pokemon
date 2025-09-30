@@ -98,7 +98,7 @@ class Wave {
     this.options = options
     this._cpModifiers = options.cpModifiers || []
     this.meta = {}
-    
+
     this.meta.luckModifier = options?.luck ?? (0.9 + Math.random() * 0.5)
     this._cpModifiers.push(this.meta.luckModifier)
     

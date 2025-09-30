@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore } from "../../utils.js";
+import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty } from "../../utils.js";
 
 var i = 0;
 var netWin = 0;
@@ -304,6 +304,18 @@ startWarBtn.onclick = () => {
   const defenceWaves = getActualDefenders()
   const attackerOpts = getDataBoxData('atk');
   const defenderOpts = getDataBoxData('def');
+
+  if (!attackerOpts.cpModifiers)
+    attackerOpts.cpModifiers = []
+  if (!defenderOpts.cpModifiers)
+    defenderOpts.cpModifiers = []
+
+  attackerOpts.cpModifiers.push(
+    getSoldierImbalancePenalty(atkKingdom, 'emergency'),
+  )
+  defenderOpts.cpModifiers.push(
+    getSoldierImbalancePenalty(defKingdom, shiftSelect.value),
+  )
 
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
