@@ -116,10 +116,10 @@ shiftsDataWrapper.innerHTML = "";
         }
       }
     });
-   console.log(imbalanceDataList)
-       const shiftData = document.createElement("div");
 
     if (imbalanceDataList.length > 0) {
+       const shiftData = document.createElement("div");
+
     shiftData.className = "shift-data"
     shiftData.innerHTML = `<h2 >${type}:</h2>`;
       shiftData.innerHTML += `
@@ -127,17 +127,23 @@ shiftsDataWrapper.innerHTML = "";
        <h4>Actions to Balance:</h4>
         `
         const ol = document.createElement("ol")
-     for (const {extraStudent,student,sensei} of imbalanceDataList){
+     for (const {extraStudent,student,sensei} of imbalanceDataList.reverse()){
       ol.innerHTML +=   `
-         <li><strong >${extraStudent >= 0 ? "Remove" : "Add" }</strong> ${Math.abs(extraStudent)} ${student.rankId}s or <strong>${extraStudent >= 0 ? "Add" : "Remove" }</strong> ${Math.abs(extraStudent / 3)} ${sensei.rankId}s in ${type} shift</li>
-          
-     
+         <li><strong >${extraStudent >= 0 ? "Remove" : "Add" }</strong> ${Math.abs(extraStudent)} ${student.rankId}s or <strong>${extraStudent >= 0 ? "Add" : "Remove" }</strong> ${Math.round(Math.abs(extraStudent / 3))} ${sensei.rankId}s in ${type} shift</li>
          `;
      }
      shiftData.appendChild(ol)
+    shiftsDataWrapper.appendChild(shiftData);
+
     }
 
-    shiftsDataWrapper.appendChild(shiftData);
+  }
+
+  // show/hide balanced class
+  if (shiftsDataWrapper.children.length > 0) {
+    document.querySelector("#imbalance-section").classList.remove("balanced")
+  } else{
+  document.querySelector("#imbalance-section").classList.add("balanced")
   }
 };
 
