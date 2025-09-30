@@ -94,7 +94,7 @@ shiftsDataWrapper.innerHTML = "";
     const soldierList = kingdom.barrack.soldiers[type];
     if (soldierList.length === 0) continue;
     const quantityMap = new Map();
-    const imbalanceData = [];
+    const imbalanceDataList = [];
 
     for (const rankId of ranksIdList) {
       const q = soldierList.reduce(
@@ -109,30 +109,32 @@ shiftsDataWrapper.innerHTML = "";
         const rankIndex = ranksIdList.indexOf(rankId);
         const senseiRankId = ranksIdList[rankIndex + 1];
         const senseiQ = quantityMap.get(senseiRankId);
-        const extraSensei = q - senseiQ * 3;
+        const extraStudent = q - senseiQ * 3;
 
-        if (senseiQ > 0 && extraSensei !== 0) {
-          console.log(rankId, true);
-          imbalanceData.push({ extraSensei, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
+        if (senseiQ > 0 && extraStudent !== 0) {
+          imbalanceDataList.push({ extraStudent, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
         }
       }
     });
+   console.log(imbalanceDataList)
+       const shiftData = document.createElement("div");
 
-    const shiftData = document.createElement("div");
-    shiftData.className = `shift-data ${imbalanceData.length > 0 ? "imbalance" : ""}`;
+    if (imbalanceDataList.length > 0) {
+    shiftData.className = "shift-data"
     shiftData.innerHTML = `<h2 >${type}:</h2>`;
-    if (imbalanceData.length === 0) {
-      shiftData.innerHTML += "<h3>everything is balanced </h3>";
-    } else {
-      console.log(imbalanceData);
       shiftData.innerHTML += `
-       <h4>ranks causing imbalance: ${imbalanceData.map((d) => `(${d.student.rankId}, ${d.sensei.rankId})`).join(", ")}</h4>
-       <h4>Options:</h4>
-        <ol>
-         <li>remove  from ${type}</li>
-        </ol>
-       
-     `;
+       <h4>ranks causing imbalance: ${imbalanceDataList.map((d) => `(${d.student.rankId}, ${d.sensei.rankId})`).join(", ")}</h4>
+       <h4>Actions to Balance:</h4>
+        `
+        const ol = document.createElement("ol")
+     for (const {extraStudent,student,sensei} of imbalanceDataList){
+      ol.innerHTML +=   `
+         <li><strong >${extraStudent >= 0 ? "Remove" : "Add" }</strong> ${Math.abs(extraStudent)} ${student.rankId}s or <strong>${extraStudent >= 0 ? "Add" : "Remove" }</strong> ${Math.abs(extraStudent / 3)} ${sensei.rankId}s in ${type} shift</li>
+          
+     
+         `;
+     }
+     shiftData.appendChild(ol)
     }
 
     shiftsDataWrapper.appendChild(shiftData);
