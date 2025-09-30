@@ -144,7 +144,7 @@ shiftsDataWrapper.innerHTML = "";
        const shiftData = document.createElement("div");
        const extraStudentsCount = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
       
-       const imbalanceRate = getSoldierImbalanceRate(extraStudentsCount,soldierList)
+       const imbalanceRate = getSoldierImbalanceRate(kingdom,type,extraStudentsCount)
        
        
     shiftData.className = "shift-data"

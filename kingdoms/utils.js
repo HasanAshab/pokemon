@@ -313,9 +313,39 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 }
 
 
-export function getSoldierImbalanceRate(totalExtraStudent, soldierList) {
-    return Math.abs((totalExtraStudent / soldierList.reduce((sum, s) => sum + s.quantity, 0)) * 100 )
-   
+export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent) {
+ if (totalExtraStudent === null){
+  const ranksIdList = Object.keys(humans).slice(1);
+   const soldierList = kingdom.barrack.soldiers[type];
+    if (soldierList.length === 0) return null
+    const quantityMap = new Map();
+    const imbalanceDataList = [];
+
+    for (const rankId of ranksIdList) {
+      const q = soldierList.reduce(
+        (sum, s) => sum + (s.image.id === rankId ? s.quantity : 0),
+        0,
+      );
+      quantityMap.set(rankId, q);
+    }
+
+    quantityMap.forEach((q, rankId) => {
+      if (q > 0) {
+        const rankIndex = ranksIdList.indexOf(rankId);
+        const senseiRankId = ranksIdList[rankIndex + 1];
+        const senseiQ = quantityMap.get(senseiRankId);
+        const extraStudent = q - senseiQ * 3;
+
+        if (senseiQ > 0 && extraStudent !== 0) {
+          imbalanceDataList.push({ extraStudent, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
+        }
+      }
+    }); 
+       totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
+  
+  return Math.abs((totalExtraStudent / kingdom.barrack.soldiers[type].reduce((sum, s) => sum + s.quantity, 0)) * 100 )
+ }
+  return Math.abs((totalExtraStudent / kingdom.barrack.soldiers[type].reduce((sum, s) => sum + s.quantity, 0)) * 100 ) 
 }
 
 export function getSoldierImbalancePenalty(kingdom, shift) {

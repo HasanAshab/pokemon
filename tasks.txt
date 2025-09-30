@@ -10,7 +10,6 @@ war score penalty for bad comando and commander ratio
 
 
 *ovi
-hp percent
 War: show good and bad details
 fix retreat of beast abilities
 hand3
