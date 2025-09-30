@@ -311,3 +311,15 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
     return s;
   });
 }
+
+
+export function getSoldierImbalanceRate(kingdom, shift) {
+  // ovi task 
+}
+
+export function getSoldierImbalancePenalty(kingdom, shift) {
+  const rate = getSoldierImbalanceRate(kingdom, shift);
+  const penaltyMod = rate
+  console.log(rate, penaltyMod);
+  return penaltyMod
+}
