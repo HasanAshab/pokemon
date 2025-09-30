@@ -333,6 +333,7 @@ function loadPokemonData(playerTag) {
   loadMoves(playerTag)
   setRetreatPerWave(pokemonMap[playerTag].meta.retreat,playerTag)
  // setRetreatChargeForAbilities(pokemon.abilities.retreatCost(), playerTag)
+ 
   if (hp !== oldHp) {
     const hpDist = fixFloat(hp - oldHp)
     const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
@@ -530,6 +531,7 @@ function loadChoosePokemon(playerTag) {
     i++
   }
 }
+
 
 function makeMyPokemons() {
   const pokemonsMeta = getPokemonsMeta()
@@ -888,6 +890,12 @@ function setDoubleTeamData(count, playerTag) {
   valueElm.textContent = count
 }
 
+function setHealthPercentData(percent,playerTag) {
+  const valueElm = document.querySelector(`.${playerTag}-controle-cont .health > .value`)
+  valueElm.textContent = percent
+}
+
+
 function setTotalHealth(className, hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
   healthProgressBar.setAttribute("data-total-hp", hp)
@@ -1229,6 +1237,17 @@ function loadAbilities(playerTag) {
     abilitiesWrapper.innerHTML += ` <button data-retreat="${ability._ability.retreat}" type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
   }
 }
+/*function loadHealth(playerTag) {
+  const pokemon = pokemonMap[playerTag]
+  const abilities = pokemon.abilities._abilities
+  
+  const playerSettingsForm = document.querySelector('.player-settings-form')
+  const abilitiesWrapper = playerSettingsForm.querySelector('.settings-wrapper .settings.abilities .wrapper')
+  abilitiesWrapper.innerHTML = ''
+  for (const ability of abilities) {
+    abilitiesWrapper.innerHTML += ` <button data-retreat="${ability._ability.retreat}" type="button" onclick="toggleAbility(event,'${playerTag}','${ability.name}')" class="ability ${ability.active ? 'active' : ''}">${ability.name}</button>`
+  }
+}*/
 function loadItems(playerTag) {
   const pokemon = pokemonMap[playerTag]
   const items = pokemon.items._items
