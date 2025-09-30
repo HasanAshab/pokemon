@@ -11,9 +11,6 @@ war score penalty for bad comando and commander ratio
 
 *ovi
 hp percent
-imbalance:
-  option a & b
-  imbalance percentage
 War: show good and bad details
 fix retreat of beast abilities
 hand3
