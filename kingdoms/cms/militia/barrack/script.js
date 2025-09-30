@@ -82,7 +82,29 @@ function getSoldierStack(soldiers) {
   });
   return new SoldierStack(stackData);
 }
+globalThis.balanceSoldiers = (action,amount, shift, rankId) => {
+  const soldiersList = kingdom.barrack.soldiers[shift];
+  const soldiers = soldiersList.filter((s) => s.image.id === rankId);
+   if (action === "Remove"){ 
+  soldiers.forEach((s) => {
+    if (amount === 0) return
+      const res = s.quantity - amount
+      if (res < 0){
+        amount -= s.quantity
+        s.quantity = 0
+      }else {
+        s.quantity = res
+        amount = 0
+      }
+  })
+    }else{
+      soldiers[0].quantity += amount
+    }
 
+  renderAllSoldiers();  
+  save();
+  showImbalanceData();
+}
 globalThis.showImbalanceData = () => {
   const ranksIdList = Object.keys(humans).slice(1);
   
@@ -119,7 +141,9 @@ shiftsDataWrapper.innerHTML = "";
 
     if (imbalanceDataList.length > 0) {
        const shiftData = document.createElement("div");
-
+       const totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
+       console.log((totalExtraStudent / 100) * 100);
+     
     shiftData.className = "shift-data"
     shiftData.innerHTML = `<h2 >${type}:</h2>`;
       shiftData.innerHTML += `
@@ -128,8 +152,12 @@ shiftsDataWrapper.innerHTML = "";
         `
         const ol = document.createElement("ol")
      for (const {extraStudent,student,sensei} of imbalanceDataList.reverse()){
-      ol.innerHTML +=   `
-         <li><strong >${extraStudent >= 0 ? "Remove" : "Add" }</strong> ${Math.abs(extraStudent)} ${student.rankId}s or <strong>${extraStudent >= 0 ? "Add" : "Remove" }</strong> ${Math.round(Math.abs(extraStudent / 3))} ${sensei.rankId}s in ${type} shift</li>
+     const actionForStudent = extraStudent >= 0 ? "Remove" : "Add"
+     const actionForSensei = extraStudent >= 0 ? "Add" : "Remove"
+     const studentAmount = Math.abs(extraStudent)
+     const senseiAmount = Math.round(Math.abs(extraStudent / 3))  
+     ol.innerHTML +=   `
+         <li><strong style="color:${actionForStudent === "Add" ? "green" : "red"}" onclick="balanceSoldiers('${actionForStudent}',${studentAmount}, '${type}', '${student.rankId}') ">${actionForStudent}</strong> ${studentAmount} ${student.rankId}s or <strong  onclick="balanceSoldiers('${actionForSensei}',${senseiAmount}, '${type}', '${sensei.rankId}') " style="color:${actionForSensei === "Add" ? "green" : "red"}">${actionForSensei}</strong> ${senseiAmount} ${sensei.rankId}s in ${type} shift</li>
          `;
      }
      shiftData.appendChild(ol)
