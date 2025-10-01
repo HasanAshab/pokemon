@@ -2,6 +2,7 @@ import {
   calculateTax,
   calculateBuildUsedLandArea,
   calculatePeopleUsedLandArea,
+  calculateLandPrice
 } from "../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -20,6 +21,7 @@ const taxLabel = document.getElementById("taxLabel");
 const taxBar = document.getElementById("taxBar");
 const usedLandLabel = document.getElementById("usedLandLabel");
 const freeLandLabel = document.getElementById("freeLandLabel");
+const landCostLabel = document.getElementById("landCostLabel");
 const saveBtn = document.getElementById("saveBtn");
 
 kingdomName.textContent = name || "Unknown Kingdom";
@@ -49,7 +51,13 @@ function updateDisplay() {
     calculateBuildUsedLandArea(kingdom) +
     calculatePeopleUsedLandArea(population, pci, taxRate);
   const freeLand = Math.max(area - totalUsedLand, 0);
-
+  const landCost = calculateLandPrice(
+    1,
+    freeLand,
+    density,
+    pci,
+    taxRate
+  );
   const tax = calculateTax(kingdom);
 
   taxRateValue.textContent = taxRateInput.value;
@@ -62,6 +70,7 @@ function updateDisplay() {
 
   usedLandLabel.textContent = totalUsedLand.toFixed(2);
   freeLandLabel.textContent = freeLand.toFixed(2);
+  landCostLabel.textContent = landCost.toLocaleString();
 }
 
 landAreaInput.addEventListener("input", updateDisplay);

@@ -2,6 +2,34 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 
+export function calculateLandPrice(
+  landArea,       // total land area (km²)
+  freeLandArea,   // free land area (km²)
+  density,        // people per km²
+  perCapitaIncome,// $
+  taxRate,        // in decimal (e.g., 0.01 for 1%)
+  k = 100        // balancing factor
+) {
+  // Step 1: Base price from PCI
+  let basePrice = perCapitaIncome * k;
+
+  // Step 2: Adjust for density
+  let adjustedPrice = basePrice * (1 + density);
+
+  // Step 3: Adjust for tax (lower tax → higher price)
+  let afterTaxPrice = adjustedPrice * (1 - taxRate);
+
+  // Step 4: Scarcity factor (less free land = higher price)
+  let scarcityFactor = landArea / freeLandArea;
+
+  // Final price
+  let finalPrice = afterTaxPrice * scarcityFactor;
+
+  return finalPrice;
+}
+
+
+
 
 export function saveKingdoms(kingdoms) {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));

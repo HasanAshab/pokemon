@@ -1,8 +1,11 @@
 * Tasks
 war score penalty for bad comando and commander ratio
 war espasionage report imbalance
+land price
+
 * bug 
 mirror bug: for event
+
 * Bottle neck
 
 
