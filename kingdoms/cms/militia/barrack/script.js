@@ -41,18 +41,16 @@ globalThis.showTab = ({currentTarget},tabName) => {
   currentTarget.classList.add("active");
 
   //  hide old tabs
-   document.querySelectorAll(`.active-tab`).forEach((tab) => {
-    
-    tab.classList.remove("active-tab");
+   document.querySelectorAll(`.tab.active`).forEach((tab) => {
+    tab.classList.remove("active");
     tab.style.display = "none";
   });
   // show all current tabs
   document.querySelectorAll(`.tab-${tabName}`).forEach((tab) => {
-    tab.classList.add("active-tab");
+    tab.classList.add("active");
     tab.style.display = "";
   });
 
-  
 };
 
 function save() {
@@ -381,3 +379,8 @@ globalThis.redirectToAcademyPage = () => {
   const encoded = encodeURIComponent(name);
   window.location.href = `/kingdoms/cms/militia/barrack/academy/?name=${encoded}`;
 };
+// hide inactive tab
+   document.querySelectorAll(`.tab:not(.active)`).forEach((tab) => {
+    tab.classList.remove("active");
+    tab.style.display = "none";
+  });
