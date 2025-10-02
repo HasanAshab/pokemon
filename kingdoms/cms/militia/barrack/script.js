@@ -66,7 +66,7 @@ function renderAcademy() {
 document.getElementById("incrAcademy").onclick = () => {
   kingdoms[name].barrack.academyLevel++;
   renderAcademy();
-  renderAllSoldiers();
+  renderAllForces("soldier");
   save();
 };
 
@@ -74,7 +74,7 @@ document.getElementById("decrAcademy").onclick = () => {
   if (kingdoms[name].barrack.academyLevel > 1) {
     kingdoms[name].barrack.academyLevel--;
     renderAcademy();
-    renderAllSoldiers();
+    renderAllForces("soldier");
     save();
   }
 };
@@ -120,7 +120,7 @@ globalThis.balanceSoldiers = (action,amount, shift, rankId) => {
       soldiers[0].quantity += amount
     }
 
-  renderAllSoldiers();  
+  renderAllForces("soldier");  
   save();
   showImbalanceData();
 }
@@ -203,7 +203,7 @@ function calcTypeSalary(soldiers) {
   }, 0);
 }
 
-function renderSoldierSection(type) {
+function renderForceSection(type) {
   const container = document.getElementById(`${type}SoldiersContainer`);
   container.innerHTML = "";
 
@@ -227,7 +227,7 @@ function renderSoldierSection(type) {
       const newLevel = parseInt(levelInput.value) || 1;
       soldier.image.xp = (newLevel - 1) * 100;
       save();
-      renderAllSoldiers();
+      renderAllForces("soldier");
     };
 
     const quantityInput = document.createElement("input");
@@ -241,7 +241,7 @@ function renderSoldierSection(type) {
         imageCapacity,
       );
       save();
-      renderAllSoldiers();
+      renderAllForces("soldier");
       showImbalanceData();
     };
 
@@ -251,7 +251,7 @@ function renderSoldierSection(type) {
     ivSalaryInput.onblur = () => {
       soldier.ivSalary = parseFloat(ivSalaryInput.value) || 0;
       save();
-      renderAllSoldiers();
+      renderAllForces("soldier");
     };
 
     const totalSalary = soldier.quantity * soldier.ivSalary;
@@ -264,7 +264,7 @@ function renderSoldierSection(type) {
     delBtn.onclick = () => {
       kingdoms[name].barrack.soldiers[type].splice(index, 1);
       save();
-      renderAllSoldiers();
+      renderAllForces("soldier");
     };
 
     div.appendChild(imageSelect);
@@ -291,13 +291,13 @@ function renderSoldierSection(type) {
   mightEl.textContent = might.toLocaleString();
 }
 
-function renderAllSoldiers() {
-  renderSoldierSection("day");
-  renderSoldierSection("night");
-  renderSoldierSection("emergency");
-
-  const totalSalary = ["day", "night", "emergency"].reduce((total, type) => {
-    return total + calcTypeSalary(kingdoms[name].barrack.soldiers[type]);
+function renderAllForces(forceType) {
+  renderForceSection("day",forceType);
+  renderForceSection("night",forceType);
+  renderForceSection("emergency",forceType);
+  const barrackForce = kingdoms[name].barrack[forceType === "soldier" ? "soldiers" : "polices"]
+  const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
+    return total + calcTypeSalary(barrackForce[type]);
   }, 0);
 
   const totalSalaryEl =
@@ -305,17 +305,17 @@ function renderAllSoldiers() {
     document.createElement("div");
   totalSalaryEl.id = "totalSalaryContainer";
   totalSalaryEl.className = "total-salary-container";
-  totalSalaryEl.textContent = `Total Army Salary: ${totalSalary.toLocaleString()}$`;
+  totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
 
   document.querySelector("body").appendChild(totalSalaryEl);
 
   let totalMight = 0;
-  ["day", "night", "emergency"].forEach((type) => {
-    const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
+  Object.keys(barrackForce).forEach((type) => {
+    const stack = getSoldierStack(barrackForce[type]);
     totalMight += stack.cp();
   });
 
-  const totalMightEl = document.getElementById("soldiersMight");
+  const totalMightEl = document.getElementById("forcesMight");
   totalMightEl.textContent = totalMight.toLocaleString();
 }
 
@@ -326,7 +326,7 @@ document.getElementById("addDaySoldierBtn").onclick = () => {
     ivSalary: 0,
   });
   save();
-  renderSoldierSection("day");
+  renderForceSection("day","soldier");
 };
 
 document.getElementById("addNightSoldierBtn").onclick = () => {
@@ -336,7 +336,7 @@ document.getElementById("addNightSoldierBtn").onclick = () => {
     ivSalary: 0,
   });
   save();
-  renderSoldierSection("night");
+  renderForceSection("night","soldier");
 };
 
 document.getElementById("addEmergencySoldierBtn").onclick = () => {
@@ -346,7 +346,7 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
     ivSalary: 0,
   });
   save();
-  renderSoldierSection("emergency");
+  renderForceSection("emergency","soldier");
 };
 
 function renderHospital() {
@@ -371,7 +371,7 @@ function renderHospital() {
 
 renderAcademy();
 // renderHospital();
-renderAllSoldiers();
+renderAllForces("soldier");
 
 loadPokemonsDatalist("pokemon-data-list");
 showImbalanceData();
