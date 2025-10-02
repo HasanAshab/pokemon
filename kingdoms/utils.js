@@ -3,20 +3,20 @@ import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 
 export function calculateLandPrice(
+  area,       // want land area (km²)
   landArea,       // total land area (km²)
   freeLandArea,   // free land area (km²)
   density,        // people per km²
   perCapitaIncome,// $
   taxRate,        // in decimal (e.g., 0.01 for 1%)
   method,
-  k = 100       // balancing factor
-
+  k = 2       // balancing factor
 ) {
   // Step 1: Base price from PCI
   let basePrice = perCapitaIncome * k;
 
   // Step 2: Adjust for density
-  let adjustedPrice = basePrice * (1 + density);
+  let adjustedPrice = basePrice * ((1 + density) * 0.5);
 
   // Step 3: Adjust for tax (lower tax → higher price)
   let afterTaxPrice = adjustedPrice * (1 - taxRate);
@@ -25,12 +25,14 @@ export function calculateLandPrice(
   let scarcityFactor = landArea / freeLandArea;
 
   // Final price
-  let finalPrice = afterTaxPrice * scarcityFactor;
+  let finalPrice = area * afterTaxPrice * scarcityFactor;
 
-  return method === "buy" ? finalPrice : finalPrice / 24;
+
+  if (method === "rent")
+    finalPrice /= 24;
+
+  return Math.round(finalPrice)
 }
-
-
 
 
 export function saveKingdoms(kingdoms) {
