@@ -8,6 +8,17 @@ h1, h2 {
   margin-bottom: 10px;
   color: #333;
 }
+#main-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  border: 1px   solid #333;
+}
+#main-header > button.active{
+  background-color: #333;
+  color: #fff;
+}
 
 section {
   margin-bottom: 30px;

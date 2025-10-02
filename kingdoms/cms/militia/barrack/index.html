@@ -18,28 +18,35 @@
     </div>
     <div>Monthly Cost: <span id="academyCost">100</span> coins</div>
   </section>
-
-  <section><h2>Total Might: <span id="soldiersMight">0</span></h2></section>
-  <section id="imbalance-section" class="balanced">
+  <div id="main-header">
+    <button onclick="showTab(event,'soldier')" class="active" id="soldiers">
+     soldiers
+    </button>
+    <button onclick="showTab(event,'police')" id="polices">
+      polices
+    </button>
+  </div>
+  <section class="tab-soldier active-tab"><h2>Total Might: <span id="soldiersMight">0</span></h2></section>
+  <section id="imbalance-section" class="balanced tab-soldier active-tab">
       <button onclick="showImbalanceData()" class="show-imbalance-data-btn" type="submit">Show imbalance data</button>
    <p>Everything is balanced 🎉</p>
       <div class="shifts-data-wrapper"></div>
   </section>
-  <section id="daySoldiersSection">
+  <section id="daySoldiersSection" class="tab-soldier active-tab">
     <h2>Day Soldiers</h2>
     <h4>Might: <span id="daySoldiersMight">0</span></h4>
     <button id="addDaySoldierBtn">+ Add Day Soldier</button>
     <div id="daySoldiersContainer"></div>
   </section>
 
-  <section id="nightSoldiersSection">
+  <section id="nightSoldiersSection" class="tab-soldier active-tab">
     <h2>Night Soldiers</h2>
     <h4>Might: <span id="nightSoldiersMight">0</span></h4>
     <button id="addNightSoldierBtn">+ Add Night Soldier</button>
     <div id="nightSoldiersContainer"></div>
   </section>
 
-  <section id="emergencySoldiersSection">
+  <section id="emergencySoldiersSection" class="tab-soldier active-tab">
     <h2>Emergency Soldiers</h2>
     <h4>Might: <span id="emergencySoldiersMight">0</span></h4>
     <button id="addEmergencySoldierBtn">+ Add Emergency Soldier</button>

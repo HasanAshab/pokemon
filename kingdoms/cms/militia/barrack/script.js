@@ -35,6 +35,26 @@ const hospitalLevelEl = document.getElementById("hospitalLevel");
 const hospitalCostEl = document.getElementById("hospitalCost");
 const hospitalCapacityEl = document.getElementById("hospitalCapacity");
 
+globalThis.showTab = ({currentTarget},tabName) => {
+  // remove & add active class
+  currentTarget.parentElement.querySelector(".active").classList.remove("active");
+  currentTarget.classList.add("active");
+
+  //  hide old tabs
+   document.querySelectorAll(`.active-tab`).forEach((tab) => {
+    
+    tab.classList.remove("active-tab");
+    tab.style.display = "none";
+  });
+  // show all current tabs
+  document.querySelectorAll(`.tab-${tabName}`).forEach((tab) => {
+    tab.classList.add("active-tab");
+    tab.style.display = "";
+  });
+
+  
+};
+
 function save() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 }
