@@ -38,6 +38,39 @@ for (const [id, pokemon] of Object.entries(pokemons)) {
       }
     }
   }
+  if (pokemon.type !== "entity") continue
+  MOVES[`summon-bulk:${id}`] = {
+    accuracy: true,
+    basePower: 0,
+    category: "Status",
+    name: `Bulk Summon (${pokemon.name})`,
+    pp: null,
+    priority: 0,
+    flags: { summon: 1 },
+    target: "self",
+    type: "Dark",
+    retreat: 1,
+    async onAfterMove(user) {
+      const CHANCE_PER_SUMMON = 0.6
+      const cost = calcRetreat(pokemon)
+      const count = Math.round(user.state.retreat / cost)
+      
+      console.debug(`${user.name}: Capable of ${count} ${pokemon.name} summon`)
+      
+      for (let j = 0; j < count; j++) {
+        if (Math.random() > CHANCE_PER_SUMMON)
+          continue
+        
+        const quantity = user.state._data.summonQuantity 
+        for (let i = 0; i < quantity; i++) {
+          await user.state.summon(id)
+        }
+        user.state.decreaseHealth(user.hp * 0.05, true)
+      }
+      user.state.retreat = 0
+    }
+  }
+
 }
 
 export default MOVES
