@@ -53,7 +53,8 @@ function updateDisplay() {
     calculatePeopleUsedLandArea(population, pci, taxRate);
   const freeLand = Math.max(area - totalUsedLand, 0);
   const landCost = calculateLandPrice(
-    priceForAreaInput.value,
+    parseInt(priceForAreaInput.value),
+    area,
     freeLand,
     density,
     pci,
@@ -75,11 +76,13 @@ function updateDisplay() {
   landCostLabel.textContent = landCost.toLocaleString();
 }
 
+priceForAreaInput.addEventListener("change", updateDisplay);
 landAreaInput.addEventListener("input", updateDisplay);
 densityInput.addEventListener("input", updateDisplay);
 pciInput.addEventListener("input", updateDisplay);
 taxRateInput.addEventListener("input", updateDisplay);
 landCostMethod.addEventListener("change", updateDisplay);
+
 
 saveBtn.addEventListener("click", () => {
   const area = parseFloat(landAreaInput.value) || 0;
