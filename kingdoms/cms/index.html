@@ -41,7 +41,11 @@
       <label>Used Land Area: <span id="usedLandLabel">0</span></label>
       <label>Free Land Area: <span id="freeLandLabel">0</span></label>
       <label>Land Cost for ( <span id="landAreaLabel">1</span> km² ): <span id="landCostLabel">0</span>$</label>
-      <input type="range" id="taxRate" value="1" min="1"  step="1">
+      <select id="landCostMethod">
+        <option value="buy">Buy</option>
+        <option value="rent">Rent</option>
+      </select>
+      <input oninput="updateCostForLand(event)" type="range" id="price-for-area-input" value="1" min="1"   step="1">
  
     </div>
 

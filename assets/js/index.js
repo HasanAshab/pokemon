@@ -257,7 +257,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 // import './test.js'
 
   // window.location = "/kingdoms/cms/militia/barrack/?name=ember"
-
+/*
 startBattle([
    {
    "id": "genin",
@@ -317,4 +317,4 @@ startBattle([
        "spd": 0
      }
    }
- ], [], "multiple")
+ ], [], "multiple")*/

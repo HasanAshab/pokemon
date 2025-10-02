@@ -13,7 +13,6 @@ const densityInput = document.getElementById("density");
 const pciInput = document.getElementById("pci");
 const taxRateInput = document.getElementById("taxRate");
 const taxRateValue = document.getElementById("taxRateValue");
-
 const kingdomName = document.getElementById("kingdomName");
 const populationLabel = document.getElementById("populationLabel");
 const populationBar = document.getElementById("populationBar");
@@ -21,7 +20,9 @@ const taxLabel = document.getElementById("taxLabel");
 const taxBar = document.getElementById("taxBar");
 const usedLandLabel = document.getElementById("usedLandLabel");
 const freeLandLabel = document.getElementById("freeLandLabel");
+const priceForAreaInput = document.getElementById("price-for-area-input")
 const landCostLabel = document.getElementById("landCostLabel");
+const landCostMethod = document.getElementById("landCostMethod")
 const saveBtn = document.getElementById("saveBtn");
 
 kingdomName.textContent = name || "Unknown Kingdom";
@@ -52,14 +53,15 @@ function updateDisplay() {
     calculatePeopleUsedLandArea(population, pci, taxRate);
   const freeLand = Math.max(area - totalUsedLand, 0);
   const landCost = calculateLandPrice(
-    1,
+    priceForAreaInput.value,
     freeLand,
     density,
     pci,
-    taxRate
+    taxRate,
+    landCostMethod.value 
   );
   const tax = calculateTax(kingdom);
-
+  priceForAreaInput.max = freeLand
   taxRateValue.textContent = taxRateInput.value;
 
   populationLabel.textContent = population.toLocaleString();
@@ -77,6 +79,7 @@ landAreaInput.addEventListener("input", updateDisplay);
 densityInput.addEventListener("input", updateDisplay);
 pciInput.addEventListener("input", updateDisplay);
 taxRateInput.addEventListener("input", updateDisplay);
+landCostMethod.addEventListener("change", updateDisplay);
 
 saveBtn.addEventListener("click", () => {
   const area = parseFloat(landAreaInput.value) || 0;
@@ -91,6 +94,31 @@ saveBtn.addEventListener("click", () => {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   alert("Kingdom saved!");
 });
+
+globalThis.updateCostForLand = function({currentTarget}){
+  const landAreaLabel =  document.getElementById("landAreaLabel")
+  const area = currentTarget.value
+  const totalKigndomArea = parseFloat(landAreaInput.value) || 0;
+  const density = parseFloat(densityInput.value) || 0;
+  const pci = parseFloat(pciInput.value) || 0;
+  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
+  const population = totalKigndomArea * density;
+  const totalUsedLand =
+    calculateBuildUsedLandArea(kingdom) +
+    calculatePeopleUsedLandArea(population, pci, taxRate);
+  const freeLand = Math.max(totalKigndomArea - totalUsedLand, 0);
+  const landCost = calculateLandPrice(
+    area,
+    freeLand,
+    density,
+    pci,
+    taxRate,
+    landCostMethod.value 
+  );
+  
+  landAreaLabel.textContent = area
+  landCostLabel.textContent = landCost.toLocaleString()
+}
 
 document.querySelectorAll(".info-card").forEach((card) => {
   card.addEventListener("click", () => {

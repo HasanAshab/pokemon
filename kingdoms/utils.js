@@ -8,7 +8,9 @@ export function calculateLandPrice(
   density,        // people per km²
   perCapitaIncome,// $
   taxRate,        // in decimal (e.g., 0.01 for 1%)
-  k = 100        // balancing factor
+  method,
+  k = 100       // balancing factor
+
 ) {
   // Step 1: Base price from PCI
   let basePrice = perCapitaIncome * k;
@@ -25,7 +27,7 @@ export function calculateLandPrice(
   // Final price
   let finalPrice = afterTaxPrice * scarcityFactor;
 
-  return finalPrice;
+  return method === "buy" ? finalPrice : finalPrice / 24;
 }
 
 
