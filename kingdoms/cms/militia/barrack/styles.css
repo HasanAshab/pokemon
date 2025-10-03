@@ -34,13 +34,13 @@ section {
   display: none;
 }
 
-#soldiersContainer {
+:is(#policesContainer,#soldiersContainer) {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.soldier-card {
+:is(.police-card,.soldier-card) {
   border: 1px solid #ddd;
   padding: 12px;
   border-radius: 6px;
@@ -51,7 +51,7 @@ section {
   align-items: center;
 }
 
-.soldier-card input, .soldier-card select {
+:is(.police-card,.soldier-card) :is(input, select) {
   width: 100%;
   padding: 6px 8px;
   font-size: 14px;
@@ -59,7 +59,7 @@ section {
   border-radius: 4px;
 }
 
-.soldier-card button {
+:is(.police-card,.soldier-card) button {
   padding: 6px 12px;
   background: #e74c3c;
   color: white;
@@ -68,7 +68,7 @@ section {
   cursor: pointer;
 }
 
-.soldier-card button:hover {
+:is(.police-card,.soldier-card) button:hover {
   background: #c0392b;
 }
 

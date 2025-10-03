@@ -26,6 +26,10 @@ if (!kingdoms[name].barrack)
       night: [],
       emergency: [],
     },
+    polices: {
+      day: [],
+      night: [],    
+    }
   };
 const kingdom = kingdoms[name];
 
@@ -51,6 +55,32 @@ globalThis.showTab = ({currentTarget},tabName) => {
     tab.style.display = "";
   });
 
+
+if (tabName === "police"){
+  alert(tabName)
+ renderAllForces("police");
+
+document.getElementById("addDayPoliceBtn").onclick = () => {
+  kingdoms[name].barrack.polices.day.push({
+    image: { id: "student", xp: 0 },
+    quantity: 0,
+    ivSalary: 0,
+  });
+  save();
+  renderForceSection("day","police");
+};
+
+document.getElementById("addNightPoliceBtn").onclick = () => {
+  kingdoms[name].barrack.polices.night.push({
+    image: { id: "student", xp: 0 },
+    quantity: 0,
+    ivSalary: 0,
+  });
+  save();
+  renderForceSection("night","police");
+};
+
+}
 };
 
 function save() {
@@ -79,9 +109,9 @@ document.getElementById("decrAcademy").onclick = () => {
   }
 };
 
-const createField = (labelText, inputEl) => {
+const createField = (labelText, inputEl,forceType) => {
   const wrapper = document.createElement("div");
-  wrapper.className = "soldier-field";
+  wrapper.className = forceType + "-field";
 
   const label = document.createElement("label");
   label.textContent = labelText;
@@ -197,64 +227,66 @@ shiftsDataWrapper.innerHTML = "";
   }
 };
 
-function calcTypeSalary(soldiers) {
-  return soldiers.reduce((total, soldier) => {
-    return total + (soldier.quantity || 0) * (soldier.ivSalary || 0);
+function calcTypeSalary(forces) {
+  return forces.reduce((total, force) => {
+    return total + (force.quantity || 0) * (force.ivSalary || 0);
   }, 0);
 }
 
-function renderForceSection(type) {
-  const container = document.getElementById(`${type}SoldiersContainer`);
+function renderForceSection(type,forceType) {
+  const container = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}sContainer`);
+  const barrackForce = kingdoms[name].barrack[forceType === "soldier" ? "soldiers":"polices"]
   container.innerHTML = "";
-
-  kingdoms[name].barrack.soldiers[type].forEach((soldier, index) => {
+ 
+   barrackForce[type].forEach((force, index) => {
     const div = document.createElement("div");
-    div.className = "soldier-card";
+    div.className = forceType +"-card";
 
     const imageSelect = document.createElement("input");
     imageSelect.type = "text";
     imageSelect.setAttribute("list", "pokemon-data-list");
-    imageSelect.value = soldier.image.id;
+    imageSelect.value = force.image.id;
     imageSelect.onblur = () => {
-      soldier.image.id = imageSelect.value;
+      force.image.id = imageSelect.value;
       save();
     };
 
     const levelInput = document.createElement("input");
     levelInput.type = "number";
-    levelInput.value = soldier.image.xp / 100 + 1;
+    levelInput.value = force.image.xp / 100 + 1;
     levelInput.onblur = () => {
       const newLevel = parseInt(levelInput.value) || 1;
-      soldier.image.xp = (newLevel - 1) * 100;
+      force.image.xp = (newLevel - 1) * 100;
       save();
-      renderAllForces("soldier");
+      renderAllForces(forceType);
     };
 
     const quantityInput = document.createElement("input");
     quantityInput.type = "number";
-    quantityInput.value = soldier.quantity;
+    quantityInput.value = force.quantity;
     quantityInput.onblur = () => {
       const imageCapacity =
-        kingdom.barrack.academyData[soldier.image.id] * 30;
-      soldier.quantity = Math.min(
+        kingdom.barrack.academyData[force.image.id] * 30;
+      force.quantity = Math.min(
         parseInt(quantityInput.value) || 0,
         imageCapacity,
       );
       save();
-      renderAllForces("soldier");
-      showImbalanceData();
+      renderAllForces(forceType);
+      if (forceType === "soldier")
+        showImbalanceData();
     };
 
     const ivSalaryInput = document.createElement("input");
     ivSalaryInput.type = "number";
-    ivSalaryInput.value = soldier.ivSalary;
+    ivSalaryInput.value = force.ivSalary;
     ivSalaryInput.onblur = () => {
-      soldier.ivSalary = parseFloat(ivSalaryInput.value) || 0;
+      force.ivSalary = parseFloat(ivSalaryInput.value) || 0;
       save();
-      renderAllForces("soldier");
+      renderAllForces(forceType);
     };
 
-    const totalSalary = soldier.quantity * soldier.ivSalary;
+    const totalSalary = force.quantity * force.ivSalary;
     const totalSalaryEl = document.createElement("div");
     totalSalaryEl.className = "total-salary";
     totalSalaryEl.textContent = `Total Salary: ${totalSalary.toLocaleString()}$`;
@@ -262,22 +294,22 @@ function renderForceSection(type) {
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
     delBtn.onclick = () => {
-      kingdoms[name].barrack.soldiers[type].splice(index, 1);
+      barrackForce[type].splice(index, 1);
       save();
-      renderAllForces("soldier");
+      renderAllForces(forceType);
     };
 
     div.appendChild(imageSelect);
-    div.appendChild(createField("Level:", levelInput));
-    div.appendChild(createField("Quantity:", quantityInput));
-    div.appendChild(createField("Salary/person:", ivSalaryInput));
+    div.appendChild(createField("Level:", levelInput,forceType));
+    div.appendChild(createField("Quantity:", quantityInput,forceType));
+    div.appendChild(createField("Salary/person:", ivSalaryInput,forceType));
     div.appendChild(totalSalaryEl);
     div.appendChild(delBtn);
 
     container.appendChild(div);
   });
 
-  const typeTotalSalary = calcTypeSalary(kingdoms[name].barrack.soldiers[type]);
+  const typeTotalSalary = calcTypeSalary(barrackForce[type]);
   const typeTotalEl = document.createElement("div");
   typeTotalEl.className = "type-total-salary";
   typeTotalEl.textContent = `Total ${
@@ -285,9 +317,9 @@ function renderForceSection(type) {
   } Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
   container.appendChild(typeTotalEl);
 
-  const stack = getSoldierStack(kingdoms[name].barrack.soldiers[type]);
+  const stack = getSoldierStack(barrackForce[type]);
   const might = stack.cp();
-  const mightEl = document.getElementById(`${type}SoldiersMight`);
+  const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}sMight`);
   mightEl.textContent = might.toLocaleString();
 }
 
@@ -299,7 +331,7 @@ function renderAllForces(forceType) {
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
     return total + calcTypeSalary(barrackForce[type]);
   }, 0);
-
+alert(totalSalary,forceType)
   const totalSalaryEl =
     document.getElementById("totalSalaryContainer") ||
     document.createElement("div");
@@ -318,7 +350,7 @@ function renderAllForces(forceType) {
   const totalMightEl = document.getElementById("forcesMight");
   totalMightEl.textContent = totalMight.toLocaleString();
 }
-
+// soldiers
 document.getElementById("addDaySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.day.push({
     image: { id: "student", xp: 0 },
@@ -348,7 +380,13 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
   save();
   renderForceSection("emergency","soldier");
 };
+// polices
+  if (!kingdoms[name].barrack.polices)
+  kingdoms[name].barrack.polices = {day:[],night:[]}
 
+
+
+// 
 function renderHospital() {
   const level = kingdoms[name].barrack.hospitalLevel;
   hospitalLevelEl.textContent = level;
@@ -369,7 +407,7 @@ function renderHospital() {
 //   save();
 // };
 
-renderAcademy();
+//renderAcademy();
 // renderHospital();
 renderAllForces("soldier");
 
@@ -384,3 +422,4 @@ globalThis.redirectToAcademyPage = () => {
     tab.classList.remove("active");
     tab.style.display = "none";
   });
+  

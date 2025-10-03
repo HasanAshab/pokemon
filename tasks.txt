@@ -7,6 +7,7 @@ police day + night
 might per c (security score) + die
 
 * bug 
+sibaria kigndom bug
 mirror bug: for event
 
 * Bottle neck
