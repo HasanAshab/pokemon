@@ -1,15 +1,58 @@
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
+
+export function getPopulation(kingdom) {
+  return kingdom.landArea * kingdom.density;
+}
+
+export function calculateBirthCount(population) {
+  const birthRatePer1000 = 20;
+  const annualBirths = (population * birthRatePer1000) / 1000;
+  return annualBirths
+  return Math.floor(annualBirths / 12);
+}
+
+export function calculateAgeDeathCount(population) {
+  const deathRatePer1000 = 10; // realistic average
+  const annualDeaths = (population * deathRatePer1000) / 1000;
+  return annualDeaths
+  return Math.floor(annualDeaths / 12);
+}
+
 export function getPopulationGrowth(kingdom){
-  return -50
+  const population = getPopulation(kingdom)
+  const sysGrowth = calculateBirthCount(population) - calculateAgeDeathCount(population)
+  return (
+    sysGrowth
+    - getDiedForHospital(kingdom)
+    - getDiedForSecurity(kingdom)
+  )
 }
-export function getDiedForHospital(kingdom){
-  return 40
+
+export function getDiedForHospital(kingdom) {
+  const population = getPopulation(kingdom);
+  const doctorsCount = getStorage(kingdom).doctor || 0;
+
+  // If 1 doctor per 20 people or more, deaths are 0
+  if (doctorsCount / population >= 1 / 20) {
+    return 0;
+  }
+
+  // Otherwise, calculate deaths normally
+  const deathRatePer1000 = 10; // realistic average
+  const annualDeaths = (population * deathRatePer1000) / 1000;
+  return annualDeaths
+
+  const monthlyDeaths = Math.floor(annualDeaths / 12);  
+  return monthlyDeaths;
 }
+
+
 export function getDiedForSecurity(kingdom){
   return 10
 }
+
 export function getSecurityRate(kingdom,forceType){
   return 20
 }

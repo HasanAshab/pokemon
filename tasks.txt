@@ -2,12 +2,10 @@
 war score penalty for bad comando and commander ratio
 war espasionage report imbalance
 
-land price + rent
 police day + night
 might per c (security score) + die
 
 * bug 
-sibaria kigndom bug
 mirror bug: for event
 
 * Bottle neck
