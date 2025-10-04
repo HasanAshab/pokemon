@@ -20,12 +20,13 @@ function saveAndRefresh() {
 }
 
 
+
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
     const div = document.createElement("div");
     div.className = "building";
-
+    div.id = building.name
     const nameLabel = document.createElement("label");
     nameLabel.textContent = "Building Name";
 
@@ -241,3 +242,28 @@ addBuildingBtn.onclick = () => {
 };
 
 renderBuildings();
+globalThis.hideQuickFindForm = ()=>{
+   const quickFindForm = document.getElementById("quickFindForm")
+ quickFindForm.classList.remove("active")
+
+}
+
+globalThis.showQuickFindForm = ()=>{
+   const quickFindForm = document.getElementById("quickFindForm")
+ quickFindForm.classList.add("active")
+  const linksContainer =  quickFindForm.querySelector(".links-container")
+   linksContainer.innerHTML = "" 
+    kingdoms[name].buildings.forEach((building) => {
+    const btn = document.createElement("button")
+     btn.textContent = building.name
+     btn.onclick = ()=>{
+     const id = CSS.escape(building.name); // ensures valid selector
+     const targetedBuilding = buildingsContainer.querySelector(`#${id}`);
+     if (targetedBuilding) {
+    targetedBuilding.scrollIntoView({ behavior: "smooth", block: "center" });
+      hideQuickFindForm()
+     }       
+     }
+     linksContainer.appendChild(btn)
+    })
+}

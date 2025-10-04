@@ -142,3 +142,47 @@ button:hover {
 .item-pair input {
   flex: 1;
 }
+#quickFindBtn{
+  position: fixed;
+  top: 1vh;
+  z-index: 100;
+}
+#quickFindForm.active ~ #quickFindBtn {
+  display: none;
+}
+#quickFindForm{
+  display: none;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 90vw;
+  height: 60vh;
+  position: fixed;
+  top: 10vh;
+  left: 5vw;
+  background-color: white;
+ box-shadow: 10px 10px 100px 100px rgba(0,0,0,0.5);
+}
+#quickFindForm.active{
+  display: flex;
+  
+}
+#quickFindForm > .header{
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ border-bottom: 1px solid black;
+}
+#quickFindForm > .links-container{
+display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+    width: 90%;
+    flex-wrap: wrap;
+ max-height: 300px;
+ overflow-y: scroll;
+   padding: 5%;
+
+}

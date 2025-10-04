@@ -57,7 +57,6 @@ globalThis.showTab = ({currentTarget},tabName) => {
 
 
 if (tabName === "police"){
-  alert(tabName)
  renderAllForces("police");
 
 document.getElementById("addDayPoliceBtn").onclick = () => {
@@ -326,20 +325,19 @@ function renderForceSection(type,forceType) {
 function renderAllForces(forceType) {
   renderForceSection("day",forceType);
   renderForceSection("night",forceType);
+ if (forceType === "soldier")
   renderForceSection("emergency",forceType);
   const barrackForce = kingdoms[name].barrack[forceType === "soldier" ? "soldiers" : "polices"]
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
     return total + calcTypeSalary(barrackForce[type]);
   }, 0);
-alert(totalSalary,forceType)
+
   const totalSalaryEl =
-    document.getElementById("totalSalaryContainer") ||
-    document.createElement("div");
+    document.getElementById("totalSalaryContainer")
   totalSalaryEl.id = "totalSalaryContainer";
   totalSalaryEl.className = "total-salary-container";
   totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
 
-  document.querySelector("body").appendChild(totalSalaryEl);
 
   let totalMight = 0;
   Object.keys(barrackForce).forEach((type) => {

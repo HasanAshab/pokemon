@@ -33,7 +33,12 @@ export function calculateLandPrice(
 
   return Math.round(finalPrice)
 }
-
+export function getPopulationInRisk(kingdom){
+  return 240
+}
+export function getSafetyRate(kingdom,forceType){
+  return 20
+}
 
 export function saveKingdoms(kingdoms) {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -43,7 +48,6 @@ export const soldiersAcademy = {
   getDefaultData:  function getDefaultData(){
   const data = {}
   for (const key in humans ){
-      if (key !== "student")
        data[key] = 0
    }
   return data
@@ -54,7 +58,7 @@ export const soldiersAcademy = {
   getAcademyCost: function(kingdom){
     const academyData = kingdom.barrack.academyData
    let cost = 0
-  let index = 2
+  let index = 1
   for (const key in academyData){
     const lvl = academyData[key]
    cost += this.getSoldierCost(lvl,index++)
@@ -153,7 +157,7 @@ export function upgradePrice(basePrice, level, rate = 1.5) {
 }
 
 export function calculatePeopleUsedLandArea(population, pci, taxRate) {
-  const perPerson = (pci - taxRate * pci) * 0.0002;
+  const perPerson = (pci - (taxRate * pci)) * 0.00002;
   return population * perPerson;
 }
 

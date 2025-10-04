@@ -38,7 +38,9 @@ input {
   width: 0%;
   transition: width 0.3s;
 }
-
+.bar.risk {
+  background: red;
+}
 .bar.tax {
   background: #f4a261;
 }

@@ -2,7 +2,8 @@ import {
   calculateTax,
   calculateBuildUsedLandArea,
   calculatePeopleUsedLandArea,
-  calculateLandPrice
+  calculateLandPrice,
+  getPopulationInRisk
 } from "../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +17,9 @@ const taxRateValue = document.getElementById("taxRateValue");
 const kingdomName = document.getElementById("kingdomName");
 const populationLabel = document.getElementById("populationLabel");
 const populationBar = document.getElementById("populationBar");
+const populationInRiskLabel = document.getElementById("populationInRiskLabel");
+const populationInRiskBar = document.getElementById("populationInRiskBar");
+
 const taxLabel = document.getElementById("taxLabel");
 const taxBar = document.getElementById("taxBar");
 const usedLandLabel = document.getElementById("usedLandLabel");
@@ -48,6 +52,7 @@ function updateDisplay() {
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
   const population = area * density;
+  const populationInRisk = getPopulationInRisk(kingdom)
   const totalUsedLand =
     calculateBuildUsedLandArea(kingdom) +
     calculatePeopleUsedLandArea(population, pci, taxRate);
@@ -66,7 +71,11 @@ function updateDisplay() {
   taxRateValue.textContent = taxRateInput.value;
 
   populationLabel.textContent = population.toLocaleString();
-  populationBar.style.width = Math.min((population / 10000) * 100, 100) + "%";
+  populationBar.style.width = Math.min((population / (totalUsedLand * 2)) * 100, 100) + "%";
+
+  populationInRiskLabel.textContent = populationInRisk.toLocaleString();
+  populationInRiskBar.style.width = ( populationInRisk / population) * 100 + "%";
+
 
   taxLabel.textContent = tax.toLocaleString();
   taxBar.style.width = Math.min((tax / 2000) * 100, 100) + "%";

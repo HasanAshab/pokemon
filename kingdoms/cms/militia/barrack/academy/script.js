@@ -1,7 +1,7 @@
 import humans from "../../../../../data/humans.js";
 import { saveKingdoms, soldiersAcademy } from "../../../../utils.js";
 
-delete humans["student"]
+//delete humans["student"]
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const encodedName =  encodeURIComponent(name);
