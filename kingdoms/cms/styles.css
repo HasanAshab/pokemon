@@ -38,8 +38,12 @@ input {
   width: 0%;
   transition: width 0.3s;
 }
-.bar.risk {
+.bar.population-growth {
+  background: green;
+}
+.bar.red {
   background: red;
+
 }
 .bar.tax {
   background: #f4a261;

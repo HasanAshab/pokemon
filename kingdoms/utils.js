@@ -1,6 +1,18 @@
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
+export function getPopulationGrowth(kingdom){
+  return -50
+}
+export function getDiedForHospital(kingdom){
+  return 40
+}
+export function getDiedForSecurity(kingdom){
+  return 10
+}
+export function getSecurityRate(kingdom,forceType){
+  return 20
+}
 
 export function calculateLandPrice(
   area,       // want land area (km²)
@@ -32,12 +44,6 @@ export function calculateLandPrice(
     finalPrice /= 24;
 
   return Math.round(finalPrice)
-}
-export function getPopulationInRisk(kingdom){
-  return 240
-}
-export function getSafetyRate(kingdom,forceType){
-  return 20
 }
 
 export function saveKingdoms(kingdoms) {

@@ -7,6 +7,7 @@ import {
   getHospitalCapacity,
   getSoldierImbalanceRate,
   soldiersAcademy,
+  getSecurityRate
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
@@ -54,11 +55,9 @@ globalThis.showTab = ({currentTarget},tabName) => {
     tab.classList.add("active");
     tab.style.display = "";
   });
-
-
+  
+renderAllForces(tabName);
 if (tabName === "police"){
- renderAllForces("police");
-
 document.getElementById("addDayPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.day.push({
     image: { id: "student", xp: 0 },
@@ -327,7 +326,7 @@ function renderAllForces(forceType) {
   renderForceSection("night",forceType);
  if (forceType === "soldier")
   renderForceSection("emergency",forceType);
-  const barrackForce = kingdoms[name].barrack[forceType === "soldier" ? "soldiers" : "polices"]
+  const barrackForce = kingdoms[name].barrack[forceType+"s"]
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
     return total + calcTypeSalary(barrackForce[type]);
   }, 0);
@@ -338,13 +337,16 @@ function renderAllForces(forceType) {
   totalSalaryEl.className = "total-salary-container";
   totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
 
+  const securityRate = getSecurityRate(kingdom,forceType+"s")
+  const securityRateEl = document.getElementById("securityRate")
+  securityRateEl.textContent = securityRate
 
   let totalMight = 0;
   Object.keys(barrackForce).forEach((type) => {
     const stack = getSoldierStack(barrackForce[type]);
     totalMight += stack.cp();
   });
-
+  
   const totalMightEl = document.getElementById("forcesMight");
   totalMightEl.textContent = totalMight.toLocaleString();
 }
