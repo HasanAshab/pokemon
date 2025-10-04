@@ -1,4 +1,4 @@
-import { sumObj, calcNetProd, getStorage } from '../../utils.js';
+import { sumObj, calcNetProd, getStorage, getPopulation, getPopulationGrowth } from '../../utils.js';
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -101,6 +101,10 @@ const newMonthBtn = document.getElementById("newMonthBtn");
 newMonthBtn.onclick = () => {
   const netProd = calcNetProd(kingdoms[name]);
   kingdoms[name].storage = sumObj(kingdoms[name].storage, netProd)
+
+  const newDensity = (getPopulation(kingdoms[name]) + getPopulationGrowth(kingdoms[name])) / kingdoms[name].landArea
+  kingdoms[name].density = newDensity 
+
   saveAndRefresh(kingdoms[name].storage);
 };
 

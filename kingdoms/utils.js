@@ -9,12 +9,12 @@ export function getPopulation(kingdom) {
 export function calculateBirthCount(population) {
   const birthRatePer1000 = 20;
   const annualBirths = (population * birthRatePer1000) / 1000;
-  return annualBirths
+  return Math.round(annualBirths)
   return Math.floor(annualBirths / 12);
 }
 
 export function getPopulationGrowth(kingdom){
-  const population = getPopulation(kingdom)
+  const population = getPopulation(kingdom)  
   return calculateBirthCount(population) - getTotalDeathCount(kingdom)
 }
 
@@ -28,7 +28,7 @@ export function getDiedForAge(kingdom) {
   const population = getPopulation(kingdom);
   const deathRatePer1000 = 10; // realistic average
   const annualDeaths = (population * deathRatePer1000) / 1000;
-  return annualDeaths
+  return Math.round(annualDeaths)
   return Math.floor(annualDeaths / 12);
 }
 
@@ -44,7 +44,7 @@ export function getDiedForHospital(kingdom) {
   // Otherwise, calculate deaths normally
   const deathRatePer1000 = 10; // realistic average
   const annualDeaths = (population * deathRatePer1000) / 1000;
-  return annualDeaths
+  return Math.round(annualDeaths)
 
   const monthlyDeaths = Math.floor(annualDeaths / 12);  
   return monthlyDeaths;
@@ -53,11 +53,8 @@ export function getDiedForHospital(kingdom) {
 
 export function getDiedForSecurity(kingdom) {
   const securityRate = getTotalSecurityRate(kingdom)
-  const deathRate = 1 - (securityRate / 100)
-  console.log(securityRate, deathRate);
-  const death = getPopulation(kingdom) * deathRate
-  console.log(death);
-  
+  const deathRate = (1 - (securityRate / 100)) * 0.05
+  const death = Math.round(getPopulation(kingdom) * deathRate)
   return death
 }
 
@@ -69,11 +66,11 @@ export function getTotalSecurityRate(kingdom){
 }
 
 export function getSecurityRate(kingdom, forceType){
-  const target = 92740.8;
+  const target = 15.35671;
   const might = (getMight(kingdom, forceType, "day")
     + getMight(kingdom, forceType, "night")) / 2
-
-  const closeness = (might / target) * 100;
+  const ratio = might / getPopulation(kingdom)  
+  const closeness = (ratio / target) * 100;
   return Number(closeness.toFixed(2))
 }
 
