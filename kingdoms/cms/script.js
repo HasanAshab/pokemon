@@ -7,7 +7,8 @@ import {
   getDiedForHospital,
   getDiedForSecurity,
   getTotalDeathCount,
-  getDiedForAge
+  getDiedForAge,
+  calculateBirthCount
 } from "../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -67,12 +68,12 @@ function updateDisplay() {
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
   const population = area * density;
   const populationGrowth = getPopulationGrowth(kingdom)
-  
+  const birthCount = calculateBirthCount(kingdom)
   const totalDeathCount = getTotalDeathCount(kingdom)
   const diedForAge = getDiedForAge(kingdom)
   const diedForHospital = getDiedForHospital(kingdom)
   const diedForSecurity = getDiedForSecurity(kingdom)
-
+  
   const totalUsedLand =
     calculateBuildUsedLandArea(kingdom) +
     calculatePeopleUsedLandArea(population, pci, taxRate);
@@ -87,6 +88,11 @@ function updateDisplay() {
     landCostMethod.value 
   );
   const tax = calculateTax(kingdom);
+  
+
+  birthCountLabel.textContent = birthCount.toLocaleString();
+  
+
   priceForAreaInput.max = freeLand
   taxRateValue.textContent = taxRateInput.value;
 
@@ -101,8 +107,11 @@ function updateDisplay() {
     // clamp to 0–100 just in case
    populationGrowthBarWidth = Math.max(0, Math.min(100, populationGrowthBarWidth));
    populationGrowthBar.style.width = populationGrowthBarWidth + "%";
+   
    if (populationGrowth < 0){
     populationGrowthBar.classList.add("red")
+  }else {
+    populationGrowthBar.classList.remove("red")
   }
 
   totalDeathCountLabel.textContent = totalDeathCount.toLocaleString();
@@ -134,6 +143,7 @@ landCostMethod.addEventListener("change", updateDisplay);
 
 birthRateInput.onchange = ()=>{
   kingdom.birthRate = birthRateInput.value
+  updateDisplay()
 }
 saveBtn.addEventListener("click", () => {
   const area = parseFloat(landAreaInput.value) || 0;
