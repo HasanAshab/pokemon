@@ -1,17 +1,89 @@
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
+
+export function getPopulation(kingdom) {
+  return kingdom.landArea * kingdom.density;
+}
+
+export function calculateBirthCount(kingdom) {
+  const population = getPopulation(kingdom)
+  const annualBirths = population * (kingdom.birthRate ?? 0.02);
+  return Math.round(annualBirths)
+  return Math.floor(annualBirths / 12);
+}
+
 export function getPopulationGrowth(kingdom){
-  return -50
+  return calculateBirthCount(kingdom) - getTotalDeathCount(kingdom)
 }
-export function getDiedForHospital(kingdom){
-  return 40
+
+export function getTotalDeathCount(kingdom){
+  return getDiedForAge(kingdom)
+    + getDiedForHospital(kingdom)
+    + getDiedForSecurity(kingdom)
 }
-export function getDiedForSecurity(kingdom){
-  return 10
+
+export function getDiedForAge(kingdom) {
+  const population = getPopulation(kingdom);
+  const deathRatePer1000 = 5; // realistic average
+  const annualDeaths = (population * deathRatePer1000) / 1000;
+  return Math.round(annualDeaths)
+  return Math.floor(annualDeaths / 12);
 }
-export function getSecurityRate(kingdom,forceType){
-  return 20
+
+export function getDiedForHospital(kingdom) {
+  const population = getPopulation(kingdom);
+  const doctorsCount = getStorage(kingdom).doctor || 0;
+  const target = 0.05343511450381679;
+  const ratio = doctorsCount / population;
+  
+  // Otherwise, calculate deaths normally
+  const deathRate = (1 - (ratio / target)) * 0.039;
+  console.log(deathRate);
+  
+  const annualDeaths = population * deathRate;
+  return Math.max(0, Math.round(annualDeaths))
+
+  const monthlyDeaths = Math.floor(annualDeaths / 12);  
+  return monthlyDeaths;
+}
+
+
+export function getDiedForSecurity(kingdom) {
+  const securityRate = getTotalSecurityRate(kingdom)
+  const deathRate = (1 - (securityRate / 100)) * 0.05
+  const death = Math.round(getPopulation(kingdom) * deathRate)
+  return death
+}
+
+export function getTotalSecurityRate(kingdom){
+  return Math.min(
+      getSecurityRate(kingdom, "polices")
+    + getSecurityRate(kingdom, "soldiers")
+  , 100)
+}
+
+export function getSecurityRate(kingdom, forceType){
+  const target = 15.35671;
+  const might = (getMight(kingdom, forceType, "day")
+    + getMight(kingdom, forceType, "night")) / 2
+  const ratio = might / getPopulation(kingdom)  
+  const closeness = (ratio / target) * 100;
+  return Number(closeness.toFixed(2))
+}
+
+export function getMight(kingdom, forceType, shift) {
+  const soldiers = kingdom.barrack[forceType]?.[shift]
+  if (!soldiers) return 0
+  const stack = new SoldierStack(soldiers.map(s => [s.image, s.quantity]))
+  if (stack.cp() === 0) return 0
+
+
+  const forceTypeMod = forceType === "soldiers" ? 0.08 : 1
+  const countMod = (stack.cp() / stack.count()) * 0.006
+  
+  const might = stack.cp() * forceTypeMod * countMod
+  return might
 }
 
 export function calculateLandPrice(

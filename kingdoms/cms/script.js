@@ -5,7 +5,9 @@ import {
   calculateLandPrice,
   getPopulationGrowth,
   getDiedForHospital,
-  getDiedForSecurity
+  getDiedForSecurity,
+  getTotalDeathCount,
+  getDiedForAge
 } from "../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -21,10 +23,14 @@ const populationLabel = document.getElementById("populationLabel");
 const populationBar = document.getElementById("populationBar");
 const populationGrowthLabel = document.getElementById("populationGrowthLabel");
 const populationGrowthBar = document.getElementById("populationGrowthBar");
-const diedForSecurityLabel = document.getElementById("diedForSecurityLabel");
-const diedForSecurityBar = document.getElementById("diedForSecurityBar");
+
+const totalDeathCountLabel = document.getElementById("totalDied");
+const diedForAgeLabel = document.getElementById("diedForAgeLabel");
+const diedForAgeBar = document.getElementById("diedForAgeBar");
 const diedForHospitalLabel = document.getElementById("diedForHospitalLabel");
 const diedForHospitalBar = document.getElementById("diedForHospitalBar");
+const diedForSecurityLabel = document.getElementById("diedForSecurityLabel");
+const diedForSecurityBar = document.getElementById("diedForSecurityBar");
 
 const taxLabel = document.getElementById("taxLabel");
 const taxBar = document.getElementById("taxBar");
@@ -58,9 +64,13 @@ function updateDisplay() {
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
   const population = area * density;
-  const populationGrowth =   getPopulationGrowth(kingdom)
+  const populationGrowth = getPopulationGrowth(kingdom)
+  
+  const totalDeathCount = getTotalDeathCount(kingdom)
+  const diedForAge = getDiedForAge(kingdom)
   const diedForHospital = getDiedForHospital(kingdom)
   const diedForSecurity = getDiedForSecurity(kingdom)
+
   const totalUsedLand =
     calculateBuildUsedLandArea(kingdom) +
     calculatePeopleUsedLandArea(population, pci, taxRate);
@@ -82,6 +92,7 @@ function updateDisplay() {
   populationBar.style.width = Math.min((population / (totalUsedLand * 2)) * 100, 100) + "%";
 
   populationGrowthLabel.textContent = populationGrowth.toLocaleString();
+
   //populationGrowthBar.style.width = ( populationGrowth / population) * 100 + "%";
   let populationGrowthRatio = (populationGrowth + population) / (2 * population);
   let populationGrowthBarWidth = populationGrowthRatio * 100;
@@ -91,12 +102,17 @@ function updateDisplay() {
    if (populationGrowth < 0){
     populationGrowthBar.classList.add("red")
   }
+
+  totalDeathCountLabel.textContent = totalDeathCount.toLocaleString();
+  
+  diedForAgeLabel.textContent = diedForAge.toLocaleString()
+  diedForAgeBar.style.width = ((diedForAge * 100) / totalDeathCount) + "%";
   
   diedForHospitalLabel.textContent = diedForHospital.toLocaleString()
-  diedForHospitalBar.style.width = ((diedForHospital / -populationGrowth) * 100) + "%";
+  diedForHospitalBar.style.width = ((diedForHospital * 100) / totalDeathCount) + "%";
 
   diedForSecurityLabel.textContent = diedForSecurity.toLocaleString()
-  diedForSecurityBar.style.width = ((diedForSecurity / -populationGrowth) * 100) + "%";
+  diedForSecurityBar.style.width = ((diedForSecurity * 100) / totalDeathCount) + "%";
 
   
   taxLabel.textContent = tax.toLocaleString();
