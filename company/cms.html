@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizSim & Employee Salary Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        #companyWorth {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #f4f4f4;
+        }
+
+        .add-row {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .add-row input, .add-row button {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .input-group, .add-row {
+                flex-direction: column;
+            }
+
+            input, .add-row input {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BizSim - Business Simulation</h1>
+        
+        <!-- Business Simulation Section -->
+        <div class="section">
+            <h2>Monthly Revenue Chart</h2>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <div class="input-group">
+                <input type="number" id="low" placeholder="Low Revenue Estimate" onchange="saveEstimates()">
+                <input type="number" id="medium" placeholder="Medium Revenue Estimate" onchange="saveEstimates(); updateWorth();" oninput="updateWorth()">
+                <input type="number" id="high" placeholder="High Revenue Estimate" onchange="saveEstimates()">
+            </div>
+            <div id="companyWorth">Total Worth $: 0</div>
+            <button onclick="addRevenue()">Add Monthly Revenue</button>
+            <button onclick="clearData()" class="delete-btn" style="margin-left: 10px;">Clear Data</button>
+        </div>
+
+        <!-- Employee Salary Management Section -->
+        <div class="section">
+            <h2>Employee Salary Management</h2>
+            <div class="table-container">
+                <table id="salaryTable">
+                    <thead>
+                        <tr>
+                            <th>Post</th>
+                            <th>Mans</th>
+                            <th>Salary per Man</th>
+                            <th>Total Salary</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Total:</strong></td>
+                            <td id="totalSalary">0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="add-row">
+                <input type="text" id="newPost" placeholder="Post">
+                <input type="number" id="newMans" placeholder="Mans">
+                <input type="number" id="newSalary" placeholder="Salary per Man">
+                <button onclick="addRow()">Add</button>
+            </div>
+        </div> 
+        
+        <!-- Contract Management Section -->
+        <div class="section">
+            <h2>Contract Management</h2>
+            <div class="table-container">
+                <table id="contractTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Profit ($)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total Profit:</strong></td>
+                            <td id="totalProfit">0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="add-row">
+                <input type="text" id="contractName" placeholder="Contract Name">
+                <input type="number" id="contractProfit" placeholder="Profit">
+                <button onclick="addContract()">Add Contract</button>
+            </div>
+        </div>
+        
+        <!-- Asset Management Section -->
+        <div class="section">
+            <h2>Asset Management</h2>
+            <div class="table-container">
+                <table id="assetTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Rent</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total Rent:</strong></td>
+                            <td id="totalAssetRent">0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="add-row">
+                <input type="text" id="assetName" placeholder="Name">
+                <input type="number" id="assetRent" placeholder="Rent">
+                <button onclick="addAsset()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let revenueChart;
+        let chartData = {
+            labels: [],
+            datasets: [{
+                label: 'Monthly Revenue ($)',
+                data: [],
+                backgroundColor: '#3498db',
+                borderColor: '#2980b9',
+                borderWidth: 2
+            }]
+        };
+
+        // Contract Management
+        let contracts = JSON.parse(localStorage.getItem("contracts")) || [];
+
+        // Asset Management
+        let assets = JSON.parse(localStorage.getItem("assets")) || [];
+
+        function updateWorth() {
+            const medium = parseFloat(document.getElementById('medium').value);
+            const worth = !isNaN(medium) ? medium * 70 : 0;
+            document.getElementById('companyWorth').textContent = `Total Worth $: ${worth.toLocaleString()}`;
+        }
+
+        function loadData() {
+            const savedData = localStorage.getItem('revenueData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                chartData.labels = parsedData.labels;
+                chartData.datasets[0].data = parsedData.data;
+            }
+
+            const savedEstimates = localStorage.getItem('revenueEstimates');
+            if (savedEstimates) {
+                const { low, medium, high } = JSON.parse(savedEstimates);
+                document.getElementById('low').value = low;
+                document.getElementById('medium').value = medium;
+                document.getElementById('high').value = high;
+                updateWorth(); // Refresh worth on load
+            }
+        }
+
+        function saveEstimates() {
+            const low = document.getElementById('low').value;
+            const medium = document.getElementById('medium').value;
+            const high = document.getElementById('high').value;
+            localStorage.setItem('revenueEstimates', JSON.stringify({ low, medium, high }));
+        }
+
+        function saveChartData() {
+            const dataToSave = {
+                labels: chartData.labels,
+                data: chartData.datasets[0].data
+            };
+            localStorage.setItem('revenueData', JSON.stringify(dataToSave));
+        }
+
+        function addRevenue() {
+            const low = parseFloat(document.getElementById('low').value);
+            const medium = parseFloat(document.getElementById('medium').value);
+            const high = parseFloat(document.getElementById('high').value);
+
+            if (!low || !medium || !high) {
+                alert('Please fill all three estimates!');
+                return;
+            }
+
+            const options = [low, medium, high];
+            const selectedRevenue = options[Math.floor(Math.random() * options.length)];
+
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const nextMonth = chartData.labels.length % 12;
+
+            chartData.labels.push(monthNames[nextMonth]);
+            chartData.datasets[0].data.push(selectedRevenue);
+
+            revenueChart.update();
+            saveChartData();
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.removeItem('revenueData');
+                localStorage.removeItem('revenueEstimates');
+                chartData.labels = [];
+                chartData.datasets[0].data = [];
+                document.getElementById('low').value = '';
+                document.getElementById('medium').value = '';
+                document.getElementById('high').value = '';
+                document.getElementById('companyWorth').textContent = 'Total Worth $: 0';
+                revenueChart.update();
+            }
+        }
+
+        // Employee Salary Management
+        let employees = JSON.parse(localStorage.getItem("employees")) || [
+            { post: "Incharge", mans: 2, salary: 7000 },
+            { post: "Worker", mans: 6, salary: 6000 }
+        ];
+
+        function formatNumber(num) {
+            return num.toLocaleString();
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector("#salaryTable tbody");
+            tbody.innerHTML = "";
+            let total = 0;
+
+            employees.forEach((emp, index) => {
+                const row = document.createElement("tr");
+                const totalSalary = emp.mans * emp.salary;
+                total += totalSalary;
+
+                row.innerHTML = `
+                    <td>${emp.post}</td>
+                    <td>${emp.mans}</td>
+                    <td>${formatNumber(emp.salary)}</td>
+                    <td>${formatNumber(totalSalary)}</td>
+                    <td><button class="delete-btn" onclick="removeRow(${index})">Remove</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById("totalSalary").textContent = formatNumber(total);
+            localStorage.setItem("employees", JSON.stringify(employees));
+        }
+
+        function addRow() {
+            const post = document.getElementById("newPost").value;
+            const mans = parseInt(document.getElementById("newMans").value);
+            const salary = parseInt(document.getElementById("newSalary").value);
+
+            if (!post || isNaN(mans) || isNaN(salary)) {
+                alert("Please fill in all fields correctly.");
+                return;
+            }
+
+            employees.push({ post, mans, salary });
+            renderTable();
+
+            document.getElementById("newPost").value = "";
+            document.getElementById("newMans").value = "";
+            document.getElementById("newSalary").value = "";
+        }
+
+        function removeRow(index) {
+            employees.splice(index, 1);
+            renderTable();
+        }
+
+        // Contract Management Functions
+        function renderContractsTable() {
+            const tbody = document.querySelector("#contractTable tbody");
+            tbody.innerHTML = "";
+            let totalProfit = 0;
+
+            contracts.forEach((contract, index) => {
+                const row = document.createElement("tr");
+                totalProfit += contract.profit;
+
+                row.innerHTML = `
+                    <td>${contract.name}</td>
+                    <td>${formatNumber(contract.profit)}</td>
+                    <td><button class="delete-btn" onclick="removeContract(${index})">Remove</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById("totalProfit").textContent = formatNumber(totalProfit);
+            localStorage.setItem("contracts", JSON.stringify(contracts));
+        }
+
+        function addContract() {
+            const name = document.getElementById("contractName").value.trim();
+            const profit = parseFloat(document.getElementById("contractProfit").value);
+
+            if (!name || isNaN(profit)) {
+                alert("Please enter valid contract name and profit.");
+                return;
+            }
+
+            contracts.push({ name, profit });
+            renderContractsTable();
+
+            document.getElementById("contractName").value = "";
+            document.getElementById("contractProfit").value = "";
+        }
+
+        function removeContract(index) {
+            contracts.splice(index, 1);
+            renderContractsTable();
+        }
+
+        // Asset Management Functions
+        function renderAssetsTable() {
+            const tbody = document.querySelector("#assetTable tbody");
+            tbody.innerHTML = "";
+            let totalRent = 0;
+
+            assets.forEach((asset, index) => {
+                const row = document.createElement("tr");
+                totalRent += asset.rent;
+
+                row.innerHTML = `
+                    <td>${asset.name}</td>
+                    <td>${formatNumber(asset.rent)}</td>
+                    <td><button class="delete-btn" onclick="removeAsset(${index})">Remove</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById("totalAssetRent").textContent = formatNumber(totalRent);
+            localStorage.setItem("assets", JSON.stringify(assets));
+        }
+
+        function addAsset() {
+            const name = document.getElementById("assetName").value.trim();
+            const rent = parseFloat(document.getElementById("assetRent").value);
+
+            if (!name || isNaN(rent)) {
+                alert("Please enter valid asset name and rent.");
+                return;
+            }
+
+            assets.push({ name, rent });
+            renderAssetsTable();
+
+            document.getElementById("assetName").value = "";
+            document.getElementById("assetRent").value = "";
+        }
+
+        function removeAsset(index) {
+            assets.splice(index, 1);
+            renderAssetsTable();
+        }
+
+        // Initialize everything on page load
+        window.onload = function () {
+            loadData();
+            renderTable();
+            renderContractsTable();
+            renderAssetsTable();
+            
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

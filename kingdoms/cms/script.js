@@ -58,7 +58,7 @@ function updateDisplay() {
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
   const population = area * density;
-  const populationGrowth = getPopulationGrowth(kingdom)
+  const populationGrowth =   getPopulationGrowth(kingdom)
   const diedForHospital = getDiedForHospital(kingdom)
   const diedForSecurity = getDiedForSecurity(kingdom)
   const totalUsedLand =

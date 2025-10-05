@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>choose from Companies</title>
+</head>
+<body>
+  <h3>Choose your Company</h3>
+  <div id="companiesWrapper">
+    
+    <a href="./cms.html">Unicorn</a>
+  </div>
+  <button onclick="createNewCompany()">Create new Company</button>
+</body>
+<script>
+  function loadCompanies(){
+    const companiesWrapper = document.getElementById("createNewCompany")
+    companiesWrapper.innerHTML = ""
+   
+    
+  }
+ function createNewCompany(){
+   const cName = window.prompt("Company name?") 
+   alert(cName)
+ }
+</script>
+</html>
