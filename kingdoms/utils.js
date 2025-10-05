@@ -279,6 +279,21 @@ export function calcSoldiersSalary(kingdom, type) {
   );
 }
 
+export function calcPoliceSalary(kingdom, type) {
+  if (!kingdom?.barrack?.soldiers) return 0;
+
+  if (type) {
+    return kingdom.barrack.polices[type].reduce((total, soldier) => {
+      const soldierTotal = (soldier.quantity || 0) * (soldier.ivSalary || 0);
+      return total + soldierTotal;
+    }, 0);
+  }
+  return (
+    calcPoliceSalary(kingdom, "day") +
+    calcPoliceSalary(kingdom, "night")
+  );
+}
+
 export function calcAcademyCost(kingdom) {  
   return soldiersAcademy.getAcademyCost(kingdom)
 }
@@ -324,6 +339,7 @@ export function calcNetProd(kingdom, localize = false) {
   const sysCons = {
     coins:
       calcSoldiersSalary(kingdom) +
+      calcPoliceSalary(kingdom) +
       calcAcademyCost(kingdom) +
       calcCommandersSalary(kingdom),
   };
