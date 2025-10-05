@@ -15,6 +15,8 @@ const name = urlParams.get("name");
 
 const landAreaInput = document.getElementById("landArea");
 const densityInput = document.getElementById("density");
+const birthRateInput = document.getElementById("birthRate");
+const birthCountLabel = document.getElementById("birthCount")
 const pciInput = document.getElementById("pci");
 const taxRateInput = document.getElementById("taxRate");
 const taxRateValue = document.getElementById("taxRateValue");
@@ -130,7 +132,9 @@ pciInput.addEventListener("input", updateDisplay);
 taxRateInput.addEventListener("input", updateDisplay);
 landCostMethod.addEventListener("change", updateDisplay);
 
-
+birthRateInput.onchange = ()=>{
+  kingdom.birthRate = birthRateInput.value
+}
 saveBtn.addEventListener("click", () => {
   const area = parseFloat(landAreaInput.value) || 0;
   const density = parseFloat(densityInput.value) || 0;
