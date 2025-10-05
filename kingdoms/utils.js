@@ -6,16 +6,15 @@ export function getPopulation(kingdom) {
   return kingdom.landArea * kingdom.density;
 }
 
-export function calculateBirthCount(population) {
-  const birthRatePer1000 = 20;
-  const annualBirths = (population * birthRatePer1000) / 1000;
+export function calculateBirthCount(kingdom) {
+  const population = getPopulation(kingdom)
+  const annualBirths = population * (kingdom.birthRate ?? 0.02);
   return Math.round(annualBirths)
   return Math.floor(annualBirths / 12);
 }
 
 export function getPopulationGrowth(kingdom){
-  const population = getPopulation(kingdom)  
-  return calculateBirthCount(population) - getTotalDeathCount(kingdom)
+  return calculateBirthCount(kingdom) - getTotalDeathCount(kingdom)
 }
 
 export function getTotalDeathCount(kingdom){
@@ -26,7 +25,7 @@ export function getTotalDeathCount(kingdom){
 
 export function getDiedForAge(kingdom) {
   const population = getPopulation(kingdom);
-  const deathRatePer1000 = 10; // realistic average
+  const deathRatePer1000 = 5; // realistic average
   const annualDeaths = (population * deathRatePer1000) / 1000;
   return Math.round(annualDeaths)
   return Math.floor(annualDeaths / 12);
@@ -35,16 +34,15 @@ export function getDiedForAge(kingdom) {
 export function getDiedForHospital(kingdom) {
   const population = getPopulation(kingdom);
   const doctorsCount = getStorage(kingdom).doctor || 0;
-
-  // If 1 doctor per 20 people or more, deaths are 0
-  if (doctorsCount / population >= 1 / 20) {
-    return 0;
-  }
-
+  const target = 0.05343511450381679;
+  const ratio = doctorsCount / population;
+  
   // Otherwise, calculate deaths normally
-  const deathRatePer1000 = 10; // realistic average
-  const annualDeaths = (population * deathRatePer1000) / 1000;
-  return Math.round(annualDeaths)
+  const deathRate = (1 - (ratio / target)) * 0.039;
+  console.log(deathRate);
+  
+  const annualDeaths = population * deathRate;
+  return Math.max(0, Math.round(annualDeaths))
 
   const monthlyDeaths = Math.floor(annualDeaths / 12);  
   return monthlyDeaths;
