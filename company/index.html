@@ -6,24 +6,82 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>choose from Companies</title>
 </head>
+<style>
+   #companiesWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;    
+   }
+   #companiesWrapper > .link-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+   }
+   #companiesWrapper > .link-wrapper > .link{
+    cursor: pointer;
+   }
+
+
+</style>
 <body>
   <h3>Choose your Company</h3>
   <div id="companiesWrapper">
+   <button class="link">Unic</button>
     
-    <a href="./cms.html">Unicorn</a>
   </div>
-  <button onclick="createNewCompany()">Create new Company</button>
+  <button style="margin-top: 10px; background-color: green; color: white;" onclick="createNewCompany()">Create new Company +</button>
 </body>
 <script>
+    const companies = JSON.parse(localStorage.getItem("companies")) || {}
+
+  function redirectToCompany(companyName){
+    window.location.href = `./cms.html?company=${companyName}`
+  }
+   function deleteCompany(companyName){
+    delete companies[companyName]
+    console.log(companies);
+    
+    localStorage.setItem("companies", JSON.stringify(companies))
+    loadCompanies()
+   }
   function loadCompanies(){
-    const companiesWrapper = document.getElementById("createNewCompany")
+    const companiesWrapper = document.getElementById("companiesWrapper")
     companiesWrapper.innerHTML = ""
-   
+   for ( const key in companies){ 
+    const company = companies[key]
+      const linkWrapper = document.createElement("span")
+      linkWrapper.innerHTML = `<span class="link" onclick='redirectToCompany("${company.name}")'>${company.name}</span><button style='color: red;' onclick='deleteCompany("${company.name}")'>x</button>`
+      linkWrapper.classList.add("link-wrapper")
+      companiesWrapper.appendChild(linkWrapper)
+      
+    }
     
   }
  function createNewCompany(){
    const cName = window.prompt("Company name?") 
-   alert(cName)
+   if (cName){
+      console.log(companies);
+      companies[cName] = {
+        name: cName,
+         revenue: 0, 
+         contracts: [],
+          assets: [],
+           employees: [],
+           revenueEstimates: {
+             low: 0,
+             medium: 0,
+             high: 0
+           }
+          }
+      localStorage.setItem("companies", JSON.stringify(companies))
+      loadCompanies()
+   } 
+ }
+ window.onload = ()=> {
+  loadCompanies()
  }
 </script>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BizSim & Employee Salary Management</title>
+    <title>Controle management system</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -132,7 +132,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>BizSim - Business Simulation</h1>
+        <h1 id="companyName">Company Name</h1>
         
         <!-- Business Simulation Section -->
         <div class="section">
@@ -242,7 +242,11 @@
     </div>
 
     <script>
-        let revenueChart;
+              const urlParams = new URLSearchParams(window.location.search);
+            const companyName = urlParams.get('company');
+            const companies  = JSON.parse(localStorage.getItem("companies")) || {};
+            const company = companies[companyName];
+            let revenueChart;
         let chartData = {
             labels: [],
             datasets: [{
@@ -255,10 +259,10 @@
         };
 
         // Contract Management
-        let contracts = JSON.parse(localStorage.getItem("contracts")) || [];
+        let contracts = company.contracts || [];
 
         // Asset Management
-        let assets = JSON.parse(localStorage.getItem("assets")) || [];
+        let assets = company.assets || [];
 
         function updateWorth() {
             const medium = parseFloat(document.getElementById('medium').value);
@@ -267,16 +271,16 @@
         }
 
         function loadData() {
-            const savedData = localStorage.getItem('revenueData');
+            const savedData = company.revenue;
             if (savedData) {
-                const parsedData = JSON.parse(savedData);
+                const parsedData = savedData;
                 chartData.labels = parsedData.labels;
                 chartData.datasets[0].data = parsedData.data;
             }
 
-            const savedEstimates = localStorage.getItem('revenueEstimates');
+            const savedEstimates = company.revenueEstimates;
             if (savedEstimates) {
-                const { low, medium, high } = JSON.parse(savedEstimates);
+                const { low, medium, high } = savedEstimates;
                 document.getElementById('low').value = low;
                 document.getElementById('medium').value = medium;
                 document.getElementById('high').value = high;
@@ -482,7 +486,10 @@
 
         // Initialize everything on page load
         window.onload = function () {
-            loadData();
+        //   setting company name
+            document.getElementById('companyName').textContent = companyName;
+    
+          loadData();
             renderTable();
             renderContractsTable();
             renderAssetsTable();
