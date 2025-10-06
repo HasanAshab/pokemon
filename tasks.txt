@@ -2,6 +2,10 @@
 war score penalty for bad comando and commander ratio
 war espasionage report imbalance
 
+abilite active cost = initial / 2
+selfish scar 1 - 2 eyes 1.5 - 3 retreat
+
+
 * bug 
 mirror bug: for event
 
