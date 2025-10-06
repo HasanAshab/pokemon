@@ -22,6 +22,40 @@
        function saveAllData() {
          localStorage.setItem('companies', JSON.stringify(companies));
        }
+       console.log(company.employees);
+       
+       globalThis.processMonthlyChanges = ()=> {
+        const mediumRevenueEstimate =  Number(company.revenueEstimates.medium);
+        const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
+        const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
+        const assetsCost = assets.reduce((total, asset) => total + asset.rent, 0);
+        const totalIncome = mediumRevenueEstimate + contractProfit - totalEmployeesSalary - assetsCost;
+         console.log({
+          mediumRevenueEstimate,
+          totalEmployeesSalary,
+          contractProfit,
+          assetsCost,
+          totalIncome
+         });
+
+        company.monthlyChanges.coins =  company.monthlyChanges.coins + totalIncome;
+         
+        renderStorageItems();
+       
+      }
+
+       function updateCoins() {
+        const revenueThisMonth = company.revenue.data[company.revenue.data.length - 1] || 0;
+        const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
+        const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
+        const assetsCost = assets.reduce((total, asset) => total + asset.rent, 0);
+        
+        const totalIncome = revenueThisMonth + contractProfit - totalEmployeesSalary - assetsCost;
+        
+        company.storage.coins =  company.storage.coins + totalIncome;
+        renderStorageItems();
+         
+       }
         function updateWorth() {
             const medium = parseFloat(document.getElementById('medium').value);
             const worth = !isNaN(medium) ? medium * 70 : 0;
@@ -82,28 +116,20 @@
 
             chartData.labels.push(monthNames[nextMonth]);
             chartData.datasets[0].data.push(selectedRevenue);
-
+             
             revenueChart.update();
             saveChartData();
+            updateCoins();
         }
 
         function clearData() {
             if (confirm('Are you sure you want to clear all data?')) {
                 ;
-                console.log(companies);
-                
               company.revenue =  {
            labels: [],
            data: []
          }
-         company.contracts =  []
-           company.assets = [],
-            company.employees = [],
-            company.revenueEstimates = {
-             low: 0,
-             medium: 0,
-             high: 0
-           }
+         
                 saveAllData();
                 document.getElementById('companyWorth').textContent = 'Total Worth $: 0';
                 revenueChart.update();
@@ -138,7 +164,7 @@
             });
 
             document.getElementById("totalSalary").textContent = formatNumber(total);
-            localStorage.setItem("employees", JSON.stringify(employees));
+           saveAllData();
         }
 
         function addRow() {
@@ -183,8 +209,8 @@
             });
 
             document.getElementById("totalProfit").textContent = formatNumber(totalProfit);
-            localStorage.setItem("contracts", JSON.stringify(contracts));
-        }
+            saveAllData();  
+          }
 
         function addContract() {
             const name = document.getElementById("contractName").value.trim();
@@ -226,8 +252,8 @@
             });
 
             document.getElementById("totalAssetRent").textContent = formatNumber(totalRent);
-            localStorage.setItem("assets", JSON.stringify(assets));
-        }
+            saveAllData();
+          }
 
         function addAsset() {
             const name = document.getElementById("assetName").value.trim();
@@ -302,10 +328,10 @@
                 changeDisplay.className = 'monthly-change';
                 if (changeValue > 0) {
                     changeDisplay.className += ' change-positive';
-                    changeDisplay.textContent = `+${changeValue}`;
+                    changeDisplay.textContent = `+${changeValue.toLocaleString()}`;
                 } else if (changeValue < 0) {
                     changeDisplay.className += ' change-negative';
-                    changeDisplay.textContent = `${changeValue}`;
+                    changeDisplay.textContent = `${changeValue.toLocaleString()}`;
                 } else {
                     changeDisplay.className += ' change-neutral';
                     changeDisplay.textContent = '0';
@@ -389,19 +415,6 @@
             renderStorageItems();
         }
 
-        function processMonthlyChanges() {
-            if (confirm('Process monthly changes? This will update all item quantities based on their monthly change values.')) {
-                Object.keys(storage).forEach(itemName => {
-                    const change = monthlyChanges[itemName] || 0;
-                    storage[itemName] = Math.max(0, storage[itemName] + change);
-                });
-
-                company.storage = storage;
-                saveAllData();
-                renderStorageItems();
-                alert('Monthly changes processed successfully!');
-            }
-        }
 
         // Initialize everything on page load
         window.onload = function () {
@@ -412,11 +425,10 @@
             renderTable();
             renderContractsTable();
             renderAssetsTable();
-            renderStorageItems();
+            processMonthlyChanges();
             
             // Add event listeners for storage system
             document.getElementById('addItemBtn').onclick = addNewStorageItem;
-            document.getElementById('newMonthBtn').onclick = processMonthlyChanges;
             
             const ctx = document.getElementById('revenueChart').getContext('2d');
             revenueChart = new Chart(ctx, {

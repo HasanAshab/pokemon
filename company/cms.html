@@ -17,7 +17,7 @@
       <h2>Storage Management</h2>
       <div class="storage-header">
         <button id="addItemBtn" class="btn primary-btn">Add New Item</button>
-        <button id="newMonthBtn" class="btn special-btn">Process Monthly Changes</button>
+        <button id="newMonthBtn" onclick="processMonthlyChanges()" class="btn special-btn">Process Monthly Changes</button>
       </div>
       <div id="itemsContainer" class="items-container"></div>
     </div>
@@ -33,8 +33,8 @@
         <input type="number" id="high" placeholder="High Revenue Estimate" onchange="saveEstimates()">
       </div>
       <div id="companyWorth">Total Worth $: 0</div>
-      <button onclick="addRevenue()">Add Monthly Revenue</button>
-      <button onclick="clearData()" class="delete-btn" style="margin-left: 10px;">Clear Data</button>
+      <button onclick="addRevenue()">New Month</button>
+      <button onclick="clearData()" class="delete-btn" style="margin-left: 10px;">Clear All Data</button>
     </div>
 
     <!-- Employee Salary Management Section -->
