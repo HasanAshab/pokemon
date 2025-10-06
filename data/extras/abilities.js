@@ -168,7 +168,17 @@ export default {
     retreat: 3
   },
   "mayangan:selfish-scar": {
-    retreat: 3
+    retreat: 0,
+    onActivate(pokemon) {
+      this.retreat = 0
+     if(pokemon.hasAbility("mayangan:silver-eye")){
+     this.retreat += 1.5
+      }
+      if(pokemon.hasAbility("mayangan:golden-eye")){
+     this.retreat += 1.5
+      }     
+    }
+    
   },
 
   "mayangan:silver-eye": {
