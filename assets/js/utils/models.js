@@ -532,7 +532,10 @@ class Ability {
     }
 
     activate() {
-        if (this.active) return        
+        const chakra = this._ability.retreat / 2
+        if (this.active || this.pokemon.state.retreat < chakra) 
+          return null
+        this.pokemon.state.retreat -= chakra
         this.active = true
         this.onActivate()
         this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), this.pokemon.state.battle)
