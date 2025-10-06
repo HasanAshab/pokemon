@@ -74,7 +74,7 @@ export class SoldierStack extends Map {
 
 
 class Wave {
-  constructor(commander, soldiers, options = {}, extraScore) {
+  constructor(commander, soldiers, options = {}, extraScore = 0) {
     this.commander = commander
     this.soldiers = soldiers
     this._extraScore = extraScore
@@ -94,7 +94,7 @@ class Wave {
     return this.soldiers.statOf(stat) * this.cpModifier()
   }
   
-  cpModifier() {
+  cpModifier() {    
     return this._cpModifiers.reduce((acc, mod) => acc * mod, 1)
   }
 
@@ -252,12 +252,10 @@ class War {
 
   _calcScore(w1) {
     const w2 = this._opponentOf(w1)
-    const imageBonusMod = this._getImageBonusMod(w1)
-    console.log(imageBonusMod, w1.constructor.name);
-    
+    const imageBonusMod = this._getImageBonusMod(w1)    
     const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
     const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore() + w1._extraScore
+    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore() + w1._extraScore    
     return phyScore + spScore + otherScore
   }
 

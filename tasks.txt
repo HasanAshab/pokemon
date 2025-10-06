@@ -5,6 +5,8 @@ war espasionage report imbalance
 
 * bug 
 mirror bug: for event
+same image on barrack will not work
+war hospital capacity waste
 
 * Bottle neck
 
