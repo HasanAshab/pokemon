@@ -2,8 +2,6 @@
 war score penalty for bad comando and commander ratio
 war espasionage report imbalance
 
-selfish scar 1 - 2 eyes 1.5 - 3 retreat
-
 
 * bug 
 mirror bug: for event

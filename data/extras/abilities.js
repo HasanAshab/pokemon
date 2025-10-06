@@ -167,23 +167,16 @@ export default {
   mayangan1: {
     retreat: 3
   },
-  "mayangan:selfish-scar": {
-    retreat: 0,
-    onActivate(pokemon) {
-      this.retreat = 0
-     if(pokemon.hasAbility("mayangan:silver-eye")){
-     this.retreat += 1.5
-      }
-      if(pokemon.hasAbility("mayangan:golden-eye")){
-     this.retreat += 1.5
-      }     
-    }
-    
+  "mayangan:selfish-scar:silver": {
+    retreat: 1.5
+  },
+  "mayangan:selfish-scar:golden": {
+    retreat: 1.5
   },
 
   "mayangan:silver-eye": {
     onTryBoost(boost, target, source, effect) {
-      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar");
+      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar:silver");
       for (let i in boost) {
         boost[i] = hasIntelligentEye && boost[i] < 0 ? -boost[i] : -boost[i];
       }
@@ -193,7 +186,7 @@ export default {
   // nakku
   "mayangan:golden-eye": {
     onTryBoostOpponent(boost, target, source, effect) {
-      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar");
+      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar:golden");
       for (let i in boost) {
         boost[i] = hasIntelligentEye && boost[i] > 0 ? -boost[i] : -boost[i];
       }
