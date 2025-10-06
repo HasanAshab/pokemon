@@ -134,6 +134,16 @@
     <div class="container">
         <h1 id="companyName">Company Name</h1>
         
+        <div class="section storage">
+            <h2>Storage</h2>
+            <div id="itemsContainer" class="items-container"></div>
+            <button id="addItemBtn" class="btn primary-btn">Add New Item</button>
+            <div class="items-wrapper">
+              <div id="item1" class="item">Item 1</div>
+              <div id="item2" class="item">Item 2</div>
+              <div id="item3" class="item">Item 3</div>
+            </div>
+          </div>
         <!-- Business Simulation Section -->
         <div class="section">
             <h2>Monthly Revenue Chart</h2>
@@ -263,7 +273,9 @@
 
         // Asset Management
         let assets = company.assets || [];
-
+       function saveAllData() {
+         localStorage.setItem('companies', JSON.stringify(companies));
+       }
         function updateWorth() {
             const medium = parseFloat(document.getElementById('medium').value);
             const worth = !isNaN(medium) ? medium * 70 : 0;
@@ -292,15 +304,17 @@
             const low = document.getElementById('low').value;
             const medium = document.getElementById('medium').value;
             const high = document.getElementById('high').value;
-            localStorage.setItem('revenueEstimates', JSON.stringify({ low, medium, high }));
-        }
+            company.revenueEstimates = { low, medium, high };
+            saveAllData();
+          }
 
         function saveChartData() {
             const dataToSave = {
                 labels: chartData.labels,
                 data: chartData.datasets[0].data
             };
-            localStorage.setItem('revenueData', JSON.stringify(dataToSave));
+            company.revenue = dataToSave;
+            saveAllData();
         }
 
         function addRevenue() {
@@ -329,23 +343,29 @@
 
         function clearData() {
             if (confirm('Are you sure you want to clear all data?')) {
-                localStorage.removeItem('revenueData');
-                localStorage.removeItem('revenueEstimates');
-                chartData.labels = [];
-                chartData.datasets[0].data = [];
-                document.getElementById('low').value = '';
-                document.getElementById('medium').value = '';
-                document.getElementById('high').value = '';
+                ;
+                console.log(companies);
+                
+              company.revenue =  {
+           labels: [],
+           data: []
+         }
+         company.contracts =  []
+           company.assets = [],
+            company.employees = [],
+            company.revenueEstimates = {
+             low: 0,
+             medium: 0,
+             high: 0
+           }
+                saveAllData();
                 document.getElementById('companyWorth').textContent = 'Total Worth $: 0';
                 revenueChart.update();
             }
         }
 
         // Employee Salary Management
-        let employees = JSON.parse(localStorage.getItem("employees")) || [
-            { post: "Incharge", mans: 2, salary: 7000 },
-            { post: "Worker", mans: 6, salary: 6000 }
-        ];
+        let employees = company.employees || [];
 
         function formatNumber(num) {
             return num.toLocaleString();
