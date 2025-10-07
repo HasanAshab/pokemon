@@ -201,9 +201,7 @@ shiftsDataWrapper.innerHTML = "";
        const shiftData = document.createElement("div");
        const extraStudentsCount = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
       
-       const imbalanceRate = getForceImbalanceRate(kingdom,forceType,type,extraStudentsCount)
-       console.log(imbalanceRate);
-       
+       const imbalanceRate = getForceImbalanceRate(kingdom,forceType,type,extraStudentsCount)       
        
     shiftData.className = "shift-data"
     shiftData.innerHTML = `<h2 >${type}: ${imbalanceRate.toFixed(2)}%</h2>`;

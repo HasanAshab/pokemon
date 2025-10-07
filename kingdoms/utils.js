@@ -81,8 +81,8 @@ export function getMight(kingdom, forceType, shift) {
 
   const forceTypeMod = forceType === "soldiers" ? 0.08 : 1
   const countMod = (stack.cp() / stack.count()) * 0.006
-  
-  const might = stack.cp() * forceTypeMod * countMod
+  const imbalanceMod = Math.min(1, (1 - (getForceImbalanceRate(kingdom, forceType, shift) / 100) + 0.005) * 1.005)
+  const might = stack.cp() * forceTypeMod * countMod * imbalanceMod
   return might
 }
 
@@ -448,9 +448,9 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 }
 
 
-export function getForceImbalanceRate(kingdom,forceType, type, totalExtraStudent = null) {
- if (totalExtraStudent === null) {
-  const ranksIdList = Object.keys(humans).slice(1);
+export function getForceImbalanceRate(kingdom, forceType, type, totalExtraStudent = null) {
+  if (totalExtraStudent === null) {
+  const ranksIdList = Object.keys(humans).slice(forceType === "soldiers" ? 1 : 0);
    const forceList = kingdom.barrack[forceType][type];
     if (forceList.length === 0) return null
     const quantityMap = new Map();
@@ -483,7 +483,7 @@ export function getForceImbalanceRate(kingdom,forceType, type, totalExtraStudent
 }
 
 export function getSoldierImbalancePenalty(kingdom, shift) {
-  const rate = getForceImbalanceRate(kingdom, shift);
+  const rate = getForceImbalanceRate(kingdom, 'soldiers', shift);
   const penaltyMod = (1 - (rate / 100)) * 1.5
   return penaltyMod
 }
