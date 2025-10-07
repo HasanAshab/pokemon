@@ -24,6 +24,7 @@ function saveAndRefresh() {
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
+    console.log(building);
     
     const div = document.createElement("div");
     div.className = "building";

@@ -316,6 +316,8 @@ export function calcBuildConsumtion(kingdom) {
 
 export function calcBuildNetProd(kingdom) {
   const prod = calcBuildProduction(kingdom);
+  console.log(prod);
+  
   const cons = modObj(calcBuildConsumtion(kingdom), -1);  
   return sumObj(prod, cons);
 }
