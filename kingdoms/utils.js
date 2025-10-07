@@ -429,7 +429,8 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
     if (!soldierStack.has(s.image.id))
       return s
     
-    const [image, quantity] = soldierStack.get(s.image.id);
+    let [image, quantity] = soldierStack.get(s.image.id);
+    quantity = Math.min(s.quantity, quantity)
     hospitalCap -= quantity;
     if (hospitalCap < 0) {
       const woundedCount = Math.abs(hospitalCap)
@@ -447,8 +448,8 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 }
 
 
-export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent = null) {
- if (totalExtraStudent === null){
+export function getSoldierImbalanceRate(kingdom, type, totalExtraStudent = null) {
+ if (totalExtraStudent === null) {
   const ranksIdList = Object.keys(humans).slice(1);
    const soldierList = kingdom.barrack.soldiers[type];
     if (soldierList.length === 0) return null
@@ -463,7 +464,7 @@ export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent = null) 
       quantityMap.set(rankId, q);
     }
 
-    quantityMap.forEach((q, rankId) => {
+    quantityMap.forEach((q, rankId) => {      
       if (q > 0) {
         const rankIndex = ranksIdList.indexOf(rankId);
         const senseiRankId = ranksIdList[rankIndex + 1];
@@ -474,9 +475,8 @@ export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent = null) 
           imbalanceDataList.push({ extraStudent, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
         }
       }
-    }); 
-       totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
-  
+    });
+    totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
   return Math.abs((totalExtraStudent / kingdom.barrack.soldiers[type].reduce((sum, s) => sum + s.quantity, 0)) * 100 )
  }
   return Math.abs((totalExtraStudent / kingdom.barrack.soldiers[type].reduce((sum, s) => sum + s.quantity, 0)) * 100 ) 
@@ -484,7 +484,6 @@ export function getSoldierImbalanceRate(kingdom, type,totalExtraStudent = null) 
 
 export function getSoldierImbalancePenalty(kingdom, shift) {
   const rate = getSoldierImbalanceRate(kingdom, shift);
-  const penaltyMod = rate
-  console.log(rate, penaltyMod);
+  const penaltyMod = (1 - (rate / 100)) * 1.5
   return penaltyMod
 }
