@@ -35,7 +35,12 @@
       Security Rate: <span id="securityRate" class="data">0</span>%</span>
       <div id="totalSalaryContainer" class="data"></div>
     </section>
-    
+    <section id="imbalance-section" class="balanced ">
+      <button onclick="showImbalanceData()" class="show-imbalance-data-btn" type="submit">Show imbalance data</button>
+   <p>Everything is balanced 🎉</p>
+      <div class="shifts-data-wrapper"></div>
+  </section>
+  
   <section id="dayPolicesSection" class="tab-police tab">
     <h2>Day Polices</h2>
     <h4>Might: <span id="dayPolicesMight">0</span></h4>
@@ -47,11 +52,6 @@
     <h4>Might: <span id="nightPolicesMight">0</span></h4>
     <button id="addNightPoliceBtn">+ Add Night Police</button>
     <div id="nightPolicesContainer"></div>
-  </section>
-  <section id="imbalance-section" class="balanced tab-soldier active tab">
-      <button onclick="showImbalanceData()" class="show-imbalance-data-btn" type="submit">Show imbalance data</button>
-   <p>Everything is balanced 🎉</p>
-      <div class="shifts-data-wrapper"></div>
   </section>
   <section id="daySoldiersSection" class="tab-soldier active tab">
     <h2>Day Soldiers</h2>
