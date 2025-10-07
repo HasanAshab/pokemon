@@ -652,14 +652,55 @@ class MammothSkinEffect extends Effect {
     givesImmunity(effectName) {
         return this._givesImmunityToEffects.includes(effectName)
     }
+
+    onScene(move) {
+        if (this._move) {
+            this._move.flags = this._oldFlags
+        }
+
+        this._move = move
+        this._oldFlags = structuredClone(this._move.flags)
+        this._move.flags.shield = 1
+    }
 }
 
 
 class AreaSplashEffect extends Effect {
     static effectName = "areasplash"
 
+    _oldMovesData = {}
     setup() {
         super.setup()
+
+        this.state.moves.forEach(move => {
+            if (move.target === "self") return
+            if (!move.flags.offensive) return
+            if (move.flags.weapon) return
+
+
+            this._oldMovesData[move.id] = {
+                target: move.target,
+                basePower: move.basePower,
+                capacity: move.capacity
+            }
+
+            if (move.capacity > 1) {
+                return move.capacity = Math.round(move.capacity * 1.3) 
+            }
+
+            move.basePower = Math.round(move.basePower * 0.66668)
+            move.capacity = move.category === "Status" ? Infinity : Math.max(Math.round(move.basePower / 10), 2)
+
+            console.log(move.id, move.target);
+            if (move.healTarget)
+                move.target = "allySide"
+            else {
+              const mapping = {
+                "normal": "foeSide",
+              }
+              move.target = mapping[move.target] || move.target
+            }
+        })
     }
 }
 
@@ -723,16 +764,6 @@ class AncientModeEffect extends ExpirableEffect {
     displayMeta() {
       const totalStatBoosted = this._stats.hp + this._stats.atk
         return `(${Math.floor(totalStatBoosted / 10)}.inch) - ${this.lifetime.turns}`
-    }
-    
-    onScene(move) {
-        if (this._move) {
-            this._move.flags = this._oldFlags
-        }
-
-        this._move = move
-        this._oldFlags = structuredClone(this._move.flags)
-        this._move.flags.shield = 1
     }
 }
 
