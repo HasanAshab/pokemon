@@ -10,8 +10,11 @@ police imbalance will damage securuty
 ancient mod: 
       1.  silver active = shild, immune to bleed 
       2. golden active = allAdjastenFoes if != weapon
+
 * bug 
 mirror bug: for event
+
+same image on barrack will not work + defence wave
 
 * Bottle neck
 
