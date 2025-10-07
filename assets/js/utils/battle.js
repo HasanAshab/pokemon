@@ -791,13 +791,10 @@ class BaseBattle extends EventEmitter {
     }
 
     async _handleCapacityMove(attacker, move) {
-      if (move.category !== "Status")
-          move.reduceCapacity()
-
       const opponentTag = attacker._tag === "you" ? "enemy" : "you"
       const team = attacker._tag === "you" ? this.team1 : this.team2
 
-      while (0 < move.capacity) {            
+      while (1 < move.capacity) {            
         const [p, counterMove] = await this.prompt(attacker).ask("adjacent_counter_stack", move)
         const isAlly = team.includes(p)
         

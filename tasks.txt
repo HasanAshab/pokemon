@@ -1,6 +1,5 @@
 * Tasks
-ancient mod:
-      2. golden active = allAdjastenFoes if != weapon
+ancient mod shadow clone
 
 * bug 
 mirror bug: for event
@@ -14,6 +13,7 @@ same image on barrack will not work + defence wave
 
 
 *ovi
+birth rate input
 War: show good and bad details
 fix retreat of beast abilities
 hand3
