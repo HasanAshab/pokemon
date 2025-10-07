@@ -448,16 +448,16 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 }
 
 
-export function getSoldierImbalanceRate(kingdom, type, totalExtraStudent = null) {
+export function getForceImbalanceRate(kingdom,forceType, type, totalExtraStudent = null) {
  if (totalExtraStudent === null) {
   const ranksIdList = Object.keys(humans).slice(1);
-   const soldierList = kingdom.barrack.soldiers[type];
-    if (soldierList.length === 0) return null
+   const forceList = kingdom.barrack[forceType][type];
+    if (forceList.length === 0) return null
     const quantityMap = new Map();
     const imbalanceDataList = [];
 
     for (const rankId of ranksIdList) {
-      const q = soldierList.reduce(
+      const q = forceList.reduce(
         (sum, s) => sum + (s.image.id === rankId ? s.quantity : 0),
         0,
       );
@@ -477,13 +477,13 @@ export function getSoldierImbalanceRate(kingdom, type, totalExtraStudent = null)
       }
     });
     totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
-  return Math.abs((totalExtraStudent / kingdom.barrack.soldiers[type].reduce((sum, s) => sum + s.quantity, 0)) * 100 )
+  return Math.abs((totalExtraStudent / kingdom.barrack.[forceType][type].reduce((sum, s) => sum + s.quantity, 0)) * 100 )
  }
-  return Math.abs((totalExtraStudent / kingdom.barrack.soldiers[type].reduce((sum, s) => sum + s.quantity, 0)) * 100 ) 
+  return Math.abs((totalExtraStudent / kingdom.barrack.[forceType][type].reduce((sum, s) => sum + s.quantity, 0)) * 100 ) 
 }
 
 export function getSoldierImbalancePenalty(kingdom, shift) {
-  const rate = getSoldierImbalanceRate(kingdom, shift);
+  const rate = getForceImbalanceRate(kingdom, shift);
   const penaltyMod = (1 - (rate / 100)) * 1.5
   return penaltyMod
 }

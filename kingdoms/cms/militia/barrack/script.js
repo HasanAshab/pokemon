@@ -5,7 +5,7 @@ import {
   calcAcademyCost,
   // calcHospitalCost,
   getHospitalCapacity,
-  getSoldierImbalanceRate,
+  getForceImbalanceRate,
   soldiersAcademy,
   getSecurityRate
 } from "../../../utils.js";
@@ -154,19 +154,20 @@ globalThis.balanceSoldiers = (action,amount, shift, rankId) => {
 }
 globalThis.showImbalanceData = () => {
   const ranksIdList = Object.keys(humans).slice(1);
-  
+  const forceType = "soldiers"//document.getElementById("main-header")?.querySelector("button.active").id
+  alert(forceType)
     const shiftsDataWrapper = document.querySelector(
       "#imbalance-section  .shifts-data-wrapper",
     );
 shiftsDataWrapper.innerHTML = "";
-  for (const type in kingdom.barrack.soldiers) {
-    const soldierList = kingdom.barrack.soldiers[type];
-    if (soldierList.length === 0) continue;
+  for (const type in kingdom.barrack[forceType]) {
+    const forceList = kingdom.barrack.[forceType][type];
+    if (forceList.length === 0) continue;
     const quantityMap = new Map();
     const imbalanceDataList = [];
 
     for (const rankId of ranksIdList) {
-      const q = soldierList.reduce(
+      const q = forceList.reduce(
         (sum, s) => sum + (s.image.id === rankId ? s.quantity : 0),
         0,
       );
@@ -190,7 +191,7 @@ shiftsDataWrapper.innerHTML = "";
        const shiftData = document.createElement("div");
        const extraStudentsCount = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
       
-       const imbalanceRate = getSoldierImbalanceRate(kingdom,type,extraStudentsCount)
+       const imbalanceRate = getForceImbalanceRate(kingdom,forceType,type,extraStudentsCount)
        
        
     shiftData.className = "shift-data"

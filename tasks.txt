@@ -1,11 +1,18 @@
 * Tasks
 police imbalance will damage securuty
+war score penalty for bad comando and commander ratio
+bleed effect can reduce 2% - 10%
+of its total health:
+      1. if user use high power move = 10% 
+      2. med power move = 4%
+      3. low move = 2%
 weapon give bleeding
 ancient mod:
       2. golden active = allAdjastenFoes if != weapon
 
 * bug 
 mirror bug: for event
+
 same image on barrack will not work + defence wave
 
 * Bottle neck
