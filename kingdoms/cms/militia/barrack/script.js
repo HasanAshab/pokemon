@@ -155,8 +155,9 @@ globalThis.balanceSoldiers = (action,amount, forceType, shift, rankId) => {
   showImbalanceData();
 }
 globalThis.showImbalanceData = () => {
-  const ranksIdList = Object.keys(humans).slice(1);
   const forceType = document.getElementById("main-header")?.querySelector("button.active").id
+
+  const ranksIdList = Object.keys(humans).slice(forceType === "soldiers" ? 1 : 0);
  
   const shiftsDataWrapper = document.querySelector(
       "#imbalance-section  .shifts-data-wrapper",
@@ -182,13 +183,17 @@ shiftsDataWrapper.innerHTML = "";
       if (q > 0) {
 
         const rankIndex = ranksIdList.indexOf(rankId);
-        const senseiRankId = ranksIdList[rankIndex + forceType === "polices" ? 0 : 1];
+        
+        const senseiRankId = ranksIdList[rankIndex + 1];
+       
+        
         const senseiQ = quantityMap.get(senseiRankId);
         const extraStudent = q - senseiQ * 3;
 
         if (senseiQ > 0 && extraStudent !== 0) {
           imbalanceDataList.push({ extraStudent, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
         }
+
       }
     });
 
@@ -279,7 +284,6 @@ function renderForceSection(type,forceType) {
       );
       save();
       renderAllForces(forceType);
-      if (forceType === "soldier")
         showImbalanceData();
     };
 
