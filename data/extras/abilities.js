@@ -168,10 +168,12 @@ export default {
     retreat: 3
   },
   "mayangan:selfish-scar:silver": {
-    retreat: 1.5
+    retreat: 1.5,
+    dependencies: ["mayangan:silver-eye"]
   },
   "mayangan:selfish-scar:golden": {
-    retreat: 1.5
+    retreat: 1.5,
+    dependencies: ["mayangan:golden-eye"]
   },
 
   "mayangan:silver-eye": {

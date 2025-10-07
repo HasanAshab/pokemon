@@ -843,6 +843,18 @@ function setEffects(effects, playerTag) {
       "name": "Paper Bomb",
       "color": "Normal"
     },
+    "bleed": {
+      "name": "Bleed",
+      "color": "Normal"
+    },
+    "mammothskin": {
+      "name": "Mammoth Skin",
+      "color": "Normal"
+    },
+    "areasplash": {
+      "name": "Area Splash",
+      "color": "Normal"
+    },
     "ancientmode": {
       "name": "Ancient Mode",
       "color": "Dragon"

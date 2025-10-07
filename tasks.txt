@@ -1,11 +1,7 @@
 * Tasks
-bleed effect can reduce 2% - 10% of its total health:
-      1. if user use high power move = 10% 
-      2. med power move = 4%
-      3. low move = 2%
 police imbalance will damage securuty
-ancient mod: 
-      1.  silver active = shild, immune to bleed 
+weapon give bleeding
+ancient mod:
       2. golden active = allAdjastenFoes if != weapon
 
 * bug 

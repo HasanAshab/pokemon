@@ -10,10 +10,15 @@ class Effect {
         const abilityTrigger = pokemon.abilities.isEnabled() && pokemon.abilities.isImmune(this.effectName)
         const typeTrigger = (pokemon.isHuman ? pokemon._beastTypes : pokemon.types)
           .some(t => this.immuneTo.includes(t))
-        return abilityTrigger || typeTrigger
+        const effectTrigger = pokemon.state.effects.givesImmunity(this.effectName)
+        return abilityTrigger || typeTrigger || effectTrigger
     }
 
     static isPre() {
+        return false
+    }
+
+    givesImmunity(effectName) {
         return false
     }
 
@@ -607,10 +612,73 @@ class PaperBombEffect extends Effect {
     }
 }
 
-class AncientModeEffect extends ExpirableEffect {
-    static effectName = "ancientmode"
+
+class BleedEffect extends Effect {
+    static effectName = "bleed"
+    static immuneTo = ["steel"]
+    _lastMovement = null
+
+    onUsedMove(move) {
+        const lowMovement = this.state.pokemon.level 
+        const midMovement = lowMovement * 2        
+        if (move._bp > midMovement) {
+            this._lastMovement = "HIGH"
+        }
+        else if (move._bp > lowMovement) {
+            this._lastMovement = "MID"
+        }
+        else {
+            this._lastMovement = "LOW" 
+        }
+    }
+
+    onSceneEnd() {
+        const map = {
+          "LOW": 0.02,
+          "MID": 0.04,
+          "HIGH": 0.1
+        }
+        const damageRate = map[this._lastMovement ?? "LOW"]
+        this.state.decreaseHealth(this.state.pokemon.maxhp * damageRate)
+        this._lastMovement = null
+    }
+}
+
+
+class MammothSkinEffect extends Effect {
+    static effectName = "mammothskin"
+    _givesImmunityToEffects = ["bleed"]
+
+    givesImmunity(effectName) {
+        return this._givesImmunityToEffects.includes(effectName)
+    }
+}
+
+
+class AreaSplashEffect extends Effect {
+    static effectName = "areasplash"
+
     setup() {
         super.setup()
+    }
+}
+
+class AncientModeEffect extends ExpirableEffect {
+    static effectName = "ancientmode"
+    _addedEffects = []
+
+    setup() {
+        super.setup()
+
+        if (this.state.pokemon.abilities.isActive("mayangan:silver-eye")) {
+            this.state.effects.add(this.source, "mammothskin")
+            this._addedEffects.push("mammothskin")
+        }
+
+        if (this.state.pokemon.abilities.isActive("mayangan:golden-eye")) {
+            this.state.effects.add(this.source, "areasplash")
+            this._addedEffects.push("areasplash")
+        }
 
         const grade = this.state.moves.find(move => move.id === "ancientmode")._meta.grade || 0
         const gradeStatBonusPercent = (grade * 8) / 100
@@ -640,12 +708,16 @@ class AncientModeEffect extends ExpirableEffect {
         this.state.pokemon.tokens = sumObj(this.state.pokemon.tokens, this._stats)
         this.state.increaseHealth(this._stats.hp)
     }
-    
+
     teardown() {
         super.teardown()
         this.state.pokemon._beastTypes = this.state.pokemon._beastTypes.filter(t => t !== "Dragon")
         this.state.pokemon.tokens = sumObj(this.state.pokemon.tokens, modObj(this._stats, -1))
         this.state.decreaseHealth(this._stats.hp, true)
+
+        this._addedEffects.forEach(effect => {
+            this.state.effects.remove(effect)
+        })
     }
 
     displayMeta() {
@@ -681,6 +753,9 @@ export const EFFECTS = makeEffectsMap([
     ShadowCloneEffect,
     SageModeEffect,
     PaperBombEffect,
+    BleedEffect,
+    MammothSkinEffect,
+    AreaSplashEffect,
     AncientModeEffect
 ])
 
@@ -735,10 +810,14 @@ export class EffectManager {
         return effect
     }
 
+    givesImmunity(effectName) {
+        return this._effects.some(effect => effect.givesImmunity(effectName))
+    }
+
     canUseMove(move) {
         return this._effects.every(effect => effect.canUseMove(move))
     }
-    
+
     canOpponentUseMove(move) {
         return this._effects.every(effect => effect.canOpponentUseMove(move))
     }
