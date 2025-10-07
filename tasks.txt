@@ -1,6 +1,6 @@
 * Tasks
-ancient mod:
-      2. golden active = allAdjastenFoes if != weapon
+land price up with population
+ancient mod shadow clone
 
 * bug 
 mirror bug: for event
