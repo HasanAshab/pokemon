@@ -1,6 +1,4 @@
 * Tasks
-war score penalty for bad comando and commander ratio
-war espasionage report imbalance
 bleed effect can reduce 2% - 10% of its total health:
       1. if user use high power move = 10% 
       2. med power move = 4%
@@ -9,9 +7,10 @@ police imbalance will damage securuty
 ancient mod: 
       1.  silver active = shild, immune to bleed 
       2. golden active = allAdjastenFoes if != weapon
+
 * bug 
 mirror bug: for event
-same image on barrack will not work
+same image on barrack will not work + defence wave
 
 * Bottle neck
 

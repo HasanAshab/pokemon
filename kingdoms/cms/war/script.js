@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty } from "../../utils.js";
+import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getSoldierImbalanceRate } from "../../utils.js";
 
 var i = 0;
 var netWin = 0;
@@ -218,6 +218,7 @@ function generateDefendersReport(expLvl = 0) {
   reportLines.push("Total"); 
   reportLines.push("Waves: " + actualDefenders.length);
   expLvl && reportLines.push("Units: " + totalUnits);
+  expLvl > 4 && reportLines.push(`Imbalance: ${getSoldierImbalanceRate(kingdoms[defenderSelect.value], shiftSelect.value).toFixed(2)}%`);
 
   expLvl > 1 && actualDefenders.forEach((defenders, index) => {  
     reportLines.push("");
