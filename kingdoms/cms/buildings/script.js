@@ -24,8 +24,6 @@ function saveAndRefresh() {
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
-    console.log(building);
-    
     const div = document.createElement("div");
     div.className = "building";
     div.id = building.name
@@ -83,17 +81,19 @@ function renderBuildings() {
 
     function renderKeyValueSection(container, items, label) {
       container.innerHTML = "";
-      Object.keys(items).forEach((key) => {
-       const {value,isHML} = items[key]
 
+      Object.entries(items).forEach(([key, value]) => {
         const pairDiv = document.createElement("div");
         pairDiv.className = "item-pair";
 
         const keyInput = document.createElement("input");
         keyInput.placeholder = "Item";
-        keyInput.className = "key";
         keyInput.value = key;
-        
+
+        const valInput = document.createElement("input");
+        valInput.type = "number";
+        valInput.placeholder = "Amount";
+        valInput.value = value;
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "−";
@@ -103,32 +103,7 @@ function renderBuildings() {
         };
 
         pairDiv.appendChild(keyInput);
-         if (isHML){ 
-          pairDiv.classList.add("hml");
-         const lowValInput = document.createElement("input");
-         lowValInput.classList.add("low");
-         lowValInput.type = "number";
-         lowValInput.placeholder = "Amount";
-         lowValInput.value = value.low;
-         const medValInput = document.createElement("input");
-         medValInput.classList.add("med");
-         medValInput.type = "number";
-         medValInput.placeholder = "Amount";
-         medValInput.value = value.med;
-         const highValInput = document.createElement("input");
-         highValInput.classList.add("high");
-         highValInput.type = "number";
-         highValInput.placeholder = "Amount";
-         highValInput.value = value.high;
-        pairDiv.append(highValInput, medValInput, lowValInput);
-        }else {
-        const valInput = document.createElement("input");
-        valInput.type = "number";
-        valInput.placeholder = "Amount";
-        valInput.value = value;
         pairDiv.appendChild(valInput);
-        
-        }
         pairDiv.appendChild(delBtn);
         container.appendChild(pairDiv);
       });
@@ -136,19 +111,18 @@ function renderBuildings() {
       const addBtn = document.createElement("button");
       addBtn.textContent = `+ Add ${label}`;
       addBtn.onclick = () => {
-      const _isHML = !window.confirm("Is Normal System?");
-        items[""] = {value: _isHML ? {low:0,med:0,high:0} : 0 , isHML:_isHML};
+        items[""] = 0;
         renderKeyValueSection(container, items, label);
       };
       container.appendChild(addBtn);
     }
-    
+
     const producesLabel = document.createElement("label");
     producesLabel.textContent = "Produces";
 
     const producesContainer = document.createElement("div");
     renderKeyValueSection(producesContainer, building.produces, "Produce");
-    
+
     const consumesLabel = document.createElement("label");
     consumesLabel.textContent = "Consumes";
 
@@ -199,20 +173,8 @@ function renderBuildings() {
           [...container.querySelectorAll(".item-pair")].forEach(pair => {
             const inputs = pair.querySelectorAll("input");
             const k = inputs[0].value.trim();
-            if (pair.classList.contains("hml")) {
-              if (k){
-                result[k] = {value:{low: 0, med: 0, high: 0},isHML: true};
-              const low = pair.querySelector(".low").value.trim();
-              const med = pair.querySelector(".med").value.trim();
-              const high = pair.querySelector(".high").value.trim();
-              if (low) result[k].value.low = isNaN(low) ? 0 : low;
-              if (med) result[k].value.med = isNaN(med) ? 0 : med;
-              if (high) result[k].value.high = isNaN(high) ? 0 : high;
-              }
-            }else {
             const v = parseFloat(inputs[1].value);
-            if (k) result[k] = { value:isNaN(v) ? 0 : v, isHML: false };
-            }
+            if (k) result[k] = isNaN(v) ? 0 : v;
           });
           return result;
         };

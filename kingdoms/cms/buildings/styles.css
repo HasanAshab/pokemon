@@ -1,5 +1,4 @@
 /* General styling */
-
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
@@ -139,31 +138,9 @@ button:hover {
   margin-bottom: 4px;
   align-items: center;
 }
-.item-pair.hml {
- flex-wrap: wrap;
-}
-.item-pair:not(.hml) input {
+
+.item-pair input {
   flex: 1;
-}
-
-.item-pair.hml input.key {
-    border-top: 2px solid gold !important;
-  border-right: 2px solid green !important;
-  border-left: 2px solid red !important;
-  outline: none;
-
-}
-.item-pair.hml input.low {
-    border:1px solid red !important;
-    outline: none;
-}
-.item-pair.hml input.med {
-    border:1px solid gold !important;
-    outline: none;
-}
-.item-pair.hml input.high {
-    border:1px solid green !important;
-    outline: none;
 }
 #quickFindBtn{
   position: fixed;
@@ -208,10 +185,4 @@ display: flex;
  overflow-y: scroll;
    padding: 5%;
 
-}
-
-
-.hml:focus{
-  outline: none;
-  
 }
