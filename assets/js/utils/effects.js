@@ -669,14 +669,13 @@ class AreaSplashEffect extends Effect {
     static effectName = "areasplash"
 
     _oldMovesData = {}
+    
     setup() {
         super.setup()
-
         this.state.moves.forEach(move => {
             if (move.target === "self") return
             if (!move.flags.offensive) return
             if (move.flags.weapon) return
-
 
             this._oldMovesData[move.id] = {
                 target: move.target,
@@ -689,16 +688,27 @@ class AreaSplashEffect extends Effect {
             }
 
             move.basePower = Math.round(move.basePower * 0.66668)
-            move.capacity = move.category === "Status" ? Infinity : Math.max(Math.round(move.basePower / 10), 2)
-
-            console.log(move.id, move.target);
+            move.capacity = move.category === "Status" ? 2 : Math.max(Math.round(move.basePower / 10), 2)
+            
             if (move.healTarget)
                 move.target = "allySide"
             else {
               const mapping = {
                 "normal": "foeSide",
               }
-              move.target = mapping[move.target] || move.target
+              move.target = mapping[move.target] || move.target              
+            }
+        })
+    }
+
+    teardown() {
+        super.teardown()
+        this.state.moves.forEach(move => {
+            if (move.id in this._oldMovesData) {
+                const data = this._oldMovesData[move.id]
+                move.target = data.target
+                move.basePower = data.basePower
+                move.capacity = data.capacity
             }
         })
     }

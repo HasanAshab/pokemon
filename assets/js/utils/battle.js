@@ -236,12 +236,18 @@ class BaseBattle extends EventEmitter {
 
         // move failure
         try {
-          const ref1 = this.pokemon1.state.moves.find(m => m.id === move1.id)
+          const ref1 = this.pokemon1.state.moves.find(m => m.id === move1.id)          
           const ref2 = this.pokemon2.state.moves.find(m => m.id === move2.id)
           move1._meta = ref1._meta
           move2._meta = ref2._meta
           move1.accuracy = ref1.accuracy
           move2.accuracy = ref2.accuracy
+          move1.target = ref1.target
+          move2.target = ref2.target
+          move1.basePower = ref1.basePower
+          move2.basePower = ref2.basePower
+          move1.capacity = ref1.capacity
+          move2.capacity = ref2.capacity
           move1._user = this.pokemon1
           move2._user = this.pokemon2
           move1._target = this.pokemon2
@@ -270,6 +276,12 @@ class BaseBattle extends EventEmitter {
           move2._meta = ref2._meta
           move1.accuracy = ref1.accuracy
           move2.accuracy = ref2.accuracy
+          move1.target = ref1.target
+          move2.target = ref2.target
+          move1.basePower = ref1.basePower
+          move2.basePower = ref2.basePower
+          move1.capacity = ref1.capacity
+          move2.capacity = ref2.capacity
           move1._user = this.pokemon1
           move2._user = this.pokemon2
           move1._target = this.pokemon2
@@ -724,7 +736,6 @@ class BaseBattle extends EventEmitter {
         !ajmode && await this._handleStatusCapacity(this.pokemon1, this.pokemon2, move1)
         !ajmode && await this._handleStatusCapacity(this.pokemon2, this.pokemon1, move2)
         
-
         if (
           ajmode || clonemode1 || clonemode2 ||
           (move1.capacity !== Infinity && move2.category !== "Status" && move1.target === "allAdjacent" && move2.target === "allAdjacent") ||
