@@ -477,9 +477,9 @@ export function getForceImbalanceRate(kingdom,forceType, type, totalExtraStudent
       }
     });
     totalExtraStudent = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
-  return Math.abs((totalExtraStudent / kingdom.barrack.[forceType][type].reduce((sum, s) => sum + s.quantity, 0)) * 100 )
+  return Math.abs((totalExtraStudent / kingdom.barrack[forceType][type].reduce((sum, s) => sum + s.quantity, 0)) * 100 )
  }
-  return Math.abs((totalExtraStudent / kingdom.barrack.[forceType][type].reduce((sum, s) => sum + s.quantity, 0)) * 100 ) 
+  return Math.abs((totalExtraStudent / kingdom.barrack[forceType][type].reduce((sum, s) => sum + s.quantity, 0)) * 100 ) 
 }
 
 export function getSoldierImbalancePenalty(kingdom, shift) {

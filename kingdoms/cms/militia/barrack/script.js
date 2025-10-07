@@ -55,7 +55,7 @@ globalThis.showTab = ({currentTarget},tabName) => {
     tab.classList.add("active");
     tab.style.display = "";
   });
-  
+  showImbalanceData();
 renderAllForces(tabName);
 if (tabName === "police"){
 document.getElementById("addDayPoliceBtn").onclick = () => {
@@ -129,11 +129,13 @@ function getSoldierStack(soldiers) {
   });
   return new SoldierStack(stackData);
 }
-globalThis.balanceSoldiers = (action,amount, shift, rankId) => {
-  const soldiersList = kingdom.barrack.soldiers[shift];
-  const soldiers = soldiersList.filter((s) => s.image.id === rankId);
+globalThis.balanceSoldiers = (action,amount, forceType, shift, rankId) => {
+  if ( !forceType.endsWith("s") )
+  forceType += "s" 
+  const forcesList = kingdom.barrack[forceType][shift];
+  const forces = forcesList.filter((s) => s.image.id === rankId);
    if (action === "Remove"){ 
-  soldiers.forEach((s) => {
+  forces.forEach((s) => {
     if (amount === 0) return
       const res = s.quantity - amount
       if (res < 0){
@@ -145,23 +147,25 @@ globalThis.balanceSoldiers = (action,amount, shift, rankId) => {
       }
   })
     }else{
-      soldiers[0].quantity += amount
+      forces[0].quantity += amount
     }
 
-  renderAllForces("soldier");  
+  renderAllForces(forceType);  
   save();
   showImbalanceData();
 }
 globalThis.showImbalanceData = () => {
   const ranksIdList = Object.keys(humans).slice(1);
-  const forceType = "soldiers"//document.getElementById("main-header")?.querySelector("button.active").id
-  alert(forceType)
-    const shiftsDataWrapper = document.querySelector(
+  const forceType = document.getElementById("main-header")?.querySelector("button.active").id
+ 
+  const shiftsDataWrapper = document.querySelector(
       "#imbalance-section  .shifts-data-wrapper",
     );
 shiftsDataWrapper.innerHTML = "";
   for (const type in kingdom.barrack[forceType]) {
-    const forceList = kingdom.barrack.[forceType][type];
+    
+    const forceList = kingdom.barrack[forceType][type];
+
     if (forceList.length === 0) continue;
     const quantityMap = new Map();
     const imbalanceDataList = [];
@@ -176,8 +180,9 @@ shiftsDataWrapper.innerHTML = "";
 
     quantityMap.forEach((q, rankId) => {
       if (q > 0) {
+
         const rankIndex = ranksIdList.indexOf(rankId);
-        const senseiRankId = ranksIdList[rankIndex + 1];
+        const senseiRankId = ranksIdList[rankIndex + forceType === "polices" ? 0 : 1];
         const senseiQ = quantityMap.get(senseiRankId);
         const extraStudent = q - senseiQ * 3;
 
@@ -192,6 +197,7 @@ shiftsDataWrapper.innerHTML = "";
        const extraStudentsCount = imbalanceDataList.reduce((sum, d) => sum + d.extraStudent, 0);
       
        const imbalanceRate = getForceImbalanceRate(kingdom,forceType,type,extraStudentsCount)
+       console.log(imbalanceRate);
        
        
     shiftData.className = "shift-data"
@@ -207,7 +213,7 @@ shiftsDataWrapper.innerHTML = "";
      const studentAmount = Math.abs(extraStudent)
      const senseiAmount = Math.round(Math.abs(extraStudent / 3))  
      ol.innerHTML +=   `
-         <li><strong style="color:${actionForStudent === "Add" ? "green" : "red"}" onclick="balanceSoldiers('${actionForStudent}',${studentAmount}, '${type}', '${student.rankId}') ">${actionForStudent}</strong> ${studentAmount} <strong>${student.rankId}s</strong> or <strong  onclick="balanceSoldiers('${actionForSensei}',${senseiAmount}, '${type}', '${sensei.rankId}') " style="color:${actionForSensei === "Add" ? "green" : "red"}">${actionForSensei}</strong> ${senseiAmount} <strong>${sensei.rankId}s</strong> in ${type} shift</li>
+         <li><strong style="color:${actionForStudent === "Add" ? "green" : "red"}" onclick="balanceSoldiers('${actionForStudent}',${studentAmount}, '${forceType}', '${type}', '${student.rankId}') ">${actionForStudent}</strong> ${studentAmount} <strong>${student.rankId}s</strong> or <strong  onclick="balanceSoldiers('${actionForSensei}',${senseiAmount}, '${forceType}', '${type}', '${sensei.rankId}') " style="color:${actionForSensei === "Add" ? "green" : "red"}">${actionForSensei}</strong> ${senseiAmount} <strong>${sensei.rankId}s</strong> in ${type} shift</li>
           <br>
          `;
      }
@@ -233,8 +239,9 @@ function calcTypeSalary(forces) {
 }
 
 function renderForceSection(type,forceType) {
-  const container = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}sContainer`);
-  const barrackForce = kingdoms[name].barrack[forceType === "soldier" ? "soldiers":"polices"]
+  if (!forceType.endsWith("s")) forceType += "s" 
+  const container = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Container`);
+    const barrackForce = kingdoms[name].barrack[forceType]
   container.innerHTML = "";
  
    barrackForce[type].forEach((force, index) => {
@@ -318,16 +325,17 @@ function renderForceSection(type,forceType) {
 
   const stack = getSoldierStack(barrackForce[type]);
   const might = stack.cp();
-  const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}sMight`);
+  const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Might`);
   mightEl.textContent = might.toLocaleString();
 }
 
 function renderAllForces(forceType) {
+  if (!forceType.endsWith("s")) forceType += "s"
   renderForceSection("day",forceType);
   renderForceSection("night",forceType);
- if (forceType === "soldier")
+ if (forceType === "soldiers")
   renderForceSection("emergency",forceType);
-  const barrackForce = kingdoms[name].barrack[forceType+"s"]
+  const barrackForce = kingdoms[name].barrack[forceType]
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
     return total + calcTypeSalary(barrackForce[type]);
   }, 0);
@@ -338,7 +346,7 @@ function renderAllForces(forceType) {
   totalSalaryEl.className = "total-salary-container";
   totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
 
-  const securityRate = getSecurityRate(kingdom,forceType+"s")
+  const securityRate = getSecurityRate(kingdom,forceType)
   const securityRateEl = document.getElementById("securityRate")
   securityRateEl.textContent = securityRate
 

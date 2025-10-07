@@ -47,7 +47,7 @@ section {
   gap: 15px;
 }
 
-:is(.police-card,.soldier-card) {
+:is(.polices-card,.soldiers-card) {
   border: 1px solid #ddd;
   padding: 12px;
   border-radius: 6px;
@@ -58,7 +58,7 @@ section {
   align-items: center;
 }
 
-:is(.police-card,.soldier-card) :is(input, select) {
+:is(.polices-card,.soldiers-card) :is(input, select) {
   width: 100%;
   padding: 6px 8px;
   font-size: 14px;
@@ -66,7 +66,7 @@ section {
   border-radius: 4px;
 }
 
-:is(.police-card,.soldier-card) button {
+:is(.polices-card,.soldiers-card) button {
   padding: 6px 12px;
   background: #e74c3c;
   color: white;
@@ -75,7 +75,7 @@ section {
   cursor: pointer;
 }
 
-:is(.police-card,.soldier-card) button:hover {
+:is(.polices-card,.soldiers-card) button:hover {
   background: #c0392b;
 }
 
