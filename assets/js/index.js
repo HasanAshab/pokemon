@@ -258,7 +258,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
   // window.location = "/kingdoms/cms/militia/barrack/?name=Ember"
 
-startBattle([
+startBattle(null,[
    {
    "id": "genin",
    "name": "Hatano fushi (18 years)",

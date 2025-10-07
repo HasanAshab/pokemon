@@ -4,7 +4,12 @@ body {
   background: #f2f2f2;
   padding: 2rem;
 }
-
+.msg.good{
+  color: green;
+}
+.msg.bad{
+  color: red;
+}
 .container {
   max-width: 800px;
   margin: auto;

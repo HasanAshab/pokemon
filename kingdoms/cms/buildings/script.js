@@ -24,6 +24,7 @@ function saveAndRefresh() {
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
+    
     const div = document.createElement("div");
     div.className = "building";
     div.id = building.name
@@ -83,6 +84,8 @@ function renderBuildings() {
       container.innerHTML = "";
 
       Object.entries(items).forEach(([key, value]) => {
+      if (typeof value === "object")
+          value = value.value
         const pairDiv = document.createElement("div");
         pairDiv.className = "item-pair";
 

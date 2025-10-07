@@ -15,6 +15,16 @@ kingdomName.textContent = name || 'Unknown Kingdom';
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 const attackWaves = [];
 
+strategySelect.onchange = ()=>{
+    const goodMsgEl = document.querySelector(".msg.good")
+    const badMsgEl = document.querySelector(".msg.bad")
+const good = WAR_SYSTEMS[strategySelect.value].details.good
+  const bad = WAR_SYSTEMS[strategySelect.value].details.bad
+goodMsgEl.textContent = good
+badMsgEl.textContent = bad
+
+  
+}
 function renderStrategySelect() {
   Object.keys(WAR_SYSTEMS).forEach(strategy => {
     const option = document.createElement('option');
