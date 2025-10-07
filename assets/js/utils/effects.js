@@ -834,6 +834,8 @@ export class EffectManager {
     }
 
     apply(move, { on, pre = false }) {
+        if (this.state._data.armorUsed) return
+
         const abilitiesMap = {
           "brn": "blueflame",
           "par": "purplethunder"

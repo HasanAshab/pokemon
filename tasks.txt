@@ -1,5 +1,4 @@
 * Tasks
-weapon give bleeding
 ancient mod:
       2. golden active = allAdjastenFoes if != weapon
 
@@ -15,6 +14,7 @@ same image on barrack will not work + defence wave
 
 
 *ovi
+weapon give bleeding
 War: show good and bad details
 fix retreat of beast abilities
 hand3

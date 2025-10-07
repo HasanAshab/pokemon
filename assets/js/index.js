@@ -257,7 +257,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 // import './test.js'
 
   // window.location = "/kingdoms/cms/militia/barrack/?name=Ember"
-/*
+
 startBattle([
    {
    "id": "genin",
@@ -272,6 +272,11 @@ startBattle([
      ],
      "items": ["gen-age-18"],
      "moves": [
+       {
+         "id": "poisonsting",
+         "grade": "0",
+         "isSelected": true
+       },
        {
          "id": "cut",
          "grade": "0",
@@ -317,4 +322,4 @@ startBattle([
        "spd": 0
      }
    }
- ], [], "multiple")*/
+ ], [], "multiple")

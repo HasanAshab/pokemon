@@ -78,7 +78,6 @@ export function getMight(kingdom, forceType, shift) {
   const stack = new SoldierStack(soldiers.map(s => [s.image, s.quantity]))
   if (stack.cp() === 0) return 0
 
-
   const forceTypeMod = forceType === "soldiers" ? 0.08 : 1
   const countMod = (stack.cp() / stack.count()) * 0.006
   const imbalanceMod = Math.min(1, (1 - (getForceImbalanceRate(kingdom, forceType, shift) / 100) + 0.005) * 1.005)
