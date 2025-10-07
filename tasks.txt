@@ -15,7 +15,6 @@ same image on barrack will not work + defence wave
 
 
 *ovi
-police imbalance
 War: show good and bad details
 fix retreat of beast abilities
 hand3
