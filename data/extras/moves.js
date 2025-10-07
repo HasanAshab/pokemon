@@ -530,7 +530,10 @@ sword: {
       pp: 25 * 3,
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon:1 },
-      secondary: null,
+      secondary: {
+        chance: 10,
+        status: "bleed"
+      },
       target: "normal",
       type: "Steel",
       contestType: "Tough",
