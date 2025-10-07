@@ -307,7 +307,7 @@ export function calcBuildProduction(kingdom) {
   return kingdom.buildings.reduce((prod, build) => {
     return sumObj(prod, modObj(build.produces, build.quantity));
   }, {});
-}
+}// {lol:100,lol:{value}}
 
 export function calcBuildConsumtion(kingdom) {
   return kingdom.buildings.reduce((cons, build) => {   

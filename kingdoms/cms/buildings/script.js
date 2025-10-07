@@ -81,15 +81,8 @@ function renderBuildings() {
     baseMaintainsInput.style.display = "none";
 
     function renderKeyValueSection(container, items, label) {
-     
       container.innerHTML = "";
-       console.log(items);
-       
       Object.keys(items).forEach((key) => {
-        if (typeof items[key] === 'number') {
-          items[key] = {value: items[key], isHML: false}
-          
-        } 
        const {value,isHML} = items[key]
 
         const pairDiv = document.createElement("div");
@@ -115,17 +108,17 @@ function renderBuildings() {
          lowValInput.classList.add("low");
          lowValInput.type = "number";
          lowValInput.placeholder = "Amount";
-         lowValInput.value = value;
+         lowValInput.value = value.low;
          const medValInput = document.createElement("input");
          medValInput.classList.add("med");
          medValInput.type = "number";
          medValInput.placeholder = "Amount";
-         medValInput.value = value;
+         medValInput.value = value.med;
          const highValInput = document.createElement("input");
          highValInput.classList.add("high");
          highValInput.type = "number";
          highValInput.placeholder = "Amount";
-         highValInput.value = value;
+         highValInput.value = value.high;
         pairDiv.append(highValInput, medValInput, lowValInput);
         }else {
         const valInput = document.createElement("input");
@@ -142,8 +135,8 @@ function renderBuildings() {
       const addBtn = document.createElement("button");
       addBtn.textContent = `+ Add ${label}`;
       addBtn.onclick = () => {
-      const isHMl = window.prompt("Is Hign Medium Low ? (y/n)", "n") === "y";
-        items[""] = {value:0, isHML: isHMl};
+      const _isHML = !window.confirm("Is Normal System?");
+        items[""] = {value: _isHML ? {low:0,med:0,high:0} : 0 , isHML:_isHML};
         renderKeyValueSection(container, items, label);
       };
       container.appendChild(addBtn);

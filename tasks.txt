@@ -1,8 +1,14 @@
 * Tasks
 war score penalty for bad comando and commander ratio
 war espasionage report imbalance
-
-
+bleed effect can reduce 2% - 10% of its total health:
+      1. if user use high power move = 10% 
+      2. med power move = 4%
+      3. low move = 2%
+police imbalance will damage securuty
+ancient mod: 
+      1.  silver active = shild, immune to bleed 
+      2. golden active = allAdjastenFoes if != weapon
 * bug 
 mirror bug: for event
 
@@ -13,6 +19,7 @@ mirror bug: for event
 
 
 *ovi
+police imbalance
 War: show good and bad details
 fix retreat of beast abilities
 hand3

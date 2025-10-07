@@ -256,7 +256,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 // import './test.js'
 
-  // window.location = "/kingdoms/cms/?name=Bengolia"
+  window.location = "/kingdoms/cms/?name=Ember"
 /*
 startBattle([
    {
