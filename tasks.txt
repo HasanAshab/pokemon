@@ -1,5 +1,4 @@
 * Tasks
-land price up with population
 ancient mod shadow clone
 
 * bug 
@@ -14,6 +13,7 @@ same image on barrack will not work + defence wave
 
 
 *ovi
+birth rate input
 War: show good and bad details
 fix retreat of beast abilities
 hand3

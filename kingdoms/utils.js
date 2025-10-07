@@ -36,10 +36,9 @@ export function getDiedForHospital(kingdom) {
   const doctorsCount = getStorage(kingdom).doctor || 0;
   const target = 0.05343511450381679;
   const ratio = doctorsCount / population;
-  
+
   // Otherwise, calculate deaths normally
   const deathRate = (1 - (ratio / target)) * 0.039;
-  console.log(deathRate);
   
   const annualDeaths = population * deathRate;
   return Math.max(0, Math.round(annualDeaths))
@@ -95,8 +94,10 @@ export function calculateLandPrice(
   method,
   k = 2       // balancing factor
 ) {
+  const densityMod = Math.pow(density * 3.2, 2);
+  
   // Step 1: Base price from PCI
-  let basePrice = perCapitaIncome * k;
+  let basePrice = perCapitaIncome * k * densityMod;
 
   // Step 2: Adjust for density
   let adjustedPrice = basePrice * ((1 + density) * 0.5);
