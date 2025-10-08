@@ -11,6 +11,12 @@ same image on barrack will not work + defence wave
 Mayangan scar not reduce stat
 
 *ovi
+company : 
+   5. edit action for all  
+   4. chart last month delete
+   1. assets size decrease from kigndom
+   2. produce to kigndom
+   3. consume from kigndom
 fix retreat of beast abilities
 hand3
 
