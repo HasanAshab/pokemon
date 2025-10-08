@@ -8,7 +8,7 @@ same image on barrack will not work + defence wave
 
 
 * Pending
-
+Mayangan scar not reduce stat
 
 *ovi
 fix retreat of beast abilities
