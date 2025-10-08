@@ -32,11 +32,10 @@ globalThis.processMonthlyChanges = () => {
   const mediumRevenueEstimate = Number(company.revenueEstimates.medium);
   const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
   const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
-  const assetsCost = assets.reduce((total, asset) => total + asset.rent, 0);
+  const assetsCost = assets.reduce((total, asset) => total + getAssetRent(asset), 0);
   const totalIncome = mediumRevenueEstimate + contractProfit - totalEmployeesSalary - assetsCost;
-  console.log(company);
 
-  company.monthlyChanges.coins = company.monthlyChanges.coins + totalIncome;
+  company.monthlyChanges.coins =  totalIncome;
 
   renderStorageItems();
 
@@ -122,18 +121,12 @@ globalThis.addRevenue =()=> {
   updateCoins();
 }
 
-function clearData() {
-  if (confirm('Are you sure you want to clear all data?')) {
-    ;
-    company.revenue = {
-      labels: [],
-      data: []
-    }
-
+globalThis.deleteLastMonthRevenue = ()=> {
+    company.revenue.labels.pop();
+    company.revenue.data.pop();
     saveAllData();
     document.getElementById('companyWorth').textContent = 'Total Worth $: 0';
     revenueChart.update();
-  }
 }
 
 // Employee Salary Management
@@ -154,13 +147,26 @@ function renderTable() {
     total += totalSalary;
 
     row.innerHTML = `
-                    <td>${emp.post}</td>
-                    <td>${emp.mans}</td>
-                    <td>${formatNumber(emp.salary)}</td>
+                    <td contenteditable="true" data-field="post" data-index="${index}">${emp.post}</td>
+                    <td contenteditable="true" data-field="mans" data-index="${index}">${emp.mans}</td>
+                    <td contenteditable="true" data-field="salary" data-index="${index}">${formatNumber(emp.salary)}</td>
                     <td>${formatNumber(totalSalary)}</td>
-                    <td><button class="delete-btn" onclick="removeRow(${index})">Remove</button></td>
+                    <td>
+                      <button class="delete-btn" onclick="removeRow(${index})">Remove</button>
+                    </td>
                 `;
     tbody.appendChild(row);
+  });
+
+  // Add event listeners for inline editing
+  tbody.querySelectorAll('[contenteditable="true"]').forEach(cell => {
+    cell.addEventListener('blur', handleEmployeeEdit);
+    cell.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.blur();
+      }
+    });
   });
 
   document.getElementById("totalSalary").textContent = formatNumber(total);
@@ -190,6 +196,33 @@ globalThis.removeRow = function(index) {
   renderTable();
 }
 
+function handleEmployeeEdit(e) {
+  const index = parseInt(e.target.dataset.index);
+  const field = e.target.dataset.field;
+  let value = e.target.textContent.trim();
+
+  if (field === 'mans' || field === 'salary') {
+    // Remove formatting for numbers
+    value = value.replace(/,/g, '');
+    const numValue = parseInt(value);
+    if (isNaN(numValue) || numValue < 0) {
+      alert('Please enter a valid positive number');
+      renderTable();
+      return;
+    }
+    employees[index][field] = numValue;
+  } else {
+    if (!value) {
+      alert('Field cannot be empty');
+      renderTable();
+      return;
+    }
+    employees[index][field] = value;
+  }
+
+  renderTable();
+}
+
 // Contract Management Functions
 function renderContractsTable() {
   const tbody = document.querySelector("#contractTable tbody");
@@ -201,11 +234,24 @@ function renderContractsTable() {
     totalProfit += contract.profit;
 
     row.innerHTML = `
-                    <td>${contract.name}</td>
-                    <td>${formatNumber(contract.profit)}</td>
-                    <td><button class="delete-btn" onclick="removeContract(${index})">Remove</button></td>
+                    <td contenteditable="true" data-field="name" data-index="${index}">${contract.name}</td>
+                    <td contenteditable="true" data-field="profit" data-index="${index}">${formatNumber(contract.profit)}</td>
+                    <td>
+                      <button class="delete-btn" onclick="removeContract(${index})">Remove</button>
+                    </td>
                 `;
     tbody.appendChild(row);
+  });
+
+  // Add event listeners for inline editing
+  tbody.querySelectorAll('[contenteditable="true"]').forEach(cell => {
+    cell.addEventListener('blur', handleContractEdit);
+    cell.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.blur();
+      }
+    });
   });
 
   document.getElementById("totalProfit").textContent = formatNumber(totalProfit);
@@ -230,6 +276,33 @@ globalThis.addContract = function() {
 
 globalThis.removeContract = function(index) {
   contracts.splice(index, 1);
+  renderContractsTable();
+}
+
+function handleContractEdit(e) {
+  const index = parseInt(e.target.dataset.index);
+  const field = e.target.dataset.field;
+  let value = e.target.textContent.trim();
+
+  if (field === 'profit') {
+    // Remove formatting for numbers
+    value = value.replace(/,/g, '');
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) {
+      alert('Please enter a valid number');
+      renderContractsTable();
+      return;
+    }
+    contracts[index][field] = numValue;
+  } else {
+    if (!value) {
+      alert('Field cannot be empty');
+      renderContractsTable();
+      return;
+    }
+    contracts[index][field] = value;
+  }
+
   renderContractsTable();
 }
 function getAssetRent(asset) {
@@ -257,14 +330,27 @@ function renderAssetsTable() {
     const rent = getAssetRent(asset);
     totalRent += rent;
     row.innerHTML = `
-                    <td>${asset.name}</td>
-                    <td>${asset.kingdom}</td>
-                    <td>${asset.quantity}</td>
-                    <td>${asset.size}</td>
+                    <td contenteditable="true" data-field="name" data-index="${index}">${asset.name}</td>
+                    <td contenteditable="true" data-field="kingdom" data-index="${index}">${asset.kingdom}</td>
+                    <td contenteditable="true" data-field="quantity" data-index="${index}">${asset.quantity}</td>
+                    <td contenteditable="true" data-field="size" data-index="${index}">${asset.size}</td>
                     <td>${formatNumber(rent)}</td>
-                    <td><button class="delete-btn" onclick="removeAsset(${index})">Remove</button></td>
+                    <td>
+                      <button class="delete-btn" onclick="removeAsset(${index})">Remove</button>
+                    </td>
                 `;
     tbody.appendChild(row);
+  });
+
+  // Add event listeners for inline editing
+  tbody.querySelectorAll('[contenteditable="true"]').forEach(cell => {
+    cell.addEventListener('blur', handleAssetEdit);
+    cell.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.blur();
+      }
+    });
   });
 
   document.getElementById("totalAssetRent").textContent = formatNumber(totalRent);
@@ -295,6 +381,31 @@ globalThis.removeAsset = function removeAsset(index) {
   renderAssetsTable();
 }
 
+function handleAssetEdit(e) {
+  const index = parseInt(e.target.dataset.index);
+  const field = e.target.dataset.field;
+  let value = e.target.textContent.trim();
+
+  if (field === 'quantity' || field === 'size') {
+    const numValue = parseInt(value);
+    if (isNaN(numValue) || numValue < 0) {
+      alert('Please enter a valid positive number');
+      renderAssetsTable();
+      return;
+    }
+    assets[index][field] = numValue;
+  } else {
+    if (!value) {
+      alert('Field cannot be empty');
+      renderAssetsTable();
+      return;
+    }
+    assets[index][field] = value;
+  }
+
+  renderAssetsTable();
+}
+
 // Storage Management System
 let storage = company.storage || {};
 let monthlyChanges = company.monthlyChanges || {};
@@ -322,7 +433,7 @@ function renderStorageItems() {
     nameInput.value = itemName;
     nameDiv.appendChild(nameLabel);
     nameDiv.appendChild(nameInput);
-
+   
     const quantityDiv = document.createElement('div');
     const quantityLabel = document.createElement('label');
     quantityLabel.textContent = 'Quantity';

@@ -2,6 +2,10 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 
+
+export function foo (size,kingdom){
+
+}
 export function getPopulation(kingdom) {
   return kingdom.landArea * kingdom.density;
 }

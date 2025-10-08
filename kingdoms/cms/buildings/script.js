@@ -35,6 +35,20 @@ function renderBuildings() {
     nameInput.value = building.name;
     nameInput.disabled = true;
 
+    const propertyLabel = document.createElement("label");
+    propertyLabel.textContent = "Property";
+
+    const propertySelect = document.createElement("select");
+    const property = building.property || "govt";
+    propertySelect.style.width = "100%";
+    propertySelect.style.padding = "5px";
+
+    propertySelect.innerHTML = `
+    <option ${property === "govt" ? "selected" : ""} value="govt">govt</option>
+    <option ${property === "private" ? "selected" : ""} value="private">private</option>
+    <option ${property === "rent" ? "selected" : ""} value="rent">rent</option>
+    `
+    propertySelect.disabled = true;
     const levelLabel = document.createElement("label");
     levelLabel.textContent = "Current Level";
 
@@ -158,6 +172,7 @@ function renderBuildings() {
     editBtn.textContent = "Edit";
     editBtn.onclick = () => {
       nameInput.disabled = false;
+      propertySelect.disabled = false;
       basePriceInput.style.display = "block";
       baseSizeInput.style.display = "block";
       baseMaintainsInput.style.display = "block";
@@ -166,6 +181,7 @@ function renderBuildings() {
       editBtn.textContent = "Save";
       editBtn.onclick = () => {
         building.name = nameInput.value.trim();
+        building.property = propertySelect.value;
         building.basePrice = parseFloat(basePriceInput.value);
         building.baseSize = parseFloat(baseSizeInput.value);
         building.baseMaintains =  flagsToObj(baseMaintainsInput.value);
@@ -201,6 +217,9 @@ function renderBuildings() {
 
     div.appendChild(nameLabel);
     div.appendChild(nameInput);
+    
+    div.appendChild(propertyLabel);
+    div.appendChild(propertySelect);
 
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
