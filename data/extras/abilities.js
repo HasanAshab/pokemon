@@ -184,7 +184,10 @@ export default {
       console.log(hasIntelligentEye);
       
       for (let i in boost) {
-        boost[i] = hasIntelligentEye ? Math.abs(boost[i]) : -boost[i];
+        if (hasIntelligentEye && boost[i] < 0)
+          delete boost[i]
+        else
+          boost[i] = -boost[i];
       }
     },
     retreat: 0.5
@@ -194,7 +197,10 @@ export default {
     onTryBoostOpponent(boost, target, source, opponent) {
       const hasIntelligentEye = opponent.hasAbility("mayangan:selfish-scar:golden");
       for (let i in boost) {
-        boost[i] = hasIntelligentEye ? -Math.abs(boost[i]) : -boost[i];
+        if (hasIntelligentEye && boost[i] > 0)
+          delete boost[i]
+        else
+          boost[i] = -boost[i];
       }
     },
     retreat: 1.5

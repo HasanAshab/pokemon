@@ -47,15 +47,16 @@ function updateCoins() {
   const revenueThisMonth = company.revenue.data[company.revenue.data.length - 1] || 0;
   const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
   const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
-  const assetsCost = assets.reduce((total, asset) => total + asset.rent, 0);
+  const assetsCost = assets.reduce((total, asset) => total + getAssetRent(asset), 0);
 
   const totalIncome = revenueThisMonth + contractProfit - totalEmployeesSalary - assetsCost;
-
-  company.storage.coins = company.storage.coins + totalIncome;
+ console.log(contracts, company.employees)
+  company.storage.coins = (company.storage.coins || 0) + totalIncome;
+  
   renderStorageItems();
 
 }
-function updateWorth() {
+globalThis.updateWorth = ()=> {
   const medium = parseFloat(document.getElementById('medium').value);
   const worth = !isNaN(medium) ? medium * 70 : 0;
   document.getElementById('companyWorth').textContent = `Total Worth $: ${worth.toLocaleString()}`;
@@ -79,7 +80,7 @@ function loadData() {
   }
 }
 
-function saveEstimates() {
+globalThis.saveEstimates =()=> {
   const low = document.getElementById('low').value;
   const medium = document.getElementById('medium').value;
   const high = document.getElementById('high').value;
@@ -96,7 +97,7 @@ function saveChartData() {
   saveAllData();
 }
 
-function addRevenue() {
+globalThis.addRevenue =()=> {
   const low = parseFloat(document.getElementById('low').value);
   const medium = parseFloat(document.getElementById('medium').value);
   const high = parseFloat(document.getElementById('high').value);
