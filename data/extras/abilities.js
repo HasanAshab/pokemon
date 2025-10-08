@@ -72,7 +72,7 @@ function SharedEyeAbility({ blind, retreat, dependencies = [] }) {
 
 export default {
   // secret
-  sharedeye: SharedEyeAbility({blind: 0.25, retreat: 0}),
+  sharedeye: SharedEyeAbility({blind: 0.125, retreat: -1, dependencies: ["mayangan:silver-eye", "mayangan:selfish-scar:silver"]}),
   // gets 6 seconds
   sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 1.5 }),
   // gets 12 seconds

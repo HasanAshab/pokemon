@@ -106,6 +106,9 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>Country</th>
+              <th>Quantity</th>
+              <th>km<sup>2</sup></th>
               <th>Rent</th>
               <th>Action</th>
             </tr>
@@ -122,13 +125,16 @@
       </div>
       <div class="add-row">
         <input type="text" id="assetName" placeholder="Name">
-        <input type="number" id="assetRent" placeholder="Rent">
+        <input type="text" list="kingdoms-data-list" id="assetKingdom" placeholder="Country">
+        <datalist id="kingdoms-data-list"></datalist>
+        <input type="number" id="assetQuantity" placeholder="Quantity">
+        <input type="number" id="assetKm" placeholder="size">
         <button onclick="addAsset()">Add</button>
       </div>
     </div>
   </div>
 
 </body>
-<script src="./cms.js"></script>
+<script type="module" src="./cms.js"></script>
 
 </html>

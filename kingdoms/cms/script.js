@@ -89,7 +89,7 @@ function updateDisplay() {
   );
   const tax = calculateTax(kingdom);
   
-
+  birthRateInput.value = kingdom.birthRate
   birthCountLabel.textContent = birthCount.toLocaleString();
   
 
