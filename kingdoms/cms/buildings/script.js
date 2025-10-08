@@ -19,8 +19,17 @@ function saveAndRefresh() {
   renderBuildings();
 }
 
-
-
+function loadCompaniesDataList() {
+  const companies = JSON.parse( localStorage.getItem("companies"))
+  const companiesDataList = document.getElementById("companiesDataList");
+  companiesDataList.innerHTML = "";
+  Object.keys(companies).forEach((company) => {
+    const option = document.createElement("option");
+    option.value = company;
+    companiesDataList.appendChild(option);
+  }) 
+}
+loadCompaniesDataList()
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
@@ -42,6 +51,22 @@ function renderBuildings() {
     const property = building.property || "govt";
     propertySelect.style.width = "100%";
     propertySelect.style.padding = "5px";
+    
+    const ownedByLabel = document.createElement("label");
+    ownedByLabel.textContent = "Owned By";
+
+    const ownedByInput = document.createElement("input");
+    ownedByInput.value = building.ownedBy || "govt";
+    ownedByInput.disabled = true;
+    ownedByInput.setAttribute("list", "companiesDataList");
+    // const companies = Object.keys(kingdoms[name].companies);
+    // companies.forEach((company) => {
+    //   const option = document.createElement("option");
+    //   option.value = company;
+    //   companiesDataList.appendChild(option);
+    // });
+    // ownedByInput.appendChild(companiesDataList);
+ 
 
     propertySelect.innerHTML = `
     <option ${property === "govt" ? "selected" : ""} value="govt">govt</option>
