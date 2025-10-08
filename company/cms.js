@@ -166,7 +166,7 @@ function renderTable() {
   saveAllData();
 }
 
-function addRow() {
+globalThis.addRow = function() {
   const post = document.getElementById("newPost").value;
   const mans = parseInt(document.getElementById("newMans").value);
   const salary = parseInt(document.getElementById("newSalary").value);
@@ -184,7 +184,7 @@ function addRow() {
   document.getElementById("newSalary").value = "";
 }
 
-function removeRow(index) {
+globalThis.removeRow = function(index) {
   employees.splice(index, 1);
   renderTable();
 }
@@ -211,7 +211,7 @@ function renderContractsTable() {
   saveAllData();
 }
 
-function addContract() {
+globalThis.addContract = function() {
   const name = document.getElementById("contractName").value.trim();
   const profit = parseFloat(document.getElementById("contractProfit").value);
 
@@ -227,7 +227,7 @@ function addContract() {
   document.getElementById("contractProfit").value = "";
 }
 
-function removeContract(index) {
+globalThis.removeContract = function(index) {
   contracts.splice(index, 1);
   renderContractsTable();
 }
