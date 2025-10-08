@@ -1289,17 +1289,18 @@ class StatsManager {
         const attacker = this.state.battle.opponentOf(this.state.pokemon);
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return
+        console.log(move.name, attacker.name, this.state.pokemon.name);
         const oldStatChanges = structuredClone(move.statChanges)
         if(on === "self") {
-            this.state.pokemon.abilities.onTryBoost(move.statChanges.self, attacker, attacker)
-            attacker.abilities.onTryBoostOpponent(move.statChanges.self, attacker, attacker)
+            this.state.pokemon.abilities.onTryBoostOpponent(move.statChanges.self, attacker, attacker, this.state.pokemon)
+            attacker.abilities.onTryBoost(move.statChanges.self, attacker, attacker, this.state.pokemon)
             for (const [stat, change] of Object.entries(move.statChanges.self)) {
                 attacker.state.stats.applyStatChange(stat, change)
             }
         }
         else if (on === "target") {
-            this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker)
-            attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker)
+            this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker, attacker)
+            attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
             
             for (const [stat, change] of Object.entries(move.statChanges.target)) {
                 this.applyStatChange(stat, change)

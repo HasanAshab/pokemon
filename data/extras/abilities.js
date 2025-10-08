@@ -177,20 +177,24 @@ export default {
   },
 
   "mayangan:silver-eye": {
-    onTryBoost(boost, target, source, effect) {
+    onTryBoost(boost, target, source) {
+      console.log(target.name);
+      
       const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar:silver");
+      console.log(hasIntelligentEye);
+      
       for (let i in boost) {
-        boost[i] = hasIntelligentEye && boost[i] < 0 ? -boost[i] : -boost[i];
+        boost[i] = hasIntelligentEye ? Math.abs(boost[i]) : -boost[i];
       }
     },
     retreat: 0.5
   },
   // nakku
   "mayangan:golden-eye": {
-    onTryBoostOpponent(boost, target, source, effect) {
-      const hasIntelligentEye = target.hasAbility("mayangan:selfish-scar:golden");
+    onTryBoostOpponent(boost, target, source, opponent) {
+      const hasIntelligentEye = opponent.hasAbility("mayangan:selfish-scar:golden");
       for (let i in boost) {
-        boost[i] = hasIntelligentEye && boost[i] > 0 ? -boost[i] : -boost[i];
+        boost[i] = hasIntelligentEye ? -Math.abs(boost[i]) : -boost[i];
       }
     },
     retreat: 1.5

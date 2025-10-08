@@ -761,7 +761,7 @@ class AbilityManager {
         return this.pokemon.level >= 36
     }
 
-    isActive(nameOrRegex) {
+    isActive(nameOrRegex) {        
         return this.actives().some(ab => ab.name === nameOrRegex || ab.name.match(nameOrRegex))
     }
 

@@ -1,10 +1,7 @@
 * Tasks
-land price ++ when population increase
 ancient mod shadow clone
 
 * bug 
-mirror bug: for event
-
 same image on barrack will not work + defence wave
 
 * Bottle neck
