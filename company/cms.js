@@ -413,7 +413,7 @@ function renderStorageItems() {
   });
 }
 
-function addNewStorageItem() {
+globalThis.addNewStorageItem = function () {
   const itemName = prompt('Enter new item name:');
   if (!itemName || !itemName.trim()) {
     return;
