@@ -86,14 +86,20 @@ export function getMight(kingdom, forceType, shift) {
 
 export function calculateLandPrice(
   area,       // want land area (km²)
-  landArea,       // total land area (km²)
-  freeLandArea,   // free land area (km²)
-  density,        // people per km²
-  perCapitaIncome,// $
-  taxRate,        // in decimal (e.g., 0.01 for 1%)
+  kingdom,
   method,
   k = 2       // balancing factor
 ) {
+  const landArea = kingdom.landArea;
+   const density = kingdom.density;
+    const population = landArea * density;
+  const perCapitaIncome = kingdom.pci;
+  const taxRate = kingdom.taxRate;
+
+    const totalUsedLand =
+      calculateBuildUsedLandArea(kingdom) +
+      calculatePeopleUsedLandArea(population, perCapitaIncome, taxRate);
+  const freeLandArea = Math.max(landArea - totalUsedLand, 0); 
   const densityMod = Math.pow(density * 3.2, 2);
   
   // Step 1: Base price from PCI

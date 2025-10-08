@@ -80,11 +80,7 @@ function updateDisplay() {
   const freeLand = Math.max(area - totalUsedLand, 0);
   const landCost = calculateLandPrice(
     parseInt(priceForAreaInput.value),
-    area,
-    freeLand,
-    density,
-    pci,
-    taxRate,
+    kingdom,
     landCostMethod.value 
   );
   const tax = calculateTax(kingdom);
@@ -173,10 +169,7 @@ globalThis.updateCostForLand = function({currentTarget}){
   const freeLand = Math.max(totalKigndomArea - totalUsedLand, 0);
   const landCost = calculateLandPrice(
     area,
-    freeLand,
-    density,
-    pci,
-    taxRate,
+    kingdom,
     landCostMethod.value 
   );
   

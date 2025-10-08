@@ -1,3 +1,4 @@
+import { calculateLandPrice } from "../kingdoms/utils.js";
 
   const kingdoms = JSON.parse(localStorage.getItem("kingdoms"))
 const urlParams = new URLSearchParams(window.location.search);
@@ -231,9 +232,11 @@ function removeContract(index) {
   renderContractsTable();
 }
 function getAssetRent(asset) {
-  let rent = 0;
   const kingdom = kingdoms[asset.kingdom];
-  console.log(kingdom);
+  const totalSize = Number(asset.size) * Number(asset.quantity)
+  let rent = calculateLandPrice(totalSize, kingdom, "rent");
+
+  // console.log(rent, kingdom);
   
   return rent
 }
@@ -267,7 +270,7 @@ function renderAssetsTable() {
   saveAllData();
 }
 
-function addAsset() {
+globalThis.addAsset = function() {
   const name = document.getElementById("assetName").value.trim();
   const kingdom = document.getElementById("assetKingdom").value;
   const quantity = parseInt(document.getElementById("assetQuantity").value);
@@ -286,7 +289,7 @@ function addAsset() {
   document.getElementById("assetKm").value = "";
 }
 
-function removeAsset(index) {
+globalThis.removeAsset = function removeAsset(index) {
   assets.splice(index, 1);
   renderAssetsTable();
 }
