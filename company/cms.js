@@ -1,4 +1,4 @@
-import { calculateLandPrice } from "../kingdoms/utils.js";
+import { getAssetCost } from "./utils.js";
 
   const kingdoms = JSON.parse(localStorage.getItem("kingdoms"))
 const urlParams = new URLSearchParams(window.location.search);
@@ -32,7 +32,9 @@ globalThis.processMonthlyChanges = () => {
   const mediumRevenueEstimate = Number(company.revenueEstimates.medium);
   const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
   const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
-  const assetsCost = assets.reduce((total, asset) => total + getAssetRent(asset), 0);
+  const assetsCost = getAssetCost(companyName);
+  console.log(assetsCost);
+  
   const totalIncome = mediumRevenueEstimate + contractProfit - totalEmployeesSalary - assetsCost;
 
   company.monthlyChanges.coins =  totalIncome;
@@ -46,7 +48,7 @@ function updateCoins() {
   const revenueThisMonth = company.revenue.data[company.revenue.data.length - 1] || 0;
   const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
   const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
-  const assetsCost = assets.reduce((total, asset) => total + getAssetRent(asset), 0);
+  const assetsCost = getAssetCost(companyName);
 
   const totalIncome = revenueThisMonth + contractProfit - totalEmployeesSalary - assetsCost;
  console.log(contracts, company.employees)
@@ -555,7 +557,7 @@ window.onload = function () {
   renderTable();
   renderContractsTable();
   loadKingdomsDataList();
-  renderAssetsTable();
+  // renderAssetsTable();
   processMonthlyChanges();
 
   // Add event listeners for storage system
