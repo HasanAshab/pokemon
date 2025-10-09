@@ -344,12 +344,24 @@ export function getStorage(kingdom) {
   return sumObj(buildMaintains, kingdom.storage);
 }
 
+export function getLandRent(kingdom) {
+  return kingdom.buildings
+    .filter(build => build.property === "rent")
+    .reduce((total, build) => {
+      return (
+        total +
+        calculateSize(build.baseSize, build.currentLevel) * build.quantity
+      );
+    })
+}
+
 export function calcNetProd(kingdom, localize = false) {
   const sysProd = {
     coins: calculateTax(kingdom),
   };
   const sysCons = {
     coins:
+      getLandRent(kingdom) +
       calcSoldiersSalary(kingdom) +
       calcPoliceSalary(kingdom) +
       calcAcademyCost(kingdom) +
