@@ -40,10 +40,10 @@ function renderBuildings() {
     ownedByLabel.textContent = "Owned By";
 
     const ownedBySelect = document.createElement("select");
-    const ownedBy = building.ownedBy || "govt";
+    const ownedBy = building.ownedBy || name;
     ownedBySelect.style.width = "100%";
     ownedBySelect.style.padding = "5px";
-    ownedBySelect.innerHTML += Object.keys(companies).concat(["govt"]).map((companyName) =>  `<option ${ownedBy === companyName ? "selected" : ""} value="${companyName}">${companyName}</option>`).join("");
+    ownedBySelect.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((companyName) =>  `<option ${ownedBy === companyName ? "selected" : ""} value="${companyName}">${companyName}</option>`).join("");
 
 
     ownedBySelect.disabled = true;
@@ -57,6 +57,18 @@ function renderBuildings() {
     propertySelect.style.width = "100%";
     propertySelect.style.padding = "5px";
     
+        ownedBySelect.onchange = () => {
+      if (ownedBySelect.value === name) {
+        propertySelect.value = "govt";
+      }else {
+        propertySelect.value = "rent";
+      }
+    }
+    propertySelect.onchange = () => {
+      if (ownedBySelect.value === name) {
+        propertySelect.value = "govt";
+      }
+    }
 
 
     propertySelect.innerHTML = `

@@ -48,6 +48,7 @@ kingdomName.textContent = name || "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 let kingdom = kingdoms[name] || {
+  id: name,
   landArea: 1000,
   density: 100,
   pci: 50,
@@ -147,6 +148,7 @@ saveBtn.addEventListener("click", () => {
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
 
+  kingdom.id = name;
   kingdom.landArea = area;
   kingdom.density = density;
   kingdom.pci = pci;
