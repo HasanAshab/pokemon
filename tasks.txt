@@ -12,8 +12,6 @@ same image on barrack will not work + defence wave
 *ovi
 company : 
    1. assets size decrease from kigndom
-   2. produce to kigndom
-   3. consume from kigndom
 fix retreat of beast abilities
 hand3
 

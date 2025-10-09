@@ -7,6 +7,7 @@ const name = params.get("name");
 const kingdomNameEl = document.getElementById("kingdomName");
 const buildingsContainer = document.getElementById("buildingsContainer");
 const addBuildingBtn = document.getElementById("addBuildingBtn");
+  const companies = JSON.parse( localStorage.getItem("companies"))
 
 kingdomNameEl.textContent = name ? `${name}'s Buildings` : "Unknown Kingdom";
 
@@ -19,17 +20,7 @@ function saveAndRefresh() {
   renderBuildings();
 }
 
-function loadCompaniesDataList() {
-  const companies = JSON.parse( localStorage.getItem("companies"))
-  const companiesDataList = document.getElementById("companiesDataList");
-  companiesDataList.innerHTML = "";
-  Object.keys(companies).forEach((company) => {
-    const option = document.createElement("option");
-    option.value = company;
-    companiesDataList.appendChild(option);
-  }) 
-}
-loadCompaniesDataList()
+
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
@@ -44,6 +35,20 @@ function renderBuildings() {
     nameInput.value = building.name;
     nameInput.disabled = true;
 
+
+    const ownedByLabel = document.createElement("label");
+    ownedByLabel.textContent = "Owned By";
+
+    const ownedBySelect = document.createElement("select");
+    const ownedBy = building.ownedBy || "govt";
+    ownedBySelect.style.width = "100%";
+    ownedBySelect.style.padding = "5px";
+    ownedBySelect.innerHTML += Object.keys(companies).concat(["govt"]).map((companyName) =>  `<option ${ownedBy === companyName ? "selected" : ""} value="${companyName}">${companyName}</option>`).join("");
+
+
+    ownedBySelect.disabled = true;
+
+
     const propertyLabel = document.createElement("label");
     propertyLabel.textContent = "Property";
 
@@ -52,21 +57,7 @@ function renderBuildings() {
     propertySelect.style.width = "100%";
     propertySelect.style.padding = "5px";
     
-    const ownedByLabel = document.createElement("label");
-    ownedByLabel.textContent = "Owned By";
 
-    const ownedByInput = document.createElement("input");
-    ownedByInput.value = building.ownedBy || "govt";
-    ownedByInput.disabled = true;
-    ownedByInput.setAttribute("list", "companiesDataList");
-    // const companies = Object.keys(kingdoms[name].companies);
-    // companies.forEach((company) => {
-    //   const option = document.createElement("option");
-    //   option.value = company;
-    //   companiesDataList.appendChild(option);
-    // });
-    // ownedByInput.appendChild(companiesDataList);
- 
 
     propertySelect.innerHTML = `
     <option ${property === "govt" ? "selected" : ""} value="govt">govt</option>
@@ -198,6 +189,8 @@ function renderBuildings() {
     editBtn.onclick = () => {
       nameInput.disabled = false;
       propertySelect.disabled = false;
+          ownedBySelect.disabled = false;
+
       basePriceInput.style.display = "block";
       baseSizeInput.style.display = "block";
       baseMaintainsInput.style.display = "block";
@@ -206,6 +199,7 @@ function renderBuildings() {
       editBtn.textContent = "Save";
       editBtn.onclick = () => {
         building.name = nameInput.value.trim();
+        building.ownedBy = ownedBySelect.value;
         building.property = propertySelect.value;
         building.basePrice = parseFloat(basePriceInput.value);
         building.baseSize = parseFloat(baseSizeInput.value);
@@ -243,8 +237,12 @@ function renderBuildings() {
     div.appendChild(nameLabel);
     div.appendChild(nameInput);
     
+    div.appendChild(ownedByLabel);
+    div.appendChild(ownedBySelect);
+
     div.appendChild(propertyLabel);
     div.appendChild(propertySelect);
+
 
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
