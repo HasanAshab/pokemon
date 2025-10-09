@@ -1274,8 +1274,10 @@ function loadItems(playerTag) {
     itemsWrapper.innerHTML += `         
      <div class="item">
                 <span class="name">${item.id}</span>
+                ${item.type === "armor" ? `<span class="cover-percentage">( ${item.covers}% )</span>` : ""}
+
                 <button onclick="removeItem('${item.id}', '${playerTag}')" class="remove-btn">x</button>
-              </div>
+                </div>
 `
   }
 }
