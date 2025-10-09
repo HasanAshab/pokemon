@@ -10,9 +10,6 @@ same image on barrack will not work + defence wave
 * Pending
 
 *ovi
-company : 
-   1. assets size decrease from kigndom
-   2. give asset rent
 fix retreat of beast abilities
 hand3
 

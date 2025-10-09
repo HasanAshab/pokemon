@@ -56,7 +56,6 @@ function renderBuildings() {
     const property = building.property || "govt";
     propertySelect.style.width = "100%";
     propertySelect.style.padding = "5px";
-    
         ownedBySelect.onchange = () => {
       if (ownedBySelect.value === name) {
         propertySelect.value = "govt";

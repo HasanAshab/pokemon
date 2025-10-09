@@ -290,7 +290,7 @@ export function calcSoldiersSalary(kingdom, type) {
 }
 
 export function calcPoliceSalary(kingdom, type) {
-  if (!kingdom?.barrack?.soldiers) return 0;
+  if (!kingdom?.barrack?.polices) return 0;
 
   if (type) {
     return kingdom.barrack.polices[type].reduce((total, soldier) => {
@@ -326,9 +326,7 @@ export function calcBuildConsumtion(kingdom) {
 }
 
 export function calcBuildNetProd(kingdom) {
-  const prod = calcBuildProduction(kingdom);
-  console.log(prod);
-  
+  const prod = calcBuildProduction(kingdom);  
   const cons = modObj(calcBuildConsumtion(kingdom), -1);  
   return sumObj(prod, cons);
 }
@@ -339,29 +337,45 @@ export function getStorage(kingdom) {
       ? calculateMaintains(build.baseMaintains, build.currentLevel)
       : {};
     return sumObj(acc, modObj(maintains, build.quantity));
-  }, {});
-  
+  }, {});  
   return sumObj(buildMaintains, kingdom.storage);
 }
 
-export function getLandRent(kingdom) {
+export function calcLandTax(kingdom) {
   return kingdom.buildings
+    .filter(build => build.ownedBy !== kingdom.id)
     .filter(build => build.property === "rent")
     .reduce((total, build) => {
-      return (
-        total +
-        calculateSize(build.baseSize, build.currentLevel) * build.quantity
-      );
-    })
+      const size = calculateSize(build.baseSize, build.currentLevel) * build.quantity
+      const rent = calculateLandPrice(size, kingdom, "rent");
+      return total + rent;
+    }, 0)
 }
 
-export function calcNetProd(kingdom, localize = false) {
+export function calcLandRent(kingdom) {  
+  const kingdoms = Object.values(JSON.parse(localStorage.getItem("kingdoms")));
+  return kingdoms
+    .filter(k => k.id !== kingdom.id)
+    .reduce((cost, k) => {
+      return cost + k.buildings
+      .filter(build => build.ownedBy === kingdom.id)
+      .filter(build => build.property === "rent")
+      .reduce((total, build) => {
+        const size = calculateSize(build.baseSize, build.currentLevel) * build.quantity
+        const rent = calculateLandPrice(size, k, "rent");
+        return total + rent;
+      }, 0)
+  }, 0)
+}
+
+
+export function calcNetProd(kingdom, localize = false) {  
   const sysProd = {
-    coins: calculateTax(kingdom),
+    coins: calcLandTax(kingdom) + calculateTax(kingdom),
   };
   const sysCons = {
     coins:
-      getLandRent(kingdom) +
+      calcLandRent(kingdom) +
       calcSoldiersSalary(kingdom) +
       calcPoliceSalary(kingdom) +
       calcAcademyCost(kingdom) +

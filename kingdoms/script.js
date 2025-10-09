@@ -43,11 +43,13 @@ document.getElementById("addKingdomBtn").onclick = () => {
   }
 
   kingdoms[name] = {
+    id: name,
     landArea: 1000,
     density: 100,
     pci: 50,
     taxRate: 0.3,
     buildings: [],
+    storage: {},
   };
 
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));

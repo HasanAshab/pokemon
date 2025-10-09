@@ -54,6 +54,7 @@ let kingdom = kingdoms[name] || {
   pci: 50,
   taxRate: 0.3,
   buildings: [],
+  storage: {},
 };
 
 landAreaInput.value = kingdom.landArea;
