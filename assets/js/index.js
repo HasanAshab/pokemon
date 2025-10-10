@@ -257,8 +257,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 // import './test.js'
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
-startBattle(null,[
-
+startBattle([
   {
     "id": "rookie",
     "name": "E3",
@@ -661,6 +660,63 @@ startBattle(null,[
   {
     "id": "rookie",
     "name": "E10",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E11",
     "xp": 1400,
     "nature": "none",
     "retreat": 4.5,

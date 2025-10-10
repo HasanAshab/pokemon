@@ -544,8 +544,10 @@ function makeMyPokemons() {
 }
 
 function makeEnemyPokemons() {
-  return getParam("enemy").split(",").map(base64 => Pokemon.fromBase64(base64, "enemy"))
+  const enemiesBase64List = JSON.parse(localStorage.getItem("$enemies-base64-list"))
+  return enemiesBase64List.map(base64 => Pokemon.fromBase64(base64, "enemy"))
 }
+
 
 function loadTeams() {
   globalThis.teams = {

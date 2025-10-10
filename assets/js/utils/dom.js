@@ -193,14 +193,15 @@ export async function getUserPokemonsMeta(name, session = 1){
   return enemiesMeta
 }
 export function startBattle(enemiesMeta, fields = [], system) {
-   system = "multiple"
-  const history = JSON.parse(localStorage.getItem("battle-history")) || {};
+    system = "multiple"
+    const history = JSON.parse(localStorage.getItem("battle-history")) || {};
     const enemiesBase64List = enemiesMeta.map(meta => {
         history[meta.name] = meta
         return new Pokemon(meta.id, meta).toBase64()
     })
+    localStorage.setItem("$enemies-base64-list", JSON.stringify(enemiesBase64List));
     localStorage.setItem("battle-history", JSON.stringify(history));
-    window.location = `battle.html?enemy=${enemiesBase64List.join(",")}&fields=${fields.join(',')}${system ? "&system=" + system : ''}`;
+    window.location = `battle.html?fields=${fields.join(',')}${system ? "&system=" + system : ''}`;
   }
 
 export async function startUserBattle(name,popList=[],fields =[], system) {
