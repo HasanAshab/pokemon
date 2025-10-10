@@ -257,4 +257,80 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 // import './test.js'
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
-window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
+// window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
+startBattle([
+  {
+    "id": "rookie",
+    "name": "E1",
+    "xp": 1900,
+    "nature": "none",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor1"
+    ],
+    "moves": [],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E2",
+    "xp": 1900,
+    "nature": "none",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E3",
+    "xp": 1900,
+    "nature": "none",
+    "retreat": 4,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
+], [], "multiple")

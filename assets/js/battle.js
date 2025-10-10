@@ -427,11 +427,10 @@ function setBattleStateListeners(playerTag) {
   })
 
   pokemon.state.on('fainted', () => {
-
+    loadChoosePokemon(playerTag)
     const pokemonSwitchBtn = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler .pokemon:not(.disabled)`)
     pokemonSwitchBtn?.click()
-
-
+    loadPokemonData(playerTag)
   })
 
   battle.prompt(pokemon).reply("dodge", () => {
