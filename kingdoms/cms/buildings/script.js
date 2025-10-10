@@ -41,9 +41,12 @@ function renderBuildings() {
 
     const ownedBySelect = document.createElement("select");
     const ownedBy = building.ownedBy || name;
+       if (!building.ownedBy){
+      building.ownedBy = ownedBy
+    }
     ownedBySelect.style.width = "100%";
     ownedBySelect.style.padding = "5px";
-    ownedBySelect.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((companyName) =>  `<option ${ownedBy === companyName ? "selected" : ""} value="${companyName}">${companyName}</option>`).join("");
+    ownedBySelect.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((owner) =>  `<option ${ownedBy === owner ? "selected" : ""} value="${owner}">${owner}</option>`).join("");
 
 
     ownedBySelect.disabled = true;
@@ -54,6 +57,9 @@ function renderBuildings() {
 
     const propertySelect = document.createElement("select");
     const property = building.property || "govt";
+    if (!building.property){
+      building.property = property
+    }
     propertySelect.style.width = "100%";
     propertySelect.style.padding = "5px";
         ownedBySelect.onchange = () => {
@@ -304,14 +310,29 @@ globalThis.hideQuickFindForm = ()=>{
 
 }
 
-globalThis.showQuickFindForm = ()=>{
-   const quickFindForm = document.getElementById("quickFindForm")
- quickFindForm.classList.add("active")
-  const linksContainer =  quickFindForm.querySelector(".links-container")
+function renderQuickBuildingLinks(quickFindForm,ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox){
+    const linksContainer =  quickFindForm.querySelector(".links-container")
    linksContainer.innerHTML = "" 
-    kingdoms[name].buildings.forEach((building) => {
+   let buildings = kingdoms[name].buildings
+   if (ownedBySel.value !== "all")
+      buildings = buildings.filter(b=>b.ownedBy === ownedBySel.value)
+   if (propertySel.value !== "all")
+      buildings = buildings.filter(b=>b.property === propertySel.value)
+   if (sortBySizeCheckBox.checked) {
+      buildings = [...buildings].sort((b1,b2)=> {
+       let size1 = calculateSize(b1.baseSize,b1.currentLevel) 
+       let size2 = calculateSize(b2.baseSize,b2.currentLevel) 
+      if ( showQuantityCheckBox.checked){
+          size1 = size1 * b1.quantity
+          size2 = size2 * b2.quantity
+      }
+      return size2 -size1 
+      } ) 
+   }
+    buildings.forEach((building) => {
+      
     const btn = document.createElement("button")
-     btn.textContent = building.name
+     btn.textContent = `${building.name} ${showQuantityCheckBox.checked ? "( " + building.quantity + " )" : "" } ${showSizeCheckBox.checked ? calculateSize(building.baseSize,building.currentLevel) + " sq.m" : ""  }`
      btn.onclick = ()=>{
      const id = CSS.escape(building.name); // ensures valid selector
      const targetedBuilding = buildingsContainer.querySelector(`#${id}`);
@@ -322,4 +343,24 @@ globalThis.showQuickFindForm = ()=>{
      }
      linksContainer.appendChild(btn)
     })
+}
+function setupOwnedBySelect(ownedBySel){
+  ownedBySel.innerHTML = "<option selected value='all'>all</option>"
+  ownedBySel.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((owner) =>  `<option value="${owner}">${owner}</option>`).join("");
+}
+globalThis.showQuickFindForm = ()=>{
+   const quickFindForm = document.getElementById("quickFindForm")
+ quickFindForm.classList.add("active")
+  const controlerBar = quickFindForm.querySelector(".controler-bar")
+  const ownedBySel = controlerBar.querySelector(".owned-by")
+  const propertySel = controlerBar.querySelector(".property")
+  const sortBySizeCheckBox = controlerBar.querySelector(".sort-by-size")
+  const showSizeCheckBox = controlerBar.querySelector(".show-size")
+  const showQuantityCheckBox = controlerBar.querySelector(".show-quantity")
+  setupOwnedBySelect(ownedBySel)
+  renderQuickBuildingLinks(quickFindForm,ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox)
+ const controlers = [ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox]
+  controlers.forEach(el=>{
+    el.onchange = ()=> renderQuickBuildingLinks(quickFindForm,ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox)
+  })
 }

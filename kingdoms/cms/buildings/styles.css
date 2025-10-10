@@ -175,6 +175,16 @@ button:hover {
   align-items: center;
  border-bottom: 1px solid black;
 }
+#quickFindForm > .controler-bar{
+  width: 90%;
+    display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+ border-bottom: 1px solid black;
+ padding: 8px 0;
+ gap: 5px;
+}
 #quickFindForm > .links-container{
 display: flex;
   justify-content: center;

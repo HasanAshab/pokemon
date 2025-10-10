@@ -33,8 +33,6 @@ globalThis.processMonthlyChanges = () => {
   const totalEmployeesSalary = company.employees.reduce((total, employee) => total + (employee.mans * employee.salary), 0);
   const contractProfit = contracts.reduce((total, contract) => total + contract.profit, 0);
   const assetsCost = getAssetCost(companyName);
-  console.log(assetsCost);
-  
   const totalIncome = mediumRevenueEstimate + contractProfit - totalEmployeesSalary - assetsCost;
 
   company.monthlyChanges.coins =  totalIncome;
