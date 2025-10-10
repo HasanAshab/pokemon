@@ -410,28 +410,28 @@ class BaseBattle extends EventEmitter {
             damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
             damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
         }
-        else if ((["allAdjacent", "foeSide"].includes(move1.target)) !== (["allAdjacent", "foeSide"].includes(move2.target))) {             
-            if (["allAdjacent", "foeSide"].includes(move1.target)) {
-                await this._tryDodge(this.pokemon2, senario, clonemode2)
-                const oldm = move2
-                move2 = senario.get(this.pokemon2)
-                isDodged2()
-                    ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
-                    : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
-                if (isDodged2())
-                    move2 = oldm
-            }
-            else {
-                await this._tryDodge(this.pokemon1, senario, clonemode1)
-                const oldm = move1
-                move1 = senario.get(this.pokemon1)
-                isDodged1()
-                    ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
-                    : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
-                if (isDodged1())
-                    move1 = oldm
-            }
-        }
+        // else if ((["allAdjacent", "foeSide"].includes(move1.target)) !== (["allAdjacent", "foeSide"].includes(move2.target))) {             
+        //     if (["allAdjacent", "foeSide"].includes(move1.target)) {
+        //         await this._tryDodge(this.pokemon2, senario, clonemode2)
+        //         const oldm = move2
+        //         move2 = senario.get(this.pokemon2)
+        //         isDodged2()
+        //             ? instantDamages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+        //             : damages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+        //         if (isDodged2())
+        //             move2 = oldm
+        //     }
+        //     else {
+        //         await this._tryDodge(this.pokemon1, senario, clonemode1)
+        //         const oldm = move1
+        //         move1 = senario.get(this.pokemon1)
+        //         isDodged1()
+        //             ? instantDamages.set(this.pokemon2, hit1.damage() * pokeEffect1)
+        //             : damages.set(this.pokemon1, hit2.damage() * pokeEffect2)
+        //         if (isDodged1())
+        //             move1 = oldm
+        //     }
+        // }
         else if(move1.category === "Physical" && move2.category === "Physical" && move1.flags.contact && !move2.flags.contact) {            
             const thornsDamage = move1.flags.weapon
                 ? hit2.damage() * 0.10
@@ -1289,7 +1289,6 @@ class StatsManager {
         const attacker = this.state.battle.opponentOf(this.state.pokemon);
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return
-        console.log(move.name, attacker.name, this.state.pokemon.name);
         const oldStatChanges = structuredClone(move.statChanges)
         if(on === "self") {
             this.state.pokemon.abilities.onTryBoostOpponent(move.statChanges.self, attacker, attacker, this.state.pokemon)
