@@ -5,6 +5,7 @@ ancient mod shadow clone
 same image on barrack will not work + defence wave
 sage : health .0003883748297364466
 adjasten : do you want to dodge 
+___ scene = 1 turn ??
 * Bottle neck
 
 
