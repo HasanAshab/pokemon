@@ -146,6 +146,7 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
   playerSettingsForm.parentElement.classList.add("active")
   playerSettingsForm.querySelector(".header > .name").textContent = playerTag
+  setupBotModeBtn()
   loadCurrentHealthPercentage(playerTag)
   loadAbilities(playerTag)
   loadItems(playerTag)
@@ -154,6 +155,12 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   // global
   loadActiveFeilds()
 }
+ function setupBotModeBtn(){
+  const botModeBtn =  document.querySelector(".player-settings-form .bot-mode-btn") 
+  botModeBtn.onclick = ()=>{
+    
+  }
+ }
 function loadCurrentHealthPercentage(playerTag) {
   const healthElm = document.querySelector(".player-settings-form .settings-wrapper .extra-data .health-percent > .value") 
   healthElm.textContent = `${Math.floor((pokemonMap[playerTag].hp/pokemonMap[playerTag].maxhp)*100)} % `;
