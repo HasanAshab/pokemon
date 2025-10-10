@@ -151,7 +151,7 @@ export default {
       secondary: null,
       target: "self",
       type: "Normal",
-      retreat: 8,
+      retreat: 6,
       flags: {},
       effects: {
         self: [{

@@ -257,69 +257,462 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 // import './test.js'
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
-
 startBattle(null,[
-   {
-   "id": "genin",
-   "name": "Hatano fushi (18 years)",
-     "xp": 2100,
-     "nature": "none",
-     "retreat": 6,
-     "types": [],
-     "abilities": [
-       "fishingan1",
-       "defsusano"
-     ],
-     "items": ["gen-age-18"],
-     "moves": [
-       {
-         "id": "poisonsting",
-         "grade": "0",
-         "isSelected": true
-       },
-       {
-         "id": "cut",
-         "grade": "0",
-         "isSelected": true
-       },
-       {
-         "id": "return",
-         "grade": "0",
-         "isSelected": true
-       },
-       {
-         "id": "quickattack",
-         "grade": "0",
-         "isSelected": true
-       },
-       {
-         "id": "watergun",
-         "grade": "0",
-         "isSelected": true
-       },
-       {
-         "id": "whirlpool",
-         "grade": "0",
-         "isSelected": true
-       },
-             {
-         "id": "field:Water",
-         "grade": "0",
-         "isSelected": true
-       }
-     ],
-     "mega": {
-       "moves": [],
-       "suffix": ""
-     },
-     "stats": {},
-     "token_used": {
-       "hp": 0,
-       "spe": 0,
-       "atk": 0,
-       "def": 0,
-       "spa": 0,
-       "spd": 0
-     }
-   }
- ], [], "multiple")
+
+  {
+    "id": "rookie",
+    "name": "E3",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E4",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E5",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E6",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E7",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E8",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E9",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "rookie",
+    "name": "E10",
+    "xp": 1400,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "latherarmor2"
+    ],
+    "moves": [
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "machpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "kunai",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  }
+], [], "multiple")

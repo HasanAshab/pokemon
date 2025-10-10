@@ -3,7 +3,8 @@ ancient mod shadow clone
 
 * bug 
 same image on barrack will not work + defence wave
-
+sage : health .0003883748297364466
+adjasten : do you want to dodge 
 * Bottle neck
 
 
