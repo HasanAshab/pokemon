@@ -150,7 +150,7 @@ export class Pokemon extends PSPokemon {
     }
 
     isTypeOf(type) {
-        return this.types.includes(type);
+        return this.types.includes(type) || this._beastTypes.includes(type);
     }
 
     effectiveness(type) {
@@ -173,10 +173,6 @@ export class Pokemon extends PSPokemon {
         });        
         
         return effectiveness;
-    }
-    
-    getSTAB(move) {
-        return this.isTypeOf(move.type) ? 1.4 : 1;
     }
     
     cp() {

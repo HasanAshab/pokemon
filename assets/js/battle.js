@@ -2,7 +2,7 @@ import { EventEmitter } from "./utils/event.js"
 import { Pokemon, Move } from "./utils/models.js"
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
-import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags } from "./utils/helpers.js"
+import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags, shuffle } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
 import pokemons from "../../data/pokemons.js"
@@ -84,6 +84,13 @@ globalThis.progressbarClickHandler = ({ currentTarget }, playerTag) => {
   }
 }
 
+function clickOnMove(playerTag,moveId) {
+  // const pokemon = pokemonMap[playerTag]
+  const moveCard = document.querySelector(`.${playerTag}-controle-cont  .card-container .card[data-move-id="${moveId}"]`)  
+  if (moveCard) {
+    moveCard.click()
+  }
+}
 
 globalThis.switchPokemonClickHandler = function ({ currentTarget }, playerTag) {
   if (!currentTarget.classList.contains("disabled")) {
@@ -349,6 +356,28 @@ globalThis.removeMove = function (playerTag, moveId) {
   loadPokemonData(playerTag)
 }
 
+function chooseBotMove(playerTag) {
+  const pokemon = pokemonMap[playerTag];
+  const opponent = pokemonMap[opponentTag(playerTag)];
+
+  const sortedMoves = pokemon.state.moves
+    .filter(m => battle.canUseMove(pokemon, m.id))
+    .toSorted((m1, m2) => {
+      // Effectiveness matters most, then STAB, then raw power
+      const score1 = (m1.basePower || 0) * opponent.effectiveness(m1) * (pokemon.isTypeOf(m1.type) ? 1.5 : 1);
+      const score2 = (m2.basePower || 0) * opponent.effectiveness(m2) * (pokemon.isTypeOf(m2.type) ? 1.5 : 1);
+
+      return score2 - score1; // sort descending by effective damage
+    });
+
+  console.log(sortedMoves.map(m => m.id));
+  const choosedMoves = sortedMoves.slice(0, 3);
+  console.log(choosedMoves.map(m => m.id));
+  
+  const moveId = shuffle(choosedMoves)[0].id;
+  return moveId
+}
+
 
 function loadPokemonData(playerTag) {
 
@@ -377,6 +406,10 @@ function loadPokemonData(playerTag) {
   if (hp === 0) {
     const winnerTag = opponentTag(playerTag)
     //handleWin(winnerTag, playerTag)
+  }
+
+  if (pokemon.meta.isBot) {
+    clickOnMove(playerTag, chooseBotMove(playerTag))
   }
 }
 
@@ -1201,17 +1234,40 @@ globalThis.showFieldMoveForm = (playerTag) => {
 
   }
 }
-
-eventEmitter.on("move-card-select", (card, playerTag) => {
+ async function confirmBotScene() {
+   const botMoveConfirmBtn = document.querySelector("#bot-move-confirm-btn")
+   botMoveConfirmBtn.classList.add("active")
+   return new Promise(resolve => {
+     botMoveConfirmBtn.onclick = () => {
+       botMoveConfirmBtn.classList.remove("active")
+       resolve(true)
+     }
+   })
+  }
+eventEmitter.on("move-card-select", async (card, playerTag) => {
   if (card.classList.contains("disabled")) return
   const oponentPlayerTag = playerTag === "you" ? "enemy" : "you"
   const oponentSelectedMoveCard = document.querySelector(`.${oponentPlayerTag}-controle-cont .card-container .card.selected`)
+
   if (oponentSelectedMoveCard) {
-    oponentSelectedMoveCard.classList.remove("selected")
+    card.classList.add("selected")
+    
+    const bothBot = pokemonMap[playerTag].meta.isBot && pokemonMap[oponentPlayerTag].meta.isBot
+    
+    if (bothBot) {
+      const confirmBotMode = await confirmBotScene()
+      if (!confirmBotMode) {
+        return
+      }
+    }
+
     runScene({
       [playerTag]: card.dataset.moveId,
       [oponentPlayerTag]: oponentSelectedMoveCard.dataset.moveId
     }).catch(console.log)
+    oponentSelectedMoveCard.classList.remove("selected")
+    card.classList.remove("selected")
+
   } else {
     card.parentElement.parentElement.querySelector(".card.selected")?.classList.remove("selected")
     card.classList.add("selected")

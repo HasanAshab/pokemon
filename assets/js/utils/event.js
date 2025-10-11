@@ -42,8 +42,8 @@ export class EventEmitter {
 
         const send = ({ fn }) => {
           fn.apply(ctx, args);
-          fn.toString().includes('async')
-            && console.log('Async reciever detected:', fn);
+          // fn.toString().includes('async')
+          //   && console.log('Async reciever detected:', fn);
         };
 
         if (this._events[event]) {
