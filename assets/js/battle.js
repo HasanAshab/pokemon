@@ -11,6 +11,7 @@ import pokemons from "../../data/pokemons.js"
 const eventEmitter = new EventEmitter()
 const system = getParam("system") || "multiple"
 let allAdjacentModeBy = null
+let shadowCloneBy = null
 
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.abilitiesPopupQueue = new PopupMsgQueue("abilities-msg-cont", 4, 3000);
@@ -322,7 +323,8 @@ function setBattleListeners() {
 
   battle.on("$counterclonecomplete", (moves1, moves2) => {
     if (moves1.length === 0 || moves2.length === 0) {
-      setTimeout(() => hideShadowCloneSceneController(), 3000)
+      const botMode = battle.pokemon1.meta.isBot || battle.pokemon2.meta.isBot
+      setTimeout(() => hideShadowCloneSceneController(), (botMode ? 6000 : 3000))
     }
     else {
       const data1 = moves1.map((m, i) => ({ move: m, isDodged: dodgeData[i + 1] ?? false }))
@@ -362,11 +364,6 @@ globalThis.removeMove = function (playerTag, moveId) {
 function chooseBotMove(playerTag) {
   const pokemon = pokemonMap[playerTag];
   const opponent = pokemonMap[opponentTag(playerTag)];
-
-  pokemon.state.moves.forEach(move => {
-    console.log(battle.canUseMove(pokemon, move.id), move.id);
-    
-  })
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
@@ -377,15 +374,16 @@ function chooseBotMove(playerTag) {
 
       return score2 - score1; // sort descending by effective damage
     });
-  
 
-  console.log(sortedMoves.map(m => m.id));
+  const choosedStatusMove = shuffle(
+    pokemon.state.usableOffensiveMoves()
+      .filter(m => m.category === "Status")
+      .filter(m => m.effects.self.every(e => !pokemon.state.effects.has(e.name)))
+  )[0]
   const choosedMoves = sortedMoves.slice(0, 3);
-  choosedMoves.push(
-    shuffle(pokemon.state.usableOffensiveMoves().filter(m => m.category === "Status"))[0]
-  )
+  choosedStatusMove && choosedMoves.push(choosedStatusMove)
   console.log(choosedMoves.map(m => m.id));
-  
+
   const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
   return moveId
 }
@@ -420,7 +418,7 @@ function loadPokemonData(playerTag) {
     //handleWin(winnerTag, playerTag)
   }
 
-  if (pokemon.meta.isBot && playerTag !== allAdjacentModeBy) {
+  if (pokemon.meta.isBot && ![allAdjacentModeBy, shadowCloneBy].includes(playerTag)) {
     clickOnMove(playerTag, chooseBotMove(playerTag))
   }
 }
@@ -510,6 +508,7 @@ function setBattleStateListeners(playerTag) {
   })
 
   battle.prompt(pokemon).reply("counterclone", (cloneMove, counterMove) => {
+    shadowCloneBy = opponentTag(playerTag)
     showShadowCloneSceneController(playerTag)
     addShadowCloneScene(cloneMove.id)
     if (counterMove) {
@@ -783,8 +782,9 @@ function showShadowCloneSceneController(playerTag) {
   const title = shadowCloneSceneController.querySelector(".title")
   title.textContent = `Shadow Clone Scene Controller ( ${playerTag} )`
 }
-globalThis.hideShadowCloneSceneController = function () {
 
+globalThis.hideShadowCloneSceneController = function () {
+  shadowCloneBy = null
   const shadowCloneSceneController = document.querySelector(".shadow-clone-scene-controller")
   const shadowCloneSceneList = shadowCloneSceneController.querySelector(".shadow-clone-scene-list")
 

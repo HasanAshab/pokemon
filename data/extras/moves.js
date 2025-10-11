@@ -267,7 +267,7 @@ export default {
         }],
         target: []
       },
-      retreat: 0
+      retreat: 1
     },
   
     focusenergy: {
