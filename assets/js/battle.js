@@ -367,6 +367,12 @@ function chooseBotMove(playerTag) {
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
+    .filter(m => {
+      if (pokemon.state.usableOffensiveMoves().length === 1) return true
+      const alreadyEffected = m.effects.self.some(e => pokemon.state.effects.has(e.name))
+        || m.effects.target.some(e => opponent.state.effects.has(e.name))
+      return !alreadyEffected
+    })
     .toSorted((m1, m2) => {      
       const predictPower = move => {
         const avgHits = Array.isArray(move.multihit)
@@ -375,10 +381,18 @@ function chooseBotMove(playerTag) {
         return move.basePower * move.capacity * avgHits
       }
       
-      const score1 = predictPower(m1) * opponent.effectiveness(m1) * (pokemon.isTypeOf(m1.type) ? 1.5 : 1);
-      const score2 = predictPower(m2) * opponent.effectiveness(m2) * (pokemon.isTypeOf(m2.type) ? 1.5 : 1);
-
-      return score2 - score1; // sort descending by effective damage
+      const getEffectBonus = move => {
+        const calcBonus = effects => {
+          return effects.reduce((total, e) => total + (e.chance / 19), 0)
+        }
+        return Math.max(1, calcBonus(move.effects.self) + calcBonus(move.effects.target))
+      }
+      
+      const score1 = predictPower(m1) * getEffectBonus(m1) * opponent.effectiveness(m1) * (pokemon.isTypeOf(m1.type) ? 1.5 : 1);
+      const score2 = predictPower(m2) * getEffectBonus(m2) * opponent.effectiveness(m2) * (pokemon.isTypeOf(m2.type) ? 1.5 : 1);
+      
+      console.log(m1.id, score1);
+      return score2 - score1;
     });
 
   const choosedStatusMove = shuffle(
@@ -386,7 +400,7 @@ function chooseBotMove(playerTag) {
       .filter(m => m.category === "Status")
       .filter(m => m.effects.self.every(e => !pokemon.state.effects.has(e.name)))
   )[0]
-  const choosedMoves = sortedMoves.slice(0, 3);
+  const choosedMoves = sortedMoves.slice(0, 4);
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
   console.log(choosedMoves.map(m => m.id));
 
