@@ -10,6 +10,8 @@ import pokemons from "../../data/pokemons.js"
 
 const eventEmitter = new EventEmitter()
 const system = getParam("system") || "multiple"
+let allAdjacentModeBy = null
+
 globalThis.popupQueue = new PopupMsgQueue("popup-msg-cont");
 globalThis.abilitiesPopupQueue = new PopupMsgQueue("abilities-msg-cont", 4, 3000);
 globalThis.toggleMoveInfo = function (info) {
@@ -268,19 +270,20 @@ globalThis.decreaseStat = function (playerTag, statName) {
   loadEasyStats(playerTag)
 
 }
-function updateAllAdjFlag(isActive, capacity) {
+function updateAllAdjFlag(isActive, capacity, playerTag) {
   const allAdjElm = document.getElementById("all-adj-data")
   if (isActive) {
     allAdjElm.classList.add("active")
     allAdjElm.textContent = `Adjasten ( ${capacity} )`
+    allAdjacentModeBy = playerTag
   }
   else {
     allAdjElm.classList.remove("active")
     allAdjElm.textContent = "Adjasten"
-
+    allAdjacentModeBy = null
   }
-
 }
+
 function loadVeryCloseBtn() {
   const btn = document.getElementById("very-close-btn")
   battle.ctx.veryClose
@@ -360,8 +363,13 @@ function chooseBotMove(playerTag) {
   const pokemon = pokemonMap[playerTag];
   const opponent = pokemonMap[opponentTag(playerTag)];
 
-  const sortedMoves = pokemon.state.moves
-    .filter(m => battle.canUseMove(pokemon, m.id))
+  pokemon.state.moves.forEach(move => {
+    console.log(battle.canUseMove(pokemon, move.id), move.id);
+    
+  })
+  const sortedMoves = pokemon.state.usableOffensiveMoves()
+    .filter(m => m.flags.offensive)
+    .filter(m => m.category !== "Status")
     .toSorted((m1, m2) => {
       // Effectiveness matters most, then STAB, then raw power
       const score1 = (m1.basePower || 0) * opponent.effectiveness(m1) * (pokemon.isTypeOf(m1.type) ? 1.5 : 1);
@@ -369,12 +377,16 @@ function chooseBotMove(playerTag) {
 
       return score2 - score1; // sort descending by effective damage
     });
+  
 
   console.log(sortedMoves.map(m => m.id));
   const choosedMoves = sortedMoves.slice(0, 3);
+  choosedMoves.push(
+    shuffle(pokemon.state.usableOffensiveMoves().filter(m => m.category === "Status"))[0]
+  )
   console.log(choosedMoves.map(m => m.id));
   
-  const moveId = shuffle(choosedMoves)[0].id;
+  const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
   return moveId
 }
 
@@ -408,7 +420,7 @@ function loadPokemonData(playerTag) {
     //handleWin(winnerTag, playerTag)
   }
 
-  if (pokemon.meta.isBot) {
+  if (pokemon.meta.isBot && playerTag !== allAdjacentModeBy) {
     clickOnMove(playerTag, chooseBotMove(playerTag))
   }
 }
@@ -418,10 +430,15 @@ function loadEffects(playerTag) {
   setEffects(pokemon.state.effects.all(), playerTag)
 }
 
+const _alreadySubscribedPokemons = []
+
 function setBattleStateListeners(playerTag) {
   const pokemon = pokemonMap[playerTag]
   const opponent = pokemonMap[opponentTag(playerTag)]
 
+  if (_alreadySubscribedPokemons.includes(pokemon.name)) return
+  _alreadySubscribedPokemons.push(pokemon.name)
+  
   pokemon.state.on("wave", () => {
     loadPokemonData(playerTag)
   })
@@ -520,12 +537,12 @@ function setBattleStateListeners(playerTag) {
 
   battle.prompt(pokemon).reply("adjacent_counter_stack", (adjacentMove) => {
     return new Promise((resolve, _) => {
-      updateAllAdjFlag(true, adjacentMove.capacity - 1)
+      updateAllAdjFlag(true, adjacentMove.capacity - 1, playerTag)
       const pokemonToSelect = document.querySelector(`.pokemon-switch-controler .pokemon[data-name="${pokemon.meta.name}"]`)
       pokemonToSelect.click()
 
       eventEmitter.once("move-card-select", (card, tag) => {
-        updateAllAdjFlag(adjacentMove.capacity - 2 > 0, adjacentMove.capacity - 1)
+        updateAllAdjFlag(adjacentMove.capacity - 2 > 0, adjacentMove.capacity - 1, playerTag)
         const selectedPokemonName = document.querySelector(`.${tag}-controle-cont .pokemon-switch-controler .pokemon.active`)?.dataset.name
         const p = teams[tag].find(p => p.name === selectedPokemonName)
         const storedMove = p.state.moves.find(move => move.id === card.dataset.moveId)
