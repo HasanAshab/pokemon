@@ -2,6 +2,7 @@
 war attacker reduce
 
 * bug
+to fixed hp
 same bot button on each team
 ___ scene = 1 turn
 same image on barrack will not work + defence wave
@@ -10,6 +11,7 @@ ancient mod shadow clone
 * Bottle neck
 Bot shinobi:
   dodge on effective attack + chance
+  leaf trap
 
 * Pending
 ancient mode with selfish scar
