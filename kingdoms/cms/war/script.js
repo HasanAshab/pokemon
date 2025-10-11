@@ -21,9 +21,11 @@ strategySelect.onchange = ()=>{
 const good = WAR_SYSTEMS[strategySelect.value].details.good
   const bad = WAR_SYSTEMS[strategySelect.value].details.bad
 goodMsgEl.textContent = good
-badMsgEl.textContent = bad
+badMsgEl.textContent = bad  
+}
 
-  
+defenderSelect.onchange = () => {
+  showDefenderData();
 }
 function renderStrategySelect() {
   Object.keys(WAR_SYSTEMS).forEach(strategy => {
@@ -121,15 +123,14 @@ function renderWaves() {
       percentageInput.min = "0";
       percentageInput.max = "100";
       percentageInput.value = soldier.percentage || 0;
-
       const percentageLabel = document.createElement("span");
-      const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
-        s => s.image.id === soldier.image
-      ).quantity;
-      const quantity = Math.ceil(total * (percentageInput.value / 100));
-      percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
+      percentageLabel.textContent = `${percentageInput.value}% (0 soldiers)`;
 
-      percentageInput.oninput = () => {
+      percentageInput.oninput = () => {   
+        const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
+          s => s.image.id === soldier.image
+        ).quantity * (parseInt(areaPercentageInput.value) / 100);
+        console.log(areaPercentageInput.value);
         const quantity = Math.ceil(total * (percentageInput.value / 100));
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
