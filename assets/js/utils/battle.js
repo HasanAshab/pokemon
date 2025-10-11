@@ -840,7 +840,7 @@ class BaseBattle extends EventEmitter {
         const opponentMove = senario.get(opponent)
         
         const wantDodge = !["staythere", "dodge", "block"].includes(move.id) && ((move.flags.weapon !== opponentMove.flags.weapon) || !(move.flags.contact && opponentMove.flags.contact)) 
-            && (clonemode || await this.prompt(pokemon).ask("dodge"))
+            && (pokemon.meta.isBot || clonemode || await this.prompt(pokemon).ask("dodge"))
         
         if (wantDodge) {
             move = new Move("dodge")

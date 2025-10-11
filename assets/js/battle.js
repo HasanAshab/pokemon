@@ -367,9 +367,7 @@ function chooseBotMove(playerTag) {
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
-    .toSorted((m1, m2) => {
-      // Effectiveness matters most, then STAB, then raw power
-      
+    .toSorted((m1, m2) => {      
       const predictPower = move => {
         const avgHits = Array.isArray(move.multihit)
           ? (move.multihit[0] + move.multihit[1]) / 2

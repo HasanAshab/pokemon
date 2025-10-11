@@ -9,8 +9,7 @@ ancient mod shadow clone
 
 * Bottle neck
 Bot shinobi:
-  dodge on effective attack
-  always dodge
+  dodge on effective attack + chance
 
 * Pending
 ancient mode with selfish scar
