@@ -63,6 +63,7 @@ function isTwoTurnMove(move) {
 function mergeDefault(move) {
     const defaultProps = {
         tokenChanges: {},
+        multihit: 1,
         onAfterMove(pokemon, target, move) {
             if ('heal' in move) {
                 let healTarget

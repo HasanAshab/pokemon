@@ -369,8 +369,16 @@ function chooseBotMove(playerTag) {
     .filter(m => m.category !== "Status")
     .toSorted((m1, m2) => {
       // Effectiveness matters most, then STAB, then raw power
-      const score1 = (m1.basePower || 0) * opponent.effectiveness(m1) * (pokemon.isTypeOf(m1.type) ? 1.5 : 1);
-      const score2 = (m2.basePower || 0) * opponent.effectiveness(m2) * (pokemon.isTypeOf(m2.type) ? 1.5 : 1);
+      
+      const predictPower = move => {
+        const avgHits = Array.isArray(move.multihit)
+          ? (move.multihit[0] + move.multihit[1]) / 2
+          : move.multihit        
+        return move.basePower * move.capacity * avgHits
+      }
+      
+      const score1 = predictPower(m1) * opponent.effectiveness(m1) * (pokemon.isTypeOf(m1.type) ? 1.5 : 1);
+      const score2 = predictPower(m2) * opponent.effectiveness(m2) * (pokemon.isTypeOf(m2.type) ? 1.5 : 1);
 
       return score2 - score1; // sort descending by effective damage
     });

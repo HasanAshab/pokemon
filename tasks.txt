@@ -8,7 +8,9 @@ same image on barrack will not work + defence wave
 ancient mod shadow clone
 
 * Bottle neck
-Bot shinobi
+Bot shinobi:
+  dodge on effective attack
+  always dodge
 
 * Pending
 ancient mode with selfish scar
