@@ -108,8 +108,12 @@ flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2px;
+  overflow-y: scroll;
+  
 }
-
+.container > .center > * {
+flex: 1;
+}
 #new-wave-btn {
   padding: 4px 8px;
   background-color: black;
@@ -210,11 +214,15 @@ flex-direction: column;
   align-items: center;
   font-size: small;
 }
+
 .pokemon-switch-controler > .pokemon > .pokeball-icon {
   border-radius: 100%;
 }
 .pokemon-switch-controler > .pokemon.active > .pokeball-icon {
   border: 3px solid gold;
+}
+.pokemon-switch-controler > .pokemon.active  > svg.stroke{
+stroke: gold;
 }
 .pokemon-switch-controler > .pokemon.disabled > .pokeball-icon {
   filter: brightness(30%);
@@ -437,6 +445,14 @@ flex-direction: column;
   padding: 10px;
   
 }
+.player-settings-form .settings-wrapper .settings.extra-data{
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.player-settings-form .settings-wrapper .settings.extra-data > .bot-mode-btn.active > .fill{
+  fill: royalblue;
+}
 .player-settings-form .settings-wrapper .settings.extra-data > .data.health-percent{
   
   width: 100%;
@@ -649,3 +665,4 @@ display: flex;
 .shadow-clone-scene-controller.auto .shadow-clone-scene-list .shadow-clone-scene .clone-move-name.dodged::after{
   background-color: green;
 }
+
