@@ -1256,7 +1256,7 @@ class StatsManager {
         const stage = this._statChanges[name] ?? 0;
         const finalStat = baseStat
             * this._statStageMultiplier(name, stage)
-            * this.modifier(name)
+            * this.modifier(name);        
         return fixFloat(finalStat);
     }
 

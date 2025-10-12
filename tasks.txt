@@ -9,7 +9,7 @@ ancient mod shadow clone
 
 * Bottle neck
 Bot shinobi:
-  category priority (token)
+  adjacent mode bug
   X dodge on effective attack + chance
 
 

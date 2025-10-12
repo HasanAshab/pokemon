@@ -1596,8 +1596,8 @@ katana: {
       onHit(pokemon, opponent) {
         const per = 0.15
         const stats = {
-          atk: pokemon.stats.atk * per,
-          spa: pokemon.stats.spa * per,
+          atk: pokemon.state.stats.get("atk") * per,
+          spa: pokemon.state.stats.get("spa") * per,
         }
         opponent.tokens = sumObj(opponent.tokens, stats)
         
