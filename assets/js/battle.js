@@ -380,7 +380,7 @@ function chooseBotMove(playerTag) {
         || m.effects.target.some(e => opponent.state.effects.has(e.name))
       return !alreadyEffected
     })
-    .toSorted((m1, m2) => {      
+    .toSorted((m1, m2) => {
       const predictPower = move => {
         const avgHits = Array.isArray(move.multihit)
           ? (move.multihit[0] + move.multihit[1]) / 2
@@ -413,11 +413,36 @@ function chooseBotMove(playerTag) {
         return bonus
       }
 
-      console.log(pokemon.stats.atk, pokemon.stats.spa);
-      
+      const getCategoryBonus = move => {
+        const map = {
+          "Physical": "atk",
+          "Special": "spa",
+        }
+        const revMap = {
+          "Physical": "Special",
+          "Special": "Physical",
+        }
+
+        const mod = pokemon.state.stats.get(map[move.category]) / pokemon.state.stats.get(map[revMap[move.category]])
+        
+        let bonus;
+        if (mod < 1) {
+          // Amplifies the negative impact by a factor of 4 (e.g., 0.95 -> 1 + (-0.05 * 4) = 0.8)
+          bonus = 1 + ((mod - 1) * 4)
+        } else {
+          // Amplifies the positive impact by a factor of 3 (e.g., 1.05 -> 1 + (0.05 * 3) = 1.15)
+          bonus = 1 + ((mod - 1) * 3)
+        }
+        return Math.max(0, bonus)
+      }
 
       const getScore = move => {
-        return predictPower(move) * getStatChangesBonus(move) * getEffectBonus(move) * opponent.effectiveness(move) * (pokemon.isTypeOf(move.type) ? 1.5 : 1)
+        return predictPower(move)
+          * getStatChangesBonus(move)
+          * getEffectBonus(move)
+          * getCategoryBonus(move)
+          * opponent.effectiveness(move) 
+          * (pokemon.isTypeOf(move.type) ? 1.5 : 1)
       }
 
       const score1 = getScore(m1)
@@ -427,7 +452,7 @@ function chooseBotMove(playerTag) {
       _scores[m2.id] = score2;
       return score2 - score1;
     });
-
+      
   console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
   const choosedMoves = sortedMoves.slice(0, 4);
