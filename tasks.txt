@@ -10,7 +10,6 @@ ancient mod shadow clone
 * Bottle neck
 Bot shinobi:
   category priority (token)
-  all summon is bot
   X dodge on effective attack + chance
 
 

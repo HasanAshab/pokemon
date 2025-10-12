@@ -1147,7 +1147,8 @@ class BattleState extends EventEmitter {
         const level = ((sourceMove._meta.grade || 0) * 3) || 1         
         const summon = new Pokemon(id, {
           xp: (level - 1) * 100,
-          retreat: Math.max(3, level)
+          retreat: Math.max(3, level),
+          isBot: true,
         }, this.pokemon._tag)
 
         summon.meta.name = `${summon.name} (${this._summonNo++})`
