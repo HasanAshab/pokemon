@@ -373,6 +373,7 @@ function chooseBotMove(playerTag) {
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
+    .filter(m => allAdjacentModeBy === null || m.capacity === 1)
     .filter(m => {
       if (pokemon.state.usableOffensiveMoves().length === 1) return true
       const alreadyEffected = m.effects.self.some(e => pokemon.state.effects.has(e.name))
@@ -393,17 +394,27 @@ function chooseBotMove(playerTag) {
         }
         return Math.max(1, calcBonus(move.effects.self) + calcBonus(move.effects.target))
       }
-      
+
       const getStatChangesBonus = move => {
         const calcTotal = changes => {
           return Object.values(changes).reduce((total, stat) => total + stat, 0)
         }
-        let bonus = (calcTotal(move.statChanges.self) + (calcTotal(move.statChanges.target) * -1)) * 1.3
-        
-        console.log(move.id, bonus);
-
+        const total = calcTotal(move.statChanges.self) + (calcTotal(move.statChanges.target) * -1)
+        let bonus;
+        if (total === 0) {
+          bonus = 1
+        }
+        else if (total > 0) {
+          bonus = Math.pow(1.5, total)
+        }
+        else {
+          bonus = Math.pow(0.7, Math.abs(total))
+        }
         return bonus
       }
+
+      console.log(pokemon.stats.atk, pokemon.stats.spa);
+      
 
       const getScore = move => {
         return predictPower(move) * getStatChangesBonus(move) * getEffectBonus(move) * opponent.effectiveness(move) * (pokemon.isTypeOf(move.type) ? 1.5 : 1)
@@ -419,12 +430,11 @@ function chooseBotMove(playerTag) {
 
   console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
-
-    
   const choosedMoves = sortedMoves.slice(0, 4);
   const choosedStatusMove = shuffle(
     pokemon.state.usableOffensiveMoves()
       .filter(m => m.category === "Status")
+      .filter(m => shadowCloneBy === null || m.id !== "shadowclone")
       .filter(m => m.effects.self.every(e => !pokemon.state.effects.has(e.name)))
   )[0]
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
@@ -457,11 +467,6 @@ function loadPokemonData(playerTag) {
     const hpDist = fixFloat(hp - oldHp)
     const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
     //popupQueue.add(msg, playerTag)
-  }
-
-  if (hp === 0) {
-    const winnerTag = opponentTag(playerTag)
-    //handleWin(winnerTag, playerTag)
   }
 
   if (pokemon.meta.isBot && ![allAdjacentModeBy, shadowCloneBy].includes(playerTag)) {
