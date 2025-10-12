@@ -432,8 +432,8 @@ function chooseBotMove(playerTag) {
         } else {
           // Amplifies the positive impact by a factor of 3 (e.g., 1.05 -> 1 + (0.05 * 3) = 1.15)
           bonus = 1 + ((mod - 1) * 3)
-        }        
-        return bonus
+        }
+        return Math.max(0, bonus)
       }
 
       const getScore = move => {
