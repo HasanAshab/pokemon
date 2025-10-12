@@ -181,6 +181,8 @@ class BaseBattle extends EventEmitter {
     canUseMove(pokemon, moveId) {
         const move = pokemon.state.moves.find(m => m.id === moveId)
         
+        if (move.id === "staythere") return true
+
         return move.retreat <= pokemon.state.retreat 
           && (move.pp === null || move.pp > 0)
           && pokemon.abilities.canUseMove(move)

@@ -9,10 +9,9 @@ ancient mod shadow clone
 
 * Bottle neck
 Bot shinobi:
-  stat changes bonus
   category priority (token)
-  X dodge on effective attack + chance
   all summon is bot
+  X dodge on effective attack + chance
 
 
 * Pending
