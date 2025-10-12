@@ -370,6 +370,7 @@ function chooseBotMove(playerTag) {
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
+    .filter(m => allAdjacentModeBy === null || m.capacity === 1)
     .filter(m => {
       if (pokemon.state.usableOffensiveMoves().length === 1) return true
       const alreadyEffected = m.effects.self.some(e => pokemon.state.effects.has(e.name))
@@ -390,7 +391,7 @@ function chooseBotMove(playerTag) {
         }
         return Math.max(1, calcBonus(move.effects.self) + calcBonus(move.effects.target))
       }
-      
+
       const getStatChangesBonus = move => {
         const calcTotal = changes => {
           return Object.values(changes).reduce((total, stat) => total + stat, 0)
@@ -423,12 +424,11 @@ function chooseBotMove(playerTag) {
 
   console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
-
-    
   const choosedMoves = sortedMoves.slice(0, 4);
   const choosedStatusMove = shuffle(
     pokemon.state.usableOffensiveMoves()
       .filter(m => m.category === "Status")
+      .filter(m => shadowCloneBy === null || m.id !== "shadowclone")
       .filter(m => m.effects.self.every(e => !pokemon.state.effects.has(e.name)))
   )[0]
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
@@ -461,11 +461,6 @@ function loadPokemonData(playerTag) {
     const hpDist = fixFloat(hp - oldHp)
     const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
     //popupQueue.add(msg, playerTag)
-  }
-
-  if (hp === 0) {
-    const winnerTag = opponentTag(playerTag)
-    //handleWin(winnerTag, playerTag)
   }
 
   if (pokemon.meta.isBot && ![allAdjacentModeBy, shadowCloneBy].includes(playerTag)) {
