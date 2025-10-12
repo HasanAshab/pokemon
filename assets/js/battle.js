@@ -918,6 +918,10 @@ function setEffects(effects, playerTag) {
       "name": "Sleep",
       "color": "Psychic"
     },
+    "tailwind":{
+      "name": "TailWind",
+      "color": "Flying"
+    },
     "confusion": {
       "name": "Confusion",
       "color": "Psychic"

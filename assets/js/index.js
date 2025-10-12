@@ -258,67 +258,57 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
 // window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
-/*startBattle([
+startBattle([
   {
-    "id": "rookie",
-    "name": "E1",
-    "xp": 1900,
-    "nature": "none",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [
-      "latherarmor1"
+    "id": "chunin",
+    "name": "Mustofa",
+    "xp": 2900,
+    "nature": "nin",
+    "retreat": 9,
+    "types": [
+      "Fire"
     ],
-    "moves": [],
-    "mega": {
-      "moves": [],
-      "suffix": ""
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-  {
-    "id": "rookie",
-    "name": "E2",
-    "xp": 1900,
-    "nature": "none",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
+    "abilities": [
+      "flamebody"
+    ],
     "items": [],
-    "moves": [],
-    "mega": {
-      "moves": [],
-      "suffix": ""
-    },
-    "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
-  },
-  {
-    "id": "rookie",
-    "name": "E3",
-    "xp": 1900,
-    "nature": "none",
-    "retreat": 4,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [],
+    "moves": [
+      {
+        "id": "ember",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "firespin",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "heatwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "incinerate",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "furysmoke",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "protect",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "field:Fire",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
     "mega": {
       "moves": [],
       "suffix": ""
@@ -333,4 +323,4 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
       "spd": 0
     }
   }
-], [], "multiple")*/
+], [], "multiple")

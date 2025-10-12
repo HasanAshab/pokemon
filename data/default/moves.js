@@ -9559,7 +9559,7 @@ export default {
     heatwave: {
       num: 257,
       accuracy: 90,
-      basePower: 95,
+      basePower: 55,
       category: "Special",
       name: "Heat Wave",
       pp: 10,
@@ -10660,10 +10660,7 @@ export default {
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
       onHit(pokemon, source) {
-        const item = pokemon.getItem()
-        if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
-          this.add("-enditem", pokemon, item.name, "[from] move: Incinerate")
-        }
+        
       },
       secondary: null,
       target: "allAdjacentFoes",
@@ -21316,6 +21313,13 @@ export default {
       pp: 15,
       priority: 0,
       flags: { snatch: 1, metronome: 1, wind: 1 },
+      effects: {
+        self: [{
+          name: "tailwind",
+          chance: 70,
+        }],
+        target: [],
+      },
       sideCondition: "tailwind",
       condition: {
         duration: 4,
@@ -21351,7 +21355,7 @@ export default {
       target: "allySide",
       type: "Flying",
       zMove: { effect: "crit2" },
-      contestType: "Cool"
+      contestType: "Cool",
     },
     takedown: {
       num: 36,

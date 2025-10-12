@@ -199,7 +199,6 @@ class AquaRingEffect extends Effect {
        this.state.increaseHealth(hp)
     }
 }
-
 class NatureHealingEffect extends Effect {
     static effectName = "naturehealing"
 
@@ -238,6 +237,20 @@ class SleepEffect extends ExpirableEffect {
         super.teardown()
         this.status.canMove = true
     }
+}
+class  TailWindEffect extends ExpirableEffect {
+    static effectName = "tailwind"
+
+    setup() {
+        super.setup()
+        this.lifetime.turns = 2
+
+    }
+    onScene(){
+              this.state.stats.chainModify("spe", 2);
+
+    }
+    
 }
 
 class FreezeEffect extends ExpirableEffect {
@@ -783,6 +796,7 @@ export const EFFECTS = makeEffectsMap([
     AquaRingEffect,
     NatureHealingEffect,
     SleepEffect,
+    TailWindEffect,
     FreezeEffect,
     FlinchEffect,
     ParalyzeEffect,
