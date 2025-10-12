@@ -410,6 +410,9 @@ function chooseBotMove(playerTag) {
         return bonus
       }
 
+      console.log(pokemon.stats.atk, pokemon.stats.spa);
+      
+
       const getScore = move => {
         return predictPower(move) * getStatChangesBonus(move) * getEffectBonus(move) * opponent.effectiveness(move) * (pokemon.isTypeOf(move.type) ? 1.5 : 1)
       }
