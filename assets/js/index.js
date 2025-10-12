@@ -258,7 +258,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
 // window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
-startBattle([
+/*startBattle([
   {
     "id": "rookie",
     "name": "E1",
@@ -333,4 +333,4 @@ startBattle([
       "spd": 0
     }
   }
-], [], "multiple")
+], [], "multiple")*/

@@ -91,7 +91,10 @@ function clickOnMove(playerTag,moveId) {
   // const pokemon = pokemonMap[playerTag]
   const moveCard = document.querySelector(`.${playerTag}-controle-cont  .card-container .card[data-move-id="${moveId}"]`)  
   if (moveCard) {
-    moveCard.click()
+    moveCard.click();
+    moveCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  } else {
+    console.warn(`Move card not found for ${playerTag} with moveId ${moveId}`);
   }
 }
 
