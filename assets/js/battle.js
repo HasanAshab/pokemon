@@ -395,10 +395,17 @@ function chooseBotMove(playerTag) {
         const calcTotal = changes => {
           return Object.values(changes).reduce((total, stat) => total + stat, 0)
         }
-        let bonus = (calcTotal(move.statChanges.self) + (calcTotal(move.statChanges.target) * -1)) * 1.3
-        
-        console.log(move.id, bonus);
-
+        const total = calcTotal(move.statChanges.self) + (calcTotal(move.statChanges.target) * -1)
+        let bonus;
+        if (total === 0) {
+          bonus = 1
+        }
+        else if (total > 0) {
+          bonus = Math.pow(1.5, total)
+        }
+        else {
+          bonus = Math.pow(0.7, Math.abs(total))
+        }
         return bonus
       }
 
