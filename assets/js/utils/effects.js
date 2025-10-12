@@ -184,7 +184,7 @@ class PoisonEffect extends Effect {
 class AquaRingEffect extends Effect {
     static effectName = "aquaring"
 
-    onTurn() {
+    onScene() {
         this._increaseHealth()
     }
     
@@ -203,8 +203,8 @@ class AquaRingEffect extends Effect {
 class NatureHealingEffect extends Effect {
     static effectName = "naturehealing"
 
-    onTurn() {
-        this._increaseHealth()
+    onScene() {
+        this._increaseHealth() 
     }
     
     onWave() {
