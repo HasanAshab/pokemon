@@ -2,6 +2,7 @@
 war attacker reduce
 
 * bug
+tailwind
 same bot button on each team
 ___ scene = 1 turn
 same image on barrack will not work + defence wave

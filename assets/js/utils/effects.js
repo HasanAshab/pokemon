@@ -240,15 +240,12 @@ class SleepEffect extends ExpirableEffect {
 }
 class  TailWindEffect extends ExpirableEffect {
     static effectName = "tailwind"
+    lifetime = { turns: 2 }
 
-    setup() {
-        super.setup()
-        this.lifetime.turns = 2
-
-    }
     onScene(){
-              this.state.stats.chainModify("spe", 2);
-
+      console.log(this.state.pokemon.name);
+      
+        this.state.stats.chainModify("spe", 2);
     }
     
 }
