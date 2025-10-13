@@ -272,6 +272,7 @@ export class Pokemon extends PSPokemon {
     }
     
     movesMeta() {
+        return this.meta.moves
         return this.isMegaForm() 
             ? this.meta.mega.moves
             : this.meta.moves

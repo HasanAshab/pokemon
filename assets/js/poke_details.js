@@ -3,6 +3,7 @@ import {loadAbilitiesDataList,loadTypesDataList,loadItemsDataList, loadNaturesDa
 import { Pokemon, Move } from "./utils/models.js"
 import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 import { Damage } from "./utils/damage.js"
+import pokemons from "../../data/pokemons.js";
 
 
 var name = getParam("name")
@@ -236,6 +237,8 @@ function loadStats() {
 function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
+    console.log(pokemon.movesMeta());
+    
     for (const moveMeta of pokemon.movesMeta()) {
         const move = new Move(moveMeta.id, moveMeta)
         move._meta = moveMeta
