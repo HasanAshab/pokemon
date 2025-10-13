@@ -469,7 +469,7 @@ function chooseBotMove(playerTag) {
   )[0]
   
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
-  allAdjacentModeBy && choosedStallingMove && choosedMoves.push(choosedStallingMove)
+  (allAdjacentModeBy || shadowCloneBy) && choosedStallingMove && choosedMoves.push(choosedStallingMove)
 
   console.log(choosedMoves.map(m => m.id));
 
