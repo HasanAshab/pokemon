@@ -355,21 +355,21 @@ startBattle(null,[
     }
   }
 ], [], "multiple")
-// mustofa
+// mustofa and masal
 startBattle(null,[
   {
     "id": "chunin",
     "name": "Mustofa",
-    "xp": 2900,
+    "xp": 3100,
     "nature": "nin",
-    "retreat": 8.5,
+    "retreat": 7.5,
     "types": [
       "Fire"
     ],
     "abilities": [
       "flamebody"
     ],
-    "items": ["gen-age-50","gen-thik","gen-food-mid"],
+    "items": ["gen-age-50", "gen-ember", "gen-thik","gen-food-mid", "chainarmor1"],
     "moves": [
       {
         "id": "ember",
@@ -406,12 +406,69 @@ startBattle(null,[
         "grade": "0",
         "isSelected": true
       },
-       {
+      {
         "id": "kunai",
         "grade": "0",
         "isSelected": true
       },
        {
+        "id": "ninjastar",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": ""
+    },
+    "stats": {},
+    "token_used": {
+      "hp": 0,
+      "spe": 0,
+      "atk": 0,
+      "def": 0,
+      "spa": 0,
+      "spd": 0
+    }
+  },
+  {
+    "id": "genin",
+    "name": "Masal",
+    "xp": 2200,
+    "nature": "tai",
+    "retreat": 5,
+    "types": [
+      "Fighting"
+    ],
+    "abilities": [],
+    "items": [
+      "latherarmor2",
+      "gen-ember",
+      "gen-thik",
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "ember",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "karatechop",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "doublekick",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "chakrablade",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
         "id": "ninjastar",
         "grade": "0",
         "isSelected": true
