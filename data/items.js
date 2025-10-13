@@ -240,6 +240,15 @@ export default {
       "spd": 10,
     }
   },
+  "gen-age-50":{
+    tokensPercent: {
+      "hp": -3,
+      "def": -3,
+      "atk": -3,
+      "spa": -3,
+      "spd": -3, 
+    }
+  },
   "gen-bulk": {
     tokensPercent: {
       "hp": 20,
