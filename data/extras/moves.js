@@ -1625,6 +1625,24 @@ katana: {
       contestType: "Cool",
       
     },
-    
+     fireball: {
+      num: 100057,
+      accuracy: 60,
+      basePower: 60,
+      category: "Special",
+      name: "Fireball",
+      pp: 5 * 3,
+      priority: 0,
+      flags: {
+        protect: 1,
+        mirror: 1, 
+        metronome: 1 ,
+        weapon: 0
+      },
+      secondary: null,
+       target: "normal",
+      type: "Fire",
+    },
+
 }
 
