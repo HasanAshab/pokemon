@@ -1010,9 +1010,15 @@ class BattleState extends EventEmitter {
         return mod
     }
 
-    chainModifyRetreat(mod, conditionFn) {
-        this._retreatModifiers.push({ mod, conditionFn })
+    chainModifyRetreat(mod, conditionFn = () => true) {
+        const ref = { mod, conditionFn }
+        this._retreatModifiers.push(ref)
+        return ref
     }
+    removeRetreatModifier(ref) {
+        this._retreatModifiers = this._retreatModifiers.filter(m => m !== ref)
+    }
+
     toJSON() {
         return {
             _manCount: this._manCount,

@@ -387,7 +387,7 @@ export class Move {
 
     get retreat() {
         const mod = this._user?.state?.retreatModifier(this) ?? 1
-        return this._ref.retreat * mod
+        return parseFloat(parseFloat(this._ref.retreat * mod).toFixed(2))
     }
 
     set retreat(value) {
@@ -518,7 +518,10 @@ class Ability {
         this.active = false
         setTimeout(() => {
           if (this._ability.flags?.autoenable === 1 || !this.pokemon.isHuman) { 
-              'state' in this.pokemon && this.activate()
+              if ('state' in this.pokemon) {
+                this.activate()
+                this.pokemon.state.once("fainted", () => this.deactivate())
+              }
           }
         }, 200)
     }
