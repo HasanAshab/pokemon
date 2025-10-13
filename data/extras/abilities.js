@@ -306,9 +306,45 @@ export default {
     }
   },
 
+  innerpressure: {
+    retreat: 1.5,
+    flags: { autoenable: 1 },
+    _refs: {},
+    onScene(pokemon) {
+        pokemon.state.battle._all.forEach(p => {
+          if (p.name === pokemon.name)
+            return
+          console.log(p.name);
+          const oldRef = this.ability._refs[p.name]
+          if (oldRef)
+            p.state.removeRetreatModifier(oldRef)
+
+          const ref = p.state.chainModifyRetreat(this.ability._calcMod(pokemon))
+          this.ability._refs[p.name] = ref
+        })
+    },
+
+    onDeactivate(pokemon) {
+        pokemon.state.battle._all.forEach(p => {
+          if (p.name === pokemon.name)
+            return
+          const ref = this.ability._refs[p.name]
+          if (ref)
+            p.state.removeRetreatModifier(ref)
+        })
+    },
+
+    _calcMod(pokemon) {
+      console.log(2 - (pokemon.hp / pokemon.maxhp));
+      
+      return 2 - (pokemon.hp / pokemon.maxhp);
+    }
+  },
+
   // no weakness and resistence for the type + effects 100% 
   blueflame: { retreat: 2 },
   purplethunder: { retreat: 2 },
+  
   chakrafarm: {
     retreat: 0,
     onWave(pokemon) {

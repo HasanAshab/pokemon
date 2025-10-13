@@ -1,9 +1,7 @@
 * Tasks
-innerpressure ability
 
 * bug
 tailwind (side condition)
-
 same bot button on each team
 
 ancient mod shadow clone
