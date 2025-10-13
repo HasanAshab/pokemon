@@ -242,9 +242,8 @@ class  TailWindEffect extends ExpirableEffect {
     static effectName = "tailwind"
     lifetime = { turns: 2 }
 
-    onScene(){
+    onScene() {
       console.log(this.state.pokemon.name);
-      
         this.state.stats.chainModify("spe", 2);
     }
     
@@ -885,7 +884,7 @@ export class EffectManager {
         })
     }
 
-    apply(move, { on, pre = false }) {
+    apply(move, { on, pre = false }) {        
         if (this.state._data.armorUsed) return
 
         const abilitiesMap = {
@@ -895,7 +894,7 @@ export class EffectManager {
         const attacker = this.state.battle.opponentOf(this.state.pokemon)
         if (on === "self") {
             move.effects.self
-                .forEach(effect => {
+                .forEach(effect => {                    
                     if (Math.random() < (effect.chance / 100)) {
                         attacker.state.effects.add(move, effect.name)
                     }
@@ -904,7 +903,7 @@ export class EffectManager {
         else if(on === "target") {            
             move.effects.target
                 .filter(effect => EFFECTS[effect.name]?.isPre() === pre)
-                .forEach(effect => {
+                .forEach(effect => {                    
                     const chance = attacker.abilities.isActive(abilitiesMap[effect.name])
                         ? 100
                         : effect.chance * move.hits
