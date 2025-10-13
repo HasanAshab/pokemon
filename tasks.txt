@@ -1,9 +1,6 @@
 * Tasks
 
 * bug
-side condition
-
-
 ancient mod shadow clone
 same image on barrack will not work + defence wave
 

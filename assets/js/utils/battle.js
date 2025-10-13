@@ -86,9 +86,9 @@ class BaseBattle extends EventEmitter {
                 p.state.emit(this._event, ...args)
             })
         })
-        this.on(["scene", "scene-end"], function(map) {
+        this.on(["scene", "scene-end"], function(map, ...args) {
             that.groundedPokemons().filter(p => map.has(p)).forEach(p => {
-                p.state.emit(this._event, map.get(p), map)
+                p.state.emit(this._event, map.get(p), map, ...args)
             })
         })
     }
@@ -595,7 +595,7 @@ class BaseBattle extends EventEmitter {
             [this.pokemon1, hit1], 
             [this.pokemon2, hit2]
         ])
-        this.emit("scene-end", hitsMap)
+        this.emit("scene-end", hitsMap, senario)
         
         // Shadow Clone Support
         const sc1 = this.pokemon1.state.effects.has("shadowclone")
@@ -1060,6 +1060,10 @@ class BattleState extends EventEmitter {
 
     get team() {
         return this.battle[this.pokemon._tag === "you" ? "team1" : "team2"]
+    }
+
+    get foeTeam() {
+        return this.team === this.battle.team1 ? this.battle.team2 : this.battle.team1
     }
 
     isAlly(pokemon) {

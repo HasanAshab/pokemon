@@ -36,10 +36,6 @@ class Effect {
         "used-move",
         "contacted",
     ]
-    _listeners = {
-        self: {},
-        opponent: {},
-    }
 
     constructor(state, source) {
         this.state = state;
@@ -50,7 +46,7 @@ class Effect {
         this.events.forEach(event => {
             this._subscribeTo(event)
             this._subscribeToOpponent(event)
-        })
+          })
     }
 
     teardown() {
@@ -87,29 +83,32 @@ class Effect {
     _subscribeTo(event) {
         const listener = this[`on${camelize(capitalizeFirstLetter(event))}`]
         if (listener) {
-            this._listeners.self[event] = listener.bind(this)
-            this.state.on(event, this._listeners.self[event])
+            this.state.on(event, listener.bind(this), `effect::${this.constructor.effectName}::${event}`)
         }
     }
     
     _unsubscribeTo(event) {
-        const listener = this._listeners.self[event]
-        listener && this.state.removeListener(event, listener)
+        this.state.removeListener(event, `effect::${this.constructor.effectName}::${event}`)
     }
     
     _subscribeToOpponent(event) {
-        const opponent = this.state.battle.opponentOf(this.state.pokemon)
-        const listener = this[`onOpponent${camelize(capitalizeFirstLetter(event))}`]
-        if (listener) {
-            this._listeners.opponent[event] = listener.bind(this)
-            opponent.state.on(event, this._listeners.opponent[event])
-        }
+        this.state.foeTeam.forEach(opponent => {
+            const listener = this[`onOpponent${camelize(capitalizeFirstLetter(event))}`]
+            if (!listener) return
+            const superListener = (...args) => {
+                const ally = opponent.state.battle.opponentOf(opponent)                
+                if (ally.name === this.state.pokemon.name) {
+                    return listener.apply(this, args)
+                }
+            }
+            opponent.state.on(event, superListener, `effect::${this.constructor.effectName}::${event}`)
+        })
     }
-    
+
     _unsubscribeToOpponent(event) {
-        const opponent = this.state.battle.opponentOf(this.state.pokemon)
-        const listener = this._listeners.opponent[event]
-        listener && opponent.state.removeListener(event, listener)
+        this.state.foeTeam.forEach(opponent => {
+            opponent.state.removeListener(event, `effect::${this.constructor.effectName}::${event}`)
+        })
     }
 }
 
@@ -781,10 +780,41 @@ class AncientModeEffect extends ExpirableEffect {
     }
 
     displayMeta() {
-      const totalStatBoosted = this._stats.hp + this._stats.atk
+        const totalStatBoosted = this._stats.hp + this._stats.atk
         return `(${Math.floor(totalStatBoosted / 10)}.inch) - ${this.lifetime.turns}`
     }
 }
+
+class InnerGateEffect extends Effect {
+    static effectName = "innergate"
+
+    onOpponentContacted(contactor, move) {
+        if (
+          contactor.name !== this.state.pokemon.name 
+          || !this._isGateMove(move)
+        ) return
+        this.state.stats._statChanges.atk++
+        this.state.stats._statChanges.atk = Math.min(this.state.stats._statChanges.atk, 6)
+    }
+
+    onSceneEnd(_, __, senario) {
+        const move = senario.get(this.state.pokemon)
+        const opponentMove = senario.get(this.state.battle.opponentOf(this.state.pokemon))
+
+        if (opponentMove.id === "dodge" && opponentMove._dodgeMatrix.every(Boolean) && this._isGateMove(move)) {
+            this.state.stats._statChanges.def--
+            this.state.stats._statChanges.def = Math.max(this.state.stats._statChanges.def, -6)
+        }
+
+    }
+
+    _isGateMove(move) {
+      return move.category === "Physical"
+          && move.flags.contact
+          && !move.flags.weapon
+    }
+}
+
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
@@ -807,7 +837,8 @@ export const EFFECTS = makeEffectsMap([
     BleedEffect,
     MammothSkinEffect,
     AreaSplashEffect,
-    AncientModeEffect
+    AncientModeEffect,
+    InnerGateEffect,
 ])
 
 

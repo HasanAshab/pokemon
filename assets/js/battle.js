@@ -1041,7 +1041,11 @@ function setEffects(effects, playerTag) {
     "ancientmode": {
       "name": "Ancient Mode",
       "color": "Dragon"
-    }
+    },
+    "innergate": {
+      "name": "Inner Gate",
+      "color": "Fighting"
+    },
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const effectElements = effectsDataColumn.querySelectorAll(".effect")

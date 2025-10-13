@@ -1680,5 +1680,25 @@ katana: {
         return !pokemon.state._data.tailwind
       }
     },
+  openinnergate: {
+      num: 100058,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Open Inner Gate",
+      pp: 1,
+      priority: 0,
+      flags: {},
+      effects: {
+        self: [{
+          name: "innergate",
+          chance: 100,
+          isVolatile: true
+        }],
+        target: []
+      },
+      target: "self",
+      type: "Fighting",
+    },
 }
 
