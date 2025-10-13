@@ -29,8 +29,7 @@ function generalizeTarget(move) {
 function handleComboMoves(move, id) {  
   if (!move.flags.combo) return
   move.basePowerCallback = function(pokemon, target) {
-    const pastFiveMoves = pokemon.state._data.movesHistory.slice(-4)
-
+    const pastFiveMoves = pokemon.state._data.movesHistory.filter(m => m !== "staythere").slice(-4)
     let hitCount = 0
     for (let i = pastFiveMoves.length - 1; i >= 0; i--) {
       if (pastFiveMoves[i] !== id) break

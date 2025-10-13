@@ -327,7 +327,6 @@ function setBattleListeners() {
   battle.on("$counterclonecomplete", (moves1, moves2) => {
     if (moves1.length === 0 || moves2.length === 0) {
       const botMode = battle.pokemon1.meta.isBot || battle.pokemon2.meta.isBot
-      setTimeout(() => hideShadowCloneSceneController(), (botMode ? 6000 : 3000))
     }
     else {
       const data1 = moves1.map((m, i) => ({ move: m, isDodged: dodgeData[i + 1] ?? false }))
@@ -369,8 +368,18 @@ function chooseBotMove(playerTag) {
   const pokemon = pokemonMap[playerTag];
   const opponent = pokemonMap[opponentTag(playerTag)];
 
-  let _scores = {}
+  const actionableMovesHistory = pokemon.state._data.movesHistory.filter(m => m !== "staythere");
+  const lastMoveName = actionableMovesHistory[actionableMovesHistory.length - 1];
+  if (lastMoveName) {
+    const move = new Move(lastMoveName);
+    if (move.flags.combo)
+      return battle.canUseMove(pokemon, lastMoveName)
+        ? lastMoveName
+        : "staythere";
+  }
+  
 
+  let _scores = {}
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
@@ -467,7 +476,7 @@ function chooseBotMove(playerTag) {
     pokemon.state.usableMoves()
       .filter(m => m.flags.stall)
   )[0]
-  
+
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
   (allAdjacentModeBy || shadowCloneBy) && choosedStallingMove && choosedMoves.push(choosedStallingMove)
 
@@ -1509,10 +1518,9 @@ function clickOnFirstPokemonSwitch(playerTag,mirror = false) {
     pokemonSwitchControler.querySelector(`.pokemon.mirror`).click()
   }else {
   pokemonSwitchControler.querySelector(`.pokemon`).click()
-    
   }
-  // log
 }
+
 window.onload = () => {
   globalThis.pokemonMap = {}
   globalThis.fields = getParam("fields")?.split(',').filter(Boolean) ?? []

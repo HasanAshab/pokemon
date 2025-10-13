@@ -2,14 +2,12 @@
 
 * bug
 tailwind (side condition)
-same bot button on each team
 
 ancient mod shadow clone
 same image on barrack will not work + defence wave
 
 * Bottle neck
 Bot shinobi:
-  combo
   X dodge on effective attack + chance
 
 
@@ -17,6 +15,7 @@ Bot shinobi:
 ancient mode with selfish scar
 
 *ovi
+same bot button on each team
 fix retreat of beast abilities
 hand3
 
