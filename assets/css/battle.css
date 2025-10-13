@@ -610,9 +610,6 @@ display: flex;
   background-color: gray;
 }
 
-.shadow-clone-scene-controller:not(.auto) > .header > .close-btn{
-  display: none;
-}
 .shadow-clone-scene-controller .shadow-clone-scene-list{
   width: 90%;
   padding: 10px;
