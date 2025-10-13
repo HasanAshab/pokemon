@@ -63,6 +63,9 @@ function mergeDefault(move) {
     const defaultProps = {
         tokenChanges: {},
         multihit: 1,
+        canUse(pokemon) {
+            return true
+        },
         onAfterMove(pokemon, target, move) {
             if ('heal' in move) {
                 let healTarget

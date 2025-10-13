@@ -192,6 +192,7 @@ class BaseBattle extends EventEmitter {
           && pokemon.abilities.canUseMove(move)
           && pokemon.state.effects.canUseMove(move)
           && this.opponentOf(pokemon).state.effects.canOpponentUseMove(move)
+          && move.canUse(pokemon)
     }
 
     getActive(tag) {

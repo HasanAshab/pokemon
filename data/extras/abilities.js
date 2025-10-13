@@ -314,7 +314,6 @@ export default {
         pokemon.state.battle._all.forEach(p => {
           if (p.name === pokemon.name)
             return
-          console.log(p.name);
           const oldRef = this.ability._refs[p.name]
           if (oldRef)
             p.state.removeRetreatModifier(oldRef)
@@ -334,9 +333,7 @@ export default {
         })
     },
 
-    _calcMod(pokemon) {
-      console.log(2 - (pokemon.hp / pokemon.maxhp));
-      
+    _calcMod(pokemon) {      
       return 2 - (pokemon.hp / pokemon.maxhp);
     }
   },

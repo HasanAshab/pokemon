@@ -1,7 +1,9 @@
 * Tasks
 
 * bug
-tailwind (side condition)
+side condition
+effect expiry bug (turn == scene)
+
 
 ancient mod shadow clone
 same image on barrack will not work + defence wave

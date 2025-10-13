@@ -329,8 +329,9 @@ substitute: {
         pokemon.state.on('turn-end', () => {
           if (pokemon.state.battle.turnNo === turnNo + 1) {
             statCh.crit = oldCrit
+            return pokemon.state.removeListener('turn-end', "expire-laserfocus")
           }
-        })
+        }, "expire-laserfocus")
       },
       flags: { snatch: 1, metronome: 1 },
       secondary: null,
@@ -1640,9 +1641,44 @@ katana: {
         weapon: 0
       },
       secondary: null,
-       target: "normal",
+      target: "normal",
       type: "Fire",
     },
+   tailwind: {
+      num: 366,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Tailwind",
+      pp: 15,
+      priority: 0,
+      flags: { snatch: 1, metronome: 1, wind: 1 },
+      target: "allySide",
+      type: "Flying",
+      retreat: 3,
+      onHit(pokemon, opponent) {
+        const expiry = pokemon.state.battle.turnNo + 2
 
+        opponent.state.on('scene-end', () => {
+          if (pokemon.state.battle.turnNo === expiry) {
+            delete pokemon.state._data.tailwind
+            return opponent.state.removeListener('scene-end', "expire-tailwind")
+          }          
+
+          if (!pokemon.state._data.tailwind?.selfSpeedBoosted) {
+            pokemon.state.stats.chainModify("spe", 2)
+            pokemon.state._data.tailwind = { selfSpeedBoosted: true }
+            opponent.state.once("turn-end", () => {
+              pokemon.state._data.tailwind.selfSpeedBoosted = false
+            })
+          }
+
+          opponent.state.stats.chainModify("spe", 2)
+        }, "expire-tailwind")
+      },
+      canUse(pokemon) {
+        return !pokemon.state._data.tailwind
+      }
+    },
 }
 
