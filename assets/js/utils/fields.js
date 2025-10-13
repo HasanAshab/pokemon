@@ -29,11 +29,13 @@ class GenericField extends Field {
             if (oppositeEffect > 1) {
                 pokemon.state.damage.chainModifyCrit(1.5)
             }
-            if (oppositeEffect < 1) {
-                pokemon.state.damage.chainModifyPower(move.id, 1 - 0.15)
-            }
-            if (straightEffect > 1) {                
-                pokemon.state.damage.chainModifyPower(move.id, 1 - 0.15)
+            if (move.type !== this.type) {
+              if (oppositeEffect < 1) {
+                  pokemon.state.damage.chainModifyPower(move.id, 1 - 0.15)
+              }
+              if (straightEffect > 1) {                
+                  pokemon.state.damage.chainModifyPower(move.id, 1 - 0.15)
+              }
             }
         })
     }

@@ -2,7 +2,6 @@
 war attacker reduce
 
 * bug
-fire field
 tailwind
 same bot button on each team
 ___ scene = 1 turn
