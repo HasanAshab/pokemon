@@ -127,9 +127,8 @@ function addFlags(move) {
     setKeyIfNotExists(flags, "offensive", 1)
     isTwoTurnMove(move) && setKeyIfNotExists(flags, "twoturn", 1)
 
-    if (move.effects?.self.some(e => e.name === "stall")) {
-      console.log(move.name);
-      
+    
+    if (move.stallingMove) {      
         flags.stall = 1
         flags.offensive = 0
     }

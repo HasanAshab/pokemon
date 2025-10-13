@@ -467,9 +467,10 @@ function chooseBotMove(playerTag) {
     pokemon.state.usableMoves()
       .filter(m => m.flags.stall)
   )[0]
-  console.log(pokemon.state.usableMoves());
   
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
+  allAdjacentModeBy && choosedStallingMove && choosedMoves.push(choosedStallingMove)
+
   console.log(choosedMoves.map(m => m.id));
 
   const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
@@ -624,7 +625,7 @@ function setBattleStateListeners(playerTag) {
       pokemonToSelect.click()
 
       eventEmitter.once("move-card-select", async (card, tag) => {
-        const confirmed = await confirmBotScene()
+        const confirmed = allAdjacentModeBy === playerTag ? true : await confirmBotScene()
         if (!confirmed) return
         updateAllAdjFlag(adjacentMove.capacity - 2 > 0, adjacentMove.capacity - 1, playerTag)
         const selectedPokemonName = document.querySelector(`.${tag}-controle-cont .pokemon-switch-controler .pokemon.active`)?.dataset.name
