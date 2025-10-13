@@ -2,7 +2,6 @@
 
 * bug
 side condition
-effect expiry bug (turn == scene)
 
 
 ancient mod shadow clone
@@ -17,6 +16,7 @@ Bot shinobi:
 ancient mode with selfish scar
 
 *ovi
+kingdom clone
 same bot button on each team
 fix retreat of beast abilities
 hand3

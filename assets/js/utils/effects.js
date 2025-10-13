@@ -120,7 +120,7 @@ class ExpirableEffect extends Effect {
         super.setup()
         this.lifetime.turns && this.lifetime.turns--
     }
-    
+
     onTurn() {
         if(this.isExpired()) {
             this.remove()
@@ -137,7 +137,7 @@ class ExpirableEffect extends Effect {
             this.remove()
         }
     }
-    
+
     isExpired() {
         return [null, undefined, 0].includes(this.lifetime.turns)
             && [null, undefined, 0].includes(this.lifetime.waves)
