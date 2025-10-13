@@ -123,14 +123,21 @@ function bindMethods(move) {
 
 function addFlags(move) {
     const flags = move.flags
-    
+
     setKeyIfNotExists(flags, "offensive", 1)
     isTwoTurnMove(move) && setKeyIfNotExists(flags, "twoturn", 1)
+
+    if (move.effects?.self.some(e => e.name === "stall")) {
+      console.log(move.name);
+      
+        flags.stall = 1
+        flags.offensive = 0
+    }
 }
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
-      move.pp = Math.round(move.pp / 3) || 1;
+      move.pp = Math.round(move.pp / 6) || 1;
     }
 }
 

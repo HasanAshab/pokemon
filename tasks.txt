@@ -2,6 +2,7 @@
 war attacker reduce
 
 * bug
+fire field
 tailwind
 same bot button on each team
 ___ scene = 1 turn
@@ -10,7 +11,7 @@ ancient mod shadow clone
 
 * Bottle neck
 Bot shinobi:
-  adjacent mode bug
+  dont protect, except shadowclo, alladj
   X dodge on effective attack + chance
 
 

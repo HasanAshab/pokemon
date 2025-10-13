@@ -364,6 +364,7 @@ globalThis.removeMove = function (playerTag, moveId) {
   loadPokemonData(playerTag)
 }
 
+
 function chooseBotMove(playerTag) {
   const pokemon = pokemonMap[playerTag];
   const opponent = pokemonMap[opponentTag(playerTag)];
@@ -452,7 +453,7 @@ function chooseBotMove(playerTag) {
       _scores[m2.id] = score2;
       return score2 - score1;
     });
-      
+
   console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
   const choosedMoves = sortedMoves.slice(0, 4);
@@ -462,6 +463,12 @@ function chooseBotMove(playerTag) {
       .filter(m => shadowCloneBy === null || m.id !== "shadowclone")
       .filter(m => m.effects.self.every(e => !pokemon.state.effects.has(e.name)))
   )[0]
+  const choosedStallingMove = shuffle(
+    pokemon.state.usableMoves()
+      .filter(m => m.flags.stall)
+  )[0]
+  console.log(pokemon.state.usableMoves());
+  
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
   console.log(choosedMoves.map(m => m.id));
 
@@ -616,7 +623,9 @@ function setBattleStateListeners(playerTag) {
       const pokemonToSelect = document.querySelector(`.pokemon-switch-controler .pokemon[data-name="${pokemon.meta.name}"]`)
       pokemonToSelect.click()
 
-      eventEmitter.once("move-card-select", (card, tag) => {
+      eventEmitter.once("move-card-select", async (card, tag) => {
+        const confirmed = await confirmBotScene()
+        if (!confirmed) return
         updateAllAdjFlag(adjacentMove.capacity - 2 > 0, adjacentMove.capacity - 1, playerTag)
         const selectedPokemonName = document.querySelector(`.${tag}-controle-cont .pokemon-switch-controler .pokemon.active`)?.dataset.name
         const p = teams[tag].find(p => p.name === selectedPokemonName)
