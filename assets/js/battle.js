@@ -472,6 +472,7 @@ function chooseBotMove(playerTag) {
       .filter(m => m.flags.stall)
   )[0]
 
+
   if (choosedStatusMove)
     choosedMoves.push(choosedStatusMove)
   if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)

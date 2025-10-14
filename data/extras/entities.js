@@ -413,5 +413,56 @@ export default {
     color: "Blue",
     eggGroups: ["Dragon", "Water 2"]
   },
-  
+    fleshlet: {
+      num: 661,
+      name: "Fleshlet",
+      types: ["normal", "Flying"],
+      baseStats: { hp: 40, atk: 50, def: 38, spa: 40, spd: 38, spe: 72 },
+      abilities: {},
+      heightm: 0.3,
+      weightkg: 1.7,
+      color: "Yellow",
+      evos: ["voltwing"],
+      eggGroups: ["Flying"]
+    },
+    voltwing: {
+      num: 662,
+      name: "Voltwing",
+      types: ["Electric", "Flying"],
+      baseStats: { hp: 50, atk: 68, def: 50, spa: 68, spd: 50, spe: 100 },
+      abilities: { },
+      heightm: 0.7,
+      weightkg: 16,
+      color: "Yellow",
+      prevo: "Fletchling",
+      evoLevel: 17,
+      evos: ["voltress"],
+      eggGroups: ["Flying"]
+    },
+    voltress: {
+      num: 663,
+      name: "Voltress",
+      types: ["Electric", "Flying"],
+      baseStats: { hp: 70, atk: 82, def: 69, spa: 82, spd: 69, spe: 133 },
+      abilities: { 0: "flash" },
+      heightm: 1.2,
+      weightkg: 24.5,
+      color: "Red",
+      prevo: "Fletchinder",
+      evoLevel: 35,
+      eggGroups: ["Flying"]
+    },
+     voltressmega: {
+      num: 663,
+      name: "Voltress",
+      types: ["Electric", "Flying","dark"],
+      baseStats: { hp: 80, atk: 107, def: 79, spa: 107, spd: 79, spe: 153 },
+      abilities: { 0: "flash" ,1:"purplethunder"},
+      heightm: 1.2,
+      weightkg: 24.5,
+      color: "Red",
+      prevo: "Voltress",
+      evoLevel: 35,
+      eggGroups: ["Flying"]
+    }  
 }
