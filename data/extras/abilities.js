@@ -442,21 +442,10 @@ export default {
     }
   },
   flamebody: {
-    retreat: 2.5,
-    // _totalSpeedDecrease: 0,
-    onTurn(pokemon, opponent) {
-      opponent.state.team.forEach(p => {
-        p.state.stats._statChanges.spe -= 0.25
-      })
-      // this.ability._totalSpeedDecrease += 0.25
-    },
-    // onDeactivate(pokemon, opponent) {
-    //   opponent.state.stats._statChanges.spe += this.ability._totalSpeedDecrease
-    //   this.ability._totalSpeedDecrease = 0
-    // },
-    onDamagingHit(damage, target, source, move) {      
+    retreat: 2,
+    onDamagingHit(damage, target, source, move) { 
       if (this.checkMoveMakesContact(move, source, target)) {
-        if (this.randomChance(3, 10)) {
+        if (this.randomChance(5, 10)) {
           source.trySetStatus("brn", target)
         }
       }
