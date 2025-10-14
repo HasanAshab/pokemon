@@ -49,7 +49,7 @@ export default {
         to: "zygardecomplete",
         requires: {
           level: 36,
-          hp: 50
+          hp: 20
         }
       }
     },

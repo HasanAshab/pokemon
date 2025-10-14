@@ -210,7 +210,13 @@ export class Pokemon extends PSPokemon {
     }
 
     morph() {
-        
+        if (!this.canMorph())
+            throw new Error(`Cannot morph ${this.name}`)
+        const morphId = this._pokemon.morph.to
+        const oldMaxHp = this.maxhp
+        this._pokemon = pokemons[morphId]
+        this.state.increaseHealth(this.maxhp - oldMaxHp)
+        this.abilities.reset()
     }
 
     toBase64() {
@@ -741,7 +747,15 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {      
         this.pokemon = pokemon
-        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };                
+        this.reset()
+    }
+
+    reset() {
+        this._rawAbilitiesSet = new Set([
+          ...Object.values(this.pokemon._pokemon.abilities),
+          ...(this.pokemon.meta.abilities || [])
+        ]);
+        this._rawAbilities = { ...Array.from(this._rawAbilitiesSet) };                      
         this._setAbilities(this._rawAbilities)
     }
 
