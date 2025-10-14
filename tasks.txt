@@ -1,4 +1,5 @@
 * Tasks
+bare move armde more damage
 mega move change
 
 * bug

@@ -341,8 +341,10 @@ class BaseBattle extends EventEmitter {
                 }
 
                 if (!isDodged()) {
-                    armed.state.damage.chainModifyPower(armedMove.id, 1.3)
-                    senario.set(bare, new Move("staythere"))                    
+                    armed.state.damage.chainModifyPower(armedMove.id, 100)
+                    console.log("here");
+                    
+                    senario.set(bare, new Move("staythere"))    
                     if (
                       !armedMove.flags.bodypart
                       && bareMove.flags.contact === armedMove.flags.contact
@@ -839,6 +841,8 @@ class BaseBattle extends EventEmitter {
     }
 
     async _tryDodge(pokemon, senario, clonemode = false) {
+        if (this._alreadyTriedDodge) return
+        this._alreadyTriedDodge = true
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)

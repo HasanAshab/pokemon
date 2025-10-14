@@ -218,7 +218,7 @@ export default {
         if (attacker.state.flags.autoDodge) {
           attacker.state.flags.autoDodge = 0
         }
-        
+
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },
