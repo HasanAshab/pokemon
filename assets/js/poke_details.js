@@ -3,7 +3,6 @@ import {loadAbilitiesDataList,loadTypesDataList,loadItemsDataList, loadNaturesDa
 import { Pokemon, Move } from "./utils/models.js"
 import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 import { Damage } from "./utils/damage.js"
-import pokemons from "../../data/pokemons.js";
 
 
 var name = getParam("name")
@@ -17,7 +16,6 @@ globalThis.upgradeMove = function(id) {
     const grade = moveMeta.grade ? moveMeta.grade + 1 : 1
     moveMeta.grade = grade
     setPokemonMeta(name, meta)
-    loadPokemon()
     loadMoves()
 }
 
@@ -230,7 +228,7 @@ function loadStats() {
     setStat("abilities", pokemon.abilities.names().join(','))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
-    
+        
     for (const stat in pokemon.stats) {
      const statValue = pokemon.stats[stat].toFixed(2)
       setStat(stat,statValue)
@@ -416,7 +414,7 @@ function loadMoves() {
     }
 }
 
-function loadPokemon() {
+function setupPokemon() {
   const meta = getPokemonsMeta(name)
   globalThis.pokemon = new Pokemon(meta.id, meta)
   globalThis.dummy = new Pokemon('student')
@@ -424,7 +422,6 @@ function loadPokemon() {
 }
 
 function loadAll(){
-    loadPokemon()
     loadNaturesDataList("nature-data-list")
     loadItemsDataList("items-data-list")
     loadTypesDataList("types-data-list")
@@ -438,5 +435,6 @@ function loadAll(){
 }
 
 window.onload = () => {
+    setupPokemon()
     loadAll()
 }
