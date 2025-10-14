@@ -104,7 +104,7 @@ export default {
       num: 6,
       name: "Charizard-Mega-Z",
       baseSpecies: "Charizard",
-      forme: "Mega-Z",
+      forme: "Mega-Z (50%)",
       types: ["Fire", "Poison", "Dark", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
       baseStats: { hp: 78, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
@@ -113,7 +113,30 @@ export default {
       weightkg: 120,
       color: "Black",
       eggGroups: ["Monster", "Dragon"],
-      requiredItem: "Charizardite Z"
+      requiredItem: "Charizardite Z",
+      items: ["$charizardz:darklayer1"],
+      morph: {
+        to: "charizardmegazcomplete",
+        requires: {
+          level: 40,
+          hp: 50
+        }
+      }
+    },
+    charizardmegazcomplete: {
+      num: 6,
+      name: "Charizard-Mega-Z (Complete)",
+      baseSpecies: "Charizard",
+      forme: "Mega-Z (100%)",
+      types: ["Fire", "Poison", "Dark", "Dragon"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 78, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
+      abilities: { 0: "Blaze" },
+      heightm: 2,
+      weightkg: 120,
+      color: "Black",
+      eggGroups: ["Monster", "Dragon"],
+      items: ["$charizardz:darklayer2"],
     },
      magtauros: {
       num: 10001,

@@ -11,8 +11,8 @@ abilities multiple opponent event system
 ancient mode with selfish scar
 
 *ovi
-make the center nav bigger
 refresh confirm bot btn
+make the center nav bigger
 a button to unselect all move cards
 
 kingdom clone
