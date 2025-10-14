@@ -988,7 +988,12 @@ class BattleState extends EventEmitter {
         this.on("turn-end", () => {          
             this.retreat -= this.pokemon.abilities.retreatCost()
         })
-        
+
+        this.on("scene", () => {
+            if (!this.pokemon.canMorph()) return
+            this.pokemon.morph()
+        })
+
         this.once("fainted", () => {
             if (confirm(`${this.pokemon.meta.name} fainted. Clear him?`)) {
                 this.battle.removePokemon(this.pokemon)

@@ -201,6 +201,18 @@ export class Pokemon extends PSPokemon {
         return this._pokemon === pokemons[this.megaId]
     }
 
+    canMorph() {
+        const morph = this._pokemon.morph
+        if (!morph) return false
+        const { level = 0, hp = 100 } = morph.requires ?? {}
+        return this.level >= level
+          && ((this.hp * 100) / this.maxhp) <= hp
+    }
+
+    morph() {
+        
+    }
+
     toBase64() {
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
