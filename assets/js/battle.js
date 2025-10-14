@@ -463,7 +463,7 @@ function chooseBotMove(playerTag) {
       return score2 - score1;
     });
 
-  console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
+//  console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
   const choosedMoves = sortedMoves.slice(0, 4);
   const choosedStatusMove = shuffle(
@@ -478,9 +478,8 @@ function chooseBotMove(playerTag) {
   )[0]
 
   choosedStatusMove && choosedMoves.push(choosedStatusMove)
-  (allAdjacentModeBy || shadowCloneBy) && choosedStallingMove && choosedMoves.push(choosedStallingMove)
-
-  console.log(choosedMoves.map(m => m.id));
+  if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)
+    choosedMoves.push(choosedStallingMove)
 
   const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
   return moveId
