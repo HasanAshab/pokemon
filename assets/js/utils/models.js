@@ -201,26 +201,6 @@ export class Pokemon extends PSPokemon {
         return this._pokemon === pokemons[this.megaId]
     }
 
-    canMorph() {
-        const morph = this._pokemon.morph
-        if (!morph) return false
-        const { level = 0, hp = 100 } = morph.requires ?? {}
-        return this.level >= level
-          && ((this.hp * 100) / this.maxhp) <= hp
-    }
-
-    morph() {
-        if (!this.canMorph())
-            throw new Error(`Cannot morph ${this.name}`)
-        const morphId = this._pokemon.morph.to
-        const oldMaxHp = this.maxhp
-        this._pokemon = pokemons[morphId]
-        this.state.increaseHealth(this.maxhp - oldMaxHp)
-        this.abilities.reset()
-        this.items.reset()
-        this.state.armor.reset()
-    }
-
     toBase64() {
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
@@ -238,22 +218,42 @@ export class Pokemon extends PSPokemon {
         return (this.level * Pokemon.TOKEN_PER_LEVEL) - this.tokensUsed()
     }
 
-    megaEvolve() {
-        if (!this.hasMegaForm()) return false
-        
+    updateImage(imageId) {
         let oldMaxHp
         if ("state" in this)
             oldMaxHp = this.maxhp
 
-        this._pokemon = pokemons[this.megaId];        
+        this._pokemon = pokemons[imageId];        
 
         if ("state" in this) {
             this.state.increaseHealth(this.maxhp - oldMaxHp)
-            this.state.armor.reset()
+            this.items.reset()
+            this._pokemon.items?.forEach(item => this.state.armor.add(item))
+            this._pokemon.itemsRemove?.forEach(item => this.state.armor.remove(item))
         }
+
         this.abilities.reset()
-        this.items.reset()
+    }
+
+    megaEvolve() {
+        if (!this.hasMegaForm()) return false    
+        this.updateImage(this.megaId)
         return true
+    }
+
+    canMorph() {
+        const morph = this._pokemon.morph
+        if (!morph) return false
+        const { level = 0, hp = 100 } = morph.requires ?? {}
+        return this.level >= level
+          && ((this.hp * 100) / this.maxhp) <= hp
+    }
+
+    morph() {
+        if (!this.canMorph())
+            throw new Error(`Cannot morph ${this.name}`)
+        const morphId = this._pokemon.morph.to
+        this.updateImage(morphId)
     }
 
     toSageMode(sixPath = false) {
@@ -762,6 +762,8 @@ class AbilityManager {
     }
 
     reset() {
+        if (this._abilities)
+            this._abilities.forEach(ab => ab.deactivate())
         this._rawAbilitiesSet = new Set([
           ...Object.values(this.pokemon._pokemon.abilities),
           ...(this.pokemon.meta.abilities || [])

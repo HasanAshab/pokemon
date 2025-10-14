@@ -1500,11 +1500,14 @@ class ArmorManager {
         item = new Item(item, this.state.pokemon.items)
       }
 
+      if (item.type !== "armor") return false
+
       item.armor = {
         hp: 100,
         _hp: 100
       }
       this._items[toFront ? "unshift" : "push"](item)
+      return true
     }
 
     remove(id) {
