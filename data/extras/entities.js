@@ -108,7 +108,7 @@ export default {
       types: ["Fire", "Poison", "Dark", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
       baseStats: { hp: 78, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
-      abilities: { 0: "Blaze" },
+      abilities: { 0: "Crit" },
       heightm: 2,
       weightkg: 120,
       color: "Black",
@@ -133,7 +133,7 @@ export default {
       genderRatio: { M: 0.875, F: 0.125 },
       //hp changed krsi testing er laigga
       baseStats: { hp: 100, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
-      abilities: { 0: "Blaze" },
+      abilities: { 0: "Crit", 1: "Scar Face" },
       heightm: 2,
       weightkg: 120,
       color: "Black",

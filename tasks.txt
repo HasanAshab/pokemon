@@ -17,6 +17,8 @@ ancient mode with selfish scar
 refresh confirm bot btn
 make the center nav bigger
 a button to unselect all move cards
+make $charizardz:darklayer1, $charizardz:darklayer2
+
 
 kingdom clone
 same bot button on each team

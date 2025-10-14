@@ -502,7 +502,7 @@ export default {
     }
   },
   
-  flnch: {
+  scarface: {
     retreat: 0, //set it
     onScene(pokemon, opponent) {
       opponent.state.moves = opponent.state.moves.map(move => {
@@ -511,9 +511,9 @@ export default {
             move.effects.self = []
           }
           move.effects.self.push({
-            addedBy: `ability::flnch::${pokemon.name}`, //set it
+            addedBy: `ability::scarface::${pokemon.name}`,
             name: "flinch",
-            chance: 20, // set it
+            chance: 20,
           })
         }
         return move
@@ -522,7 +522,7 @@ export default {
     onSceneEnd(pokemon, opponent) {
       opponent.state.moves = opponent.state.moves.map(move => {        
         if (move.effects.self) {
-          move.effects.self = move.effects.self.filter(effect => effect.addedBy !== `ability::flnch::${pokemon.name}`)         
+          move.effects.self = move.effects.self.filter(effect => effect.addedBy !== `ability::scarface::${pokemon.name}`)         
         }
         return move
       })
