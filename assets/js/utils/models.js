@@ -238,11 +238,17 @@ export class Pokemon extends PSPokemon {
 
     megaEvolve() {
         if (!this.hasMegaForm()) return false
+        
+        let oldMaxHp
+        if ("state" in this)
+            oldMaxHp = this.maxhp
+
         this._pokemon = pokemons[this.megaId];        
 
         if ("state" in this) {
-            this.state.stats.refresh()
+            this.state.increaseHealth(this.maxhp - oldMaxHp)
         }
+        this.abilities.reset()
         return true
     }
 
@@ -275,9 +281,6 @@ export class Pokemon extends PSPokemon {
     megaDevolve() {
         if (!this.isMegaForm()) return false
         this._pokemon = pokemons[this.id];
-        if ("state" in this) {
-            this.state.stats.refresh()
-        }
         return true
     }
 

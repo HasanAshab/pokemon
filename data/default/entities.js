@@ -51,7 +51,7 @@ export default {
       forme: "Mega",
       types: ["Grass", "Poison"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 80, atk: 100, def: 123, spa: 122, spd: 120, spe: 80 },
+      baseStats: { hp: 100, atk: 100, def: 123, spa: 122, spd: 120, spe: 80 },
       abilities: { 0: "Thick Fat" },
       heightm: 2.4,
       weightkg: 155.5,
