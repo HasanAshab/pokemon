@@ -341,17 +341,7 @@ class BaseBattle extends EventEmitter {
                 }
 
                 if (!isDodged()) {
-                    armed.state.damage.chainModifyPower(armedMove.id, 100)
-                    console.log("here");
-                    
-                    senario.set(bare, new Move("staythere"))    
-                    if (
-                      !armedMove.flags.bodypart
-                      && bareMove.flags.contact === armedMove.flags.contact
-                      && !clonemode
-                    ) {
-                      armed.state.removeMove(armedMove.id)
-                    }
+                    senario.set(bare, new Move("staythere"))
                     if (bareMove === move1) {
                       move1 = senario.get(bare)
                     }
@@ -1471,9 +1461,9 @@ class DamageManager {
     chainModifyCrit(modifier) {
         this._critModifiers.push(modifier)
     }
-    
+
     chainModifyPower(id, modifier) {
-        if (!this._powerModifiers[id]) 
+        if (!this._powerModifiers[id])
             this._powerModifiers[id] = []
         this._powerModifiers[id].push(modifier)
     }
