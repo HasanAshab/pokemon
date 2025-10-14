@@ -130,7 +130,8 @@ export default {
       forme: "Mega-Z (100%)",
       types: ["Fire", "Poison", "Dark", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 78, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
+      //hp changed krsi testing er laigga
+      baseStats: { hp: 100, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
       abilities: { 0: "Blaze" },
       heightm: 2,
       weightkg: 120,

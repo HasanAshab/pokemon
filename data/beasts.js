@@ -96,23 +96,23 @@ killerbee: {
   heightm: 1.8,
   desc:`summons a swarm of bees that attack the target.`
 },
- charizard: {
-  num: 13,
-  name: "charizard",
-  types: ["Fire"],
-  baseStats: { hp: 40, atk: 35, def: 25, spa: 50, spd: 25, spe: 25 }, // total = 200
-  abilities: { 0: "charizardbeast" },
-  heightm: 1.7,
-  animeName: "charizard"
-},
+//  charizard: {
+//   num: 13,
+//   name: "charizard",
+//   types: ["Fire"],
+//   baseStats: { hp: 40, atk: 35, def: 25, spa: 50, spd: 25, spe: 25 }, // total = 200
+//   abilities: { 0: "charizardbeast" },
+//   heightm: 1.7,
+//   animeName: "charizard"
+// },
 
-charizardy: {
-  num: 14,
-  name: "charizardy",
-  types: ["Fire", "Flying"],
-  baseStats: { hp: 70, atk: 50, def: 50, spa: 120, spd: 30, spe: 80 }, // total = 400
-  abilities: {},
-  heightm: 1.9,
-  animeName: "charizardY"
-},
+// charizardy: {
+//   num: 14,
+//   name: "charizardy",
+//   types: ["Fire", "Flying"],
+//   baseStats: { hp: 70, atk: 50, def: 50, spa: 120, spd: 30, spe: 80 }, // total = 400
+//   abilities: {},
+//   heightm: 1.9,
+//   animeName: "charizardY"
+// },
 }
