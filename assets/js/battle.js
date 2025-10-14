@@ -477,8 +477,10 @@ function chooseBotMove(playerTag) {
       .filter(m => m.flags.stall)
   )[0]
 
-  choosedStatusMove && choosedMoves.push(choosedStatusMove)
-  (allAdjacentModeBy || shadowCloneBy) && choosedStallingMove && choosedMoves.push(choosedStallingMove)
+  if (choosedStatusMove)
+    choosedMoves.push(choosedStatusMove)
+  if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)
+    choosedMoves.push(choosedStallingMove)
 
   console.log(choosedMoves.map(m => m.id));
 
