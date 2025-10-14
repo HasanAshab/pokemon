@@ -75,7 +75,6 @@ export function setPokemonMeta(name, value) {
     const pokemonsMeta = getPokemonsMeta()
     pokemonsMeta[name] = value
     localStorage.setItem("pokemons-meta", JSON.stringify(pokemonsMeta))
-    pokemon.meta = value
 }
 
 export function delayedFunc(func, delay) {
