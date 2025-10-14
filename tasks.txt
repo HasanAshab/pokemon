@@ -6,8 +6,6 @@ How will manage abilities for a morphable pokemon?
 Crit ability also for form 2?
 
 * bug
-armor reset
-abilities reset also remove subscribers
 abilities multiple opponent event system
 
 * Bottle neck
