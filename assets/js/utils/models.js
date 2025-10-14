@@ -217,6 +217,8 @@ export class Pokemon extends PSPokemon {
         this._pokemon = pokemons[morphId]
         this.state.increaseHealth(this.maxhp - oldMaxHp)
         this.abilities.reset()
+        this.items.reset()
+        this.state.armor.reset()
     }
 
     toBase64() {
@@ -247,8 +249,10 @@ export class Pokemon extends PSPokemon {
 
         if ("state" in this) {
             this.state.increaseHealth(this.maxhp - oldMaxHp)
+            this.state.armor.reset()
         }
         this.abilities.reset()
+        this.items.reset()
         return true
     }
 
@@ -888,15 +892,9 @@ export class Item {
 class ItemManager {
     constructor(pokemon) {
         this.pokemon = pokemon
-        this._items = (pokemon.meta.items || []).filter(id => {
-            if (Item.exists(id)) return true
-            console.log(`${pokemon.name} has invalid item: ${id}`)
-            return false
-        }).map(id => {
-            return new Item(id, this)
-        })
+        this.reset()
     }
-    
+
     names() {
       return this._items.map(item => item.id)
     }
@@ -905,6 +903,25 @@ class ItemManager {
         const item = this._items.find(item => item.id === id)
         item._unappply()
         this._items = this._items.filter(item => item.id !== id)
+    }
+
+    reset() {
+      if (this.items)
+        this._items.forEach(item => this.remove(item.id))
+
+      this._rawItems = Array.from(
+            new Set([
+                ...(this.pokemon._pokemon.items || []),
+                ...(this.pokemon.meta.items || [])
+            ])
+        )
+        this._items = this._rawItems.filter(id => {
+            if (Item.exists(id)) return true
+            console.log(`${this.pokemon.name} has invalid item: ${id}`)
+            return false
+        }).map(id => {
+            return new Item(id, this)
+        })
     }
 }
 

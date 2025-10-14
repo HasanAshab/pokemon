@@ -114,7 +114,8 @@ export default {
       color: "Black",
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Charizardite Z",
-      items: ["$charizardz:darklayer1"],
+      // items: ["$charizardz:darklayer1"],
+      items: ["latherarmor1"],
       morph: {
         to: "charizardmegazcomplete",
         requires: {
