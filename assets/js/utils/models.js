@@ -198,7 +198,7 @@ export class Pokemon extends PSPokemon {
     }
 
     isMegaForm() {      
-        return this._pokemon === pokemons[this.megaId]
+        return this._pokemon.name === pokemons[this.megaId].name
     }
 
     toBase64() {
@@ -238,6 +238,10 @@ export class Pokemon extends PSPokemon {
     megaEvolve() {
         if (!this.hasMegaForm()) return false    
         this.updateImage(this.megaId)
+
+        if ("state" in this) {
+          this.state.setMoves(this.meta.mega.moves)
+        }
         return true
     }
 
@@ -298,7 +302,6 @@ export class Pokemon extends PSPokemon {
     }
     
     movesMeta() {
-        return this.meta.moves
         return this.isMegaForm() 
             ? this.meta.mega.moves
             : this.meta.moves

@@ -1072,6 +1072,8 @@ class BattleState extends EventEmitter {
     }
 
     setMoves(moves) {
+        if (this.moves) 
+            this.moves.forEach(m => this.removeMove(m.id))
         this.moves = []
         BattleState.SYS_MOVES.forEach(m => this.addMove(m))
         this.pokemon.isHuman && BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
