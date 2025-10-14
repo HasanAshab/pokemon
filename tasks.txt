@@ -1,5 +1,4 @@
 * Tasks
-charizardz forms 2. flinch
 
 * QnA
 How will manage abilities for a morphable pokemon?

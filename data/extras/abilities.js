@@ -489,7 +489,7 @@ export default {
     dependencies: ["chakrafarm"],
   },
 
-  changekornam: {
+  crit: {
     retreat: 0, //set it
     setup(pokemon) {
       this.ability._lockCritDown(pokemon)
@@ -499,6 +499,33 @@ export default {
     },
     _lockCritDown(pokemon) {
       pokemon.state.stats._statChanges.crit = Math.max(2, pokemon.state.stats._statChanges.crit)
+    }
+  },
+  
+  flnch: {
+    retreat: 0, //set it
+    onScene(pokemon, opponent) {
+      opponent.state.moves = opponent.state.moves.map(move => {
+        if (move.flags.contact) {          
+          if (!move.effects.self) {
+            move.effects.self = []
+          }
+          move.effects.self.push({
+            addedBy: `ability::flnch::${pokemon.name}`, //set it
+            name: "flinch",
+            chance: 20, // set it
+          })
+        }
+        return move
+      })
+    },
+    onSceneEnd(pokemon, opponent) {
+      opponent.state.moves = opponent.state.moves.map(move => {        
+        if (move.effects.self) {
+          move.effects.self = move.effects.self.filter(effect => effect.addedBy !== `ability::flnch::${pokemon.name}`)         
+        }
+        return move
+      })
     }
   },
 
