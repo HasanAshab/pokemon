@@ -379,7 +379,6 @@ function chooseBotMove(playerTag) {
   }
   
 
-  let _scores = {}
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
@@ -458,12 +457,8 @@ function chooseBotMove(playerTag) {
       const score1 = getScore(m1)
       const score2 = getScore(m2)      
 
-      _scores[m1.id] = score1;
-      _scores[m2.id] = score2;
       return score2 - score1;
     });
-
-  console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
   const choosedMoves = sortedMoves.slice(0, 4);
   const choosedStatusMove = shuffle(
@@ -481,8 +476,6 @@ function chooseBotMove(playerTag) {
     choosedMoves.push(choosedStatusMove)
   if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)
     choosedMoves.push(choosedStallingMove)
-
-  console.log(choosedMoves.map(m => m.id));
 
   const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
   return moveId
