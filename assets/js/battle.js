@@ -1046,6 +1046,10 @@ function setEffects(effects, playerTag) {
       "name": "Inner Gate",
       "color": "Fighting"
     },
+    "mustrecharge": {
+      "name": "Re-charging",
+      "color": "Normal"
+    }
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const effectElements = effectsDataColumn.querySelectorAll(".effect")

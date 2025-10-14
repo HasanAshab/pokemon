@@ -93,9 +93,6 @@ class BaseBattle extends EventEmitter {
         })
     }
 
-    set scenePerTurn(value) {
-        this._turnAfterScenes = Math.min(3, value)
-    }
 
     addPokemon(pokemon) {
         const team = pokemon._tag === "you" ? this.team1 : this.team2
@@ -886,7 +883,7 @@ class MultiBattle extends BaseBattle {
         super(...args)
         
         const avgPokePerSide = Math.round(this._all.length / 2)
-        this.scenePerTurn = this.scenePerTurn * avgPokePerSide
+        this.scenePerTurn = Math.min(3, this.scenePerTurn * avgPokePerSide)
         this._turnAfterScenes = this.scenePerTurn
 
         console.log(`1 Turn = ${this.scenePerTurn} scenes`);

@@ -328,9 +328,7 @@ export class Pokemon extends PSPokemon {
     }
 
     get stats() {
-        const baseStats = this._pokemon.baseStats;
-        this.id.includes("blast") && console.log(baseStats.def);
-        
+        const baseStats = this._pokemon.baseStats;        
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
         const tokenStats = this._calculateTokenStat();
