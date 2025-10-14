@@ -815,6 +815,15 @@ class InnerGateEffect extends Effect {
     }
 }
 
+class RechargingEffect extends ExpirableEffect {
+    static effectName = "mustrecharge"
+
+    lifetime = { turns: 1 }
+
+    canUseMove() {
+        return false
+    }
+}
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
@@ -839,6 +848,7 @@ export const EFFECTS = makeEffectsMap([
     AreaSplashEffect,
     AncientModeEffect,
     InnerGateEffect,
+    RechargingEffect,
 ])
 
 

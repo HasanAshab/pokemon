@@ -220,7 +220,7 @@ export class Pokemon extends PSPokemon {
 
     megaEvolve() {
         if (!this.hasMegaForm()) return false
-        this._pokemon = pokemons[this.megaId];
+        this._pokemon = pokemons[this.megaId];        
 
         if ("state" in this) {
             this.state.stats.refresh()
@@ -321,14 +321,14 @@ export class Pokemon extends PSPokemon {
 
     _calculateTokenStat() {
         const tokenStats = {};
-        
         Object.keys(this._pokemon.baseStats).forEach(statName => {
             tokenStats[statName] = this.tokens[statName]
         });
         return tokenStats;
     }
+
     get stats() {
-        const baseStats = this._pokemon.baseStats;
+        const baseStats = this._pokemon.baseStats;        
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
         const tokenStats = this._calculateTokenStat();
