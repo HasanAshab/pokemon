@@ -560,7 +560,9 @@ class Ability {
         this.pokemon.state.retreat -= chakra
         this.active = true
         this.onActivate()
-        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), this.pokemon.state.battle)
+        this.pokemon.state.foeTeam.forEach(p => {
+          this._ability.onActivate?.(this.pokemon, p, this.pokemon.state.battle)
+        })
         this._subscribeListeners()
     }
 
@@ -568,7 +570,9 @@ class Ability {
         if (!this.active) return
         this.active = false
         this.onDeactivate()
-        this._ability.onDeactivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+        this.pokemon.state.foeTeam.forEach(p => {
+          this._ability.onDeactivate?.(this.pokemon, p, this.pokemon.state.battle)
+        })
         this._unsubscribeListeners()
     }
 
