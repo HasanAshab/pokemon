@@ -10,10 +10,9 @@ class BaseBattle extends EventEmitter {
     scenePerTurn = 1
     //Possible turns per wave with their weight
     turnsPerWave = [
-        [2, 0.2],
+        [2, 0.25],
         [3, 0.45],
         [4, 0.3],
-        [6, 0.05],
     ]
     turnNo = 0
     waveNo = 0
