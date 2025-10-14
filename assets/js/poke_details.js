@@ -34,6 +34,14 @@ globalThis.setMegaSuffix = function(value){
     meta.mega.suffix = value
     setPokemonMeta(name,meta)
 }
+
+globalThis.loadMegaSuffix = function(){
+    const meta = getPokemonsMeta(name)
+    const suffix = meta.mega.suffix
+    const select = document.querySelector(".mega-suffix-select")
+    select.value = suffix
+}
+
 globalThis.toggleMoveInfo = function(info){
 info.classList.toggle("active")
 }
@@ -237,7 +245,6 @@ function loadStats() {
 function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
-    console.log(pokemon.movesMeta());
     
     for (const moveMeta of pokemon.movesMeta()) {
         const move = new Move(moveMeta.id, moveMeta)
@@ -426,6 +433,8 @@ function loadAll(){
     loadName()
     loadMoves()
     loadStats()
+
+    loadMegaSuffix()
 }
 
 window.onload = () => {

@@ -192,12 +192,12 @@ export class Pokemon extends PSPokemon {
       }
       return Math.round(total)
     }
-    
+
     hasMegaForm() {
         return this.megaId in pokemons
     }
-    
-    isMegaForm() {
+
+    isMegaForm() {      
         return this._pokemon === pokemons[this.megaId]
     }
 
@@ -221,6 +221,7 @@ export class Pokemon extends PSPokemon {
     megaEvolve() {
         if (!this.hasMegaForm()) return false
         this._pokemon = pokemons[this.megaId];
+
         if ("state" in this) {
             this.state.stats.refresh()
         }

@@ -1,9 +1,10 @@
 import humans from "./humans.js";
 import entities from "./default/entities.js";
+import entitiesExtra from "./extras/entities.js";
 import beasts from "./beasts.js";
 
 
-for (const entity of Object.values(entities)) {
+function processEntity(entity) {
   entity.type = "entity"
   entity.abilities = {}
   for (const stat in entity.baseStats) {
@@ -11,15 +12,28 @@ for (const entity of Object.values(entities)) {
   }
 }
 
-for (const beast of Object.values(beasts)) {
+function processBeast(beast) {
   beast.type = "beast"
   for (const stat in beast.baseStats) {
     beast.baseStats[stat] = Math.floor(beast.baseStats[stat] * 1.5)
   }
 }
 
+
+for (const entity of Object.values(entities)) {
+  processEntity(entity)
+}
+for (const entity of Object.values(entitiesExtra)) {
+  processEntity(entity)
+}
+
+for (const beast of Object.values(beasts)) {
+  processBeast(beast)
+}
+
 export default {
   ...humans,
   ...entities,
+  ...entitiesExtra,
   ...beasts
 }
