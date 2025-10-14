@@ -1,8 +1,9 @@
 * Tasks
-charizardz forms 1. crit 2 2. flinch + (crit 2) ?
+charizardz forms 2. flinch
 
 * QnA
-How will manage abilities for a morphable pokemon 
+How will manage abilities for a morphable pokemon?
+Crit ability also for form 2?
 
 * bug
 armor reset

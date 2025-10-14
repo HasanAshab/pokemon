@@ -489,6 +489,19 @@ export default {
     dependencies: ["chakrafarm"],
   },
 
+  changekornam: {
+    retreat: 0, //set it
+    setup(pokemon) {
+      this.ability._lockCritDown(pokemon)
+    },
+    onScene(pokemon) {
+      this.ability._lockCritDown(pokemon)
+    },
+    _lockCritDown(pokemon) {
+      pokemon.state.stats._statChanges.crit = Math.max(2, pokemon.state.stats._statChanges.crit)
+    }
+  },
+
   hands1beast: {
     retreat: 1.25,
     type: 'beast',
