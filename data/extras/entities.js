@@ -1,4 +1,75 @@
 export default {
+    zygarde10: {
+      num: 718,
+      name: "Zygarde-10%",
+      baseSpecies: "Zygarde",
+      forme: "10%",
+      types: ["Dragon", "Ground"],
+      gender: "N",
+      baseStats: { hp: 54, atk: 100, def: 71, spa: 61, spd: 85, spe: 115 },
+      abilities: { 0: "Aura Break", S: "Power Construct" },
+      heightm: 1.2,
+      weightkg: 33.5,
+      color: "Black",
+      eggGroups: ["Undiscovered"],
+      changesFrom: "Zygarde",
+      gen: 7,
+      morph: {
+        to: "zygarde",
+        requires: {
+          level: 16,
+          hp: 90
+        }
+      }
+    },
+    zygarde: {
+      num: 718,
+      name: "Zygarde",
+      baseForme: "50%",
+
+      types: ["Dragon", "Ground"],
+      gender: "N",
+      baseStats: { hp: 108, atk: 100, def: 121, spa: 81, spd: 95, spe: 95 },
+      abilities: { 0: "Aura Break", S: "Power Construct" },
+      heightm: 5,
+      weightkg: 305,
+      color: "Green",
+      tags: ["Restricted Legendary"],
+      eggGroups: ["Undiscovered"],
+      otherFormes: ["Zygarde-10%", "Zygarde-Complete"],
+      // forme 2 = 10% with Power Constructor ,forme 3 = 50% with Power Construct
+      formeOrder: [
+        "Zygarde",
+        "Zygarde-10%",
+        "Zygarde-10%",
+        "Zygarde",
+        "Zygarde-Complete"
+      ],
+      morph: {
+        to: "zygardecomplete",
+        requires: {
+          level: 36,
+          hp: 20
+        }
+      }
+    },
+    zygardecomplete: {
+      num: 718,
+      name: "Zygarde-Complete",
+      baseSpecies: "Zygarde",
+      forme: "Complete",
+      types: ["Dragon", "Ground"],
+      gender: "N",
+      baseStats: { hp: 216, atk: 100, def: 121, spa: 91, spd: 95, spe: 85 },
+      abilities: { 0: "Power Construct" },
+      heightm: 4.5,
+      weightkg: 610,
+      color: "Black",
+      eggGroups: ["Undiscovered"],
+      requiredAbility: "Power Construct",
+      battleOnly: ["Zygarde", "Zygarde-10%"],
+      gen: 7
+    },
     charizardmegax: {
       num: 6,
       name: "Charizard-Mega-X",

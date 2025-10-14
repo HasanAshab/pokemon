@@ -379,7 +379,6 @@ function chooseBotMove(playerTag) {
   }
   
 
-  let _scores = {}
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
@@ -458,12 +457,8 @@ function chooseBotMove(playerTag) {
       const score1 = getScore(m1)
       const score2 = getScore(m2)      
 
-      _scores[m1.id] = score1;
-      _scores[m2.id] = score2;
       return score2 - score1;
     });
-
-//  console.log(sortedMoves.map(m => m.id + ": " + _scores[m.id]));
 
   const choosedMoves = sortedMoves.slice(0, 4);
   const choosedStatusMove = shuffle(
@@ -477,7 +472,9 @@ function chooseBotMove(playerTag) {
       .filter(m => m.flags.stall)
   )[0]
 
-  choosedStatusMove && choosedMoves.push(choosedStatusMove)
+
+  if (choosedStatusMove)
+    choosedMoves.push(choosedStatusMove)
   if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)
     choosedMoves.push(choosedStallingMove)
 
@@ -500,7 +497,7 @@ function loadPokemonData(playerTag) {
   setCurrentHealth("health", hp, playerTag)
   setCurrentHealth("armor-hp", pokemon.state.armor.hp(), playerTag)
   setDoubleTeamData(pokemon.state.manCount, playerTag)
-  loadMoves(playerTag)
+  loadMoves(playerTag)  
   setRetreatPerWave(pokemonMap[playerTag].meta.retreat,playerTag)
  // setRetreatChargeForAbilities(pokemon.abilities.retreatCost(), playerTag)
  
@@ -1078,10 +1075,10 @@ function setStatChanges(data, playerTag) {
 }
 
 function setRetreatPerWave(retreat, playerTag) {
-  const retreatPerWave = document.querySelector(`.${playerTag}-controle-cont .retreat-per-wave`)
-
-  retreatPerWave.textContent = (retreat - pokemonMap[playerTag].abilities.retreatCost())
+  const retreatPerWave = document.querySelector(`.${playerTag}-controle-cont .retreat-per-wave`)  
+  retreatPerWave.textContent = parseFloat(retreat - pokemonMap[playerTag].abilities.retreatCost()).toFixed(2)
 }
+
 function setRetreatChargeForAbilities(retreat, playerTag) {
   const retreatChargeForAbilities = document.querySelector(`.${playerTag}-controle-cont .retreat-charge-for-abilities`)
   retreatChargeForAbilities.textContent = retreat

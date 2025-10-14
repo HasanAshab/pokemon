@@ -1,18 +1,20 @@
 * Tasks
+charizardz forms 1. armo 30 2. armo 90 + flinch
 
 * bug
-ancient mod shadow clone
-same image on barrack will not work + defence wave
+abilities multiple opponent event system
 
 * Bottle neck
-Bot shinobi:
-  X dodge on effective attack + chance
 
 
 * Pending
 ancient mode with selfish scar
 
 *ovi
+make the center nav bigger
+refresh confirm bot btn
+a button to unselect all move cards
+
 kingdom clone
 same bot button on each team
 fix retreat of beast abilities

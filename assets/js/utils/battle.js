@@ -341,15 +341,7 @@ class BaseBattle extends EventEmitter {
                 }
 
                 if (!isDodged()) {
-                    armed.state.damage.chainModifyPower(armedMove.id, 1.3)
-                    senario.set(bare, new Move("staythere"))                    
-                    if (
-                      !armedMove.flags.bodypart
-                      && bareMove.flags.contact === armedMove.flags.contact
-                      && !clonemode
-                    ) {
-                      armed.state.removeMove(armedMove.id)
-                    }
+                    senario.set(bare, new Move("staythere"))
                     if (bareMove === move1) {
                       move1 = senario.get(bare)
                     }
@@ -839,6 +831,8 @@ class BaseBattle extends EventEmitter {
     }
 
     async _tryDodge(pokemon, senario, clonemode = false) {
+        if (this._alreadyTriedDodge) return
+        this._alreadyTriedDodge = true
         let move = senario.get(pokemon)
         const opponent = this.opponentOf(pokemon)
         const opponentMove = senario.get(opponent)
@@ -989,6 +983,12 @@ class BattleState extends EventEmitter {
             this.retreat -= this.pokemon.abilities.retreatCost()
         })
         
+        this.on(["scene", "scene-end", "wave"], () => {          
+            if (!this.pokemon.canMorph()) return
+            this.pokemon.morph()
+            globalThis.popupQueue.add(`${this.pokemon.meta.name} morphed!`, this.pokemon._tag)
+        })
+
         this.once("fainted", () => {
             if (confirm(`${this.pokemon.meta.name} fainted. Clear him?`)) {
                 this.battle.removePokemon(this.pokemon)
@@ -1461,9 +1461,9 @@ class DamageManager {
     chainModifyCrit(modifier) {
         this._critModifiers.push(modifier)
     }
-    
+
     chainModifyPower(id, modifier) {
-        if (!this._powerModifiers[id]) 
+        if (!this._powerModifiers[id])
             this._powerModifiers[id] = []
         this._powerModifiers[id].push(modifier)
     }

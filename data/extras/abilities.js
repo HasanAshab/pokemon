@@ -253,7 +253,18 @@ export default {
     },
   },
 
+  bhuiyakugan0: {
+    retreat: 0,
+    flags: { autoenable: 1 },
+    onScene(pokemon) {
+      if (pokemon.state.effects.has("bleed")) {
+        pokemon.state.effects.add(null, "confusion")
+      }
+    }
+  },
+
   bhuiyakugan1: {
+    dependencies: ["bhuiyakugan0"],
     retreat: 0.5,
     onActivate(pokemon) {
         pokemon.state.chainModifyRetreat(0.5, move => move.flags.summon)
@@ -264,6 +275,7 @@ export default {
   },
 
   bhuiyakugan2: {
+    dependencies: ["bhuiyakugan0"],
     retreat: 2,
     onActivate(pokemon) {
       pokemon.state.moves.forEach(move => {
@@ -417,6 +429,11 @@ export default {
         return this.chainModify(1.5)
       }
     },
+    onModifyOpponentSpA(_, target, source, move) {
+      if (move.type === "Ground") {
+        return this.chainModify(1.5)
+      }
+    },
     onHit(pokemon, opponent, move) {
       if (move.type === "Ground" && move.hit.criticalCount()) {
         this.deactivate()
@@ -425,24 +442,31 @@ export default {
     }
   },
   flamebody: {
-    retreat: 2,
-    _totalSpeedDecrease: 0,
+    retreat: 2.5,
+    // _totalSpeedDecrease: 0,
     onTurn(pokemon, opponent) {
-      opponent.state.stats._statChanges.spe -= 0.25
-      this.ability._totalSpeedDecrease += 0.25
+      opponent.state.team.forEach(p => {
+        p.state.stats._statChanges.spe -= 0.25
+      })
+      // this.ability._totalSpeedDecrease += 0.25
     },
-    onDeactivate(pokemon, opponent) {
-      opponent.state.stats._statChanges.spe += this.ability._totalSpeedDecrease
-      this.ability._totalSpeedDecrease = 0
-    },
-    onDamagingHit(damage, target, source, move) {
+    // onDeactivate(pokemon, opponent) {
+    //   opponent.state.stats._statChanges.spe += this.ability._totalSpeedDecrease
+    //   this.ability._totalSpeedDecrease = 0
+    // },
+    onDamagingHit(damage, target, source, move) {      
       if (this.checkMoveMakesContact(move, source, target)) {
         if (this.randomChance(3, 10)) {
           source.trySetStatus("brn", target)
         }
       }
     },
-    onModifyOpponentAtk(_, target, source, move) {
+    onModifyOpponentAtk(_, target, source, move) {      
+      if (move.type === "Water") {
+        return this.chainModify(1.5)
+      }
+    },
+    onModifyOpponentSpA(_, target, source, move) {      
       if (move.type === "Water") {
         return this.chainModify(1.5)
       }

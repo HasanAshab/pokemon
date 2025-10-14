@@ -201,6 +201,24 @@ export class Pokemon extends PSPokemon {
         return this._pokemon === pokemons[this.megaId]
     }
 
+    canMorph() {
+        const morph = this._pokemon.morph
+        if (!morph) return false
+        const { level = 0, hp = 100 } = morph.requires ?? {}
+        return this.level >= level
+          && ((this.hp * 100) / this.maxhp) <= hp
+    }
+
+    morph() {
+        if (!this.canMorph())
+            throw new Error(`Cannot morph ${this.name}`)
+        const morphId = this._pokemon.morph.to
+        const oldMaxHp = this.maxhp
+        this._pokemon = pokemons[morphId]
+        this.state.increaseHealth(this.maxhp - oldMaxHp)
+        this.abilities.reset()
+    }
+
     toBase64() {
         return btoa(JSON.stringify({ id: this.id, meta: this.meta }));
     }
@@ -220,11 +238,17 @@ export class Pokemon extends PSPokemon {
 
     megaEvolve() {
         if (!this.hasMegaForm()) return false
+        
+        let oldMaxHp
+        if ("state" in this)
+            oldMaxHp = this.maxhp
+
         this._pokemon = pokemons[this.megaId];        
 
         if ("state" in this) {
-            this.state.stats.refresh()
+            this.state.increaseHealth(this.maxhp - oldMaxHp)
         }
+        this.abilities.reset()
         return true
     }
 
@@ -257,9 +281,6 @@ export class Pokemon extends PSPokemon {
     megaDevolve() {
         if (!this.isMegaForm()) return false
         this._pokemon = pokemons[this.id];
-        if ("state" in this) {
-            this.state.stats.refresh()
-        }
         return true
     }
 
@@ -539,7 +560,9 @@ class Ability {
         this.pokemon.state.retreat -= chakra
         this.active = true
         this.onActivate()
-        this._ability.onActivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), this.pokemon.state.battle)
+        this.pokemon.state.foeTeam.forEach(p => {
+          this._ability.onActivate?.(this.pokemon, p, this.pokemon.state.battle)
+        })
         this._subscribeListeners()
     }
 
@@ -547,7 +570,9 @@ class Ability {
         if (!this.active) return
         this.active = false
         this.onDeactivate()
-        this._ability.onDeactivate?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+        this.pokemon.state.foeTeam.forEach(p => {
+          this._ability.onDeactivate?.(this.pokemon, p, this.pokemon.state.battle)
+        })
         this._unsubscribeListeners()
     }
 
@@ -729,7 +754,15 @@ class Ability {
 class AbilityManager {
     constructor(pokemon) {      
         this.pokemon = pokemon
-        this._rawAbilities = { ... pokemon._pokemon.abilities, ...(pokemon.meta.abilities || []) };                
+        this.reset()
+    }
+
+    reset() {
+        this._rawAbilitiesSet = new Set([
+          ...Object.values(this.pokemon._pokemon.abilities),
+          ...(this.pokemon.meta.abilities || [])
+        ]);
+        this._rawAbilities = { ...Array.from(this._rawAbilitiesSet) };                      
         this._setAbilities(this._rawAbilities)
     }
 

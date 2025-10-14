@@ -61,15 +61,25 @@ function setCurrentHealth(hp) {
 }
 
 function setStat(slug, value) {
+  let saveValue = value
   const stat = document.querySelector(`.stat.${slug}`)
    if (updatablePokemonMetaList.includes(slug)){
     const commaStrs = ["items", "types", "abilities"]
      if (commaStrs.includes(slug)) {
        value = value.split(',').map(item => item.trim()).filter(Boolean)
-       value = [ ... new Set(value) ]        
+       value = [ ... new Set(value) ]
+       saveValue = value
+       if (slug === "abilities") {
+         const defAb = Object.values(pokemon._pokemon.abilities)
+         saveValue = value.filter(ability => !defAb.includes(ability))
+       }
+       else if (slug === "types") {
+         const defT = pokemon._pokemon.types
+         saveValue = value.filter(type => !defT.includes(type))
+       }
      }
      const meta = getPokemonsMeta(name)
-     meta[slug] = value
+     meta[slug] = saveValue
     setPokemonMeta(name,meta)
   }else{
      if (slug === "hp")
@@ -134,7 +144,6 @@ globalThis.statClickHandler = function( {
   statNameElm.textContent = currentTarget.querySelector("strong").textContent
 
   if (updatablePokemonMetaList.includes(statSlug)){
-   console.log(statSlug)
    const datalist = statUpdateForm.querySelector(`datalist[data-property-name="${statSlug}"]`);
     if (datalist !== null)
      statValueInp.setAttribute('list',`${statSlug}-data-list`)

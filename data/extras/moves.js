@@ -179,6 +179,23 @@ export default {
         attacker.toSageMode(true)
       }
     },
+    megaevolve: {
+      num: 9999999,
+      accuracy: true,
+      basePower: 0,
+      category: "Status",
+      name: "Mega Evolve",
+      pp: 1,
+      priority: 2,
+      secondary: null,
+      target: "self",
+      type: "Normal",
+      retreat: 6,
+      flags: {},
+      onBeforeMove(attacker) {
+        attacker.megaEvolve()
+      }
+    },
     dodge: {
       num: 100003,
       accuracy: true,
@@ -201,7 +218,7 @@ export default {
         if (attacker.state.flags.autoDodge) {
           attacker.state.flags.autoDodge = 0
         }
-        
+
         move.hit.damages = move.hit.damages.filter((_, i) => !this._dodgeMatrix[i])
       },
     },
