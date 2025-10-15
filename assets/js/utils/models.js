@@ -240,7 +240,7 @@ export class Pokemon extends PSPokemon {
         this.updateImage(this.megaId)
 
         if ("state" in this) {
-          this.state.setMoves(this.meta.mega.moves)
+          this.meta.mega.moves.forEach(m => this.state.addMove(m.id))
         }
         return true
     }

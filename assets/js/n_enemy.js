@@ -54,7 +54,7 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false,formIndex = null) {
     items.forEach(item => addInput(itemsMultiInputBox,item))
 
     enemyMoveItems.forEach(item => {
-      addMove(null,item.querySelector('.move-input').value, item.querySelector('.move-grade-input').value,div)
+      addMove(null,false,item.querySelector('.move-input').value, item.querySelector('.move-grade-input').value,div)
     })
     
   }
@@ -100,16 +100,19 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
     <label>Nature</label>
     <input list="natures-data-list" value="${nature}" type="text" onblur="showStats(event)" class="nature-inp">
     <br>
+      <label>Mega Suffix</label>
+    <select class="mega-suffix-select">
+      <option value="none">None</option>
+    <option value="mega">Mega</option>
+      <option value="megax">X</option>
+      <option value="megay">Y</option>
+      <option value="megaz">Z</option>
+      <option value="bond">Bond</option>
+      <option value="ash">Ash</option>
 
-    <label>Token Used</label>
-    <textarea class="token-inp" onblur="showStats(event)">${objToFlags({
-          hp:0,
-          spe:0,
-          atk:0,
-          def:0,
-          spa:0,
-          spd:0
-        })}</textarea>
+    </select>
+
+    
     <br>
     <h4>Types</h4>
   <div class="multy-input-box" data-property="types" data-index=${index}>
@@ -155,27 +158,20 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
       <button type="button" onclick="addMove(event)">Add Move</button>
       <button class="set-auto-move-btn" type="button" onclick="setMoveAutomatic(event)" >Set Automatic</button>
       </div>
+    <br>
+    <div class="move-section">
+      <h4>Mega Moves</h4>
+      <div class="mega-moves-list"></div>
+      <button type="button" onclick="addMove(event,true)">Add Mega Move</button>
+      <button class="set-auto-move-btn" type="button" onclick="setMoveAutomatic(event,true)" >Set Automatic</button>
+    
+      </div>
  <br>
  <button onclick="addEnemy(true,${index})" class="duplicate-enemy-btn">Duplicate This Enemy</button>
  <button onclick="removeEnemy(${index})" class="remove-enemy-btn">Remove This Enemy</button>
   `;
 
-  // ###########################
-  // don't delete this
-//       <label>Mega Suffix</label>
-//     <select class="mega-suffix-select">
-//       <option value="mega">Mega</option>
-//       <option value="megax">X</option>
-//       <option value="megay">Y</option>
-//       <option value="megaz">Z</option>
-//     </select>
-//     <br>
-  //   <div class="move-section">
-    //   <h4>Mega Moves</h4>
-    //   <div class="mega-moves-list"></div>
-    //   <button type="button" onclick="addMove(event, true)">Add Mega Move</button>
-    // </div>
-    // ###########################
+
 }
 
 function showStats(event) {
@@ -184,7 +180,7 @@ function showStats(event) {
   stats.textContent = `Enemy: ${form.querySelector('.enemy').value}\nLevel: ${form.querySelector('.level-inp').value}`;
 }
 
-function addMove(event, moveId = '' , grade =0 , form , isMega = false) {
+function addMove(event,isMega = false, moveId = '' , grade =0 , form ) {
   if (!form)
    form = event.target.closest('.pokemon-form');
   const list = isMega ? form.querySelector('.mega-moves-list') : form.querySelector('.moves-list');
@@ -204,8 +200,8 @@ function addMove(event, moveId = '' , grade =0 , form , isMega = false) {
 
 
 async function suggestFromLearnset(pokemon) {
-  const { default: learnset } = await import(`../../data/learnsets/${pokemon.image}.js`)
-  console.log(learnset)
+  const filename = pokemon.image.replace(/mega(.)$/, '$1');  
+  const { default: learnset } = await import(`../../data/learnsets/${filename}.js`)
   return learnset
     .filter(ls => ls.required_level <= pokemon.level && ls.source === "level")
     .map(ls => ls.name)
@@ -425,7 +421,7 @@ function getDefaultPrompt({ level, nature }) {
   }
 }
 
-async function setMoveAutomatic(event) {
+async function setMoveAutomatic(event,isMega = false) {
   const form = event.target.closest('.pokemon-form');
   const typesInputIndex = form.querySelector(".multy-input-box").dataset.index
   const pokemon = new Pokemon(form.querySelector('.enemy').value);
@@ -433,18 +429,19 @@ async function setMoveAutomatic(event) {
     level: form.querySelector('.level-inp').value,
     nature: form.querySelector('.nature-inp').value
   })));
+  console.log(`${form.querySelector('.enemy').value}${isMega ? form.querySelector('.mega-suffix-select').value : ''}`);
   
   const automaticCreatedMoves = await suggestMoves(flagsToObj(prompt), {
-    image: form.querySelector('.enemy').value,
+    image: `${form.querySelector('.enemy').value}${isMega ? form.querySelector('.mega-suffix-select').value : ''}`,
     level: form.querySelector('.level-inp').value,
     types: getMultyInputValues("types",typesInputIndex).concat(pokemon._pokemon.types),
     retreat: form.querySelector('.retreat-inp').value
   });
-
-  const list = form.querySelector('.moves-list');
+  
+  const list = form.querySelector(`.${isMega ? "mega-" : ""}moves-list`);
   const moveItems = list.querySelectorAll('.move-item');
   if ( moveItems.length === 0){
-  automaticCreatedMoves.forEach(moveId => addMove(event, moveId));
+  automaticCreatedMoves.forEach(moveId => addMove(event, isMega, moveId));
 }else {
   moveItems.forEach((moveItem,index) => {
     const moveInput = moveItem.querySelector('.move-input');
@@ -515,7 +512,7 @@ function makeEnemiesMeta() {
     const items = getMultyInputValues("items",index)//itemsRaw.split(',').map(item => item.trim()).filter(item => item);
 
     const moves = [];
-    form.querySelectorAll('.move-item').forEach(moveItem => {
+    form.querySelectorAll('.moves-list .move-item').forEach(moveItem => {
       const id = moveItem.querySelector('.move-input').value.trim();
       const grade = moveItem.querySelector('.move-grade-input').value.trim();
       
@@ -525,11 +522,14 @@ function makeEnemiesMeta() {
    
 
     const megaMoves = [];
-    // form.querySelectorAll('.mega-moves-list .mega-move-input').forEach(input => {
-    //   const id = input.value.trim();
-    //   if (id) megaMoves.push({ id, isSelected: true });
-    // });
-
+    form.querySelectorAll('.mega-moves-list .move-item').forEach(moveItem => {
+      const id = moveItem.querySelector('.move-input').value.trim();
+      const grade = moveItem.querySelector('.move-grade-input').value.trim();
+      
+      if (id) megaMoves.push({ id, grade, isSelected: true });
+    });
+    console.log({moves,megaMoves});
+    
     const enemyMeta = {
       id: enemyId,
       name,

@@ -155,7 +155,7 @@ export default {
       types: ["Fire", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
       baseStats: { hp: 78, atk: 120, def: 111, spa: 140, spd: 85, spe: 100 },
-      abilities: { 0: "Blueflare" },
+      abilities: { 0: "Blue Flame" },
       heightm: 2,
       weightkg: 110.5,
       color: "Black",
