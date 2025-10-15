@@ -78,8 +78,8 @@ export class Damage {
             : this.attacker.stats[isSpecial ? "spa" : "atk"];
         
         //return stab * bp * attackStat * 0.416;
-        // return stab * bp * attackStat * 0.65;
-        return stab * bp * attackStat * 0.55;
+        // return stab * bp * attackStat * 0.55;
+        return stab * bp * attackStat * 1.5;
     }
 
     _calculate() {
@@ -140,8 +140,8 @@ export class Hit {
             "Special": "spd"
         }
         let defStat = this.target.state.stats.get(
-                statMap[this.move.category] ?? "def"
-            )
+            statMap[this.move.category] ?? "def"
+        )
 
         const armor = this.target.state.armor.forCategory(this.move.category)
 

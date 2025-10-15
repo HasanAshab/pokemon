@@ -1,6 +1,5 @@
 * Tasks
-fix level stats
-fix dodge chance, atk
+fix dodge chance
 
 * QnA
 
