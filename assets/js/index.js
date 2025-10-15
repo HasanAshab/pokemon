@@ -251,142 +251,69 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-// import './test.js'
 
-  // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
-// window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
-
-startBattle([
+// bug gym
+startBattle(null,[
   {
-    "id": "chunin",
-    "name": "Mustofa",
-    "xp": 3100,
-    "nature": "nin",
-    "retreat": 7.5,
-    "types": [
-      "Fire"
-    ],
-    "abilities": [
-      "flamebody"
-    ],
-    "items": ["gen-age-50", "gen-ember", "gen-thik","gen-food-mid", "chainarmor1"],
+    "id": "caterpie",
+    "name": "caterpie",
+    "xp": 400,
+    "nature": "none",
+    "retreat": 3,
+    "types": [],
+    "abilities": [],
+    "items": [],
     "moves": [
       {
-        "id": "ember",
+        "id": "tackle",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "firespin",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "heatwave",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "fireball",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "furysmoke",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "protect",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "field:Fire",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "kunai",
-        "grade": "0",
-        "isSelected": true
-      },
-       {
-        "id": "ninjastar",
+        "id": "stringshot",
         "grade": "0",
         "isSelected": true
       }
     ],
     "mega": {
       "moves": [],
-      "suffix": ""
+      "suffix": "none"
     },
     "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
+    "token_used": {}
   },
   {
-    "id": "genin",
-    "name": "Masal",
-    "xp": 2500,
-    "nature": "tai",
-    "retreat": 6,
-    "types": [
-      "Fighting"
-    ],
+    "id": "kricketot",
+    "name": "kricketot",
+    "xp": 600,
+    "nature": "none",
+    "retreat": 3.5,
+    "types": [],
     "abilities": [],
-    "items": [
-      "latherarmor2",
-      "gen-ember",
-      "gen-thik",
-      "gen-food-low",
-      "gen-age-18"
-    ],
+    "items": [],
     "moves": [
       {
-        "id": "ember",
+        "id": "tackle",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "karatechop",
+        "id": "absorb",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "doublekick",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "chakrablade",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "ninjastar",
+        "id": "growl",
         "grade": "0",
         "isSelected": true
       }
     ],
     "mega": {
       "moves": [],
-      "suffix": ""
+      "suffix": "none"
     },
     "stats": {},
-    "token_used": {
-      "hp": 0,
-      "spe": 0,
-      "atk": 0,
-      "def": 0,
-      "spa": 0,
-      "spd": 0
-    }
+    "token_used": {}
   }
-], [], "multiple")
+], ["Bug"], "multiple")
+
