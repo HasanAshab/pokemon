@@ -4,6 +4,10 @@ class Field {
     constructor(battle) {
         this.battle = battle;
     }
+
+    impacts() {
+      return []
+    }
 }
 
 class GenericField extends Field {
@@ -14,6 +18,9 @@ class GenericField extends Field {
         
         battle.tailListener("scene", (...args) => this.onScene(...args), 'field-scene-' + type)
         battle.tailListener("turn", (...args) => this.onTurn(...args), 'field-scene-' + type)
+
+        console.log(this.impacts());
+        
     }
 
     onScene(senario) {
@@ -56,6 +63,49 @@ class GenericField extends Field {
     remove() {
       this.battle.removeField(this.type)
       this.cleanup()
+    }
+
+    impacts() {
+      const critRatioTypes = []
+      const powerReducedTypes = []
+     
+      Object.entries(typeChart).forEach(([key, value]) => {
+        if (value[this.type] > 1) {
+          critRatioTypes.push(key)
+        }
+        if (key !== this.type) {
+          if (value[this.type] < 1) {
+            powerReducedTypes.push(key)
+          }
+        }
+      })
+
+      Object.entries(typeChart[this.type]).forEach(([key, value]) => {
+        if (key !== this.type) {
+          if (value > 1) {
+            powerReducedTypes.push(key)
+          }
+        }
+      })
+
+
+      return [
+        {
+          placeholder: "Speed increased by 25%",
+          type: "good",
+          targets: [ this.type ]
+        },
+        {
+          placeholder: "Critical ratio increased by 50%",
+          type: "good",
+          targets: critRatioTypes
+        },
+        {
+          placeholder: "Power reduced by 15%",
+          type: "bad",
+          targets: powerReducedTypes
+        }
+      ]
     }
 }
 

@@ -2,8 +2,7 @@ import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNatu
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
 import { Move , Pokemon } from "./utils/models.js";
-
-import { objToFlags,flagsToObj, shuffle } from "./utils/helpers.js";
+import { objToFlags,flagsToObj, shuffle, capitalizeFirstLetter } from "./utils/helpers.js";
 import { EFFECTS } from "./utils/effects.js";
 
 window.onload = () => {
