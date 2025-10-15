@@ -2,13 +2,32 @@ export default {
   $blackbeastlayer: {
     type: "armor",
     covers: 100,
-    stats: {
-      def: 100,
-      spd: 100
+    basestats: {
+      def: 30,
+      spd: 30
     },
     tokens: {
       spe: -30
     }
+  },
+  "$charizardz:darklayer1":{
+      type: "armor",
+    covers: 25,
+    basestats: {
+      def: 80,
+      spd: 80
+    },
+    tokens: {}  
+  },
+  
+   "$charizardz:darklayer2":{
+      type: "armor",
+    covers: 90,
+    basestats: {
+      def: 80,
+      spd: 80
+    },
+    tokens: {}  
   },
   latherarmor1: {
     type: "armor",
