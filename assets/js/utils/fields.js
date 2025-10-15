@@ -19,7 +19,6 @@ class GenericField extends Field {
         battle.tailListener("scene", (...args) => this.onScene(...args), 'field-scene-' + type)
         battle.tailListener("turn", (...args) => this.onTurn(...args), 'field-scene-' + type)
 
-        console.log(this.impacts());
         
     }
 
@@ -93,16 +92,19 @@ class GenericField extends Field {
         {
           placeholder: "Speed increased by 25%",
           type: "good",
+          targetObj: "pokemon",
           targets: [ this.type ]
         },
         {
           placeholder: "Critical ratio increased by 50%",
           type: "good",
+          targetObj: "move",
           targets: critRatioTypes
         },
         {
           placeholder: "Power reduced by 15%",
           type: "bad",
+          targetObj: "move",
           targets: powerReducedTypes
         }
       ]

@@ -188,7 +188,46 @@ flex: 0 0 auto;
   padding: 3vw;
 }
 
-
+#show-fields-impact-btn {
+  padding: 4px 17px;
+  background-color: skyblue;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  filter: brightness(20%);
+}
+#show-fields-impact-btn.active {
+  filter: brightness(100%);
+}
+#show-fields-impact-btn.active ~ .fields-impact {
+  display: flex;
+}
+.fields-impact {
+  display: none;
+  position: absolute;
+  width: calc(50% - 6vw);
+  height: 80vh;
+  left: 1vw;
+  box-shadow:  0 0 5px 10px rgba(0,0,0,0.5);
+  background-color: white;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 3vw;
+  z-index: 100;
+  overflow-y: scroll;
+}
+.fields-impact > .impacts-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.fields-impact > .impacts-wrapper > .impact .placeholder.good::marker{
+ color: green;
+}
+.fields-impact > .impacts-wrapper > .impact .placeholder.bad::marker{
+  color: red;
+ }
 .you-controle-cont {
   height: 46.50%;
   display: flex;

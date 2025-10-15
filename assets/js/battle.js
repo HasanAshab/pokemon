@@ -227,8 +227,34 @@ globalThis.fieldClickHandler = function ({ currentTarget }) {
     battle.addField(fieldType)
   loadActiveFeilds()
 }
-
+globalThis.showFieldsImpacts = function ({ currentTarget }) {
+  currentTarget.classList.toggle("active")
+  const fields = battle.fields
+  const fieldsImpactDiv = currentTarget.parentElement.querySelector(".fields-impact")
+    const impactsWrapper = fieldsImpactDiv.querySelector(".impacts-wrapper")
+   impactsWrapper.innerHTML = ""
+  for (const field of fields) {
+   const impactsData = field.impacts()
+   const impactHeader = document.createElement("h3")
+   impactHeader.textContent = field.type
+   impactsWrapper.appendChild(impactHeader)
+   for (const impactData of impactsData){
+   const impact = document.createElement("ul")
+   impact.className = "impact"
+   const placeHolder = document.createElement("li")
+   placeHolder.className = "placeholder"
+   placeHolder.classList.add(impactData.type)
+   placeHolder.textContent += `${impactData.placeholder} for  `
+   for (const targetType of impactData.targets){
+    placeHolder.innerHTML += `<strong style="color: var(--${targetType}-type-color);">${targetType}</strong>, `
+   }
+   impact.appendChild(placeHolder)
+   impactsWrapper.appendChild(impact)
+   }
+  }
+}
 globalThis.showActiveFieldsBtnClickHandler = function ({ currentTarget }) {
+   console.log(battle.fields[0].impacts())
   currentTarget.classList.toggle("active")
   const onlyActiveFieldsWrapper = currentTarget.parentElement.querySelector(".only-active-fields-wrapper")
   onlyActiveFieldsWrapper.innerHTML = ""
