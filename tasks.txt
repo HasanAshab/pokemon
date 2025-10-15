@@ -1,5 +1,4 @@
 * Tasks
-fix dodge chance
 
 * QnA
 
