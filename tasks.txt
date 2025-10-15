@@ -1,5 +1,4 @@
 * Tasks
-armor baseStat
 
 * QnA
 
@@ -14,7 +13,6 @@ Bot shinobis hit a move in act of his team
 ancient mode with selfish scar
 
 *ovi
-make $charizardz:darklayer1, $charizardz:darklayer2
 
 kingdom clone
 same bot button on each team

@@ -2,7 +2,7 @@ export default {
   $blackbeastlayer: {
     type: "armor",
     covers: 100,
-    basestats: {
+    baseStats: {
       def: 30,
       spd: 30
     },
@@ -10,10 +10,11 @@ export default {
       spe: -30
     }
   },
+
   "$charizardz:darklayer1":{
       type: "armor",
     covers: 25,
-    basestats: {
+    baseStats: {
       def: 80,
       spd: 80
     },
@@ -23,7 +24,7 @@ export default {
    "$charizardz:darklayer2":{
       type: "armor",
     covers: 90,
-    basestats: {
+    baseStats: {
       def: 80,
       spd: 80
     },

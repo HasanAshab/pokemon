@@ -3,7 +3,7 @@ import { Item, Move, Pokemon } from "./models.js";
 import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
-import { fixFloat, weightedRandom, sumObj, modObj } from "./helpers.js"
+import { fixFloat, weightedRandom, sumObj, modObj, calcLevelStat } from "./helpers.js"
 
 
 class BaseBattle extends EventEmitter {
@@ -1530,13 +1530,10 @@ class ArmorManager {
     }
 
     forCategory(category) {
-        const statMap = {
-            "Physical": "def",
-            "Special": "spd"
-        }
         for (const item of this._triggeredArmors()) {
-            const defStat = item.stats[statMap[category]]
-
+            const defStat = this._getDefStatFor(item, category)
+            console.log(defStat);
+            
             if (defStat > 0 && item.armor._hp > 0) {
                 return {
                     id: item.id,
@@ -1545,6 +1542,19 @@ class ArmorManager {
             }
         }
         return null
+    }
+
+    _getDefStatFor(item, category) {
+        const statMap = {
+            "Physical": "def",
+            "Special": "spd"
+        }
+
+        if (item.stats)
+            return item.stats[statMap[category]]
+
+        const baseDefStat = item.baseStats[statMap[category]]
+        return calcLevelStat(statMap[category], baseDefStat, this.state.pokemon.level, 1)
     }
 
     _triggeredArmors() {

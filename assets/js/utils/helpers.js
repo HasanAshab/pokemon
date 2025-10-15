@@ -135,6 +135,27 @@ export function logUniqueMethodKeys(obj) {
   console.log([...uniqueMethodKeys]);
 }
 
+export function calcLevelStat(statName, baseStat, level) {    
+    const ev = 0; // Effort values from `efforts`
+    const iv = 35; // Default IV value
+
+    if (statName === "hp") {
+      // HP calculation
+      return Math.floor(
+        ((8 * baseStat + iv + Math.floor(ev / 4)) * level) / 100 + level + 10
+      );
+    }
+    else if (statName === "spe") {
+        return level * 0.25
+    }
+    else {
+      // Other stat calculations
+      return Math.floor(
+        ((2 * baseStat + iv + Math.floor(ev / 4)) * level) / 100 + 5
+      );
+    }
+}
+
 
 export function queryMoves(query, moves = MOVES) {
     const {

@@ -5,7 +5,7 @@ import items from "../../../data/items.js"
 import typeChart, { CHART_MAP } from "../../../data/types.js"
 import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
-import { sumObj, modObj, weightedRandom } from "./helpers.js";
+import { sumObj, modObj, weightedRandom, calcLevelStat } from "./helpers.js";
 
 
 const SAGE_MAPING = {
@@ -312,25 +312,9 @@ export class Pokemon extends PSPokemon {
 
         Object.keys(this._pokemon.baseStats).forEach(statName => {
           const baseStat = this._pokemon.baseStats[statName];
-          const ev = 0; // Effort values from `efforts`
-          const iv = 35; // Default IV value
-      
-          if (statName === "hp") {
-            // HP calculation
-            stats[statName] = Math.floor(
-              ((8 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + this.level + 10
-            );
-          }
-          else if (statName === "spe") {
-              stats[statName] = this.level * 0.25
-          }
-          else {
-            // Other stat calculations
-            stats[statName] = Math.floor(
-              ((2 * baseStat + iv + Math.floor(ev / 4)) * this.level) / 100 + 5
-            );
-          }
+          stats[statName] = calcLevelStat(statName, baseStat, this.level);
         });
+          
         return stats;
       }
       
@@ -370,6 +354,7 @@ export class Pokemon extends PSPokemon {
         return totalStats;
       }
 }
+
 
 export class Move {
     succeed = true
