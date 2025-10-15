@@ -357,8 +357,7 @@ export default {
   chakrafarm: {
     retreat: 0,
     onWave(pokemon) {
-      const chance = Math.random() * 100
-      
+      const chance = Math.random() * 100      
       if (chance >= 85) {
         pokemon.state.retreat += pokemon.level
       }
@@ -467,6 +466,26 @@ export default {
       }
     },
   },
+
+  seapearl: {
+    retreat: 1.5,
+    _mapping: {
+      "Normal": "Water",
+    },
+    onActivate(pokemon) {
+      pokemon.state.moves
+        .filter(move => move.flags.offensive)
+        .forEach(move => {
+            move.type = this.ability._mapping[move.type] || move.type
+        })
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+          move.type = move._ref.type
+      })
+    },
+  },
+
   swordmanship: {
     retreat: 0,
     onActivate(pokemon) {

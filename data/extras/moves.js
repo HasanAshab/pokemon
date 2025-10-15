@@ -1697,6 +1697,35 @@ katana: {
         return !pokemon.state._data.tailwind
       }
     },
+    watershuriken: {
+      num: 594,
+      accuracy: 100,
+      basePower: 15,
+      category: "Special",
+      name: "Water Shuriken",
+      pp: 20,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      multihit: [2, 5],
+      secondary: null,
+      target: "normal",
+      type: "Water",
+      contestType: "Cool"
+    },
+    bondshuriken: {
+      num: 100059,
+      accuracy: 100,
+      basePower: 70,
+      category: "Special",
+      name: "Bond Shuriken",
+      pp: null,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Water",
+      contestType: "Cool"
+    },
   openinnergate: {
       num: 100058,
       accuracy: true,

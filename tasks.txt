@@ -1,8 +1,9 @@
 * Tasks
+eternatus
+
 
 * QnA
-How will manage abilities for a morphable pokemon?
-Crit ability also for form 2?
+
 
 * bug
 abilities multiple opponent event system

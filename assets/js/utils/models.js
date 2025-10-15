@@ -198,7 +198,7 @@ export class Pokemon extends PSPokemon {
     }
 
     isMegaForm() {      
-        return this._pokemon.name === pokemons[this.megaId].name
+        return this._pokemon.name === pokemons[this.megaId]?.name
     }
 
     toBase64() {

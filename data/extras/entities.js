@@ -70,6 +70,60 @@ export default {
       battleOnly: ["Zygarde", "Zygarde-10%"],
       gen: 7
     },
+    greninja: {
+      num: 658,
+      name: "Greninja",
+      types: ["Water", "Dark"],
+      genderRatio: { M: 0.875, F: 0.125 },
+      baseStats: { hp: 72, atk: 95, def: 67, spa: 103, spd: 71, spe: 122 },
+      abilities: { 0: "Torrent", H: "Protean", S: "Battle Bond" },
+      heightm: 1.5,
+      weightkg: 40,
+      color: "Blue",
+      prevo: "Frogadier",
+      evoLevel: 36,
+      eggGroups: ["Water 1"],
+      otherFormes: ["Greninja-Bond", "Greninja-Ash"],
+      formeOrder: ["Greninja", "Greninja-Bond", "Greninja-Ash"]
+    },
+    greninjabond: {
+      num: 658,
+      name: "Greninja-Bond",
+      baseSpecies: "Greninja",
+      forme: "Bond",
+      types: ["Water", "Dark"],
+      gender: "M",
+      baseStats: { hp: 72, atk: 95, def: 77, spa: 103, spd: 81, spe: 132 },
+      abilities: { 0: "Chakra Farm" },
+      heightm: 1.5,
+      weightkg: 40,
+      color: "Blue",
+      eggGroups: ["Undiscovered"],
+      gen: 7,
+      morph: {
+        to: "greninjaash",
+        requires: {
+          hp: 80,
+        }
+      }
+    },
+    greninjaash: {
+      num: 658,
+      name: "Greninja-Ash",
+      baseSpecies: "Greninja",
+      forme: "Ash",
+      types: ["Water", "Dark"],
+      gender: "M",
+      baseStats: { hp: 72, atk: 145, def: 67, spa: 153, spd: 71, spe: 132 },
+      abilities: { 0: "Sea Pearl" },
+      heightm: 1.5,
+      weightkg: 40,
+      color: "Blue",
+      eggGroups: ["Undiscovered"],
+      requiredAbility: "Battle Bond",
+      battleOnly: "Greninja-Bond",
+      gen: 7
+    },
     charizardmegax: {
       num: 6,
       name: "Charizard-Mega-X",
