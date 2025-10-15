@@ -78,7 +78,7 @@ export default {
       types: ["Fire", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
       baseStats: { hp: 78, atk: 120, def: 111, spa: 140, spd: 85, spe: 100 },
-      abilities: { 0: "Tough Claws" },
+      abilities: { 0: "Blueflare" },
       heightm: 2,
       weightkg: 110.5,
       color: "Black",
@@ -93,7 +93,7 @@ export default {
       types: ["Fire", "Flying"],
       genderRatio: { M: 0.875, F: 0.125 },
       baseStats: { hp: 78, atk: 104, def: 78, spa: 104, spd: 115, spe: 155 },
-      abilities: { 0: "Drought" },
+      abilities: { 0: "Inner Pressure" },
       heightm: 1.6,
       weightkg: 90,
       color: "Red",
@@ -105,9 +105,9 @@ export default {
       name: "Charizard-Mega-Z",
       baseSpecies: "Charizard",
       forme: "Mega-Z (50%)",
-      types: ["Fire", "Poison", "Dark", "Dragon"],
+      types: ["Fire", "Poison","Psythic", 'flying' , "Dark", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 78, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
+      baseStats: { hp: 85, atk: 130, def: 105, spa: 125, spd: 104, spe: 85 },
       abilities: { 0: "Crit" },
       heightm: 2,
       weightkg: 120,
@@ -119,7 +119,7 @@ export default {
       morph: {
         to: "charizardmegazcomplete",
         requires: {
-          level: 40,
+          level: 50,
           hp: 50
         }
       }
@@ -131,8 +131,7 @@ export default {
       forme: "Mega-Z (100%)",
       types: ["Fire", "Poison", "Dark", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
-      //hp changed krsi testing er laigga
-      baseStats: { hp: 100, atk: 141, def: 120, spa: 115, spd: 120, spe: 60 },
+      baseStats: { hp: 90, atk: 160, def: 120, spa: 160, spd: 115, spe: 75 },
       abilities: { 0: "Crit", 1: "Scar Face" },
       heightm: 2,
       weightkg: 120,
