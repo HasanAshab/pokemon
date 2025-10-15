@@ -1,5 +1,4 @@
 * Tasks
-wave count
 
 * QnA
 How will manage abilities for a morphable pokemon?
