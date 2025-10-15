@@ -191,8 +191,7 @@ export default {
       color: "Black",
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Charizardite Z",
-      // items: ["$charizardz:darklayer1"],
-      items: ["latherarmor1"],
+       items: ["$charizardz:darklayer1"],
       morph: {
         to: "charizardmegazcomplete",
         requires: {
@@ -214,9 +213,8 @@ export default {
       weightkg: 120,
       color: "Black",
       eggGroups: ["Monster", "Dragon"],
-      // items: ["$charizardz:darklayer2"],
-      items: ["latherarmor2"],
-      itemsRemove: ["latherarmor1"],
+       items: ["$charizardz:darklayer2"],
+       itemsRemove: ["$charizardz:darklayer1"],
     },
      magtauros: {
       num: 10001,
