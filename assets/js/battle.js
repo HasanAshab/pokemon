@@ -99,13 +99,17 @@ function clickOnMove(playerTag,moveId) {
 }
 
 globalThis.switchPokemonClickHandler = function ({ currentTarget }, playerTag) {
+  eventEmitter.emit("switch-pokemon-select", playerTag, currentTarget)
+}
+
+eventEmitter.on("switch-pokemon-select", (playerTag, currentTarget) => {
   if (!currentTarget.classList.contains("disabled")) {
     const parent = currentTarget.parentElement
     parent.querySelector(".pokemon.active")?.classList.remove("active")
     currentTarget.classList.add("active")
     switchPokemon(playerTag, currentTarget.dataset.index)
   }
-}
+})
 
 globalThis.showStatEditForm = function (playerTag) {
   const pokemon = pokemonMap[playerTag]
@@ -758,9 +762,7 @@ function switchPokemon(playerTag, index) {
     globalThis.pokemonMap["you"] = pokemon
   }
   else {
-
     globalThis.enemyPokemon = teams.enemy[index]
-
     globalThis.pokemonMap["enemy"] = enemyPokemon
   }
 
@@ -1357,13 +1359,23 @@ globalThis.showFieldMoveForm = (playerTag) => {
  async function confirmBotScene() {
    const botMoveConfirmBtn = document.querySelector("#bot-move-confirm-btn")
    botMoveConfirmBtn.classList.add("active")
-   return new Promise(resolve => {
-     botMoveConfirmBtn.onclick = () => {
-       botMoveConfirmBtn.classList.remove("active")
-       resolve(true)
-     }
+   return new Promise((resolve) => {
+      const oldBattlers = Object.values(pokemonMap).map(p => p.name)
+      botMoveConfirmBtn.onclick = () => {
+        botMoveConfirmBtn.classList.remove("active")
+        resolve(true)
+      }
+      eventEmitter.on("switch-pokemon-select", (playerTag, currentTarget) => {
+        const currentBattlers = Object.values(pokemonMap).map(p => p.name)        
+        if (oldBattlers[0] === currentBattlers[0] && oldBattlers[1] === currentBattlers[1]) return
+        botMoveConfirmBtn.classList.remove("active")
+        resolve(false)
+        botMoveConfirmBtn.onclick = null
+        eventEmitter.removeListener("switch-pokemon-select", "refresh-confirm-bot-btn")
+      }, "refresh-confirm-bot-btn")
    })
   }
+
 eventEmitter.on("move-card-select", async (card, playerTag) => {
   if (card.classList.contains("disabled")) return
   const oponentPlayerTag = playerTag === "you" ? "enemy" : "you"
