@@ -246,7 +246,7 @@ flex: 0 0 auto;
   transform: rotate(180deg);
 }
 .pokemon-switch-controler {
-  width: 70px;
+  width: 120px;
   height: 130px;
   overflow-y: scroll;
 

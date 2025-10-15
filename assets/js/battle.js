@@ -732,7 +732,7 @@ function loadChoosePokemon(playerTag) {
         </g>
       </svg>
       `}
-            <span class="name">${pokemon.meta.name ?? pokemon.name}</span>
+            <span class="name">${pokemon.id} ( ${i} )</span>
           </div>`
     
     i++
