@@ -124,6 +124,29 @@ export default {
       battleOnly: "Greninja-Bond",
       gen: 7
     },
+    eternatus: {
+      num: 890,
+      name: "Eternatus",
+      types: ["Poison", "Dragon"],
+      gender: "N",
+      baseStats: { hp: 140, atk: 85, def: 95, spa: 145, spd: 95, spe: 130 },
+      abilities: { 0: "Pressure" },
+      heightm: 20,
+      weightkg: 950,
+      color: "Purple",
+      eggGroups: ["Undiscovered"],
+      tags: ["Restricted Legendary"],
+      otherFormes: ["Eternatus-Eternamax"],
+      formeOrder: ["Eternatus", "Eternatus-Eternamax"],
+      cannotDynamax: true,
+      morph: {
+        to: "eternatuseternamax",
+        requires: {
+          level: 36,
+          hp: 20
+        }
+      }
+    },
     charizardmegax: {
       num: 6,
       name: "Charizard-Mega-X",
@@ -292,7 +315,7 @@ export default {
       name: "Scyther",
       types: ["Bug", "Flying"],
       baseStats: { hp: 70, atk: 110, def: 80, spa: 55, spd: 80, spe: 105 },
-      abilities: { 0: "Swarm", 1: "Technician", H: "Steadfast" },
+      abilities: { 0: "Swarm" },
       heightm: 1.5,
       weightkg: 56,
       evoLevel: 23,
@@ -304,28 +327,26 @@ export default {
     scydon: {
       num: 10006,
       name: "Scydon",
-      types: ["Bug", "Flying","Dragon"],
-      baseStats: { hp: 80, atk: 120, def: 80, spa: 150, spd: 80, spe: 170 },
-      abilities: { 0: "Swarm", 1: "Technician", H: "Steadfast" },
+      types: ["Bug", "Fairy","Dragon"],
+      baseStats:{hp:71,atk:106,def:71,spa:132,spd:71,spe:150},
+      abilities: { 0: "Swarm" },
       heightm: 1.7,
       weightkg: 66,
       prevo: "Scyther",
       color: "white",
-      eggGroups: ["Bug"]
+      eggGroups: ["Bug"],
+      evos: ["Roaring don"]
     },
-    scydonmega: {
+    roaringdon: {
       num: 10006,
-      name: "Scydon-Mega",
-      baseSpecies: "Scydon",
-      forme: "Mega",
+      name: "Roaring don",
       types: ["Bug", "dark","Steel","Dragon"],
-      baseStats: { hp: 100, atk: 170, def: 100, spa: 160, spd: 100, spe: 150 },
-      abilities: { 0: "Tough Claws" },
+      baseStats: {hp:90,atk:153,def:90,spa:144,spd:90,spe:135},
+      abilities: { 0: "Rough Skin" },
       heightm: 2.3,
       weightkg: 75,
       color: "white",
       eggGroups: ["Bug"],
-      requiredItem: "Scydonite"
     },
     boltu: {
       num: 10007,
