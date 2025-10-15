@@ -49,7 +49,7 @@ function updateTotalBattlesCount() {
 
 function setWinsCount(val) {
   const winsCountElm = document.querySelector(".wins-count");
-  if (val) {
+  if (val !== undefined) {
     localStorage.setItem("user-wins-count", val);
     winsCountElm.textContent = val;
     updateTotalBattlesCount();
@@ -59,7 +59,7 @@ function setWinsCount(val) {
 }
 function setLosesCount(val) {
   const losesCountElm = document.querySelector(".loses-count");
-  if (val) {
+  if (val !== undefined) {
     localStorage.setItem("user-loses-count", val);
     losesCountElm.textContent = val;
     updateTotalBattlesCount();
@@ -69,7 +69,7 @@ function setLosesCount(val) {
 }
 function setRank(val) {
   const rankElm = document.getElementById("cor-rank");
-  if (val) {
+  if (val !== undefined) {
     localStorage.setItem("user-cor-rank", val);
     rankElm.textContent = val;
   } else {
@@ -230,10 +230,7 @@ globalThis.redirectToEnemyPage = function () {
 
 function loadTotalCP() {
   const pokemonsMeta = getPokemonsMeta();
-  const pokemons = Object.keys(pokemonsMeta).map((name) => {
-    const m = pokemonsMeta[name];
-    return new Pokemon(m.id, m);
-  });
+  const pokemons = Object.values(pokemonsMeta).map((m) => new Pokemon(m.id, m));
   const totalCpBar = document.getElementById("total-cp");
   totalCpBar.textContent = pokemons.reduce((acc, p) => acc + p.cp(), 0);
 }
