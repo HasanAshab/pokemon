@@ -762,7 +762,9 @@ class BaseBattle extends EventEmitter {
         else if (move.target === "allAdjacent") {
           team = [...this.team1, ...this.team2]
             .filter(p => p !== attacker)
-        }        
+        }
+
+        team = team.filter(p => this.groundedPokemons().includes(p))
 
         for (const p of team.filter(p => p !== defender)) {
           let atk = attacker
