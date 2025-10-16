@@ -76,8 +76,9 @@ class ExpirableWeather extends Weather {
 
 class StandardWeather extends ExpirableWeather {
     lifetime = { turns: 6 }
-    
+
     _accModifiedMoves = []
+    _heals = []
 
     onScene(senario) {
         senario.forEach((move, pokemon) => {
@@ -93,7 +94,15 @@ class StandardWeather extends ExpirableWeather {
                 move.accuracy = acc
                 this._accModifiedMoves.push(move)
             })
-      })
+        })
+    }
+
+    onTurn() {
+        this.battle.groundedPokemons()
+          .filter(p => this._heals.some(t => p.isTypeOf(t)))
+          .forEach(pokemon => {
+            pokemon.state.increaseHealth(pokemon.maxhp / 8)
+          })
     }
 
     teardown() {
@@ -115,6 +124,7 @@ class StandardWeather extends ExpirableWeather {
 
 class SunnyDayWeather extends StandardWeather {
     static weatherName = "sunnyday"
+    _heals = ["Grass"]
 
     _getPowerMod(move) {
         if (move.type === "Fire")
@@ -134,6 +144,7 @@ class SunnyDayWeather extends StandardWeather {
 
 class RainDanceWeather extends StandardWeather {
     static weatherName = "RainDance"
+    _heals = ["Grass"]
 
     _getPowerMod(move) {
         if (move.type === "Water")
@@ -164,7 +175,7 @@ export class WeatherManager {
     }
   
     name() {
-        return this._weather.constructor.weatherName
+        return this._weather?.constructor.weatherName || null
     }
 
     set(source, weatherName) {      

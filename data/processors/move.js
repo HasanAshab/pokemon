@@ -134,7 +134,10 @@ function addFlags(move) {
         flags.stall = 1
         flags.offensive = 0
     }
-}
+
+    
+  }
+  
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
@@ -207,6 +210,15 @@ function setEffects(move) {
         chance: 65,
         isVolatile: true
     })
+
+    
+    //WORKAROUND: charge -> recharge
+    move.flags.charge && move.effects.self.push({
+        name: "mustrecharge",
+        chance: 100,
+        isVolatile: true
+    })
+
 }
 
 function setStatChanges(move) {
@@ -356,9 +368,9 @@ function setCapacity(move) {
   if (!multiTarget.includes(move.target))
       return move.capacity = 1
 
-  move.basePower = Math.round(move.basePower * 0.66668)
-  
-  move.capacity = move.category === "Status" ? Infinity : Math.max(Math.round(move.basePower / 10), 2)
+    
+    move.capacity = move.category === "Status" ? Infinity : Math.max(Math.round(move.basePower / 14), 2)
+    move.basePower = Math.round(move.basePower * 0.19)
 }
 
 function modifyAccuracy(move) {
