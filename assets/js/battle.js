@@ -263,17 +263,14 @@ function showPokemonFieldImpacts({ placeholder, type, targets }) {
   const pokemonList = teams["you"].concat(teams["enemy"])
   pokemonList.forEach(pokemon => {
     const pokemonElm = document.querySelector(`.pokemon[data-name="${pokemon.name}"]`)
-     let typeIncludesCount = 0
+     let typeIncludes = false
     for (const pokemonType of pokemon._pokemon.types) {
-      console.log(pokemonType);
-      
       if (targets.includes(pokemonType)) {
-        typeIncludesCount++
+        typeIncludes = true
+        break;
       }     
     }
-    console.log(typeIncludesCount);
-    
-     if (typeIncludesCount > 0)
+     if (typeIncludes)
         pokemonElm.classList.add("fast")
      else 
         pokemonElm.classList.remove("fast")
@@ -281,18 +278,76 @@ function showPokemonFieldImpacts({ placeholder, type, targets }) {
   })
   // const pokemonList = document.querySelectorAll(".pokemon-list .pokemon")
 }
+function getImpacts(fields) {
+  const speedUpPokemonTypes = new Set();
+  const powerReducedMoveTypes = new Set();
+  const criticalMoveTypes = new Set();
+
+  for (const f of fields) {
+    for (const imp of f.impacts()) {
+      const placeholder = imp.placeholder;
+
+      if (placeholder.startsWith("Speed increased")) {
+        for (const t of imp.targets) speedUpPokemonTypes.add(t);
+      } 
+      else if (placeholder.startsWith("Power reduced")) {
+        for (const t of imp.targets) powerReducedMoveTypes.add(t);
+      } 
+      else if (placeholder.startsWith("Critical ratio increased")) {
+        for (const t of imp.targets) criticalMoveTypes.add(t);
+      }
+    }
+  }
+
+  return {
+    speedUpPokemonTypes: [...speedUpPokemonTypes],
+    powerReducedMoveTypes: [...powerReducedMoveTypes],
+    criticalMoveTypes: [...criticalMoveTypes],
+  };
+}
+
+function showSpeedUpPokemons(speedUpPokemonTypes){
+   const pokemonList = teams["you"].concat(teams["enemy"])
+
+    pokemonList.forEach(pokemon => {
+    const pokemonElm = document.querySelector(`.pokemon[data-name="${pokemon.name}"]`)
+     let typeIncludes = false
+    for (const pokemonType of pokemon._pokemon.types) {
+      if (speedUpPokemonTypes.includes(pokemonType)) {
+        typeIncludes = true
+        break;
+      }     
+    }
+     if (typeIncludes)
+        pokemonElm.classList.add("fast")
+     else 
+        pokemonElm.classList.remove("fast")
+  })
+
+}
+function showPowerReducedMoves(powerReducedMoveTypes,playerTag){
+  const moves = pokemonMap[playerTag]
+  console.log(moves)
+}
 function displayBattleFieldImpacts() {
   const fields = battle.fields
-  for (const field of fields) {
+  const {speedUpPokemonTypes,powerReducedMoveTypes,criticalMoveTypes} = getImpacts(fields)
+  showSpeedUpPokemons(speedUpPokemonTypes)
+  
+  showPowerReducedMoves(powerReducedMoveTypes,"you")
+ // showPowerReducedMoves(powerReducedMoveTypes,"enemy")
+
+  
+  
+ /* for (const field of fields) {
     const impactsData = field.impacts()
     for (const impactData of impactsData) {
       if (impactData.placeholder === "Speed increased by 25%")
         showPokemonFieldImpacts(impactData)
 
-
     }
 
-  }
+  }*/
 }
 globalThis.showActiveFieldsBtnClickHandler = function ({ currentTarget }) {
   currentTarget.classList.toggle("active")

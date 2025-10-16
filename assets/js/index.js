@@ -316,5 +316,5 @@ startBattle( [
     "stats": {},
     "token_used": {}
   }
-], ["Bug"], "single")
+], ["Bug","Fire"], "multiple")
 
