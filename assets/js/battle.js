@@ -637,7 +637,26 @@ function chooseBotMove(playerTag) {
   const moveId = choosedMoves.length === 0 
     ? "staythere"
     : weightedRandomV2(choosedMoves, weights).id
-  console.log(choosedMoves.map((m, i) => `${m.id} -> ${weights[i]}`));
+
+  // console.log(choosedMoves.map((m, i) => `${m.id} -> ${weights[i]}`));
+
+  battle.fields.forEach(f => {
+    const modMap = {
+     "good": 1.3,
+     "bad": 0.7 
+    }
+    f.impacts()
+      .filter(im => im.targetObj === "move")
+      .forEach(im => {
+        choosedMoves.forEach((m, i) => {
+          if (im.targets.includes(m.type)) {
+            weights[i] *= modMap[im.type]
+          }
+        })
+    })
+  })
+  
+  // console.log(choosedMoves.map((m, i) => `${m.id} -> ${weights[i]}`));
   
   return moveId
 }

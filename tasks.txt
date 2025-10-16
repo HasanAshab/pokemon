@@ -1,6 +1,4 @@
 * Tasks
-bot pokemon:
-  field aware
 
 * QnA
 
