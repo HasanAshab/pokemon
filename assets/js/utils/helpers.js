@@ -101,6 +101,28 @@ export function weightedRandom(values, weights) {
   return values[values.length - 1]; // Fallback
 }
 
+
+export function weightedRandomV2(choices, weights) {
+  if (choices.length !== weights.length) {
+    throw new Error('choices and weights must have the same length');
+  }
+
+  const totalWeight = weights.reduce((a, b) => a + b, 0);
+  const rand = Math.random() * totalWeight;
+  
+  let cumulative = 0;
+  for (let i = 0; i < choices.length; i++) {
+    cumulative += weights[i];
+    if (rand < cumulative) {
+      return choices[i];
+    }
+  }
+
+  // fallback (should never hit unless floating point issue)
+  return choices[choices.length - 1];
+}
+
+
 export function getDamageDangerLevel(pokemon, damage) {
     const maxHP = pokemon.maxhp;
     const damagePercentage = (damage / maxHP) * 100;

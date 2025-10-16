@@ -2,10 +2,9 @@ import { EventEmitter } from "./utils/event.js"
 import { Pokemon, Move } from "./utils/models.js"
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
-import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags, shuffle } from "./utils/helpers.js"
+import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, getDamageDangerLevel, flagsToObj, objToFlags, shuffle, weightedRandomV2 } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
-import pokemons from "../../data/pokemons.js"
 
 
 const eventEmitter = new EventEmitter()
@@ -607,8 +606,11 @@ function chooseBotMove(playerTag) {
 
     if (Object.keys(scores).length === 1)
       scores[0] = 1
+
     
-  const choosedMoves = sortedMoves.slice(0, 4);
+  const choosedMoves = sortedMoves.slice(0, 6);
+  const weights = choosedMoves.map(m => scores[m.id])
+
   const choosedStatusMove = shuffle(
     pokemon.state.usableOffensiveMoves()
       .filter(m => m.category === "Status")
@@ -621,12 +623,22 @@ function chooseBotMove(playerTag) {
   )[0]
 
 
-  if (choosedStatusMove)
+  if (choosedStatusMove) {
+    const avgWeight = weights.reduce((total, w) => total + w, 0) / weights.length
     choosedMoves.push(choosedStatusMove)
-  if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)
-    choosedMoves.push(choosedStallingMove)
+    weights.push(avgWeight)
+  }
 
-  const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
+  if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove) {
+    choosedMoves.push(choosedStallingMove)
+    weights.push(Math.max(weights) - 1)
+  }
+
+  const moveId = choosedMoves.length === 0 
+    ? "staythere"
+    : weightedRandomV2(choosedMoves, weights).id
+  console.log(choosedMoves.map((m, i) => `${m.id} -> ${weights[i]}`));
+  
   return moveId
 }
 
