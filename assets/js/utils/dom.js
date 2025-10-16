@@ -193,7 +193,7 @@ export async function getUserPokemonsMeta(name, session = 1){
   return enemiesMeta
 }
 export function startBattle(enemiesMeta, fields = [], system) {
-    system = "multiple"
+    //system = "multiple"
     const history = JSON.parse(localStorage.getItem("battle-history")) || {};
     const enemiesBase64List = enemiesMeta.map(meta => {
         history[meta.name] = meta

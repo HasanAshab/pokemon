@@ -303,10 +303,11 @@ function setRetreat(move) {
       + targetStatEffectBonus
       + critRatioBonus
   )
-  if (move.category === "Status" && move.target === "foeSide")
-      multiplier += 2
-  if (move.category === "Status" && move.target === "allAdjacent")
-      multiplier += 1.5
+  //todo
+  // if (move.category === "Status" && move.target === "foeSide")
+//       multiplier += 2
+//   if (move.category === "Status" && move.target === "allAdjacent")
+//       multiplier += 1.5
 
   retreat += 0.5 * multiplier
   

@@ -2,6 +2,7 @@
 bot pokemon:
   Weighted random move
   field aware
+single battle
 
 * QnA
 
