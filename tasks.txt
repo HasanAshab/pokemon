@@ -1,6 +1,4 @@
 * Tasks
-compeararot
-
 bot pokemon:
   Weighted random move
   field aware
