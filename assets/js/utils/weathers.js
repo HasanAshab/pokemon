@@ -164,7 +164,7 @@ export class WeatherManager {
     }
   
     name() {
-        return this._weather.constructor.weatherName
+        return this._weather?.constructor.weatherName || null
     }
 
     set(source, weatherName) {      

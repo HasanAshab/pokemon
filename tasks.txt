@@ -15,14 +15,14 @@ Bot shinobis hit a move in act of his team
 * Pending
 ancient mode with selfish scar
 
-*ovi
 
+*ovi
 kingdom clone
 same bot button on each team
 fix retreat of beast abilities
 hand3
-
 * Scenario
+
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 
 phy 1 -> sp = x 100% dx
