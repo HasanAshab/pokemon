@@ -660,7 +660,7 @@ function loadEffects(playerTag) {
 const _alreadySubscribedPokemons = []
 
 function setBattleStateListeners(playerTag) {
-  const pokemon = pokemonMap[playerTag]
+  const pokemon = pokemonMap[playerTag]  
   const opponent = pokemonMap[opponentTag(playerTag)]
 
   if (_alreadySubscribedPokemons.includes(pokemon.name)) return
@@ -674,9 +674,11 @@ function setBattleStateListeners(playerTag) {
   })
   pokemon.state.tailListener("scene-end", () => {
     setTimeout(() => {
-      globalThis.teams = {
-        "you": battle.team1,
-        "enemy": battle.team2
+      if (system === "multiple") {
+        globalThis.teams = {
+          "you": battle.team1,
+          "enemy": battle.team2
+        }
       }
       loadEffects(playerTag)
       setStatChanges(pokemon.state.stats._statChanges, playerTag)
@@ -818,7 +820,7 @@ function toggleMirrorChoosePokemons(playerTag) {
 }
 
 function loadChoosePokemon(playerTag) {
-  const team = teams[playerTag]
+  const team = teams[playerTag]  
   if (team[0].meta.mirror)
     return null
 
@@ -862,7 +864,7 @@ function makeMyPokemons() {
 }
 
 function makeEnemyPokemons() {
-  const enemiesBase64List = JSON.parse(localStorage.getItem("$enemies-base64-list"))
+  const enemiesBase64List = JSON.parse(localStorage.getItem("$enemies-base64-list"))  
   return enemiesBase64List.map(base64 => Pokemon.fromBase64(base64, "enemy"))
 }
 
