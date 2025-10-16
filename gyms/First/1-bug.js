@@ -1,4 +1,4 @@
-startBattle( [
+startBattle(null,[
   {
     "id": "caterpie",
     "name": "caterpie",
@@ -7,7 +7,7 @@ startBattle( [
     "retreat": 3,
     "types": [],
     "abilities": [],
-    "items": [],
+    "items": ["gen-food-low"],
     "moves": [
       {
         "id": "tackle",
@@ -35,7 +35,7 @@ startBattle( [
     "retreat": 3,
     "types": [],
     "abilities": [],
-    "items": [],
+    "items": ["gen-food-low"],
     "moves": [
       {
         "id": "tackle",

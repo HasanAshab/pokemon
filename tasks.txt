@@ -1,4 +1,6 @@
 * Tasks
+compeararot
+
 bot pokemon:
   Weighted random move
   field aware
@@ -7,6 +9,8 @@ bot pokemon:
 
 
 * bug
+single battle alladjacent 
+
 abilities multiple opponent event system
 Bot shinobis hit a move in act of his team
 

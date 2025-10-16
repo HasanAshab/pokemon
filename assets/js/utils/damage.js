@@ -79,7 +79,7 @@ export class Damage {
         
         //return stab * bp * attackStat * 0.416;
         // return stab * bp * attackStat * 0.55;
-        return stab * bp * attackStat * 1.5;
+        return stab * bp * attackStat * 0.9;
     }
 
     _calculate() {

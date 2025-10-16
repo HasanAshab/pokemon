@@ -7,7 +7,7 @@ startBattle([
     "retreat": 3,
     "types": [],
     "abilities": [],
-    "items": [],
+    "items": ["gen-food-low"],
     "moves": [
       {
         "id": "rockpolish",
@@ -41,7 +41,7 @@ startBattle([
     "retreat": 3.5,
     "types": [],
     "abilities": [],
-    "items": [],
+    "items": ["gen-food-low"],
     "moves": [
       {
         "id": "tackle",
