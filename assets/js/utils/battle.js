@@ -173,6 +173,10 @@ class BaseBattle extends EventEmitter {
     prompt(pokemon) {
         return this._prompts.get(pokemon);
     }
+
+    filterTeam(team) {
+        return team
+    }
     
     actives() {
         return [this.pokemon1, this.pokemon2]
@@ -211,7 +215,6 @@ class BaseBattle extends EventEmitter {
     }
 
     async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
-      
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -857,9 +860,9 @@ class BaseBattle extends EventEmitter {
 }
 
 class SingleBattle extends BaseBattle {
-    filterTeam(team) {
-        return [team[0]]
-    }
+    // filterTeam(team) {
+    //     return [team[0]]
+    // }
 
     needNewWave() {
         return !this._waveAfterTurns ||
