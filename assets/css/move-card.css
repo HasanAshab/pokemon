@@ -43,6 +43,12 @@
   position: relative;
   user-select: none;
 }
+.card:not(.power-reduced) .power-reduced-badge {
+ display: none;
+}
+.card:not(.critical) .critical-badge{
+  display: none;
+}
 
 .card.disabled {
   filter: brightness(40%);
