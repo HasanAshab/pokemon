@@ -252,9 +252,8 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-
 // bug gym
-startBattle( [
+startBattle(null,[
   {
     "id": "caterpie",
     "name": "caterpie",
@@ -286,9 +285,9 @@ startBattle( [
   {
     "id": "kricketot",
     "name": "kricketot",
-    "xp": 600,
+    "xp": 500,
     "nature": "none",
-    "retreat": 3.5,
+    "retreat": 3,
     "types": [],
     "abilities": [],
     "items": [],
@@ -317,4 +316,5 @@ startBattle( [
     "token_used": {}
   }
 ], ["Bug","Fire"], "multiple")
+
 
