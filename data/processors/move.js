@@ -134,7 +134,10 @@ function addFlags(move) {
         flags.stall = 1
         flags.offensive = 0
     }
-}
+
+    
+  }
+  
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
@@ -207,6 +210,15 @@ function setEffects(move) {
         chance: 65,
         isVolatile: true
     })
+
+    
+    //WORKAROUND: charge -> recharge
+    move.flags.charge && move.effects.self.push({
+        name: "mustrecharge",
+        chance: 100,
+        isVolatile: true
+    })
+
 }
 
 function setStatChanges(move) {
