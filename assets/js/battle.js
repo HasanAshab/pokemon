@@ -519,6 +519,8 @@ function chooseBotMove(playerTag) {
   }
 
 
+  const scores = {}
+
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
     .filter(m => m.category !== "Status")
@@ -597,9 +599,15 @@ function chooseBotMove(playerTag) {
       const score1 = getScore(m1)
       const score2 = getScore(m2)
 
+      scores[m1.id] = score1
+      scores[m2.id] = score2
+
       return score2 - score1;
     });
 
+    if (Object.keys(scores).length === 1)
+      scores[0] = 1
+    
   const choosedMoves = sortedMoves.slice(0, 4);
   const choosedStatusMove = shuffle(
     pokemon.state.usableOffensiveMoves()
