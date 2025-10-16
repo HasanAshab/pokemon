@@ -532,7 +532,7 @@ class Ability {
         this.pokemon = manager.pokemon
         this.active = false
         setTimeout(() => {
-          if (this._ability.flags?.autoenable === 1 || !this.pokemon.isHuman) { 
+          if (this._ability.flags?.autoenable === 1) {// || !this.pokemon.isHuman) { 
               if ('state' in this.pokemon) {
                 this.activate()
                 this.pokemon.state.once("fainted", () => this.deactivate())
