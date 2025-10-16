@@ -87,9 +87,9 @@ globalThis.progressbarClickHandler = ({ currentTarget }, playerTag) => {
   }
 }
 
-function clickOnMove(playerTag,moveId) {
+function clickOnMove(playerTag, moveId) {
   // const pokemon = pokemonMap[playerTag]
-  const moveCard = document.querySelector(`.${playerTag}-controle-cont  .card-container .card[data-move-id="${moveId}"]`)  
+  const moveCard = document.querySelector(`.${playerTag}-controle-cont  .card-container .card[data-move-id="${moveId}"]`)
   if (moveCard) {
     moveCard.click();
     moveCard.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -144,17 +144,17 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
       p.meta.mirror = true
       opponentTeam.push(p)
     })
-    clickOnFirstPokemonSwitch(opponentTag(playerTag),true)
+    clickOnFirstPokemonSwitch(opponentTag(playerTag), true)
   }
 
   else {
     toggleMirrorChoosePokemons(playerTag)
     teams[opponentTag(playerTag)] = opponentTeam.filter(p => !p.meta.mirror)
-    
+
     teams[playerTag].forEach(p => {
       p.meta.mirror = false
     })
-        clickOnFirstPokemonSwitch(opponentTag(playerTag))
+    clickOnFirstPokemonSwitch(opponentTag(playerTag))
 
   }
 
@@ -173,37 +173,41 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   loadActiveFeilds()
 }
 
- function setupBotModeBtn(playerTag){
-  const botModeBtn =  document.querySelector(".player-settings-form .bot-mode-btn:not(.team)") 
-  const botModeTeamBtn =  document.querySelector(".player-settings-form .bot-mode-btn.team") 
+function setupBotModeBtn(playerTag) {
+  const botModeBtn = document.querySelector(".player-settings-form .bot-mode-btn:not(.team)")
+  const botModeTeamBtn = document.querySelector(".player-settings-form .bot-mode-btn.team")
 
-  botModeBtn.onclick = ()=>{
+  botModeBtn.onclick = () => {
     botModeBtn.classList.toggle("active")
     const pokemon = pokemonMap[playerTag]
-    if (botModeBtn.classList.contains("active")){
+    if (botModeBtn.classList.contains("active")) {
       pokemon.meta.isBot = true
-    }else {
+    } else {
       pokemon.meta.isBot = false
     }
-   loadChoosePokemon(playerTag)
+    loadChoosePokemon(playerTag)
+          displayBattleFieldImpacts()
+
   }
-  botModeTeamBtn.onclick = ()=>{
-        botModeTeamBtn.classList.toggle("active")
+  botModeTeamBtn.onclick = () => {
+    botModeTeamBtn.classList.toggle("active")
     const team = teams[playerTag]
-   for (const pokemon of team){
-    if (botModeTeamBtn.classList.contains("active")){
-      pokemon.meta.isBot = true
-    }else {
-      pokemon.meta.isBot = false
+    for (const pokemon of team) {
+      if (botModeTeamBtn.classList.contains("active")) {
+        pokemon.meta.isBot = true
+      } else {
+        pokemon.meta.isBot = false
+      }
     }
-   }
-   loadChoosePokemon(playerTag)
+    loadChoosePokemon(playerTag)
+          displayBattleFieldImpacts()
+
   }
- }
+}
 function loadCurrentHealthPercentage(playerTag) {
-  const healthElm = document.querySelector(".player-settings-form .settings-wrapper .extra-data .health-percent > .value") 
-  healthElm.textContent = `${Math.floor((pokemonMap[playerTag].hp/pokemonMap[playerTag].maxhp)*100)} % `;
-  
+  const healthElm = document.querySelector(".player-settings-form .settings-wrapper .extra-data .health-percent > .value")
+  healthElm.textContent = `${Math.floor((pokemonMap[playerTag].hp / pokemonMap[playerTag].maxhp) * 100)} % `;
+
 }
 function loadActiveFeilds() {
   const fieldElmList = document.querySelectorAll(".player-settings-form .fields-cont .field")
@@ -218,6 +222,7 @@ function loadActiveFeilds() {
     else
       fieldElm.classList.remove("active")
   }
+  displayBattleFieldImpacts()
 }
 globalThis.fieldClickHandler = function ({ currentTarget }) {
   const fieldType = currentTarget.classList[1]
@@ -231,30 +236,65 @@ globalThis.showFieldsImpacts = function ({ currentTarget }) {
   currentTarget.classList.toggle("active")
   const fields = battle.fields
   const fieldsImpactDiv = currentTarget.parentElement.querySelector(".fields-impact")
-    const impactsWrapper = fieldsImpactDiv.querySelector(".impacts-wrapper")
-   impactsWrapper.innerHTML = ""
+  const impactsWrapper = fieldsImpactDiv.querySelector(".impacts-wrapper")
+  impactsWrapper.innerHTML = ""
   for (const field of fields) {
-   const impactsData = field.impacts()
-   const impactHeader = document.createElement("h3")
-   impactHeader.textContent = field.type
-   impactsWrapper.appendChild(impactHeader)
-   for (const impactData of impactsData){
-   const impact = document.createElement("ul")
-   impact.className = "impact"
-   const placeHolder = document.createElement("li")
-   placeHolder.className = "placeholder"
-   placeHolder.classList.add(impactData.type)
-   placeHolder.textContent += `${impactData.placeholder} for  `
-   for (const targetType of impactData.targets){
-    placeHolder.innerHTML += `<strong style="color: var(--${targetType}-type-color);">${targetType}</strong>, `
-   }
-   impact.appendChild(placeHolder)
-   impactsWrapper.appendChild(impact)
-   }
+    const impactsData = field.impacts()
+    const impactHeader = document.createElement("h3")
+    impactHeader.textContent = field.type
+    impactsWrapper.appendChild(impactHeader)
+    for (const impactData of impactsData) {
+      const impact = document.createElement("ul")
+      impact.className = "impact"
+      const placeHolder = document.createElement("li")
+      placeHolder.className = "placeholder"
+      placeHolder.classList.add(impactData.type)
+      placeHolder.textContent += `${impactData.placeholder} for  `
+      for (const targetType of impactData.targets) {
+        placeHolder.innerHTML += `<strong style="color: var(--${targetType}-type-color);">${targetType}</strong>, `
+      }
+      impact.appendChild(placeHolder)
+      impactsWrapper.appendChild(impact)
+    }
+  }
+}
+
+function showPokemonFieldImpacts({ placeholder, type, targets }) {
+  const pokemonList = teams["you"].concat(teams["enemy"])
+  pokemonList.forEach(pokemon => {
+    const pokemonElm = document.querySelector(`.pokemon[data-name="${pokemon.name}"]`)
+     let typeIncludesCount = 0
+    for (const pokemonType of pokemon._pokemon.types) {
+      console.log(pokemonType);
+      
+      if (targets.includes(pokemonType)) {
+        typeIncludesCount++
+      }     
+    }
+    console.log(typeIncludesCount);
+    
+     if (typeIncludesCount > 0)
+        pokemonElm.classList.add("fast")
+     else 
+        pokemonElm.classList.remove("fast")
+
+  })
+  // const pokemonList = document.querySelectorAll(".pokemon-list .pokemon")
+}
+function displayBattleFieldImpacts() {
+  const fields = battle.fields
+  for (const field of fields) {
+    const impactsData = field.impacts()
+    for (const impactData of impactsData) {
+      if (impactData.placeholder === "Speed increased by 25%")
+        showPokemonFieldImpacts(impactData)
+
+
+    }
+
   }
 }
 globalThis.showActiveFieldsBtnClickHandler = function ({ currentTarget }) {
-   console.log(battle.fields[0].impacts())
   currentTarget.classList.toggle("active")
   const onlyActiveFieldsWrapper = currentTarget.parentElement.querySelector(".only-active-fields-wrapper")
   onlyActiveFieldsWrapper.innerHTML = ""
@@ -407,7 +447,7 @@ function chooseBotMove(playerTag) {
         ? lastMoveName
         : "staythere";
   }
-  
+
 
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
@@ -423,10 +463,10 @@ function chooseBotMove(playerTag) {
       const predictPower = move => {
         const avgHits = Array.isArray(move.multihit)
           ? (move.multihit[0] + move.multihit[1]) / 2
-          : move.multihit        
+          : move.multihit
         return move.basePower * move.capacity * avgHits
       }
-      
+
       const getEffectBonus = move => {
         const calcBonus = effects => {
           return effects.reduce((total, e) => total + (e.chance / 19), 0)
@@ -463,7 +503,7 @@ function chooseBotMove(playerTag) {
         }
 
         const mod = pokemon.state.stats.get(map[move.category]) / pokemon.state.stats.get(map[revMap[move.category]])
-        
+
         let bonus;
         if (mod < 1) {
           // Amplifies the negative impact by a factor of 4 (e.g., 0.95 -> 1 + (-0.05 * 4) = 0.8)
@@ -480,12 +520,12 @@ function chooseBotMove(playerTag) {
           * getStatChangesBonus(move)
           * getEffectBonus(move)
           * getCategoryBonus(move)
-          * opponent.effectiveness(move) 
+          * opponent.effectiveness(move)
           * (pokemon.isTypeOf(move.type) ? 1.5 : 1)
       }
 
       const score1 = getScore(m1)
-      const score2 = getScore(m2)      
+      const score2 = getScore(m2)
 
       return score2 - score1;
     });
@@ -527,10 +567,10 @@ function loadPokemonData(playerTag) {
   setCurrentHealth("health", hp, playerTag)
   setCurrentHealth("armor-hp", pokemon.state.armor.hp(), playerTag)
   setDoubleTeamData(pokemon.state.manCount, playerTag)
-  loadMoves(playerTag)  
-  setRetreatPerWave(pokemonMap[playerTag].meta.retreat,playerTag)
- // setRetreatChargeForAbilities(pokemon.abilities.retreatCost(), playerTag)
- 
+  loadMoves(playerTag)
+  setRetreatPerWave(pokemonMap[playerTag].meta.retreat, playerTag)
+  // setRetreatChargeForAbilities(pokemon.abilities.retreatCost(), playerTag)
+
   if (hp !== oldHp) {
     const hpDist = fixFloat(hp - oldHp)
     const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
@@ -555,7 +595,7 @@ function setBattleStateListeners(playerTag) {
 
   if (_alreadySubscribedPokemons.includes(pokemon.name)) return
   _alreadySubscribedPokemons.push(pokemon.name)
-  
+
   pokemon.state.on("wave", () => {
     loadPokemonData(playerTag)
   })
@@ -571,6 +611,7 @@ function setBattleStateListeners(playerTag) {
       loadEffects(playerTag)
       setStatChanges(pokemon.state.stats._statChanges, playerTag)
       loadChoosePokemon(playerTag)
+      displayBattleFieldImpacts()
       loadPokemonData(playerTag)
     }, 100)
   })
@@ -617,6 +658,8 @@ function setBattleStateListeners(playerTag) {
 
   pokemon.state.on('fainted', () => {
     loadChoosePokemon(playerTag)
+          displayBattleFieldImpacts()
+
     const pokemonSwitchBtn = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler .pokemon:not(.disabled)`)
     pokemonSwitchBtn?.click()
     loadPokemonData(playerTag)
@@ -676,7 +719,7 @@ function toggleMirrorChoosePokemons(playerTag) {
   const pokemonSwitchControler = document.querySelector(`.${opponentTag(playerTag)}-controle-cont .pokemon-switch-controler`)
   let i = teams[opponentTag(playerTag)].length
   pokemonSwitchControler.classList.toggle("mirror-mode")
- 
+
   if (pokemonSwitchControler.classList.contains("mirror-mode")) {
     for (const pokemon of teams[playerTag]) {
       pokemonSwitchControler.innerHTML += `
@@ -694,36 +737,37 @@ function toggleMirrorChoosePokemons(playerTag) {
     `
       i++
     }
-   
+
   } else {
-     pokemonSwitchControler.querySelectorAll(".pokemon").forEach(pokemon => {
-      if (pokemon.classList.contains("mirror") )
-      pokemonSwitchControler.removeChild(pokemon)
-     })
+    pokemonSwitchControler.querySelectorAll(".pokemon").forEach(pokemon => {
+      if (pokemon.classList.contains("mirror"))
+        pokemonSwitchControler.removeChild(pokemon)
+    })
 
   }
 }
 
 function loadChoosePokemon(playerTag) {
   const team = teams[playerTag]
-   if (team[0].meta.mirror) 
-     return null
+  if (team[0].meta.mirror)
+    return null
 
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
   if (pokemonSwitchControler.classList.contains("mirror-mode")) return null
- 
+
   pokemonSwitchControler.innerHTML = ""
   const activePokemon = playerTag === "you" ? globalThis.pokemon : globalThis.enemyPokemon
   let i = 0
   for (const pokemon of team) {
     pokemonSwitchControler.innerHTML += `
-          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""} ${pokemon.meta.name === activePokemon?.meta.name ? "active" : ""}" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}">
-      ${ pokemon.meta.isBot 
-      ? `
+          <div class="pokemon ${pokemon.isFainted ? "disabled" : ""} ${pokemon.meta.name === activePokemon?.meta.name ? "active" : ""}" data-name="${pokemon.meta.name}" onclick="switchPokemonClickHandler(event, '${playerTag}')" data-index="${i}" >
+          <svg class="fast-icon" width="25px" height="25px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#000000" d="M487 37.1C396.4 53.23 292 95.28 207.5 140 163 163.6 124 187.8 95.39 209.2 81.08 220 69.36 230 60.93 238.6c-8.43 8.7-13.38 16.3-14.65 20.3-9.04 28.7-3.42 57.7 1.73 84.7 9.55 50.4-3.23 88.9-22.98 126.3 25.24-5.7 45.36-19.8 57-47 8.47-19.8 9.13-37 11.43-57.6 2.3-20.6 6.45-44.2 22.44-73.2l.2-.4.2-.4c8.8-12.6 26.2-22.2 50-33.4 23.7-11.2 53.6-23 86-35.1 63.8-23.8 137.2-48.7 190.1-71.3 20-30.1 34-74.24 44.6-114.4zm-55 138.2c-51.7 21-116.6 43.1-173.5 64.3-32.2 12-61.8 23.7-84.6 34.5-22.6 10.7-38.5 21.6-42.6 27.2-6.8 12.3-11.1 23.2-14 33.3 83.4-6.5 195.3-31.8 271.3-66.6 27.4-29.7 36.9-59.7 43.4-92.7zm-58 118.8c-79 32.2-182 53.3-260.8 58.6-.9 5-1.5 9.8-2 14.6-.4 3.5-.7 7.1-1.1 10.6 72.4 7.5 136.3 4 206.2-6.5 32.6-22.5 49.8-49.6 57.7-77.3zm-78.4 98.2c-62.3 8.1-121.6 10.2-187.6 3.4-.7 4.5-1.6 9-2.7 13.6 35.9 19.2 98.1 25.8 140.7 24.6 30.2-12.4 41.5-24.8 49.6-41.6zM99.78 426.7c-1.15 2.1-3.14 6.7-4.21 8.9 14.03 20.2 48.73 32.2 88.43 39.3 21.2-8 28.3-15.5 36.5-23-39.7-1.1-86.7-7.7-120.7-25.2z"></path></g></svg>
+          ${pokemon.meta.isBot
+        ? `
          <svg fill="royalblue" width="40px" height="40px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" class="stroke" stroke="#00000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#ffffff" stroke-width="0.336"></g><g id="SVGRepo_iconCarrier"><path d="M21 10.975V8a2 2 0 0 0-2-2h-6V4.688c.305-.274.5-.668.5-1.11a1.5 1.5 0 0 0-3 0c0 .442.195.836.5 1.11V6H5a2 2 0 0 0-2 2v2.998l-.072.005A.999.999 0 0 0 2 12v2a1 1 0 0 0 1 1v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a1 1 0 0 0 1-1v-1.938a1.004 1.004 0 0 0-.072-.455c-.202-.488-.635-.605-.928-.632zM7 12c0-1.104.672-2 1.5-2s1.5.896 1.5 2-.672 2-1.5 2S7 13.104 7 12zm8.998 6c-1.001-.003-7.997 0-7.998 0v-2s7.001-.002 8.002 0l-.004 2zm-.498-4c-.828 0-1.5-.896-1.5-2s.672-2 1.5-2 1.5.896 1.5 2-.672 2-1.5 2z"></path></g></svg>
       `
-      
-     : `<svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
+
+        : `<svg class="pokeball-icon" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.985 511.985" xml:space="preserve" fill="#000000">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
         <g id="SVGRepo_iconCarrier">
@@ -734,7 +778,7 @@ function loadChoosePokemon(playerTag) {
       `}
             <span class="name">${pokemon.id} ( ${i} )</span>
           </div>`
-    
+
     i++
   }
 }
@@ -986,7 +1030,7 @@ function setEffects(effects, playerTag) {
       "name": "Sleep",
       "color": "Psychic"
     },
-    "tailwind":{
+    "tailwind": {
       "name": "TailWind",
       "color": "Flying"
     },
@@ -1103,7 +1147,7 @@ function setStatChanges(data, playerTag) {
 }
 
 function setRetreatPerWave(retreat, playerTag) {
-  const retreatPerWave = document.querySelector(`.${playerTag}-controle-cont .retreat-per-wave`)  
+  const retreatPerWave = document.querySelector(`.${playerTag}-controle-cont .retreat-per-wave`)
   retreatPerWave.textContent = parseFloat(retreat - pokemonMap[playerTag].abilities.retreatCost()).toFixed(2)
 }
 
@@ -1122,7 +1166,7 @@ function setDoubleTeamData(count, playerTag) {
   valueElm.textContent = count
 }
 
-function setHealthPercentData(percent,playerTag) {
+function setHealthPercentData(percent, playerTag) {
   const valueElm = document.querySelector(`.${playerTag}-controle-cont .health > .value`)
   valueElm.textContent = percent
 }
@@ -1382,25 +1426,25 @@ globalThis.showFieldMoveForm = (playerTag) => {
 
   }
 }
- async function confirmBotScene() {
-   const botMoveConfirmBtn = document.querySelector("#bot-move-confirm-btn")
-   botMoveConfirmBtn.classList.add("active")
-   return new Promise((resolve) => {
-      const oldBattlers = Object.values(pokemonMap).map(p => p.name)
-      botMoveConfirmBtn.onclick = () => {
-        botMoveConfirmBtn.classList.remove("active")
-        resolve(true)
-      }
-      eventEmitter.on("switch-pokemon-select", (playerTag, currentTarget) => {
-        const currentBattlers = Object.values(pokemonMap).map(p => p.name)        
-        if (oldBattlers[0] === currentBattlers[0] && oldBattlers[1] === currentBattlers[1]) return
-        botMoveConfirmBtn.classList.remove("active")
-        resolve(false)
-        botMoveConfirmBtn.onclick = null
-        eventEmitter.removeListener("switch-pokemon-select", "refresh-confirm-bot-btn")
-      }, "refresh-confirm-bot-btn")
-   })
-  }
+async function confirmBotScene() {
+  const botMoveConfirmBtn = document.querySelector("#bot-move-confirm-btn")
+  botMoveConfirmBtn.classList.add("active")
+  return new Promise((resolve) => {
+    const oldBattlers = Object.values(pokemonMap).map(p => p.name)
+    botMoveConfirmBtn.onclick = () => {
+      botMoveConfirmBtn.classList.remove("active")
+      resolve(true)
+    }
+    eventEmitter.on("switch-pokemon-select", (playerTag, currentTarget) => {
+      const currentBattlers = Object.values(pokemonMap).map(p => p.name)
+      if (oldBattlers[0] === currentBattlers[0] && oldBattlers[1] === currentBattlers[1]) return
+      botMoveConfirmBtn.classList.remove("active")
+      resolve(false)
+      botMoveConfirmBtn.onclick = null
+      eventEmitter.removeListener("switch-pokemon-select", "refresh-confirm-bot-btn")
+    }, "refresh-confirm-bot-btn")
+  })
+}
 
 eventEmitter.on("move-card-select", async (card, playerTag) => {
   if (card.classList.contains("disabled")) return
@@ -1409,9 +1453,9 @@ eventEmitter.on("move-card-select", async (card, playerTag) => {
 
   if (oponentSelectedMoveCard) {
     card.classList.add("selected")
-    
+
     const bothBot = pokemonMap[playerTag].meta.isBot && pokemonMap[oponentPlayerTag].meta.isBot
-    
+
     if (bothBot) {
       const confirmBotMode = await confirmBotScene()
       if (!confirmBotMode) {
@@ -1453,10 +1497,10 @@ async function runScene(moveIds) {
   const move1 = new Move(moveId)
   const move2 = new Move(enemyMoveId)
   const isAlly = pokemon.state.isAlly(enemyPokemon)
-  
+
   const oldActive = battle.getActive("you")
   const oldOppo = battle.getActive("enemy")
-  
+
   if (isAlly) {
     battle.activate(pokemon, "you")
     battle.activate(enemyPokemon, "enemy")
@@ -1554,12 +1598,12 @@ globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name)
 
 
 
-function clickOnFirstPokemonSwitch(playerTag,mirror = false) {
+function clickOnFirstPokemonSwitch(playerTag, mirror = false) {
   const pokemonSwitchControler = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler`)
   if (mirror) {
     pokemonSwitchControler.querySelector(`.pokemon.mirror`).click()
-  }else {
-  pokemonSwitchControler.querySelector(`.pokemon`).click()
+  } else {
+    pokemonSwitchControler.querySelector(`.pokemon`).click()
   }
 }
 
@@ -1574,6 +1618,8 @@ window.onload = () => {
   clickOnFirstPokemonSwitch("you")
   clickOnFirstPokemonSwitch("enemy")
   setBattleListeners()
+  displayBattleFieldImpacts()
+
 }
 
 

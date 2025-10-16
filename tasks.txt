@@ -1,4 +1,7 @@
 * Tasks
+bot pokemon:
+  Weighted random move
+  field aware
 
 * QnA
 

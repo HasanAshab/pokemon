@@ -262,8 +262,16 @@ flex: 0 0 auto;
   justify-content: center;
   align-items: center;
   font-size: small;
+  position: relative;
 }
-
+.pokemon-switch-controler > .pokemon:not(.fast) > .fast-icon {
+  display: none;
+}
+.pokemon-switch-controler > .pokemon.fast > .fast-icon {
+  position: absolute;
+  right: 1vw;
+  top: 0;
+}
 .pokemon-switch-controler > .pokemon > .pokeball-icon {
   border-radius: 100%;
 }
