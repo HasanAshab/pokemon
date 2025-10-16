@@ -4,6 +4,7 @@ import { EffectManager } from "./effects.js"
 import { makeField } from "./fields.js"
 import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj, calcLevelStat } from "./helpers.js"
+import { WeatherManager } from "./weathers.js";
 
 
 class BaseBattle extends EventEmitter {
@@ -32,6 +33,7 @@ class BaseBattle extends EventEmitter {
         this.pokemon2 = this.team2[0]
         this._all = [...this.team1, ...this.team2]
         this.fields = fieldTypes.map(f => makeField(this, f))
+        this.weathers = new WeatherManager(this)
 
         this._all.forEach(p => {
             if (!p.state) {
@@ -214,7 +216,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
+    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {        
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -955,6 +957,9 @@ class BattleState extends EventEmitter {
                     on: "target",
                     pre: true,
                 })
+
+                move.weather && this.battle.weathers.set(move, move.weather)
+
             }
         })
         

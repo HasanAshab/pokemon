@@ -333,7 +333,11 @@ function setRetreat(move) {
   if (move.accuracy === true) {
     retreat += 0.5
   }
-    
+
+  if (move.weather) {
+      retreat += 0.5
+  }
+
   retreat = adjustToClosestRetreat(retreat)
 
   // we failed to detect its speciality

@@ -1746,5 +1746,26 @@ katana: {
       target: "self",
       type: "Fighting",
     },
+    solarbeam: {
+      num: 76,
+      accuracy: 100,
+      basePower: 120,
+      category: "Special",
+      name: "Solar Beam",
+      pp: 10,
+      priority: 0,
+      flags: {
+        charge: 1,
+        protect: 1,
+        mirror: 1,
+        metronome: 1,
+        nosleeptalk: 1,
+        failinstruct: 1
+      },
+      secondary: null,
+      target: "normal",
+      type: "Grass",
+      contestType: "Cool"
+    },
 }
 
