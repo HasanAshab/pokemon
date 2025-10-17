@@ -251,81 +251,11 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-startBattle([
-  {
-    "id": "ekans",
-    "name": "Ee1",
-    "xp": 600,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "wrap",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "poisonsting",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "leer",
-        "grade": "0",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "none"
-    },
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "koffing",
-    "name": "E2",
-    "xp": 600,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-      {
-        "id": "tackle",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "smog",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "poisongas",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "smokescreen",
-        "grade": "0",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "none"
-    },
-    "stats": {},
-    "token_used": {}
-  }
-], ["Grass", "Dark"], "multiple")
 
 // water gym
+
+
+
 
 /*
 startBattle([
