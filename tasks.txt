@@ -1,6 +1,9 @@
 * Tasks
+show pokemon image in enemy page 
+firy wing
 compare:
   level
+preview move video
 * QnA
 
 
