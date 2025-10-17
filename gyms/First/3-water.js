@@ -2,7 +2,7 @@ startBattle(null,[
   {
     "id": "wooper",
     "name": "E1",
-    "xp": 900,
+    "xp": 700,
     "nature": "none",
     "retreat": 3.5,
     "types": [],
@@ -40,7 +40,7 @@ startBattle(null,[
   {
     "id": "lotad",
     "name": "E2",
-    "xp": 1000,
+    "xp": 800,
     "nature": "none",
     "retreat": 3.5,
     "types": [],

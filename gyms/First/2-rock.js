@@ -2,7 +2,7 @@ startBattle([
     {
     "id": "roggenrola",
     "name": "E2",
-    "xp": 600,
+    "xp": 500,
     "nature": "none",
     "retreat": 3,
     "types": [],
@@ -36,7 +36,7 @@ startBattle([
   {
     "id": "rockruff",
     "name": "E1",
-    "xp": 700,
+    "xp": 500,
     "nature": "none",
     "retreat": 3.5,
     "types": [],

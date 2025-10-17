@@ -1,0 +1,45 @@
+[
+    {
+    "id": "squirtle",
+    "name": "E1",
+    "xp": 1100,
+    "nature": "none",
+    "retreat": 3.75,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "tailwhip",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "watergun",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "bubble",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rapidspin",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+]
