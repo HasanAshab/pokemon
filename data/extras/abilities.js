@@ -844,4 +844,77 @@ export default {
 
     dependencies: ["devapath", "animalpath", "innerpath", "pretapath", "asurapath", "indrapath"],
   },
+
+  blaze: {
+    onModifyAtkPriority: 5,
+    onModifyAtk(atk, attacker, defender, move) {      
+      if (move.type === "Fire" && attacker.hp <= attacker.maxhp / 3) {
+        this.debug("Blaze boost")
+        return this.chainModify(1.5)
+      }
+    },
+    onModifySpAPriority: 5,
+    onModifySpA(atk, attacker, defender, move) {            
+      if (move.type === "Fire" && attacker.hp <= attacker.maxhp / 3) {
+        this.debug("Blaze boost")
+        return this.chainModify(1.5)
+      }
+    },
+    onModifyMove(move, attacker) {
+      if (attacker.hp >= attacker.maxhp / 3) return
+      move.priority = move._ref.priority + 1
+    },
+    flags: {},
+    name: "Blaze",
+    rating: 2,
+    num: 66
+  },
+  torrent: {
+    onModifyAtkPriority: 5,
+    onModifyAtk(atk, attacker, defender, move) {
+      if (move.type === "Water" && attacker.hp <= attacker.maxhp / 3) {
+        this.debug("Torrent boost")
+        return this.chainModify(1.5)
+      }
+    },
+    onModifySpAPriority: 5,
+    onModifySpA(atk, attacker, defender, move) {
+      if (move.type === "Water" && attacker.hp <= attacker.maxhp / 3) {
+        this.debug("Torrent boost")
+        return this.chainModify(1.5)
+      }
+    },
+    onModifyMove(move, attacker) {
+      if (attacker.hp >= attacker.maxhp / 3) return
+      move.priority = move._ref.priority + 1
+    },
+    flags: {},
+    name: "Torrent",
+    rating: 2,
+    num: 67
+  },
+  swarm: {
+    onModifyAtkPriority: 5,
+    onModifyAtk(atk, attacker, defender, move) {
+      if (move.type === "Bug" && attacker.hp <= attacker.maxhp / 3) {
+        this.debug("Swarm boost")
+        return this.chainModify(1.5)
+      }
+    },
+    onModifySpAPriority: 5,
+    onModifySpA(atk, attacker, defender, move) {
+      if (move.type === "Bug" && attacker.hp <= attacker.maxhp / 3) {
+        this.debug("Swarm boost")
+        return this.chainModify(1.5)
+      }
+    },
+    onModifyMove(move, attacker) {
+      if (attacker.hp >= attacker.maxhp / 3) return
+      move.priority = move._ref.priority + 1
+    },
+    flags: {},
+    name: "Swarm",
+    rating: 2,
+    num: 68
+  },
 }
