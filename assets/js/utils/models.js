@@ -699,8 +699,16 @@ class Ability {
               console.log(e)
             }
         }
-        this._listeners.scene = () => {
+        this._listeners.scene = (move) => {
             this._ability.onScene?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+            
+            const ctx = {
+                chainModify: (modifier) => {
+                    this.pokemon.state.damage.chainModifyPower(move.id, modifier)
+                },
+            }
+            this._ability.onBasePower?.callWithExtraCtx(ctx, move.basePower, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), move)
+            
         }
         this._listeners["using-move"] = (move, opponentMove) => {
             try {

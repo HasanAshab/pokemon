@@ -959,7 +959,6 @@ class BattleState extends EventEmitter {
                 })
 
                 move.weather && this.battle.weathers.set(move, move.weather)
-
             }
         })
         
