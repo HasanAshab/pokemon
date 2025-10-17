@@ -7,9 +7,9 @@ import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
 import { sumObj, modObj, weightedRandom, calcLevelStat } from "./helpers.js";
 
-// console.log(
-//   Array.from(new Set(Object.values(moves).map(m => m.weather).filter(Boolean)))
-// );
+console.log(
+  Array.from(new Set(Object.values(moves).map(m => m.weather).filter(Boolean)))
+);
 
 
 const SAGE_MAPING = {

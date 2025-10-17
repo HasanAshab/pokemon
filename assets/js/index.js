@@ -254,3 +254,67 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 // bug gym
 
+startBattle([
+  {
+    "id": "caterpie",
+    "name": "caterpie",
+    "xp": 500,
+    "nature": "none",
+    "retreat": 3,
+    "types": [],
+    "abilities": [],
+    "items": ["gen-food-low"],
+    "moves": [
+      {
+        "id": "raindance",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "sunnyday",
+        "grade": "0",
+        "isSelected": true
+      },
+
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "kricketot",
+    "name": "kricketot",
+    "xp": 600,
+    "nature": "none",
+    "retreat": 3,
+    "types": [],
+    "abilities": [],
+    "items": ["gen-food-low"],
+    "moves": [
+      {
+        "id": "raindance",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "sunnyday",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "growl",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], ["Bug"], "multiple")

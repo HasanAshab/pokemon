@@ -228,6 +228,23 @@ flex: 0 0 auto;
 .fields-impact > .impacts-wrapper > .impact .placeholder.bad::marker{
   color: red;
  }
+
+ #weather-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+ }
+  #weather-indicator.show-lifetime::after {
+  content: attr(data-lifetime);
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  right: -5px;
+  bottom: 0;
+  padding: 1px 3px;
+  font-size: small;
+ }
 .you-controle-cont {
   height: 46.50%;
   display: flex;
