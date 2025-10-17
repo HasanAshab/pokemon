@@ -252,60 +252,37 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-// bug gym
+// water gym
 
+/*
 startBattle([
   {
-    "id": "caterpie",
-    "name": "caterpie",
-    "xp": 500,
+    "id": "pikachu",
+    "name": "E1",
+    "xp": 700,
     "nature": "none",
     "retreat": 3,
     "types": [],
     "abilities": [],
-    "items": ["gen-food-low"],
+    "items": ['gen-food-low'],
     "moves": [
       {
-        "id": "raindance",
+        "id": "tailwhip",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "sunnyday",
-        "grade": "0",
-        "isSelected": true
-      },
-
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "none"
-    },
-    "stats": {},
-    "token_used": {}
-  },
-  {
-    "id": "kricketot",
-    "name": "kricketot",
-    "xp": 600,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [],
-    "items": ["gen-food-low"],
-    "moves": [
-      {
-        "id": "raindance",
+        "id": "thundershock",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "sunnyday",
+        "id": "quickattack",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "growl",
+        "id": "nuzzle",
         "grade": "0",
         "isSelected": true
       }
@@ -317,4 +294,4 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], ["Bug"], "multiple")
+], ["Grass"], "single")*/

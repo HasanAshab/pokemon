@@ -40,7 +40,7 @@ startBattle(null,[
   {
     "id": "lotad",
     "name": "E2",
-    "xp": 800,
+    "xp": 700,
     "nature": "none",
     "retreat": 3.5,
     "types": [],

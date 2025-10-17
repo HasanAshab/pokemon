@@ -59,7 +59,7 @@ function setCurrentHealth(hp) {
    healthProgressBar.querySelector(".current-hp").textContent = hp
    healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
 }
-
+let statIndex = 1
 function setStat(slug, value) {
   let saveValue = value
   const stat = document.querySelector(`.stat.${slug}`)
@@ -85,7 +85,11 @@ function setStat(slug, value) {
      if (slug === "hp")
     setTotalHealth(value)
   }
-  stat.setAttribute("data-value", value)
+    stat.setAttribute("data-value", value)
+
+  if (["hp","atk","def","spa","spd","spe"].includes(slug)){
+  stat.setAttribute("data-token-used",statIndex++)
+  }
 }
 function setStatToken(slug,value,shouldSetMeta = true){
    if (!updatablePokemonMetaList.includes(slug)){
@@ -160,7 +164,7 @@ globalThis.statClickHandler = function( {
    if (attributeName === "data-value")
     setStat(statSlug, Number(statValueInp.value) || statValueInp.value)
    else 
-    setStatToken(statSlug,statValueInp.value)
+  //  setStatToken(statSlug,statValueInp.value)
    statUpdateForm.parentNode.classList.remove("active")
    statValueInp.removeAttribute('list')
   }
@@ -237,11 +241,15 @@ function loadStats() {
     setStat("abilities", pokemon.abilities.names().join(','))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
-        
-    for (const stat in pokemon.stats) {
+    
+    const sortedStatNames = Object.entries(pokemon.stats).sort((a, b) => b[1] - a[1]).map(s => s[0])
+
+    for (const stat of sortedStatNames) {
      const statValue = pokemon.stats[stat].toFixed(2)
+        console.log(stat,statValue)
+
       setStat(stat,statValue)
-      setStatToken(stat, pokemon.meta.token_used[stat], false)
+    //  setStatToken(stat, pokemon.meta.token_used[stat], false)
       if (stat === "hp") {
           setTotalHealth(statValue)
       }
