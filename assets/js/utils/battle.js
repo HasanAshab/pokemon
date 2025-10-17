@@ -256,6 +256,8 @@ class BaseBattle extends EventEmitter {
           move2.basePower = ref2.basePower
           move1.capacity = ref1.capacity
           move2.capacity = ref2.capacity
+          move1.priority = ref1.priority
+          move2.priority = ref2.priority
           move1._user = this.pokemon1
           move2._user = this.pokemon2
           move1._target = this.pokemon2
@@ -290,6 +292,8 @@ class BaseBattle extends EventEmitter {
           move2.basePower = ref2.basePower
           move1.capacity = ref1.capacity
           move2.capacity = ref2.capacity
+          move1.priority = ref1.priority
+          move2.priority = ref2.priority
           move1._user = this.pokemon1
           move2._user = this.pokemon2
           move1._target = this.pokemon2
