@@ -3039,7 +3039,7 @@ export default {
   },
   megalauncher: {
     onBasePowerPriority: 19,
-    onBasePower(basePower, attacker, defender, move) {
+    onBasePower(basePower, attacker, defender, move) {      
       if (move.flags["pulse"]) {
         return this.chainModify(1.5)
       }

@@ -2,6 +2,8 @@
 sunny day advanced
 rain dance advanced
 
+compare:
+  level
 * QnA
 
 
