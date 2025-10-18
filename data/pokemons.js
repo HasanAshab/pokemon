@@ -4,7 +4,8 @@ import entitiesExtra from "./extras/entities.js";
 import beasts from "./beasts.js";
 
 
-function fixSpeed(pokemon) {
+
+function fixSpeed(pokemon) {  
     const baseWeight = 50;       // Reference weight for comparison (lighter Pokémon benefit more)
     const maxPenalty = 0.6;      // Maximum reduction percentage (60%)
     const minBonus = 0.2;        // Minimum bonus for very light Pokémon (20%)
@@ -23,7 +24,7 @@ function fixSpeed(pokemon) {
     pokemon.baseStats.spe = parseFloat(finalSpeed.toFixed(2));
 }
 
-function modifyBaseStats(pokemon) {
+function modifyBaseStats(pokemon) {  
     const oldSpeed = pokemon.baseStats.spe;
     fixSpeed(pokemon);
     const newSpeed = pokemon.baseStats.spe;
@@ -57,9 +58,15 @@ function processBeast(beast) {
 }
 
 
-for (const entity of Object.values(entities)) {
+for (const [id, entity] of Object.entries(entities)) {
+  // TEMP: skip
+  if (entity.isCosmeticForme) {
+    delete entities[id]
+    continue
+  }
   processEntity(entity)
   modifyBaseStats(entity)
+
 }
 for (const entity of Object.values(entitiesExtra)) {
   processEntity(entity)
@@ -68,7 +75,10 @@ for (const entity of Object.values(entitiesExtra)) {
 
 for (const beast of Object.values(beasts)) {
   processBeast(beast)
+  
 }
+
+
 
 export default {
   ...humans,
