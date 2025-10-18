@@ -1,4 +1,5 @@
 * Tasks
+bullet proof
 preview move video
 
 * QnA
@@ -10,7 +11,7 @@ Bot shinobis hit a move in act of his team
 * Bottle neck
 
 * Pending
-ancient mode with selfish scar
+ancient mode with selfish scar (only crit damages)
 
 
 *ovi
