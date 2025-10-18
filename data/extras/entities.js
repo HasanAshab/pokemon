@@ -327,7 +327,7 @@ export default {
       name: "Scydon",
       types: ["Bug", "Fairy","Dragon"],
       baseStats:{hp:71,atk:106,def:71,spa:132,spd:71,spe:150},
-      abilities: { 0: "Swarm" },
+      abilities: { 0: "Swarm", 1: "Fairy Wing" },
       heightm: 1.7,
       weightkg: 66,
       prevo: "Scyther",

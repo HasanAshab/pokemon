@@ -486,6 +486,26 @@ export default {
     },
   },
 
+  fairywing: {
+    retreat: 1.5,
+    _mapping: {
+      "Flying": "Fairy",
+    },
+    onActivate(pokemon) {
+      pokemon.state.moves
+        .filter(move => move.flags.offensive)
+        .forEach(move => {
+            move.type = this.ability._mapping[move.type] || move.type
+        })
+    },
+    onDeactivate(pokemon) {
+      pokemon.state.moves.forEach(move => {
+          move.type = move._ref.type
+      })
+    },
+  },
+
+
   swordmanship: {
     retreat: 0,
     onActivate(pokemon) {
