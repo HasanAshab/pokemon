@@ -67,3 +67,16 @@ background-color: red;
 .move-item button {
   padding: 2px 5px;
 }
+
+.pokemon-pic-wrapper{
+  width: 150px;
+  height: 150px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pokemon-pic-wrapper > img{
+  width: 100%;
+  height: 100%;
+}

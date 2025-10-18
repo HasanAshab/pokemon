@@ -496,7 +496,14 @@ stroke: gold;
   justify-content: space-between;
   align-items: center;
 }
-
+.player-settings-form .header .primary{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 2px;
+ font-size: 20px;
+}
 .player-settings-form .header .close-btn{
   background-color: red;
   color: white;

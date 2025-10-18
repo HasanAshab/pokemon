@@ -5,6 +5,7 @@ import { Damage } from "./utils/damage.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, getDamageDangerLevel, flagsToObj, objToFlags, shuffle, weightedRandomV2 } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
+import pokemons from "../../data/pokemons.js"
 
 
 const eventEmitter = new EventEmitter()
@@ -161,7 +162,12 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
 globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
   playerSettingsForm.parentElement.classList.add("active")
-  playerSettingsForm.querySelector(".header > .name").textContent = playerTag
+  playerSettingsForm.querySelector(".header .primary .name").textContent = pokemonMap[playerTag].name
+  playerSettingsForm.querySelector(".header .primary .pokemon-pic").src = pokemonMap[playerTag].picture
+  
+  
+  
+  
   setupBotModeBtn(playerTag)
   loadCurrentHealthPercentage(playerTag)
   loadAbilities(playerTag)

@@ -84,6 +84,10 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
   }
   return `
     <h3>${heading}</h3>
+    <div class="pokemon-pic-wrapper">
+      <img src="" alt="pokemon pic"/>
+    </div>
+    <br>
     <label>Choose Enemy Image</label>
     <input list="enemy-data-list" class="enemy" onblur="showStats(event)" value="${enemyImage}">
     <br>
@@ -172,11 +176,17 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
 
 
 }
-
-function showStats(event) {
-  const form = event.target.closest('.pokemon-form');
+function showPokemonPic(id) {
+  const picSrc = new Pokemon(id).picture
+  const picWrapper = document.querySelector('.pokemon-pic-wrapper')
+  picWrapper.querySelector('img').src = picSrc
+}
+function showStats({currentTarget}) {
+  const form = currentTarget.closest('.pokemon-form');
   const stats = form.querySelector('.enemy-stats');
   stats.textContent = `Enemy: ${form.querySelector('.enemy').value}\nLevel: ${form.querySelector('.level-inp').value}`;
+  if (currentTarget.classList.contains('enemy')) 
+    showPokemonPic(currentTarget.value);
 }
 
 function addMove(event,isMega = false, moveId = '' , grade =0 , form ) {

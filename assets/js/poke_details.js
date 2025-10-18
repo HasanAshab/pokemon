@@ -220,11 +220,16 @@ globalThis.forgetMove = function(id) {
 }
 
 function loadName() {
+
     const display = document.getElementById("pokemon-name")
     display.innerText = `${name} (${pokemon.id})`  
     display.onclick = () => {
       window.location = '/data.html?name=' + name
     }
+    const pokemonPic = document.getElementById("pokemon-pic")
+    console.log(pokemon);
+    
+    pokemonPic.src = pokemon.picture
 }
 
 

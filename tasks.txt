@@ -1,5 +1,5 @@
 * Tasks
-firy wing
+fairy wing
 compare:
   level
 preview move video

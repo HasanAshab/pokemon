@@ -104,21 +104,26 @@
 }
 .pokemon > .primary{
 background-color: inherit;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 4px;
 }
 .pokemon > .primary:active{
  filter: invert(20%);
 }
-
+.pokemon-pic{
+    width: 25px;
+    height: 25px;
+}
 .pokemon-name {
     font-size: 18px;
     font-weight: bold;
     color: gray;
 }
 .pokemon-level {
-    background: ;
     color: #2196f3;
     font-size: 14px;
-    
 }
 
 .pokemon:has(.win-btn:active) {

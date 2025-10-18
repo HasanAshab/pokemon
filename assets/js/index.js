@@ -194,12 +194,14 @@ function loadAllPokemons() {
   pokemonList.innerHTML = "";
   for (const pokemon in pokemons_meta) {
     const meta = pokemons_meta[pokemon];
+    const pokePic = new Pokemon(meta.id)?.picture;
     
     pokemonList.innerHTML += `
 
-                  <li class="pokemon ${meta.isSelectedForMultiBattle ? "selected-for-multy-battle" : ""}" >
+    <li class="pokemon ${meta.isSelectedForMultiBattle ? "selected-for-multy-battle" : ""}" >
    <div class="primary" onclick="pokemonClickHandler('${pokemon}')">
-    <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
+    <img  class="pokemon-pic" src="${pokePic}"/>
+   <span class="pokemon-name">${pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}</span>
     <i class="pokemon-level">LVL: ${Pokemon.calculateLevel(meta.xp)}</i>
     </div>
     
