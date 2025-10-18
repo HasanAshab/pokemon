@@ -229,6 +229,8 @@ function loadName() {
 
 
 function loadStats() {
+  console.log(pokemon.picture);
+  
    setCurrentHealth(pokemon.meta.stats.hp ?? pokemon.maxhp)
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)
@@ -246,8 +248,6 @@ function loadStats() {
 
     for (const stat of sortedStatNames) {
      const statValue = pokemon.stats[stat].toFixed(2)
-        console.log(stat,statValue)
-
       setStat(stat,statValue)
     //  setStatToken(stat, pokemon.meta.token_used[stat], false)
       if (stat === "hp") {

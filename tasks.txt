@@ -1,14 +1,13 @@
 * Tasks
-show pokemon image in enemy page 
 firy wing
 compare:
   level
 preview move video
+
+
 * QnA
 
-
 * bug
-
 abilities multiple opponent event system
 Bot shinobis hit a move in act of his team
 
@@ -19,10 +18,10 @@ ancient mode with selfish scar
 
 
 *ovi
-kingdom clone
+show pokemon image in enemy page 
+
 same bot button on each team
-fix retreat of beast abilities
-hand3
+kingdom clone
 * Scenario
 
 phy 1 -> phy 1 = x - y d 

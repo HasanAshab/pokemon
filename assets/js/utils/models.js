@@ -149,6 +149,10 @@ export class Pokemon extends PSPokemon {
         return hp === 0
     }
 
+    get picture() {
+        return `${window.location.origin}/data/poke_pics/${this.id}.png`
+    }
+
     get isHuman() {
         return !["entity", "beast"].includes(this._pokemon.type)
     }
