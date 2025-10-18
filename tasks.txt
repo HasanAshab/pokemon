@@ -1,7 +1,5 @@
 * Tasks
 firy wing
-compare:
-  level
 preview move video
 
 

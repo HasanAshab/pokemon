@@ -167,11 +167,17 @@
     <div class="object-inputs">
       <div class="panel">
         <h3>First Pokémon</h3>
+        <label for="fooInput">ID: </label>
         <input id="fooInput" list="pokemon-data-list" placeholder="Enter Pokémon name...">
+        <label for="fooLevel">Level: </label>
+        <input id="fooLevel" type="number" value="1" placeholder="Level">
       </div>
       <div class="panel">
         <h3>Second Pokémon</h3>
+        <label for="barInput">ID: </label>
         <input id="barInput" list="pokemon-data-list" placeholder="Enter Pokémon name...">
+        <label for="barLevel">Level: </label>
+        <input id="barLevel" type="number" value="1" placeholder="Level">
       </div>
     </div>
 
@@ -186,7 +192,7 @@
 
   <script type="module">
     import { loadPokemonsDatalist } from "./assets/js/utils/dom.js";
-    import pokemons from "./data/pokemons.js";
+    import { Pokemon } from "./assets/js/utils/models.js";
 
     window.onload = () => {
       loadPokemonsDatalist("pokemon-data-list");
@@ -195,8 +201,18 @@
     function compareObjects() {
       const fooId = document.getElementById('fooInput').value.toLowerCase();
       const barId = document.getElementById('barInput').value.toLowerCase();
-      const foo = pokemons[fooId];
-      const bar = pokemons[barId];
+      let foo = new Pokemon(fooId, {
+        xp: (document.getElementById('fooLevel').value - 1) * 100
+      });
+      let bar = new Pokemon(barId, {
+        xp: (document.getElementById('barLevel').value - 1) * 100
+      });
+      
+      foo._pokemon.baseStats = foo.stats
+      foo = foo._pokemon
+      
+      bar._pokemon.baseStats = bar.stats
+      bar = bar._pokemon
       
       if (!foo || !bar) {
         document.getElementById('comparisonResult').innerHTML = `
