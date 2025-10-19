@@ -163,10 +163,10 @@ globalThis.statClickHandler = function( {
   saveBtn.onclick = ()=> {
    if (attributeName === "data-value")
     setStat(statSlug, Number(statValueInp.value) || statValueInp.value)
-   else 
-  //  setStatToken(statSlug,statValueInp.value)
    statUpdateForm.parentNode.classList.remove("active")
    statValueInp.removeAttribute('list')
+   setupPokemon()
+    loadAll()    
   }
   cancelBtn.onclick = ()=>{
       statUpdateForm.parentNode.classList.remove("active")
