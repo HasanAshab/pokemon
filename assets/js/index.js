@@ -259,7 +259,7 @@ startBattle([
   {
     "id": "poochyena",
     "name": "pch",
-    "xp": 800,
+    "xp": 1500,
     "nature": "none",
     "retreat": 3.25,
     "types": [],

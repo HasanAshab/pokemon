@@ -65,6 +65,14 @@ class PSPokemon {
     getUndynamaxedHP() {
         return this.hp
     }
+    
+    // WORKAROUND: its reversed
+    adjacentAllies() {
+        return this.state.foeTeam.filter(p =>{
+            return p.name !== this.state.battle.opponentOf(this).name
+              && this.state.battle.groundedPokemons().some(p2 => p2.name === p.name)
+        })
+    }
 }
 
 export class Pokemon extends PSPokemon {
