@@ -218,9 +218,10 @@ function addMove(event,isMega = false, moveId = '' , grade =0 , form ) {
 async function suggestFromLearnset(pokemon) {
   const filename = pokemon.image.replace(/mega(.)$/, '$1');  
   const { default: learnset } = await import(`../../data/learnsets/${filename}.js`)
-  return learnset
-    .filter(ls => ls.required_level <= pokemon.level && ls.source === "level")
-    .map(ls => ls.name)
+  const lvlLs = learnset.filter(ls => ls.required_level <= pokemon.level && ls.source === "level")
+  const tmLs = learnset.filter(ls => ls.required_level <= pokemon.level && ls.source === "tm")
+  const ls = lvlLs.concat(shuffle(tmLs).slice(0, 5)).map(ls => ls.name)
+  return ls
 }
 
 async function suggestUsingOptions(options, pokemon) {

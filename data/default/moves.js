@@ -7126,7 +7126,7 @@ export default {
           move.basePower * pokemon.volatiles["furycutter"].multiplier,
           1,
           160
-        )
+        )        
         this.debug("BP: " + bp)
         return bp
       },
