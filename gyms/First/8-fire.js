@@ -2,9 +2,9 @@ startBattle([
   {
     "id": "slugma",
     "name": "E1",
-    "xp": 1000,
+    "xp": 1200,
     "nature": "none",
-    "retreat": 3.5,
+    "retreat": 4,
     "types": [],
     "abilities": [],
     "items": ["gen-food-low"],
@@ -42,4 +42,4 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], [], "multiple")
+], [], "single")

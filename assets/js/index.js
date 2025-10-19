@@ -252,14 +252,11 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-
-
-// dragon gym
 /*
 startBattle([
   {
-    "id": "noibat",
-    "name": "E1",
+    "id": "squirtle",
+    "name": "Ee1",
     "xp": 900,
     "nature": "none",
     "retreat": 3.5,
@@ -273,22 +270,17 @@ startBattle([
         "isSelected": true
       },
       {
-        "id": "supersonic",
+        "id": "tailwhip",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "gust",
+        "id": "watergun",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "twister",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "quickattack",
+        "id": "rapidspin",
         "grade": "0",
         "isSelected": true
       }
@@ -300,7 +292,105 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], ["Dragon", "Normal"], "multiple")
+], ["Normal"], "single")*/
+
+
+
+
+/*
+startBattle([
+  {
+    "id": "riolu",
+    "name": "karate",
+    "xp": 1100,
+    "nature": "none",
+    "retreat": 3.75,
+    "types": [],
+    "abilities": [],
+    "items": ["gen-food-low"],
+    "moves": [
+      {
+        "id": "bulletpunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "vacuumwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "detect",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "growl",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
+*/
+// fighting gym
+/*
+startBattle([
+  {
+    "id": "tyrogue",
+    "name": "Ee1",
+    "xp": 900,
+    "nature": "none",
+    "retreat": 3.5,
+    "types": [],
+    "abilities": [],
+    "items": ["gen-food-low"],
+    "moves": [
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "focusenergy",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "fakeout",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "poweruppunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "detect",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], ["Fighting"], "single")
 */
 /*
 startBattle([
