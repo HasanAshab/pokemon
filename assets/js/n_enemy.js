@@ -184,11 +184,16 @@ function showPokemonPic(id,form) {
 function showStats({currentTarget}) {
   const form = currentTarget.closest('.pokemon-form');
   const stats = form.querySelector('.enemy-stats');
-  
-  const enemyTotalBst = 100
-  stats.textContent = `Enemy: ${form.querySelector('.enemy').value}\nLevel: ${form.querySelector('.level-inp').value}`;
+  const enemyId = currentTarget.value
+  const level = form.querySelector('.level-inp').value
+  const nature = form.querySelector('.nature-inp').value
+  const enemyTotalBst = new Pokemon(enemyId, {
+    xp: (level - 1) * Pokemon.XP_PER_LEVEL,
+    nature
+  }).cp()
+  stats.textContent = `Enemy: ${enemyId}\nTotal BST: ${enemyTotalBst}`;
   if (currentTarget.classList.contains('enemy')) 
-    showPokemonPic(currentTarget.value,form);
+    showPokemonPic(enemyId,form);
 }
 
 function addMove(event,isMega = false, moveId = '' , grade =0 , form ) {
