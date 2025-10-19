@@ -10,8 +10,10 @@ import { Pokemon } from "./models.js";
 export function loadPokemonsDatalist(id) {
   const dataList = document.getElementById(id);
   const html = Object.keys(pokemons)
-    .map(id => `<option value="${id}">${pokemons[id].name} (${pokemons[id].types.join(", ")})</option>`)
+    .map(id => `<option value="${id}">${pokemons[id].name} (${pokemons[id].types.join(", ")}) TB: ${pokemons[id].baseStatsTotal}</option>`)
     .join("")
+    console.log(pokemons.charmander.baseStatsTotal);
+    
   dataList.innerHTML = html;
 }
 
