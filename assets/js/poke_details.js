@@ -165,8 +165,7 @@ globalThis.statClickHandler = function( {
     setStat(statSlug, Number(statValueInp.value) || statValueInp.value)
    statUpdateForm.parentNode.classList.remove("active")
    statValueInp.removeAttribute('list')
-   setupPokemon()
-    loadAll()    
+   
   }
   cancelBtn.onclick = ()=>{
       statUpdateForm.parentNode.classList.remove("active")
