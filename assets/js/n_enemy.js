@@ -562,7 +562,7 @@ function makeEnemiesMeta() {
   return enemiesMeta
 }
 
-function makeStartBattleCode(meta, fields, system = "multiple") {
+function makeStartBattleCode(meta, fields, system = "") {
     fields = fields.map(f => `"${f}"`).join(', ')
     return `startBattle(${JSON.stringify(meta, null, 2)}, [${fields}], "${system}")`;
 }
@@ -623,9 +623,11 @@ globalThis.selectRandomFields = function(){
 }
 
 globalThis.copyStartBattleCode = function() {
+    const sysSelect = document.getElementById('sys-select');
     const code = makeStartBattleCode(
         makeEnemiesMeta(),
-        getActiveBattleFields()
+        getActiveBattleFields(),
+        sysSelect.value
     )
     navigator.clipboard.writeText(code)
     alert(code)
