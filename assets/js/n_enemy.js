@@ -176,17 +176,19 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
 
 
 }
-function showPokemonPic(id) {
+function showPokemonPic(id,form) {
   const picSrc = new Pokemon(id).picture
-  const picWrapper = document.querySelector('.pokemon-pic-wrapper')
+  const picWrapper = form.querySelector('.pokemon-pic-wrapper')
   picWrapper.querySelector('img').src = picSrc
 }
 function showStats({currentTarget}) {
   const form = currentTarget.closest('.pokemon-form');
   const stats = form.querySelector('.enemy-stats');
+  
+  const enemyTotalBst = 100
   stats.textContent = `Enemy: ${form.querySelector('.enemy').value}\nLevel: ${form.querySelector('.level-inp').value}`;
   if (currentTarget.classList.contains('enemy')) 
-    showPokemonPic(currentTarget.value);
+    showPokemonPic(currentTarget.value,form);
 }
 
 function addMove(event,isMega = false, moveId = '' , grade =0 , form ) {
