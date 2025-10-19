@@ -231,6 +231,9 @@ export class Pokemon extends PSPokemon {
     }
 
     updateImage(imageId) {
+        const sound = new Audio('/assets/sound_track/transform.mp3')
+        sound.play()
+  
         let oldMaxHp
         if ("state" in this)
             oldMaxHp = this.maxhp

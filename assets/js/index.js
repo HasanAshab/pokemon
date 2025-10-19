@@ -255,7 +255,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
 
-startBattle([
+startBattle(null, [
   {
     "id": "poochyena",
     "name": "pch",
