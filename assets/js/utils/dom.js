@@ -206,7 +206,7 @@ export function startBattle(enemiesMeta, fields = [], system) {
 
 export async function startUserBattle(name,popList=[],fields =[], system) {
    try {
-       const userPokemonsMeta = await getUserPokemonsMeta(name)
+       const userPokemonsMeta = await getUserPokemonsMeta(name,2)
        startBattle(userPokemonsMeta, fields, system)
    }
    catch(e) {
