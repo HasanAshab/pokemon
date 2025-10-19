@@ -255,7 +255,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
 
-startBattle(null,[
+startBattle(null, [
   {
     "id": "poochyena",
     "name": "pch",
@@ -338,8 +338,6 @@ startBattle(null,[
     "token_used": {}
   }
 ], ["Dark", "Ice"], "multiple")
-
-
 
 
 
