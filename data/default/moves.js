@@ -6278,7 +6278,7 @@ export default {
       pp: 15,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
-      onHit(target, source, move) {
+      onHit(target, source, move) {        
         for (const ally of target.adjacentAllies()) {
           this.damage(
             ally.baseMaxhp / 16,

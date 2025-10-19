@@ -7,10 +7,6 @@ import natures from "../../../data/natures.js"
 import movesText from "../../../data/moves_text.js"
 import { sumObj, modObj, weightedRandom, calcLevelStat } from "./helpers.js";
 
-console.log(
-  Array.from(new Set(Object.values(moves).map(m => m.weather).filter(Boolean)))
-);
-
 
 const SAGE_MAPING = {
     "hp": "spe",
@@ -68,6 +64,14 @@ class PSPokemon {
 
     getUndynamaxedHP() {
         return this.hp
+    }
+    
+    // WORKAROUND: its reversed
+    adjacentAllies() {
+        return this.state.foeTeam.filter(p =>{
+            return p.name !== this.state.battle.opponentOf(this).name
+              && this.state.battle.groundedPokemons().some(p2 => p2.name === p.name)
+        })
     }
 }
 
@@ -497,10 +501,18 @@ export class Move {
           return true
            
         // Calculate the effective accuracy
-        const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
+        let userAccMod = user.state.stats.get("accuracy")
+        if (userAccMod > 1) {
+            userAccMod *= 0.7
+        }
+        else if (userAccMod < 1) {
+            userAccMod *= 1.4
+        }
         
-        // Generate a random number between 0 and 100
-        const randomChance = Math.random() * 100;
+        const effectiveAccuracy = Math.max(0, Math.min(this.accuracy * userAccMod, 300));
+              
+        // Generate a random number between 0 and 120
+        const randomChance = Math.random() * 120;
 
         // Check if the move succeeds
         return randomChance <= effectiveAccuracy;
@@ -511,7 +523,7 @@ export class Move {
         !succeed && console.log(`${user.name}: ${this.name} failed!`)
         return succeed
     }
-    
+
     multiHit() {
         if(!this.multihit)
             return 1
