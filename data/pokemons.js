@@ -57,6 +57,11 @@ function processBeast(beast) {
   }
 }
 
+function setTotalBaseStats(pokemon) {
+  pokemon.baseStatsTotal = Math.round(
+    Object.values(pokemon.baseStats).reduce((a, b) => a + b)
+  );
+}
 
 for (const [id, entity] of Object.entries(entities)) {
   // TEMP: skip
@@ -66,11 +71,13 @@ for (const [id, entity] of Object.entries(entities)) {
   }
   processEntity(entity)
   modifyBaseStats(entity)
+  setTotalBaseStats(entity)
 
 }
 for (const entity of Object.values(entitiesExtra)) {
   processEntity(entity)
   modifyBaseStats(entity)
+  setTotalBaseStats(entity)
 }
 
 for (const beast of Object.values(beasts)) {

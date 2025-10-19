@@ -262,7 +262,7 @@ export function canDodge(attacker, defender, move) {
 
     // Base dodge chance using a modified speed ratio
     const speedRatio = Math.abs(defenderSpd / attackerSpd);
-    const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.7)); // Clamp between 5% and 70%
+    const dodgeChance = Math.max(0.05, Math.min(speedRatio * 0.3, 0.85)); // Clamp between 5% and 85%
 
     // Accuracy and evasion modifiers
     const accuracyModifier = attackerAccuracy / defenderEvasion;
