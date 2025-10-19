@@ -1,38 +1,26 @@
 [
   {
-    "id": "bulbasaur",
-    "name": "bulba",
-    "xp": 900,
+    "id": "bellsprout",
+    "name": "bell",
+    "xp": 800,
     "nature": "none",
-    "retreat": 3.5,
+    "retreat": 3,
     "types": [],
     "abilities": [],
-    "items": [
-      "gen-food-low"
-    ],
+    "items": [],
     "moves": [
-      {
-        "id": "tackle",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "growl",
-        "grade": "0",
-        "isSelected": true
-      },
       {
         "id": "vinewhip",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "growth",
+        "id": "wrap",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "razorleaf",
+        "id": "dirt",
         "grade": "0",
         "isSelected": true
       }
@@ -44,4 +32,4 @@
     "stats": {},
     "token_used": {}
   }
-  ]
+]
