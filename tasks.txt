@@ -1,6 +1,5 @@
 * Tasks
 dynamax
-bullet proof
 
 * QnA
 

@@ -405,7 +405,7 @@ export class Move {
         this._reducedCapacity = 0
     }
   
-    get isNeverFails() {       
+    get isNeverFails() {
         if ('onTryMove' in this || 'onTryImmunity' in this)
             return false
         return this.accuracy === true || this.category !== "Status"

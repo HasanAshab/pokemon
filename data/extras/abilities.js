@@ -937,4 +937,22 @@ export default {
     rating: 2,
     num: 68
   },
+  bulletproof: {
+    onModifyOpponentAtk(_, target, source, move) {
+      if (move.flags["bullet"]) {
+        this.popup("immune to bullet", source);
+        return this.chainModify(0)
+      }
+    },
+    onModifyOpponentSpA(_, target, source, move) {
+      if (move.flags["bullet"]) {
+        this.popup("immune to bullet", source);
+        return this.chainModify(0)
+      }
+    },
+    flags: { breakable: 1 },
+    name: "Bulletproof",
+    rating: 3,
+    num: 171
+  },
 }
