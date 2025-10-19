@@ -26,7 +26,7 @@ function loadBattleSystems() {
 }
 
 async function loadCharectersList(){
-   const res = await fetch("../../users/sessions/1/_names.json") 
+   const res = await fetch("../../users/sessions/2/_names.json") 
    const data = await res.json()
    
    const charectersList = document.querySelector(".charecters-list")
