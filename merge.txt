@@ -5,3 +5,4 @@
 3. abilities.onBasePower support (e.g. Mega Launcher)
 4. blaze like abilities NEW
 5. fairywing + seapearls
+6. moves: fire burst

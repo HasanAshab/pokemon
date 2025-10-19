@@ -1657,7 +1657,10 @@ katana: {
         metronome: 1 ,
         weapon: 0
       },
-      secondary: null,
+      secondary: {
+        chance: 100,
+        status: "brn"
+      },
       target: "normal",
       type: "Fire",
     },

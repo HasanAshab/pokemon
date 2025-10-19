@@ -165,9 +165,6 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   playerSettingsForm.querySelector(".header .primary .name").textContent = pokemonMap[playerTag].name
   playerSettingsForm.querySelector(".header .primary .pokemon-pic").src = pokemonMap[playerTag].picture
   
-  
-  
-  
   setupBotModeBtn(playerTag)
   loadCurrentHealthPercentage(playerTag)
   loadAbilities(playerTag)
@@ -1716,16 +1713,31 @@ function loadItems(playerTag) {
   }
 }
 function loadTokenStats(playerTag) {
-  const pokemon = pokemonMap[playerTag]
-  const tokenStats = structuredClone(pokemon.tokens)
+  const pokemon = pokemonMap[playerTag];
+  const tokenStats = structuredClone(pokemon.tokens);
 
-  for (const [key, value] of Object.entries(tokenStats)) {
-    tokenStats[key] = `${pokemon.state.stats.get(key)} (${value < 0 ? '' : '+'}${value})`
-  }
+  // Create array with combined stats for sorting
+  const combinedStats = Object.entries(tokenStats).map(([key, tokenValue]) => {
+    const baseStat = pokemon.state.stats.get(key);
+    const total = baseStat + tokenValue;
+    return [key, { base: baseStat, token: tokenValue, total }];
+  });
 
-  const playerSettingsForm = document.querySelector('.player-settings-form')
-  const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats')
-  preStats.innerHTML = JSON.stringify(tokenStats, null, 2)
+  // Sort by total stat (descending)
+  combinedStats.sort((a, b) => b[1].total - a[1].total);
+
+  // Rebuild formatted object for display
+  const formattedStats = Object.fromEntries(
+    combinedStats.map(([key, { base, token }]) => [
+      key,
+      `${base} (${token < 0 ? '' : '+'}${token})`
+    ])
+  );
+
+  const playerSettingsForm = document.querySelector('.player-settings-form');
+  const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats');
+
+  preStats.textContent = JSON.stringify(formattedStats, null, 2);
 }
 globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name) {
   currentTarget.classList.toggle("active")
