@@ -201,20 +201,8 @@
     function compareObjects() {
       const fooId = document.getElementById('fooInput').value.toLowerCase();
       const barId = document.getElementById('barInput').value.toLowerCase();
-      let foo = new Pokemon(fooId, {
-        xp: (document.getElementById('fooLevel').value - 1) * 100
-      });
-      let bar = new Pokemon(barId, {
-        xp: (document.getElementById('barLevel').value - 1) * 100
-      });
-      
-      foo._pokemon.baseStats = foo.stats
-      foo = foo._pokemon
-      
-      bar._pokemon.baseStats = bar.stats
-      bar = bar._pokemon
-      
-      if (!foo || !bar) {
+
+      if (!fooId || !barId) {
         document.getElementById('comparisonResult').innerHTML = `
           <div class="panel">
             <p style="color: red;">Please select valid Pokémon names from both inputs.</p>
@@ -222,6 +210,21 @@
         `;
         return;
       }
+
+      let foo = new Pokemon(fooId, {
+        xp: (document.getElementById('fooLevel').value - 1) * 100
+      });
+      let bar = new Pokemon(barId, {
+        xp: (document.getElementById('barLevel').value - 1) * 100
+      });
+      
+      const fooPoke = structuredClone(foo._pokemon)
+      fooPoke.baseStats = foo.stats
+      foo = fooPoke
+      
+      const barPoke = structuredClone(bar._pokemon)
+      barPoke.baseStats = bar.stats
+      bar = barPoke
       
       const result = renderComparisonTable(foo, bar);
       document.getElementById('comparisonResult').innerHTML = result;
