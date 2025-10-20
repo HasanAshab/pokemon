@@ -1,5 +1,4 @@
 * Tasks
-priority retrat penalty
 * QnA
 
 * bug
