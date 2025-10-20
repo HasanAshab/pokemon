@@ -490,7 +490,7 @@ export default {
     eggGroups: ["Dragon", "Water 2"]
   },
     fleshlet: {
-      num: 661,
+      num: 10014,
       name: "Fleshlet",
       types: ["Normal", "Flying"],
       baseStats: { hp: 30, atk: 50, def: 38, spa: 40, spd: 38, spe: 82 },
@@ -502,11 +502,11 @@ export default {
       eggGroups: ["Flying"]
     },
     voltwing: {
-      num: 662,
+      num: 10015,
       name: "Voltwing",
       types: ["Electric", "Flying"],
       baseStats: { hp: 50, atk: 68, def: 50, spa: 68, spd: 50, spe: 100 },
-      abilities: { },
+      abilities: {0:"Flash"},
       heightm: 0.7,
       weightkg: 16,
       color: "Yellow",
@@ -516,11 +516,11 @@ export default {
       eggGroups: ["Flying"]
     },
     voltress: {
-      num: 663,
+      num: 10016,
       name: "Voltress",
       types: ["Electric", "Flying"],
       baseStats: { hp: 70, atk: 82, def: 69, spa: 82, spd: 69, spe: 133 },
-      abilities: { 0: "flash" },
+      abilities: { 0: "Flash" },
       heightm: 1.2,
       weightkg: 24.5,
       color: "Red",
@@ -529,11 +529,11 @@ export default {
       eggGroups: ["Flying"]
     },
      voltressmega: {
-      num: 663,
+      num: 10016,
       name: "Voltress",
-      types: ["Electric", "Flying","dark"],
+      types: ["Electric", "Flying"],
       baseStats: { hp: 80, atk: 107, def: 79, spa: 107, spd: 79, spe: 153 },
-      abilities: { 0: "flash" ,1:"purplethunder"},
+      abilities: { 0: "Flash" ,1:"Purple Thunder"},
       heightm: 1.2,
       weightkg: 24.5,
       color: "Red",
