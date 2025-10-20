@@ -349,6 +349,8 @@ function setRetreat(move) {
   if (move.weather) {
       retreat += 0.5
   }
+  
+  retreat += (move.priority * 0.5)
 
   retreat = adjustToClosestRetreat(retreat)
 

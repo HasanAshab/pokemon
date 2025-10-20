@@ -11,3 +11,4 @@
 9. total basestat datalist
 10. new compare.html
 11. dodge clamp max 85
+12. priority retrat penalty
