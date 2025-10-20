@@ -44,12 +44,13 @@ async function loadCharectersList(){
 async function charecterBtnsClickHandler(charecter){
   const system = document.getElementById('sys-select')?.value;
    let popList = []
-  if (system === "multiple"){
+  /*if (system === "multiple"){
      popList = await getPopList(charecter)
-  }
+  }*/
    startUserBattle(charecter,popList,getActiveBattleFields(),system)
   }
  async function getPopList(charecter){
+    console.log("i kichi")
     const userPokemonsMeta = await getUserPokemonsMeta(charecter)
     const popListForm = document.querySelector(".pop-list-form")
     const confirmBtn = document.createElement('button')
@@ -168,8 +169,14 @@ globalThis.selectRandomFields = function(){
  const startIndex = Math.floor(Math.random() * fields.length)
  const totalFeildsToSelect = Math.floor(Math.random() * 6) + 1
  let fieldsSelected = 0
+
+ // cleanup old active fields
+ for (const field of fields){
+    field.classList.remove("active")
+ }
  while (fieldsSelected !== totalFeildsToSelect){
   for (let i = startIndex; i < fields.length; i++){
+       
       const isSelected = (Math.floor(Math.random() * 11) + 1) <= 3 ? true : false
       if (isSelected){
           fields[i].classList.add("active")

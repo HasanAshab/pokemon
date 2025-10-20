@@ -7,7 +7,7 @@
     "retreat": 3,
     "types": [],
     "abilities": [],
-    "items": [],
+    "items": ["gen-food-low"],
     "moves": [
       {
         "id": "vinewhip",
