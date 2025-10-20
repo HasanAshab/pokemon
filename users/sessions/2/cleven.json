@@ -28,11 +28,6 @@
         "id": "nuzzle",
         "grade": "0",
         "isSelected": true
-      },
-      {
-        "id": "thunderwave",
-        "grade": "0",
-        "isSelected": true
       }
     ],
     "mega": {
@@ -43,8 +38,8 @@
     "token_used": {}
   },
   {
-    "id": "chespin",
-    "name": "chest",
+    "id": "mankey",
+    "name": "man",
     "xp": 800,
     "nature": "none",
     "retreat": 3.25,
@@ -55,27 +50,22 @@
     ],
     "moves": [
       {
-        "id": "vinewhip",
+        "id": "furyattack",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "tackle",
+        "id": "growl",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "leechseed",
+        "id": "focusenergy",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "rollout",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "razorleaf",
+        "id": "poweruppunch",
         "grade": "0",
         "isSelected": true
       }
