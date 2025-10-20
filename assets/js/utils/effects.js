@@ -160,7 +160,7 @@ class BurnEffect extends Effect {
     }
     
     _calculateEffectDamage() {
-        const effectDamage = Math.floor(this.state.pokemon.maxhp / 16); // 1/16th HP loss
+        const effectDamage = Math.floor(this.state.pokemon.maxhp / 10); // 1/16th HP loss
         return effectDamage;
     }
 }
@@ -175,7 +175,7 @@ class PoisonEffect extends Effect {
 
     _calculateEffectDamage() {
         const maxHP = this.state.pokemon.stats.hp;
-        const poisonDamage = Math.floor(this.state.pokemon.maxhp / 8); // 1/8th HP loss
+        const poisonDamage = Math.floor(this.state.pokemon.maxhp / 6); // 1/8th HP loss
         return poisonDamage;
     }
 }
