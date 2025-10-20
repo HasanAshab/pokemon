@@ -493,7 +493,7 @@ export default {
       num: 661,
       name: "Fleshlet",
       types: ["Normal", "Flying"],
-      baseStats: { hp: 40, atk: 50, def: 38, spa: 40, spd: 38, spe: 72 },
+      baseStats: { hp: 30, atk: 50, def: 38, spa: 40, spd: 38, spe: 82 },
       abilities: {},
       heightm: 0.3,
       weightkg: 1.7,

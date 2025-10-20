@@ -1,0 +1,90 @@
+[
+  {
+    "id": "pikachu",
+    "name": "pika",
+    "xp": 700,
+    "nature": "none",
+    "retreat": 3.25,
+    "types": [],
+    "abilities": [],
+    "items": ["gen-food-low"],
+    "moves": [
+      {
+        "id": "growl",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "thundershock",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "quickattack",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "nuzzle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "thunderwave",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "chespin",
+    "name": "chest",
+    "xp": 800,
+    "nature": "none",
+    "retreat": 3.25,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "vinewhip",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "leechseed",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rollout",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "razorleaf",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+]
