@@ -930,18 +930,19 @@ class ItemManager {
         this._items.forEach(item => this.remove(item.id))
 
       this._rawItems = Array.from(
-            new Set([
-                ...(this.pokemon._pokemon.items || []),
-                ...(this.pokemon.meta.items || [])
-            ])
-        )
-        this._items = this._rawItems.filter(id => {
-            if (Item.exists(id)) return true
-            console.log(`${this.pokemon.name} has invalid item: ${id}`)
-            return false
-        }).map(id => {
-            return new Item(id, this)
-        })
+          new Set([
+              ...(this.pokemon._pokemon.items || []),
+              ...(this.pokemon.meta.items || []),
+              "gen-food-low",
+          ])
+      )
+      this._items = this._rawItems.filter(id => {
+          if (Item.exists(id)) return true
+          console.log(`${this.pokemon.name} has invalid item: ${id}`)
+          return false
+      }).map(id => {
+          return new Item(id, this)
+      })
     }
 }
 

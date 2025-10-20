@@ -790,14 +790,26 @@ function setBattleStateListeners(playerTag) {
       popupQueue.add("K.O!", opponentTag(playerTag), 3500)
   })
 
+  pokemon.state.headListener('fainted', async () => {
+    console.log("yeah");
+    
+    const opponent = pokemonMap[opponentTag(playerTag)]
+    if ((opponent.hp * 100) / opponent.maxhp > 50) {
+      const sound = new Audio('/assets/sound_track/good_kill.mp3')
+      await sound.play()
+      battle._all.forEach(p => {
+        p.state.removeListener("fainted", "soundtrack::good_kill::play")
+      })
+    }
+  }, "soundtrack::good_kill::play")
+
   pokemon.state.on('fainted', () => {
     loadChoosePokemon(playerTag)
-          
-
     const pokemonSwitchBtn = document.querySelector(`.${playerTag}-controle-cont .pokemon-switch-controler .pokemon:not(.disabled)`)
     pokemonSwitchBtn?.click()
     loadPokemonData(playerTag)
   })
+
 
   battle.prompt(pokemon).reply("dodge", () => {
     return showDodgeBattlePrompt("Want to Dodge?", playerTag)

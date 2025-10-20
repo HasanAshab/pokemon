@@ -4,6 +4,7 @@ export class EventEmitter {
         this._debouncedEmitters = {};
         this._onceEvents = {};
         this._tailListeners = {};
+        this._headListeners = {};
     }
 
     _addListener(storage, events, listener, tag) {
@@ -37,6 +38,10 @@ export class EventEmitter {
         this._addListener(this._tailListeners, events, listener, tag);
     }
 
+    headListener(events, listener, tag = null) {
+        this._addListener(this._headListeners, events, listener, tag);
+    }
+
     emit(event, ...args) {
         const ctx = { _event: event };
 
@@ -45,6 +50,10 @@ export class EventEmitter {
           // fn.toString().includes('async')
           //   && console.log('Async reciever detected:', fn);
         };
+
+        if (this._headListeners[event]) {
+            this._headListeners[event].forEach(send);
+        }
 
         if (this._events[event]) {
             this._events[event].forEach(send);
@@ -95,6 +104,7 @@ export class EventEmitter {
         removeFrom(this._events);
         removeFrom(this._onceEvents);
         removeFrom(this._tailListeners);
+        removeFrom(this._headListeners);
     }
     
     removeListeners() {
@@ -102,35 +112,7 @@ export class EventEmitter {
         this._debouncedEmitters = {};
         this._onceEvents = {};
         this._tailListeners = {};
+        this._headListeners = {};
     }
 }
 
-
-export class Observable extends EventEmitter {
-    constructor() {
-        super();
-        return this._createProxy(this);
-    }
-
-    _createProxy(obj) {
-        const self = this;
-        return new Proxy(obj, {
-            get(target, key) {
-                const value = target[key];
-                if (typeof value === "object" && value !== null && !(value instanceof EventEmitter)) {
-                    return self._createProxy(value);
-                }
-                return value;
-            },
-            set(target, key, value) {
-                const oldValue = target[key];
-                if (oldValue !== value) {
-                    target[key] = value;
-                    // Use the debounced emit instead of immediate emit
-                    self.debounceEmit("change", 100, self);
-                }
-                return true;
-            },
-        });
-    }
-}
