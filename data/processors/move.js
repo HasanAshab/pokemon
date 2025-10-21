@@ -343,7 +343,7 @@ function setRetreat(move) {
   }
 
   if (move.accuracy === true) {
-    retreat += 0.5
+      retreat += 0.5
   }
 
   if (move.weather) {
@@ -351,6 +351,10 @@ function setRetreat(move) {
   }
   
   retreat += (move.priority * 0.5)
+
+  if (move.flags.combo) {
+      retreat += (move.basePower / 40)
+  }
 
   retreat = adjustToClosestRetreat(retreat)
 
