@@ -303,7 +303,7 @@ export class Pokemon extends PSPokemon {
 
     megaDevolve() {
         if (!this.isMegaForm()) return false
-        this._pokemon = pokemons[this.id];
+        this.updateImage(this.id);
         return true
     }
 
