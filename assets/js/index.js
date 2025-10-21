@@ -254,8 +254,52 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 //last gym
-
-
+/*
+startBattle([
+  {
+    "id": "hoothoot",
+    "name": "E1",
+    "xp": 600,
+    "nature": "none",
+    "retreat": 4.5,
+    "types": [],
+    "abilities": [
+      "sharingan1"
+    ],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "peck",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "hypnosis",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "gust",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
+*/
 
 
 
