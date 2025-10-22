@@ -1,4 +1,4 @@
-[
+startBattle([
   {
     "id": "bellsprout",
     "name": "bell",
@@ -32,4 +32,4 @@
     "stats": {},
     "token_used": {}
   }
-]
+], [], "single")
