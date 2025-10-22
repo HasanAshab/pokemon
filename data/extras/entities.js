@@ -169,10 +169,10 @@ export default {
       forme: "Mega-Y",
       types: ["Fire", "Flying"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 78, atk: 104, def: 78, spa: 104, spd: 115, spe: 155 },
+      baseStats: { hp: 78, atk: 100, def: 78, spa: 100, spd: 100, spe: 178 },
       abilities: { 0: "Inner Pressure" },
       heightm: 1.6,
-      weightkg: 90,
+      weightkg: 70,
       color: "Red",
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Charizardite Y"

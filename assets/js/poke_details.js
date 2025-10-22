@@ -8,6 +8,7 @@ import { Damage } from "./utils/damage.js"
 var name = getParam("name")
 var isMegaEvolved = false
 const updatablePokemonMetaList = ["items", "types", "abilities", "retreat","xp","nature","wins-count","loses-count"]
+var statIndex = 1
 
 
 globalThis.upgradeMove = function(id) {
@@ -20,6 +21,7 @@ globalThis.upgradeMove = function(id) {
 }
 
 globalThis.megaBtnClickHandler = function({currentTarget}){
+   statIndex = 1
    currentTarget.classList.toggle("active")
    isMegaEvolved = currentTarget.classList.contains("active")
    isMegaEvolved 
@@ -59,7 +61,7 @@ function setCurrentHealth(hp) {
    healthProgressBar.querySelector(".current-hp").textContent = hp
    healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0: progress}%`
 }
-let statIndex = 1
+
 function setStat(slug, value) {
   let saveValue = value
   const stat = document.querySelector(`.stat.${slug}`)
