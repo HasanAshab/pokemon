@@ -830,6 +830,40 @@ class RechargingEffect extends ExpirableEffect {
     }
 }
 
+
+class ChargeEffect extends Effect {
+    static effectName = "charge"
+    
+    _nonDistruptingMoves = ["staythere", "dodge", "block"]
+    
+    onScene(move) {
+        if (this._nonDistruptingMoves.includes(move.id)) return
+        if (move.type === "Electric") {
+          this.state.damage.chainModifyPower(move.id, 2)
+        }
+        this.remove()
+    }
+}
+
+class CurseEffect extends Effect {
+    static effectName = "curse"
+
+    _damagePercent = 7
+
+    setup() {
+        super.setup()
+
+        if (this.source._user.isTypeOf("Ghost")) {
+          this._damagePercent = 25
+        }
+    }
+
+    onScene() {
+      const damage = this.state.pokemon.maxhp * (this._damagePercent / 100)
+      this.state.decreaseHealthNonContact(damage, "Special")
+    }
+}
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -854,6 +888,8 @@ export const EFFECTS = makeEffectsMap([
     AncientModeEffect,
     InnerGateEffect,
     RechargingEffect,
+    ChargeEffect,
+    CurseEffect,
 ])
 
 

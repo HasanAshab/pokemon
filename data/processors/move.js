@@ -114,6 +114,9 @@ function bindMethods(move) {
         },
         damage(amount, target) {
           target.state.decreaseHealth(amount)
+        },
+        directDamage(amount, target) {
+          target.state.decreaseHealth(amount, true)
         }
     }
     

@@ -13,3 +13,4 @@
 11. dodge clamp max 85
 12. priority retrat penalty
 13. combo retreat penalty
+14. directDamage() ctx on move.onHit()

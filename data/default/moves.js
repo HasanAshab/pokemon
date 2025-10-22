@@ -3717,6 +3717,8 @@ export default {
         }
       },
       onHit(target, source) {
+        console.log(target.name, source.name);
+        
         this.directDamage(source.maxhp / 2, source, source)
       },
       condition: {

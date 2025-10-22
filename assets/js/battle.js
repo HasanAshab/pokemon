@@ -1262,7 +1262,15 @@ function setEffects(effects, playerTag) {
     "mustrecharge": {
       "name": "Re-charging",
       "color": "Normal"
-    }
+    },
+    "charge": {
+      "name": "Charge",
+      "color": "Electric"
+    },
+    "curse": {
+      "name": "Curse",
+      "color": "Ghost"
+    },
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const effectElements = effectsDataColumn.querySelectorAll(".effect")
