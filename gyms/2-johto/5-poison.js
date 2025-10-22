@@ -35,11 +35,6 @@ startBattle([
         "id": "focusenergy",
         "grade": "0",
         "isSelected": true
-      },
-      {
-        "id": "doublekick",
-        "grade": "0",
-        "isSelected": true
       }
     ],
     "mega": {
@@ -80,6 +75,11 @@ startBattle([
         "id": "substitute",
         "grade": "0",
         "isSelected": true
+      },
+      {
+        "id": "furyswipes",
+        "grade": "0",
+        "isSelected": true
       }
     ],
     "mega": {
@@ -89,4 +89,4 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], [], "single")
+], ["Poison","Water"], "multiple");
