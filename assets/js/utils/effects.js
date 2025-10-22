@@ -862,6 +862,22 @@ class CurseEffect extends Effect {
     }
 }
 
+class RageEffect extends Effect {
+    static effectName = "rage"
+
+    onSceneEnd(hit, hitsMap) {
+        const opponentHit = hitsMap.get(this.state.battle.opponentOf(this.state.pokemon))
+        
+        if (![this.source.id, "staythere"].includes(hit.move.id)) {
+            return this.remove()
+        }
+        if (!opponentHit.damage()) return
+        
+        this.state.stats._statChanges.atk += opponentHit.hitCount()
+        this.state.stats._statChanges.atk = Math.min(this.state.stats._statChanges.atk, 6)
+    }
+}
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -888,6 +904,7 @@ export const EFFECTS = makeEffectsMap([
     RechargingEffect,
     ChargeEffect,
     CurseEffect,
+    RageEffect,
 ])
 
 

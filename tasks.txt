@@ -1,5 +1,5 @@
 * Tasks
-move: rage
+move: trickroom
 mega hp decreasing
 
 * QnA
