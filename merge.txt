@@ -14,3 +14,4 @@
 12. priority retrat penalty
 13. combo retreat penalty
 14. directDamage() ctx on move.onHit()
+15. curse + charge
