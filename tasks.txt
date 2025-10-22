@@ -1,7 +1,7 @@
 * Tasks
 mega hp decreasing
 give spe stat reduced stat
-
+moves: sleepUse(snore,sleeptalk) , curse
 * QnA
 
 * bug
