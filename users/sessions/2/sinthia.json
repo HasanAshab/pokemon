@@ -1,0 +1,82 @@
+[
+  {
+    "id": "charmeleon",
+    "name": "charmy",
+    "xp": 1300,
+    "nature": "none",
+    "retreat": 3.25,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "firespin",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "furyswipes",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "ember",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "metalclaw",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "pidgey",
+    "name": "pid",
+    "xp": 1000,
+    "nature": "none",
+    "retreat": 3.25,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "gust",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "sandattack",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "furyattack",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+]
