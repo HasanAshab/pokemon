@@ -1,10 +1,10 @@
 startBattle([
   {
-    "id": "abra",
-    "name": "abra",
-    "xp": 1300,
+    "id": "houndour",
+    "name": "hound",
+    "xp": 1500,
     "nature": "none",
-    "retreat": 3.75,
+    "retreat": 3.5,
     "types": [],
     "abilities": [],
     "items": [
@@ -12,27 +12,27 @@ startBattle([
     ],
     "moves": [
       {
-        "id": "agility",
+        "id": "leer",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "confusion",
+        "id": "ember",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "hypnosis",
+        "id": "bite",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "doubleteam",
+        "id": "firefang",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "rest",
+        "id": "firespin",
         "grade": "0",
         "isSelected": true
       }
@@ -44,4 +44,4 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], ["Psychic", "Steel"], "single")
+], ["Fire"], "single")

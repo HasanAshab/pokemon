@@ -1,4 +1,5 @@
 * Tasks
+move: rage
 mega hp decreasing
 
 * QnA

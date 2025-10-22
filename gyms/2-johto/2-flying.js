@@ -1,10 +1,10 @@
 startBattle([
   {
-    "id": "abra",
-    "name": "abra",
-    "xp": 1300,
+    "id": "doduo",
+    "name": "dod",
+    "xp": 700,
     "nature": "none",
-    "retreat": 3.75,
+    "retreat": 3.25,
     "types": [],
     "abilities": [],
     "items": [
@@ -12,27 +12,27 @@ startBattle([
     ],
     "moves": [
       {
-        "id": "agility",
+        "id": "peck",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "confusion",
+        "id": "quickattack",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "hypnosis",
+        "id": "rage",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "doubleteam",
+        "id": "furyattack",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "rest",
+        "id": "doublekick",
         "grade": "0",
         "isSelected": true
       }
@@ -44,4 +44,4 @@ startBattle([
     "stats": {},
     "token_used": {}
   }
-], ["Psychic", "Steel"], "single")
+], ["Flying"], "single")
