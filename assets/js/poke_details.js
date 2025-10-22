@@ -227,16 +227,12 @@ function loadName() {
     display.onclick = () => {
       window.location = '/data.html?name=' + name
     }
-    const pokemonPic = document.getElementById("pokemon-pic")
-    console.log(pokemon);
-    
+    const pokemonPic = document.getElementById("pokemon-pic")    
     pokemonPic.src = pokemon.picture
 }
 
 
-function loadStats() {
-  console.log(pokemon.picture);
-  
+function loadStats() {  
    setCurrentHealth(pokemon.meta.stats.hp ?? pokemon.maxhp)
     setStat("level", pokemon.level)
     setStat("nature", pokemon.meta.nature)

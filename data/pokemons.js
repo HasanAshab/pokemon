@@ -30,6 +30,7 @@ function modifyBaseStats(pokemon) {
     const newSpeed = pokemon.baseStats.spe;
 
     const speedReduced = oldSpeed - newSpeed;
+    
     if (speedReduced <= 0) return; // No redistribution needed if speed didn't reduce
 
     const baseStats = pokemon.baseStats;
@@ -37,7 +38,7 @@ function modifyBaseStats(pokemon) {
     const share = Math.round(speedReduced / statKeys.length);
 
     for (const stat of statKeys) {
-        baseStats[stat] = parseFloat((baseStats[stat] + share).toFixed(2));
+        baseStats[stat] = Math.round(baseStats[stat] + share);
     }
 }
 

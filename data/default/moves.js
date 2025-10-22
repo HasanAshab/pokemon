@@ -19359,8 +19359,8 @@ export default {
       priority: 0,
       flags: { protect: 1, mirror: 1, sound: 1, bypasssub: 1 },
       sleepUsable: true,
-      onTry(source) {
-        return source.status === "slp" || source.hasAbility("comatose")
+      canUse(pokemon) {
+        return pokemon.state.effects.has("slp")
       },
       secondary: {
         chance: 30,

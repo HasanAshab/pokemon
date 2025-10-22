@@ -1,7 +1,5 @@
 * Tasks
-give spe stat reduced stat
 mega hp decreasing
-moves: sleepUse(snore,sleeptalk)
 * QnA
 
 * bug

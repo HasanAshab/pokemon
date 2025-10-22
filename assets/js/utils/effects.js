@@ -229,12 +229,10 @@ class SleepEffect extends ExpirableEffect {
         super.setup()
         const sleepingTurns = weightedRandom([1, 2, 3, 4], [0.10, 0.30, 0.50, 0.10])
         this.lifetime.turns = sleepingTurns
-        this.status.canMove = false
     }
 
-    teardown() {
-        super.teardown()
-        this.status.canMove = true
+    canUseMove(move) {
+        return move.sleepUsable
     }
 }
 class  TailWindEffect extends ExpirableEffect {
