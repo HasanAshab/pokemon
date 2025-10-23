@@ -1770,5 +1770,24 @@ katana: {
       type: "Grass",
       contestType: "Cool"
     },
+    frubbles: {
+      num: 100059,
+      accuracy: 100,
+      basePower: 0.1,
+      category: "Special",
+      name: "Frubbles",
+      pp: 40,
+      priority: 1,
+      flags: { protect: 1, reflectable: 1, mirror: 1, metronome: 1 },
+      statChanges: {
+        chance: 100,
+        self: {},
+        target: { accuracy: -0.5 }
+      },
+      target: "foeSide",
+      type: "Normal",
+      capacity:3
+    },
+
 }
 
