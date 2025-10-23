@@ -1758,33 +1758,37 @@ function loadItems(playerTag) {
 `
   }
 }
+
 function loadTokenStats(playerTag) {
-  const pokemon = pokemonMap[playerTag];
-  const tokenStats = structuredClone(pokemon.tokens);
+  const pokemon = pokemonMap[playerTag]
+  const tokenStats = structuredClone(pokemon.tokens)
+  let sortedStats = {}
+  for (const key of Object.keys(tokenStats)) {
+   sortedStats[key] = pokemon.state.stats.get(key)
+  }
+  // now i will sort the obj by the value
+  sortedStats = Object.fromEntries(
+    Object.entries(sortedStats).sort((a, b) => b[1] - a[1])
+  )
+  let i = 1
+  for (const key in sortedStats) {
+    console.log(key);
+    tokenStats[`${i++}-${key}`] = `${sortedStats[key]} (${tokenStats[key] < 0 ? '' : '+'}${tokenStats[key]})`
+  }
+  delete tokenStats["hp"] 
+  delete tokenStats["spe"]
+  delete tokenStats["atk"]
+  delete tokenStats["def"]
+  delete tokenStats["spa"]
+  delete tokenStats["spd"]
 
-  // Create array with combined stats for sorting
-  const combinedStats = Object.entries(tokenStats).map(([key, tokenValue]) => {
-    const baseStat = pokemon.state.stats.get(key);
-    const total = baseStat + tokenValue;
-    return [key, { base: baseStat, token: tokenValue, total }];
-  });
+  
+  
+  const playerSettingsForm = document.querySelector('.player-settings-form')
+  const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats')
+  preStats.innerHTML = JSON.stringify(tokenStats, null, 2)
+} 
 
-  // Sort by total stat (descending)
-  combinedStats.sort((a, b) => b[1].total - a[1].total);
-
-  // Rebuild formatted object for display
-  const formattedStats = Object.fromEntries(
-    combinedStats.map(([key, { base, token }]) => [
-      key,
-      `${base} (${token < 0 ? '' : '+'}${token})`
-    ])
-  );
-
-  const playerSettingsForm = document.querySelector('.player-settings-form');
-  const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats');
-
-  preStats.textContent = JSON.stringify(formattedStats, null, 2);
-}
 globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name) {
   currentTarget.classList.toggle("active")
   pokemonMap[playerTag].abilities.toggle(ability_name);
