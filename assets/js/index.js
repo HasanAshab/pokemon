@@ -271,51 +271,6 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
 
-/*
-startBattle([
-  {
-    "id": "hoothoot",
-    "name": "E1",
-    "xp": 600,
-    "nature": "none",
-    "retreat": 3,
-    "types": [],
-    "abilities": [
-    ],
-    "items": [
-      "gen-food-low"
-    ],
-    "moves": [
-      {
-        "id": "tackle",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "peck",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "hypnosis",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "gust",
-        "grade": "0",
-        "isSelected": true
-      }
-    ],
-    "mega": {
-      "moves": [],
-      "suffix": "none"
-    },
-    "stats": {},
-    "token_used": {}
-  }
-], [], "single")
-*/
 
 
 

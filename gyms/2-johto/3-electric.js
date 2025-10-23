@@ -12,7 +12,7 @@ startBattle([
     ],
     "moves": [
       {
-        "id": "gyroball",
+        "id": "nuzzle",
         "grade": "0",
         "isSelected": true
       },
