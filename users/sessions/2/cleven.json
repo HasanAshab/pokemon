@@ -1,19 +1,16 @@
 [
   {
     "id": "pikachu",
-    "name": "pika",
-    "xp": 800,
+    "name": "E1",
+    "xp": 1400,
     "nature": "none",
-    "retreat": 3.25,
+    "retreat": 3.75,
     "types": [],
     "abilities": [],
-    "items": ["gen-food-low"],
+    "items": [
+      "gen-food-low"
+    ],
     "moves": [
-      {
-        "id": "growl",
-        "grade": "0",
-        "isSelected": true
-      },
       {
         "id": "thundershock",
         "grade": "0",
@@ -25,7 +22,62 @@
         "isSelected": true
       },
       {
-        "id": "nuzzle",
+        "id": "thunderwave",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "electroweb",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
+    "id": "quilladin",
+    "name": "quil",
+    "xp": 1300,
+    "nature": "none",
+    "retreat": 3.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "vinewhip",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "tackle",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "growl",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rollout",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "armthrust",
         "grade": "0",
         "isSelected": true
       }
@@ -39,10 +91,10 @@
   },
   {
     "id": "mankey",
-    "name": "man",
-    "xp": 800,
+    "name": "mank",
+    "xp": 1400,
     "nature": "none",
-    "retreat": 3.25,
+    "retreat": 4,
     "types": [],
     "abilities": [],
     "items": [
@@ -50,12 +102,7 @@
     ],
     "moves": [
       {
-        "id": "furyattack",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
-        "id": "growl",
+        "id": "lowkick",
         "grade": "0",
         "isSelected": true
       },
@@ -65,7 +112,17 @@
         "isSelected": true
       },
       {
-        "id": "poweruppunch",
+        "id": "furyswipes",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "detect",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rage",
         "grade": "0",
         "isSelected": true
       }
@@ -76,5 +133,4 @@
     },
     "stats": {},
     "token_used": {}
-  }
-]
+  }]

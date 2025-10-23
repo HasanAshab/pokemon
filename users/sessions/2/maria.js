@@ -1,8 +1,8 @@
-startBattle([
+[
   {
-    "id": "poliwhirl",
-    "name": "poli",
-    "xp": 1300,
+    "id": "braixen",
+    "name": "brax",
+    "xp": 1400,
     "nature": "none",
     "retreat": 3.5,
     "types": [],
@@ -12,27 +12,27 @@ startBattle([
     ],
     "moves": [
       {
-        "id": "pound",
+        "id": "tailwhip",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "bubble",
+        "id": "ember",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "hypnosis",
+        "id": "howl",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "mudshot",
+        "id": "flamecharge",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "poweruppunch",
+        "id": "agility",
         "grade": "0",
         "isSelected": true
       }
@@ -45,11 +45,11 @@ startBattle([
     "token_used": {}
   },
   {
-    "id": "bulbasaur",
-    "name": "bulba",
-    "xp": 1100,
+    "id": "marill",
+    "name": "E2",
+    "xp": 1000,
     "nature": "none",
-    "retreat": 3.75,
+    "retreat": 3.25,
     "types": [],
     "abilities": [],
     "items": [
@@ -57,27 +57,27 @@ startBattle([
     ],
     "moves": [
       {
-        "id": "growl",
+        "id": "tailwhip",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "vinewhip",
+        "id": "bubble",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "leechseed",
+        "id": "rollout",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "razorleaf",
+        "id": "charm",
         "grade": "0",
         "isSelected": true
       },
       {
-        "id": "poisonpowder",
+        "id": "protect",
         "grade": "0",
         "isSelected": true
       }
@@ -88,6 +88,4 @@ startBattle([
     },
     "stats": {},
     "token_used": {}
-  }
-
-], [], "single")
+  }]

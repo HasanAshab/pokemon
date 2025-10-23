@@ -1,0 +1,1 @@
+startUserBattle("cleven",[],[],"single")

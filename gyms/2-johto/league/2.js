@@ -1,0 +1,1 @@
+startUserBattle("maria",[],[],"multiple")
