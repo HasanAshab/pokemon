@@ -1271,6 +1271,10 @@ function setEffects(effects, playerTag) {
       "name": "Curse",
       "color": "Ghost"
     },
+    "rage": {
+      "name": "Rage",
+      "color": "Normal"
+    },
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)
   const effectElements = effectsDataColumn.querySelectorAll(".effect")
