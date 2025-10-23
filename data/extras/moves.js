@@ -1770,7 +1770,6 @@ katana: {
       type: "Grass",
       contestType: "Cool"
     },
-<<<<<<< HEAD
     frubbles: {
       num: 100059,
       accuracy: 100,
