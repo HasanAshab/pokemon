@@ -1,0 +1,1 @@
+startUserBattle("poshu",[],[],"single")
