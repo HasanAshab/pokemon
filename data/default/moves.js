@@ -2228,7 +2228,7 @@ export default {
       priority: 0,
       flags: { protect: 1, mirror: 1, nonsky: 1, metronome: 1 },
       secondary: {
-        chance: 100,
+        chance: 25,
         boosts: {
           spe: -1
         }
@@ -10602,7 +10602,7 @@ export default {
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1, wind: 1 },
       secondary: {
-        chance: 20,
+        chance: 25,
         boosts: {
           spe: -1
         }

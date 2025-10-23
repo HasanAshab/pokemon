@@ -32,6 +32,29 @@ globalThis.retreatBtnClickHandler = function (playerTag) {
   loadPokemonData(playerTag)
 }
 
+globalThis.selectRandomFields = function(){
+ const fields = document.querySelectorAll(".fields-cont > .field")
+ const startIndex = Math.floor(Math.random() * fields.length)
+ const totalFeildsToSelect = Math.floor(Math.random() * 6) + 1
+ let fieldsSelected = 0
+
+ // cleanup old active fields
+ for (const field of fields){
+    field.classList.remove("active")
+ }
+ while (fieldsSelected !== totalFeildsToSelect){
+  for (let i = startIndex; i < fields.length; i++){
+       
+      const isSelected = (Math.floor(Math.random() * 11) + 1) <= 3 ? true : false
+      if (isSelected){
+          fields[i].classList.add("active")
+          fieldsSelected++
+      }
+      if (fieldsSelected === totalFeildsToSelect)
+         break;
+  }
+ }
+}
 
 globalThis.getEnemiesMetaBtnClickHandler = function () {
   const meta = teams.enemy.map((p) => ({
