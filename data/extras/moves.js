@@ -1770,6 +1770,7 @@ katana: {
       type: "Grass",
       contestType: "Cool"
     },
+<<<<<<< HEAD
     frubbles: {
       num: 100059,
       accuracy: 100,
@@ -1789,5 +1790,64 @@ katana: {
       capacity:3
     },
 
+        flamecharge: {
+      num: 488,
+      accuracy: 100,
+      basePower: 40,
+      category: "Physical",
+      name: "Flame Charge",
+      pp: 20,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 100,
+        self: {
+          boosts: {
+            spe: 1
+          }
+        }
+      },
+      target: "normal",
+      type: "Fire",
+      contestType: "Cool"
+    },
+        icywind: {
+      num: 196,
+      accuracy: 95,
+      basePower: 55,
+      category: "Special",
+      name: "Icy Wind",
+      pp: 15,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1, wind: 1 },
+      secondary: {
+        chance: 25,
+        boosts: {
+          spe: -1
+        }
+      },
+      target: "allAdjacentFoes",
+      type: "Ice",
+      contestType: "Beautiful"
+    },
+        electroweb: {
+      num: 527,
+      accuracy: 95,
+      basePower: 55,
+      category: "Special",
+      name: "Electroweb",
+      pp: 15,
+      priority: 0,
+      flags: { protect: 1, mirror: 1, metronome: 1 },
+      secondary: {
+        chance: 30,
+        boosts: {
+          spe: -1
+        }
+      },
+      target: "allAdjacentFoes",
+      type: "Electric",
+      contestType: "Beautiful"
+    }
 }
 
