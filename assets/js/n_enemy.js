@@ -105,7 +105,6 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
     <br>
       <label>Mega Suffix</label>
     <select class="mega-suffix-select">
-      <option value="none">None</option>
     <option value="mega">Mega</option>
       <option value="megax">X</option>
       <option value="megay">Y</option>

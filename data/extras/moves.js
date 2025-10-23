@@ -193,6 +193,8 @@ export default {
       retreat: 6,
       flags: {},
       onBeforeMove(attacker) {
+        console.log(attacker);
+        
         attacker.megaEvolve()
       }
     },

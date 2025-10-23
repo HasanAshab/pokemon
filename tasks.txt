@@ -1,4 +1,5 @@
 * Tasks
+mega evlv bug ( gen food low)
 freeze
 move: trickroom
 mega hp decreasing
