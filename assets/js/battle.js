@@ -1190,6 +1190,10 @@ function setEffects(effects, playerTag) {
       "name": "Paralyze",
       "color": "Electric"
     },
+    "attract" : {
+      "name": "Attract",
+      "color": "Fairy"
+    },
     "frz": {
       "name": "Freeze",
       "color": "Ice"

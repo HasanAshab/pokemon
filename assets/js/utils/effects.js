@@ -331,6 +331,20 @@ class ParalyzeEffect extends Effect {
         return !this.status.canMove ? '🔴' : '⚪'
     }
 }
+class AttractEffect extends Effect {
+    static effectName = "attract"
+
+    onTurn() {
+        this.status.canMove = Math.random() > 0.50
+    }
+    onTurnEnd() {
+        this.status.canMove = true
+    }
+    
+    displayMeta() {
+        return !this.status.canMove ? '🔴' : '⚪'
+    }
+}
 
 class ConfusionEffect extends ExpirableEffect {
     static effectName = "confusion"
@@ -888,6 +902,7 @@ export const EFFECTS = makeEffectsMap([
     FreezeEffect,
     FlinchEffect,
     ParalyzeEffect,
+    AttractEffect,
     ConfusionEffect,
     LeechSeedEffect,
     StallEffect,

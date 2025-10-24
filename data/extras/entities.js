@@ -524,7 +524,7 @@ export default {
       heightm: 1.2,
       weightkg: 24.5,
       color: "Red",
-      prevo: "Fletchinder",
+      prevo: "Voltwing",
       evoLevel: 35,
       eggGroups: ["Flying"]
     },
@@ -533,7 +533,7 @@ export default {
       name: "Voltress",
       types: ["Electric", "Flying"],
       baseStats: { hp: 80, atk: 107, def: 79, spa: 107, spd: 79, spe: 153 },
-      abilities: { 0: "Flash" ,1:"Purple Thunder"},
+      abilities: { 0:"Purple Thunder"},
       heightm: 1.2,
       weightkg: 24.5,
       color: "Red",

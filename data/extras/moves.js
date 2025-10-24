@@ -1903,17 +1903,6 @@ katana: {
       num: 279,
       accuracy: 100,
       basePower: 60,
-      /*
-      basePowerCallback(pokemon, target, move) {
-        const damagedByTarget = pokemon.attackedBy.some(
-          p => p.source === target && p.damage > 0 && p.thisTurn
-        )
-        if (damagedByTarget) {
-          this.debug("BP doubled for getting hit by " + target)
-          return move.basePower * 2
-        }
-        return move.basePower
-      },*/
       category: "Physical",
       isNonstandard: "Past",
       name: "Revenge",
@@ -1929,13 +1918,6 @@ katana: {
       num: 372,
       accuracy: 100,
       basePower: 60,
-    /*  basePowerCallback(pokemon, target, move) {
-        if (target.hurtThisTurn) {
-          this.debug("BP doubled on damaged target")
-          return move.basePower * 2
-        }
-        return move.basePower
-      },*/
       category: "Physical",
       name: "Assurance",
       pp: 10,
@@ -1946,6 +1928,29 @@ katana: {
       type: "Dark",
       contestType: "Clever"
     },
-
+      attract: {
+      num: 213,
+      accuracy: 100,
+      basePower: 0,
+      category: "Status",
+      name: "Attract",
+      pp: 15,
+      priority: 0,
+      flags: {
+        protect: 1,
+        reflectable: 1,
+        mirror: 1,
+        bypasssub: 1,
+        metronome: 1
+      },
+      secondary: {
+        chance: 70,
+        status: "attract"
+      },
+      target: "normal",
+      type: "Fairy",
+      zMove: { effect: "clearnegativeboost" },
+      contestType: "Cute"
+    },
 }
 
