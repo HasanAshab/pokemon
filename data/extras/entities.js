@@ -541,4 +541,5 @@ export default {
       evoLevel: 35,
       eggGroups: ["Flying"]
     }  
+    
 }
