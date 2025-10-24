@@ -1248,6 +1248,7 @@ class StatsManager {
       crit: 0,
       accuracy: 0,
       evasion: 0,
+      pow: 0,
     };
     _modifiers = {};
     _freezed = false;

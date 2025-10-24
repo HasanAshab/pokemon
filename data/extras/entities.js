@@ -177,40 +177,40 @@ export default {
       eggGroups: ["Monster", "Dragon"],
       requiredItem: "Charizardite Y"
     },
-    charizardmegaz: {
+    charizardbond: {
       num: 6,
-      name: "Charizard-Mega-Z",
+      name: "Charizard-Bond",
       baseSpecies: "Charizard",
-      forme: "Mega-Z (50%)",
-      types: ["Fire", "Poison", 'Flying', "Dragon"],
+      forme: "Bond (50%)",
+      types: ["Fire", "Poison", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 85, atk: 130, def: 105, spa: 125, spd: 104, spe: 85 },
+      baseStats: { hp: 100, atk: 115, def: 119, spa: 125, spd: 90, spe: 85 },
       abilities: { 0: "Crit" },
       heightm: 2,
       weightkg: 91,
       color: "pink",
       eggGroups: ["Monster", "Dragon"],
-      requiredItem: "Charizardite Z",
+      requiredItem: "",
        items: ["$charizardz:darklayer1"],
       morph: {
-        to: "charizardmegazcomplete",
+        to: "charizardbondcomplete",
         requires: {
           level: 50,
           hp: 50
         }
       }
     },
-    charizardmegazcomplete: {
+    charizardbondcomplete: {
       num: 6,
-      name: "Charizard-Mega-Z (Complete)",
+      name: "Charizard-Bond (Complete)",
       baseSpecies: "Charizard",
-      forme: "Mega-Z (100%)",
-      types: ["Fire", "Poison","Psythic", 'flying' , "Dark", "Dragon"],
+      forme: "Bond (100%)",
+      types: ["Fire", "Poison","Psychic", 'Flying' , "Dark", "Dragon"],
       genderRatio: { M: 0.875, F: 0.125 },
-      baseStats: { hp: 90, atk: 150, def: 115, spa: 150, spd: 115, spe: 75 },
+      baseStats: { hp: 100, atk: 130, def: 115, spa: 160, spd: 105, spe: 85 },
       abilities: { 0: "Crit", 1: "Scar Face" },
       heightm: 2,
-      weightkg: 120,
+      weightkg: 110,
       color: "Black",
       eggGroups: ["Monster", "Dragon"],
        items: ["$charizardz:darklayer2"],

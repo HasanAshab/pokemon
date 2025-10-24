@@ -113,6 +113,21 @@
   margin-right: 5px;
   gap: 5px;
 }
+.card-header .right-side > .priority-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ position: relative;
+}
+.card-header .right-side > .priority-indicator > .priority-data{
+ position: absolute;
+ bottom: 0;
+ right: -3px;
+ padding: 1px;
+ background-color: #9FA19F;
+ border-radius: 50%;
+ font-weight: bold;
+}
 
 .card-body {
   width: 100%;

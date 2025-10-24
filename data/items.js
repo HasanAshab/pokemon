@@ -13,10 +13,10 @@ export default {
 
   "$charizardz:darklayer1":{
       type: "armor",
-    covers: 25,
+    covers: 100,
     baseStats: {
-      def: 80,
-      spd: 80
+      def: 800,
+      spd: 800
     },
     tokens: {}  
   },
