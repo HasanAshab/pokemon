@@ -12,11 +12,6 @@ startBattle([
     ],
     "moves": [
       {
-        "id": "electroball",
-        "grade": "0",
-        "isSelected": true
-      },
-      {
         "id": "charge",
         "grade": "0",
         "isSelected": true

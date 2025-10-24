@@ -2,7 +2,7 @@
 mega evlv bug ( gen food low)
 megaz armour bug
 freeze
-move:   trickroom
+move:  attract, trickroom
 mega hp decreasing
 
 * QnA

@@ -7119,7 +7119,7 @@ export default {
     furycutter: {
       num: 210,
       accuracy: 95,
-      basePower: 40,
+      basePower: 25,
       basePowerCallback(pokemon, target, move) {
         if (!pokemon.volatiles["furycutter"] || move._hitNo === 1) {
           pokemon.addVolatile("furycutter")

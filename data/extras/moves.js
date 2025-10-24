@@ -1778,12 +1778,36 @@ katana: {
       basePower: 0.1,
       category: "Special",
       name: "Frubbles",
-      pp: 40,
+      pp: 2 * 6,
       priority: 1,
       flags: { protect: 1, reflectable: 1, mirror: 1, metronome: 1 },
       statChanges: {
         chance: 100,
-        self: {},
+        self: {
+          def: -0.5,
+          spd: -0.5
+        },
+        target: { accuracy: -0.5 }
+      },
+      target: "foeSide",
+      type: "Normal",
+      capacity:3
+    },
+    frubbles2: {
+      num: 100060,
+      accuracy: 100,
+      basePower: 0.1,
+      category: "Special",
+      name: "Frubbles 2",
+      pp: 4 * 6,
+      priority: 1,
+      flags: { protect: 1, reflectable: 1, mirror: 1, metronome: 1 },
+      statChanges: {
+        chance: 100,
+        self: {
+          def: -0.25,
+          spd: -0.25
+        },
         target: { accuracy: -0.5 }
       },
       target: "foeSide",
@@ -1849,6 +1873,79 @@ katana: {
       target: "allAdjacentFoes",
       type: "Electric",
       contestType: "Beautiful"
-    }
+    },
+        avalanche: {
+      num: 419,
+      accuracy: 100,
+      basePower: 60,
+     /* basePowerCallback(pokemon, target, move) {
+        const damagedByTarget = pokemon.attackedBy.some(
+          p => p.source === target && p.damage > 0 && p.thisTurn
+        )
+        if (damagedByTarget) {
+          this.debug("BP doubled for getting hit by " + target)
+          return move.basePower * 2
+        }
+        return move.basePower
+      },
+      */
+      category: "Physical",
+      name: "Avalanche",
+      pp: 10,
+      priority: -4,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Ice",
+      contestType: "Beautiful"
+    },
+    revenge: {
+      num: 279,
+      accuracy: 100,
+      basePower: 60,
+      /*
+      basePowerCallback(pokemon, target, move) {
+        const damagedByTarget = pokemon.attackedBy.some(
+          p => p.source === target && p.damage > 0 && p.thisTurn
+        )
+        if (damagedByTarget) {
+          this.debug("BP doubled for getting hit by " + target)
+          return move.basePower * 2
+        }
+        return move.basePower
+      },*/
+      category: "Physical",
+      isNonstandard: "Past",
+      name: "Revenge",
+      pp: 10,
+      priority: -4,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Fighting",
+      contestType: "Tough"
+    },
+    assurance: {
+      num: 372,
+      accuracy: 100,
+      basePower: 60,
+    /*  basePowerCallback(pokemon, target, move) {
+        if (target.hurtThisTurn) {
+          this.debug("BP doubled on damaged target")
+          return move.basePower * 2
+        }
+        return move.basePower
+      },*/
+      category: "Physical",
+      name: "Assurance",
+      pp: 10,
+      priority: 0,
+      flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
+      secondary: null,
+      target: "normal",
+      type: "Dark",
+      contestType: "Clever"
+    },
+
 }
 
