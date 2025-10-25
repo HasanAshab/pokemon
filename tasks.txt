@@ -1,31 +1,24 @@
 * Tasks
-mega evlv bug ( gen food low)
-megaz armour bug
-freeze
-move:  attract, trickroom
-mega hp decreasing
+move: trickroom
 
 * QnA
 
 * bug
-mega in battle : health overflow hoia jai
+mega in battle : health overflow hoia jai ( gen food low)
 rough skin: contact sara marleo recoil dai
 damage baraite hbe 50lvl vs 50lvl er jonno
 effectiveness showing bug
-abilities multiple opponent event system
-Bot shinobis hit a move in act of his team
+megaz armour
 
 * Bottle neck
 bot 
-* Pending
-ancient mode with selfish scar (only crit damages)
 
+* Pending
 
 *ovi
-same bot button on each team
-kingdom clone
-* Scenario
 
+
+* Scenario
 phy 1 -> phy 1 = x - y d 
 phy 1 -> phy 0 = x(10%) dx 
 phy 1 -> sp = x 100% dx
