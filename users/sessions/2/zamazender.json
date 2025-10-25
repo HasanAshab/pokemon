@@ -1,5 +1,50 @@
 [
   {
+    "id": "marshtomp",
+    "name": "mar",
+    "xp": 1300,
+    "nature": "none",
+    "retreat": 3.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "sandtomb",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "watergun",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "mudslap",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rockthrow",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "protect",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  },
+  {
     "id": "honedge",
     "name": "hone",
     "xp": 1300,
