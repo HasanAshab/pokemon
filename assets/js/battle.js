@@ -1384,29 +1384,40 @@ function loadMoves(playerTag) {
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   moveCardsContainer.innerHTML = ''
   const veryClose = battle.ctx.veryClose === true;
-  let moves = [...pokemon.state.moves].sort((a, b) => {
-    const aUsable = battle.canUseMove(pokemon, a.id);
-    const bUsable = battle.canUseMove(pokemon, b.id);
-    if (aUsable !== bUsable) return aUsable ? -1 : 1;
+  // let moves = [...pokemon.state.moves].sort((a, b) => {
+  //   const aUsable = battle.canUseMove(pokemon, a.id);
+  //   const bUsable = battle.canUseMove(pokemon, b.id);
+  //   if (aUsable !== bUsable) return aUsable ? -1 : 1;
 
-    if (veryClose) {
-      const aContact = a.flags.contact === 1;
-      const bContact = b.flags.contact === 1;
-      if (aContact !== bContact) return aContact ? -1 : 1;
-    }
+  //   if (veryClose) {
+  //     const aContact = a.flags.contact === 1;
+  //     const bContact = b.flags.contact === 1;
+  //     if (aContact !== bContact) return aContact ? -1 : 1;
+  //   }
+
+  //   const aPower = a.basePower || 0;
+  //   const bPower = b.basePower || 0;
+  //   if (aPower !== bPower) return bPower - aPower;
+
+  //   const aDefault = a._meta?.isDefault === true;
+  //   const bDefault = b._meta?.isDefault === true;
+  //   if (aDefault !== bDefault) return aDefault ? 1 : -1;
+
+  //   return 0;
+  // });
+
+  let moves = [...pokemon.state.moves].sort((a, b) => {
+    const aGroup = a._meta?.$isDefault ? 0 : 1;
+    const bGroup = b._meta?.$isDefault ? 0 : 1;
+
+    if (aGroup !== bGroup) return aGroup - bGroup;
 
     const aPower = a.basePower || 0;
     const bPower = b.basePower || 0;
-    if (aPower !== bPower) return bPower - aPower;
-
-    const aDefault = a._meta?.isDefault === true;
-    const bDefault = b._meta?.isDefault === true;
-    if (aDefault !== bDefault) return aDefault ? 1 : -1;
-
-    return 0;
+    return bPower - aPower;
   });
 
-  moves = pokemon.state.moves
+
   for (const move of moves) {
     const mod = pokemon.state.damage.powerModifier(move.id)
     const effectiveness = opponentPokemon.effectiveness(move.type)

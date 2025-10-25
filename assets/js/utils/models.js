@@ -374,6 +374,10 @@ export class Move {
     succeed = true
     effectType = "Move"
 
+    static exists(id) {
+      return id in moves
+    }
+
     constructor(id, meta = {}) {
         this.id = id;
         this._meta = meta

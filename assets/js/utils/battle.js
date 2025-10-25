@@ -917,6 +917,7 @@ class BattleState extends EventEmitter {
         "staythere",
         "dodge",
         "block",
+        (state => state.pokemon.level >= 38 ? "megaevolve": null)
     ]
     
     static DEFAULT_MOVES = [
@@ -1092,13 +1093,17 @@ class BattleState extends EventEmitter {
         if (this.moves) 
             this.moves.forEach(m => this.removeMove(m.id))
         this.moves = []
-        BattleState.SYS_MOVES.forEach(m => this.addMove(m))
+        BattleState.SYS_MOVES.forEach(m => {
+          const moveId = m instanceof Function 
+            ? m(this)
+            : m
+          this.addMove(moveId, { $isDefault: true })
+        })
         this.pokemon.isHuman && BattleState.DEFAULT_MOVES.forEach(m => this.addMove(m))
         "moves" in this.pokemon._pokemon && this.pokemon._pokemon.moves.forEach(m => this.addMove(m))
 
         moves.filter(moveMeta => !moveMeta.isUnselected)
           .forEach(moveMeta => {
-            moveMeta.isDefault = true
             this.addMove(moveMeta.id, moveMeta)
           })
     }
@@ -1107,7 +1112,9 @@ class BattleState extends EventEmitter {
       return !!this.moves.find(m => m.id === id)
     }
     
-    addMove(id, meta = {}) {
+    addMove(id, meta = {}) {      
+        if (!Move.exists(id)) return
+
         const move = new Move(id, meta)
         move._user = this.pokemon
         if(!this.hasMove(id)) {

@@ -16,3 +16,4 @@
 14. directDamage() ctx on move.onHit()
 15. curse + charge
 16. rage move
+17. moves : sort by power + default first
