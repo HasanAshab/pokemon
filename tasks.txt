@@ -11,6 +11,7 @@ effectiveness showing bug
 megaz armour
 
 * Bottle neck
+old enemy page performance
 bot 
 
 * Pending
