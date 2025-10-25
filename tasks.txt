@@ -4,10 +4,9 @@ move: trickroom
 * QnA
 
 * bug
-blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki? 
 mega in battle : health overflow hoia jai ( gen food low)
 rough skin: contact sara marleo recoil dai 
-effectiveness showing bug
+blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki? 
 
 megaz armour
 

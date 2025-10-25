@@ -1,10 +1,10 @@
 import { processor } from "./helpers.js"
 
-const IMPACTOR = 0.75
+const HALF = 0.75
 export const CHART_MAP = {
-    "double": IMPACTOR * 2,
-    "half": IMPACTOR,
-    "immune": IMPACTOR * 0.5
+    "double": 1 / HALF,
+    "half": HALF,
+    "immune": HALF * 0.5
 }
 
 
