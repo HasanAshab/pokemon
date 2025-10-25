@@ -266,8 +266,8 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-
-startBattle(null,[
+/*
+startBattle([
   {
     "id": "garchomp",
     "name": "dada",
@@ -314,7 +314,7 @@ startBattle(null,[
         "isSelected": true
       },
               {
-          "id": "earthquake",
+          "id": "dracometeor",
           "grade": "0",
           "isSelected": true
         }
@@ -329,6 +329,7 @@ startBattle(null,[
     "token_used": {}
   }
 ], [], "single")
+*/
 /*
 startBattle([
   {

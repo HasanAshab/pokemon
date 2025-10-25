@@ -79,7 +79,13 @@ export class Damage {
         
         //return stab * bp * attackStat * 0.416;
         // return stab * bp * attackStat * 0.55;
+       
+       //for 0 - 16 lvl
         return stab * bp * attackStat * 0.7;
+     
+        // for 50lvl
+        // return stab * bp * attackStat * 1.2;
+
     }
 
     _calculate() {

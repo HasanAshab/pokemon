@@ -4,9 +4,10 @@ move: trickroom
 * QnA
 
 * bug
+moves : sort by damage, mega evolve btn should be defaut if lvl > 38
+blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki? 
 mega in battle : health overflow hoia jai ( gen food low)
-rough skin: contact sara marleo recoil dai
-damage baraite hbe 50lvl vs 50lvl er jonno
+rough skin: contact sara marleo recoil dai 
 effectiveness showing bug
 megaz armour
 
