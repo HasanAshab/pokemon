@@ -267,10 +267,117 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
+startBattle(null,[
+  {
+    "id": "garchomp",
+    "name": "dada",
+    "xp": 4900,
+    "nature": "none",
+    "retreat": 10,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+      {
+        "id": "megaevolve",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "crunch",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "dualchop",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "mudbomb",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "dragonclaw",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "dig",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "thunderfang",
+        "grade": "0",
+        "isSelected": true
+      },
+              {
+          "id": "earthquake",
+          "grade": "0",
+          "isSelected": true
+        }
 
+    ],
+    "mega": {
+      "moves": [
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
+/*
+startBattle([
+  {
+    "id": "voltorb",
+    "name": "volt",
+    "xp": 1200,
+    "nature": "none",
+    "retreat": 3.5,
+    "types": [],
+    "abilities": [],
+    "items": [
+      "gen-food-low"
+    ],
+    "moves": [
+      {
+        "id": "charge",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "thundershock",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "electroweb",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "rollout",
+        "grade": "0",
+        "isSelected": true
+      },
+      {
+        "id": "protect",
+        "grade": "0",
+        "isSelected": true
+      }
+    ],
+    "mega": {
+      "moves": [],
+      "suffix": "none"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], ["Electric"], "single")
 
-
-
-
+*/
 
 

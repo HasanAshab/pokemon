@@ -1253,10 +1253,9 @@ katana: {
     dracometeor: {
       num: 434,
       accuracy: 50,
-      basePower: 30,
+      basePower: 100,
       category: "Special",
       name: "Draco Meteor",
-      multihit:[5,10],
       pp: 5,
       priority: 0,
       flags: { protect: 1, mirror: 1, metronome: 1 },
@@ -1266,7 +1265,7 @@ katana: {
         }
       },
       secondary: null,
-      target: "normal",
+      target: "foeSide",
       type: "Dragon",
       contestType: "Beautiful"
     },
@@ -1952,5 +1951,53 @@ katana: {
       zMove: { effect: "clearnegativeboost" },
       contestType: "Cute"
     },
+      fly: {
+      num: 19,
+      accuracy: 95,
+      basePower: 90,
+      category: "Physical",
+      name: "Fly",
+      pp: 15,
+      priority: 0,
+      flags: {
+        contact: 1,
+        protect: 1,
+        mirror: 1,
+        gravity: 1,
+        distance: 1,
+        metronome: 1,
+        nosleeptalk: 1,
+        noassist: 1,
+        failinstruct: 1
+      },
+      secondary: null,
+      target: "any",
+      type: "Flying",
+      contestType: "Clever"
+    },
+    dig: {
+      num: 91,
+      accuracy: 100,
+      basePower: 80,
+      category: "Physical",
+      name: "Dig",
+      pp: 10,
+      priority: 0,
+      flags: {
+        contact: 1,
+        protect: 1,
+        mirror: 1,
+        nonsky: 1,
+        metronome: 1,
+        nosleeptalk: 1,
+        noassist: 1,
+        failinstruct: 1
+      },
+      secondary: null,
+      target: "normal",
+      type: "Ground",
+      contestType: "Tough"
+    },
+
 }
 
