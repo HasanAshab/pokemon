@@ -937,7 +937,7 @@ class ItemManager {
           new Set([
               ...(this.pokemon._pokemon.items || []),
               ...(this.pokemon.meta.items || []),
-              "gen-food-low",
+              // "gen-food-low",
           ])
       )
       this._items = this._rawItems.filter(id => {

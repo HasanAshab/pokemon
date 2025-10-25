@@ -1147,6 +1147,8 @@ class BattleState extends EventEmitter {
     increaseHealth(amount) {
         const maxHealth = this.pokemon.maxhp; // Use calculated HP stat
         const newHp = Math.min(this.stats.get("hp") + amount, maxHealth);
+        console.log(maxHealth, this.stats.get("hp") + amount);
+        
         return this.stats.set("hp", newHp);
     }
 

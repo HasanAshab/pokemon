@@ -1420,9 +1420,7 @@ function loadMoves(playerTag) {
 
   for (const move of moves) {
     const mod = pokemon.state.damage.powerModifier(move.id)
-    const effectiveness = opponentPokemon.effectiveness(move.type)
-    console.log(move.id, effectiveness);
-    
+    const effectiveness = opponentPokemon.effectiveness(move.type)    
     const damage = new Damage(pokemon, move)
     let capacityColor = "black"
     let basePowerColor = "black"
