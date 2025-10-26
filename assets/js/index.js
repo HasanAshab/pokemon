@@ -237,7 +237,7 @@ pokemonList.innerHTML = "";
 }
 
 globalThis.openEnemyChooseInterface = function () {
-  window.location = `enemy.html?name=${name}`;
+  window.location = `char_enemy.html?name=${name}`;
 };
 globalThis.redirectToEnemyPage = function () {
   window.location = `m_enemy.html`;
@@ -268,68 +268,6 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-startBattle([
-  {
-    "id": "garchomp",
-    "name": "dada",
-    "xp": 4900,
-    "nature": "none",
-    "retreat": 10,
-    "types": [],
-    "abilities": [],
-    "items": [],
-    "moves": [
-    {
-           "id": "dragonrush",
-        "grade": "3",
-        "isSelected": true   
-    },
-      {
-        "id": "crunch",
-        "grade": "6",
-        "isSelected": true
-      },
-      {
-        "id": "dualchop",
-        "grade": "6",
-        "isSelected": true
-      },
-      {
-        "id": "mudbomb",
-        "grade": "6",
-        "isSelected": true
-      },
-      {
-        "id": "dragonclaw",
-        "grade": "6",
-        "isSelected": true
-      },
-      {
-        "id": "dig",
-        "grade": "6",
-        "isSelected": true
-      },
-      {
-        "id": "thunderfang",
-        "grade": "6",
-        "isSelected": true
-      },
-         {
-          "id": "rockblast",
-          "grade": "6",
-          "isSelected": true
-        }
-
-    ],
-    "mega": {
-      "moves": [
-      ],
-      "suffix": "mega"
-    },
-    "stats": {},
-    "token_used": {}
-  }
-], [], "single")
 
 /*
 startBattle([

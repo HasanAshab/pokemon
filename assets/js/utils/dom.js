@@ -207,7 +207,8 @@ export function startBattle(enemiesMeta, fields = [], system) {
 export async function startUserBattle(name,popList=[],fields =[], system) {
    try {
        const userPokemonsMeta = await getUserPokemonsMeta(name,2)
-       startBattle(userPokemonsMeta, fields, system)
+      const filteredPokemonsMeta =  Object.values(userPokemonsMeta).filter(meta => !popList.includes(meta.id))
+       startBattle(filteredPokemonsMeta, fields, system)
    }
    catch(e) {
        console.error(e)

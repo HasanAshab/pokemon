@@ -6,7 +6,6 @@ move: trickroom
 * bug
 
 megaz armour
-mega in battle : health overflow hoia jai ( gen food low )
 
 * Bottle neck
 old enemy page performance
