@@ -4726,12 +4726,12 @@ export default {
     onDamagingHitOrder: 1,
     onDamagingHit(damage, target, source, move) {
       if (this.checkMoveMakesContact(move, source, target, true)) {
-        this.damage(source.baseMaxhp / 8, source, target)
+        this.damage(source.baseMaxhp / 10, source, target)
       }
     },
     flags: {},
     name: "Rough Skin",
-    rating: 2.5,
+    rating: 2,
     num: 24
   },
   runaway: {
