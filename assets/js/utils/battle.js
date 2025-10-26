@@ -526,25 +526,25 @@ class BaseBattle extends EventEmitter {
         
         if (ajmode || move2.target !== "allySide") {          
             if (!attackSelf2 && canMove2 && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
-                this.pokemon1.state.emit("contacted", this.pokemon2, move2)
+                move2.flags.contact && this.pokemon1.state.emit("contacted", this.pokemon2, move2)
                 this.pokemon1.state.effects.apply(move2, { on: "target" })            
                 this.pokemon1.state.stats.apply("target", move2)
             }
         }
         if (ajmode || move1.target !== "allySide") {
-            if (!attackSelf1 && canMove1 && (d2 || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
-                this.pokemon2.state.emit("contacted", this.pokemon1, move1)
+            if (!attackSelf1 && canMove1 && (d2 || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {                
+                move1.flags.contact && this.pokemon2.state.emit("contacted", this.pokemon1, move1)
                 this.pokemon2.state.effects.apply(move1, { on: "target" })
                 this.pokemon2.state.stats.apply("target", move1)
             }
         }
         if (attackSelf1) {
-            this.pokemon1.state.emit("contacted", this.pokemon1, move1)
+            move1.flags.contact && this.pokemon1.state.emit("contacted", this.pokemon1, move1)
             this.pokemon1.state.effects.apply(move1, { on: "target" })
             this.pokemon1.state.stats.apply("target", move1)
         }
         if (attackSelf2) {
-            this.pokemon2.state.emit("contacted", this.pokemon2, move2)
+            move2.flags.contact && this.pokemon2.state.emit("contacted", this.pokemon2, move2)
             this.pokemon2.state.effects.apply(move2, { on: "target" })
             this.pokemon2.state.stats.apply("target", move2)
         }
@@ -553,9 +553,11 @@ class BaseBattle extends EventEmitter {
         this.pokemon2.state.decreaseHealth(instD2)
 
         // TEMP: block move support
-        if (move1.priority === move2.priority) {
+        if (move1.priority >= move2.priority) {
             d1 -= d1 * this.pokemon1.state.damage.blockModifier()
-            d2 -=  d2 * this.pokemon2.state.damage.blockModifier()            
+        }
+        if (move2.priority >= move1.priority) {
+            d2 -= d2 * this.pokemon2.state.damage.blockModifier()
         }
 
         if(move2.priority > move1.priority && (clonemode1 || pokeEffect2 > 1 || move2.hit.criticalCount())) {

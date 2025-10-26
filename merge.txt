@@ -17,4 +17,7 @@
 15. curse + charge
 16. rage move
 17. moves : sort by power + default first
-19. effectiveness showing bug
+19. effectiveness showing bug + IMPACTOR -> HALF
+20. dont emit "contacted" event for non contact moves
+21. block priority
+22. sort stats on battle settings
