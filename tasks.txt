@@ -7,7 +7,7 @@ move: trickroom
 blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki? 
 
 megaz armour
-mega in battle : health overflow hoia jai ( gen food low)
+mega in battle : health overflow hoia jai ( gen food low )
 
 * Bottle neck
 old enemy page performance

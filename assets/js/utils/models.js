@@ -179,10 +179,17 @@ export class Pokemon extends PSPokemon {
           : this.types
 
         effectableTypes.forEach(tType => {
-            if (typeChart[type] && typeChart[type][tType]) {
-                effectiveness *= typeChart[type][tType];
+            const eff = typeChart[type]?.[tType] ?? 1
+            
+            const opponent = this.state.battle.opponentOf(this)
+            const abilitiesMap = {
+              "Fire": "blueflame",
+              "Electric": "purplethunder"
             }
-        });        
+
+            effectiveness *= eff;
+            // console.log(type, eff);
+        });    
         
         return effectiveness;
     }
