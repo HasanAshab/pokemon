@@ -553,9 +553,11 @@ class BaseBattle extends EventEmitter {
         this.pokemon2.state.decreaseHealth(instD2)
 
         // TEMP: block move support
-        if (move1.priority === move2.priority) {
+        if (move1.priority >= move2.priority) {
             d1 -= d1 * this.pokemon1.state.damage.blockModifier()
-            d2 -=  d2 * this.pokemon2.state.damage.blockModifier()            
+        }
+        if (move2.priority >= move1.priority) {
+            d2 -= d2 * this.pokemon2.state.damage.blockModifier()
         }
 
         if(move2.priority > move1.priority && (clonemode1 || pokeEffect2 > 1 || move2.hit.criticalCount())) {

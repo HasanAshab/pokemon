@@ -231,7 +231,7 @@ export default {
       category: "Physical",
       name: "Block",
       pp: null,
-      priority: 0,
+      priority: 1,
       flags: { offensive: 0, noeffect: 1 },
       secondary: null,
       onBeforeMove(attacker, defender, move) {

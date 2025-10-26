@@ -1802,7 +1802,6 @@ function loadTokenStats(playerTag) {
   )
   let i = 1
   for (const key in sortedStats) {
-    console.log(key);
     tokenStats[`${i++}-${key}`] = `${sortedStats[key]} (${tokenStats[key] < 0 ? '' : '+'}${tokenStats[key]})`
   }
   delete tokenStats["hp"] 

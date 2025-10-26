@@ -4,8 +4,8 @@ move: trickroom
 * QnA
 
 * bug
-block priority
 blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki? 
+
 megaz armour
 mega in battle : health overflow hoia jai ( gen food low)
 
