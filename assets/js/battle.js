@@ -1802,16 +1802,9 @@ function loadTokenStats(playerTag) {
   )
   let i = 1
   for (const key in sortedStats) {
-    tokenStats[`${i++}-${key}`] = `${sortedStats[key]} (${tokenStats[key] < 0 ? '' : '+'}${tokenStats[key]})`
+    tokenStats[`${i++}. ${key}`] = `${sortedStats[key]} (${tokenStats[key] < 0 ? '' : '+'}${tokenStats[key]})`
+    delete tokenStats[key] 
   }
-  delete tokenStats["hp"] 
-  delete tokenStats["spe"]
-  delete tokenStats["atk"]
-  delete tokenStats["def"]
-  delete tokenStats["spa"]
-  delete tokenStats["spd"]
-
-  
   
   const playerSettingsForm = document.querySelector('.player-settings-form')
   const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats')
