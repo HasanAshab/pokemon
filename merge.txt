@@ -21,3 +21,5 @@
 20. dont emit "contacted" event for non contact moves
 21. block priority
 22. sort stats on battle settings
+23. blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki?
+24. abilities.isActive + has name -> id

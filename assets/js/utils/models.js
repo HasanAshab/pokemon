@@ -179,18 +179,21 @@ export class Pokemon extends PSPokemon {
           : this.types
 
         effectableTypes.forEach(tType => {
-            const eff = typeChart[type]?.[tType] ?? 1
-            
+            let eff = typeChart[type]?.[tType] ?? 1
+
             const opponent = this.state.battle.opponentOf(this)
             const abilitiesMap = {
               "Fire": "blueflame",
               "Electric": "purplethunder"
             }
+  
+            if (opponent.abilities.isActive(abilitiesMap[type]) && eff < 1) {
+              eff = 1
+            }
 
             effectiveness *= eff;
-            // console.log(type, eff);
-        });    
-        
+          });    
+
         return effectiveness;
     }
     
@@ -809,8 +812,8 @@ class AbilityManager {
       return this._abilities.filter(ab => ab.active)
     }
     
-    has(name) {
-        return this._abilities.some(ab => ab.name === name)
+    has(id) {
+        return this._abilities.some(ab => ab.id === id)
     }
 
     activate(name) {
@@ -830,8 +833,8 @@ class AbilityManager {
         return this.pokemon.level >= 36
     }
 
-    isActive(nameOrRegex) {        
-        return this.actives().some(ab => ab.name === nameOrRegex || ab.name.match(nameOrRegex))
+    isActive(idOrRegex) {        
+        return this.actives().some(ab => ab.name === idOrRegex || ab.id.match(idOrRegex))
     }
 
     retreatCost() {
