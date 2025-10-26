@@ -266,7 +266,8 @@ function loadAll() {
 document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
-/*
+
+
 startBattle([
   {
     "id": "garchomp",
@@ -278,44 +279,44 @@ startBattle([
     "abilities": [],
     "items": [],
     "moves": [
-      {
-        "id": "megaevolve",
-        "grade": "0",
-        "isSelected": true
-      },
+    {
+           "id": "dragonrush",
+        "grade": "3",
+        "isSelected": true   
+    },
       {
         "id": "crunch",
-        "grade": "0",
+        "grade": "6",
         "isSelected": true
       },
       {
         "id": "dualchop",
-        "grade": "0",
+        "grade": "6",
         "isSelected": true
       },
       {
         "id": "mudbomb",
-        "grade": "0",
+        "grade": "6",
         "isSelected": true
       },
       {
         "id": "dragonclaw",
-        "grade": "0",
+        "grade": "6",
         "isSelected": true
       },
       {
         "id": "dig",
-        "grade": "0",
+        "grade": "6",
         "isSelected": true
       },
       {
         "id": "thunderfang",
-        "grade": "0",
+        "grade": "6",
         "isSelected": true
       },
-              {
-          "id": "dracometeor",
-          "grade": "0",
+         {
+          "id": "rockblast",
+          "grade": "6",
           "isSelected": true
         }
 
@@ -329,7 +330,7 @@ startBattle([
     "token_used": {}
   }
 ], [], "single")
-*/
+
 /*
 startBattle([
   {
