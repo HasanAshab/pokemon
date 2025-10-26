@@ -20,3 +20,4 @@
 19. effectiveness showing bug + IMPACTOR -> HALF
 20. dont emit "contacted" event for status moves
 21. block priority
+22. sort stats on battle settings
