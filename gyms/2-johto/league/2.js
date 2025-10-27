@@ -1,1 +1,1 @@
-startUserBattle("maria",[],[],"multiple")
+startUserBattle("sinthia",[],[],"multiple")

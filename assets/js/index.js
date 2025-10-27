@@ -317,7 +317,6 @@ startBattle([
     "token_used": {}
   }
 ], ["Electric"], "single")
-
 */
 
 

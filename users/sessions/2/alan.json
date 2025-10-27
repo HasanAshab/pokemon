@@ -1,0 +1,72 @@
+[{
+  "nature": "none",
+  "id": "charizard",
+  "xp": 4900,
+  "retreat": 8,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "megax",
+    "moves": [
+      {
+        "id": "thunderpunch",
+        "grade": 6
+      },
+      {
+        "id": "dragondance"
+      },
+      {
+        "id": "dragonbreath",
+        "grade": 6
+      }
+    ]
+  },
+  "wins-count": 0,
+  "loses-count": 0,
+  "moves": [
+    {
+      "id": "flamethrower",
+      "isDefault": true,
+      "grade": 6
+    },
+    {
+      "id": "steelwing",
+      "isDefault": true,
+      "grade": 6
+    },
+    {
+      "id": "blastburn",
+      "isDefault": true,
+      "grade": 3
+    },
+    {
+      "id": "dragonclaw",
+      "grade": 10,
+      "isDefault": true
+    },
+    {
+      "id": "slash",
+      "grade": 6,
+      "isDefault": true
+    },
+    {
+      "id": "firepunch",
+      "grade": 6
+    },
+    {
+      "id": "airslash",
+      "grade": 6
+    }
+  ],
+  "types": [],
+  "items": [],
+  "abilities": [],
+  "name": "lizardon"
+}]
