@@ -5,6 +5,8 @@ combo move refactor
 * QnA
 
 * bug
+
+ upgraded all adjusten move  bug ( disarming voice)
 megaz armour
 
 * Bottle neck
