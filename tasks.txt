@@ -1,10 +1,11 @@
 * Tasks
-combo move refactor
 move: trickroom
+combo move refactor
+
 * QnA
 
 * bug
-
+steal beem
 megaz armour
 
 * Bottle neck
