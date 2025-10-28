@@ -268,122 +268,73 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-// startBattle([
-//   {
-//     "id": "garchomp",
-//     "name": "dada",
-//     "xp": 4900,
-//     "nature": "none",
-//     "retreat": 10,
-//     "types": [],
-//     "abilities": [],
-//     "items": [],
-//     "moves": [
-//     {
-//            "id": "dragonrush",
-//         "grade": "3",
-//         "isSelected": true   
-//     },
-//       {
-//         "id": "crunch",
-//         "grade": "6",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "dualchop",
-//         "grade": "6",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "mudbomb",
-//         "grade": "6",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "dragonclaw",
-//         "grade": "6",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "dig",
-//         "grade": "6",
-//         "isSelected": true
-//       },
-//       {
-//         "id": "thunderfang",
-//         "grade": "6",
-//         "isSelected": true
-//       },
-//          {
-//           "id": "rockblast",
-//           "grade": "6",
-//           "isSelected": true
-//         }
+startBattle([
+  {
+    "id": "garchomp",
+    "name": "dada",
+    "xp": 4900,
+    "nature": "none",
+    "retreat": 10,
+    "types": [],
+    "abilities": [],
+    "items": [],
+    "moves": [
+    {
+           "id": "dragonrush",
+        "grade": "3",
+        "isSelected": true   
+    },
+      {
+        "id": "crunch",
+        "grade": "6",
+        "isSelected": true
+      },
+      {
+        "id": "dualchop",
+        "grade": "6",
+        "isSelected": true
+      },
+      {
+        "id": "mudbomb",
+        "grade": "6",
+        "isSelected": true
+      },
+      {
+        "id": "dragonclaw",
+        "grade": "6",
+        "isSelected": true
+      },
+      {
+        "id": "dig",
+        "grade": "6",
+        "isSelected": true
+      },
+      {
+        "id": "thunderfang",
+        "grade": "6",
+        "isSelected": true
+      },
+      {
+       "id":"earthquake",
+       "grade": "0"
+      },
+         {
+          "id": "rockblast",
+          "grade": "6",
+          "isSelected": true
+        }
+// 
+    ],
+    "mega": {
+      "moves": [
+      ],
+      "suffix": "mega"
+    },
+    "stats": {},
+    "token_used": {}
+  }
+], [], "single")
+// 
 
-//     ],
-//     "mega": {
-//       "moves": [
-//       ],
-//       "suffix": "mega"
-//     },
-//     "stats": {},
-//     "token_used": {}
-//   }
-// ], [], "single")
 
 
-
-
-/*{
-  "nature": "calm",
-  "id": "gardevoir",
-  "xp": 4900,
-  "retreat": 8,
-  "stats": {},
-  "token_used": {
-    "hp": 0,
-    "spe": 0,
-    "atk": 0,
-    "def": 0,
-    "spa": 0,
-    "spd": 0
-  },
-  "mega": {
-    "suffix": "mega",
-    "moves": []
-  },
-  "wins-count": 0,
-  "loses-count": 0,
-  "moves": [
-    {
-      "id": "shadowball",
-      "grade": 4
-    },
-    {
-      "id": "moonblast",
-      "grade": 4
-    },
-    {
-      "id": "attract",
-      "grade": 4
-    },
-    {
-      "id": "psychic",
-      "grade": 4
-    },
-    {
-      "id": "doubleteam"
-    },
-    {
-      "id": "aquaring",
-      "grade": 2
-    },
-    {
-      "id": "agility"
-    }
-  ],
-  "types": [],
-  "items": [],
-  "abilities": [],
-  "name": "dyantha"
-}*/

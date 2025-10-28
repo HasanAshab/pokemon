@@ -1,0 +1,53 @@
+[{
+  "nature": "calm",
+  "id": "gardevoir",
+  "xp": 4900,
+  "retreat": 8,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 0,
+  "loses-count": 0,
+  "moves": [
+    {
+      "id": "shadowball",
+      "grade": 4
+    },
+    {
+      "id": "moonblast",
+      "grade": 4
+    },
+    {
+      "id": "attract",
+      "grade": 4
+    },
+    {
+      "id": "psychic",
+      "grade": 4
+    },
+    {
+      "id": "doubleteam"
+    },
+    {
+      "id": "aquaring",
+      "grade": 2
+    },
+    {
+      "id": "agility"
+    }
+  ],
+  "types": [],
+  "items": [],
+  "abilities": [],
+  "name": "dyantha"
+}]

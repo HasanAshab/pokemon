@@ -1,0 +1,60 @@
+[{
+  "nature": "none",
+  "id": "metagross",
+  "xp": 4900,
+  "retreat": 9,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 0,
+  "loses-count": 0,
+  "moves": [
+    {
+      "id": "flashcannon",
+      "grade": 6
+    },
+    {
+      "id": "meteormash",
+      "grade": 6
+    },
+    {
+      "id": "psychic",
+      "grade": 6
+    },
+    {
+      "id": "metalclaw",
+      "grade": 6
+    },
+    {
+      "id": "zenheadbutt",
+      "grade": 6
+    },
+    {
+      "id": "heavyslam",
+      "grade": 6
+    },
+    {
+      "id": "psychocut",
+      "grade": 6
+    },
+    {
+      "id": "steelbeam",
+      "grade": 6
+    }
+  ],
+  "types": [],
+  "items": [],
+  "abilities": [],
+  "name": "Steven",
+  "isSelectedForMultiBattle": false
+}]
