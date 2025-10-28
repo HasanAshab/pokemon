@@ -20164,7 +20164,7 @@ export default {
       flags: { protect: 1, mirror: 1 },
       mindBlownRecoil: true,
       onAfterMove(pokemon, target, move) {
-        if (move.mindBlownRecoil && !move.multihit) {
+        if (move.mindBlownRecoil) {
           const hpBeforeRecoil = pokemon.hp
           this.damage(
             Math.round(pokemon.maxhp / 2),
