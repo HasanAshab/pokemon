@@ -1783,8 +1783,8 @@ katana: {
       statChanges: {
         chance: 100,
         self: {
-          def: -0.5,
-          spd: -0.5
+          def: -0.17,
+          spd: -0.17
         },
         target: { accuracy: -0.5 }
       },
@@ -1804,8 +1804,8 @@ katana: {
       statChanges: {
         chance: 100,
         self: {
-          def: -0.25,
-          spd: -0.25
+          def: -0.9,
+          spd: -0.9
         },
         target: { accuracy: -0.5 }
       },

@@ -5,6 +5,7 @@ import { BATTLE_SYSTEMS } from "./utils/battle.js"
 
 
 window.onload = () => {
+  console.log("lol")
     loadCharectersList()
     // loadPokemonsDatalist("enemy-data-list")
     // loadNaturesDataList("natures-data-list")
@@ -29,7 +30,7 @@ function loadBattleSystems() {
 async function loadCharectersList(){
    const res = await fetch("../../users/sessions/2/_names.json") 
    const data = await res.json()
-   
+   console.log("data")
    const charectersList = document.querySelector(".charecters-list")
    charectersList.innerHTML = ""
    for (const charecter of data){

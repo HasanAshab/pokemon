@@ -268,55 +268,69 @@ document.body.onload = loadAll;
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
 
-
-/*
 startBattle([
   {
-    "id": "voltorb",
-    "name": "volt",
-    "xp": 1200,
+    "id": "garchomp",
+    "name": "dada",
+    "xp": 4900,
     "nature": "none",
-    "retreat": 3.5,
+    "retreat": 10,
     "types": [],
     "abilities": [],
-    "items": [
-      "gen-food-low"
-    ],
+    "items": [],
     "moves": [
+    {
+           "id": "dragonrush",
+        "grade": "3",
+        "isSelected": true   
+    },
       {
-        "id": "charge",
-        "grade": "0",
+        "id": "crunch",
+        "grade": "6",
         "isSelected": true
       },
       {
-        "id": "thundershock",
-        "grade": "0",
+        "id": "dualchop",
+        "grade": "6",
         "isSelected": true
       },
       {
-        "id": "electroweb",
-        "grade": "0",
+        "id": "mudbomb",
+        "grade": "6",
         "isSelected": true
       },
       {
-        "id": "rollout",
-        "grade": "0",
+        "id": "dragonclaw",
+        "grade": "6",
         "isSelected": true
       },
       {
-        "id": "protect",
-        "grade": "0",
+        "id": "dig",
+        "grade": "6",
         "isSelected": true
-      }
+      },
+      {
+        "id": "thunderfang",
+        "grade": "6",
+        "isSelected": true
+      },
+         {
+          "id": "rockblast",
+          "grade": "6",
+          "isSelected": true
+        }
+
     ],
     "mega": {
-      "moves": [],
-      "suffix": "none"
+      "moves": [
+      ],
+      "suffix": "mega"
     },
     "stats": {},
     "token_used": {}
   }
-], ["Electric"], "single")
-*/
+], [], "single")
+
+
 
 
