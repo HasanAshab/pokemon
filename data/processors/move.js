@@ -144,7 +144,7 @@ function addFlags(move) {
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
-      move.pp = move.flags.combo ? 5 : Math.round(move.pp / 4) || 1;
+      move.pp = move.flags.combo ? 5 : Math.round(move.pp / 6) || 1;
     }
 }
 

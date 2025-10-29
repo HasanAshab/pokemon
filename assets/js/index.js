@@ -267,74 +267,52 @@ document.body.onload = loadAll;
 
 import { startBattle, startUserBattle } from "./utils/dom.js";
 
-
+/*
 startBattle([
   {
-    "id": "garchomp",
-    "name": "dada",
-    "xp": 4900,
+    "id": "oddish",
+    "name": "E1",
+    "xp": 1300,
     "nature": "none",
-    "retreat": 10,
+    "retreat": 3.5,
     "types": [],
     "abilities": [],
     "items": [],
     "moves": [
-    {
-           "id": "dragonrush",
-        "grade": "3",
-        "isSelected": true   
-    },
       {
-        "id": "crunch",
-        "grade": "6",
+        "id": "absorb",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "dualchop",
-        "grade": "6",
+        "id": "growth",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "mudbomb",
-        "grade": "6",
+        "id": "sleeppowder",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "dragonclaw",
-        "grade": "6",
+        "id": "vinewhip",
+        "grade": "0",
         "isSelected": true
       },
       {
-        "id": "dig",
-        "grade": "6",
+        "id": "sunnyday",
+        "grade": "0",
         "isSelected": true
-      },
-      {
-        "id": "thunderfang",
-        "grade": "6",
-        "isSelected": true
-      },
-      {
-       "id":"earthquake",
-       "grade": "0"
-      },
-         {
-          "id": "rockblast",
-          "grade": "6",
-          "isSelected": true
-        }
-// 
+      }
     ],
     "mega": {
-      "moves": [
-      ],
-      "suffix": "mega"
+      "moves": [],
+      "suffix": "none"
     },
     "stats": {},
     "token_used": {}
   }
-], [], "single")
-// 
-
+], ["Grass"], "single")
+*/
 
 
