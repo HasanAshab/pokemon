@@ -1,17 +1,15 @@
 * Tasks
-mega: heal 15% 
 move: trickroom
 combo move refactor
 
 * QnA
 
 * bug
- upgraded all adjusten move  bug ( disarming voice)
  shadow clone : 
    1. vs alladjasten
- 
+areasplash effect is outdated (capacity)
 megaz armour
-mega korle hp ba onno stat ektu hoileo bare jediga barar kotha na
+
 * Bottle neck
 old enemy page performance
 bot 

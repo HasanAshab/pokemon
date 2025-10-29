@@ -23,3 +23,4 @@
 22. sort stats on battle settings
 23. blue flame : fire move not very effective target ke hit korle damage ki normal effect hoi naki?
 24. abilities.isActive + has name -> id
+25. dont copy the capacity from ref to current move directly

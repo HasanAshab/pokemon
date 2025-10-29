@@ -266,6 +266,7 @@ export class Pokemon extends PSPokemon {
 
         if ("state" in this) {
           this.meta.mega.moves.forEach(m => this.state.addMove(m.id))
+          this.state.increaseHealth(this.maxhp * 0.15)
         }
         return true
     }
@@ -403,11 +404,11 @@ export class Move {
 
     get capacity() {
         if (this._move.capacity === Infinity || this._move.capacity === 1)
-            return this._move.capacity
+            return this._move.capacity        
         return Math.round(this._move.capacity * Math.pow(1.5, this._meta.grade || 0)) - this._reducedCapacity
     }
 
-    set capacity(value) {
+    set capacity(value) {        
         this._move.capacity = value
     }
 
