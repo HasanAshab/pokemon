@@ -93,7 +93,11 @@ export class Pokemon extends PSPokemon {
         this.id = id;
         this.meta = Object.assign({
           nature: 'none',
-        }, meta);   
+        }, meta);
+
+        if (typeof this.meta.abilities === 'object') {
+          this.meta.abilities = Object.values(this.meta.abilities)
+        }
      
         // Warning: Token_Used Feature is now Deprecated and removed
         // this.meta.token_used = Object.assign({
@@ -752,6 +756,7 @@ class AbilityManager {
     reset() {
         if (this._abilities)
             this._abilities.forEach(ab => ab.deactivate())
+        
         this._rawAbilitiesSet = new Set([
           ...Object.values(this.pokemon._pokemon.abilities),
           ...(this.pokemon.meta.abilities || [])
