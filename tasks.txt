@@ -5,6 +5,7 @@ combo move refactor
 * QnA
 
 * bug
+ effectiveness : garchomp er upor water type normal hower kotha.
  shadow clone : 
    1. vs alladjasten
 areasplash effect is outdated (capacity)
@@ -17,7 +18,7 @@ bot
 * Pending
 
 *ovi
-
+poke_details: learnset
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

@@ -44,12 +44,16 @@ startBattle([
         "grade": "6",
         "isSelected": true
       },
+      {
+       "id":"earthquake",
+       "grade": "0"
+      },
          {
           "id": "rockblast",
           "grade": "6",
           "isSelected": true
         }
-
+// 
     ],
     "mega": {
       "moves": [
