@@ -1,4 +1,4 @@
-import { sumObj, calcNetProd, getStorage, getPopulation, getPopulationGrowth } from '../../utils.js';
+import { sumObj, calcNetProd, getStorage, getPopulation, getPopulationGrowth, getMaintainedStorage } from '../../utils.js';
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -13,6 +13,10 @@ if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].storage) kingdoms[name].storage = {};
 
 function saveAndRefresh(storage) {
+  Object.keys(getMaintainedStorage(kingdoms[name])).forEach(item => {
+    storage[item] = 0;
+  })
+
   kingdoms[name].storage = storage;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   renderItems();
@@ -67,6 +71,7 @@ function renderItems() {
         delete storage[itemName];
       }
       storage[newName] = quantity;
+
       saveAndRefresh(storage);
     };
 

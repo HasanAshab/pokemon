@@ -331,13 +331,17 @@ export function calcBuildNetProd(kingdom) {
   return sumObj(prod, cons);
 }
 
-export function getStorage(kingdom) {
-  const buildMaintains = kingdom.buildings.reduce((acc, build) => {
+export function getMaintainedStorage(kingdom) {
+  return kingdom.buildings.reduce((acc, build) => {
     const maintains = build.baseMaintains
       ? calculateMaintains(build.baseMaintains, build.currentLevel)
       : {};
     return sumObj(acc, modObj(maintains, build.quantity));
   }, {});  
+}
+
+export function getStorage(kingdom) {
+  const buildMaintains = getMaintainedStorage(kingdom);
   return sumObj(buildMaintains, kingdom.storage);
 }
 
