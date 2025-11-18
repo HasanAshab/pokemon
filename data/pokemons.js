@@ -6,7 +6,7 @@ import beasts from "./beasts.js";
 
 function processEntity(entity) {
   entity.type = "entity"
-  // entity.abilities = {}
+  entity.abilities = {}
   for (const stat in entity.baseStats) {
     entity.baseStats[stat] = Math.floor(entity.baseStats[stat] * 0.5)
   }

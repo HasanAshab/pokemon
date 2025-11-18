@@ -210,8 +210,7 @@ class BaseBattle extends EventEmitter {
         }
     }
 
-    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
-      
+    async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {        
         const oldVeryClose = this.ctx.veryClose
         if (clonemode1 || clonemode2) {
             this.ctx.waveLocked = true          
@@ -1157,7 +1156,9 @@ class BattleState extends EventEmitter {
         if (!sourceMove)
           throw new Error(`${this.pokemon.name} cannot summon ${id}.`);
 
-        const level = ((sourceMove._meta.grade || 0) * 3) || 1         
+        const level = ((sourceMove._meta.grade || 0) * 3) || 1    
+        console.log(level, Math.max(3, level));
+
         const summon = new Pokemon(id, {
           xp: (level - 1) * 100,
           retreat: Math.max(3, level),
