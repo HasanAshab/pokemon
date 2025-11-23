@@ -317,7 +317,7 @@ export function calcBuildProduction(kingdom) {
   return kingdom.buildings.reduce((prod, build) => {
     return sumObj(prod, modObj(build.produces, build.quantity));
   }, {});
-}// {lol:100,lol:{value}}
+}
 
 export function calcBuildConsumtion(kingdom) {
   return kingdom.buildings.reduce((cons, build) => {   
@@ -343,6 +343,33 @@ export function getMaintainedStorage(kingdom) {
 export function getStorage(kingdom) {
   const buildMaintains = getMaintainedStorage(kingdom);
   return sumObj(buildMaintains, kingdom.storage);
+}
+
+
+export function getTransLogs(kingdom, itemName) {
+  const logs = [];
+
+  if (itemName === "coins") {
+    logs.push(`TAX &#x2192; <span style="color: green; font-weight: bold">${calculateTax(kingdom).toLocaleString()}</span>`);
+    logs.push(`Land Tax &#x2192; <span style="color: green; font-weight: bold">${calcLandTax(kingdom).toLocaleString()}</span>`);
+    logs.push(`Rented Land &#x2190; <span style="color: red; font-weight: bold">${calcLandRent(kingdom).toLocaleString()}</span>`);
+    logs.push(`Military Maintainance &#x2190; <span style="color: red; font-weight: bold">${calcAcademyCost(kingdom).toLocaleString()}</span>`);
+    logs.push(`Commanders Salary &#x2190; <span style="color: red; font-weight: bold">${calcCommandersSalary(kingdom).toLocaleString()}</span>`);
+    logs.push(`Soldiers Salary &#x2190; <span style="color: red; font-weight: bold">${calcSoldiersSalary(kingdom).toLocaleString()}</span>`);
+    logs.push(`Police Salary &#x2190; <span style="color: red; font-weight: bold">${calcPoliceSalary(kingdom).toLocaleString()}</span>`);
+  }
+
+  kingdom.buildings.forEach(build => {
+    if (build.produces[itemName]) {
+      const q = build.produces[itemName] * build.quantity
+      logs.push(`${build.name} &#x2192; <span style="color: green; font-weight: bold">+${q.toLocaleString()}</span>`);
+    }
+    if (build.consumes[itemName]) {
+      const q = build.consumes[itemName] * build.quantity
+      logs.push(`${build.name} &#x2190; <span style="color: red; font-weight: bold">-${q.toLocaleString()}</span>`);
+    }
+  });
+  return logs;
 }
 
 export function calcLandTax(kingdom) {

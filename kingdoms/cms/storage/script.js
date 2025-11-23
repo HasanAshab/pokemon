@@ -1,4 +1,4 @@
-import { sumObj, calcNetProd, getStorage, getPopulation, getPopulationGrowth, getMaintainedStorage } from '../../utils.js';
+import { sumObj, calcNetProd, getStorage, getTransLogs, getPopulation, getPopulationGrowth, getMaintainedStorage } from '../../utils.js';
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -86,11 +86,25 @@ function renderItems() {
     itemActions.appendChild(saveBtn);
     itemActions.appendChild(delBtn);
 
+    const logs = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = "Logs";
+    const logsList = document.createElement("ul");
+    const logItems = getTransLogs(kingdoms[name], itemName);
+    logItems.forEach(item => {
+      const logItem = document.createElement("li");
+      logItem.innerHTML = item;
+      logsList.appendChild(logItem);
+    });
+    logs.appendChild(summary);
+    logs.appendChild(logsList);
+
     div.appendChild(nameLabel);
     div.appendChild(nameInput);
     div.appendChild(qtyLabel);
     div.appendChild(qtyInput);
     div.appendChild(prodSpan);
+    div.appendChild(logs);
     div.appendChild(itemActions);
 
     itemsContainer.appendChild(div);
