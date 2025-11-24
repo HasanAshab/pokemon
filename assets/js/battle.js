@@ -407,7 +407,8 @@ function chooseBotMove(playerTag) {
         ? lastMoveName
         : "staythere";
   }
-  
+
+  const scores = {}
 
   const sortedMoves = pokemon.state.usableOffensiveMoves()
     .filter(m => m.flags.offensive)
@@ -423,10 +424,10 @@ function chooseBotMove(playerTag) {
       const predictPower = move => {
         const avgHits = Array.isArray(move.multihit)
           ? (move.multihit[0] + move.multihit[1]) / 2
-          : move.multihit        
+          : move.multihit
         return move.basePower * move.capacity * avgHits
       }
-      
+
       const getEffectBonus = move => {
         const calcBonus = effects => {
           return effects.reduce((total, e) => total + (e.chance / 19), 0)
@@ -463,7 +464,7 @@ function chooseBotMove(playerTag) {
         }
 
         const mod = pokemon.state.stats.get(map[move.category]) / pokemon.state.stats.get(map[revMap[move.category]])
-        
+
         let bonus;
         if (mod < 1) {
           // Amplifies the negative impact by a factor of 4 (e.g., 0.95 -> 1 + (-0.05 * 4) = 0.8)
@@ -480,17 +481,26 @@ function chooseBotMove(playerTag) {
           * getStatChangesBonus(move)
           * getEffectBonus(move)
           * getCategoryBonus(move)
-          * opponent.effectiveness(move) 
+          * opponent.effectiveness(move)
           * (pokemon.isTypeOf(move.type) ? 1.5 : 1)
       }
 
       const score1 = getScore(m1)
-      const score2 = getScore(m2)      
+      const score2 = getScore(m2)
+
+      scores[m1.id] = score1
+      scores[m2.id] = score2
 
       return score2 - score1;
     });
 
-  const choosedMoves = sortedMoves.slice(0, 4);
+    if (Object.keys(scores).length === 1)
+      scores[0] = 1
+
+    
+  const choosedMoves = sortedMoves.slice(0, 6);
+  const weights = choosedMoves.map(m => scores[m.id])
+
   const choosedStatusMove = shuffle(
     pokemon.state.usableOffensiveMoves()
       .filter(m => m.category === "Status")
@@ -503,12 +513,41 @@ function chooseBotMove(playerTag) {
   )[0]
 
 
-  if (choosedStatusMove)
+  if (choosedStatusMove) {
+    const avgWeight = weights.reduce((total, w) => total + w, 0) / weights.length
     choosedMoves.push(choosedStatusMove)
-  if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove)
-    choosedMoves.push(choosedStallingMove)
+    weights.push(avgWeight)
+  }
 
-  const moveId = shuffle(choosedMoves)[0]?.id || "staythere";
+  if ((allAdjacentModeBy || shadowCloneBy) && choosedStallingMove) {
+    choosedMoves.push(choosedStallingMove)
+    weights.push(Math.max(weights) - 1)
+  }
+
+  const moveId = choosedMoves.length === 0 
+    ? "staythere"
+    : weightedRandomV2(choosedMoves, weights).id
+
+  // console.log(choosedMoves.map((m, i) => `${m.id} -> ${weights[i]}`));
+
+  battle.fields.forEach(f => {
+    const modMap = {
+     "good": 1.3,
+     "bad": 0.7 
+    }
+    f.impacts()
+      .filter(im => im.targetObj === "move")
+      .forEach(im => {
+        choosedMoves.forEach((m, i) => {
+          if (im.targets.includes(m.type)) {
+            weights[i] *= modMap[im.type]
+          }
+        })
+    })
+  })
+  
+  // console.log(choosedMoves.map((m, i) => `${m.id} -> ${weights[i]}`));
+  
   return moveId
 }
 
