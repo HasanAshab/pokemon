@@ -3,12 +3,14 @@
 1. Bot shinobi (field aware + weighted decition):
 2. weather
 3. abilities.onBasePower support (e.g. Mega Launcher)
+6. flameburst
 
 Pending:
 
 4. blaze like abilities NEW
 5. fairywing + seapearls
-6. flameburst
+
+
 7. user accuracy on status move
 8. bulletproof
 9. total basestat datalist
