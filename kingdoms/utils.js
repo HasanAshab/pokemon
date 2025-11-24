@@ -308,19 +308,23 @@ export function calcAcademyCost(kingdom) {
   return soldiersAcademy.getAcademyCost(kingdom)
 }
 
+export function getEnabledBuildings(kingdom) {
+  return kingdom.buildings.filter((build) => build.state === "enabled");
+}
+
 export function getHospitalCapacity(kingdom) {
   const reviveCapacity = getStorage(kingdom).revive || 0;
   return Math.floor(reviveCapacity);
 }
 
 export function calcBuildProduction(kingdom) {
-  return kingdom.buildings.reduce((prod, build) => {
+  return getEnabledBuildings(kingdom).reduce((prod, build) => {
     return sumObj(prod, modObj(build.produces, build.quantity));
   }, {});
 }
 
 export function calcBuildConsumtion(kingdom) {
-  return kingdom.buildings.reduce((cons, build) => {   
+  return getEnabledBuildings(kingdom).reduce((cons, build) => {   
     return sumObj(cons, modObj(build.consumes, build.quantity));
   }, {});
 }
@@ -332,7 +336,7 @@ export function calcBuildNetProd(kingdom) {
 }
 
 export function getMaintainedStorage(kingdom) {
-  return kingdom.buildings.reduce((acc, build) => {
+  return getEnabledBuildings(kingdom).reduce((acc, build) => {
     const maintains = build.baseMaintains
       ? calculateMaintains(build.baseMaintains, build.currentLevel)
       : {};
@@ -359,7 +363,7 @@ export function getTransLogs(kingdom, itemName) {
     logs.push(`Police Salary &#x2190; <span style="color: red; font-weight: bold">${calcPoliceSalary(kingdom).toLocaleString()}</span>`);
   }
 
-  kingdom.buildings.forEach(build => {
+  getEnabledBuildings(kingdom).forEach(build => {
     if (build.produces[itemName]) {
       const q = build.produces[itemName] * build.quantity
       logs.push(`${build.name} &#x2192; <span style="color: green; font-weight: bold">+${q.toLocaleString()}</span>`);
@@ -389,13 +393,13 @@ export function calcLandRent(kingdom) {
     .filter(k => k.id !== kingdom.id)
     .reduce((cost, k) => {
       return cost + k.buildings
-      .filter(build => build.ownedBy === kingdom.id)
-      .filter(build => build.property === "rent")
-      .reduce((total, build) => {
-        const size = calculateSize(build.baseSize, build.currentLevel) * build.quantity
-        const rent = calculateLandPrice(size, k, "rent");
-        return total + rent;
-      }, 0)
+        .filter(build => build.ownedBy === kingdom.id)
+        .filter(build => build.property === "rent")
+        .reduce((total, build) => {
+          const size = calculateSize(build.baseSize, build.currentLevel) * build.quantity
+          const rent = calculateLandPrice(size, k, "rent");
+          return total + rent;
+        }, 0)
   }, 0)
 }
 

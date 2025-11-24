@@ -1,13 +1,12 @@
 import { flagsToObj, objToFlags } from '../../../assets/js/utils/helpers.js';
 import { calculateMaintains, calculateSize, upgradePrice } from '../../utils.js'
 
-
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const kingdomNameEl = document.getElementById("kingdomName");
 const buildingsContainer = document.getElementById("buildingsContainer");
 const addBuildingBtn = document.getElementById("addBuildingBtn");
-  const companies = JSON.parse( localStorage.getItem("companies"))
+const companies = JSON.parse(localStorage.getItem("companies"))
 
 kingdomNameEl.textContent = name ? `${name}'s Buildings` : "Unknown Kingdom";
 
@@ -20,14 +19,20 @@ function saveAndRefresh() {
   renderBuildings();
 }
 
-
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
     
     const div = document.createElement("div");
     div.className = "building";
-    div.id = building.name
+    div.id = building.name;
+    
+    // Add enabled/disabled state visual indicator
+    if (building.state === "disabled") {
+      div.style.opacity = "0.6";
+      div.style.backgroundColor = "#f8f8f8";
+    }
+
     const nameLabel = document.createElement("label");
     nameLabel.textContent = "Building Name";
 
@@ -35,22 +40,18 @@ function renderBuildings() {
     nameInput.value = building.name;
     nameInput.disabled = true;
 
-
     const ownedByLabel = document.createElement("label");
     ownedByLabel.textContent = "Owned By";
 
     const ownedBySelect = document.createElement("select");
     const ownedBy = building.ownedBy || name;
-       if (!building.ownedBy){
-      building.ownedBy = ownedBy
+    if (!building.ownedBy){
+      building.ownedBy = ownedBy;
     }
     ownedBySelect.style.width = "100%";
     ownedBySelect.style.padding = "5px";
     ownedBySelect.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((owner) =>  `<option ${ownedBy === owner ? "selected" : ""} value="${owner}">${owner}</option>`).join("");
-
-
     ownedBySelect.disabled = true;
-
 
     const propertyLabel = document.createElement("label");
     propertyLabel.textContent = "Property";
@@ -58,14 +59,14 @@ function renderBuildings() {
     const propertySelect = document.createElement("select");
     const property = building.property || "govt";
     if (!building.property){
-      building.property = property
+      building.property = property;
     }
     propertySelect.style.width = "100%";
     propertySelect.style.padding = "5px";
-        ownedBySelect.onchange = () => {
+    ownedBySelect.onchange = () => {
       if (ownedBySelect.value === name) {
         propertySelect.value = "govt";
-      }else {
+      } else {
         propertySelect.value = "rent";
       }
     }
@@ -75,13 +76,22 @@ function renderBuildings() {
       }
     }
 
-
     propertySelect.innerHTML = `
     <option ${property === "govt" ? "selected" : ""} value="govt">govt</option>
     <option ${property === "private" ? "selected" : ""} value="private">private</option>
     <option ${property === "rent" ? "selected" : ""} value="rent">rent</option>
-    `
+    `;
     propertySelect.disabled = true;
+
+    // Status display (enabled/disabled)
+    const statusLabel = document.createElement("label");
+    statusLabel.textContent = "Status";
+    
+    const statusDisplay = document.createElement("div");
+    statusDisplay.textContent = building.state === "disabled" ? "Disabled" : "Enabled";
+    statusDisplay.style.fontWeight = "bold";
+    statusDisplay.style.color = building.state === "disabled" ? "#ff4444" : "#44ff44";
+
     const levelLabel = document.createElement("label");
     levelLabel.textContent = "Current Level";
 
@@ -114,7 +124,6 @@ function renderBuildings() {
     basePriceInput.className = "editable price-input";
     basePriceInput.style.setProperty("border-color", "gold");
     basePriceInput.style.setProperty("border-radius", "3vw");
-    
     basePriceInput.style.display = "none";
 
     const baseSizeInput = document.createElement("input");
@@ -131,8 +140,8 @@ function renderBuildings() {
       container.innerHTML = "";
 
       Object.entries(items).forEach(([key, value]) => {
-      if (typeof value === "object")
-          value = value.value
+        if (typeof value === "object")
+          value = value.value;
         const pairDiv = document.createElement("div");
         pairDiv.className = "item-pair";
 
@@ -179,14 +188,23 @@ function renderBuildings() {
     const consumesContainer = document.createElement("div");
     renderKeyValueSection(consumesContainer, building.consumes, "Consume");
 
-
-    
     const upgradeBtn = document.createElement("button");
     upgradeBtn.className = "btn primary-btn";
     const upgradeCost = upgradePrice(building.basePrice, building.currentLevel);
     upgradeBtn.textContent = `Upgrade (Cost: ${upgradeCost} coins)`;
 
+    // Disable upgrade button if building is disabled
+    if (building.state === "disabled") {
+      upgradeBtn.disabled = true;
+      upgradeBtn.style.opacity = "0.5";
+    }
+
     upgradeBtn.onclick = () => {
+      if (building.state === "disabled") {
+        alert("Cannot upgrade a disabled building!");
+        return;
+      }
+      
       const storage = kingdoms[name].storage;
       if ((storage.coins || 0) >= upgradeCost) {
         storage.coins -= upgradeCost;
@@ -195,6 +213,16 @@ function renderBuildings() {
       } else {
         alert("Not enough coins!");
       }
+    };
+
+    // Toggle Enable/Disable Button
+    const toggleStatusBtn = document.createElement("button");
+    toggleStatusBtn.className = building.state === "disabled" ? "btn success-btn" : "btn warning-btn";
+    toggleStatusBtn.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    
+    toggleStatusBtn.onclick = () => {
+      building.state = building.state === "disabled" ? "enabled" : "disabled";
+      saveAndRefresh();
     };
 
     const itemActions = document.createElement("div");
@@ -206,7 +234,7 @@ function renderBuildings() {
     editBtn.onclick = () => {
       nameInput.disabled = false;
       propertySelect.disabled = false;
-          ownedBySelect.disabled = false;
+      ownedBySelect.disabled = false;
 
       basePriceInput.style.display = "block";
       baseSizeInput.style.display = "block";
@@ -220,7 +248,7 @@ function renderBuildings() {
         building.property = propertySelect.value;
         building.basePrice = parseFloat(basePriceInput.value);
         building.baseSize = parseFloat(baseSizeInput.value);
-        building.baseMaintains =  flagsToObj(baseMaintainsInput.value);
+        building.baseMaintains = flagsToObj(baseMaintainsInput.value);
         building.quantity = parseInt(quantityInput.value) || 1;
 
         const extractValues = (container) => {
@@ -249,6 +277,7 @@ function renderBuildings() {
     };
 
     itemActions.appendChild(editBtn);
+    itemActions.appendChild(toggleStatusBtn); // Add the toggle button
     itemActions.appendChild(delBtn);
 
     div.appendChild(nameLabel);
@@ -260,13 +289,15 @@ function renderBuildings() {
     div.appendChild(propertyLabel);
     div.appendChild(propertySelect);
 
+    div.appendChild(statusLabel);
+    div.appendChild(statusDisplay);
 
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
 
     div.appendChild(sizeLabel);
     div.appendChild(sizeDisplay);
-     div.appendChild(baseSizeInput);
+    div.appendChild(baseSizeInput);
 
     div.appendChild(MaintainsLabel);
     div.appendChild(MaintainsDisplay);
@@ -297,70 +328,78 @@ addBuildingBtn.onclick = () => {
     currentLevel: 1,
     quantity: 1,
     produces: {},
-    consumes: {}
+    consumes: {},
+    state: "enabled" // Default to enabled
   };
   kingdoms[name].buildings.push(newBuilding);
   saveAndRefresh();
 };
 
 renderBuildings();
-globalThis.hideQuickFindForm = ()=>{
-   const quickFindForm = document.getElementById("quickFindForm")
- quickFindForm.classList.remove("active")
 
+globalThis.hideQuickFindForm = () => {
+  const quickFindForm = document.getElementById("quickFindForm");
+  quickFindForm.classList.remove("active");
 }
 
-function renderQuickBuildingLinks(quickFindForm,ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox){
-    const linksContainer =  quickFindForm.querySelector(".links-container")
-   linksContainer.innerHTML = "" 
-   let buildings = kingdoms[name].buildings
-   if (ownedBySel.value !== "all")
-      buildings = buildings.filter(b=>b.ownedBy === ownedBySel.value)
-   if (propertySel.value !== "all")
-      buildings = buildings.filter(b=>b.property === propertySel.value)
-   if (sortBySizeCheckBox.checked) {
-      buildings = [...buildings].sort((b1,b2)=> {
-       let size1 = calculateSize(b1.baseSize,b1.currentLevel) 
-       let size2 = calculateSize(b2.baseSize,b2.currentLevel) 
-      if ( showQuantityCheckBox.checked){
-          size1 = size1 * b1.quantity
-          size2 = size2 * b2.quantity
+function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox) {
+  const linksContainer = quickFindForm.querySelector(".links-container");
+  linksContainer.innerHTML = "";
+  let buildings = kingdoms[name].buildings;
+  
+  if (ownedBySel.value !== "all")
+    buildings = buildings.filter(b => b.ownedBy === ownedBySel.value);
+  
+  if (propertySel.value !== "all")
+    buildings = buildings.filter(b => b.property === propertySel.value);
+  
+  if (sortBySizeCheckBox.checked) {
+    buildings = [...buildings].sort((b1, b2) => {
+      let size1 = calculateSize(b1.baseSize, b1.currentLevel);
+      let size2 = calculateSize(b2.baseSize, b2.currentLevel);
+      if (showQuantityCheckBox.checked) {
+        size1 = size1 * b1.quantity;
+        size2 = size2 * b2.quantity;
       }
-      return size2 -size1 
-      } ) 
-   }
-    buildings.forEach((building) => {
-      
-    const btn = document.createElement("button")
-     btn.textContent = `${building.name} ${showQuantityCheckBox.checked ? "( " + building.quantity + " )" : "" } ${showSizeCheckBox.checked ? calculateSize(building.baseSize,building.currentLevel) + " sq.m" : ""  }`
-     btn.onclick = ()=>{
-     const id = CSS.escape(building.name); // ensures valid selector
-     const targetedBuilding = buildingsContainer.querySelector(`#${id}`);
-     if (targetedBuilding) {
-    targetedBuilding.scrollIntoView({ behavior: "smooth", block: "center" });
-      hideQuickFindForm()
-     }       
-     }
-     linksContainer.appendChild(btn)
-    })
+      return size2 - size1;
+    });
+  }
+  
+  buildings.forEach((building) => {
+    const btn = document.createElement("button");
+    // Add status indicator to quick find
+    const statusIndicator = building.state === "disabled" ? " 🔴" : " 🟢";
+    btn.textContent = `${building.name}${statusIndicator} ${showQuantityCheckBox.checked ? "( " + building.quantity + " )" : ""} ${showSizeCheckBox.checked ? calculateSize(building.baseSize, building.currentLevel) + " sq.m" : ""}`;
+    btn.onclick = () => {
+      const id = CSS.escape(building.name); // ensures valid selector
+      const targetedBuilding = buildingsContainer.querySelector(`#${id}`);
+      if (targetedBuilding) {
+        targetedBuilding.scrollIntoView({ behavior: "smooth", block: "center" });
+        hideQuickFindForm();
+      }
+    };
+    linksContainer.appendChild(btn);
+  });
 }
-function setupOwnedBySelect(ownedBySel){
-  ownedBySel.innerHTML = "<option selected value='all'>all</option>"
-  ownedBySel.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((owner) =>  `<option value="${owner}">${owner}</option>`).join("");
+
+function setupOwnedBySelect(ownedBySel) {
+  ownedBySel.innerHTML = "<option selected value='all'>all</option>";
+  ownedBySel.innerHTML += Object.keys(companies).concat(Object.keys(kingdoms)).map((owner) => `<option value="${owner}">${owner}</option>`).join("");
 }
-globalThis.showQuickFindForm = ()=>{
-   const quickFindForm = document.getElementById("quickFindForm")
- quickFindForm.classList.add("active")
-  const controlerBar = quickFindForm.querySelector(".controler-bar")
-  const ownedBySel = controlerBar.querySelector(".owned-by")
-  const propertySel = controlerBar.querySelector(".property")
-  const sortBySizeCheckBox = controlerBar.querySelector(".sort-by-size")
-  const showSizeCheckBox = controlerBar.querySelector(".show-size")
-  const showQuantityCheckBox = controlerBar.querySelector(".show-quantity")
-  setupOwnedBySelect(ownedBySel)
-  renderQuickBuildingLinks(quickFindForm,ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox)
- const controlers = [ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox]
-  controlers.forEach(el=>{
-    el.onchange = ()=> renderQuickBuildingLinks(quickFindForm,ownedBySel,propertySel,sortBySizeCheckBox,showSizeCheckBox,showQuantityCheckBox)
-  })
+
+globalThis.showQuickFindForm = () => {
+  const quickFindForm = document.getElementById("quickFindForm");
+  quickFindForm.classList.add("active");
+  const controlerBar = quickFindForm.querySelector(".controler-bar");
+  const ownedBySel = controlerBar.querySelector(".owned-by");
+  const propertySel = controlerBar.querySelector(".property");
+  const sortBySizeCheckBox = controlerBar.querySelector(".sort-by-size");
+  const showSizeCheckBox = controlerBar.querySelector(".show-size");
+  const showQuantityCheckBox = controlerBar.querySelector(".show-quantity");
+  setupOwnedBySelect(ownedBySel);
+  renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox);
+  const controlers = [ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox];
+  controlers.forEach(el => {
+    el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox);
+  });
 }
