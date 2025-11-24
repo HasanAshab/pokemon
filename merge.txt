@@ -1,10 +1,10 @@
 
 * Merge to shinobi
 1. Bot shinobi (field aware + weighted decition):
+2. weather
 
 Pending:
 
-2. weather
 3. abilities.onBasePower support (e.g. Mega Launcher)
 4. blaze like abilities NEW
 5. fairywing + seapearls

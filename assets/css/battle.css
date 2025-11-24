@@ -228,6 +228,23 @@ flex: 0 0 auto;
 .fields-impact > .impacts-wrapper > .impact .placeholder.bad::marker{
   color: red;
  }
+
+ #weather-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+ }
+  #weather-indicator.show-lifetime::after {
+  content: attr(data-lifetime);
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  right: -5px;
+  bottom: 0;
+  padding: 1px 3px;
+  font-size: small;
+ }
 .you-controle-cont {
   height: 46.50%;
   display: flex;
@@ -246,7 +263,7 @@ flex: 0 0 auto;
   transform: rotate(180deg);
 }
 .pokemon-switch-controler {
-  width: 70px;
+  width: 120px;
   height: 130px;
   overflow-y: scroll;
 
@@ -262,8 +279,16 @@ flex: 0 0 auto;
   justify-content: center;
   align-items: center;
   font-size: small;
+  position: relative;
 }
-
+.pokemon-switch-controler > .pokemon:not(.fast) > .fast-icon {
+  display: none;
+}
+.pokemon-switch-controler > .pokemon.fast > .fast-icon {
+  position: absolute;
+  right: 1vw;
+  top: 0;
+}
 .pokemon-switch-controler > .pokemon > .pokeball-icon {
   border-radius: 100%;
 }
@@ -471,7 +496,14 @@ stroke: gold;
   justify-content: space-between;
   align-items: center;
 }
-
+.player-settings-form .header .primary{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 2px;
+ font-size: 20px;
+}
 .player-settings-form .header .close-btn{
   background-color: red;
   color: white;
