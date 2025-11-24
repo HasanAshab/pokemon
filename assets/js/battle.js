@@ -162,7 +162,9 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
 globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
   playerSettingsForm.parentElement.classList.add("active")
-  playerSettingsForm.querySelector(".header > .name").textContent = playerTag
+  playerSettingsForm.querySelector(".header .primary .name").textContent = pokemonMap[playerTag].name
+  playerSettingsForm.querySelector(".header .primary .pokemon-pic").src = pokemonMap[playerTag].picture
+  
   setupBotModeBtn(playerTag)
   loadCurrentHealthPercentage(playerTag)
   loadAbilities(playerTag)
@@ -1215,29 +1217,39 @@ function loadMoves(playerTag) {
   const moveCardsContainer = document.querySelector(`.${playerTag}-controle-cont .card-container`)
   moveCardsContainer.innerHTML = ''
   const veryClose = battle.ctx.veryClose === true;
-  let moves = [...pokemon.state.moves].sort((a, b) => {
-    const aUsable = battle.canUseMove(pokemon, a.id);
-    const bUsable = battle.canUseMove(pokemon, b.id);
-    if (aUsable !== bUsable) return aUsable ? -1 : 1;
+  // let moves = [...pokemon.state.moves].sort((a, b) => {
+  //   const aUsable = battle.canUseMove(pokemon, a.id);
+  //   const bUsable = battle.canUseMove(pokemon, b.id);
+  //   if (aUsable !== bUsable) return aUsable ? -1 : 1;
 
-    if (veryClose) {
-      const aContact = a.flags.contact === 1;
-      const bContact = b.flags.contact === 1;
-      if (aContact !== bContact) return aContact ? -1 : 1;
-    }
+  //   if (veryClose) {
+  //     const aContact = a.flags.contact === 1;
+  //     const bContact = b.flags.contact === 1;
+  //     if (aContact !== bContact) return aContact ? -1 : 1;
+  //   }
+
+  //   const aPower = a.basePower || 0;
+  //   const bPower = b.basePower || 0;
+  //   if (aPower !== bPower) return bPower - aPower;
+
+  //   const aDefault = a._meta?.isDefault === true;
+  //   const bDefault = b._meta?.isDefault === true;
+  //   if (aDefault !== bDefault) return aDefault ? 1 : -1;
+
+  //   return 0;
+  // });
+
+   let moves = [...pokemon.state.moves].sort((a, b) => {
+    const aGroup = a._meta?.$isDefault ? 0 : 1;
+    const bGroup = b._meta?.$isDefault ? 0 : 1;
+
+    if (aGroup !== bGroup) return aGroup - bGroup;
 
     const aPower = a.basePower || 0;
     const bPower = b.basePower || 0;
-    if (aPower !== bPower) return bPower - aPower;
-
-    const aDefault = a._meta?.isDefault === true;
-    const bDefault = b._meta?.isDefault === true;
-    if (aDefault !== bDefault) return aDefault ? 1 : -1;
-
-    return 0;
+    return bPower - aPower;
   });
 
-  moves = pokemon.state.moves
   for (const move of moves) {
     const mod = pokemon.state.damage.powerModifier(move.id)
     const effectiveness = opponentPokemon.effectiveness(move.type)
@@ -1593,15 +1605,24 @@ function loadItems(playerTag) {
 function loadTokenStats(playerTag) {
   const pokemon = pokemonMap[playerTag]
   const tokenStats = structuredClone(pokemon.tokens)
-
-  for (const [key, value] of Object.entries(tokenStats)) {
-    tokenStats[key] = `${pokemon.state.stats.get(key)} (${value < 0 ? '' : '+'}${value})`
+  let sortedStats = {}
+  for (const key of Object.keys(tokenStats)) {
+   sortedStats[key] = pokemon.state.stats.get(key)
   }
-
+  // now i will sort the obj by the value
+  sortedStats = Object.fromEntries(
+    Object.entries(sortedStats).sort((a, b) => b[1] - a[1])
+  )
+  let i = 1
+  for (const key in sortedStats) {
+    tokenStats[`${i++}. ${key}`] = `${sortedStats[key]} (${tokenStats[key] < 0 ? '' : '+'}${tokenStats[key]})`
+    delete tokenStats[key] 
+  }
+  
   const playerSettingsForm = document.querySelector('.player-settings-form')
   const preStats = playerSettingsForm.querySelector('.settings-wrapper .settings.token-stats .stats')
   preStats.innerHTML = JSON.stringify(tokenStats, null, 2)
-}
+} 
 globalThis.toggleAbility = function ({ currentTarget }, playerTag, ability_name) {
   currentTarget.classList.toggle("active")
   pokemonMap[playerTag].abilities.toggle(ability_name);

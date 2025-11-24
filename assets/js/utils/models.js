@@ -364,6 +364,10 @@ export class Move {
     succeed = true
     effectType = "Move"
 
+    static exists(id) {
+      return id in moves
+    }
+
     constructor(id, meta = {}) {
         this.id = id;
         this._meta = meta
@@ -699,9 +703,18 @@ class Ability {
               console.log(e)
             }
         }
-        this._listeners.scene = () => {
+
+        this._listeners.scene = (move) => {
             this._ability.onScene?.(this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
+
+            const ctx = {
+                chainModify: (modifier) => {
+                    this.pokemon.state.damage.chainModifyPower(move.id, modifier)
+                },
+            }
+            this._ability.onBasePower?.callWithExtraCtx(ctx, move.basePower, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon), move)
         }
+
         this._listeners["using-move"] = (move, opponentMove) => {
             try {
               this._ability.onModifyMove?.(move, this.pokemon, this.pokemon.state.battle.opponentOf(this.pokemon))
