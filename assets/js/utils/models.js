@@ -407,7 +407,7 @@ export class Move {
         this._reducedCapacity = 0
     }
   
-    get isNeverFails() {       
+    get isNeverFails() {
         if ('onTryMove' in this || 'onTryImmunity' in this)
             return false
         return this.accuracy === true || this.category !== "Status"
@@ -506,10 +506,18 @@ export class Move {
           return true
            
         // Calculate the effective accuracy
-        const effectiveAccuracy = this.accuracy * user.state.stats.get("accuracy");
+        let userAccMod = user.state.stats.get("accuracy")
+        if (userAccMod > 1) {
+            userAccMod *= 0.7
+        }
+        else if (userAccMod < 1) {
+            userAccMod *= 1.4
+        }
         
-        // Generate a random number between 0 and 100
-        const randomChance = Math.random() * 100;
+        const effectiveAccuracy = Math.max(0, Math.min(this.accuracy * userAccMod, 300));
+              
+        // Generate a random number between 0 and 120
+        const randomChance = Math.random() * 120;
 
         // Check if the move succeeds
         return randomChance <= effectiveAccuracy;
@@ -520,7 +528,6 @@ export class Move {
         !succeed && console.log(`${user.name}: ${this.name} failed!`)
         return succeed
     }
-    
     multiHit() {
         if(!this.multihit)
             return 1

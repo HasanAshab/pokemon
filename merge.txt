@@ -4,15 +4,15 @@
 2. weather
 3. abilities.onBasePower support (e.g. Mega Launcher)
 6. flameburst
+7. user accuracy on status move
 
 Pending:
 
 4. blaze like abilities NEW
 5. fairywing + seapearls
-
-
-7. user accuracy on status move
 8. bulletproof
+
+
 9. total basestat datalist
 10. new compare.html
 11. dodge clamp max 85
