@@ -2,7 +2,7 @@
 * Merge to shinobi
 1. Bot shinobi (field aware + weighted decition):
 
-Pending
+Pending:
 
 2. weather
 3. abilities.onBasePower support (e.g. Mega Launcher)
