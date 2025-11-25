@@ -2,7 +2,7 @@ import { EventEmitter } from "./utils/event.js"
 import { Pokemon, Move } from "./utils/models.js"
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import { Damage } from "./utils/damage.js"
-import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, delayedFunc, getDamageDangerLevel, flagsToObj, objToFlags, shuffle } from "./utils/helpers.js"
+import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, getDamageDangerLevel, flagsToObj, objToFlags, shuffle, weightedRandomV2 } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
 import pokemons from "../../data/pokemons.js"
