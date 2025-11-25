@@ -68,10 +68,10 @@ taxRateValue.textContent = taxRateInput.value;
 
 function loadFoodConsumptionTier() {
   const tax = pciInput.value * (taxRateInput.value / 100)
-  const landRent = calculateLandPrice(3, kingdom, "rent")
+  const landRent = calculateLandPrice(3.5, kingdom, "rent")
   const savedIncome = pciInput.value - tax - landRent
-  const remainingMoney = savedIncome * 0.7
-  const foodConsumptionTier = getFoodTierForBudget(remainingMoney) 
+  const foodBudget = savedIncome * 0.5
+  const foodConsumptionTier = getFoodTierForBudget(foodBudget) 
   const tierLabel = document.getElementById("peopleFoodBudget");
   tierLabel.innerHTML = `<b>${foodConsumptionTier}</b> ($${FOOD_BUDGET[foodConsumptionTier]})`;
 }
