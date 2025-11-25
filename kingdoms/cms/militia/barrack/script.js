@@ -274,12 +274,7 @@ function renderForceSection(type,forceType) {
     quantityInput.type = "number";
     quantityInput.value = force.quantity;
     quantityInput.onblur = () => {
-      const imageCapacity =
-        kingdom.barrack.academyData[force.image.id] * 30;
-      force.quantity = Math.min(
-        parseInt(quantityInput.value) || 0,
-        imageCapacity,
-      );
+      force.quantity = parseInt(quantityInput.value) || 0;
       save();
       renderAllForces(forceType);
         showImbalanceData();
@@ -424,9 +419,9 @@ renderAllForces("soldier");
 
 loadPokemonsDatalist("pokemon-data-list");
 showImbalanceData();
-globalThis.redirectToAcademyPage = () => {
+globalThis.redirectToAmmoPage = () => {
   const encoded = encodeURIComponent(name);
-  window.location.href = `/kingdoms/cms/militia/barrack/academy/?name=${encoded}`;
+  window.location.href = `/kingdoms/cms/militia/barrack/ammo/?name=${encoded}`;
 };
 // hide inactive tab
    document.querySelectorAll(`.tab:not(.active)`).forEach((tab) => {

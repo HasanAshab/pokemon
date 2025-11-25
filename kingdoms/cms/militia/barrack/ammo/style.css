@@ -1,0 +1,39 @@
+.soldier-shifts-container{
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+  width: 100%;
+}
+
+.shift{
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+  width: 100%;
+}
+
+.shift > .soldier-ammo-cards-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1vw;
+  width: 100%;
+}
+
+.soldier-ammo-card{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vw;
+  width: 80%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1vw;
+  background-color: #f2f2f2;
+}
+
+.soldier-ammo-card > .body{
+  background-color: white;
+  
+}

@@ -1,4 +1,27 @@
+import moves from "./moves.js"
+
+function convertMoveToItem(move) {
+  return {
+    type: "weapon",
+    tokensPercent: {
+      atk: move.basePower,
+    }
+  }
+}
+
+function makeWeaponizedItems() {
+  return Object.entries(moves)
+    .filter(([id, move]) => move.flags.weapon)
+    .reduce((acc, [id, move]) => {      
+      acc[id] = convertMoveToItem(move)
+           
+      return acc
+    }, {})
+}
+
+
 export default {
+  ...makeWeaponizedItems(),
   $blackbeastlayer: {
     type: "armor",
     covers: 100,
@@ -280,7 +303,7 @@ export default {
   },
   
   "gen-food-mid": {
-tokensPercent: {
+    tokensPercent: {
       "hp": 2,
       "def": 2,
       "atk": 2,
