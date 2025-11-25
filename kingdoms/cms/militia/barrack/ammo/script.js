@@ -1,66 +1,79 @@
 // import humans from "../../../../../data/humans.js";
 // import { saveKingdoms, soldiersAcademy } from "../../../../utils.js";
 import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "../../../../../assets/js/utils/dom.js";
-
-// //delete humans["student"]
+var totalItemsMultyInputBox = 0
+globalThis.addInput = null
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const encodedName =  encodeURIComponent(name);
-// const kingdoms = JSON.parse(localStorage.getItem("kingdoms"))
-// const kingdom = kingdoms[encodedName]
+const kingdoms = JSON.parse(localStorage.getItem("kingdoms"))
+const kingdom = kingdoms[encodedName]
 
 function loadMainHeading(){
 document.getElementById("main-heading")
 .textContent = `${encodedName}'s Ammo`
 }
-function loadTotalAcademyCost(){
-  document.getElementById("total-academy-cost")
-  .textContent = `Total Academy Cost - ${soldiersAcademy.getAcademyCost(kingdom)}`
+
+function loadSoldierAmmoCards(shiftData,shiftElement){
+  const soldierAmmoCardsContainer = shiftElement.querySelector(".soldier-ammo-cards-container")
+  soldierAmmoCardsContainer.innerHTML = ""
+  shiftData.forEach(soldier => {
+    console.log(soldier);
+    const items = soldier.image.items || []
+    soldierAmmoCardsContainer.innerHTML +=` 
+     <div class="soldier-ammo-card">
+          <div class="header">
+            <h3 class="rank">${soldier.image.id}</h3>
+          </div>
+          <div class="body">
+            <div class="multy-input-box" data-property="items" data-index="${totalItemsMultyInputBox}">
+              <div class="inputs-wrapper">
+              </div>
+              <div class="controller">
+
+                <datalist id="multy-input-box-datalist"></datalist>
+                <button class="add-input-btn">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>`
+       const multyInputBox = soldierAmmoCardsContainer.querySelector(`.multy-input-box[data-index="${totalItemsMultyInputBox++}"]`)
+        items.forEach(item => {
+       addInput(multyInputBox,item)
+        })
+  })
+ 
+ 
+}
+
+function getShiftElement(shift){
+  const shiftData = kingdom.barrack.soldiers[shift]
+  const shiftElement = document.createElement("div")
+  shiftElement.className =  `shift ${shift}`
+  shiftElement.innerHTML += `
+      <h2>${shift}:</h2>
+      <div class="soldier-ammo-cards-container"></div>
+  ` 
+   loadSoldierAmmoCards(shiftData,shiftElement)
+  return shiftElement
+}
+function loadSoldierShiftsContainer() {
+  totalItemsMultyInputBox = 0
+  const soldierShiftsContainer = document.querySelector(".soldier-shifts-container")
+  soldierShiftsContainer.innerHTML = ""
+
+  const Shifts = Object.keys(kingdom.barrack.soldiers)
+
+  for (const shift of Shifts) {
+    soldierShiftsContainer.appendChild(getShiftElement(shift))
+  }
+  globalThis.addInput = initAllMultyInputBox().addInput
 }
 
 
-// function loadSoldiers(){
-//   const soldiersContainer = document.querySelector(".soldiers-container")
-//   soldiersContainer.innerHTML = ""
-//  const academyData = kingdom.barrack.academyData
-//   for (const key in humans ){
-//      const human = humans[key]
-//      const level = academyData[key]
-//      const currentCapacity = 30 * level
-//      const currentCost = soldiersAcademy.getSoldierCost(level,human.num)
-//    soldiersContainer.innerHTML += `
-//        <div class="soldier">
-//       <strong class="rank-primary-data">${human.name}</strong> 
-//       <span data-value="${level}" class="level">Level:</span>
-//       <span data-value="${currentCapacity}" class="current-capacity">Capacity:</span>
-//       <span data-value="${currentCost}" class="current-cost">Cost:</span>
-//       <div class="btns-wrapper">
-//         <button onclick="gradeSoldier('${key}',1)" data-value="( ${soldiersAcademy.getSoldierCost(level + 1,human.num)} )" class="upgrade-btn">Upgrade</button>
-//         <button onclick="gradeSoldier('${key}',-1)" data-value="( ${soldiersAcademy.getSoldierCost(level - 1,human.num)} )" class="downgrade-btn">Downgrade</button>
-//       </div>
-//     </div>
-
-   
-//    `
-//   }
-  
-// }
-// globalThis.gradeSoldier = (id,value)=>{
-//    kingdom.barrack.academyData[id] = kingdom.barrack.academyData[id] + value
-//    saveKingdoms(kingdoms)
-//    loadSoldiers()
-//    loadTotalAcademyCost()
-// }
-
-
 window.onload = ()=>{
-  // if (!kingdom.barrack.academyData){
-  //   kingdom.barrack.academyData = soldiersAcademy.getDefaultData()
-  //   saveKingdoms(kingdoms)
-  // }
+
   loadMainHeading()
-  initAllMultyInputBox()
-  // loadSoldiers()
-  // loadTotalAcademyCost()
+  loadSoldierShiftsContainer()
 
 }
