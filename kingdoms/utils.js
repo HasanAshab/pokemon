@@ -1,7 +1,7 @@
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
-
+import { FOOD_BUDGET } from "./constraints.js";
 
 export function foo (size,kingdom){
 
@@ -559,4 +559,13 @@ export function getSoldierImbalancePenalty(kingdom, shift) {
   const rate = getForceImbalanceRate(kingdom, 'soldiers', shift);
   const penaltyMod = (1 - (rate / 100)) * 1.5
   return penaltyMod
+}
+
+export function getFoodTierForBudget(budget) {
+  let lastTier = null
+  for (const tier in FOOD_BUDGET) {
+    if (budget < FOOD_BUDGET[tier]) break
+    lastTier = tier
+  }
+  return lastTier
 }

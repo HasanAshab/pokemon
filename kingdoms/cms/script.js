@@ -1,3 +1,4 @@
+import { FOOD_BUDGET } from "../constraints.js";
 import {
   calculateTax,
   calculateBuildUsedLandArea,
@@ -8,7 +9,8 @@ import {
   getDiedForSecurity,
   getTotalDeathCount,
   getDiedForAge,
-  calculateBirthCount
+  calculateBirthCount,
+  getFoodTierForBudget
 } from "../utils.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -62,6 +64,17 @@ densityInput.value = kingdom.density;
 pciInput.value = kingdom.pci;
 taxRateInput.value = (kingdom.taxRate * 100).toFixed(0);
 taxRateValue.textContent = taxRateInput.value;
+
+
+function loadFoodConsumptionTier() {
+  const tax = pciInput.value * (taxRateInput.value / 100)
+  const landRent = calculateLandPrice(3, kingdom, "rent")
+  const savedIncome = pciInput.value - tax - landRent
+  const remainingMoney = savedIncome * 0.7
+  const foodConsumptionTier = getFoodTierForBudget(remainingMoney) 
+  const tierLabel = document.getElementById("peopleFoodBudget");
+  tierLabel.innerHTML = `<b>${foodConsumptionTier}</b> ($${FOOD_BUDGET[foodConsumptionTier]})`;
+}
 
 function updateDisplay() {
   const area = parseFloat(landAreaInput.value) || 0;
@@ -130,6 +143,8 @@ function updateDisplay() {
   usedLandLabel.textContent = totalUsedLand.toFixed(2);
   freeLandLabel.textContent = freeLand.toFixed(2);
   landCostLabel.textContent = landCost.toLocaleString();
+
+  loadFoodConsumptionTier();
 }
 
 priceForAreaInput.addEventListener("change", updateDisplay);
