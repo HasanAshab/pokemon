@@ -22,6 +22,7 @@ class BaseBattle extends EventEmitter {
     }
     _states = new Map()
     _history = []
+    _realOpponent = null
 
     constructor(team1, team2, fieldTypes = []) {      
         super()
@@ -774,6 +775,8 @@ class BaseBattle extends EventEmitter {
           ])
           const opponentTag = attacker._tag === "you" ? "enemy" : "you"
           const oldActive = this.getActive(opponentTag)
+          
+          this._realOpponent = oldActive
           this.activate(atk, attacker._tag)
           this.activate(p, opponentTag)
 
@@ -781,6 +784,7 @@ class BaseBattle extends EventEmitter {
           attacker.state.increasePP(move.id)
           await this.run(scene, false, false, true)
 
+          this._realOpponent = null
           this.activate(oldActive, opponentTag)
           this.activate(attacker, attacker._tag)          
         }
@@ -796,6 +800,7 @@ class BaseBattle extends EventEmitter {
         
         const oldOppo = this.getActive(opponentTag)
         if (isAlly) {
+          this._realOpponent = oldOppo
           this.activate(attacker, attacker._tag)
           this.activate(p, opponentTag)
         }
@@ -812,6 +817,7 @@ class BaseBattle extends EventEmitter {
         move.reduceCapacity()
 
         if (isAlly) {
+          this._realOpponent = null
           this.activate(p, attacker._tag)
           this.activate(oldOppo, opponentTag)
         }
@@ -1318,7 +1324,7 @@ class StatsManager {
         const statChanged = Math.random() < (move.statChanges.chance / 100)
         if (!statChanged) return
         const oldStatChanges = structuredClone(move.statChanges)
-        if(on === "self") {
+        if(on === "self") {          
             this.state.pokemon.abilities.onTryBoostOpponent(move.statChanges.self, attacker, attacker, this.state.pokemon)
             attacker.abilities.onTryBoost(move.statChanges.self, attacker, attacker, this.state.pokemon)
             for (const [stat, change] of Object.entries(move.statChanges.self)) {
@@ -1326,9 +1332,11 @@ class StatsManager {
             }
         }
         else if (on === "target") {
+            move.id === "howl" && console.log("2", this.state.pokemon.name, attacker.name);
             this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker, attacker)
             attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
-            
+            this.state.battle._realOpponent.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
+
             for (const [stat, change] of Object.entries(move.statChanges.target)) {
                 this.applyStatChange(stat, change)
             }

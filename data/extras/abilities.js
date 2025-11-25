@@ -72,7 +72,7 @@ function SharedEyeAbility({ blind, retreat, dependencies = [] }) {
 
 export default {
   // secret
-  sharedeye: SharedEyeAbility({blind: 0.125, retreat: -1, dependencies: ["mayangan:silver-eye", "mayangan:selfish-scar:silver"]}),
+  sharedeye: SharedEyeAbility({blind: 0.125, retreat: -1, dependencies: []}), // ["mayangan:silver-eye", "mayangan:selfish-scar:silver"]}),
   // gets 6 seconds
   sharingan1: SharinganAbility({ blind: 0.5, copycat: 5, retreat: 1.5 }),
   // gets 12 seconds
@@ -196,7 +196,7 @@ export default {
   "mayangan:golden-eye": {
     onTryBoostOpponent(boost, target, source, opponent) {
       const hasIntelligentEye = opponent.hasAbility("mayangan:selfish-scar:golden");
-      for (let i in boost) {
+      for (let i in boost) {        
         if (hasIntelligentEye && boost[i] > 0)
           delete boost[i]
         else
