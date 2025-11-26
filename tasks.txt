@@ -7,7 +7,6 @@ Military tension
 
 
 * bug
-substitute
 mirror dirt
 
 abilities multiple opponent event system
