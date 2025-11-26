@@ -115,7 +115,6 @@ background-color: inherit;
     color: gray;
 }
 .pokemon-level {
-    background: ;
     color: #2196f3;
     font-size: 14px;
     
@@ -205,4 +204,25 @@ button {
 
 button:hover {
     opacity: 0.9;
+}
+.link-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.link-wrapper > .link-btn{
+    color: #2196f3;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.link-wrapper > .link-btn > a{
+    text-decoration: none;
 }

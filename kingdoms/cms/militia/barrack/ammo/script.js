@@ -23,16 +23,25 @@ function saveCardItems(cardIndex){
 function loadAllCardItems(){
   const shiftElements = document.querySelectorAll(".shift")
   for (const shiftElement of shiftElements) {
+  console.log(shiftElement.dataset.shift);
+
   const soldierAmmoCards = shiftElement.querySelectorAll(".soldier-ammo-cards-container > .soldier-ammo-card")
+  let i = 0
   for (const soldierAmmoCard of soldierAmmoCards) {
-     const multyInputBox = soldierAmmoCardsContainer.querySelector(`.multy-input-box[data-index="${i}"]`)
-     kingdom.barrack.soldiers[shiftElement.dataset.shift].forEach(soldier => {
-     const items = soldier.image.items || []   
-     items.forEach(item => {
-         if (addInput)addInput(multyInputBox,item)
-        })
-     })
+     const multyInputBox = soldierAmmoCard.querySelector(`.multy-input-box`)
+     const items = kingdom.barrack.soldiers[shiftElement.dataset.shift][i++].image.items
+     if (addInput && items) { 
+      for (const item of items) {
+        addInput(multyInputBox,item)
+      }
+     }
+    //  const items = soldier.image.items  
+    //  items.forEach(item => {
+    //      
+    //     })
+    //  })
   }
+  
 }
 }
 function loadSoldierAmmoCards(shiftData,shiftElement,shiftName){
