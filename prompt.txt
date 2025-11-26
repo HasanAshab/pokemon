@@ -1,82 +1,16 @@
-complete this suggestMoves function
+make a stock market simulation similar to #company.
 
-const MOVES = [
-  thundershock: {
-    num: 84,
-    accuracy: 100,
-    basePower: 40,
-    category: "Special",
-    name: "Thunder Shock",
-    pp: 30,
-    priority: 0,
-    flags: { protect: 1, mirror: 1, metronome: 1 },
-    secondary: {
-      chance: 10,
-      status: "par"
-    },
-    target: "normal",
-    type: "Electric",
-    contestType: "Cool"
-  },
-  punch: {
-    num: 100016,
-    accuracy: 100,
-    basePower: 20,
-    category: "Physical",
-    name: "Punch",
-    pp: 50 * 3,
-    priority: 0,
-    flags: {
-      contact: 1, 
-      protect: 1,
-      mirror: 1, 
-      metronome: 1
-    },
-    critRatio: 1,
-    secondary: null,
-    target: "normal",
-    type: "Normal",
-    contestType: "Tough",
-  },
-  //...
-]
-
-function suggestMoves(options) {
-  //...
-  
-  return moves // array of string
-}
+at root (/stock_market) 
+1. it should show my coins $ and may also edit it.
+2. also show my owned stocks total value $
+3. list all stock companies, sort by current price per stock also show my owned stock quantity
+4. i may create new stock company.
+5. A button New Month. that will simulate change to all stock based on their specific min max change rate.
+the change can be both positive and negetive.
 
 
-//usage
-suggestMoves({
-  maxPower: 50 // only moves where move.basePower <= 50
-  mele: 3, // 3 mele moves (where move.flags.contact)
-  ranged: 2, // 2 ranged moves (where !move.flags.contact)
-  phyPer: 60, // 3 of 5 (mele + ranged) will be physical move (where move.category === "Physical")
-  spePer: 20, // 1 of 5 (mele + ranged) will be special move (where move.category === "Special")
-  statPer: 20, // 1 of 5 (mele + ranged) will be status move (where move.category === "Status")
-})
-
-
-
-update: now another input will be provided `pokemon`
-suggestMoves(options, {
-  level: 20,
-  types: ["Fire", ...]
-})
-
-based on that:
-1. give more priority to same type moves
-2. 20% moves will be high power,
-   50% will be mid power (status moves will also stay there even there power is 0) and
-   rest 20% percent will be low power
-
-Note: formula to detect high mid and low move for a level is:
-  Low: move.basePower <= LVL
-  Mid: LVL < move.basePower <= LVL * 2
-  High: LVL * 2 < move.basePower <= (LVL * 2) + 10
-Example: If pokemon level is 20
-  Low: move.basePower <= 20
-  Mid: 20 < move.basePower <= 40
-  High: 40 < move.basePower <= 50
+at /stock_market/cms?name=$STOCK_COMPANY_NAME.
+1. i may set the current 1 stock price and min and max change rate using a range input.
+2. there should show previous 1 stock price using local  /shared/chart.js module of past 20 changes.
+3. i may buy and sell stocks. change my coins based on sell and buy
+4. show 

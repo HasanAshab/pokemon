@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Simulation</title>
+    <script src="../shared/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Market Simulation</h1>
+        
+        <div class="section wallet">
+            <h2>My Wallet</h2>
+            <div class="wallet-info">
+                <div class="coins-display">
+                    <label>Coins: $</label>
+                    <input type="number" id="coinsInput" placeholder="0" onblur="updateCoins()">
+                </div>
+                <div class="portfolio-value">
+                    <strong>Portfolio Value: $<span id="portfolioValue">0</span></strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="section portfolio-chart">
+            <h2>Stock Portfolio Value History</h2>
+            <div class="chart-container">
+                <canvas id="portfolioChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section controls">
+            <button onclick="showCreateStockModal()" class="btn primary-btn">Create New Stock Company</button>
+            <button onclick="simulateNewMonth()" class="btn special-btn">New Month</button>
+        </div>
+
+        <div class="section stocks">
+            <h2>Stock Companies</h2>
+            <div class="table-container">
+                <table id="stocksTable">
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Current Price ($)</th>
+                            <th>Change</th>
+                            <th>My Shares</th>
+                            <th>My Investment ($)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Stock Modal -->
+    <div id="createStockModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideCreateStockModal()">&times;</span>
+            <h3>Create New Stock Company</h3>
+            <div class="form-group">
+                <label>Company Name:</label>
+                <input type="text" id="newStockName" placeholder="Enter company name">
+            </div>
+            <div class="form-group">
+                <label>Initial Stock Price ($):</label>
+                <input type="number" id="newStockPrice" placeholder="100" min="1">
+            </div>
+            <div class="form-group">
+                <label>Min Change Rate (%):</label>
+                <input type="range" id="newStockMinChange" min="-50" max="0" value="-10">
+                <span id="minChangeDisplay">-10%</span>
+            </div>
+            <div class="form-group">
+                <label>Max Change Rate (%):</label>
+                <input type="range" id="newStockMaxChange" min="0" max="50" value="15">
+                <span id="maxChangeDisplay">15%</span>
+            </div>
+            <button onclick="createStock()" class="btn primary-btn">Create Stock</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

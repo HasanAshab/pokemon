@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Management - CMS</title>
+    <script src="../shared/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button onclick="goBack()" class="btn secondary-btn">← Back to Market</button>
+            <h1 id="stockName">Stock Name</h1>
+        </div>
+
+        <div class="section wallet-summary">
+            <div class="wallet-info">
+                <div class="coins-display">
+                    <strong>My Coins: $<span id="playerCoins">0</span></strong>
+                </div>
+                <div class="portfolio-value">
+                    <strong>My Shares: <span id="myShares">0</span></strong>
+                </div>
+                <div class="portfolio-value">
+                    <strong>Investment Value: $<span id="investmentValue">0</span></strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="section price-controls">
+            <h2>Stock Settings</h2>
+            <div class="controls-grid">
+                <div class="form-group">
+                    <label>Current Stock Price ($):</label>
+                    <input type="number" id="currentPrice" min="0.01" step="0.01">
+                    <button onclick="updatePrice()" class="btn primary-btn">Update Price</button>
+                </div>
+                <div class="form-group">
+                    <label>Min Change Rate (%):</label>
+                    <input type="range" id="minChangeRate" min="-50" max="0">
+                    <span id="minChangeDisplay">0%</span>
+                </div>
+                <div class="form-group">
+                    <label>Max Change Rate (%):</label>
+                    <input type="range" id="maxChangeRate" min="0" max="50">
+                    <span id="maxChangeDisplay">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section chart-section">
+            <h2>Price History (Last 20 Changes)</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section trading">
+            <h2>Buy/Sell Stocks</h2>
+            <div class="trading-controls">
+                <div class="trade-group">
+                    <h3>Buy Stocks</h3>
+                    <div class="form-group">
+                        <label>Number of Shares:</label>
+                        <input type="number" id="buyShares" min="1" placeholder="1">
+                    </div>
+                    <div class="cost-display">
+                        <strong>Total Cost: $<span id="buyCost">0</span></strong>
+                    </div>
+                    <button onclick="buyStock()" class="btn success-btn">Buy Shares</button>
+                </div>
+                
+                <div class="trade-group">
+                    <h3>Sell Stocks</h3>
+                    <div class="form-group">
+                        <label>Number of Shares:</label>
+                        <input type="number" id="sellShares" min="1" placeholder="1">
+                    </div>
+                    <div class="cost-display">
+                        <strong>Total Revenue: $<span id="sellRevenue">0</span></strong>
+                    </div>
+                    <button onclick="sellStock()" class="btn danger-btn">Sell Shares</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="cms.js"></script>
+</body>
+</html>
