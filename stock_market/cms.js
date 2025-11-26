@@ -96,6 +96,7 @@ function renderStockInfo() {
     
     document.getElementById('stockName').textContent = currentStockName;
     document.getElementById('currentPrice').value = stock.currentPrice;
+    document.getElementById('currentPriceDisplay').textContent = stock.currentPrice.toFixed(2);
     document.getElementById('minChangeRate').value = stock.minChangeRate;
     document.getElementById('maxChangeRate').value = stock.maxChangeRate;
     document.getElementById('minChangeDisplay').textContent = stock.minChangeRate + '%';

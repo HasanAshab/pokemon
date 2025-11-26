@@ -29,24 +29,28 @@
         </div>
 
         <div class="section price-controls">
-            <h2>Stock Settings</h2>
-            <div class="controls-grid">
-                <div class="form-group">
-                    <label>Current Stock Price ($):</label>
-                    <input type="number" id="currentPrice" min="0.01" step="0.01">
-                    <button onclick="updatePrice()" class="btn primary-btn">Update Price</button>
+            <details>
+                <summary>
+                    <h2>Stock Settings - Current Price: $<span id="currentPriceDisplay">0.00</span></h2>
+                </summary>
+                <div class="controls-grid">
+                    <div class="form-group">
+                        <label>Current Stock Price ($):</label>
+                        <input type="number" id="currentPrice" min="0.01" step="0.01">
+                        <button onclick="updatePrice()" class="btn primary-btn">Update Price</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Min Change Rate (%):</label>
+                        <input type="range" id="minChangeRate" min="-50" max="0">
+                        <span id="minChangeDisplay">0%</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Change Rate (%):</label>
+                        <input type="range" id="maxChangeRate" min="0" max="50">
+                        <span id="maxChangeDisplay">0%</span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Min Change Rate (%):</label>
-                    <input type="range" id="minChangeRate" min="-50" max="0">
-                    <span id="minChangeDisplay">0%</span>
-                </div>
-                <div class="form-group">
-                    <label>Max Change Rate (%):</label>
-                    <input type="range" id="maxChangeRate" min="0" max="50">
-                    <span id="maxChangeDisplay">0%</span>
-                </div>
-            </div>
+            </details>
         </div>
 
         <div class="section chart-section">

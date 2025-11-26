@@ -1,356 +1,440 @@
 // Stock Market Simulation
 let stockData = {};
 let playerData = {
-    coins: 10000,
-    portfolio: {},
-    portfolioHistory: []
+  coins: 10000,
+  portfolio: {},
+  portfolioHistory: []
 };
 let portfolioChart;
 
 // Load data from localStorage
 function loadData() {
-    const savedData = localStorage.getItem('stock_market');
-    if (savedData) {
-        const parsed = JSON.parse(savedData);
-        stockData = parsed.stocks || {};
-        playerData = parsed.player || { coins: 10000, portfolio: {}, portfolioHistory: [] };
-    }
-    
-    // Ensure portfolioHistory exists
-    if (!playerData.portfolioHistory) {
-        playerData.portfolioHistory = [];
-    }
-    
-    // Initialize with some default stocks if none exist
-    if (Object.keys(stockData).length === 0) {
-        initializeDefaultStocks();
-    }
+  const savedData = localStorage.getItem('stock_market');
+  if (savedData) {
+    const parsed = JSON.parse(savedData);
+    stockData = parsed.stocks || {};
+    playerData = parsed.player || { coins: 10000, portfolio: {}, portfolioHistory: [] };
+  }
+
+  // Ensure portfolioHistory exists
+  if (!playerData.portfolioHistory) {
+    playerData.portfolioHistory = [];
+  }
+
+  // Initialize with some default stocks if none exist
+  if (Object.keys(stockData).length === 0) {
+    initializeDefaultStocks();
+  }
 }
 
 // Save data to localStorage
 function saveData() {
-    const dataToSave = {
-        stocks: stockData,
-        player: playerData
-    };
-    localStorage.setItem('stock_market', JSON.stringify(dataToSave));
+  const dataToSave = {
+    stocks: stockData,
+    player: playerData
+  };
+  localStorage.setItem('stock_market', JSON.stringify(dataToSave));
 }
 
 // Initialize default stocks
 function initializeDefaultStocks() {
-    const defaultStocks = []
-    
-    defaultStocks.forEach(stock => {
-        stockData[stock.name] = {
-            currentPrice: stock.price,
-            minChangeRate: stock.minChange,
-            maxChangeRate: stock.maxChange,
-            priceHistory: [stock.price]
-        };
-    });
-    saveData();
+  const defaultStocks = []
+
+  defaultStocks.forEach(stock => {
+    stockData[stock.name] = {
+      currentPrice: stock.price,
+      minChangeRate: stock.minChange,
+      maxChangeRate: stock.maxChange,
+      priceHistory: [stock.price]
+    };
+  });
+  saveData();
 }
 
 // Update coins
 function updateCoins() {
-    const newCoins = parseFloat(document.getElementById('coinsInput').value) || 0;
-    playerData.coins = newCoins;
-    saveData();
-    renderWallet();
+  const newCoins = parseFloat(document.getElementById('coinsInput').value) || 0;
+  playerData.coins = newCoins;
+  saveData();
+  renderWallet();
 }
 
 // Record portfolio value for history
 function recordPortfolioValue() {
-    const portfolioValue = calculatePortfolioValue();
-    playerData.portfolioHistory.push(portfolioValue);
-    
-    // Keep only last 12 records
-    if (playerData.portfolioHistory.length > 12) {
-        playerData.portfolioHistory.shift();
-    }
-    
-    saveData();
+  const portfolioValue = calculatePortfolioValue();
+  playerData.portfolioHistory.push(portfolioValue);
+
+  // Keep only last 12 records
+  if (playerData.portfolioHistory.length > 12) {
+    playerData.portfolioHistory.shift();
+  }
+
+  saveData();
 }
 
 // Calculate portfolio value
 function calculatePortfolioValue() {
-    let totalValue = 0;
-    Object.keys(playerData.portfolio).forEach(stockName => {
-        const shares = playerData.portfolio[stockName] || 0;
-        const currentPrice = stockData[stockName]?.currentPrice || 0;
-        totalValue += shares * currentPrice;
-    });
-    return totalValue;
+  let totalValue = 0;
+  Object.keys(playerData.portfolio).forEach(stockName => {
+    const shares = playerData.portfolio[stockName] || 0;
+    const currentPrice = stockData[stockName]?.currentPrice || 0;
+    totalValue += shares * currentPrice;
+  });
+  return totalValue;
 }
 
 // Render wallet information
 function renderWallet() {
-    document.getElementById('coinsInput').value = playerData.coins;
-    document.getElementById('portfolioValue').textContent = calculatePortfolioValue().toLocaleString();
+  document.getElementById('coinsInput').value = playerData.coins;
+  document.getElementById('portfolioValue').textContent = calculatePortfolioValue().toLocaleString();
 }
 
 // Get price change indicator
 function getPriceChangeIndicator(stock) {
-    const priceHistory = stock.priceHistory;
-    if (priceHistory.length < 2) {
-        return { indicator: '—', class: 'price-neutral', change: 0, percent: 0 };
-    }
-    
-    const currentPrice = priceHistory[priceHistory.length - 1];
-    const previousPrice = priceHistory[priceHistory.length - 2];
-    const change = currentPrice - previousPrice;
-    const changePercent = ((change / previousPrice) * 100);
-    
-    if (change > 0) {
-        return { 
-            indicator: '▲', 
-            class: 'price-positive', 
-            change: change,
-            percent: changePercent
-        };
-    } else if (change < 0) {
-        return { 
-            indicator: '▼', 
-            class: 'price-negative', 
-            change: change,
-            percent: changePercent
-        };
-    } else {
-        return { 
-            indicator: '—', 
-            class: 'price-neutral', 
-            change: 0,
-            percent: 0
-        };
-    }
+  const priceHistory = stock.priceHistory;
+  if (priceHistory.length < 2) {
+    return { indicator: '—', class: 'price-neutral', change: 0, percent: 0 };
+  }
+
+  const currentPrice = priceHistory[priceHistory.length - 1];
+  const previousPrice = priceHistory[priceHistory.length - 2];
+  const change = currentPrice - previousPrice;
+  const changePercent = ((change / previousPrice) * 100);
+
+  if (change > 0) {
+    return {
+      indicator: '▲',
+      class: 'price-positive',
+      change: change,
+      percent: changePercent
+    };
+  } else if (change < 0) {
+    return {
+      indicator: '▼',
+      class: 'price-negative',
+      change: change,
+      percent: changePercent
+    };
+  } else {
+    return {
+      indicator: '—',
+      class: 'price-neutral',
+      change: 0,
+      percent: 0
+    };
+  }
 }
+
+// Table sorting variables
+let currentSortColumn = 1; // Default sort by price
+let sortDirection = 'desc'; // 'asc' or 'desc'
 
 // Render stocks table
 function renderStocksTable() {
-    const tbody = document.querySelector('#stocksTable tbody');
-    tbody.innerHTML = '';
-    
-    // Sort stocks by current price (descending)
-    const sortedStocks = Object.entries(stockData).sort((a, b) => b[1].currentPrice - a[1].currentPrice);
-    
-    sortedStocks.forEach(([stockName, stock]) => {
-        const row = document.createElement('tr');
-        const myShares = playerData.portfolio[stockName] || 0;
-        const myInvestment = myShares * stock.currentPrice;
-        const priceChange = getPriceChangeIndicator(stock);
-        
-        row.innerHTML = `
-            <td><strong>${stockName}</strong></td>
-            <td>$${stock.currentPrice.toFixed(2)}</td>
-            <td class="${priceChange.class}">
-                <span class="price-indicator">${priceChange.indicator}</span>
-                <span class="price-change-amount">$${Math.abs(priceChange.change).toFixed(2)}</span>
-                <span class="price-change-percent">(${priceChange.percent >= 0 ? '+' : ''}${priceChange.percent.toFixed(1)}%)</span>
+  const tbody = document.querySelector('#stocksTable tbody');
+  tbody.innerHTML = '';
+
+  // Get stocks as array with calculated values
+  const stocksArray = Object.entries(stockData).map(([stockName, stock]) => {
+    const myShares = playerData.portfolio[stockName] || 0;
+    const myInvestment = myShares * stock.currentPrice;
+    const priceChange = getPriceChangeIndicator(stock);
+
+    return {
+      name: stockName,
+      stock: stock,
+      myShares: myShares,
+      myInvestment: myInvestment,
+      priceChange: priceChange,
+      changeValue: priceChange.change // For sorting
+    };
+  });
+
+  // Sort the array based on current sort settings
+  stocksArray.sort((a, b) => {
+    let valueA, valueB;
+
+    switch (currentSortColumn) {
+      case 0: // Company Name
+        valueA = a.name.toLowerCase();
+        valueB = b.name.toLowerCase();
+        break;
+      case 1: // Current Price
+        valueA = a.stock.currentPrice;
+        valueB = b.stock.currentPrice;
+        break;
+      case 2: // Change
+        valueA = a.changeValue;
+        valueB = b.changeValue;
+        break;
+      case 3: // My Shares
+        valueA = a.myShares;
+        valueB = b.myShares;
+        break;
+      case 4: // My Investment
+        valueA = a.myInvestment;
+        valueB = b.myInvestment;
+        break;
+      default:
+        valueA = a.stock.currentPrice;
+        valueB = b.stock.currentPrice;
+    }
+
+    if (sortDirection === 'asc') {
+      return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+    } else {
+      return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+    }
+  });
+
+  // Render sorted rows
+  stocksArray.forEach(item => {
+    const row = document.createElement('tr');
+
+    row.innerHTML = `
+            <td><strong>${item.name}</strong></td>
+            <td>$${item.stock.currentPrice.toFixed(2)}</td>
+            <td class="${item.priceChange.class}">
+                <span class="price-indicator">${item.priceChange.indicator}</span>
+                <span class="price-change-amount">$${Math.abs(item.priceChange.change).toFixed(2)}</span>
+                <span class="price-change-percent">(${item.priceChange.percent >= 0 ? '+' : ''}${item.priceChange.percent.toFixed(1)}%)</span>
             </td>
-            <td>${myShares}</td>
-            <td>$${myInvestment.toFixed(2)}</td>
+            <td>${item.myShares}</td>
+            <td>$${item.myInvestment.toFixed(2)}</td>
             <td>
-                <button onclick="deleteStock('${stockName}')" class="btn danger-btn" style="margin-left: 5px;">Delete</button>
+                <button onclick="goToStockCMS('${item.name}')" class="btn secondary-btn">Manage</button>
+                <button onclick="deleteStock('${item.name}')" class="btn danger-btn" style="margin-left: 5px;">Delete</button>
             </td>
         `;
-        row.onclick = () => goToStockCMS(stockName);
-        tbody.appendChild(row);
-    });
+    // Row click removed since we have manage button
+    tbody.appendChild(row);
+  });
+
+  // Update sort indicators
+  updateSortIndicators();
+}
+
+// Sort table by column
+function sortTable(columnIndex) {
+  if (currentSortColumn === columnIndex) {
+    // Toggle direction if same column
+    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    // New column, default to descending for numbers, ascending for text
+    currentSortColumn = columnIndex;
+    sortDirection = columnIndex === 0 ? 'asc' : 'desc'; // Name ascending, others descending
+  }
+
+  renderStocksTable();
+}
+
+// Update sort indicators in table headers
+function updateSortIndicators() {
+  const headers = document.querySelectorAll('#stocksTable th .sort-indicator');
+  headers.forEach((indicator, index) => {
+    if (index === currentSortColumn) {
+      indicator.textContent = sortDirection === 'asc' ? '↑' : '↓';
+      indicator.parentElement.classList.add('sorted');
+    } else {
+      indicator.textContent = '↕';
+      indicator.parentElement.classList.remove('sorted');
+    }
+  });
 }
 
 // Show create stock modal
 function showCreateStockModal() {
-    document.getElementById('createStockModal').style.display = 'block';
-    
-    // Add event listeners for range inputs
-    const minChangeInput = document.getElementById('newStockMinChange');
-    const maxChangeInput = document.getElementById('newStockMaxChange');
-    
-    minChangeInput.oninput = () => {
-        document.getElementById('minChangeDisplay').textContent = minChangeInput.value + '%';
-    };
-    
-    maxChangeInput.oninput = () => {
-        document.getElementById('maxChangeDisplay').textContent = maxChangeInput.value + '%';
-    };
+  document.getElementById('createStockModal').style.display = 'block';
+
+  // Add event listeners for range inputs
+  const minChangeInput = document.getElementById('newStockMinChange');
+  const maxChangeInput = document.getElementById('newStockMaxChange');
+
+  minChangeInput.oninput = () => {
+    document.getElementById('minChangeDisplay').textContent = minChangeInput.value + '%';
+  };
+
+  maxChangeInput.oninput = () => {
+    document.getElementById('maxChangeDisplay').textContent = maxChangeInput.value + '%';
+  };
 }
 
 // Hide create stock modal
 function hideCreateStockModal() {
-    document.getElementById('createStockModal').style.display = 'none';
+  document.getElementById('createStockModal').style.display = 'none';
 }
 
 // Create new stock
 function createStock() {
-    const name = document.getElementById('newStockName').value.trim();
-    const price = parseFloat(document.getElementById('newStockPrice').value);
-    const minChange = parseInt(document.getElementById('newStockMinChange').value);
-    const maxChange = parseInt(document.getElementById('newStockMaxChange').value);
-    
-    if (!name || !price || price <= 0) {
-        alert('Please enter valid company name and price');
-        return;
-    }
-    
-    if (stockData[name]) {
-        alert('Company with this name already exists');
-        return;
-    }
-    
-    stockData[name] = {
-        currentPrice: price,
-        minChangeRate: minChange,
-        maxChangeRate: maxChange,
-        priceHistory: [price]
-    };
-    
-    saveData();
-    renderStocksTable();
-    hideCreateStockModal();
-    
-    // Clear form
-    document.getElementById('newStockName').value = '';
-    document.getElementById('newStockPrice').value = '';
-    document.getElementById('newStockMinChange').value = -10;
-    document.getElementById('newStockMaxChange').value = 15;
-    document.getElementById('minChangeDisplay').textContent = '-10%';
-    document.getElementById('maxChangeDisplay').textContent = '15%';
+  const name = document.getElementById('newStockName').value.trim();
+  const price = parseFloat(document.getElementById('newStockPrice').value);
+  const minChange = parseInt(document.getElementById('newStockMinChange').value);
+  const maxChange = parseInt(document.getElementById('newStockMaxChange').value);
+
+  if (!name || !price || price <= 0) {
+    alert('Please enter valid company name and price');
+    return;
+  }
+
+  if (stockData[name]) {
+    alert('Company with this name already exists');
+    return;
+  }
+
+  stockData[name] = {
+    currentPrice: price,
+    minChangeRate: minChange,
+    maxChangeRate: maxChange,
+    priceHistory: [price]
+  };
+
+  saveData();
+  renderStocksTable();
+  hideCreateStockModal();
+
+  // Clear form
+  document.getElementById('newStockName').value = '';
+  document.getElementById('newStockPrice').value = '';
+  document.getElementById('newStockMinChange').value = -10;
+  document.getElementById('newStockMaxChange').value = 15;
+  document.getElementById('minChangeDisplay').textContent = '-10%';
+  document.getElementById('maxChangeDisplay').textContent = '15%';
 }
 
 // Delete stock
 function deleteStock(stockName) {
-    if (!confirm(`Are you sure you want to delete ${stockName}? This action cannot be undone.`)) {
-        return;
+  if (!confirm(`Are you sure you want to delete ${stockName}? This action cannot be undone.`)) {
+    return;
+  }
+
+  // Check if player has shares
+  const myShares = playerData.portfolio[stockName] || 0;
+  if (myShares > 0) {
+    if (!confirm(`You own ${myShares} shares of ${stockName}. Deleting will lose these shares. Continue?`)) {
+      return;
     }
-    
-    // Check if player has shares
-    const myShares = playerData.portfolio[stockName] || 0;
-    if (myShares > 0) {
-        if (!confirm(`You own ${myShares} shares of ${stockName}. Deleting will lose these shares. Continue?`)) {
-            return;
-        }
-        // Remove shares from portfolio
-        delete playerData.portfolio[stockName];
-    }
-    
-    // Delete the stock
-    delete stockData[stockName];
-    
-    saveData();
-    renderStocksTable();
-    renderWallet();
-    updatePortfolioChart();
-    
-    alert(`${stockName} has been deleted.`);
+    // Remove shares from portfolio
+    delete playerData.portfolio[stockName];
+  }
+
+  // Delete the stock
+  delete stockData[stockName];
+
+  saveData();
+  renderStocksTable();
+  renderWallet();
+  updatePortfolioChart();
+
+  alert(`${stockName} has been deleted.`);
 }
 
 // Simulate new month
 function simulateNewMonth() {
-    Object.keys(stockData).forEach(stockName => {
-        const stock = stockData[stockName];
-        const changePercent = Math.random() * (stock.maxChangeRate - stock.minChangeRate) + stock.minChangeRate;
-        const newPrice = Math.max(1, stock.currentPrice * (1 + changePercent / 100));
-        
-        stock.currentPrice = Math.round(newPrice * 100) / 100;
-        stock.priceHistory.push(stock.currentPrice);
-        
-        // Keep only last 20 price points
-        if (stock.priceHistory.length > 20) {
-            stock.priceHistory.shift();
-        }
-    });
-    
-    // Record portfolio value after price changes
-    recordPortfolioValue();
-    
-    saveData();
-    renderStocksTable();
-    renderWallet();
-    updatePortfolioChart();
+  Object.keys(stockData).forEach(stockName => {
+    const stock = stockData[stockName];
+    const changePercent = Math.random() * (stock.maxChangeRate - stock.minChangeRate) + stock.minChangeRate;
+    const newPrice = Math.max(1, stock.currentPrice * (1 + changePercent / 100));
+
+    stock.currentPrice = Math.round(newPrice * 100) / 100;
+    stock.priceHistory.push(stock.currentPrice);
+
+    // Keep only last 20 price points
+    if (stock.priceHistory.length > 20) {
+      stock.priceHistory.shift();
+    }
+  });
+
+  // Record portfolio value after price changes
+  recordPortfolioValue();
+
+  saveData();
+  renderStocksTable();
+  renderWallet();
+  updatePortfolioChart();
 }
 
 // Initialize portfolio chart
 function initPortfolioChart() {
-    const ctx = document.getElementById('portfolioChart').getContext('2d');
-    
-    const chartData = {
-        labels: playerData.portfolioHistory.map((_, index) => `Month ${index + 1}`),
-        datasets: [{
-            label: 'Stock Portfolio Value ($)',
-            data: playerData.portfolioHistory,
-            backgroundColor: 'rgba(40, 167, 69, 0.2)',
-            borderColor: 'rgba(40, 167, 69, 1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4
-        }]
-    };
-    
-    portfolioChart = new Chart(ctx, {
-        type: 'line',
-        data: chartData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    title: {
-                        display: true,
-                        text: 'Stock Portfolio Value ($)'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Time Period'
-                    }
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Stock Portfolio Value History'
-                }
-            }
+  const ctx = document.getElementById('portfolioChart').getContext('2d');
+
+  const chartData = {
+    labels: playerData.portfolioHistory.map((_, index) => `Month ${index + 1}`),
+    datasets: [{
+      label: 'Stock Portfolio Value ($)',
+      data: playerData.portfolioHistory,
+      backgroundColor: 'rgba(40, 167, 69, 0.2)',
+      borderColor: 'rgba(40, 167, 69, 1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  };
+
+  portfolioChart = new Chart(ctx, {
+    type: 'line',
+    data: chartData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: false,
+          title: {
+            display: true,
+            text: 'Stock Portfolio Value ($)'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Time Period'
+          }
         }
-    });
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Stock Portfolio Value History'
+        }
+      }
+    }
+  });
 }
 
 // Update portfolio chart
 function updatePortfolioChart() {
-    if (!portfolioChart) return;
-    
-    portfolioChart.data.labels = playerData.portfolioHistory.map((_, index) => `Month ${index + 1}`);
-    portfolioChart.data.datasets[0].data = playerData.portfolioHistory;
-    portfolioChart.update();
+  if (!portfolioChart) return;
+
+  portfolioChart.data.labels = playerData.portfolioHistory.map((_, index) => `Month ${index + 1}`);
+  portfolioChart.data.datasets[0].data = playerData.portfolioHistory;
+  portfolioChart.update();
 }
 
 // Go to stock CMS
 function goToStockCMS(stockName) {
-    window.location.href = `cms.html?name=${encodeURIComponent(stockName)}`;
+  window.location.href = `cms.html?name=${encodeURIComponent(stockName)}`;
 }
 
 // Initialize the application
 function init() {
-    loadData();
-    
-    // Initialize portfolio history if empty
-    if (playerData.portfolioHistory.length === 0) {
-        recordPortfolioValue();
+  loadData();
+
+  // Initialize portfolio history if empty
+  if (playerData.portfolioHistory.length === 0) {
+    recordPortfolioValue();
+  }
+
+  renderWallet();
+  renderStocksTable();
+  initPortfolioChart();
+
+  // Close modal when clicking outside
+  window.onclick = function (event) {
+    const modal = document.getElementById('createStockModal');
+    if (event.target === modal) {
+      hideCreateStockModal();
     }
-    
-    renderWallet();
-    renderStocksTable();
-    initPortfolioChart();
-    
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const modal = document.getElementById('createStockModal');
-        if (event.target === modal) {
-            hideCreateStockModal();
-        }
-    };
+  };
 }
 
 // Start the application when page loads
