@@ -123,3 +123,43 @@ label {
   cursor: pointer;
   font-size: 0.9rem;
 }
+
+.disaster-descriptions {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.disaster-description-item {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background-color: white;
+  border-radius: 6px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.disaster-description-item:last-child {
+  margin-bottom: 0;
+}
+
+.disaster-description-item h5 {
+  margin: 0 0 0.5rem 0;
+  color: #d32f2f;
+  font-size: 1rem;
+}
+
+.disaster-description-item p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.no-disasters {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin: 0;
+}

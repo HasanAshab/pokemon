@@ -97,11 +97,41 @@ function loadDisasterCheckboxes() {
     checkbox.addEventListener("change", (e) => {
       if (!kingdom.disaster) kingdom.disaster = { mostProbable: {} };
       kingdom.disaster.mostProbable[disasterName] = e.target.checked;
+      updateDisasterDescriptions();
     });
     
     checkboxWrapper.appendChild(checkbox);
     checkboxWrapper.appendChild(label);
     disasterContainer.appendChild(checkboxWrapper);
+  });
+  
+  updateDisasterDescriptions();
+}
+
+function updateDisasterDescriptions() {
+  const descriptionsContainer = document.getElementById("disasterDescriptions");
+  descriptionsContainer.innerHTML = "";
+  
+  const checkedDisasters = Object.entries(kingdom.disaster.mostProbable)
+    .filter(([name, isChecked]) => isChecked)
+    .map(([name]) => name);
+  
+  if (checkedDisasters.length === 0) {
+    descriptionsContainer.innerHTML = "<p class='no-disasters'>No disasters selected</p>";
+    return;
+  }
+  
+  checkedDisasters.forEach(disasterName => {
+    const description = DISASTERS[disasterName];
+    if (description) {
+      const descriptionItem = document.createElement("div");
+      descriptionItem.className = "disaster-description-item";
+      descriptionItem.innerHTML = `
+        <h5>${disasterName}</h5>
+        <p>${description}</p>
+      `;
+      descriptionsContainer.appendChild(descriptionItem);
+    }
   });
 }
 
