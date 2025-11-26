@@ -189,8 +189,7 @@ function renderStocksTable() {
 
   // Render sorted rows
   stocksArray.forEach(item => {
-    const row = document.createElement('tr');
-
+    const row = document.createElement('tr');    
     row.innerHTML = `
             <td><strong>${item.name}</strong></td>
             <td>$${item.stock.currentPrice.toFixed(2)}</td>
@@ -201,11 +200,12 @@ function renderStocksTable() {
             </td>
             <td>${item.myShares}</td>
             <td>$${item.myInvestment.toFixed(2)}</td>
+            <td>${item.stock.minChangeRate}:${item.stock.maxChangeRate}</td>
             <td>
-                <button onclick="goToStockCMS('${item.name}')" class="btn secondary-btn">Manage</button>
                 <button onclick="deleteStock('${item.name}')" class="btn danger-btn" style="margin-left: 5px;">Delete</button>
             </td>
         `;
+    row.onclick = () => goToStockCMS(item.name);
     // Row click removed since we have manage button
     tbody.appendChild(row);
   });
