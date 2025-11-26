@@ -2,11 +2,9 @@ import { loadPokemonsDatalist } from "../../../../assets/js/utils/dom.js";
 import pokemons from "../../../../data/pokemons.js";
 import humans from "../../../../data/humans.js";
 import {
-  calcAcademyCost,
   // calcHospitalCost,
   getHospitalCapacity,
   getForceImbalanceRate,
-  soldiersAcademy,
   getSecurityRate
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
@@ -85,15 +83,9 @@ function save() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 }
 
-function renderAcademy() {
-  const level = kingdoms[name].barrack.academyLevel;
-  academyLevelEl.textContent = level;
-  academyCostEl.textContent = calcAcademyCost(kingdom).toLocaleString();
-}
 
 document.getElementById("incrAcademy").onclick = () => {
   kingdoms[name].barrack.academyLevel++;
-  renderAcademy();
   renderAllForces("soldier");
   save();
 };

@@ -1,6 +1,6 @@
 // import humans from "../../../../../data/humans.js";
-import { saveKingdoms } from "../../../../utils.js";
-import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "../../../../../assets/js/utils/dom.js";
+import { calcAmmoCost, getAmmoWithQuantity, saveKingdoms } from "../../../../utils.js";
+import {initAllMultyInputBox,getMultyInputValues } from "../../../../../assets/js/utils/dom.js";
 var totalItemsMultyInputBox = 0
 globalThis.addInput = null
 const params = new URLSearchParams(window.location.search);
@@ -99,10 +99,42 @@ function loadSoldierShiftsContainer() {
       loadAllCardItems()
   
 }
+globalThis.updateItemPrice = function({currentTarget},item){
+  kingdom.barrack.ammo[item] = Number(currentTarget.value)
+  saveKingdoms(kingdoms)
+  setItemsTable()
+}
+
+function setItemsTable(){
+  const items = getAmmoWithQuantity(kingdom)
+  const itemsTableBody = document.querySelector("#items-table > tbody")
+  itemsTableBody.innerHTML = ""
+
+  for (const item in items) {
+    if (!kingdom.barrack.ammo[item]){
+      kingdom.barrack.ammo[item] = 0
+    }
+    const price =  kingdom.barrack.ammo[item]
+
+    itemsTableBody.innerHTML += `<tr>
+    <td>${item}</td>
+    <td>${items[item]}</td>
+    <td ><input onchange="updateItemPrice(event,'${item}')" class="price" type="number" value="${price}"/>$</td>
+    </tr>`
+  }
+   itemsTableBody.innerHTML += `<tr>
+    <td>total</td>
+    <td></td>
+    <td>${calcAmmoCost(kingdom).toLocaleString()}$</td>
+    </tr>`
+}
 
 
 window.onload = ()=>{
-
+  if (!kingdom.barrack.ammo){
+      kingdom.barrack.ammo = {}
+    }
+setItemsTable()
   loadMainHeading()
   loadSoldierShiftsContainer()
 

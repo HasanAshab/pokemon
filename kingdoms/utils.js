@@ -304,10 +304,6 @@ export function calcPoliceSalary(kingdom, type) {
   );
 }
 
-export function calcAcademyCost(kingdom) {  
-  return soldiersAcademy.getAcademyCost(kingdom)
-}
-
 export function getEnabledBuildings(kingdom) {
   return kingdom.buildings.filter((build) => build.state === "enabled");
 }
@@ -357,7 +353,7 @@ export function getTransLogs(kingdom, itemName) {
     logs.push(`TAX &#x2192; <span style="color: green; font-weight: bold">${calculateTax(kingdom).toLocaleString()}</span>`);
     logs.push(`Land Tax &#x2192; <span style="color: green; font-weight: bold">${calcLandTax(kingdom).toLocaleString()}</span>`);
     logs.push(`Rented Land &#x2190; <span style="color: red; font-weight: bold">${calcLandRent(kingdom).toLocaleString()}</span>`);
-    logs.push(`Military Maintainance &#x2190; <span style="color: red; font-weight: bold">${calcAcademyCost(kingdom).toLocaleString()}</span>`);
+    logs.push(`Military Ammo &#x2190; <span style="color: red; font-weight: bold">${calcAmmoCost(kingdom).toLocaleString()}</span>`);
     logs.push(`Commanders Salary &#x2190; <span style="color: red; font-weight: bold">${calcCommandersSalary(kingdom).toLocaleString()}</span>`);
     logs.push(`Soldiers Salary &#x2190; <span style="color: red; font-weight: bold">${calcSoldiersSalary(kingdom).toLocaleString()}</span>`);
     logs.push(`Police Salary &#x2190; <span style="color: red; font-weight: bold">${calcPoliceSalary(kingdom).toLocaleString()}</span>`);
@@ -403,6 +399,20 @@ export function calcLandRent(kingdom) {
   }, 0)
 }
 
+export function getAmmoWithQuantity(kingdom){
+  return {}
+  const calcAmmoOfShift = (shift) => kingdom.barrack.soldiers[shift].reduce((acc, s) => {
+    return acc + s.image.items
+  }, 0)
+  // return kingdom.barrack.soldiers.
+}
+
+export function calcAmmoCost(kingdom) {
+  const ammo = getAmmoWithQuantity(kingdom);
+  return Object.keys(ammo).reduce((acc, key) => {
+    return acc + (ammo[key] * kingdom.barrack.ammo[key])
+  }, 0)
+}
 
 export function calcNetProd(kingdom, localize = false) {  
   const sysProd = {
@@ -413,7 +423,7 @@ export function calcNetProd(kingdom, localize = false) {
       calcLandRent(kingdom) +
       calcSoldiersSalary(kingdom) +
       calcPoliceSalary(kingdom) +
-      calcAcademyCost(kingdom) +
+      calcAmmoCost(kingdom) +
       calcCommandersSalary(kingdom),
   };
   
