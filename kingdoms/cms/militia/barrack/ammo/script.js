@@ -13,7 +13,11 @@ function loadMainHeading(){
 document.getElementById("main-heading")
 .textContent = `${encodedName}'s Ammo`
 }
-
+function saveCardItems(cardIndex){
+  
+  console.log(getMultyInputValues("items",cardIndex));
+  
+}
 function loadSoldierAmmoCards(shiftData,shiftElement){
   const soldierAmmoCardsContainer = shiftElement.querySelector(".soldier-ammo-cards-container")
   soldierAmmoCardsContainer.innerHTML = ""
@@ -67,7 +71,7 @@ function loadSoldierShiftsContainer() {
   for (const shift of Shifts) {
     soldierShiftsContainer.appendChild(getShiftElement(shift))
   }
-  globalThis.addInput = initAllMultyInputBox().addInput
+  globalThis.addInput = initAllMultyInputBox({all:saveCardItems}).addInput
 }
 
 
