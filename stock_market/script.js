@@ -150,10 +150,10 @@ function renderStocksTable() {
             <td>${myShares}</td>
             <td>$${myInvestment.toFixed(2)}</td>
             <td>
-                <button onclick="goToStockCMS('${stockName}')" class="btn secondary-btn">Manage</button>
                 <button onclick="deleteStock('${stockName}')" class="btn danger-btn" style="margin-left: 5px;">Delete</button>
             </td>
         `;
+        row.onclick = () => goToStockCMS(stockName);
         tbody.appendChild(row);
     });
 }
