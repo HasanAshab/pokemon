@@ -309,7 +309,7 @@ export default {
       zMove: { boost: { accuracy: 1 } },
       contestType: "Cool"
     },
-substitute: {
+    substitute: {
       num: 164,
       accuracy: true,
       basePower: 0,
@@ -319,6 +319,7 @@ substitute: {
       priority: 0,
       flags: { snatch: 1, nonsky: 1, metronome: 1 },
       stallingMove: true,
+      stallingChance: 80,
       onBeforeMove(target) {
         target.state.decreaseHealth(target.maxhp / 4, true)
       },

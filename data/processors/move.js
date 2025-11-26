@@ -204,7 +204,7 @@ function setEffects(move) {
     
     move.stallingMove && move.effects.self.push({
         name: "stall",
-        chance: 65,
+        chance: move.stallingChance ?? 65,
         isVolatile: true
     })
 }
