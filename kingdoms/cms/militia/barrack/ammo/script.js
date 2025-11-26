@@ -1,5 +1,5 @@
 // import humans from "../../../../../data/humans.js";
-// import { saveKingdoms, soldiersAcademy } from "../../../../utils.js";
+import { saveKingdoms } from "../../../../utils.js";
 import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "../../../../../assets/js/utils/dom.js";
 var totalItemsMultyInputBox = 0
 globalThis.addInput = null
@@ -14,23 +14,39 @@ document.getElementById("main-heading")
 .textContent = `${encodedName}'s Ammo`
 }
 function saveCardItems(cardIndex){
-  
-  console.log(getMultyInputValues("items",cardIndex));
-  
+  const items = getMultyInputValues("items",cardIndex)
+  const shift = document.querySelector(`.soldier-ammo-card[data-index="${cardIndex}"]`).dataset.shift
+  const soldierData = kingdom.barrack.soldiers[shift][cardIndex]
+  soldierData.image.items = items
+  saveKingdoms(kingdoms)
 }
-function loadSoldierAmmoCards(shiftData,shiftElement){
+function loadAllCardItems(){
+  const shiftElements = document.querySelectorAll(".shift")
+  for (const shiftElement of shiftElements) {
+  const soldierAmmoCards = shiftElement.querySelectorAll(".soldier-ammo-cards-container > .soldier-ammo-card")
+  for (const soldierAmmoCard of soldierAmmoCards) {
+     const multyInputBox = soldierAmmoCardsContainer.querySelector(`.multy-input-box[data-index="${i}"]`)
+     kingdom.barrack.soldiers[shiftElement.dataset.shift].forEach(soldier => {
+     const items = soldier.image.items || []   
+     items.forEach(item => {
+         if (addInput)addInput(multyInputBox,item)
+        })
+     })
+  }
+}
+}
+function loadSoldierAmmoCards(shiftData,shiftElement,shiftName){
   const soldierAmmoCardsContainer = shiftElement.querySelector(".soldier-ammo-cards-container")
   soldierAmmoCardsContainer.innerHTML = ""
   shiftData.forEach(soldier => {
-    console.log(soldier);
     const items = soldier.image.items || []
     soldierAmmoCardsContainer.innerHTML +=` 
-     <div class="soldier-ammo-card">
+     <div class="soldier-ammo-card" data-index="${totalItemsMultyInputBox}" data-shift="${shiftName}">
           <div class="header">
             <h3 class="rank">${soldier.image.id}</h3>
           </div>
           <div class="body">
-            <div class="multy-input-box" data-property="items" data-index="${totalItemsMultyInputBox}">
+            <div class="multy-input-box" data-property="items" data-index="${totalItemsMultyInputBox++}">
               <div class="inputs-wrapper">
               </div>
               <div class="controller">
@@ -41,10 +57,7 @@ function loadSoldierAmmoCards(shiftData,shiftElement){
             </div>
           </div>
         </div>`
-       const multyInputBox = soldierAmmoCardsContainer.querySelector(`.multy-input-box[data-index="${totalItemsMultyInputBox++}"]`)
-        items.forEach(item => {
-       addInput(multyInputBox,item)
-        })
+    
   })
  
  
@@ -53,12 +66,13 @@ function loadSoldierAmmoCards(shiftData,shiftElement){
 function getShiftElement(shift){
   const shiftData = kingdom.barrack.soldiers[shift]
   const shiftElement = document.createElement("div")
+  shiftElement.dataset.shift = shift
   shiftElement.className =  `shift ${shift}`
   shiftElement.innerHTML += `
       <h2>${shift}:</h2>
       <div class="soldier-ammo-cards-container"></div>
   ` 
-   loadSoldierAmmoCards(shiftData,shiftElement)
+   loadSoldierAmmoCards(shiftData,shiftElement,shift)
   return shiftElement
 }
 function loadSoldierShiftsContainer() {
@@ -72,6 +86,9 @@ function loadSoldierShiftsContainer() {
     soldierShiftsContainer.appendChild(getShiftElement(shift))
   }
   globalThis.addInput = initAllMultyInputBox({all:saveCardItems}).addInput
+ 
+      loadAllCardItems()
+  
 }
 
 

@@ -1335,7 +1335,7 @@ class StatsManager {
             move.id === "howl" && console.log("2", this.state.pokemon.name, attacker.name);
             this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker, attacker)
             attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
-            this.state.battle._realOpponent.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
+            this.state.battle._realOpponent?.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
 
             for (const [stat, change] of Object.entries(move.statChanges.target)) {
                 this.applyStatChange(stat, change)

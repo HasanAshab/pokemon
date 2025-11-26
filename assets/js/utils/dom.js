@@ -76,12 +76,17 @@ function loadDatalist(index, multyInputBox) {
 function removeInput(inputElm) {
   inputElm.parentElement.removeChild(inputElm)
 }
-
-function addInput(multyInputBox, value,index, callBackObj) {
+function handleCallBacks(callBackObj, index, value) {
+  if (callBackObj["all"]) callBackObj["all"](index, value)
+  if (callBackObj[index]) callBackObj[index](index, value)
+}
+function addInput(multyInputBox, value,callBackObj) {
 
   const valueInput = multyInputBox.querySelector(".controller > input")
   const inputsWrapper = multyInputBox.querySelector(".inputs-wrapper")
   const newInputElm = document.createElement("div")
+      const realIndex = multyInputBox.getAttribute("data-index")
+
   newInputElm.classList = "input"
   newInputElm.innerHTML = `
           <span class="value">${value ? value : valueInput.value}</span>
@@ -89,13 +94,17 @@ function addInput(multyInputBox, value,index, callBackObj) {
   const removeBtn = document.createElement("button")
   removeBtn.classList = "remove-btn"
   removeBtn.textContent = "x"
-  removeBtn.onclick = () => removeInput(newInputElm)
+  removeBtn.onclick = () => { 
+    removeInput(newInputElm)
+    if (callBackObj){
+      handleCallBacks(callBackObj, realIndex , valueInput.value)
+    }
+  }
   newInputElm.appendChild(removeBtn)
 
   inputsWrapper.appendChild(newInputElm)
   if (callBackObj){
-  if (callBackObj["all"]) callBackObj["all"](index, valueInput.value)
-  if (callBackObj[index]) callBackObj[index](index, valueInput.value)
+    handleCallBacks(callBackObj, realIndex, valueInput.value)
   }
   valueInput.value = ""
 }
@@ -136,7 +145,7 @@ export function initAllMultyInputBox(callBackObj) {
     loadDatalist(index, multyInputBox)
     const addInputBtn = multyInputBox.querySelector(".controller > .add-input-btn")
     addInputBtn.onclick = () => {
-      addInput(multyInputBox,undefined, index, callBackObj)
+      addInput(multyInputBox,undefined, callBackObj)
     }
 
     index++
