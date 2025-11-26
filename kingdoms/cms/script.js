@@ -1,4 +1,4 @@
-import { FOOD_BUDGET } from "../constraints.js";
+import { FOOD_BUDGET, DISASTERS } from "../constraints.js";
 import {
   calculateTax,
   calculateBuildUsedLandArea,
@@ -57,7 +57,18 @@ let kingdom = kingdoms[name] || {
   taxRate: 0.3,
   buildings: [],
   storage: {},
+  disaster: {
+    mostProbable: {}
+  }
 };
+
+// Ensure disaster object exists for existing kingdoms
+if (!kingdom.disaster) {
+  kingdom.disaster = { mostProbable: {} };
+}
+if (!kingdom.disaster.mostProbable) {
+  kingdom.disaster.mostProbable = {};
+}
 
 landAreaInput.value = kingdom.landArea;
 densityInput.value = kingdom.density;
@@ -65,6 +76,34 @@ pciInput.value = kingdom.pci;
 taxRateInput.value = (kingdom.taxRate * 100).toFixed(0);
 taxRateValue.textContent = taxRateInput.value;
 
+function loadDisasterCheckboxes() {
+  const disasterContainer = document.getElementById("disasterCheckboxes");
+  disasterContainer.innerHTML = "";
+  
+  Object.entries(DISASTERS).forEach(([disasterName, description]) => {
+    const checkboxWrapper = document.createElement("div");
+    checkboxWrapper.className = "disaster-item";
+    
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `disaster-${disasterName.replace(/\s+/g, '-').toLowerCase()}`;
+    checkbox.checked = (kingdom.disaster && kingdom.disaster.mostProbable && kingdom.disaster.mostProbable[disasterName]) || false;
+    
+    const label = document.createElement("label");
+    label.htmlFor = checkbox.id;
+    label.textContent = disasterName;
+    label.title = description;
+    
+    checkbox.addEventListener("change", (e) => {
+      if (!kingdom.disaster) kingdom.disaster = { mostProbable: {} };
+      kingdom.disaster.mostProbable[disasterName] = e.target.checked;
+    });
+    
+    checkboxWrapper.appendChild(checkbox);
+    checkboxWrapper.appendChild(label);
+    disasterContainer.appendChild(checkboxWrapper);
+  });
+}
 
 function loadFoodConsumptionTier() {
   const tax = pciInput.value * (taxRateInput.value / 100)
@@ -204,4 +243,5 @@ document.querySelectorAll(".info-card").forEach((card) => {
   });
 });
 
+loadDisasterCheckboxes();
 updateDisplay();

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kingdom CMS</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
   <div class="container">
     <h1 id="kingdomName">Kingdom</h1>
@@ -17,10 +19,10 @@
     <label>Density (people/km²)
       <input type="number" id="density" />
     </label>
-      <label>Birth Rate ( + <span id="birthCount">0</span> )
+    <label>Birth Rate ( + <span id="birthCount">0</span> )
       <input type="number" id="birthRate" value="0.02" />
     </label>
-    
+
     <label>Per Capita Income ($)
       <input type="number" id="pci" />
     </label>
@@ -28,7 +30,7 @@
     <div class="bar-group">
       <div class="label">Food Consumption Tier: <span id="peopleFoodBudget"></span></div>
     </div>
-    
+
     <div>
       <label for="taxRate">Tax Rate: <span id="taxRateValue"></span>%</label>
       <input type="range" id="taxRate" min="0" max="100" step="1">
@@ -43,7 +45,7 @@
       <div class="label">Population Growth: <span id="populationGrowthLabel">0</span></div>
       <div class="bar population-growth" id="populationGrowthBar"></div>
     </div>
-   <br>
+    <br>
     <h4><span id="totalDied">0</span> Died for lack of:</h4>
     <div class="bar-group">
       <div class="label">Age: <span id="diedForAgeLabel">0</span></div>
@@ -52,11 +54,11 @@
     <div class="bar-group">
       <div class="label">Hospital: <span id="diedForHospitalLabel">0</span></div>
       <div class="bar red" id="diedForHospitalBar"></div>
-    </div>  
+    </div>
     <div class="bar-group">
       <div class="label">Security: <span id="diedForSecurityLabel">0</span></div>
       <div class="bar red" id="diedForSecurityBar"></div>
-    </div> 
+    </div>
     <br>
     <div class="bar-group">
       <div class="label">Tax: $<span id="taxLabel">0</span></div>
@@ -71,20 +73,29 @@
         <option value="buy">Buy</option>
         <option value="rent">Rent</option>
       </select>
-      <input oninput="updateCostForLand(event)" type="number" id="price-for-area-input" value="1" min="1"   step="1">
- 
+      <input oninput="updateCostForLand(event)" type="number" id="price-for-area-input" value="1" min="1" step="1">
+
     </div>
 
     <button id="saveBtn">Save</button>
   </div>
-  
-<div class="bottom-cards">
-  <div class="info-card" data-target="storage">Storage</div>
-  <div class="info-card" data-target="buildings">Buildings</div>
-  <div class="info-card" data-target="militia">Militia</div>
-  <div class="info-card" data-target="war">War</div>
-</div>
+  <br><br>
+  <div class="container">
+    <h2>Disaster Stats</h2>
+    <h4>Most Probable Disasters:</h4>
+    <div id="disasterCheckboxes" class="disaster-checkboxes">
+      <!-- Disaster checkboxes will be populated by JavaScript -->
+    </div>
+  </div>
+
+  <div class="bottom-cards">
+    <div class="info-card" data-target="storage">Storage</div>
+    <div class="info-card" data-target="buildings">Buildings</div>
+    <div class="info-card" data-target="militia">Militia</div>
+    <div class="info-card" data-target="war">War</div>
+  </div>
 
   <script type="module" src="script.js"></script>
 </body>
+
 </html>
