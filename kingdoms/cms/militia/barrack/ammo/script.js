@@ -119,7 +119,7 @@ function setItemsTable(){
     itemsTableBody.innerHTML += `<tr>
     <td>${item}</td>
     <td>${items[item]}</td>
-    <td ><input onchange="updateItemPrice(event,'${item}')" class="price" type="number" value="${price}"/>$</td>
+    <td ><input style="width: 50px; border: none" onchange="updateItemPrice(event,'${item}')" class="price" type="number" value="${price}"/>$</td>
     </tr>`
   }
    itemsTableBody.innerHTML += `<tr>

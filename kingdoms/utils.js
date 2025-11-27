@@ -399,16 +399,18 @@ export function calcLandRent(kingdom) {
   }, 0)
 }
 
-export function getAmmoWithQuantity(kingdom){
-  return {}
+export function getAmmoWithQuantity(kingdom){  
   const calcAmmoOfShift = (shift) => kingdom.barrack.soldiers[shift].reduce((acc, s) => {
-    return acc + s.image.items
-  }, 0)
-  // return kingdom.barrack.soldiers.
+    if (!s.image.items) return acc
+    const itemsWithQuantity = Object.fromEntries(s.image.items.map(key => [key, s.quantity]));    
+    return sumObj(acc, itemsWithQuantity)
+  }, {})
+
+  return Object.keys(kingdom.barrack.soldiers).reduce((acc, shift) => sumObj(acc, calcAmmoOfShift(shift)), {})
 }
 
 export function calcAmmoCost(kingdom) {
-  const ammo = getAmmoWithQuantity(kingdom);
+  const ammo = getAmmoWithQuantity(kingdom);  
   return Object.keys(ammo).reduce((acc, key) => {
     return acc + (ammo[key] * kingdom.barrack.ammo[key])
   }, 0)
