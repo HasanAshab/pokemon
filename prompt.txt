@@ -1,16 +1,38 @@
-make a stock market simulation similar to #company.
-
-at root (/stock_market) 
-1. it should show my coins $ and may also edit it.
-2. also show my owned stocks total value $
-3. list all stock companies, sort by current price per stock also show my owned stock quantity
-4. i may create new stock company.
-5. A button New Month. that will simulate change to all stock based on their specific min max change rate.
-the change can be both positive and negetive.
+edit #Current File add a button after kingdoms containers, Disaster Report. when clicked show what disaster is happening at each kingdom. 
 
 
-at /stock_market/cms?name=$STOCK_COMPANY_NAME.
-1. i may set the current 1 stock price and min and max change rate using a range input.
-2. there should show previous 1 stock price using local  /shared/chart.js module of past 20 changes.
-3. i may buy and sell stocks. change my coins based on sell and buy
-4. show 
+
+Notes:
+1. you will get all disaster at #constraints.js 
+2. only a single disaster can happen at a time but
+also can be multiple if there are related disasters of the triggered disaster
+3. show power of the disaster using 1 to 10. the chance of power is in that order
+(from most probable to least probable)
+ 4 to 6
+ 1 to 3
+ 7 to 10
+If a disaster is more prone to a kingdom than the probability
+of happening a heigher power increases
+4. you can get disaster most prone to kingdom here: kingdoms[name].disaster.mostProbable (e.g. {Flood: true, Cyclone: false})
+
+Psudo Algorithm:
+all disasters has 10% chance to occure
+disasters marked as mostProbable will have 30% chance
+related disasters has 60% chance to occure and if that also 
+marked as mostProbable it goes to 85%
+
+There will be also chance of happening no disaster
+each time any disaster is not occured will increase the chance of
+occurance for next check. save the rate increasing at
+kingdoms[name].disaster.increasedChance = {
+  Earthquake: 10%,
+  ...
+}
+if again no disaster
+kingdoms[name].disaster.increasedChance = {
+  Earthquake: 20%,
+  ...
+}
+
+if occures then empty it 
+kingdoms[name].disaster.increasedChance = {}

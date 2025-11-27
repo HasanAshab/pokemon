@@ -58,16 +58,16 @@ let kingdom = kingdoms[name] || {
   buildings: [],
   storage: {},
   disaster: {
-    mostProbable: {}
+    geoState: {}
   }
 };
 
 // Ensure disaster object exists for existing kingdoms
 if (!kingdom.disaster) {
-  kingdom.disaster = { mostProbable: {} };
+  kingdom.disaster = { geoState: {} };
 }
-if (!kingdom.disaster.mostProbable) {
-  kingdom.disaster.mostProbable = {};
+if (!kingdom.disaster.geoState) {
+  kingdom.disaster.geoState = {};
 }
 
 landAreaInput.value = kingdom.landArea;
@@ -79,53 +79,67 @@ taxRateValue.textContent = taxRateInput.value;
 function loadDisasterCheckboxes() {
   const disasterContainer = document.getElementById("disasterCheckboxes");
   disasterContainer.innerHTML = "";
-  
-  Object.entries(DISASTERS).forEach(([disasterName, {description}]) => {
-    const checkboxWrapper = document.createElement("div");
-    checkboxWrapper.className = "disaster-item";
-    
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = `disaster-${disasterName.replace(/\s+/g, '-').toLowerCase()}`;
-    checkbox.checked = (kingdom.disaster && kingdom.disaster.mostProbable && kingdom.disaster.mostProbable[disasterName]) || false;
-    
+
+  Object.entries(DISASTERS).forEach(([disasterName, { description }]) => {
+    const disasterWrapper = document.createElement("div");
+    disasterWrapper.className = "disaster-item";
+
     const label = document.createElement("label");
-    label.htmlFor = checkbox.id;
     label.textContent = disasterName;
     label.title = description;
-    
-    checkbox.addEventListener("change", (e) => {
-      if (!kingdom.disaster) kingdom.disaster = { mostProbable: {} };
-      kingdom.disaster.mostProbable[disasterName] = e.target.checked;
+    label.className = "disaster-label";
+
+    const select = document.createElement("select");
+    select.id = `disaster-${disasterName.replace(/\s+/g, '-').toLowerCase()}`;
+    select.className = "disaster-select";
+
+    const states = [
+      { value: "normal", text: "Normal" },
+      { value: "prone", text: "Prone" },
+      { value: "immune", text: "Immune" }
+    ];
+
+    states.forEach(state => {
+      const option = document.createElement("option");
+      option.value = state.value;
+      option.textContent = state.text;
+      select.appendChild(option);
+    });
+
+    const currentState = (kingdom.disaster && kingdom.disaster.geoState && kingdom.disaster.geoState[disasterName]) || "normal";
+    select.value = currentState;
+
+    select.addEventListener("change", (e) => {
+      if (!kingdom.disaster) kingdom.disaster = { geoState: {} };
+      kingdom.disaster.geoState[disasterName] = e.target.value;
       updateDisasterDescriptions();
     });
-    
-    checkboxWrapper.appendChild(checkbox);
-    checkboxWrapper.appendChild(label);
-    disasterContainer.appendChild(checkboxWrapper);
+
+    disasterWrapper.appendChild(label);
+    disasterWrapper.appendChild(select);
+    disasterContainer.appendChild(disasterWrapper);
   });
-  
+
   updateDisasterDescriptions();
 }
 
 function updateDisasterDescriptions() {
   const descriptionsContainer = document.getElementById("disasterDescriptions");
   descriptionsContainer.innerHTML = "";
-  
-  const checkedDisasters = Object.entries(kingdom.disaster.mostProbable)
-    .filter(([name, isChecked]) => isChecked)
-    .map(([name]) => name);
-  
-  if (checkedDisasters.length === 0) {
-    descriptionsContainer.innerHTML = "<p class='no-disasters'>No disasters selected</p>";
+
+  const proneDisasters = Object.entries(kingdom.disaster.geoState)
+    .filter(([name, state]) => state === "prone");
+
+  if (proneDisasters.length === 0) {
+    descriptionsContainer.innerHTML = "<p class='no-disasters'>No disasters marked as prone</p>";
     return;
   }
-  
-  checkedDisasters.forEach(disasterName => {
-    const {description, related} = DISASTERS[disasterName];
+
+  proneDisasters.forEach(([disasterName, state]) => {
+    const { description, related } = DISASTERS[disasterName];
     if (description) {
       const descriptionItem = document.createElement("div");
-      descriptionItem.className = "disaster-description-item";
+      descriptionItem.className = "disaster-description-item disaster-prone";
       descriptionItem.innerHTML = `
         <h5>${disasterName}</h5>
         <p>${description}</p>
@@ -144,7 +158,7 @@ function loadFoodConsumptionTier() {
   const landRent = calculateLandPrice(3.5, kingdom, "rent")
   const savedIncome = pciInput.value - tax - landRent
   const foodBudget = savedIncome * 0.5
-  const foodConsumptionTier = getFoodTierForBudget(foodBudget) 
+  const foodConsumptionTier = getFoodTierForBudget(foodBudget)
   const tierLabel = document.getElementById("peopleFoodBudget");
   tierLabel.innerHTML = `<b>${foodConsumptionTier}</b> ($${FOOD_BUDGET[foodConsumptionTier]})`;
 }
@@ -161,7 +175,7 @@ function updateDisplay() {
   const diedForAge = getDiedForAge(kingdom)
   const diedForHospital = getDiedForHospital(kingdom)
   const diedForSecurity = getDiedForSecurity(kingdom)
-  
+
   const totalUsedLand =
     calculateBuildUsedLandArea(kingdom) +
     calculatePeopleUsedLandArea(population, pci, taxRate);
@@ -169,13 +183,13 @@ function updateDisplay() {
   const landCost = calculateLandPrice(
     parseInt(priceForAreaInput.value),
     kingdom,
-    landCostMethod.value 
+    landCostMethod.value
   );
   const tax = calculateTax(kingdom);
-  
+
   birthRateInput.value = kingdom.birthRate
   birthCountLabel.textContent = birthCount.toLocaleString();
-  
+
 
   priceForAreaInput.max = freeLand
   taxRateValue.textContent = taxRateInput.value;
@@ -188,28 +202,28 @@ function updateDisplay() {
   //populationGrowthBar.style.width = ( populationGrowth / population) * 100 + "%";
   let populationGrowthRatio = (populationGrowth + population) / (2 * population);
   let populationGrowthBarWidth = populationGrowthRatio * 100;
-    // clamp to 0–100 just in case
-   populationGrowthBarWidth = Math.max(0, Math.min(100, populationGrowthBarWidth));
-   populationGrowthBar.style.width = populationGrowthBarWidth + "%";
-   
-   if (populationGrowth < 0){
+  // clamp to 0–100 just in case
+  populationGrowthBarWidth = Math.max(0, Math.min(100, populationGrowthBarWidth));
+  populationGrowthBar.style.width = populationGrowthBarWidth + "%";
+
+  if (populationGrowth < 0) {
     populationGrowthBar.classList.add("red")
-  }else {
+  } else {
     populationGrowthBar.classList.remove("red")
   }
 
   totalDeathCountLabel.textContent = totalDeathCount.toLocaleString();
-  
+
   diedForAgeLabel.textContent = diedForAge.toLocaleString()
   diedForAgeBar.style.width = ((diedForAge * 100) / totalDeathCount) + "%";
-  
+
   diedForHospitalLabel.textContent = diedForHospital.toLocaleString()
   diedForHospitalBar.style.width = ((diedForHospital * 100) / totalDeathCount) + "%";
 
   diedForSecurityLabel.textContent = diedForSecurity.toLocaleString()
   diedForSecurityBar.style.width = ((diedForSecurity * 100) / totalDeathCount) + "%";
 
-  
+
   taxLabel.textContent = tax.toLocaleString();
   taxBar.style.width = Math.min((tax / 2000) * 100, 100) + "%";
 
@@ -227,7 +241,7 @@ pciInput.addEventListener("input", updateDisplay);
 taxRateInput.addEventListener("input", updateDisplay);
 landCostMethod.addEventListener("change", updateDisplay);
 
-birthRateInput.onchange = ()=>{
+birthRateInput.onchange = () => {
   kingdom.birthRate = birthRateInput.value
   updateDisplay()
 }
@@ -246,8 +260,8 @@ saveBtn.addEventListener("click", () => {
   alert("Kingdom saved!");
 });
 
-globalThis.updateCostForLand = function({currentTarget}){
-  const landAreaLabel =  document.getElementById("landAreaLabel")
+globalThis.updateCostForLand = function ({ currentTarget }) {
+  const landAreaLabel = document.getElementById("landAreaLabel")
   const area = currentTarget.value
   const totalKigndomArea = parseFloat(landAreaInput.value) || 0;
   const density = parseFloat(densityInput.value) || 0;
@@ -261,9 +275,9 @@ globalThis.updateCostForLand = function({currentTarget}){
   const landCost = calculateLandPrice(
     area,
     kingdom,
-    landCostMethod.value 
+    landCostMethod.value
   );
-  
+
   landAreaLabel.textContent = area
   landCostLabel.textContent = landCost.toLocaleString()
 }
