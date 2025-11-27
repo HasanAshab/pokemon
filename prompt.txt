@@ -16,23 +16,7 @@ of happening a heigher power increases
 4. you can get disaster most prone to kingdom here: kingdoms[name].disaster.mostProbable (e.g. {Flood: true, Cyclone: false})
 
 Psudo Algorithm:
-all disasters has 10% chance to occure
-disasters marked as mostProbable will have 30% chance
-related disasters has 60% chance to occure and if that also 
-marked as mostProbable it goes to 85%
-
-There will be also chance of happening no disaster
-each time any disaster is not occured will increase the chance of
-occurance for next check. save the rate increasing at
-kingdoms[name].disaster.increasedChance = {
-  Earthquake: 10%,
-  ...
-}
-if again no disaster
-kingdoms[name].disaster.increasedChance = {
-  Earthquake: 20%,
-  ...
-}
-
-if occures then empty it 
-kingdoms[name].disaster.increasedChance = {}
+all disasters has 5% chance to occure
+disasters marked as mostProbable will have 10% chance
+related disasters has 15% chance to occure and if that also 
+marked as mostProbable it goes to 30%
