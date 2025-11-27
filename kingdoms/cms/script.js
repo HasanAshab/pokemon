@@ -80,7 +80,7 @@ function loadDisasterCheckboxes() {
   const disasterContainer = document.getElementById("disasterCheckboxes");
   disasterContainer.innerHTML = "";
   
-  Object.entries(DISASTERS).forEach(([disasterName, description]) => {
+  Object.entries(DISASTERS).forEach(([disasterName, {description}]) => {
     const checkboxWrapper = document.createElement("div");
     checkboxWrapper.className = "disaster-item";
     
@@ -122,13 +122,17 @@ function updateDisasterDescriptions() {
   }
   
   checkedDisasters.forEach(disasterName => {
-    const description = DISASTERS[disasterName];
+    const {description, related} = DISASTERS[disasterName];
     if (description) {
       const descriptionItem = document.createElement("div");
       descriptionItem.className = "disaster-description-item";
       descriptionItem.innerHTML = `
         <h5>${disasterName}</h5>
         <p>${description}</p>
+        <h6>Can also trigger:</h6>
+        <small><ul>
+          ${related.map(item => `<li>${item}</li>`).join("")}
+        </ul></small>
       `;
       descriptionsContainer.appendChild(descriptionItem);
     }
