@@ -1,22 +1,865 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Defence Waves</title>
-  <link rel="stylesheet" href="./styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Military Defence & Tension Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f1b2e, #1c3b5a);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #4fc3f7;
+        }
+        
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background: rgba(79, 195, 247, 0.3);
+            border-bottom: 3px solid #4fc3f7;
+        }
+        
+        .tab-button:hover {
+            background: rgba(79, 195, 247, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 10px;
+            min-height: 600px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Tension Map Styles */
+        .instructions {
+            max-width: 700px;
+            margin: 0 auto 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            border-left: 4px solid #4fc3f7;
+        }
+        
+        .tension-map {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .compass-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .direction {
+            position: absolute;
+            width: 120px;
+            text-align: center;
+            transform: translate(-50%, -50%);
+        }
+        
+        .direction-label {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        .tension-select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: #2c3e50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .tension-select:hover {
+            transform: scale(1.05);
+        }
+        
+        .tension-select.low {
+            background: linear-gradient(to bottom, #e74c3c, #c0392b);
+        }
+        
+        .tension-select.medium {
+            background: linear-gradient(to bottom, #f39c12, #e67e22);
+        }
+        
+        .tension-select.high {
+            background: linear-gradient(to bottom, #27ae60, #2ecc71);
+        }
+        
+        /* Position each direction */
+        .north { top: 10%; left: 50%; }
+        .northeast { top: 25%; left: 80%; }
+        .east { top: 50%; left: 90%; }
+        .southeast { top: 75%; left: 80%; }
+        .south { top: 90%; left: 50%; }
+        .southwest { top: 75%; left: 20%; }
+        .west { top: 50%; left: 10%; }
+        .northwest { top: 25%; left: 20%; }
+        
+        .center-point {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .budget-panel {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        
+        .budget-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4fc3f7;
+        }
+        
+        .budget-display {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .budget-item {
+            margin: 10px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            min-width: 120px;
+        }
+        
+        .total-tension { 
+            background: rgba(41, 128, 185, 0.7); 
+        }
+        
+        .remaining-tension { 
+            background: rgba(39, 174, 96, 0.7); 
+        }
+        
+        .exceeded-tension { 
+            background: rgba(231, 76, 60, 0.7); 
+        }
+        
+        .tension-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .tension-breakdown {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+        
+        .breakdown-item {
+            margin: 5px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .high-breakdown { background: rgba(231, 76, 60, 0.5); }
+        .medium-breakdown { background: rgba(243, 156, 18, 0.5); }
+        .low-breakdown { background: rgba(39, 174, 96, 0.5); }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            padding: 10px 25px;
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+        }
+        
+        .control-btn.reset {
+            background: linear-gradient(to bottom, #e74c3c, #c0392b);
+        }
+        
+        /* Defence Waves Styles */
+        .defence-container {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .shift-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .shift-selector select {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+            background: white;
+        }
+        
+        .wave-item {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        
+        .soldiers-list {
+            margin: 1rem 0;
+        }
+        
+        .soldier-entry {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #fff;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .add-soldier-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4CAF50;
+            color: white;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+        }
+        
+        .remove-soldier-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ff4444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            color: #333;
+        }
+        
+        .defence-container select, 
+        .defence-container input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0.25rem 0;
+        }
+        
+        .defence-container button {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .add-wave-btn {
+            background: #4caf50;
+            color: white;
+            display: block;
+            margin: 20px auto;
+            font-size: 1.1rem;
+        }
+        
+        .defence-container button:hover {
+            opacity: 0.9;
+        }
+        
+        .wave-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .save-wave-btn {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .delete-wave-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .tension-map, .budget-panel {
+                width: 95%;
+            }
+            
+            .compass-circle {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .direction {
+                width: 100px;
+            }
+            
+            .soldier-entry {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1 id="kingdomName">Kingdom</h1>
-    <select id="shift">
-      <option value="day">Day</option>
-      <option value="night">Night</option>
-    </select>
-    <div id="wavesList" class="waves-list"></div>
-    <button id="addWaveBtn" class="add-wave-btn">Add New Wave</button>
-  </div>
-  <script type="module" src="script.js"></script>
+    <div class="main-container">
+        <header>
+            <h1>Defence Management</h1>
+        </header>
+        
+        <div class="tab-container">
+            <button class="tab-button active" onclick="switchTab('tension')">Tension Map</button>
+            <button class="tab-button" onclick="switchTab('defence')">Defence Waves</button>
+        </div>
+        
+        <!-- Tension Map Tab -->
+        <div id="tension-tab" class="tab-content active">
+            <div class="tension-map">
+                <div class="compass-circle"></div>
+                
+                <div class="direction north">
+                    <div class="direction-label">N</div>
+                    <select class="tension-select medium" data-direction="north">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+
+                <div class="direction northeast">
+                    <div class="direction-label">N.E</div>
+                    <select class="tension-select medium" data-direction="northeast">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="direction east">
+                    <div class="direction-label">E</div>
+                    <select class="tension-select medium" data-direction="east">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="direction southeast">
+                    <div class="direction-label">S.E</div>
+                    <select class="tension-select medium" data-direction="southeast">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="direction south">
+                    <div class="direction-label">S</div>
+                    <select class="tension-select medium" data-direction="south">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="direction southwest">
+                    <div class="direction-label">S.W</div>
+                    <select class="tension-select medium" data-direction="southwest">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="direction west">
+                    <div class="direction-label">W</div>
+                    <select class="tension-select medium" data-direction="west">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="direction northwest">
+                    <div class="direction-label">N.W</div>
+                    <select class="tension-select medium" data-direction="northwest">
+                        <option value="2">Low (2)</option>
+                        <option value="4" selected>Mid (4)</option>
+                        <option value="8">High (8)</option>
+                    </select>
+                </div>
+                
+                <div class="center-point"></div>
+            </div>
+            
+            <div class="budget-panel">
+                <div class="budget-title">Tension Budget Status</div>
+                <div class="budget-display">
+                    <div class="budget-item total-tension">
+                        <div>Total Tension</div>
+                        <div class="tension-value" id="total-tension">32</div>
+                        <div>/ 32</div>
+                    </div>
+                    <div class="budget-item remaining-tension">
+                        <div>Remaining</div>
+                        <div class="tension-value" id="remaining-tension">0</div>
+                        <div>Tension Points</div>
+                    </div>
+                </div>
+                
+                <div class="tension-breakdown">
+                    <div class="breakdown-item high-breakdown">
+                        High: <span id="high-count">0</span>
+                    </div>
+                    <div class="breakdown-item medium-breakdown">
+                        Medium: <span id="medium-count">8</span>
+                    </div>
+                    <div class="breakdown-item low-breakdown">
+                        Low: <span id="low-count">0</span>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="control-btn reset" id="reset-btn">Reset All to Medium</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Defence Waves Tab -->
+        <div id="defence-tab" class="tab-content">
+            <div class="defence-container">
+                <h2 id="kingdomName">Defence Waves</h2>
+                <div class="shift-selector">
+                    <label for="shift">Select Shift:</label>
+                    <select id="shift">
+                        <option value="day">Day</option>
+                        <option value="night">Night</option>
+                    </select>
+                </div>
+                <div id="wavesList" class="waves-list"></div>
+                <button id="addWaveBtn" class="add-wave-btn">Add New Wave</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Tab switching functionality
+        window.switchTab = function(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        };
+
+        // Tension Map Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tensionSelects = document.querySelectorAll('.tension-select');
+            const totalTensionEl = document.getElementById('total-tension');
+            const remainingTensionEl = document.getElementById('remaining-tension');
+            const highCountEl = document.getElementById('high-count');
+            const mediumCountEl = document.getElementById('medium-count');
+            const lowCountEl = document.getElementById('low-count');
+            const highTotalEl = document.getElementById('high-total');
+            const mediumTotalEl = document.getElementById('medium-total');
+            const lowTotalEl = document.getElementById('low-total');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            const MAX_TENSION = 32;
+            
+            // Update the visual style and counts when a tension level is changed
+            tensionSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    // Remove all tension classes
+                    this.classList.remove('high', 'medium', 'low');
+                    
+                    // Add the appropriate class based on selection
+                    if (this.value === '8') {
+                        this.classList.add('high');
+                    } else if (this.value === '4') {
+                        this.classList.add('medium');
+                    } else {
+                        this.classList.add('low');
+                    }
+                    
+                    updateTensionBudget();
+                });
+            });
+            
+            // Function to update the tension budget
+            function updateTensionBudget() {
+                let totalTension = 0;
+                let highCount = 0, mediumCount = 0, lowCount = 0;
+                
+                tensionSelects.forEach(select => {
+                    const value = parseInt(select.value);
+                    totalTension += value;
+                    
+                    if (value === 8) highCount++;
+                    else if (value === 4) mediumCount++;
+                    else lowCount++;
+                });
+                
+                // Update display
+                totalTensionEl.textContent = totalTension;
+                
+                const remainingTension = MAX_TENSION - totalTension;
+                remainingTensionEl.textContent = Math.abs(remainingTension);
+                
+                // Update breakdown
+                highCountEl.textContent = highCount;
+                mediumCountEl.textContent = mediumCount;
+                lowCountEl.textContent = lowCount;
+                
+                // Update remaining tension display style
+                const remainingItem = document.querySelector('.remaining-tension, .exceeded-tension');
+                if (remainingTension < 0) {
+                    remainingItem.className = 'budget-item exceeded-tension';
+                    remainingItem.querySelector('div:first-child').textContent = 'Exceeded by';
+                } else {
+                    remainingItem.className = 'budget-item remaining-tension';
+                    remainingItem.querySelector('div:first-child').textContent = 'Remaining';
+                }
+            }
+            
+            // Reset all tension levels to medium
+            resetBtn.addEventListener('click', function() {
+                tensionSelects.forEach(select => {
+                    select.value = '4';
+                    select.classList.remove('high', 'low');
+                    select.classList.add('medium');
+                });
+                
+                updateTensionBudget();
+            });
+            
+            // Initialize with all medium tension
+            updateTensionBudget();
+        });
+
+        // Defence Waves Functionality
+        import { prepareDefenceSoldiers } from "../../../utils.js";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get("name");
+
+        let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
+        if (!kingdoms[name]) kingdoms[name] = {};
+        if (!kingdoms[name].defenceWaves) kingdoms[name].defenceWaves = [];
+
+        const shiftSelect = document.getElementById("shift");
+
+        function renderWaves() {
+            const wavesList = document.getElementById("wavesList");
+            wavesList.innerHTML = "";
+            const actualSoldiers = prepareDefenceSoldiers(kingdoms[name], 100, shiftSelect.value);
+
+            kingdoms[name].defenceWaves.forEach((wave, index) => {
+                const waveDiv = document.createElement("div");
+                waveDiv.className = "wave-item";
+
+                const commanderSelect = document.createElement("select");
+                Object.keys(kingdoms[name].commanders || {}).forEach((commanderId) => {
+                    const option = document.createElement("option");
+                    option.value = commanderId;
+                    option.textContent = commanderId;
+                    if (wave.commander === commanderId) option.selected = true;
+                    commanderSelect.appendChild(option);
+                });
+
+                const soldiersDiv = document.createElement("div");
+                soldiersDiv.className = "soldiers-list";
+
+                // Create add soldier button
+                const addSoldierBtn = document.createElement("button");
+                addSoldierBtn.className = "add-soldier-btn";
+                addSoldierBtn.innerHTML = "+";
+                addSoldierBtn.onclick = () => {
+                    // Create soldier selection modal
+                    const modal = document.createElement("div");
+                    modal.className = "modal";
+
+                    const modalContent = document.createElement("div");
+                    modalContent.className = "modal-content";
+
+                    const soldierSelect = document.createElement("select");
+                    const soldiers = kingdoms[name].barrack?.soldiers[shiftSelect.value] || [];
+                    soldiers.forEach((soldier) => {
+                        const option = document.createElement("option");
+                        option.value = soldier.image.id;
+                        option.textContent = soldier.image.id;
+                        soldierSelect.appendChild(option);
+                    });
+
+                    const addBtn = document.createElement("button");
+                    addBtn.textContent = "Add";
+                    addBtn.onclick = () => {
+                        const selectedImage = soldierSelect.value;
+
+                        // Create new soldier entry
+                        const soldierDiv = createSoldierEntry(
+                            {
+                                image: selectedImage,
+                                percentage: 0,
+                            },
+                            index,
+                        );
+
+                        soldiersDiv.appendChild(soldierDiv);
+                        modal.remove();
+                    };
+
+                    const cancelBtn = document.createElement("button");
+                    cancelBtn.textContent = "Cancel";
+                    cancelBtn.onclick = () => modal.remove();
+
+                    modalContent.appendChild(soldierSelect);
+                    modalContent.appendChild(addBtn);
+                    modalContent.appendChild(cancelBtn);
+                    modal.appendChild(modalContent);
+                    document.body.appendChild(modal);
+                };
+
+                function createSoldierEntry(soldier, waveIndex) {
+                    const soldierDiv = document.createElement("div");
+                    soldierDiv.className = "soldier-entry";
+
+                    const percentageInput = document.createElement("input");
+                    percentageInput.type = "range";
+                    percentageInput.min = "0";
+                    percentageInput.max = "100";
+                    percentageInput.value = soldier.percentage || 0;
+
+                    const percentageLabel = document.createElement("span");
+                    const actualQuantity = actualSoldiers[index]?.find(soldier.image) || 0;
+                    percentageLabel.textContent = `${percentageInput.value}% (${actualQuantity} soldiers)`;
+
+                    // Update label when the range changes
+                    percentageInput.oninput = () => {
+                        const total = kingdoms[name].barrack?.soldiers[shiftSelect.value]?.find(s => s.image.id === soldier.image)?.quantity || 0;
+                        const quantity = Math.ceil(total * (percentageInput.value / 100));
+                        percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
+                    };
+
+                    const removeBtn = document.createElement("button");
+                    removeBtn.className = "remove-soldier-btn";
+                    removeBtn.innerHTML = "×";
+                    removeBtn.onclick = () => soldierDiv.remove();
+
+                    soldierDiv.innerHTML = `<span>${soldier.image}</span>`;
+                    soldierDiv.appendChild(document.createElement("br"));
+                    soldierDiv.appendChild(percentageInput);
+                    soldierDiv.appendChild(percentageLabel);
+                    soldierDiv.appendChild(document.createElement("br"));
+                    soldierDiv.appendChild(document.createElement("br"));
+                    soldierDiv.appendChild(removeBtn);
+
+                    return soldierDiv;
+                }
+
+                // Add existing soldiers
+                wave.soldiers.forEach((soldier) => {
+                    soldiersDiv.appendChild(createSoldierEntry(soldier, index));
+                });
+
+                soldiersDiv.appendChild(addSoldierBtn);
+
+                const waveControls = document.createElement("div");
+                waveControls.className = "wave-controls";
+
+                const saveBtn = document.createElement("button");
+                saveBtn.className = "save-wave-btn";
+                saveBtn.textContent = "Save Wave";
+                saveBtn.onclick = () => {
+                    const newWave = {
+                        commander: commanderSelect.value,
+                        soldiers: [],
+                    };
+
+                    const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
+                    soldierEntries.forEach((entry) => {
+                        const image = entry.querySelector("span").textContent;
+                        const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;        
+                        const items = entry
+                            .querySelector('input[type="text"]')
+                            .value.split(",")
+                            .map((item) => item.trim())
+                            .filter((item) => item);
+
+                        newWave.soldiers.push({ image: image, percentage, items });
+                    });
+
+                    kingdoms[name].defenceWaves[index] = newWave;
+                    localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+                    renderWaves();
+                };
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-wave-btn";
+                deleteBtn.textContent = "Delete Wave";
+                deleteBtn.onclick = () => {
+                    kingdoms[name].defenceWaves.splice(index, 1);
+                    localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+                    renderWaves();
+                };
+
+                waveControls.appendChild(saveBtn);
+                waveControls.appendChild(deleteBtn);
+
+                waveDiv.appendChild(commanderSelect);
+                waveDiv.appendChild(soldiersDiv);
+                waveDiv.appendChild(waveControls);
+                wavesList.appendChild(waveDiv);
+            });
+        }
+
+        document.getElementById("addWaveBtn").onclick = () => {
+            kingdoms[name].defenceWaves.push({
+                commander: Object.keys(kingdoms[name].commanders || {})[0] || "",
+                soldiers: [],
+            });
+            localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+            renderWaves();
+        };
+
+        shiftSelect.onchange = () => renderWaves();
+        renderWaves();
+    </script>
 </body>
 </html>
