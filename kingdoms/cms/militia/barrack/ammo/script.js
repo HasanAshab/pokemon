@@ -15,8 +15,12 @@ document.getElementById("main-heading")
 }
 function saveCardItems(cardIndex){
   const items = getMultyInputValues("items",cardIndex)
-  const shift = document.querySelector(`.soldier-ammo-card[data-index="${cardIndex}"]`).dataset.shift
-  const soldierData = kingdom.barrack.soldiers[shift][cardIndex]
+  const ammoCard = document.querySelector(`.soldier-ammo-card[data-index="${cardIndex}"]`)
+  const shift = ammoCard.dataset.shift
+const index = Array.prototype.indexOf.call(ammoCard.parentElement.children,ammoCard)  
+  const soldierData = kingdom.barrack.soldiers[shift][index]
+  console.log(soldierData,shift,cardIndex);
+  
   soldierData.image.items = items
   saveKingdoms(kingdoms)
 }
