@@ -9,6 +9,7 @@ const attackerSelect = document.getElementById('attacker');
 const defenderSelect = document.getElementById('defender');
 const strategySelect = document.getElementById('warStrategy')
 const shiftSelect = document.getElementById('shift')
+const directionSelect = document.getElementById('direction')
 const kingdomName = document.getElementById('kingdomName');
 kingdomName.textContent = name || 'Unknown Kingdom';
 
@@ -26,7 +27,20 @@ badMsgEl.textContent = bad
 
 defenderSelect.onchange = () => {
   showDefenderData();
+  loadDirectionData();
 }
+function loadDirectionData() {
+  const defender = kingdoms[defenderSelect.value];
+  const directionList = document.getElementById("direction");
+  directionList.innerHTML = "";
+  Object.keys(defender.militaryTension).forEach(direction => {
+    const option = document.createElement('option');
+    option.value = direction;
+    option.textContent = direction;
+    directionList.appendChild(option);
+  });
+}
+
 function renderStrategySelect() {
   Object.keys(WAR_SYSTEMS).forEach(strategy => {
     const option = document.createElement('option');
@@ -401,5 +415,4 @@ renderStrategySelect();
 renderKingdomSelects();
 renderWaves();
 showDefenderData()
-
-
+loadDirectionData();
