@@ -15,7 +15,7 @@ window.onload = () => {
 
 let enemyCount = 0;
 
-function loadImportentDataSelectOptions(form) {
+function loadImportentDataSelectOptions(form,isDuplicate = false,formIndex = null) {
   const nationGenSelect = form.querySelector('.nation-select');
   const ageSelect = form.querySelector('.age-select');
   const foodSelect = form.querySelector('.food-select');
@@ -24,6 +24,17 @@ function loadImportentDataSelectOptions(form) {
   const ages = getItemsOfType('age_genetics')
   const foods = getItemsOfType('food_genetics')
   const bodies = getItemsOfType('body_genetics')
+  let formToDuplicate = null
+  let duplicateGen = null
+  if (isDuplicate) {
+    formToDuplicate = document.querySelectorAll('.pokemon-form')[formIndex]
+    duplicateGen = {
+      nation: formToDuplicate.querySelector('.nation-select').value,
+      age: formToDuplicate.querySelector('.age-select').value,
+      food: formToDuplicate.querySelector('.food-select').value,
+      body: formToDuplicate.querySelector('.body-select').value,
+    }
+  }
 
   nationGenSelect.innerHTML = '';
   ageSelect.innerHTML = '';
@@ -34,6 +45,8 @@ function loadImportentDataSelectOptions(form) {
     const option = document.createElement('option');
     option.value = item;
     option.textContent = item;
+    if (isDuplicate && duplicateGen.nation === item)
+      option.selected = true
     nationGenSelect.appendChild(option);
   })
  
@@ -41,6 +54,8 @@ function loadImportentDataSelectOptions(form) {
     const option = document.createElement('option');
     option.value = item;
     option.textContent = item;
+     if (isDuplicate && duplicateGen.age === item)
+      option.selected = true
     ageSelect.appendChild(option);
   })
  
@@ -48,6 +63,8 @@ function loadImportentDataSelectOptions(form) {
     const option = document.createElement('option');
     option.value = item;
     option.textContent = item;
+    if (isDuplicate && duplicateGen.food === item)
+      option.selected = true
     foodSelect.appendChild(option);
   })
  
@@ -55,6 +72,8 @@ function loadImportentDataSelectOptions(form) {
     const option = document.createElement('option');
     option.value = item;
     option.textContent = item;
+    if (isDuplicate && duplicateGen.body === item)
+      option.selected = true
     bodySelect.appendChild(option);
   })
 
@@ -76,7 +95,7 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false,formIndex = null) {
   div.className = 'pokemon-form';
   div.dataset.index = enemyCount;
   div.innerHTML = getEnemyForm(enemyCount,container,isDuplicate,formIndex);
-  loadImportentDataSelectOptions(div);
+  loadImportentDataSelectOptions(div,isDuplicate,formIndex);
 
   container.appendChild(div);
   // add input is just a small gift from  the function. ignore it
