@@ -230,3 +230,13 @@ export async function startUserBattle(name, popList = [], fields = [], system) {
     console.error(e)
   }
 }
+
+export function getItemsOfType(type) {
+  const newItems = {}
+  for (const [id, item] of Object.entries(items)) {
+    if (item.type === type) {
+      newItems[id] = item
+    }
+  }
+  return newItems
+}

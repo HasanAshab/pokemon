@@ -35,7 +35,7 @@ export default {
   },
 
   "$charizardz:darklayer1":{
-      type: "armor",
+    type: "armor",
     covers: 25,
     baseStats: {
       def: 80,
@@ -216,10 +216,6 @@ export default {
       spe: -25
     }
   },
-
-
-
-  
   locket1: {
     type: "armor",
     covers: 50,
@@ -228,7 +224,8 @@ export default {
     }
   },
 
-  "gen-bengal": {
+  "gen-nation-bengal": {
+    type: "nation_genetics",
     tokensPercent: {
       "atk": 10,
       "spd": 10,
@@ -236,7 +233,8 @@ export default {
       "def": -10    
     }
   },
-  "gen-ember": {
+  "gen-nation-ember": {
+    type: "nation_genetics",
     tokensPercent: {
       "spa": 10,
       "def": 10,
@@ -244,7 +242,8 @@ export default {
       "spd": -10
     }
   },
-  "gen-leaf": {
+  "gen-nation-grass": {
+    type: "nation_genetics",
     tokensPercent: {
       "hp": 20,
       "spe": 20,
@@ -254,7 +253,8 @@ export default {
       "spd": -10
     }
   },
-  "gen-unknown": {
+  "gen-nation-unknown": {
+    type: "nation_genetics",
     tokensPercent: {
       "hp": 3,
       "spe": 3,
@@ -265,6 +265,7 @@ export default {
     }
   },
   "gen-age-18": {
+    type: "age_genetics",
     tokensPercent: {
       "hp": 10,
       "def": 5,
@@ -275,6 +276,7 @@ export default {
     }
   },
   "gen-age-25": {
+    type: "age_genetics",
     tokensPercent: {
       "hp": 20,
       "def": 10,
@@ -283,7 +285,8 @@ export default {
       "spd": 10,
     }
   },
-  "gen-age-50":{
+  "gen-age-50": {
+    type: "age_genetics",
     tokensPercent: {
       "hp": -3,
       "def": -3,
@@ -292,26 +295,8 @@ export default {
       "spd": -3, 
     }
   },
-  "gen-bulk": {
-    tokensPercent: {
-      "hp": 20,
-      "def": 10,
-      "atk": 30,
-      "spd": -10,
-      "spe": -40
-    }
-  },
-  
-  "gen-food-mid": {
-    tokensPercent: {
-      "hp": 2,
-      "def": 2,
-      "atk": 2,
-      "spd": 2,
-      "spe": 2
-    }
-  },
-  "gen-fat": {
+  "gen-body-fat": {
+    type: "body_genetics",
     tokensPercent: {
       "hp": 10,
       "def": 5,
@@ -320,7 +305,8 @@ export default {
       "spe": -15
     }
   },
-  "gen-thik": {
+  "gen-body-thik": {
+    type: "body_genetics",
     tokensPercent: {
       "hp": -10,
       "def": -5,
@@ -329,14 +315,60 @@ export default {
       "spe": 15
     }
   },
-  "gen-food-low": {
+
+  "gen-food-low-1": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -50,
+      "def": -30,
+      "atk": -30,
+      "spd": -30,
+      "spe": -30,
+      "spa": -30
+    }
+  },
+  "gen-food-low-2": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -40,
+      "def": -20,
+      "atk": -20,
+      "spd": -20,
+      "spe": -20,
+      "spa": -20
+    }
+  },
+  "gen-food-low-3": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -30,
+      "def": -10,
+      "atk": -10,
+      "spd": -10,
+      "spe": -10,
+      "spa": -10
+    }
+  },
+  "gen-food-low-4": {
+    type: "food_genetics",
     tokensPercent: {
       "hp": -20,
-      "def": -5,
-      "atk": -5,
-      "spd": -5,
-      "spe": -5,
-      "spa": -5
+      "def": -10,
+      "atk": -10,
+      "spd": -10,
+      "spe": -10,
+      "spa": -10
+    }
+  },
+  "gen-food-mid-1": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
     }
   }
 }
