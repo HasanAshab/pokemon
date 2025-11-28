@@ -14,9 +14,7 @@ function makeWeaponizedItems() {
   return Object.entries(moves)
     .filter(([id, move]) => move.flags.weapon)
     .reduce((acc, [id, move]) => {      
-      acc[id] = convertMoveToItem(move)
-      console.log(acc[id]);
-      
+      acc[id] = convertMoveToItem(move)      
       return acc
     }, {})
 }
@@ -327,7 +325,8 @@ export default {
       "spd": -30,
       "spe": -30,
       "spa": -30
-    }
+    },
+    meta: { budget: 300 }
   },
   "gen-food-low-2": {
     type: "food_genetics",
@@ -338,7 +337,8 @@ export default {
       "spd": -20,
       "spe": -20,
       "spa": -20
-    }
+    },
+    meta: { budget: 700 }
   },
   "gen-food-low-3": {
     type: "food_genetics",
@@ -349,7 +349,8 @@ export default {
       "spd": -10,
       "spe": -10,
       "spa": -10
-    }
+    },
+    meta: { budget: 1000 }
   },
   "gen-food-low-4": {
     type: "food_genetics",
@@ -360,7 +361,8 @@ export default {
       "spd": -10,
       "spe": -10,
       "spa": -10
-    }
+    },
+    meta: { budget: 1500 }
   },
   "gen-food-mid-1": {
     type: "food_genetics",
@@ -371,6 +373,79 @@ export default {
       "spd": 10,
       "spe": 10,
       "spa": 10
-    }
+    },
+    meta: { budget: 2500 }
+  },
+  "gen-food-mid-2": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
+    },
+    meta: { budget: 3500 }
+  },
+  "gen-food-mid-3": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
+    },
+    meta: { budget: 4500 }
+  },
+  "gen-food-high-1": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
+    },
+    meta: { budget: 6000 }
+  },
+  "gen-food-high-2": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
+    },
+    meta: { budget: 8000 }
+  },
+  "gen-food-high-3": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
+    },
+    meta: { budget: 10000 }
+  },
+  "gen-food-bulk-1": {
+    type: "food_genetics",
+    tokensPercent: {
+      "hp": -10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10,
+      "spa": 10
+    },
+    meta: { budget: 15000 }
   }
 }

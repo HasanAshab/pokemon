@@ -1,4 +1,5 @@
-import { FOOD_BUDGET, DISASTERS } from "../constraints.js";
+import items from "../../data/items.js";
+import { DISASTERS } from "../constraints.js";
 import {
   calculateTax,
   calculateBuildUsedLandArea,
@@ -160,7 +161,8 @@ function loadFoodConsumptionTier() {
   const foodBudget = savedIncome * 0.5
   const foodConsumptionTier = getFoodTierForBudget(foodBudget)
   const tierLabel = document.getElementById("peopleFoodBudget");
-  tierLabel.innerHTML = `<b>${foodConsumptionTier}</b> ($${FOOD_BUDGET[foodConsumptionTier]})`;
+  const tier = foodConsumptionTier.replace("gen-food-", "").replace("-", " - ")
+  tierLabel.innerHTML = `<b>${tier}</b> ($${items[foodConsumptionTier].meta.budget})`;
 }
 
 function updateDisplay() {

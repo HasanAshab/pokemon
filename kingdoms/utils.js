@@ -1,7 +1,7 @@
+import { getItemsOfType } from "../assets/js/utils/dom.js";
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
-import { FOOD_BUDGET } from "./constraints.js";
 
 export function foo (size,kingdom){
 
@@ -574,9 +574,10 @@ export function getSoldierImbalancePenalty(kingdom, shift) {
 }
 
 export function getFoodTierForBudget(budget) {
+  const foodGenItems = getItemsOfType('food_genetics')
   let lastTier = null
-  for (const tier in FOOD_BUDGET) {
-    if (budget < FOOD_BUDGET[tier]) break
+  for (const tier in foodGenItems) {
+    if (budget < foodGenItems[tier].meta.budget) break
     lastTier = tier
   }
   return lastTier
