@@ -160,7 +160,7 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
     <br>
 
    <label class="imp-data">
-    Nation Gen
+    Nation
     <select class="nation-gen-select"></select>
    </label>
     <br>
@@ -170,9 +170,10 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
    </label>
     <br>
    <label class="imp-data">
-    Nation Gen
-    <select class="nation-gen-select"></select>
+    Food
+    <select class="food-select"></select>
    </label>
+   
     <br>
 
     <pre class="enemy-stats">Stats will show here...</pre>
