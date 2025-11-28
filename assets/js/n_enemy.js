@@ -16,14 +16,46 @@ window.onload = () => {
 let enemyCount = 0;
 
 function loadImportentDataSelectOptions(form) {
-  const nationGenSelect = form.querySelector('.nation-gen-select');
-  nationGenSelect.innerHTML = '';
+  const nationGenSelect = form.querySelector('.nation-select');
+  const ageSelect = form.querySelector('.age-select');
+  const foodSelect = form.querySelector('.food-select');
+  const bodySelect = form.querySelector('.body-select');
   const nationGenetics = getItemsOfType('nation_genetics')
+  const ages = getItemsOfType('age_genetics')
+  const foods = getItemsOfType('food_genetics')
+  const bodies = getItemsOfType('body_genetics')
+
+  nationGenSelect.innerHTML = '';
+  ageSelect.innerHTML = '';
+  foodSelect.innerHTML = '';
+  bodySelect.innerHTML = '';
+
  Object.keys(nationGenetics).forEach(item => {
     const option = document.createElement('option');
     option.value = item;
     option.textContent = item;
     nationGenSelect.appendChild(option);
+  })
+ 
+ Object.keys(ages).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    ageSelect.appendChild(option);
+  })
+ 
+ Object.keys(foods).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    foodSelect.appendChild(option);
+  })
+ 
+ Object.keys(bodies).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    bodySelect.appendChild(option);
   })
 
 }
@@ -57,6 +89,7 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false,formIndex = null) {
     const types = getMultyInputValues("types",formIndex)
     const abilities = getMultyInputValues("abilities",formIndex)
     const items = getMultyInputValues("items",formIndex)
+
     const enemyMoveItems = enemyFormToDuplicate.querySelectorAll('.moves-list .move-item')
    console.log(types,abilities,items);
    
@@ -159,23 +192,26 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
     </div>
     <br>
 
-   <label class="imp-data">
+   <label class="gen-data">
     Nation
-    <select class="nation-gen-select"></select>
+    <select class="nation-select"></select>
    </label>
-    <br>
-   <label class="imp-data">
+    <br><br>
+   <label class="gen-data">
     Age
     <select class="age-select"></select>
    </label>
-    <br>
-   <label class="imp-data">
+    <br><br>
+   <label class="gen-data">
     Food
     <select class="food-select"></select>
    </label>
-   
-    <br>
-
+    <br><br>
+   <label class="gen-data">
+    Body Type
+    <select class="body-select"></select>
+   </label>
+    <br><br>
     <pre class="enemy-stats">Stats will show here...</pre>
 
     <div class="move-section">
@@ -534,8 +570,12 @@ function makeEnemiesMeta() {
     const itemsRaw = form.querySelector('.items-inp')?.value || '';
     const types = getMultyInputValues("types",index)//typesRaw.split(',').map(item => item.trim()).filter(item => item);
     const abilities = getMultyInputValues("abilities",index)//abilitiesRaw.split(',').map(item => item.trim()).filter(item => item);
-    const items = getMultyInputValues("items",index)//itemsRaw.split(',').map(item => item.trim()).filter(item => item);
-
+    const nationGen = form.querySelector('.nation-select')?.value || '';
+    const ageGen = form.querySelector('.age-select')?.value || '';
+    const foodGen = form.querySelector('.food-select')?.value || '';
+    const bodyGen = form.querySelector('.body-select')?.value || '';
+    const items = getMultyInputValues("items",index).concat([nationGen,ageGen,foodGen,bodyGen])//itemsRaw.split(',').map(item => item.trim()).filter(item => item);
+    
     const moves = [];
     form.querySelectorAll('.moves-list .move-item').forEach(moveItem => {
       const id = moveItem.querySelector('.move-input').value.trim();

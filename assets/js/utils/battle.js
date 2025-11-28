@@ -6,7 +6,6 @@ import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj, calcLevelStat } from "./helpers.js"
 import { WeatherManager } from "./weathers.js";
 
-
 class BaseBattle extends EventEmitter {
     scenePerTurn = 1
     //Possible turns per wave with their weight

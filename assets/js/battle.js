@@ -7,6 +7,29 @@ import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
 import pokemons from "../../data/pokemons.js"
 
+globalThis.selectRandomFields = function(){
+ const fields = document.querySelectorAll(".fields-cont > .field")
+ const startIndex = Math.floor(Math.random() * fields.length)
+ const totalFeildsToSelect = Math.floor(Math.random() * 6) + 1
+ let fieldsSelected = 0
+
+ // cleanup old active fields
+ for (const field of fields){
+    field.classList.remove("active")
+ }
+ while (fieldsSelected !== totalFeildsToSelect){
+  for (let i = startIndex; i < fields.length; i++){
+       
+      const isSelected = (Math.floor(Math.random() * 11) + 1) <= 3 ? true : false
+      if (isSelected){
+          fields[i].classList.add("active")
+          fieldsSelected++
+      }
+      if (fieldsSelected === totalFeildsToSelect)
+         break;
+  }
+ }
+}
 
 const eventEmitter = new EventEmitter()
 const system = getParam("system") || "multiple"
