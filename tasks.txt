@@ -1,8 +1,7 @@
 * Tasks
 Military tension + builds
-Gen data + enemy genetics and copy + poke_details
-weapon to item
-
+Gen data
+food central price
 * QnA
 
 

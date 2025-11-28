@@ -1,11 +1,12 @@
 import moves from "./moves.js"
 
 function convertMoveToItem(move) {
+  const atkStatName = move.flags.contact ? "atk" : "spa"
   return {
     type: "weapon",
     tokensPercent: {
-      atk: move.basePower,
-    }
+      [atkStatName]: 10 * move.retreat,
+    },
   }
 }
 
@@ -14,7 +15,8 @@ function makeWeaponizedItems() {
     .filter(([id, move]) => move.flags.weapon)
     .reduce((acc, [id, move]) => {      
       acc[id] = convertMoveToItem(move)
-           
+      console.log(acc[id]);
+      
       return acc
     }, {})
 }
