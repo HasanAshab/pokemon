@@ -80,9 +80,9 @@ function getDisasterChance(disaster, geoState, isRelated = false) {
   if (state === 'immune') return 0;
   
   if (isRelated) {
-    return state === 'prone' ? 30 : 15; // related prone: 30%, related normal: 15%
+    return state === 'prone' ? 15 : 7; // related prone: 30%, related normal: 15%
   } else {
-    return state === 'prone' ? 10 : 5; // prone: 10%, normal: 5%
+    return state === 'prone' ? 5 : 2; // prone: 10%, normal: 5%
   }
 }
 
