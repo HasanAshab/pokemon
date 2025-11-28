@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>LocalStorage Editor</title>
@@ -29,7 +30,8 @@
       margin-bottom: 20px;
     }
 
-    .controls input, .controls button {
+    .controls input,
+    .controls button {
       padding: 10px;
       font-size: 1em;
       min-width: 150px;
@@ -50,7 +52,8 @@
       min-width: 600px;
     }
 
-    th, td {
+    th,
+    td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: left;
@@ -70,7 +73,8 @@
       cursor: pointer;
     }
 
-    .edit-btn, .delete-btn {
+    .edit-btn,
+    .delete-btn {
       cursor: pointer;
       border: none;
       background: none;
@@ -78,7 +82,8 @@
       font-size: 0.95em;
     }
 
-    .edit-btn:hover, .delete-btn:hover {
+    .edit-btn:hover,
+    .delete-btn:hover {
       text-decoration: underline;
     }
 
@@ -111,12 +116,15 @@
       h1 {
         font-size: 1.5em;
       }
-      .controls input, .controls button {
+
+      .controls input,
+      .controls button {
         min-width: 100%;
       }
     }
   </style>
 </head>
+
 <body>
   <h1>LocalStorage Editor</h1>
 
@@ -129,6 +137,8 @@
 
   <div class="controls">
     <button onclick="copyAll()">Copy localStorage</button>
+    <button onclick="exportAll()">Export LocalStorage</button>
+    <button onclick="importFromFile()">Import from File</button>
     <button onclick="importAll()">Import localStorage</button>
   </div>
 
@@ -150,7 +160,8 @@
   </div>
 
   <div class="textarea-container">
-    <textarea id="localStorageData" class="auto-expand-textarea" placeholder="LocalStorage data will appear here"></textarea>
+    <textarea id="localStorageData" class="auto-expand-textarea"
+      placeholder="LocalStorage data will appear here"></textarea>
   </div>
   <div class="controls">
     <button onclick="saveLSDataTextarea()">Save</button>
@@ -158,7 +169,7 @@
 
   <script>
     const lsDataTextarea = document.getElementById('localStorageData');
-    
+
     // Function to auto-expand textarea based on content
     function autoExpandTextarea(textarea) {
       // Reset height to auto to get the correct scrollHeight
@@ -166,17 +177,17 @@
       // Set the height to scrollHeight to fit all content
       textarea.style.height = textarea.scrollHeight + 'px';
     }
-    
+
     // Initialize the textarea size on load
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
       autoExpandTextarea(lsDataTextarea);
     });
-    
+
     // Add event listener for input to auto-expand as user types
-    lsDataTextarea.addEventListener('input', function() {
+    lsDataTextarea.addEventListener('input', function () {
       autoExpandTextarea(this);
     });
-    
+
     function saveLSDataTextarea() {
       alert("Not works currently.");
       renderStorage();
@@ -191,7 +202,7 @@
         autoExpandTextarea(lsDataTextarea);
         return;
       }
-      
+
       const lsObj = {}
 
       Object.keys(localStorage).forEach(key => {
@@ -203,7 +214,7 @@
         catch (e) {
           lsObj[key] = value;
         }
-        
+
         const row = document.createElement('tr');
 
         const keyCell = document.createElement('td');
@@ -279,7 +290,7 @@
         renderStorage();
       }
     }
-    
+
     function copyAll() {
       const data = JSON.stringify(localStorage, null, 2);
       navigator.clipboard.writeText(data).then(() => {
@@ -287,6 +298,65 @@
       }).catch(err => {
         alert("Failed to copy: " + err);
       });
+    }
+
+    function exportAll() {
+      const lsObj = {};
+      Object.keys(localStorage).forEach(key => {
+        const value = localStorage.getItem(key);
+        try {
+          lsObj[key] = JSON.parse(value);
+        } catch (e) {
+          lsObj[key] = value;
+        }
+      });
+
+      const dataStr = JSON.stringify(lsObj);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+      const filename = `${timestamp}.pkbackup`;
+
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importFromFile() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.pkbackup';
+      input.onchange = function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (typeof data !== 'object' || Array.isArray(data)) {
+              alert("File must contain a JSON object with key-value pairs.");
+              return;
+            }
+            if (!confirm("This will overwrite existing keys. Continue?")) return;
+
+            for (const key in data) {
+              localStorage.setItem(key, typeof data[key] === 'string' ? data[key] : JSON.stringify(data[key]));
+            }
+            renderStorage();
+            alert("Import from file completed.");
+          } catch (error) {
+            alert("Invalid JSON file format: " + error.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
     }
 
     function importAll() {
@@ -321,4 +391,5 @@
     renderStorage();
   </script>
 </body>
+
 </html>
