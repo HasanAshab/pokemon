@@ -1,5 +1,5 @@
 import { BATTLE_SYSTEMS } from "./utils/battle.js";
-import {loadAbilitiesDataList,loadTypesDataList,loadItemsDataList, loadNaturesDataList, loadMovesDatalist ,loadPokemonsDatalist } from "./utils/dom.js";
+import {loadAbilitiesDataList,loadTypesDataList,loadItemsDataList, loadNaturesDataList, loadMovesDatalist ,loadPokemonsDatalist, getItemsOfType } from "./utils/dom.js";
 import { Pokemon, Move } from "./utils/models.js"
 import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 import { Damage } from "./utils/damage.js"
@@ -248,7 +248,66 @@ function loadStats() {
     }
     setStat("total", pokemon.cp())
 }
+function loadGenetics() {
+ const nationGenSelect = document.querySelector('.nation-select');
+  const ageSelect = document.querySelector('.age-select');
+  const foodSelect = document.querySelector('.food-select');
+  const bodySelect = document.querySelector('.body-select');
+  const nationGenetics = getItemsOfType('nation_genetics')
+  const ages = getItemsOfType('age_genetics')
+  const foods = getItemsOfType('food_genetics')
+  const bodies = getItemsOfType('body_genetics')
+  const items = getPokemonsMeta(name).items
+  
+  nationGenSelect.innerHTML = '';
+  ageSelect.innerHTML = '';
+  foodSelect.innerHTML = '';
+  bodySelect.innerHTML = '';
 
+ Object.keys(nationGenetics).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    if (items.includes(item))
+      option.selected = true
+    nationGenSelect.appendChild(option);
+  })
+ 
+ Object.keys(ages).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+       if (items.includes(item))
+      option.selected = true
+    ageSelect.appendChild(option);
+  })
+ 
+ Object.keys(foods).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+       if (items.includes(item))
+      option.selected = true
+    foodSelect.appendChild(option);
+  })
+ 
+ Object.keys(bodies).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+           if (items.includes(item))
+      option.selected = true
+    bodySelect.appendChild(option);
+  })}
+  globalThis.updateGen = function(value, type) {
+    const meta = getPokemonsMeta(name)
+    const genItemsName = Object.keys(getItemsOfType(type))
+    
+    meta.items = meta.items.filter(item => !genItemsName.includes(item))
+
+    meta.items.push(value)
+    setPokemonMeta(name,meta)
+  }
 function loadMoves() {
     const movesContainer = document.getElementById("moves-container")
     movesContainer.innerHTML = ""
@@ -446,4 +505,5 @@ function loadAll(){
 window.onload = () => {
     setupPokemon()
     loadAll()
+    loadGenetics()
 }

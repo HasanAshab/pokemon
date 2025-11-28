@@ -55,6 +55,7 @@
 <button onclick="showPokemonChooseForm()" class="pokemon-change-btn">&#9999;</button>
 </div>
 <!-- Stats Section -->
+ 
 <div class="stats-header">
 <div onclick="healthProgressBarClickHandler(event)" class="health-progress-bar" data-total-hp="0" data-current-hp="0">
 <span class="health-data"><span class="current-hp">0</span> / <span class="total-hp">0</span>
@@ -65,6 +66,24 @@
 </div>
 <span class="pokemon-cp" data-token-used="+0" data-value="0">Cp:</span>
 </div>
+<div class="genetics" style="display: flex; justify-content: center; padding: 10px; flex-direction: column; gap: 10px;">
+     <label class="gen-data">
+    Nation
+    <select class="nation-select" onchange="updateGen(event.currentTarget.value, 'nation_genetics')"></select>
+   </label>
+   <label class="gen-data">
+    Age
+    <select class="age-select" onchange="updateGen(event.currentTarget.value, 'age_genetics')"></select>
+   </label>
+   <label class="gen-data">
+    Food
+    <select class="food-select" onchange="updateGen(event.currentTarget.value, 'food_genetics')"></select>
+   </label>
+   <label class="gen-data">
+    Body
+    <select class="body-select" onchange="updateGen(event.currentTarget.value, 'body_genetics')"></select>
+   </label>
+ </div>
 <div class="stats-header-secondary">
 <div data-value="none" onclick="statClickHandler(event)" class="stat abilities">
 <strong>Abilities:</strong>
@@ -75,6 +94,7 @@
 <div data-value="" onclick="statClickHandler(event)" class="stat items">
 <strong>Items:</strong>
 </div>
+
 <div data-value="" onclick="statClickHandler(event)" class="stat types">
 <strong>types:</strong>
 </div>
