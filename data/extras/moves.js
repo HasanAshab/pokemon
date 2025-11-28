@@ -641,15 +641,8 @@ katana: {
  ninechaku:{
       num: 100010,
       accuracy: 100,
-      multihit:[1,4],
-      basePower: 0,
-      basePowerCallback(pokemon, target) {
-        let ratio = Math.floor(pokemon.getStat("spe") / target.getStat("spe"))
-        if (!isFinite(ratio)) ratio = 0
-        const bp = [10, 20, 30, 40, 50][Math.min(ratio, 4)]
-        this.debug("BP: " + bp)
-        return bp
-      },
+      multihit:[2,5],
+      basePower: 20,
       category: "Physical",
       name: "Nine Chaku",
       pp: 15 * 3,
@@ -672,15 +665,8 @@ katana: {
   ninechakublade:{
       num: 100011,
       accuracy: 100,
-      multihit:[1,4],
-      basePower: 0,
-      basePowerCallback(pokemon, target) {
-        let ratio = Math.floor(pokemon.getStat("spe") / target.getStat("spe"))
-        if (!isFinite(ratio)) ratio = 0
-        const bp = [17, 27, 37, 47, 57][Math.min(ratio, 4)]
-        this.debug("BP: " + bp)
-        return bp
-      },
+      multihit:[2,5],
+      basePower: 25,
       category: "Physical",
       name: "Nine Chaku(Blade)",
       pp: 15 * 3,

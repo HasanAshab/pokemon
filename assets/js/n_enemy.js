@@ -1,4 +1,4 @@
-import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle } from "./utils/dom.js";
+import {initAllMultyInputBox,getMultyInputValues, loadPokemonsDatalist, loadNaturesDataList, loadMovesDatalist, startBattle, getItemsOfType } from "./utils/dom.js";
 import { BATTLE_SYSTEMS } from "./utils/battle.js"
 import MOVES from "../../data/moves.js"
 import { Move , Pokemon } from "./utils/models.js";
@@ -15,7 +15,18 @@ window.onload = () => {
 
 let enemyCount = 0;
 
+function loadImportentDataSelectOptions(form) {
+  const nationGenSelect = form.querySelector('.nation-gen-select');
+  nationGenSelect.innerHTML = '';
+  const nationGenetics = getItemsOfType('nation_genetics')
+ Object.keys(nationGenetics).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    nationGenSelect.appendChild(option);
+  })
 
+}
 
 function loadBattleSystems() {
     const selectElement = document.getElementById('sys-select');
@@ -33,6 +44,8 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false,formIndex = null) {
   div.className = 'pokemon-form';
   div.dataset.index = enemyCount;
   div.innerHTML = getEnemyForm(enemyCount,container,isDuplicate,formIndex);
+  loadImportentDataSelectOptions(div);
+
   container.appendChild(div);
   // add input is just a small gift from  the function. ignore it
   globalThis.addInput = initAllMultyInputBox().addInput
@@ -55,7 +68,6 @@ globalThis.addEnemy =  function addEnemy(isDuplicate = false,formIndex = null) {
     enemyMoveItems.forEach(item => {
       addMove(null,false,item.querySelector('.move-input').value, item.querySelector('.move-grade-input').value,div)
     })
-    
   }
   enemyCount++;
 
@@ -73,13 +85,13 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
   let retreat = 4
   let nature = "none"
   if (isDuplicate){
-    const enemyFormToDuplicate = enemiesContainer.querySelector(`.pokemon-form[data-index="${formIndex}"]`)
+  const enemyForm = enemiesContainer.querySelector(`.pokemon-form[data-index="${formIndex}"]`)
     heading = `Enemy ${index + 1} ( Copied from Enemy ${formIndex + 1} )`
-    enemyImage = enemyFormToDuplicate.querySelector('.enemy').value
-    // name = enemyFormToDuplicate.querySelector('.name-inp').value
-    level = enemyFormToDuplicate.querySelector('.level-inp').value
-    retreat = enemyFormToDuplicate.querySelector('.retreat-inp').value
-    nature = enemyFormToDuplicate.querySelector('.nature-inp').value
+    enemyImage = enemyForm.querySelector('.enemy').value
+    // name = enemyForm.querySelector('.name-inp').value
+    level = enemyForm.querySelector('.level-inp').value
+    retreat = enemyForm.querySelector('.retreat-inp').value
+    nature = enemyForm.querySelector('.nature-inp').value
   
   }
   return `
@@ -147,7 +159,21 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
     </div>
     <br>
 
-
+   <label class="imp-data">
+    Nation Gen
+    <select class="nation-gen-select"></select>
+   </label>
+    <br>
+   <label class="imp-data">
+    Age
+    <select class="age-select"></select>
+   </label>
+    <br>
+   <label class="imp-data">
+    Nation Gen
+    <select class="nation-gen-select"></select>
+   </label>
+    <br>
 
     <pre class="enemy-stats">Stats will show here...</pre>
 
@@ -169,7 +195,6 @@ function getEnemyForm(index,enemiesContainer,isDuplicate,formIndex = null) {
  <button onclick="addEnemy(true,${index})" class="duplicate-enemy-btn">Duplicate This Enemy</button>
  <button onclick="removeEnemy(${index})" class="remove-enemy-btn">Remove This Enemy</button>
   `;
-
 
 }
 
