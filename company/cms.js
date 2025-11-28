@@ -18,6 +18,7 @@ let chartData = {
     borderWidth: 2
   }]
 }
+let totalMPCost = 0;
 
 // Contract Management
 let contracts = company.contracts || [];
@@ -57,7 +58,7 @@ function updateCoins() {
 }
 globalThis.updateWorth = ()=> {
   const medium = parseFloat(document.getElementById('medium').value);
-  const worth = !isNaN(medium) ? medium * 70 : 0;
+  const worth = !isNaN(medium) ? (medium - totalMPCost) * 60 : 0;
   document.getElementById('companyWorth').textContent = `Total Worth $: ${worth.toLocaleString()}`;
 }
 
@@ -170,6 +171,7 @@ function renderTable() {
   });
 
   document.getElementById("totalSalary").textContent = formatNumber(total);
+  totalMPCost = total;
   saveAllData();
 }
 
@@ -551,8 +553,8 @@ window.onload = function () {
   //   setting company name
   document.getElementById('companyName').textContent = companyName;
 
-  loadData();
   renderTable();
+  loadData();
   renderContractsTable();
   loadKingdomsDataList();
   // renderAssetsTable();

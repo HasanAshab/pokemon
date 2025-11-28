@@ -1,0 +1,3033 @@
+{
+  "last-battle": "startBattle([\n  {\n    \"id\": \"student\",\n    \"name\": \"E1\",\n    \"xp\": 700,\n    \"nature\": \"tai\",\n    \"retreat\": 3.5,\n    \"types\": [],\n    \"abilities\": [],\n    \"items\": [],\n    \"moves\": [\n      {\n        \"id\": \"bamboo\",\n        \"grade\": \"0\",\n        \"isSelected\": true\n      },\n      {\n        \"id\": \"scaryface\",\n        \"grade\": \"0\",\n        \"isSelected\": true\n      }\n    ],\n    \"mega\": {\n      \"moves\": [],\n      \"suffix\": \"none\"\n    },\n    \"stats\": {},\n    \"token_used\": {}\n  },\n  {\n    \"id\": \"student\",\n    \"name\": \"E2\",\n    \"xp\": 700,\n    \"nature\": \"tai\",\n    \"retreat\": 3.5,\n    \"types\": [],\n    \"abilities\": [],\n    \"items\": [],\n    \"moves\": [\n      {\n        \"id\": \"bamboo\",\n        \"grade\": \"0\",\n        \"isSelected\": true\n      }\n    ],\n    \"mega\": {\n      \"moves\": [],\n      \"suffix\": \"none\"\n    },\n    \"stats\": {},\n    \"token_used\": {}\n  },\n  {\n    \"id\": \"student\",\n    \"name\": \"E3\",\n    \"xp\": 700,\n    \"nature\": \"tai\",\n    \"retreat\": 3.5,\n    \"types\": [],\n    \"abilities\": [],\n    \"items\": [],\n    \"moves\": [\n      {\n        \"id\": \"bamboo\",\n        \"grade\": \"0\",\n        \"isSelected\": true\n      }\n    ],\n    \"mega\": {\n      \"moves\": [],\n      \"suffix\": \"none\"\n    },\n    \"stats\": {},\n    \"token_used\": {}\n  },\n  {\n    \"id\": \"student\",\n    \"name\": \"E4\",\n    \"xp\": 700,\n    \"nature\": \"tai\",\n    \"retreat\": 3.5,\n    \"types\": [],\n    \"abilities\": [],\n    \"items\": [],\n    \"moves\": [\n      {\n        \"id\": \"bamboo\",\n        \"grade\": \"0\",\n        \"isSelected\": true\n      }\n    ],\n    \"mega\": {\n      \"moves\": [],\n      \"suffix\": \"none\"\n    },\n    \"stats\": {},\n    \"token_used\": {}\n  },\n  {\n    \"id\": \"student\",\n    \"name\": \"E5\",\n    \"xp\": 700,\n    \"nature\": \"tai\",\n    \"retreat\": 3.5,\n    \"types\": [],\n    \"abilities\": [],\n    \"items\": [],\n    \"moves\": [\n      {\n        \"id\": \"bamboo\",\n        \"grade\": \"0\",\n        \"isSelected\": true\n      }\n    ],\n    \"mega\": {\n      \"moves\": [],\n      \"suffix\": \"none\"\n    },\n    \"stats\": {},\n    \"token_used\": {}\n  }\n], [\"Grass\", \"Dark\"], \"single\")",
+  "$enemies-base64-list": [
+    "eyJpZCI6InN0dWRlbnQiLCJtZXRhIjp7Im5hdHVyZSI6InRhaSIsImlkIjoic3R1ZGVudCIsIm5hbWUiOiJFMSIsInhwIjo3MDAsInJldHJlYXQiOjMuNSwidHlwZXMiOltdLCJhYmlsaXRpZXMiOltdLCJpdGVtcyI6W10sIm1vdmVzIjpbeyJpZCI6ImJhbWJvbyIsImdyYWRlIjoiMCIsImlzU2VsZWN0ZWQiOnRydWV9LHsiaWQiOiJzY2FyeWZhY2UiLCJncmFkZSI6IjAiLCJpc1NlbGVjdGVkIjp0cnVlfV0sIm1lZ2EiOnsibW92ZXMiOltdLCJzdWZmaXgiOiJub25lIn0sInN0YXRzIjp7fSwidG9rZW5fdXNlZCI6e319fQ==",
+    "eyJpZCI6InN0dWRlbnQiLCJtZXRhIjp7Im5hdHVyZSI6InRhaSIsImlkIjoic3R1ZGVudCIsIm5hbWUiOiJFMiIsInhwIjo3MDAsInJldHJlYXQiOjMuNSwidHlwZXMiOltdLCJhYmlsaXRpZXMiOltdLCJpdGVtcyI6W10sIm1vdmVzIjpbeyJpZCI6ImJhbWJvbyIsImdyYWRlIjoiMCIsImlzU2VsZWN0ZWQiOnRydWV9XSwibWVnYSI6eyJtb3ZlcyI6W10sInN1ZmZpeCI6Im5vbmUifSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19",
+    "eyJpZCI6InN0dWRlbnQiLCJtZXRhIjp7Im5hdHVyZSI6InRhaSIsImlkIjoic3R1ZGVudCIsIm5hbWUiOiJFMyIsInhwIjo3MDAsInJldHJlYXQiOjMuNSwidHlwZXMiOltdLCJhYmlsaXRpZXMiOltdLCJpdGVtcyI6W10sIm1vdmVzIjpbeyJpZCI6ImJhbWJvbyIsImdyYWRlIjoiMCIsImlzU2VsZWN0ZWQiOnRydWV9XSwibWVnYSI6eyJtb3ZlcyI6W10sInN1ZmZpeCI6Im5vbmUifSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19",
+    "eyJpZCI6InN0dWRlbnQiLCJtZXRhIjp7Im5hdHVyZSI6InRhaSIsImlkIjoic3R1ZGVudCIsIm5hbWUiOiJFNCIsInhwIjo3MDAsInJldHJlYXQiOjMuNSwidHlwZXMiOltdLCJhYmlsaXRpZXMiOltdLCJpdGVtcyI6W10sIm1vdmVzIjpbeyJpZCI6ImJhbWJvbyIsImdyYWRlIjoiMCIsImlzU2VsZWN0ZWQiOnRydWV9XSwibWVnYSI6eyJtb3ZlcyI6W10sInN1ZmZpeCI6Im5vbmUifSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19",
+    "eyJpZCI6InN0dWRlbnQiLCJtZXRhIjp7Im5hdHVyZSI6InRhaSIsImlkIjoic3R1ZGVudCIsIm5hbWUiOiJFNSIsInhwIjo3MDAsInJldHJlYXQiOjMuNSwidHlwZXMiOltdLCJhYmlsaXRpZXMiOltdLCJpdGVtcyI6W10sIm1vdmVzIjpbeyJpZCI6ImJhbWJvbyIsImdyYWRlIjoiMCIsImlzU2VsZWN0ZWQiOnRydWV9XSwibWVnYSI6eyJtb3ZlcyI6W10sInN1ZmZpeCI6Im5vbmUifSwic3RhdHMiOnt9LCJ0b2tlbl91c2VkIjp7fX19"
+  ],
+  "employees": [],
+  "rev": {
+    "labels": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May"
+    ],
+    "datasets": [
+      20000,
+      50000,
+      80000,
+      110000,
+      70000,
+      150000,
+      170000,
+      170000,
+      200000,
+      130000,
+      200000,
+      200000,
+      130000,
+      170000,
+      170000,
+      200000,
+      400000
+    ]
+  },
+  "companies": {
+    "ocean power": {
+      "name": "ocean power",
+      "revenue": {
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+          "Jan",
+          "Feb",
+          "Mar"
+        ],
+        "data": [
+          200000,
+          100000,
+          100000,
+          100000,
+          250000,
+          160000,
+          80000,
+          80000,
+          160000,
+          250000,
+          160000,
+          160000,
+          160000,
+          160000,
+          80000
+        ]
+      },
+      "contracts": [],
+      "assets": [
+        {
+          "name": "Water Turbine",
+          "kingdom": "Bengolia",
+          "quantity": 5,
+          "size": 14
+        },
+        {
+          "name": "office",
+          "kingdom": "Bengolia",
+          "quantity": 1,
+          "size": 104
+        }
+      ],
+      "employees": [
+        {
+          "post": "mec eng",
+          "mans": 20,
+          "salary": 3100
+        }
+      ],
+      "revenueEstimates": {
+        "low": "80000",
+        "medium": "160000",
+        "high": "250000"
+      },
+      "monthlyChanges": {
+        "coins": 22769
+      },
+      "storage": {
+        "coins": -57084
+      }
+    },
+    "paper soft": {
+      "name": "paper soft",
+      "revenue": {
+        "labels": [],
+        "data": []
+      },
+      "contracts": [],
+      "assets": [],
+      "employees": [],
+      "revenueEstimates": {
+        "low": 0,
+        "medium": 0,
+        "high": 0
+      },
+      "monthlyChanges": {},
+      "storage": {}
+    },
+    "aqua pillers": {
+      "name": "aqua pillers",
+      "revenue": {
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul"
+        ],
+        "data": [
+          400000,
+          30000,
+          500000,
+          180000,
+          500000,
+          100000,
+          180000,
+          150000,
+          260000,
+          150000,
+          300000,
+          180000,
+          450000,
+          180000,
+          180000,
+          900000,
+          200000,
+          200000,
+          900000
+        ]
+      },
+      "contracts": [],
+      "assets": [],
+      "employees": [
+        {
+          "post": "M",
+          "mans": 1,
+          "salary": 7000
+        },
+        {
+          "post": "JR. Arch",
+          "mans": 40,
+          "salary": 4200
+        },
+        {
+          "post": "+JR. Arch",
+          "mans": 10,
+          "salary": 4500
+        },
+        {
+          "post": "Lebor",
+          "mans": 80,
+          "salary": 800
+        },
+        {
+          "post": "AM",
+          "mans": 2,
+          "salary": 5000
+        },
+        {
+          "post": "Helper",
+          "mans": 10,
+          "salary": 3000
+        }
+      ],
+      "revenueEstimates": {
+        "low": "200000",
+        "medium": "500000",
+        "high": "900000"
+      },
+      "monthlyChanges": {
+        "coins": 176000
+      },
+      "storage": {
+        "coins": 378000
+      }
+    },
+    "new state": {
+      "name": "new state",
+      "revenue": {
+        "labels": [],
+        "data": []
+      },
+      "contracts": [],
+      "assets": [],
+      "employees": [],
+      "revenueEstimates": {
+        "low": 0,
+        "medium": 0,
+        "high": 0
+      },
+      "monthlyChanges": {},
+      "storage": {}
+    },
+    "Aqua ores": {
+      "name": "Aqua ores",
+      "revenue": {
+        "labels": [],
+        "data": []
+      },
+      "contracts": [
+        {
+          "name": "Ember",
+          "profit": 50000
+        }
+      ],
+      "assets": [],
+      "employees": [
+        {
+          "post": "Miners",
+          "mans": 7,
+          "salary": 3500
+        },
+        {
+          "post": "Manager",
+          "mans": 1,
+          "salary": 6000
+        }
+      ],
+      "revenueEstimates": {
+        "low": 0,
+        "medium": 0,
+        "high": 0
+      },
+      "monthlyChanges": {
+        "coins": 23000
+      },
+      "storage": {
+        "coins": 0
+      }
+    }
+  },
+  "kingdoms": {
+    "Bengolia": {
+      "landArea": 2600,
+      "density": 0.2730768769230769,
+      "pci": 4500,
+      "taxRate": 0.25,
+      "buildings": [
+        {
+          "name": "Farmer Academy",
+          "basePrice": 15000,
+          "baseSize": 100,
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {
+            "coins": 100000,
+            "paper": 100
+          },
+          "baseMaintains": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "GOB",
+          "basePrice": 100000,
+          "baseSize": 80,
+          "currentLevel": 6,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {
+            "coins": 106000,
+            "paper": 650
+          },
+          "baseMaintains": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Job Portal",
+          "basePrice": 30000,
+          "baseSize": 50,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 2,
+          "produces": {},
+          "consumes": {
+            "coins": 4000,
+            "paper": 300
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Notice Board",
+          "basePrice": 0,
+          "baseSize": 1,
+          "baseMaintains": {},
+          "currentLevel": 1,
+          "quantity": 9,
+          "produces": {},
+          "consumes": {
+            "coins": 2500,
+            "paper": 30
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Water Turbine",
+          "basePrice": 0,
+          "baseSize": 10,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 3,
+          "quantity": 5,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "ocean power",
+          "property": "rent",
+          "state": "enabled"
+        },
+        {
+          "name": "OceanPower",
+          "basePrice": 0,
+          "baseSize": 60,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 4,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "ocean power",
+          "property": "rent",
+          "state": "enabled"
+        },
+        {
+          "name": "Port",
+          "basePrice": 1500000,
+          "baseSize": 100,
+          "baseMaintains": {
+            "ship": 2
+          },
+          "currentLevel": 3,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Primary School",
+          "basePrice": 40000,
+          "baseSize": 50,
+          "baseMaintains": {},
+          "currentLevel": 1,
+          "quantity": 3,
+          "produces": {},
+          "consumes": {
+            "coins": 2500,
+            "paper": 100
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Police academy",
+          "basePrice": 25000,
+          "baseSize": 60,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 3,
+          "quantity": 1,
+          "produces": {
+            "police": 0
+          },
+          "consumes": {
+            "rookie": 0,
+            "paper": 0
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "paper soft ltd",
+          "basePrice": 0,
+          "baseSize": 60,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {
+            "paper": 3000
+          },
+          "consumes": {
+            "coins": 185000
+          },
+          "ownedBy": "paper soft",
+          "property": "rent",
+          "state": "enabled"
+        },
+        {
+          "name": "Clinic",
+          "basePrice": 20000,
+          "baseSize": 15,
+          "baseMaintains": {
+            "doctor": 1
+          },
+          "currentLevel": 1,
+          "quantity": 19,
+          "produces": {
+            "coins": 2000
+          },
+          "consumes": {
+            "coins": 3500,
+            "paper": 20
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "New state",
+          "basePrice": 100000,
+          "baseSize": 50,
+          "baseMaintains": {},
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "new state",
+          "property": "rent",
+          "state": "enabled"
+        },
+        {
+          "name": "Corruption",
+          "basePrice": 0,
+          "baseSize": 0,
+          "baseMaintains": {
+            "defence": 5
+          },
+          "currentLevel": 1,
+          "quantity": 5,
+          "produces": {},
+          "consumes": {
+            "coins": 2000
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Sand Coloni",
+          "basePrice": 0,
+          "baseSize": 120,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Police Department",
+          "basePrice": 100,
+          "baseSize": 15,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {
+            "paper": 40
+          },
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Sand Coloni 2",
+          "basePrice": 12000,
+          "baseSize": 110,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "new state",
+          "property": "rent",
+          "state": "enabled"
+        },
+        {
+          "name": "Aqua Talent",
+          "basePrice": 10000,
+          "baseSize": 10,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Cave",
+          "basePrice": 0,
+          "baseSize": 100,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {
+            "coins": 100000
+          },
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Aqua minerals",
+          "basePrice": 10000,
+          "baseSize": 10,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Ember Army Contact",
+          "basePrice": 0,
+          "baseSize": 0,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "govt",
+          "state": "enabled"
+        },
+        {
+          "name": "Stock Market",
+          "basePrice": 10000,
+          "baseSize": 10,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {
+            "paper": 400,
+            "coins": 4400
+          },
+          "state": "enabled",
+          "ownedBy": "Bengolia",
+          "property": "govt"
+        }
+      ],
+      "storage": {
+        "coins": 345024,
+        "paper": 2411,
+        "rookie": 25,
+        "police": 23,
+        "student": 0,
+        "defence": 0,
+        "ship": 0,
+        "doctor": 0
+      },
+      "barrack": {
+        "academyLevel": 1,
+        "soldiers": {
+          "day": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900,
+                "items": [
+                  "kunai",
+                  "ninjastar",
+                  "latherarmor1",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 15,
+              "ivSalary": 3000
+            },
+            {
+              "image": {
+                "id": "genin",
+                "xp": 1900,
+                "items": [
+                  "ninjablade",
+                  "ninjastar",
+                  "latherarmor2",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 5,
+              "ivSalary": 4400
+            },
+            {
+              "image": {
+                "id": "chunin",
+                "xp": 2900,
+                "items": [
+                  "ninjablade",
+                  "kohgastar",
+                  "latherarmor3",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 1,
+              "ivSalary": 6500
+            }
+          ],
+          "night": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900,
+                "items": [
+                  "kunai",
+                  "ninjastar",
+                  "latherarmor1",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 15,
+              "ivSalary": 3000
+            },
+            {
+              "image": {
+                "id": "genin",
+                "xp": 1900,
+                "items": [
+                  "ninjablade",
+                  "ninjastar",
+                  "latherarmor2",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 5,
+              "ivSalary": 4400
+            },
+            {
+              "image": {
+                "id": "chunin",
+                "xp": 2900,
+                "items": [
+                  "ninjablade",
+                  "kohgastar",
+                  "latherarmor3",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 1,
+              "ivSalary": 6500
+            }
+          ],
+          "emergency": [
+            {
+              "image": {
+                "id": "genin",
+                "xp": 2000,
+                "items": [
+                  "ninjablade",
+                  "ninjastar",
+                  "latherarmor2",
+                  "gen-food-low-3"
+                ]
+              },
+              "quantity": 7,
+              "ivSalary": 4400
+            }
+          ]
+        },
+        "hospitalLevel": 0,
+        "academyData": {
+          "student": 2,
+          "rookie": 1,
+          "genin": 1,
+          "chunin": 1,
+          "elitechunin": 0,
+          "jonin": 0,
+          "elitejonin": 0,
+          "rogue": 0,
+          "ega": 0,
+          "koga": 0,
+          "sannin": 0,
+          "sage": 0,
+          "kage": 0,
+          "shadow": 0,
+          "hokage": 0,
+          "phantom": 0,
+          "otsutsuki": 0
+        },
+        "polices": {
+          "day": [
+            {
+              "image": {
+                "id": "student",
+                "xp": 0
+              },
+              "quantity": 24,
+              "ivSalary": 2500
+            },
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900
+              },
+              "quantity": 8,
+              "ivSalary": 3700
+            }
+          ],
+          "night": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900
+              },
+              "quantity": 7,
+              "ivSalary": 3700
+            },
+            {
+              "image": {
+                "id": "student",
+                "xp": 0
+              },
+              "quantity": 21,
+              "ivSalary": 2500
+            }
+          ]
+        },
+        "ammo": {
+          "ninjablade": 1000,
+          "kohgastar": 1500,
+          "latherarmor3": 1200,
+          "ninjastar": 100,
+          "latherarmor2": 800,
+          "kunai": 80,
+          "latherarmor1": 400,
+          "gen-food-low-3": 850
+        }
+      },
+      "commanders": {
+        "hossain akitoma": {
+          "iq": {
+            "defensive": 2.5
+          },
+          "salary": 5000,
+          "image": "genin"
+        },
+        "shaheed akitoma": {
+          "iq": {
+            "offensive": 2.5
+          },
+          "salary": 5000,
+          "image": "genin"
+        }
+      },
+      "defenceWaves": [
+        {
+          "commander": "hossain akitoma",
+          "soldiers": [
+            {
+              "image": "rookie",
+              "percentage": 100,
+              "items": []
+            }
+          ]
+        }
+      ],
+      "birthRate": "0.041",
+      "id": "Bengolia",
+      "disaster": {
+        "mostProbable": {
+          "Tsunami": true,
+          "Soil Erosion": true,
+          "Severe Storm": true,
+          "Flood": true,
+          "Cyclone": true
+        }
+      }
+    },
+    "Ember": {
+      "id": "Ember",
+      "landArea": 2000,
+      "density": 0.28,
+      "pci": 2750,
+      "taxRate": 0.25,
+      "buildings": [
+        {
+          "name": "Buildings",
+          "basePrice": 100,
+          "baseSize": 1000,
+          "baseMaintains": {
+            "doctor": 5
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Ember",
+          "property": "govt"
+        },
+        {
+          "name": "Wizard Tower",
+          "basePrice": 100,
+          "baseSize": 25,
+          "baseMaintains": {
+            "defence": 30
+          },
+          "currentLevel": 2,
+          "quantity": 4,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Ember",
+          "property": "govt"
+        },
+        {
+          "name": "Aqua pillers",
+          "basePrice": 50000,
+          "baseSize": 40,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "rent"
+        }
+      ],
+      "storage": {
+        "coins": 187775,
+        "defence": 240,
+        "doctor": 10
+      },
+      "barrack": {
+        "academyLevel": 1,
+        "hospitalLevel": 0,
+        "soldiers": {
+          "day": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900
+              },
+              "quantity": 25,
+              "ivSalary": 0
+            },
+            {
+              "image": {
+                "id": "genin",
+                "xp": 1900
+              },
+              "quantity": 7,
+              "ivSalary": 0
+            }
+          ],
+          "night": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900
+              },
+              "quantity": 25,
+              "ivSalary": 0
+            },
+            {
+              "image": {
+                "id": "genin",
+                "xp": 1900
+              },
+              "quantity": 7,
+              "ivSalary": 0
+            }
+          ],
+          "emergency": []
+        },
+        "polices": {
+          "day": [
+            {
+              "image": {
+                "id": "student",
+                "xp": 600
+              },
+              "quantity": 15,
+              "ivSalary": 0
+            }
+          ],
+          "night": [
+            {
+              "image": {
+                "id": "student",
+                "xp": 600
+              },
+              "quantity": 15,
+              "ivSalary": 0
+            }
+          ]
+        },
+        "academyData": {
+          "student": 1,
+          "rookie": 1,
+          "genin": 1,
+          "chunin": 0,
+          "elitechunin": 0,
+          "jonin": 0,
+          "elitejonin": 0,
+          "rogue": 0,
+          "ega": 0,
+          "koga": 0,
+          "sannin": 0,
+          "sage": 0,
+          "kage": 0,
+          "shadow": 0,
+          "hokage": 0,
+          "phantom": 0,
+          "otsutsuki": 0
+        }
+      },
+      "birthRate": "0.10",
+      "commanders": {
+        "ec": {
+          "iq": {
+            "defensive": 2,
+            "offensive": 2.5
+          },
+          "salary": 0,
+          "image": "student"
+        }
+      }
+    },
+    "Wood": {
+      "id": "Wood",
+      "landArea": 2000,
+      "density": 0.31,
+      "pci": 4200,
+      "taxRate": 0.25,
+      "buildings": [
+        {
+          "name": "GOS",
+          "basePrice": 100,
+          "baseSize": 1000,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Wood",
+          "property": "govt"
+        },
+        {
+          "name": "Kunai Tower",
+          "basePrice": 100,
+          "baseSize": 25,
+          "baseMaintains": {
+            "defence": 20
+          },
+          "currentLevel": 1,
+          "quantity": 2,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Wood",
+          "property": "govt"
+        },
+        {
+          "name": "Aqua pillers",
+          "basePrice": 50000,
+          "baseSize": 40,
+          "baseMaintains": {
+            "defence": 0
+          },
+          "currentLevel": 1,
+          "quantity": 1,
+          "produces": {},
+          "consumes": {},
+          "ownedBy": "Bengolia",
+          "property": "rent"
+        }
+      ],
+      "storage": {},
+      "barrack": {
+        "academyLevel": 1,
+        "hospitalLevel": 0,
+        "soldiers": {
+          "day": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900,
+                "items": []
+              },
+              "quantity": 15,
+              "ivSalary": 0
+            },
+            {
+              "image": {
+                "id": "genin",
+                "xp": 1900,
+                "items": []
+              },
+              "quantity": 4,
+              "ivSalary": 0
+            }
+          ],
+          "night": [
+            {
+              "image": {
+                "id": "rookie",
+                "xp": 900,
+                "items": []
+              },
+              "quantity": 13,
+              "ivSalary": 0
+            },
+            {
+              "image": {
+                "id": "genin",
+                "xp": 1900,
+                "items": []
+              },
+              "quantity": 3,
+              "ivSalary": 0
+            }
+          ],
+          "emergency": []
+        },
+        "polices": {
+          "day": [],
+          "night": []
+        },
+        "academyData": {
+          "student": 1,
+          "rookie": 1,
+          "genin": 1,
+          "chunin": 0,
+          "elitechunin": 0,
+          "jonin": 0,
+          "elitejonin": 0,
+          "rogue": 0,
+          "ega": 0,
+          "koga": 0,
+          "sannin": 0,
+          "sage": 0,
+          "kage": 0,
+          "shadow": 0,
+          "hokage": 0,
+          "phantom": 0,
+          "otsutsuki": 0
+        }
+      },
+      "birthRate": "0.09",
+      "commanders": {
+        "wc": {
+          "iq": {
+            "defensive": 2.5,
+            "offensive": 2
+          },
+          "salary": 0,
+          "image": "student"
+        }
+      },
+      "defenceWaves": [
+        {
+          "commander": "wc",
+          "soldiers": [
+            {
+              "image": "genin",
+              "percentage": 48,
+              "items": []
+            },
+            {
+              "image": "rookie",
+              "percentage": 38,
+              "items": []
+            }
+          ]
+        },
+        {
+          "commander": "wc",
+          "soldiers": [
+            {
+              "image": "genin",
+              "percentage": 34,
+              "items": []
+            },
+            {
+              "image": "rookie",
+              "percentage": 60,
+              "items": []
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pokemons-meta": {
+    "Hasan Munshi": {
+      "nature": "tai",
+      "id": "genin",
+      "xp": 1900,
+      "retreat": 5.35,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 15,
+      "loses-count": 3,
+      "moves": [
+        {
+          "id": "ninjastar",
+          "isDefault": true
+        },
+        {
+          "id": "smokescreen",
+          "isDefault": true
+        },
+        {
+          "id": "vacuumwave",
+          "isDefault": true
+        },
+        {
+          "id": "substitute",
+          "isDefault": true
+        },
+        {
+          "id": "leaftrap",
+          "isDefault": true
+        },
+        {
+          "id": "summon:machop"
+        },
+        {
+          "id": "ninechaku"
+        },
+        {
+          "id": "cyclekick"
+        }
+      ],
+      "types": [],
+      "items": [
+        "gen-food-low-3",
+        "latherarmor2",
+        "gen-age-18",
+        "gen-thik"
+      ],
+      "abilities": [
+        "sharedeye",
+        "mayangan:golden-eye"
+      ],
+      "name": "Hasan Munshi",
+      "isSelectedForMultiBattle": true
+    },
+    "rahul akatomi": {
+      "nature": "nin",
+      "id": "rookie",
+      "name": "rahul akatomi",
+      "xp": 1900,
+      "retreat": 4.5,
+      "types": [
+        "Normal"
+      ],
+      "abilities": [],
+      "items": [
+        "latherarmor1",
+        "gen-food-mid",
+        "gen-thik"
+      ],
+      "moves": [
+        {
+          "id": "kunai",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "ninjastar",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "doubleteam",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "thundershock",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "bulletpunch",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "thunderwave",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "lightningkunai",
+          "isDefault": true
+        },
+        {
+          "id": "lightningninjastar",
+          "isDefault": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "mega"
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "isSelectedForMultiBattle": false
+    },
+    "Hossain": {
+      "nature": "none",
+      "id": "genin",
+      "xp": 2600,
+      "retreat": 6,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 0,
+      "loses-count": 0,
+      "moves": [
+        {
+          "id": "ninjastar",
+          "isDefault": true
+        },
+        {
+          "id": "watergun",
+          "isDefault": true
+        },
+        {
+          "id": "substitute",
+          "isDefault": true
+        },
+        {
+          "id": "takeweapon",
+          "isDefault": true
+        },
+        {
+          "id": "vinewhip",
+          "isDefault": true
+        },
+        {
+          "id": "waterpulse",
+          "isDefault": true
+        },
+        {
+          "id": "kunai",
+          "isDefault": true
+        },
+        {
+          "id": "doubleteam",
+          "isDefault": true
+        }
+      ],
+      "types": [
+        "Water"
+      ],
+      "items": [
+        "gen-age-18",
+        "gen-thik"
+      ],
+      "abilities": [],
+      "name": "Hossain",
+      "isSelectedForMultiBattle": false
+    },
+    "Shahid Akitoma": {
+      "nature": "nin",
+      "id": "chunin",
+      "xp": 3000,
+      "retreat": 7.5,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 0,
+      "loses-count": 0,
+      "moves": [
+        {
+          "id": "razorleaf",
+          "isDefault": true
+        },
+        {
+          "id": "sagemode",
+          "isDefault": true
+        },
+        {
+          "id": "leaftornado",
+          "isDefault": true
+        },
+        {
+          "id": "megadrain",
+          "isDefault": true
+        },
+        {
+          "id": "summon:lotad",
+          "grade": 1,
+          "isDefault": true
+        },
+        {
+          "id": "doubleteam",
+          "isDefault": true
+        },
+        {
+          "id": "naturehealing",
+          "isDefault": true
+        },
+        {
+          "id": "kunai"
+        },
+        {
+          "id": "ninjastar"
+        }
+      ],
+      "types": [
+        "Normal",
+        "Grass"
+      ],
+      "items": [
+        "gen-age-25"
+      ],
+      "abilities": [],
+      "name": "Shahid Akitoma",
+      "isSelectedForMultiBattle": false
+    },
+    "Moltra": {
+      "nature": "none",
+      "id": "chunin",
+      "xp": 2900,
+      "retreat": 10,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 0,
+      "loses-count": 0,
+      "moves": [
+        {
+          "id": "summon:fletchinder",
+          "grade": 3,
+          "isDefault": true
+        },
+        {
+          "id": "acrobatics",
+          "isDefault": true
+        },
+        {
+          "id": "flamecharge",
+          "isDefault": true
+        },
+        {
+          "id": "gust",
+          "isDefault": true
+        },
+        {
+          "id": "doubleteam",
+          "isDefault": true
+        },
+        {
+          "id": "kunai"
+        },
+        {
+          "id": "ninjastar"
+        },
+        {
+          "id": "rasengan"
+        }
+      ],
+      "types": [
+        "Normal"
+      ],
+      "items": [
+        "gen-age-25",
+        "gen-thik",
+        "gen-food-low"
+      ],
+      "abilities": [],
+      "name": "Moltra",
+      "isSelectedForMultiBattle": false
+    },
+    "Poshu munshi": {
+      "id": "rookie",
+      "name": "Poshu munshi",
+      "xp": 1200,
+      "nature": "tai",
+      "retreat": 4.25,
+      "types": [
+        "Normal"
+      ],
+      "abilities": [],
+      "items": [
+        "gen-bengal",
+        "gen-fat"
+      ],
+      "moves": [
+        {
+          "id": "tackle",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "growl",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "quickattack",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "watergun",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "isSelectedForMultiBattle": false
+    }
+  },
+  "Bengolia-soldiers-academy": {
+    "student": 0,
+    "rookie": 0,
+    "genin": 0,
+    "chunin": 0,
+    "elitechunin": 0,
+    "jonin": 0,
+    "elitejonin": 0,
+    "rogue": 0,
+    "ega": 0,
+    "koga": 0,
+    "sannin": 0,
+    "sage": 0,
+    "kage": 0,
+    "shadow": 0,
+    "hokage": 0,
+    "phantom": 0,
+    "otsutsuki": 0
+  },
+  "assets": [],
+  "stock_market": {
+    "stocks": {
+      "Aqua Pillars": {
+        "currentPrice": 2404.64,
+        "minChangeRate": -4,
+        "maxChangeRate": 6,
+        "priceHistory": [
+          2000,
+          2038.97,
+          1986.49,
+          1963.3,
+          2046.96,
+          2007.03,
+          2036.41,
+          2127.8,
+          2219.36,
+          2274.53,
+          2320.62,
+          2306.99,
+          2407.1,
+          2352.29,
+          2388.92,
+          2434.16,
+          2404.64
+        ]
+      },
+      "Paper Soft": {
+        "currentPrice": 1653.02,
+        "minChangeRate": -10,
+        "maxChangeRate": 15,
+        "priceHistory": [
+          1500,
+          1661.07,
+          1552.64,
+          1547,
+          1585.46,
+          1653.02
+        ]
+      },
+      "New State": {
+        "currentPrice": 660.99,
+        "minChangeRate": -30,
+        "maxChangeRate": 30,
+        "priceHistory": [
+          850,
+          716.78,
+          882.91,
+          623.88,
+          783.79,
+          660.99
+        ]
+      },
+      "Travel With Us": {
+        "currentPrice": 501.16,
+        "minChangeRate": -10,
+        "maxChangeRate": 15,
+        "priceHistory": [
+          400,
+          439.57,
+          398.88,
+          396.15,
+          455.04,
+          501.16
+        ]
+      },
+      "Agricorn": {
+        "currentPrice": 3764.06,
+        "minChangeRate": -9,
+        "maxChangeRate": 17,
+        "priceHistory": [
+          4000,
+          3999.92,
+          3793.52,
+          3546.3,
+          3431.98,
+          3764.06
+        ]
+      },
+      "Green Life": {
+        "currentPrice": 1207.13,
+        "minChangeRate": -11,
+        "maxChangeRate": 15,
+        "priceHistory": [
+          1000,
+          1014.5,
+          1141.12,
+          1256.94,
+          1151.99,
+          1207.13
+        ]
+      },
+      "Ocean Power": {
+        "currentPrice": 152.81,
+        "minChangeRate": -50,
+        "maxChangeRate": 50,
+        "priceHistory": [
+          300,
+          198.97,
+          297.51,
+          175.92,
+          162.59,
+          152.81
+        ]
+      },
+      "Red Spicy": {
+        "currentPrice": 2503.43,
+        "minChangeRate": -12,
+        "maxChangeRate": 20,
+        "priceHistory": [
+          1500,
+          1572.98,
+          1600.9,
+          1894.11,
+          2267.62,
+          2503.43
+        ]
+      }
+    },
+    "player": {
+      "coins": 3830.2900000000004,
+      "portfolio": {
+        "Ocean Power": 57,
+        "Red Spicy": 2
+      },
+      "portfolioHistory": [
+        0,
+        297.51,
+        1898.41,
+        2195.92,
+        2245.95,
+        2421.87,
+        2245.95,
+        11041.95,
+        12936.06,
+        13815.659999999998,
+        13802.87,
+        13717.029999999999
+      ]
+    }
+  },
+  "battle-history": {
+    "Shahid Akitoma": {
+      "nature": "nin",
+      "id": "elitechunin",
+      "xp": 3900,
+      "retreat": 13,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 0,
+      "loses-count": 0,
+      "moves": [
+        {
+          "id": "bulletseed",
+          "isDefault": true
+        },
+        {
+          "id": "razorleaf",
+          "isDefault": true
+        },
+        {
+          "id": "sagemode",
+          "isDefault": true
+        },
+        {
+          "id": "leaftornado",
+          "isDefault": true
+        },
+        {
+          "id": "megadrain",
+          "isDefault": true
+        },
+        {
+          "id": "summon:lotad",
+          "grade": 2,
+          "isDefault": true
+        },
+        {
+          "id": "doubleteam",
+          "isDefault": true
+        },
+        {
+          "id": "naturehealing",
+          "isDefault": true
+        },
+        {
+          "id": "field:Grass",
+          "isDefault": true
+        },
+        {
+          "id": "cactuspunch"
+        }
+      ],
+      "types": [
+        "Normal",
+        "Grass"
+      ],
+      "items": [],
+      "abilities": [],
+      "name": "Shahid Akitoma"
+    },
+    "Tapu fushi": {
+      "id": "genin",
+      "name": "Tapu fushi",
+      "xp": 2100,
+      "nature": "none",
+      "retreat": 6,
+      "types": [],
+      "abilities": [
+        "fishingan1",
+        "defsusano"
+      ],
+      "items": [],
+      "moves": [
+        {
+          "id": "cut",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "return",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "quickattack",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "watergun",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "whirlpool",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "Hatano fushi (18 years)": {
+      "id": "genin",
+      "name": "Hatano fushi (18 years)",
+      "xp": 2100,
+      "nature": "none",
+      "retreat": 6,
+      "types": [],
+      "abilities": [
+        "fishingan1",
+        "defsusano"
+      ],
+      "items": [
+        "gen-age-18"
+      ],
+      "moves": [
+        {
+          "id": "poisonsting",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "cut",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "return",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "quickattack",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "watergun",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "whirlpool",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "field:Water",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "scep": {
+      "id": "sceptile",
+      "name": "scep",
+      "xp": 3500,
+      "nature": "none",
+      "retreat": 8,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [
+        {
+          "id": "pound",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "quickattack",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furycutter",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "nightslash",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "xscissor",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "dualchop",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "megadrain",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "detect",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "leafblade",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "agility",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E1": {
+      "id": "student",
+      "name": "E1",
+      "xp": 700,
+      "nature": "tai",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [
+        {
+          "id": "bamboo",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "scaryface",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "none"
+      },
+      "stats": {},
+      "token_used": {}
+    },
+    "E2": {
+      "id": "student",
+      "name": "E2",
+      "xp": 700,
+      "nature": "tai",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [
+        {
+          "id": "bamboo",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "none"
+      },
+      "stats": {},
+      "token_used": {}
+    },
+    "E3": {
+      "id": "student",
+      "name": "E3",
+      "xp": 700,
+      "nature": "tai",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [
+        {
+          "id": "bamboo",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "none"
+      },
+      "stats": {},
+      "token_used": {}
+    },
+    "E4": {
+      "id": "student",
+      "name": "E4",
+      "xp": 700,
+      "nature": "tai",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [
+        {
+          "id": "bamboo",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "none"
+      },
+      "stats": {},
+      "token_used": {}
+    },
+    "E5": {
+      "id": "student",
+      "name": "E5",
+      "xp": 700,
+      "nature": "tai",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [
+        {
+          "id": "bamboo",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "none"
+      },
+      "stats": {},
+      "token_used": {}
+    },
+    "E6": {
+      "id": "rookie",
+      "name": "E6",
+      "xp": 3900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E7": {
+      "id": "rookie",
+      "name": "E7",
+      "xp": 3900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E8": {
+      "id": "rookie",
+      "name": "E8",
+      "xp": 3900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E9": {
+      "id": "rookie",
+      "name": "E9",
+      "xp": 3900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E10": {
+      "id": "rookie",
+      "name": "E10",
+      "xp": 3900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [],
+      "moves": [],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E11": {
+      "id": "rookie",
+      "name": "E11",
+      "xp": 1400,
+      "nature": "none",
+      "retreat": 4.5,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "latherarmor2"
+      ],
+      "moves": [
+        {
+          "id": "vacuumwave",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "machpunch",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "poweruppunch",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "rockthrow",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E12": {
+      "id": "rookie",
+      "name": "E12",
+      "xp": 1000,
+      "nature": "nin",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "latherarmor1"
+      ],
+      "moves": [
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furysmoke",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E13": {
+      "id": "rookie",
+      "name": "E13",
+      "xp": 1000,
+      "nature": "nin",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "latherarmor1"
+      ],
+      "moves": [
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furysmoke",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E14": {
+      "id": "rookie",
+      "name": "E14",
+      "xp": 1000,
+      "nature": "nin",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "latherarmor1"
+      ],
+      "moves": [
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furysmoke",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "E15": {
+      "id": "rookie",
+      "name": "E15",
+      "xp": 1000,
+      "nature": "nin",
+      "retreat": 3.5,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "latherarmor1"
+      ],
+      "moves": [
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furysmoke",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "kokola munshi": {
+      "nature": "none",
+      "id": "chunin",
+      "xp": 3400,
+      "retreat": 15,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 0,
+      "loses-count": 0,
+      "moves": [
+        {
+          "id": "dragonbreath",
+          "isDefault": true
+        },
+        {
+          "id": "aerialace",
+          "isDefault": true
+        },
+        {
+          "id": "rollingkick",
+          "isDefault": true
+        },
+        {
+          "id": "shadowclone",
+          "isDefault": true
+        },
+        {
+          "id": "firepunch",
+          "isDefault": true
+        },
+        {
+          "id": "substitute",
+          "isDefault": true
+        },
+        {
+          "id": "dragonrage",
+          "isDefault": true
+        },
+        {
+          "id": "ember",
+          "isDefault": true
+        },
+        {
+          "id": "scaryface",
+          "isDefault": true
+        },
+        {
+          "id": "ninjablade",
+          "isDefault": true
+        },
+        {
+          "id": "ninjastar",
+          "isDefault": true
+        },
+        {
+          "id": "twister",
+          "isDefault": true
+        },
+        {
+          "id": "firespin",
+          "isDefault": true
+        },
+        {
+          "id": "summon:rattataalola",
+          "grade": 2,
+          "isDefault": true
+        },
+        {
+          "id": "flamecharge",
+          "isDefault": true
+        },
+        {
+          "id": "chakraabsorb"
+        }
+      ],
+      "types": [
+        "Normal",
+        "Dragon",
+        "Fire"
+      ],
+      "items": [],
+      "abilities": [
+        "mayangan:silver-eye",
+        "mayangan:golden-eye"
+      ],
+      "name": "kokola munshi"
+    },
+    "tapu": {
+      "nature": "none",
+      "id": "genin",
+      "name": "tapu",
+      "xp": 2000,
+      "retreat": 5,
+      "types": [
+        "Normal",
+        "Water"
+      ],
+      "abilities": [],
+      "items": [
+        "gen-food-low"
+      ],
+      "moves": [
+        {
+          "id": "kunai",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "ninjastar",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "rapidspin",
+          "isSelected": true,
+          "isDefault": true
+        },
+        {
+          "id": "takeweapon",
+          "isDefault": true
+        },
+        {
+          "id": "aquajet",
+          "isDefault": true
+        },
+        {
+          "id": "whirlpool"
+        },
+        {
+          "id": "bubble"
+        },
+        {
+          "id": "iceshard"
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": "mega"
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "isSelectedForMultiBattle": true,
+      "loses-count": "0",
+      "wins-count": "0"
+    },
+    "Mustofa": {
+      "id": "chunin",
+      "name": "Mustofa",
+      "xp": 2900,
+      "nature": "nin",
+      "retreat": 8.5,
+      "types": [
+        "Fire"
+      ],
+      "abilities": [
+        "flamebody"
+      ],
+      "items": [
+        "gen-age-50",
+        "gen-thik",
+        "gen-food-mid"
+      ],
+      "moves": [
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "firespin",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "heatwave",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "fireball",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furysmoke",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "protect",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "field:Fire",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "Poshu munshi": {
+      "id": "rookie",
+      "name": "Poshu munshi",
+      "xp": 1200,
+      "nature": "tai",
+      "retreat": 4.25,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "gen-fat",
+        "gen-food-low"
+      ],
+      "moves": [
+        {
+          "id": "tackle",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "rollout",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "quickattack",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "B1": {
+      "id": "rookie",
+      "name": "B1",
+      "xp": 900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "gen-thik"
+      ],
+      "moves": [
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "watergun",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "B2": {
+      "id": "rookie",
+      "name": "B2",
+      "xp": 900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "gen-thik"
+      ],
+      "moves": [
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "watergun",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "B3": {
+      "id": "rookie",
+      "name": "B3",
+      "xp": 900,
+      "nature": "none",
+      "retreat": 4,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "gen-thik"
+      ],
+      "moves": [
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "watergun",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "Leader": {
+      "id": "rookie",
+      "name": "Leader",
+      "xp": 1400,
+      "nature": "nin",
+      "retreat": 4.25,
+      "types": [],
+      "abilities": [],
+      "items": [
+        "gen-ember",
+        "gen-age-18"
+      ],
+      "moves": [
+        {
+          "id": "ember",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "furysmoke",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "scaryface",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "kunai",
+          "grade": "0",
+          "isSelected": true
+        },
+        {
+          "id": "ninjastar",
+          "grade": "0",
+          "isSelected": true
+        }
+      ],
+      "mega": {
+        "moves": [],
+        "suffix": ""
+      },
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      }
+    },
+    "Hossain": {
+      "nature": "none",
+      "id": "genin",
+      "xp": 2600,
+      "retreat": 6,
+      "stats": {},
+      "token_used": {
+        "hp": 0,
+        "spe": 0,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 0
+      },
+      "mega": {
+        "suffix": "mega",
+        "moves": []
+      },
+      "wins-count": 0,
+      "loses-count": 0,
+      "moves": [
+        {
+          "id": "ninjastar",
+          "isDefault": true
+        },
+        {
+          "id": "watergun",
+          "isDefault": true
+        },
+        {
+          "id": "substitute",
+          "isDefault": true
+        },
+        {
+          "id": "takeweapon",
+          "isDefault": true
+        },
+        {
+          "id": "vinewhip",
+          "isDefault": true
+        },
+        {
+          "id": "waterpulse",
+          "isDefault": true
+        },
+        {
+          "id": "kunai",
+          "isDefault": true
+        },
+        {
+          "id": "doubleteam",
+          "isDefault": true
+        }
+      ],
+      "types": [
+        "Water"
+      ],
+      "items": [
+        "gen-age-18",
+        "gen-thik",
+        "gen-bengal"
+      ],
+      "abilities": [],
+      "name": "Hossain",
+      "isSelectedForMultiBattle": true
+    }
+  },
+  "contracts": []
+}
