@@ -668,7 +668,7 @@ katana: {
       multihit:[2,5],
       basePower: 25,
       category: "Physical",
-      name: "Nine Chaku(Blade)",
+      name: "Nine Chaku (Blade)",
       pp: 15 * 3,
       priority: 0,
       flags: {
