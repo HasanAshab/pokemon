@@ -1,7 +1,9 @@
 * Tasks
 Disaster
 Military tension + builds
-Gen data
+Gen data + enemy genetics and copy + poke_details
+weapon to item
+
 * QnA
 
 

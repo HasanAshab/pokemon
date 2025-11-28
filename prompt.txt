@@ -1,4 +1,5 @@
 edit #Current File add a button after kingdoms containers, Disaster Report. when clicked show what disaster is happening at each kingdom. 
+use kingdoms[name].disaster.current obj (e.g. { Earthquake: 10, Tsunami: 5 })
 
 
 
@@ -13,10 +14,17 @@ also can be multiple if there are related disasters of the triggered disaster
  7 to 10
 If a disaster is more prone to a kingdom than the probability
 of happening a heigher power increases
-4. you can get disaster most prone to kingdom here: kingdoms[name].disaster.mostProbable (e.g. {Flood: true, Cyclone: false})
+4. you can get disaster state to a kingdom here: kingdoms[name].disaster.geoState (e.g. {Flood: "normal", Cyclone: "prone", Earthquake: "immune"})
+normal: disasters has 5% chance to occure
+prone: disasters will have 10% chance
+immune: disasters will never happen
+related normal: disasters has 15% chance to occure
+related prone: disasters will have 30% chance
+related immune: disasters will never happen
 
 Psudo Algorithm:
-all disasters has 5% chance to occure
-disasters marked as mostProbable will have 10% chance
-related disasters has 15% chance to occure and if that also 
-marked as mostProbable it goes to 30%
+Shuffle the disaster -> loop it -> if a disaster happened stop the loop 
+-> predict a power 1 to 10 -> loop through related disasters
+-> if a happended save it and keep going -> all related disasters power will be
+rounded half of the parent disaster. e.g Earthquake 10 = Tsunami 5
+-> at last store them as kingdoms[name].disaster.current = { Earthquake: 10, Tsunami: 5 }
