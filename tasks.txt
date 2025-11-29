@@ -2,6 +2,7 @@
 Military tension + builds
 Body genetics
 App version (offline)
+Defender commander per direction
 
 * bug
 Summon delay

@@ -29,6 +29,10 @@ defenderSelect.onchange = () => {
   showDefenderData();
   loadDirectionData();
 }
+directionSelect.onchange = () => {
+  showDefenderData();
+};
+
 function loadDirectionData() {
   const defender = kingdoms[defenderSelect.value];
   const directionList = document.getElementById("direction");
@@ -231,7 +235,7 @@ function renderWaves() {
 }
 
 function getActualDefenders() {
-  return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value), shiftSelect.value);
+  return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value), shiftSelect.value, directionSelect.value);
 }
 
 function generateDefendersReport(expLvl = 0) {
@@ -415,6 +419,6 @@ startWarBtn.onclick = () => {
 
 renderStrategySelect();
 renderKingdomSelects();
+loadDirectionData();
 renderWaves();
 showDefenderData()
-loadDirectionData();

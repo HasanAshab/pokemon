@@ -449,11 +449,22 @@ export function prepareCommander(kingdom, commanderName) {
   return commander;
 }
 
+export function getMilitaryTensionMod(kingdom, direction) {
+  const mapping = {
+    2: 1,
+    4: 1.5,
+    8: 3
+  }
+
+  return mapping[kingdom.militaryTension[direction]];
+}
+
 export function prepareSoldiers(
   kingdom,
   soldiers,
   areaPercentage = 100,
   shift,
+  direction
 ) {
   const data = soldiers.map((soldier) => {
     const { image, quantity: total } = kingdom.barrack.soldiers[shift].find(
@@ -461,10 +472,12 @@ export function prepareSoldiers(
     );
     image.items = soldier.items;
 
-    const quantity = Math.ceil(total * (soldier.percentage / 100));
+    const tensionMod = getMilitaryTensionMod(kingdom, direction);    
+    const quantity = Math.min(total, Math.round(total * (soldier.percentage / 100) * (areaPercentage / 100) * tensionMod));
+    
     return [image, quantity];
   });
-  return new SoldierStack(data).resize(areaPercentage);
+  return new SoldierStack(data);
 }
 
 export function prepareDefenceCommanders(kingdom) {
@@ -473,15 +486,15 @@ export function prepareDefenceCommanders(kingdom) {
   });
 }
 
-export function prepareDefenceSoldiers(kingdom, areaPercentage = 100, shift) {
+export function prepareDefenceSoldiers(kingdom, areaPercentage = 100, shift, direction) {
   return kingdom.defenceWaves.map((wave) => {
-    return prepareSoldiers(kingdom, wave.soldiers, areaPercentage, shift);
+    return prepareSoldiers(kingdom, wave.soldiers, areaPercentage, shift, direction);
   });
 }
 
-export function prepareDefenceWaves(kingdom, areaPercentage = 100, shift) {
+export function prepareDefenceWaves(kingdom, areaPercentage = 100, shift, direction) {
   const commanders = prepareDefenceCommanders(kingdom);
-  const soldiers = prepareDefenceSoldiers(kingdom, areaPercentage, shift);
+  const soldiers = prepareDefenceSoldiers(kingdom, areaPercentage, shift, direction);
   return kingdom.defenceWaves.map((wave, index) => {
     return {
       ...wave,
