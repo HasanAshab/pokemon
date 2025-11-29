@@ -1529,13 +1529,7 @@
           soldierEntries.forEach((entry) => {
             const image = entry.querySelector("span").textContent;
             const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;
-            const items = entry
-              .querySelector('input[type="text"]')
-              .value.split(",")
-              .map((item) => item.trim())
-              .filter((item) => item);
-
-            newWave.soldiers.push({ image: image, percentage, items });
+            newWave.soldiers.push({ image: image, percentage });
           });
 
           kingdoms[name].defenceWaves[index] = newWave;
