@@ -1,6 +1,7 @@
 * Tasks
 Military tension + builds
-Gen data
+Body genetics
+App version
 
 * QnA
 

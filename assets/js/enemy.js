@@ -11,6 +11,7 @@ window.onload = () => {
     loadMovesDatalist("moves-data-list")
     loadBattleSystems()
     loadHistory()
+    loadHistoryStack()
 }
 globalThis.redirectToNewInterface = function (){
   window.location = "m_enemy.html"
@@ -302,4 +303,18 @@ globalThis.clearHistory = function() {
     loadHistory()
 }
 
-// functionm
+function loadHistoryStack() {
+    const history = JSON.parse(localStorage.getItem("$battle-stack-history") || "[]").filter(Boolean)
+    const historyList = document.querySelector(".history-stack-list")    
+    historyList.innerHTML = history.map(({name}, index) => {      
+        return `<button class="history-item" onclick="startHistoryBattle('${index}')">${name}</button>`
+    }).join('')
+}
+globalThis.startHistoryBattle = function(index) {
+    const code = JSON.parse(localStorage.getItem("$battle-stack-history") || "[]")[index].code
+    eval(code)
+}
+globalThis.clearHistoryStack = function() {
+    localStorage.removeItem("$battle-stack-history")
+    loadHistoryStack()
+}

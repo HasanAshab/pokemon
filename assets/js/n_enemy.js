@@ -654,14 +654,20 @@ function getActiveBattleFields(){
 
 function startBattleBtnHandler() {
   const sysSelect = document.getElementById('sys-select');
-  const code = makeStartBattleCode(
-        makeEnemiesMeta(),
-        getActiveBattleFields(),
-        sysSelect.value
-   )
-
+  const enemiesMeta = makeEnemiesMeta()
+  const code = generateStartBattleCode()
   localStorage.setItem("last-battle", code)
-  startBattle(makeEnemiesMeta(), getActiveBattleFields(), sysSelect.value)
+  const defaultBattleName = enemiesMeta.map(meta => meta.name.split(' ')[0]).join(' + ')
+  const battleName = window.prompt("Battle Name", defaultBattleName)
+  const history = JSON.parse(localStorage.getItem("$battle-stack-history") || "[]")
+  history.unshift({
+    name: battleName,
+    code: code
+  })
+  history.length = 8
+  localStorage.setItem("$battle-stack-history", JSON.stringify(history))
+
+  startBattle(enemiesMeta, getActiveBattleFields(), sysSelect.value)
 }
 
 
@@ -698,10 +704,16 @@ globalThis.selectRandomFields = function(){
 }
 
 globalThis.copyStartBattleCode = function() {
-    const code = makeStartBattleCode(
-        makeEnemiesMeta(),
-        getActiveBattleFields()
-    )
+    const code = generateStartBattleCode()
     navigator.clipboard.writeText(code)
     alert(code)
+}
+
+function generateStartBattleCode() {
+    const sysSelect = document.getElementById('sys-select');
+    return makeStartBattleCode(
+        makeEnemiesMeta(),
+        getActiveBattleFields(),
+        sysSelect.value
+    )
 }

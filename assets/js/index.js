@@ -255,7 +255,7 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
 // window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
-startBattle([
+startBattle(null, [
   {
   "nature": "tai",
   "id": "genin",

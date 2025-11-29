@@ -1599,6 +1599,6 @@ class BattlePrompt {
 }
 
 export const BATTLE_SYSTEMS = {
-    "single": SingleBattle,
+    // "single": SingleBattle,
     "multiple": MultiBattle,
 }
