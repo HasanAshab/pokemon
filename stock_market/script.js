@@ -1,10 +1,7 @@
 // Stock Market Simulation
 let stockData = {};
-let playerData = {
-  coins: 10000,
-  portfolio: {},
-  portfolioHistory: []
-};
+let userData = {};
+let currentUser = 'Hasan';
 let portfolioChart;
 
 // Load data from localStorage
@@ -13,13 +10,34 @@ function loadData() {
   if (savedData) {
     const parsed = JSON.parse(savedData);
     stockData = parsed.stocks || {};
-    playerData = parsed.player || { coins: 10000, portfolio: {}, portfolioHistory: [] };
+    
+    // Handle migration from old single-user format to multi-user format
+    if (parsed.player && !parsed.users) {
+      // Migrate existing data to Hasan user
+      userData = {
+        'Hasan': parsed.player,
+        'Hossain': { coins: 10000, portfolio: {}, portfolioHistory: [] }
+      };
+    } else {
+      userData = parsed.users || {
+        'Hasan': { coins: 10000, portfolio: {}, portfolioHistory: [] },
+        'Hossain': { coins: 10000, portfolio: {}, portfolioHistory: [] }
+      };
+    }
+  } else {
+    // Initialize fresh data
+    userData = {
+      'Hasan': { coins: 10000, portfolio: {}, portfolioHistory: [] },
+      'Hossain': { coins: 10000, portfolio: {}, portfolioHistory: [] }
+    };
   }
 
-  // Ensure portfolioHistory exists
-  if (!playerData.portfolioHistory) {
-    playerData.portfolioHistory = [];
-  }
+  // Ensure portfolioHistory exists for all users
+  Object.keys(userData).forEach(user => {
+    if (!userData[user].portfolioHistory) {
+      userData[user].portfolioHistory = [];
+    }
+  });
 
   // Initialize with some default stocks if none exist
   if (Object.keys(stockData).length === 0) {
@@ -31,7 +49,7 @@ function loadData() {
 function saveData() {
   const dataToSave = {
     stocks: stockData,
-    player: playerData
+    users: userData
   };
   localStorage.setItem('stock_market', JSON.stringify(dataToSave));
 }
@@ -51,10 +69,26 @@ function initializeDefaultStocks() {
   saveData();
 }
 
+// Switch user
+function switchUser() {
+  currentUser = document.getElementById('userSelect').value;
+  localStorage.setItem('stock_market_current_user', currentUser);
+  
+  // Re-render everything for the new user
+  renderWallet();
+  renderStocksTable();
+  updatePortfolioChart();
+}
+
+// Get current user data
+function getCurrentUserData() {
+  return userData[currentUser];
+}
+
 // Update coins
 function updateCoins() {
   const newCoins = parseFloat(document.getElementById('coinsInput').value) || 0;
-  playerData.coins = newCoins;
+  getCurrentUserData().coins = newCoins;
   saveData();
   renderWallet();
 }
@@ -62,11 +96,12 @@ function updateCoins() {
 // Record portfolio value for history
 function recordPortfolioValue() {
   const portfolioValue = calculatePortfolioValue();
-  playerData.portfolioHistory.push(portfolioValue);
+  const userdata = getCurrentUserData();
+  userdata.portfolioHistory.push(portfolioValue);
 
   // Keep only last 12 records
-  if (playerData.portfolioHistory.length > 12) {
-    playerData.portfolioHistory.shift();
+  if (userdata.portfolioHistory.length > 12) {
+    userdata.portfolioHistory.shift();
   }
 
   saveData();
@@ -75,8 +110,9 @@ function recordPortfolioValue() {
 // Calculate portfolio value
 function calculatePortfolioValue() {
   let totalValue = 0;
-  Object.keys(playerData.portfolio).forEach(stockName => {
-    const shares = playerData.portfolio[stockName] || 0;
+  const userdata = getCurrentUserData();
+  Object.keys(userdata.portfolio).forEach(stockName => {
+    const shares = userdata.portfolio[stockName] || 0;
     const currentPrice = stockData[stockName]?.currentPrice || 0;
     totalValue += shares * currentPrice;
   });
@@ -85,7 +121,8 @@ function calculatePortfolioValue() {
 
 // Render wallet information
 function renderWallet() {
-  document.getElementById('coinsInput').value = playerData.coins;
+  const userdata = getCurrentUserData();
+  document.getElementById('coinsInput').value = userdata.coins;
   document.getElementById('portfolioValue').textContent = calculatePortfolioValue().toLocaleString();
 }
 
@@ -135,8 +172,9 @@ function renderStocksTable() {
   tbody.innerHTML = '';
 
   // Get stocks as array with calculated values
+  const userdata = getCurrentUserData();
   const stocksArray = Object.entries(stockData).map(([stockName, stock]) => {
-    const myShares = playerData.portfolio[stockName] || 0;
+    const myShares = userdata.portfolio[stockName] || 0;
     const myInvestment = myShares * stock.currentPrice;
     const priceChange = getPriceChangeIndicator(stock);
 
@@ -307,14 +345,26 @@ function deleteStock(stockName) {
     return;
   }
 
-  // Check if player has shares
-  const myShares = playerData.portfolio[stockName] || 0;
-  if (myShares > 0) {
-    if (!confirm(`You own ${myShares} shares of ${stockName}. Deleting will lose these shares. Continue?`)) {
+  // Check if any user has shares
+  let hasShares = false;
+  let shareDetails = [];
+  
+  Object.keys(userData).forEach(user => {
+    const shares = userData[user].portfolio[stockName] || 0;
+    if (shares > 0) {
+      hasShares = true;
+      shareDetails.push(`${user}: ${shares} shares`);
+    }
+  });
+
+  if (hasShares) {
+    if (!confirm(`Users have shares in ${stockName}:\n${shareDetails.join('\n')}\nDeleting will lose these shares. Continue?`)) {
       return;
     }
-    // Remove shares from portfolio
-    delete playerData.portfolio[stockName];
+    // Remove shares from all user portfolios
+    Object.keys(userData).forEach(user => {
+      delete userData[user].portfolio[stockName];
+    });
   }
 
   // Delete the stock
@@ -356,12 +406,13 @@ function simulateNewMonth() {
 // Initialize portfolio chart
 function initPortfolioChart() {
   const ctx = document.getElementById('portfolioChart').getContext('2d');
+  const userdata = getCurrentUserData();
 
   const chartData = {
-    labels: playerData.portfolioHistory.map((_, index) => `Month ${index + 1}`),
+    labels: userdata.portfolioHistory.map((_, index) => `Month ${index + 1}`),
     datasets: [{
-      label: 'Stock Portfolio Value ($)',
-      data: playerData.portfolioHistory,
+      label: `${currentUser}'s Portfolio Value ($)`,
+      data: userdata.portfolioHistory,
       backgroundColor: 'rgba(40, 167, 69, 0.2)',
       borderColor: 'rgba(40, 167, 69, 1)',
       borderWidth: 2,
@@ -394,7 +445,7 @@ function initPortfolioChart() {
       plugins: {
         title: {
           display: true,
-          text: 'Stock Portfolio Value History'
+          text: `${currentUser}'s Portfolio Value History`
         }
       }
     }
@@ -405,8 +456,11 @@ function initPortfolioChart() {
 function updatePortfolioChart() {
   if (!portfolioChart) return;
 
-  portfolioChart.data.labels = playerData.portfolioHistory.map((_, index) => `Month ${index + 1}`);
-  portfolioChart.data.datasets[0].data = playerData.portfolioHistory;
+  const userdata = getCurrentUserData();
+  portfolioChart.data.labels = userdata.portfolioHistory.map((_, index) => `Month ${index + 1}`);
+  portfolioChart.data.datasets[0].data = userdata.portfolioHistory;
+  portfolioChart.data.datasets[0].label = `${currentUser}'s Portfolio Value ($)`;
+  portfolioChart.options.plugins.title.text = `${currentUser}'s Portfolio Value History`;
   portfolioChart.update();
 }
 
@@ -419,8 +473,16 @@ function goToStockCMS(stockName) {
 function init() {
   loadData();
 
-  // Initialize portfolio history if empty
-  if (playerData.portfolioHistory.length === 0) {
+  // Load saved current user or default to Hasan
+  const savedUser = localStorage.getItem('stock_market_current_user');
+  if (savedUser && userData[savedUser]) {
+    currentUser = savedUser;
+  }
+  document.getElementById('userSelect').value = currentUser;
+
+  // Initialize portfolio history if empty for current user
+  const userdata = getCurrentUserData();
+  if (userdata.portfolioHistory.length === 0) {
     recordPortfolioValue();
   }
 

@@ -282,6 +282,45 @@ tr:hover {
     color: #6c757d;
 }
 
+/* User Selector Styles */
+.user-selector-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.user-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-selector label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.user-selector select {
+    padding: 8px 12px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.user-selector select:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
 /* CMS Specific Styles */
 .header {
     display: flex;
@@ -392,6 +431,11 @@ details .controls-grid {
 }
 
 @media (max-width: 768px) {
+    .user-selector-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
     .wallet-info {
         flex-direction: column;
         align-items: stretch;

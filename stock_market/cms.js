@@ -1,6 +1,7 @@
 // Stock CMS Management
 let stockData = {};
-let playerData = {};
+let userData = {};
+let currentUser = 'Hasan';
 let currentStockName = '';
 let priceChart;
 
@@ -16,41 +17,78 @@ function loadData() {
     if (savedData) {
         const parsed = JSON.parse(savedData);
         stockData = parsed.stocks || {};
-        playerData = parsed.player || { coins: 10000, portfolio: {}, portfolioHistory: [] };
+        
+        // Handle migration from old single-user format to multi-user format
+        if (parsed.player && !parsed.users) {
+            // Migrate existing data to Hasan user
+            userData = {
+                'Hasan': parsed.player,
+                'Hossain': { coins: 10000, portfolio: {}, portfolioHistory: [] }
+            };
+        } else {
+            userData = parsed.users || {
+                'Hasan': { coins: 10000, portfolio: {}, portfolioHistory: [] },
+                'Hossain': { coins: 10000, portfolio: {}, portfolioHistory: [] }
+            };
+        }
+    } else {
+        // Initialize fresh data
+        userData = {
+            'Hasan': { coins: 10000, portfolio: {}, portfolioHistory: [] },
+            'Hossain': { coins: 10000, portfolio: {}, portfolioHistory: [] }
+        };
     }
     
-    // Ensure portfolioHistory exists
-    if (!playerData.portfolioHistory) {
-        playerData.portfolioHistory = [];
-    }
+    // Ensure portfolioHistory exists for all users
+    Object.keys(userData).forEach(user => {
+        if (!userData[user].portfolioHistory) {
+            userData[user].portfolioHistory = [];
+        }
+    });
 }
 
 // Save data to localStorage
 function saveData() {
     const dataToSave = {
         stocks: stockData,
-        player: playerData
+        users: userData
     };
     localStorage.setItem('stock_market', JSON.stringify(dataToSave));
 }
 
+// Switch user
+function switchUser() {
+    currentUser = document.getElementById('userSelect').value;
+    localStorage.setItem('stock_market_current_user', currentUser);
+    
+    // Re-render everything for the new user
+    renderStockInfo();
+    updateTradingCalculations();
+}
+
+// Get current user data
+function getCurrentUserData() {
+    return userData[currentUser];
+}
+
 // Record portfolio value for history
 function recordPortfolioValue() {
-    const portfolioValue = Object.keys(playerData.portfolio).reduce((total, stockName) => {
-        const shares = playerData.portfolio[stockName] || 0;
+    const userdata = getCurrentUserData();
+    const portfolioValue = Object.keys(userdata.portfolio).reduce((total, stockName) => {
+        const shares = userdata.portfolio[stockName] || 0;
         const currentPrice = stockData[stockName]?.currentPrice || 0;
         return total + (shares * currentPrice);
     }, 0);
     
-    if (!playerData.portfolioHistory) {
-        playerData.portfolioHistory = [];
+    if (!userdata.portfolioHistory) {
+        userdata.portfolioHistory = [];
     }
     
-    playerData.portfolioHistory.push(portfolioValue);
+    userdata.portfolioHistory.push(portfolioValue);
     
     // Keep only last 12 records
-    if (playerData.portfolioHistory.length > 12) {
-        playerData.portfolioHistory.shift();
+    if (userdata.portfolioHistory.length > 12) {
+        userdata.portfolioHistory.shift();
     }
 }
 
@@ -102,9 +140,10 @@ function renderStockInfo() {
     document.getElementById('minChangeDisplay').textContent = stock.minChangeRate + '%';
     document.getElementById('maxChangeDisplay').textContent = stock.maxChangeRate + '%';
     
-    // Player info
-    document.getElementById('playerCoins').textContent = playerData.coins.toLocaleString();
-    const myShares = playerData.portfolio[currentStockName] || 0;
+    // Current user info
+    const userdata = getCurrentUserData();
+    document.getElementById('playerCoins').textContent = userdata.coins.toLocaleString();
+    const myShares = userdata.portfolio[currentStockName] || 0;
     document.getElementById('myShares').textContent = myShares;
     document.getElementById('investmentValue').textContent = (myShares * stock.currentPrice).toLocaleString();
 }
@@ -186,13 +225,15 @@ function buyStock() {
     const stock = stockData[currentStockName];
     const totalCost = shares * stock.currentPrice;
     
-    if (playerData.coins < totalCost) {
+    const userdata = getCurrentUserData();
+    
+    if (userdata.coins < totalCost) {
         alert('Insufficient funds!');
         return;
     }
     
-    playerData.coins -= totalCost;
-    playerData.portfolio[currentStockName] = (playerData.portfolio[currentStockName] || 0) + shares;
+    userdata.coins -= totalCost;
+    userdata.portfolio[currentStockName] = (userdata.portfolio[currentStockName] || 0) + shares;
     
     // Record portfolio value change
     recordPortfolioValue();
@@ -213,7 +254,8 @@ function sellStock() {
         return;
     }
     
-    const myShares = playerData.portfolio[currentStockName] || 0;
+    const userdata = getCurrentUserData();
+    const myShares = userdata.portfolio[currentStockName] || 0;
     if (shares > myShares) {
         alert('You don\'t have enough shares to sell!');
         return;
@@ -222,12 +264,12 @@ function sellStock() {
     const stock = stockData[currentStockName];
     const totalRevenue = shares * stock.currentPrice;
     
-    playerData.coins += totalRevenue;
-    playerData.portfolio[currentStockName] = myShares - shares;
+    userdata.coins += totalRevenue;
+    userdata.portfolio[currentStockName] = myShares - shares;
     
     // Remove from portfolio if no shares left
-    if (playerData.portfolio[currentStockName] === 0) {
-        delete playerData.portfolio[currentStockName];
+    if (userdata.portfolio[currentStockName] === 0) {
+        delete userdata.portfolio[currentStockName];
     }
     
     // Record portfolio value change
@@ -256,6 +298,13 @@ function init() {
     }
     
     loadData();
+    
+    // Load saved current user or default to Hasan
+    const savedUser = localStorage.getItem('stock_market_current_user');
+    if (savedUser && userData[savedUser]) {
+        currentUser = savedUser;
+    }
+    document.getElementById('userSelect').value = currentUser;
     
     if (!stockData[currentStockName]) {
         alert('Stock not found');

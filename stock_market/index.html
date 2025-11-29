@@ -9,7 +9,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Stock Market Simulation</h1>
+        <div class="user-selector-section">
+            <h1>Stock Market Simulation</h1>
+            <div class="user-selector">
+                <label for="userSelect">Current User:</label>
+                <select id="userSelect" onchange="switchUser()">
+                    <option value="Hasan">Hasan</option>
+                    <option value="Hossain">Hossain</option>
+                </select>
+            </div>
+        </div>
         
         <div class="section wallet">
             <h2>My Wallet</h2>

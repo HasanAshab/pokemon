@@ -12,6 +12,13 @@
         <div class="header">
             <button onclick="goBack()" class="btn secondary-btn">← Back to Market</button>
             <h1 id="stockName">Stock Name</h1>
+            <div class="user-selector">
+                <label for="userSelect">Current User:</label>
+                <select id="userSelect" onchange="switchUser()">
+                    <option value="Hasan">Hasan</option>
+                    <option value="Hossain">Hossain</option>
+                </select>
+            </div>
         </div>
 
         <div class="section wallet-summary">
