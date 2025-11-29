@@ -143,8 +143,7 @@ function renderWaves() {
       percentageInput.oninput = () => {   
         const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
           s => s.image.id === soldier.image
-        ).quantity * (parseInt(areaPercentageInput.value) / 100);
-        console.log(areaPercentageInput.value);
+        ).quantity;
         const quantity = Math.ceil(total * (percentageInput.value / 100));
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
@@ -356,9 +355,6 @@ startWarBtn.onclick = () => {
     
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
-
-    handleWoundedSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
-    handleWoundedSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
   
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {      
@@ -368,17 +364,24 @@ startWarBtn.onclick = () => {
           <h5>Outcome: <span style="color: ${war.result.win ? "green" : "red"}">${war.result.win ? "Success" : "Failour"}</span></h5><br>
           ${war.result.raisedWhiteFlag ? "Defender raised White Flag!<br>" : ""}
           Scores: <br>
-          Attacker: ${war.result.scores.atk}<br>
-          Defender: ${war.result.scores.def}<br>
-          Defence Build: ${buildDefenceScore}<br>
-          Diff (DEF - ATK): ${war.result.scores.def - war.result.scores.atk} (${parseInt((war.result.scores.atk * 100) / war.result.scores.def)}%) <br>
+          Attacker: ${Math.round(war.result.scores.atk).toLocaleString()}<br>
+          Defender: ${Math.round(war.result.scores.def).toLocaleString()}<br>
+          Defence Build: ${Math.round(buildDefenceScore).toLocaleString()}<br>
+          Diff (DEF - ATK): ${Math.round(war.result.scores.def - war.result.scores.atk).toLocaleString()} (${parseInt((war.result.scores.atk * 100) / war.result.scores.def)}%) <br>
           Wounded Units: <br>
           Attacker:<br>
           ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
           Defender:<br>
           ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
+
+          <button style="background-color: blue; color: white" onclick="confirmResult(this)">Confirm</button>
         `
-        resolve()
+        globalThis.confirmResult = (btn) => {
+          handleWoundedSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
+          handleWoundedSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
+          resolve()
+          btn.disabled = true
+        }
       }, 1)
     })
   }
@@ -387,7 +390,7 @@ startWarBtn.onclick = () => {
     startWarBtn.disabled = false;
   })
   }
-  else {
+  else {    
     const win = netWin > 0
     const outcome = win ? "Success" : "Failour";
     resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`

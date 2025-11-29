@@ -1,29 +1,28 @@
 * Tasks
-War result confirm
 Military tension + builds
 Body genetics
-App version
-
-* QnA
-
+App version (offline)
 
 * bug
+Summon delay
 mirror dirt
 
 abilities multiple opponent event system
 Bot shinobis hit a move in act of his team
 
 * Bottle neck
+kingdom clone
 
 * Pending
 ancient mode with selfish scar
 
 *ovi
+Fix styling of:
+  Deffence manage page tension tab
+  war page Main tab
 
-kingdom clone
 same bot button on each team
 fix retreat of beast abilities
-hand3
 
 * Scenario
 phy 1 -> phy 1 = x - y d 
