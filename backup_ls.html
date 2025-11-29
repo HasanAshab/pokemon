@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LocalStorage Backup Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .backup-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #e9ecef;
+    }
+
+    .backup-name {
+      font-weight: bold;
+    }
+
+    .backup-date {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .backup-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .btn-info {
+      background-color: #17a2b8;
+      color: white;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 800px;
+      max-height: 80%;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    .storage-item {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #e9ecef;
+    }
+
+    .storage-key {
+      font-weight: bold;
+      color: #495057;
+      margin-bottom: 5px;
+    }
+
+    .storage-value {
+      background-color: white;
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid #ced4da;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBVz-ZtCY58R_IUI0OKocDpWGms51ns8zg",
+      authDomain: "pokemon-feb35.firebaseapp.com",
+      projectId: "pokemon-feb35",
+      storageBucket: "pokemon-feb35.firebasestorage.app",
+      messagingSenderId: "814700360022",
+      appId: "1:814700360022:web:bc2a204c0ce7263c77e6f7",
+      measurementId: "G-HG6MG0VENR"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>LocalStorage Backup Manager</h1>
+
+    <!-- Status Messages -->
+    <div id="statusMessage" style="display: none;"></div>
+
+    <!-- Create Backup Section -->
+    <div class="section">
+      <h2>Create New Backup</h2>
+      <input type="text" id="backupName" placeholder="Enter backup name (optional)">
+      <button class="btn-primary" onclick="createBackup()">Create Backup</button>
+      <p><small>If no name is provided, a timestamp will be used automatically.</small></p>
+    </div>
+
+    <!-- Backup List Section -->
+    <div class="section">
+      <h2>Existing Backups</h2>
+      <div id="backupList">
+        <p>Loading backups...</p>
+      </div>
+      <button class="btn-primary" onclick="loadBackups()">Refresh List</button>
+    </div>
+  </div>
+
+  <!-- Modal for viewing backup data -->
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Backup Data</h2>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <div id="modalBody">
+        <!-- Storage data will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Backup management functions
+    const BACKUP_PREFIX = 'ls_backup_';
+
+    function showStatus(message, isError = false) {
+      const statusDiv = document.getElementById('statusMessage');
+      statusDiv.textContent = message;
+      statusDiv.className = `status ${isError ? 'error' : 'success'}`;
+      statusDiv.style.display = 'block';
+      setTimeout(() => {
+        statusDiv.style.display = 'none';
+      }, 3000);
+    }
+
+    function generateTimestamp() {
+      const now = new Date();
+      return now.toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    }
+
+    function createBackup() {
+      try {
+        const backupNameInput = document.getElementById('backupName');
+        const backupName = backupNameInput.value.trim() || generateTimestamp();
+
+        // Get all localStorage data except existing backups
+        const localStorageData = {};
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (!key.startsWith(BACKUP_PREFIX)) {
+            localStorageData[key] = localStorage.getItem(key);
+          }
+        }
+
+        // Create backup object
+        const backup = {
+          name: backupName,
+          timestamp: new Date().toISOString(),
+          data: localStorageData
+        };
+
+        // Save backup
+        const backupKey = BACKUP_PREFIX + backupName;
+        localStorage.setItem(backupKey, JSON.stringify(backup));
+
+        showStatus(`Backup "${backupName}" created successfully!`);
+        backupNameInput.value = '';
+        loadBackups();
+
+      } catch (error) {
+        showStatus(`Error creating backup: ${error.message}`, true);
+      }
+    }
+
+    function loadBackups() {
+      try {
+        const backupList = document.getElementById('backupList');
+        const backups = [];
+
+        // Find all backup keys
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith(BACKUP_PREFIX)) {
+            try {
+              const backup = JSON.parse(localStorage.getItem(key));
+              backups.push(backup);
+            } catch (e) {
+              console.warn(`Invalid backup data for key: ${key}`);
+            }
+          }
+        }
+
+        // Sort by timestamp (newest first)
+        backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        if (backups.length === 0) {
+          backupList.innerHTML = '<p>No backups found.</p>';
+          return;
+        }
+
+        // Generate HTML for backup list
+        let html = '';
+        backups.forEach(backup => {
+          const date = new Date(backup.timestamp).toLocaleString();
+          const dataCount = Object.keys(backup.data).length;
+
+          html += `
+            <div class="backup-item">
+              <div>
+                <div class="backup-name">${backup.name}</div>
+                <div class="backup-date">${date} (${dataCount} items)</div>
+              </div>
+              <div class="backup-actions">
+                <button class="btn-info" onclick="viewBackup('${backup.name}')">View</button>
+                <button class="btn-success" onclick="restoreBackup('${backup.name}')">Restore</button>
+                <button class="btn-danger" onclick="deleteBackup('${backup.name}')">Delete</button>
+              </div>
+            </div>
+          `;
+        });
+
+        backupList.innerHTML = html;
+
+      } catch (error) {
+        showStatus(`Error loading backups: ${error.message}`, true);
+      }
+    }
+
+    function restoreBackup(backupName) {
+      if (!confirm(`Are you sure you want to restore backup "${backupName}"? This will replace all current localStorage data.`)) {
+        return;
+      }
+
+      try {
+        const backupKey = BACKUP_PREFIX + backupName;
+        const backupData = localStorage.getItem(backupKey);
+
+        if (!backupData) {
+          showStatus(`Backup "${backupName}" not found!`, true);
+          return;
+        }
+
+        const backup = JSON.parse(backupData);
+
+        // Clear current localStorage (except backups)
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (!key.startsWith(BACKUP_PREFIX)) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+
+        // Restore backup data
+        Object.entries(backup.data).forEach(([key, value]) => {
+          localStorage.setItem(key, value);
+        });
+
+        showStatus(`Backup "${backupName}" restored successfully!`);
+
+      } catch (error) {
+        showStatus(`Error restoring backup: ${error.message}`, true);
+      }
+    }
+
+    function deleteBackup(backupName) {
+      if (!confirm(`Are you sure you want to delete backup "${backupName}"? This action cannot be undone.`)) {
+        return;
+      }
+
+      try {
+        const backupKey = BACKUP_PREFIX + backupName;
+        localStorage.removeItem(backupKey);
+        showStatus(`Backup "${backupName}" deleted successfully!`);
+        loadBackups();
+
+      } catch (error) {
+        showStatus(`Error deleting backup: ${error.message}`, true);
+      }
+    }
+
+    function viewBackup(backupName) {
+      try {
+        const backupKey = BACKUP_PREFIX + backupName;
+        const backupData = localStorage.getItem(backupKey);
+
+        if (!backupData) {
+          showStatus(`Backup "${backupName}" not found!`, true);
+          return;
+        }
+
+        const backup = JSON.parse(backupData);
+        const modal = document.getElementById('viewModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        modalTitle.textContent = `Backup: ${backup.name}`;
+
+        // Generate HTML for storage data
+        let html = '';
+        const entries = Object.entries(backup.data);
+
+        if (entries.length === 0) {
+          html = '<p>This backup contains no data.</p>';
+        } else {
+          entries.forEach(([key, value]) => {
+            // Try to format JSON data nicely
+            let displayValue = value;
+            try {
+              const parsed = JSON.parse(value);
+              displayValue = JSON.stringify(parsed, null, 2);
+            } catch (e) {
+              // Not JSON, display as-is
+            }
+
+            html += `
+              <div class="storage-item">
+                <div class="storage-key">${key}</div>
+                <div class="storage-value">${displayValue}</div>
+              </div>
+            `;
+          });
+        }
+
+        modalBody.innerHTML = html;
+        modal.style.display = 'block';
+
+      } catch (error) {
+        showStatus(`Error viewing backup: ${error.message}`, true);
+      }
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('viewModal');
+      modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function (event) {
+      const modal = document.getElementById('viewModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Load backups when page loads
+    document.addEventListener('DOMContentLoaded', loadBackups);
+  </script>
+</body>
+
+</html>
