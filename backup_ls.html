@@ -185,14 +185,12 @@
     }
   </style>
   <script type="module">
-    // Import the functions you need from the SDKs you need
+    // Import Firebase functions
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
+    import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
     // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyBVz-ZtCY58R_IUI0OKocDpWGms51ns8zg",
       authDomain: "pokemon-feb35.firebaseapp.com",
@@ -206,6 +204,11 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // Make Firebase available globally
+    window.db = db;
+    window.firebaseUtils = { collection, addDoc, getDocs, doc, deleteDoc, query, orderBy };
   </script>
 </head>
 
@@ -249,8 +252,6 @@
 
   <script>
     // Backup management functions
-    const BACKUP_PREFIX = 'ls_backup_';
-
     function showStatus(message, isError = false) {
       const statusDiv = document.getElementById('statusMessage');
       statusDiv.textContent = message;
@@ -266,63 +267,85 @@
       return now.toISOString().replace(/[:.]/g, '-').slice(0, -5);
     }
 
-    function createBackup() {
+    async function createBackup() {
       try {
         const backupNameInput = document.getElementById('backupName');
         const backupName = backupNameInput.value.trim() || generateTimestamp();
 
-        // Get all localStorage data except existing backups
+        showStatus('Creating backup...', false);
+
+        // Get all localStorage data
         const localStorageData = {};
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (!key.startsWith(BACKUP_PREFIX)) {
-            localStorageData[key] = localStorage.getItem(key);
-          }
+          localStorageData[key] = localStorage.getItem(key);
         }
+
+        console.log('LocalStorage data to backup:', localStorageData);
 
         // Create backup object
         const backup = {
           name: backupName,
           timestamp: new Date().toISOString(),
-          data: localStorageData
+          data: localStorageData,
+          createdAt: new Date()
         };
 
-        // Save backup
-        const backupKey = BACKUP_PREFIX + backupName;
-        localStorage.setItem(backupKey, JSON.stringify(backup));
+        console.log('Backup object:', backup);
+
+        // Save backup to Firebase
+        const { collection, addDoc } = window.firebaseUtils;
+        console.log('Attempting to save to Firebase...');
+
+        const docRef = await addDoc(collection(window.db, 'localStorage_backups'), backup);
+        console.log('Document written with ID: ', docRef.id);
 
         showStatus(`Backup "${backupName}" created successfully!`);
         backupNameInput.value = '';
-        loadBackups();
+
+        // Wait a moment before reloading to ensure Firebase sync
+        setTimeout(() => {
+          loadBackups();
+        }, 1000);
 
       } catch (error) {
         showStatus(`Error creating backup: ${error.message}`, true);
+        console.error('Backup creation error:', error);
+        console.error('Full error object:', error);
+
+        // Check if it's a permissions error
+        if (error.code === 'permission-denied') {
+          showStatus('Firebase permissions error. Please check Firestore security rules.', true);
+        }
       }
     }
 
-    function loadBackups() {
+    async function loadBackups() {
       try {
         const backupList = document.getElementById('backupList');
+        backupList.innerHTML = '<p>Loading backups...</p>';
+
+        console.log('Loading backups from Firebase...');
+
+        // Get backups from Firebase
+        const { collection, getDocs, query, orderBy } = window.firebaseUtils;
+        const q = query(collection(window.db, 'localStorage_backups'), orderBy('createdAt', 'desc'));
+        const querySnapshot = await getDocs(q);
+
+        console.log('Query snapshot size:', querySnapshot.size);
+
         const backups = [];
+        querySnapshot.forEach((doc) => {
+          console.log('Document data:', doc.id, doc.data());
+          const backup = doc.data();
+          backup.id = doc.id; // Store document ID for deletion
+          backups.push(backup);
+        });
 
-        // Find all backup keys
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key.startsWith(BACKUP_PREFIX)) {
-            try {
-              const backup = JSON.parse(localStorage.getItem(key));
-              backups.push(backup);
-            } catch (e) {
-              console.warn(`Invalid backup data for key: ${key}`);
-            }
-          }
-        }
-
-        // Sort by timestamp (newest first)
-        backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        console.log('Total backups loaded:', backups.length);
 
         if (backups.length === 0) {
-          backupList.innerHTML = '<p>No backups found.</p>';
+          backupList.innerHTML = '<p>No backups found. Try creating one first!</p>';
           return;
         }
 
@@ -330,7 +353,7 @@
         let html = '';
         backups.forEach(backup => {
           const date = new Date(backup.timestamp).toLocaleString();
-          const dataCount = Object.keys(backup.data).length;
+          const dataCount = Object.keys(backup.data || {}).length;
 
           html += `
             <div class="backup-item">
@@ -339,9 +362,9 @@
                 <div class="backup-date">${date} (${dataCount} items)</div>
               </div>
               <div class="backup-actions">
-                <button class="btn-info" onclick="viewBackup('${backup.name}')">View</button>
-                <button class="btn-success" onclick="restoreBackup('${backup.name}')">Restore</button>
-                <button class="btn-danger" onclick="deleteBackup('${backup.name}')">Delete</button>
+                <button class="btn-info" onclick="viewBackup('${backup.id}')">View</button>
+                <button class="btn-success" onclick="restoreBackup('${backup.id}')">Restore</button>
+                <button class="btn-danger" onclick="deleteBackup('${backup.id}')">Delete</button>
               </div>
             </div>
           `;
@@ -349,76 +372,96 @@
 
         backupList.innerHTML = html;
 
+        // Store backups globally for other functions
+        window.currentBackups = backups;
+
       } catch (error) {
         showStatus(`Error loading backups: ${error.message}`, true);
+        console.error('Load backups error:', error);
+        console.error('Full error object:', error);
+
+        // Check if it's a permissions error
+        if (error.code === 'permission-denied') {
+          showStatus('Firebase permissions error. Please check Firestore security rules.', true);
+          document.getElementById('backupList').innerHTML = `
+            <p style="color: red;">Firebase permissions error. You need to configure Firestore security rules.</p>
+            <p>Go to Firebase Console > Firestore Database > Rules and set:</p>
+            <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px;">
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+            </pre>
+          `;
+        }
       }
     }
 
-    function restoreBackup(backupName) {
-      if (!confirm(`Are you sure you want to restore backup "${backupName}"? This will replace all current localStorage data.`)) {
-        return;
-      }
-
+    function restoreBackup(backupId) {
       try {
-        const backupKey = BACKUP_PREFIX + backupName;
-        const backupData = localStorage.getItem(backupKey);
-
-        if (!backupData) {
-          showStatus(`Backup "${backupName}" not found!`, true);
+        const backup = window.currentBackups?.find(b => b.id === backupId);
+        if (!backup) {
+          showStatus('Backup not found!', true);
           return;
         }
 
-        const backup = JSON.parse(backupData);
-
-        // Clear current localStorage (except backups)
-        const keysToRemove = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (!key.startsWith(BACKUP_PREFIX)) {
-            keysToRemove.push(key);
-          }
+        if (!confirm(`Are you sure you want to restore backup "${backup.name}"? This will replace all current localStorage data.`)) {
+          return;
         }
-        keysToRemove.forEach(key => localStorage.removeItem(key));
+
+        // Clear current localStorage
+        localStorage.clear();
 
         // Restore backup data
-        Object.entries(backup.data).forEach(([key, value]) => {
+        Object.entries(backup.data || {}).forEach(([key, value]) => {
           localStorage.setItem(key, value);
         });
 
-        showStatus(`Backup "${backupName}" restored successfully!`);
+        showStatus(`Backup "${backup.name}" restored successfully!`);
 
       } catch (error) {
         showStatus(`Error restoring backup: ${error.message}`, true);
+        console.error('Restore backup error:', error);
       }
     }
 
-    function deleteBackup(backupName) {
-      if (!confirm(`Are you sure you want to delete backup "${backupName}"? This action cannot be undone.`)) {
-        return;
-      }
-
+    async function deleteBackup(backupId) {
       try {
-        const backupKey = BACKUP_PREFIX + backupName;
-        localStorage.removeItem(backupKey);
-        showStatus(`Backup "${backupName}" deleted successfully!`);
+        const backup = window.currentBackups?.find(b => b.id === backupId);
+        if (!backup) {
+          showStatus('Backup not found!', true);
+          return;
+        }
+
+        if (!confirm(`Are you sure you want to delete backup "${backup.name}"? This action cannot be undone.`)) {
+          return;
+        }
+
+        // Delete from Firebase
+        const { doc, deleteDoc } = window.firebaseUtils;
+        await deleteDoc(doc(window.db, 'localStorage_backups', backupId));
+
+        showStatus(`Backup "${backup.name}" deleted successfully!`);
         loadBackups();
 
       } catch (error) {
         showStatus(`Error deleting backup: ${error.message}`, true);
+        console.error('Delete backup error:', error);
       }
     }
 
-    function viewBackup(backupName) {
+    function viewBackup(backupId) {
       try {
-        const backupKey = BACKUP_PREFIX + backupName;
-        const backupData = localStorage.getItem(backupKey);
-
-        if (!backupData) {
-          showStatus(`Backup "${backupName}" not found!`, true);
+        const backup = window.currentBackups?.find(b => b.id === backupId);
+        if (!backup) {
+          showStatus('Backup not found!', true);
           return;
         }
 
-        const backup = JSON.parse(backupData);
         const modal = document.getElementById('viewModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalBody = document.getElementById('modalBody');
@@ -427,7 +470,7 @@
 
         // Generate HTML for storage data
         let html = '';
-        const entries = Object.entries(backup.data);
+        const entries = Object.entries(backup.data || {});
 
         if (entries.length === 0) {
           html = '<p>This backup contains no data.</p>';
@@ -456,6 +499,7 @@
 
       } catch (error) {
         showStatus(`Error viewing backup: ${error.message}`, true);
+        console.error('View backup error:', error);
       }
     }
 
