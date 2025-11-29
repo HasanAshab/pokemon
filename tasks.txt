@@ -1,4 +1,5 @@
 * Tasks
+War result confirm
 Military tension + builds
 Body genetics
 App version

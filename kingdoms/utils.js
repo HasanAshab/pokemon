@@ -521,11 +521,11 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
       const woundedCount = Math.abs(hospitalCap)
       s.quantity -= woundedCount;
       reducePopulation(kingdom, woundedCount);
-      image.items._items.forEach(item => {
-        console.log(item.id, "-", woundedCount);
-        if (!kingdom.storage[item.id]) return
-        kingdom.storage[item.id] -= woundedCount
-      });
+      // image.items._items.forEach(item => {
+      //   console.log(item.id, "-", woundedCount);
+      //   if (!kingdom.storage[item.id]) return
+      //   kingdom.storage[item.id] -= woundedCount
+      // });
       hospitalCap = 0;
     }
     return s;
