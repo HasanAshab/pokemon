@@ -252,7 +252,6 @@ function generateDefendersReport(expLvl = 0) {
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
       
       const items = image.items.names().join(", ");
- 
       
       const level = `(lvl ${image.level})`;
       const moreData = `${level} ${items && (" with " + items)}`

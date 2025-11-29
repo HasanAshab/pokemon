@@ -448,7 +448,7 @@ kunai: {
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
        secondary: {
-        chance: 10,
+        chance: 2,
         status: "bleed"
       },
       target: "normal",
@@ -501,21 +501,21 @@ bamboo: {
 ninjablade: {
       num: 100004,
       accuracy: 100,
-      basePower: 70,
+      basePower: 60,
       category: "Physical",
       name: "Ninja Blade",
-      pp: 30 * 3,
+      pp: 15 * 3,
       priority: 0,
       flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1},
       secondary: {
-        chance: 10,
+        chance: 5,
         status: "bleed"
       },
       target: "normal",
       type: "Steel",
       contestType: "Tough",
       tokenChanges: {
-        spe: -12
+        spe: -10
       }
     },
    
@@ -642,11 +642,11 @@ katana: {
       num: 100010,
       accuracy: 100,
       multihit:[2,5],
-      basePower: 20,
+      basePower: 18,
       category: "Physical",
       name: "Nine Chaku",
       pp: 15 * 3,
-      priority: 1,
+      priority: 0,
       flags: {
         contact: 1, 
         protect: 1,

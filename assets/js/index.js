@@ -255,7 +255,72 @@ import { startBattle, startUserBattle } from "./utils/dom.js";
 
   // window.location = "/kingdoms/cms/buildings/?name=Bengolia"
 // window.location = "http://localhost:8158/battle.html?fields=&system=multiple"
-
+startBattle([
+  {
+  "nature": "tai",
+  "id": "genin",
+  "xp": 1900,
+  "retreat": 5.35,
+  "stats": {},
+  "token_used": {
+    "hp": 0,
+    "spe": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0
+  },
+  "mega": {
+    "suffix": "mega",
+    "moves": []
+  },
+  "wins-count": 15,
+  "loses-count": 3,
+  "moves": [
+    {
+      "id": "ninjastar",
+      "isDefault": true
+    },
+    {
+      "id": "smokescreen",
+      "isDefault": true
+    },
+    {
+      "id": "vacuumwave",
+      "isDefault": true
+    },
+    {
+      "id": "substitute",
+      "isDefault": true
+    },
+    {
+      "id": "leaftrap",
+      "isDefault": true
+    },
+    {
+      "id": "summon:machop"
+    },
+    {
+      "id": "ninjablade"
+    },
+    {
+      "id": "cyclekick"
+    }
+  ],
+  "types": [],
+  "items": [
+    "gen-food-low-3",
+    "latherarmor2",
+    "gen-age-18"
+  ],
+  "abilities": [
+    "sharedeye",
+    "mayangan:golden-eye"
+  ],
+  "name": "Hasan tunshi",
+  "isSelectedForMultiBattle": true
+}
+],[],"multiple")
 startBattle(null, [
   {
     "id": "chunin",

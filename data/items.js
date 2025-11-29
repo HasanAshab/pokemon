@@ -57,7 +57,7 @@ export default {
     type: "armor",
     covers: 20,
     stats: {
-      def: 15
+      def: 30
     },
     tokens: {
       spe: -1
@@ -65,9 +65,9 @@ export default {
   },
   latherarmor2: {
     type: "armor",
-    covers: 40,
+    covers: 100,
     stats: {
-      def: 15
+      def: 30
     },
     tokens: {
       spe: -4
@@ -379,72 +379,73 @@ export default {
   "gen-food-mid-2": {
     type: "food_genetics",
     tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+      "hp": 0,
+      "def": 20,
+      "atk": 20,
+      "spd": 20,
+      "spe": 20,
+      "spa": 20
+
     },
     meta: { budget: 3500 }
   },
   "gen-food-mid-3": {
     type: "food_genetics",
     tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+      "hp": 10,
+      "def": 30,
+      "atk": 30,
+      "spd": 30,
+      "spe": 30,
+      "spa": 30
     },
     meta: { budget: 4500 }
   },
   "gen-food-high-1": {
     type: "food_genetics",
     tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+      "hp": 20,
+      "def": 40,
+      "atk": 40,
+      "spd": 40,
+      "spe": 40,
+      "spa": 40
     },
     meta: { budget: 6000 }
   },
   "gen-food-high-2": {
     type: "food_genetics",
     tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+      "hp": 30,
+      "def": 50,
+      "atk": 50,
+      "spd": 50,
+      "spe": 50,
+      "spa": 50
     },
     meta: { budget: 8000 }
   },
   "gen-food-high-3": {
     type: "food_genetics",
     tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+      "hp": 40,
+      "def": 60,
+      "atk": 60,
+      "spd": 60,
+      "spe": 60,
+      "spa": 60
     },
     meta: { budget: 10000 }
   },
   "gen-food-bulk-1": {
     type: "food_genetics",
     tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+      "hp": 60,
+      "def": 100,
+      "atk": 90,
+      "spd": 60,
+      "spe": 30,
+      "spa": 60
     },
     meta: { budget: 15000 }
   }
