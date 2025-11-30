@@ -157,11 +157,7 @@ export const soldiersAcademy = {
     const ranksIdMap = new Map()
     for (const key in humans){
       ranksIdMap.set(humans[key].num,key)
-    }
-
-
-    console.log(ranksIdMap.get(rankNum + 1),soldierslist);
-    
+    }    
     // console.log(kingdom.barrack.soldiers[type]);
     
     //  let senseiRankImage = null
@@ -449,13 +445,12 @@ export function prepareCommander(kingdom, commanderName) {
   return commander;
 }
 
-export function getMilitaryTensionMod(kingdom, direction) {
+export function getMilitaryTensionMod(kingdom, direction) {  
   const mapping = {
     2: 1,
-    4: 1.5,
-    8: 3
+    4: 2,
+    8: 3.5
   }
-
   return mapping[kingdom.militaryTension[direction]];
 }
 
@@ -464,7 +459,7 @@ export function prepareSoldiers(
   soldiers,
   areaPercentage = 100,
   shift,
-  direction
+  direction = null
 ) {
   const data = soldiers.map((soldier) => {
     const { image, quantity: total } = kingdom.barrack.soldiers[shift].find(
@@ -472,9 +467,11 @@ export function prepareSoldiers(
     );
     image.items = soldier.items;
 
-    const tensionMod = getMilitaryTensionMod(kingdom, direction);    
-    const quantity = Math.min(total, Math.round(total * (soldier.percentage / 100) * (areaPercentage / 100) * tensionMod));
-    
+    const tensionMod = direction 
+      ? getMilitaryTensionMod(kingdom, direction) 
+      : 1
+
+    const quantity = Math.min(total, Math.round(total * (soldier.percentage / 100) * (areaPercentage / 100) * tensionMod));    
     return [image, quantity];
   });
   return new SoldierStack(data);

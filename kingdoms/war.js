@@ -5,7 +5,8 @@ export class SoldierStack extends Map {
   constructor(data = []) {
     if (data instanceof Map)
       data = [...data.entries()]
-    data = data.map(([imageMeta, quantity]) => {      
+    data = data.map(([imageMeta, quantity]) => {
+      console.trace(imageMeta, quantity);   
       const image = imageMeta instanceof Pokemon
         ? imageMeta
         : new Pokemon(imageMeta.id, imageMeta)
@@ -32,7 +33,7 @@ export class SoldierStack extends Map {
   }
   
   cp() {
-    return this.reduce((sum, [image, quantity]) => {
+    return this.reduce((sum, [image, quantity]) => {      
       return sum + image.cp() * quantity;
     }, 0);
   }
@@ -167,9 +168,8 @@ class War {
     const defendersCP = this.defenders.soldiers.cp();
     const luckDiff = this.attackers.meta.luckModifier - this.defenders.meta.luckModifier;
     const iqDiff = this.attackers.meta.iqModifier - this.defenders.meta.iqModifier;
-    const cpDiff = attackersCP - defendersCP;
-    
-
+    const cpDiff = attackersCP - defendersCP;    
+  
     // Units quantity
     commentLines.push(this._vsQuantStr());
   
@@ -179,7 +179,6 @@ class War {
     } else {
       commentLines.push("Defender has stronger units");
     }
-
 
     // Units advantage
     // if (attackersScore > defendersScore !== attackersCP > defendersCP) {

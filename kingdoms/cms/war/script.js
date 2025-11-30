@@ -148,7 +148,7 @@ function renderWaves() {
         const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
           s => s.image.id === soldier.image
         ).quantity;
-        const quantity = Math.ceil(total * (percentageInput.value / 100));
+        const quantity = Math.ceil(total * (percentageInput.value / 100));        
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
 

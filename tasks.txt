@@ -1,6 +1,7 @@
 * Tasks
-Military tension + builds
+Sabotage kills people
 Body genetics
+
 App version (offline)
 Defender commander per direction
 
