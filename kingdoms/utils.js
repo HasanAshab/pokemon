@@ -477,9 +477,10 @@ export function prepareSoldiers(
   return new SoldierStack(data);
 }
 
-export function prepareDefenceCommanders(kingdom) {
+export function prepareDefenceCommanders(kingdom, direction) {
   return kingdom.defenceWaves.map((wave) => {
-    return prepareCommander(kingdom, wave.commander);
+    return prepareCommander(kingdom, kingdom.directionCommanders[direction]);
+    // return prepareCommander(kingdom, wave.commander);
   });
 }
 
@@ -490,7 +491,7 @@ export function prepareDefenceSoldiers(kingdom, areaPercentage = 100, shift, dir
 }
 
 export function prepareDefenceWaves(kingdom, areaPercentage = 100, shift, direction) {
-  const commanders = prepareDefenceCommanders(kingdom);
+  const commanders = prepareDefenceCommanders(kingdom, direction);
   const soldiers = prepareDefenceSoldiers(kingdom, areaPercentage, shift, direction);
   return kingdom.defenceWaves.map((wave, index) => {
     return {
