@@ -6,7 +6,6 @@ export class SoldierStack extends Map {
     if (data instanceof Map)
       data = [...data.entries()]
     data = data.map(([imageMeta, quantity]) => {
-      console.trace(imageMeta, quantity);   
       const image = imageMeta instanceof Pokemon
         ? imageMeta
         : new Pokemon(imageMeta.id, imageMeta)
