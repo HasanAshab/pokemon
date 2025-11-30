@@ -17,6 +17,7 @@ landAreaLabel.textContent = "Total Land Area: ";
 landAreaLabel.style.fontWeight = "bold";
 
 const landAreaInput = document.createElement("input");
+landAreaInput.disabled = true;
 landAreaInput.type = "number";
 landAreaInput.placeholder = "Land area";
 landAreaInput.style.marginLeft = "10px";
@@ -41,6 +42,7 @@ filterButtons.style.display = "flex";
 filterButtons.style.gap = "10px";
 
 let currentFilter = 'all';
+let openDetailsState = {}; // Track which details elements are open
 
 const filters = [
   { key: 'all', label: 'All', color: '#6B7280' },
@@ -90,8 +92,16 @@ filters.forEach(filter => {
 filterContainer.appendChild(filterLabel);
 filterContainer.appendChild(filterButtons);
 
+// Add unassigned directions display
+const unassignedContainer = document.createElement("div");
+unassignedContainer.style.marginBottom = "20px";
+unassignedContainer.style.padding = "10px";
+unassignedContainer.style.border = "1px solid #ccc";
+unassignedContainer.style.borderRadius = "5px";
+
 document.body.insertBefore(landAreaContainer, commandersContainer);
 document.body.insertBefore(filterContainer, commandersContainer);
+document.body.insertBefore(unassignedContainer, commandersContainer);
 
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -101,10 +111,61 @@ if (!kingdoms[name].directionCommanders) kingdoms[name].directionCommanders = {}
 if (!kingdoms[name].landArea) kingdoms[name].landArea = 800; // Default land area
 
 
+function updateUnassignedDirections() {
+  const assignedDirections = Object.keys(kingdoms[name].directionCommanders);
+  const unassignedDirections = directions.filter(dir => !assignedDirections.includes(dir));
+  
+  unassignedContainer.innerHTML = "";
+  
+  const titleDiv = document.createElement("div");
+  titleDiv.textContent = "Unassigned Directions";
+  titleDiv.style.fontWeight = "bold";
+  titleDiv.style.marginBottom = "10px";
+  
+  if (unassignedDirections.length === 0) {
+    const statusDiv = document.createElement("div");
+    statusDiv.textContent = "✅ All directions have commanders assigned";
+    statusDiv.style.color = "#10B981";
+    statusDiv.style.fontStyle = "italic";
+    
+    unassignedContainer.appendChild(titleDiv);
+    unassignedContainer.appendChild(statusDiv);
+  } else {
+    const warningDiv = document.createElement("div");
+    warningDiv.textContent = `⚠️ ${unassignedDirections.length} direction(s) need commanders:`;
+    warningDiv.style.color = "#DC2626";
+    warningDiv.style.marginBottom = "10px";
+    
+    const directionsGrid = document.createElement("div");
+    directionsGrid.style.display = "flex";
+    directionsGrid.style.gap = "8px";
+    directionsGrid.style.flexWrap = "wrap";
+    
+    unassignedDirections.forEach(dir => {
+      const dirBadge = document.createElement("span");
+      dirBadge.textContent = dir;
+      dirBadge.style.backgroundColor = "#FEE2E2";
+      dirBadge.style.color = "#DC2626";
+      dirBadge.style.padding = "4px 8px";
+      dirBadge.style.borderRadius = "4px";
+      dirBadge.style.fontSize = "0.9em";
+      dirBadge.style.fontWeight = "bold";
+      dirBadge.style.border = "1px solid #FECACA";
+      
+      directionsGrid.appendChild(dirBadge);
+    });
+    
+    unassignedContainer.appendChild(titleDiv);
+    unassignedContainer.appendChild(warningDiv);
+    unassignedContainer.appendChild(directionsGrid);
+  }
+}
+
 function save() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   renderCommanders();
   updateLandAreaInput();
+  updateUnassignedDirections();
 }
 
 function updateLandAreaInput() {
@@ -149,6 +210,18 @@ function getCommandedArea(commanderName) {
 }
 
 function renderCommanders() {
+  // Save current state of open details before clearing
+  const currentDetails = commandersContainer.querySelectorAll('details[open]');
+  currentDetails.forEach(details => {
+    const commanderCard = details.closest('.commander-card');
+    if (commanderCard) {
+      const nameInput = commanderCard.querySelector('input[type="text"]');
+      if (nameInput) {
+        openDetailsState[nameInput.value] = true;
+      }
+    }
+  });
+
   commandersContainer.innerHTML = "";
   const commanders = kingdoms[name].commanders;
 
@@ -219,40 +292,65 @@ function renderCommanders() {
       save();
     };
 
-    // Direction assignment section
-    const directionContainer = document.createElement("div");
-    directionContainer.className = "direction-container";
-
-    const directionLabel = document.createElement("div");
-    directionLabel.textContent = "Assigned Directions:";
-    directionLabel.style.fontWeight = "bold";
-    directionLabel.style.marginTop = "10px";
-
     // Check if this is an attacker commander
     const isAttacker = commanderType === 'attacker';
 
-    if (isAttacker) {
-      // Remove any existing direction assignments for attackers
-      directions.forEach(dir => {
-        if (kingdoms[name].directionCommanders[dir] === commanderName) {
-          delete kingdoms[name].directionCommanders[dir];
+    // Basic stats (always shown)
+    const basicStatsDiv = document.createElement("div");
+    basicStatsDiv.className = "commander-stats";
+    basicStatsDiv.style.marginTop = "10px";
+    basicStatsDiv.style.fontSize = "0.9em";
+    basicStatsDiv.innerHTML = `
+      <div><strong>Type:</strong> <span style="color: ${typeColors[commanderType]}">${commanderType.toUpperCase()}</span></div>
+    `;
+
+    // Direction assignment section (only for non-attackers)
+    let directionContainer = null;
+    let directionStatsDiv = null;
+
+    if (!isAttacker) {
+      const commandedDirections = getCommanderDirections(commanderName);
+      const commandedArea = getCommandedArea(commanderName);
+
+      // Always visible direction stats
+      directionStatsDiv = document.createElement("div");
+      directionStatsDiv.style.marginTop = "5px";
+      directionStatsDiv.style.fontSize = "0.9em";
+      directionStatsDiv.innerHTML = `
+        <div><strong>Directions:</strong> ${commandedDirections.join(', ') || 'None'}</div>
+        <div><strong>Area Commanding:</strong> ${commandedArea.toFixed(1)} sq. km</div>
+      `;
+
+      // Create collapsible details element for assignment controls
+      const detailsElement = document.createElement("details");
+      detailsElement.style.marginTop = "10px";
+
+      // Restore open state if it was previously open
+      if (openDetailsState[commanderName]) {
+        detailsElement.open = true;
+      }
+
+      const summaryElement = document.createElement("summary");
+      summaryElement.textContent = `Direction Assignment Controls`;
+      summaryElement.style.fontWeight = "bold";
+      summaryElement.style.cursor = "pointer";
+      summaryElement.style.marginBottom = "10px";
+
+      // Track state changes
+      detailsElement.addEventListener('toggle', () => {
+        if (detailsElement.open) {
+          openDetailsState[commanderName] = true;
+        } else {
+          delete openDetailsState[commanderName];
         }
       });
 
-      const attackerNotice = document.createElement("div");
-      attackerNotice.textContent = "Attackers cannot be assigned to directions (Mobile Unit)";
-      attackerNotice.style.color = "#DC2626";
-      attackerNotice.style.fontStyle = "italic";
-      attackerNotice.style.marginTop = "5px";
-      directionContainer.appendChild(directionLabel);
-      directionContainer.appendChild(attackerNotice);
-    } else {
       const directionGrid = document.createElement("div");
       directionGrid.className = "direction-grid";
       directionGrid.style.display = "grid";
       directionGrid.style.gridTemplateColumns = "repeat(4, 1fr)";
       directionGrid.style.gap = "5px";
-      directionGrid.style.marginTop = "5px";
+      directionGrid.style.marginTop = "10px";
 
       directions.forEach(dir => {
         const dirBtn = document.createElement("button");
@@ -286,33 +384,18 @@ function renderCommanders() {
         directionGrid.appendChild(dirBtn);
       });
 
-      directionContainer.appendChild(directionLabel);
-      directionContainer.appendChild(directionGrid);
-    }
+      detailsElement.appendChild(summaryElement);
+      detailsElement.appendChild(directionGrid);
 
-    const commandedDirections = getCommanderDirections(commanderName);
-    const commandedArea = getCommandedArea(commanderName);
-
-    const statsDiv = document.createElement("div");
-    statsDiv.className = "commander-stats";
-    statsDiv.style.marginTop = "10px";
-    statsDiv.style.fontSize = "0.9em";
-
-    if (isAttacker) {
-      statsDiv.innerHTML = `
-        <div><strong>Type:</strong> <span style="color: ${typeColors[commanderType]}">${commanderType.toUpperCase()}</span></div>
-        <div><strong>Role:</strong> Mobile Strike Force</div>
-        <div><strong>Area Commanded:</strong> N/A (Mobile Unit)</div>
-      `;
+      directionContainer = detailsElement;
     } else {
-      statsDiv.innerHTML = `
-        <div><strong>Type:</strong> <span style="color: ${typeColors[commanderType]}">${commanderType.toUpperCase()}</span></div>
-        <div><strong>Directions:</strong> ${commandedDirections.join(', ') || 'None'}</div>
-        <div><strong>Area Commanded:</strong> ${commandedArea.toFixed(1)} sq. km</div>
-      `;
+      // Remove any existing direction assignments for attackers
+      directions.forEach(dir => {
+        if (kingdoms[name].directionCommanders[dir] === commanderName) {
+          delete kingdoms[name].directionCommanders[dir];
+        }
+      });
     }
-
-    directionContainer.appendChild(statsDiv);
 
     const iqContainer = document.createElement("div");
     iqContainer.className = "iq-container";
@@ -400,7 +483,13 @@ function renderCommanders() {
     card.appendChild(nameInput);
     card.appendChild(imageSelect);
     card.appendChild(salaryInput);
-    card.appendChild(directionContainer);
+    card.appendChild(basicStatsDiv);
+    if (directionStatsDiv) {
+      card.appendChild(directionStatsDiv);
+    }
+    if (directionContainer) {
+      card.appendChild(directionContainer);
+    }
     card.appendChild(iqContainer);
     card.appendChild(jsonEditor);
     card.appendChild(delBtn);
@@ -417,4 +506,5 @@ addCommanderBtn.onclick = () => {
 };
 
 updateLandAreaInput();
+updateUnassignedDirections();
 renderCommanders();
