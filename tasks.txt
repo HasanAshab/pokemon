@@ -1,6 +1,6 @@
 * Tasks
-App version (offline)
 Defender commander per direction
+App version (offline)
 
 * bug
 Summon delay
