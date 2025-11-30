@@ -1,6 +1,7 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate } from "../../utils.js";
+import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation } from "../../utils.js";
 
+globalThis.wars = []
 var i = 0;
 var netWin = 0;
 const urlParams = new URLSearchParams(window.location.search);
@@ -345,7 +346,6 @@ startWarBtn.onclick = () => {
   defenderOpts.cpModifiers.push(
     getSoldierImbalancePenalty(defKingdom, shiftSelect.value),
   )
-
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
@@ -371,27 +371,27 @@ startWarBtn.onclick = () => {
           Attacker: ${Math.round(war.result.scores.atk).toLocaleString()}<br>
           Defender: ${Math.round(war.result.scores.def).toLocaleString()}<br>
           Defence Build: ${Math.round(buildDefenceScore).toLocaleString()}<br>
-          Diff (DEF - ATK): ${Math.round(war.result.scores.def - war.result.scores.atk).toLocaleString()} (${parseInt((war.result.scores.atk * 100) / war.result.scores.def)}%) <br>
+          Diff (ATK view): ${Math.round(war.scoreDiff()).toLocaleString()} (${parseInt(war.scoreDiffPercent())}%) <br>
           Wounded Units: <br>
           Attacker:<br>
           ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
           Defender:<br>
           ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
-
           <button style="background-color: blue; color: white" onclick="confirmResult(this)">Confirm</button>
         `
         globalThis.confirmResult = (btn) => {
           handleWoundedSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
           handleWoundedSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
-          resolve()
+          resolve(war)
           btn.disabled = true
         }
       }, 1)
     })
   }
   if (i < attackWaves.length) {
-  handleWave(attackWaves[i], i).then(() => {
+  handleWave(attackWaves[i], i).then((war) => {
     startWarBtn.disabled = false;
+    globalThis.wars.push(war)
   })
   }
   else {    
@@ -399,6 +399,7 @@ startWarBtn.onclick = () => {
     const outcome = win ? "Success" : "Failour";
     resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`
 
+    const percentageInp = document.getElementById("areaPercentage")
     if (win) {
       if (strategySelect.value === "harvest") {
         const items = getDataBoxData('harvest')
@@ -406,13 +407,26 @@ startWarBtn.onclick = () => {
         defKingdom.storage = sumObj(atkKingdom.storage, modObj(items, -1))
       }
       else if (strategySelect.value === "occupy") {
-        const percentageInp = document.getElementById("areaPercentage")
         const occupiedArea = defKingdom.landArea * (parseInt(percentageInp.value) / 100)
         atkKingdom.landArea += occupiedArea
         defKingdom.landArea -= occupiedArea
       }
     }
+    if (strategySelect.value === "sabotage") {
+        const totalCiviliansInRange = getPopulation(defKingdom) * (percentageInp.value / 100)
+        const scoreLapsAvgRate = globalThis.wars
+          .map(war => -war.scoreDiffPercent())
+          .reduce((a, b) => a + b, 0) / globalThis.wars.length
+        const securityRate = getTotalSecurityRate(defKingdom)
+        const civilianSavedRate = scoreLapsAvgRate + (securityRate / 2)
+        const civiliansLostRate = 100 - Math.max(0, Math.min(civilianSavedRate, 100))
+        const civiliansLost = Math.round(totalCiviliansInRange * (civiliansLostRate / 100))
+        reducePopulation(defKingdom, civiliansLost)
+        resultDiv.innerHTML += `<br>${civiliansLost.toLocaleString()} civilians lost.<br>`
+    }
   }
+
+
   localStorage.setItem('kingdoms', JSON.stringify(kingdoms))
   i++
 };

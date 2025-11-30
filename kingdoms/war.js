@@ -290,6 +290,20 @@ class War {
       : "1 Defender"
     return `${atkQuant} vs ${defQuant}`
   }
+
+  scoreDiff() {
+    return this.result.scores.atk - this.result.scores.def;
+  }
+
+  scoreDiffPercent() {
+    const atk = this.result.scores.atk;
+    const def = this.result.scores.def;
+  
+    if (atk === 0 && def === 0) return 0; // avoid NaN
+  
+    // percent relative to defender
+    return ((atk - def) / Math.max(def, 1)) * 100;
+  }  
 }
 
 class OccupationWar extends War {

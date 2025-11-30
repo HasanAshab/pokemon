@@ -1,7 +1,4 @@
 * Tasks
-Sabotage kills people
-Body genetics
-
 App version (offline)
 Defender commander per direction
 
@@ -19,6 +16,7 @@ kingdom clone
 ancient mode with selfish scar
 
 *ovi
+Body genetics
 Fix styling of:
   Deffence manage page tension tab
   war page Main tab
