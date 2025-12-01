@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <canvas id="canvas192" width="192" height="192" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <canvas id="canvas512" width="512" height="512" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <br>
+    <button onclick="downloadIcons()">Download Icons</button>
+    
+    <script>
+        // Create 192x192 icon
+        const canvas192 = document.getElementById('canvas192');
+        const ctx192 = canvas192.getContext('2d');
+        
+        // Background
+        ctx192.fillStyle = '#3b82f6';
+        ctx192.fillRect(0, 0, 192, 192);
+        
+        // Pokeball design
+        ctx192.fillStyle = '#ffffff';
+        ctx192.beginPath();
+        ctx192.arc(96, 96, 80, 0, Math.PI * 2);
+        ctx192.fill();
+        
+        ctx192.fillStyle = '#ff0000';
+        ctx192.fillRect(16, 16, 160, 80);
+        
+        ctx192.fillStyle = '#000000';
+        ctx192.fillRect(16, 90, 160, 12);
+        
+        ctx192.fillStyle = '#ffffff';
+        ctx192.beginPath();
+        ctx192.arc(96, 96, 20, 0, Math.PI * 2);
+        ctx192.fill();
+        
+        ctx192.strokeStyle = '#000000';
+        ctx192.lineWidth = 4;
+        ctx192.beginPath();
+        ctx192.arc(96, 96, 20, 0, Math.PI * 2);
+        ctx192.stroke();
+        
+        // Create 512x512 icon (scaled version)
+        const canvas512 = document.getElementById('canvas512');
+        const ctx512 = canvas512.getContext('2d');
+        
+        ctx512.fillStyle = '#3b82f6';
+        ctx512.fillRect(0, 0, 512, 512);
+        
+        ctx512.fillStyle = '#ffffff';
+        ctx512.beginPath();
+        ctx512.arc(256, 256, 200, 0, Math.PI * 2);
+        ctx512.fill();
+        
+        ctx512.fillStyle = '#ff0000';
+        ctx512.fillRect(56, 56, 400, 200);
+        
+        ctx512.fillStyle = '#000000';
+        ctx512.fillRect(56, 240, 400, 32);
+        
+        ctx512.fillStyle = '#ffffff';
+        ctx512.beginPath();
+        ctx512.arc(256, 256, 50, 0, Math.PI * 2);
+        ctx512.fill();
+        
+        ctx512.strokeStyle = '#000000';
+        ctx512.lineWidth = 8;
+        ctx512.beginPath();
+        ctx512.arc(256, 256, 50, 0, Math.PI * 2);
+        ctx512.stroke();
+        
+        function downloadIcons() {
+            // Download 192x192 icon
+            const link192 = document.createElement('a');
+            link192.download = 'icon-192.png';
+            link192.href = canvas192.toDataURL();
+            link192.click();
+            
+            // Download 512x512 icon
+            setTimeout(() => {
+                const link512 = document.createElement('a');
+                link512.download = 'icon-512.png';
+                link512.href = canvas512.toDataURL();
+                link512.click();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

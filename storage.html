@@ -144,6 +144,11 @@
   </div>
 
   <div class="controls">
+    <button onclick="clearAppCache()" style="background-color: #ff4444; color: white; font-weight: bold;">Clear App Cache</button>
+    <button onclick="clearAllData()" style="background-color: #cc0000; color: white; font-weight: bold;">Clear All Data & Cache</button>
+  </div>
+
+  <div class="controls">
     <textarea id="importTextarea" rows="6" style="width:100%;" placeholder="Paste localStorage JSON here"></textarea>
   </div>
 
@@ -387,6 +392,94 @@
       }
       renderStorage();
       alert("Import completed.");
+    }
+
+    // Cache clearing functions
+    async function clearAppCache() {
+      if (!confirm("This will clear all cached app files. The app will need to reload from the network. Continue?")) {
+        return;
+      }
+
+      try {
+        // Clear all caches
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(
+            cacheNames.map(cacheName => caches.delete(cacheName))
+          );
+          console.log('All caches cleared');
+        }
+
+        // Unregister service worker
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(
+            registrations.map(registration => registration.unregister())
+          );
+          console.log('Service worker unregistered');
+        }
+
+        alert("App cache cleared successfully! The page will reload.");
+        window.location.reload(true); // Force reload from server
+      } catch (error) {
+        console.error('Error clearing cache:', error);
+        alert("Error clearing cache: " + error.message);
+      }
+    }
+
+    async function clearAllData() {
+      if (!confirm("This will clear ALL data including localStorage, cache, and force a complete app reset. This cannot be undone! Continue?")) {
+        return;
+      }
+
+      try {
+        // Clear localStorage
+        localStorage.clear();
+        
+        // Clear sessionStorage
+        sessionStorage.clear();
+
+        // Clear IndexedDB (if used)
+        if ('indexedDB' in window) {
+          // This is a basic cleanup - you might need to adjust based on your specific IndexedDB usage
+          try {
+            const databases = await indexedDB.databases();
+            await Promise.all(
+              databases.map(db => {
+                return new Promise((resolve, reject) => {
+                  const deleteReq = indexedDB.deleteDatabase(db.name);
+                  deleteReq.onsuccess = () => resolve();
+                  deleteReq.onerror = () => reject(deleteReq.error);
+                });
+              })
+            );
+          } catch (e) {
+            console.log('IndexedDB cleanup skipped:', e);
+          }
+        }
+
+        // Clear all caches
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(
+            cacheNames.map(cacheName => caches.delete(cacheName))
+          );
+        }
+
+        // Unregister service worker
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(
+            registrations.map(registration => registration.unregister())
+          );
+        }
+
+        alert("All data and cache cleared! The app will reload completely fresh.");
+        window.location.reload(true);
+      } catch (error) {
+        console.error('Error clearing all data:', error);
+        alert("Error clearing data: " + error.message);
+      }
     }
 
     renderStorage();

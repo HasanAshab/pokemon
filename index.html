@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokedex</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="description" content="A browser-based Pokemon game with battles, collection, and offline support">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Pokedex">
+  <meta name="msapplication-TileColor" content="#3b82f6">
+  
+  <!-- Manifest -->
+  <link rel="manifest" href="./manifest.json">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/img/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./assets/img/icon-512.png">
+  <link rel="apple-touch-icon" href="./assets/img/icon-192.png">
+  
   <link rel="stylesheet" href="./assets/css/global.css">
   <link rel="stylesheet" href="./assets/css/index.css">
 </head>
@@ -148,4 +165,55 @@
   </div>
 </body>
 <script src="./assets/js/index.js" type="module"></script>
+<script>
+  // Register service worker for PWA functionality
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          console.log('SW registered: ', registration);
+        })
+        .catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
+
+  // Install prompt for PWA
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show install button or banner
+    const installButton = document.createElement('button');
+    installButton.textContent = 'Install App';
+    installButton.style.cssText = `
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      padding: 10px 15px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    `;
+    
+    installButton.addEventListener('click', () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+          installButton.remove();
+        }
+        deferredPrompt = null;
+      });
+    });
+    
+    document.body.appendChild(installButton);
+  });
+</script>
 </html>

@@ -17,13 +17,13 @@ kingdomName.textContent = name || 'Unknown Kingdom';
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 const attackWaves = [];
 
-strategySelect.onchange = ()=>{
-    const goodMsgEl = document.querySelector(".msg.good")
-    const badMsgEl = document.querySelector(".msg.bad")
-const good = WAR_SYSTEMS[strategySelect.value].details.good
+strategySelect.onchange = () => {
+  const goodMsgEl = document.querySelector(".msg.good")
+  const badMsgEl = document.querySelector(".msg.bad")
+  const good = WAR_SYSTEMS[strategySelect.value].details.good
   const bad = WAR_SYSTEMS[strategySelect.value].details.bad
-goodMsgEl.textContent = good
-badMsgEl.textContent = bad  
+  goodMsgEl.textContent = good
+  badMsgEl.textContent = bad
 }
 
 defenderSelect.onchange = () => {
@@ -92,7 +92,7 @@ function renderWaves() {
       const defKingdom = kingdoms[defenderSelect.value]
       const actualIQ = atkKingdom.commanders[commanderSelect.value].iq.offensive;
       const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
-      const effectiveIQ = getEffectiveOffensiveIQ(actualIQ, attackedArea)      
+      const effectiveIQ = getEffectiveOffensiveIQ(actualIQ, attackedArea)
       iqLabel.textContent = `IQ: ${effectiveIQ}`;
     };
 
@@ -115,7 +115,7 @@ function renderWaves() {
       modalContent.className = "modal-content";
 
       const soldierSelect = document.createElement("select");
-      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers.emergency || [];      
+      const soldiers = kingdoms[attackerSelect.value].barrack?.soldiers.emergency || [];
       soldiers.forEach((soldier) => {
         const option = document.createElement("option");
         option.value = soldier.image.id;
@@ -158,11 +158,11 @@ function renderWaves() {
       const percentageLabel = document.createElement("span");
       percentageLabel.textContent = `${percentageInput.value}% (0 soldiers)`;
 
-      percentageInput.oninput = () => {   
+      percentageInput.oninput = () => {
         const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
           s => s.image.id === soldier.image
         ).quantity;
-        const quantity = Math.ceil(total * (percentageInput.value / 100));        
+        const quantity = Math.ceil(total * (percentageInput.value / 100));
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
 
@@ -172,7 +172,7 @@ function renderWaves() {
       itemsInput.placeholder = "Items (comma-separated)";
       itemsInput.value = soldier.items?.join(",") || "";
 
-     const abilitiesInput = document.createElement("input");
+      const abilitiesInput = document.createElement("input");
       abilitiesInput.type = "text";
       abilitiesInput.className = "abilities-inp";
       abilitiesInput.placeholder = "Abilities (comma-separated)";
@@ -259,19 +259,19 @@ function generateDefendersReport(expLvl = 0) {
   const reportLines = [];
   const totalUnits = actualDefenders.reduce((total, wave) => total += wave.soldiers.count(), 0)
 
-  reportLines.push("Total"); 
+  reportLines.push("Total");
   reportLines.push("Waves: " + actualDefenders.length);
   expLvl && reportLines.push("Units: " + totalUnits);
   expLvl > 4 && reportLines.push(`Imbalance: ${getForceImbalanceRate(defKingdom, 'soldiers', shiftSelect.value).toFixed(2)}%`);
 
-  expLvl > 1 && actualDefenders.forEach((defenders, index) => {  
+  expLvl > 1 && actualDefenders.forEach((defenders, index) => {
     reportLines.push("");
     reportLines.push(`Wave ${(index + 1)}:`);
     expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${getEffectiveDefensiveIQ(defenders.commander.iq.defensive, getCommandedArea(defKingdom, defenders.commander.name))})`);
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
-      
+
       const items = image.items.names().join(", ");
-      
+
       const level = `(lvl ${image.level})`;
       const moreData = `${level} ${items && (" with " + items)}`
       reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
@@ -312,10 +312,10 @@ globalThis.addDataRow = (containerId) => {
   dataRowsWrapper.appendChild(dataRow);
 }
 
-globalThis.removeRow = (containerId, {currentTarget}) => {
+globalThis.removeRow = (containerId, { currentTarget }) => {
   const container = document.querySelector(`.container.data-box#${containerId}`);
   const dataRowsWrapper = container.querySelector(".data-rows-wrapper");
-  dataRowsWrapper.removeChild(currentTarget.parentElement);  
+  dataRowsWrapper.removeChild(currentTarget.parentElement);
 }
 
 shiftSelect.onchange = () => renderWaves();
@@ -336,7 +336,7 @@ areaPercentageInput.oninput = () => {
   const totalArea = kingdoms[defenderSelect.value].landArea;
   const actualArea = Math.round((totalArea * percent) / 100);
   actualAreaInput.value = actualArea
-  areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;  
+  areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;
   showDefenderData();
 };
 actualAreaInput.oninput = () => {
@@ -373,22 +373,22 @@ startWarBtn.onclick = () => {
     const dwave = defenceWaves[index];
     const kingdom = kingdoms[attackerSelect.value];
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers, 100, "emergency");
-    const commander = prepareCommander(kingdom, wave.commander);    
+    const commander = prepareCommander(kingdom, wave.commander);
     const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
     commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
     dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
     console.log(commander.iq.offensive, dwave.commander.iq.defensive);
-    
+
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value));
-    
+
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts, buildDefenceScore);
-    
+
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
-  
+
     resultDiv.innerHTML += war.comments().join("<br>");
-    return new Promise((resolve, _) => {      
+    return new Promise((resolve, _) => {
       setTimeout(() => {
         resultDiv.innerHTML += `
           <br>
@@ -416,12 +416,12 @@ startWarBtn.onclick = () => {
     })
   }
   if (i < attackWaves.length) {
-  handleWave(attackWaves[i], i).then((war) => {
-    startWarBtn.disabled = false;
-    globalThis.wars.push(war)
-  })
+    handleWave(attackWaves[i], i).then((war) => {
+      startWarBtn.disabled = false;
+      globalThis.wars.push(war)
+    })
   }
-  else {    
+  else {
     const win = netWin > 0
     const outcome = win ? "Success" : "Failour";
     resultDiv.innerHTML += `<br><br><h2>Outcome: ${outcome}</h2>`
@@ -440,16 +440,16 @@ startWarBtn.onclick = () => {
       }
     }
     if (strategySelect.value === "sabotage") {
-        const totalCiviliansInRange = getPopulation(defKingdom) * (percentageInp.value / 100)
-        const scoreLapsAvgRate = globalThis.wars
-          .map(war => -war.scoreDiffPercent())
-          .reduce((a, b) => a + b, 0) / globalThis.wars.length
-        const securityRate = getTotalSecurityRate(defKingdom)
-        const civilianSavedRate = scoreLapsAvgRate + (securityRate / 2)
-        const civiliansLostRate = 100 - Math.max(0, Math.min(civilianSavedRate, 100))
-        const civiliansLost = Math.round(totalCiviliansInRange * (civiliansLostRate / 100))
-        reducePopulation(defKingdom, civiliansLost)
-        resultDiv.innerHTML += `<br>${civiliansLost.toLocaleString()} civilians lost.<br>`
+      const totalCiviliansInRange = getPopulation(defKingdom) * (percentageInp.value / 100)
+      const scoreLapsAvgRate = globalThis.wars
+        .map(war => -war.scoreDiffPercent())
+        .reduce((a, b) => a + b, 0) / globalThis.wars.length
+      const securityRate = getTotalSecurityRate(defKingdom)
+      const civilianSavedRate = scoreLapsAvgRate + (securityRate / 2)
+      const civiliansLostRate = 100 - Math.max(0, Math.min(civilianSavedRate, 100))
+      const civiliansLost = Math.round(totalCiviliansInRange * (civiliansLostRate / 100))
+      reducePopulation(defKingdom, civiliansLost)
+      resultDiv.innerHTML += `<br>${civiliansLost.toLocaleString()} civilians lost.<br>`
     }
   }
 
