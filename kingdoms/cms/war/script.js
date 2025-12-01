@@ -330,15 +330,22 @@ document.getElementById("addWaveBtn").onclick = () => {
 
 const areaPercentageInput = document.getElementById('areaPercentage');
 const areaPercentageLabel = document.getElementById('areaPercentageLabel');
-
+const actualAreaInput = document.getElementById('actualArea');
 areaPercentageInput.oninput = () => {
   const percent = areaPercentageInput.value;
   const totalArea = kingdoms[defenderSelect.value].landArea;
   const actualArea = Math.round((totalArea * percent) / 100);
-  areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;
+  actualAreaInput.value = actualArea
+  areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;  
   showDefenderData();
 };
-
+actualAreaInput.oninput = () => {
+  const actualArea = actualAreaInput.value;
+  const totalArea = kingdoms[defenderSelect.value].landArea;
+  const percent = Math.round((actualArea * 100) / totalArea);
+  areaPercentageInput.value = percent;
+  areaPercentageLabel.textContent = `${percent}% (${actualArea.toLocaleString()} sq/km)`;
+}
 const startWarBtn = document.getElementById('startWar')
 
 startWarBtn.onclick = () => {
