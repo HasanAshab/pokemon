@@ -316,6 +316,37 @@ export default {
     }
   },
 
+ "gen-body-fit-1": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 0,
+      "def": 0,
+      "atk": 0,
+      "spd": 0,
+      "spe": 0
+    }
+  },
+  "gen-body-fit-2": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 5,
+      "def": 5,
+      "atk": 5,
+      "spd": 5,
+      "spe": 5
+    }
+  },
+  "gen-body-fit-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 10,
+      "def": 10,
+      "atk": 10,
+      "spd": 10,
+      "spe": 10
+    }
+  },
+  
   "gen-food-low-1": {
     type: "food_genetics",
     tokensPercent: {
