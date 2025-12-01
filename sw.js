@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokemon-game-v1';
+const CACHE_NAME = 'pokemon-game-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -10,7 +10,8 @@ const urlsToCache = [
   '/compare.html',
   '/data.html',
   '/backup_ls.html',
-  
+  '/offline.html',
+
   // CSS files
   '/assets/css/global.css',
   '/assets/css/index.css',
@@ -20,7 +21,7 @@ const urlsToCache = [
   '/assets/css/multy-input-box.css',
   '/assets/css/n_enemy.css',
   '/assets/css/poke_details.css',
-  
+
   // JavaScript files
   '/assets/js/index.js',
   '/assets/js/battle.js',
@@ -32,12 +33,12 @@ const urlsToCache = [
   '/assets/js/utils/models.js',
   '/assets/js/utils/helpers.js',
   '/assets/js/utils/dom.js',
-  
+
   // SVG files
   '/assets/svg/sword.svg',
   '/assets/svg/arrow-down.svg',
   '/assets/svg/arrow-up.svg',
-  
+
   // Data files
   '/data/abilities.js',
   '/data/beasts.js',
@@ -48,20 +49,20 @@ const urlsToCache = [
   '/data/natures.js',
   '/data/pokemons.js',
   '/data/types.js',
-  
+
   // Company section
   '/company/index.html',
   '/company/cms.html',
   '/company/cms.css',
   '/company/cms.js',
   '/company/utils.js',
-  
+
   // Stock market section
   '/stock_market/index.html',
-  
+
   // Kingdoms section
   '/kingdoms/',
-  
+
   // Manifest
   '/manifest.json'
 ];
@@ -85,38 +86,71 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Return cached version or fetch from network
+        // Return cached version if found
         if (response) {
           return response;
         }
-        
-        // Clone the request because it's a stream
-        const fetchRequest = event.request.clone();
-        
-        return fetch(fetchRequest).then(response => {
-          // Check if we received a valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          // Clone the response because it's a stream
-          const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-          
-          return response;
-        }).catch(() => {
-          // If both cache and network fail, return a custom offline page
-          if (event.request.destination === 'document') {
-            return caches.match('/index.html');
-          }
-        });
+
+        // For HTML requests with query parameters, try to match the base URL
+        if (event.request.destination === 'document') {
+          const url = new URL(event.request.url);
+          const baseUrl = url.origin + url.pathname;
+
+          // Try to match the base URL without query parameters
+          return caches.match(baseUrl).then(baseResponse => {
+            if (baseResponse) {
+              return baseResponse;
+            }
+
+            // If no base match, try network
+            return tryNetworkThenFallback(event.request);
+          });
+        }
+
+        // For non-document requests, try network
+        return tryNetworkThenFallback(event.request);
       })
   );
 });
+
+// Helper function to try network then fallback
+function tryNetworkThenFallback(request) {
+  const fetchRequest = request.clone();
+
+  return fetch(fetchRequest).then(response => {
+    // Check if we received a valid response
+    if (!response || response.status !== 200 || response.type !== 'basic') {
+      return response;
+    }
+
+    // Clone the response because it's a stream
+    const responseToCache = response.clone();
+
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        cache.put(request, responseToCache);
+      });
+
+    return response;
+  }).catch(() => {
+    // If network fails, return appropriate fallback
+    if (request.destination === 'document') {
+      // For HTML pages, try to return the base page or offline page
+      const url = new URL(request.url);
+      const baseUrl = url.origin + url.pathname;
+
+      return caches.match(baseUrl).then(baseResponse => {
+        if (baseResponse) {
+          return baseResponse;
+        }
+        return caches.match('/offline.html') || caches.match('/index.html');
+      });
+    }
+
+    // For other resources, just fail
+    return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+  });
+}
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
@@ -158,7 +192,7 @@ self.addEventListener('push', event => {
         primaryKey: 1
       }
     };
-    
+
     event.waitUntil(
       self.registration.showNotification(data.title, options)
     );
