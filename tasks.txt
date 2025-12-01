@@ -1,6 +1,4 @@
 * Tasks
-commander penalty
-
 App version (offline)
 
 * bug
@@ -16,6 +14,7 @@ kingdom clone
 ancient mode with selfish scar
 
 *ovi
+attack direct land
 Body genetics
 Fix styling of:
   Deffence manage page tension tab
