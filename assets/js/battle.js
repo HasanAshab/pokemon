@@ -5,7 +5,7 @@ import { Damage } from "./utils/damage.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, getDamageDangerLevel, flagsToObj, objToFlags, shuffle, weightedRandomV2 } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
-import pokemons from "../../data/pokemons.js"
+
 
 globalThis.selectRandomFields = function(){
  const fields = document.querySelectorAll(".fields-cont > .field")

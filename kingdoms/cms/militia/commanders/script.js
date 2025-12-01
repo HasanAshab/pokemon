@@ -1,9 +1,79 @@
 import pokemons from '../../../../data/pokemons.js'
+import { getCommandedArea, getCommanderDirections, getEffectiveDefensiveIQ } from '../../../utils.js';
 
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 const commandersContainer = document.getElementById("commandersContainer");
 const addCommanderBtn = document.getElementById("addCommanderBtn");
+
+// Add mobile responsive styles
+const style = document.createElement('style');
+style.textContent = `
+  @media (max-width: 768px) {
+    .commander-card {
+      margin-bottom: 15px !important;
+    }
+    
+    .direction-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 8px !important;
+    }
+    
+    .direction-btn {
+      padding: 8px 4px !important;
+      font-size: 0.8em !important;
+    }
+    
+    input, select {
+      width: 100% !important;
+      margin-bottom: 8px !important;
+      box-sizing: border-box !important;
+    }
+    
+    .iq-entry {
+      flex-direction: column !important;
+      gap: 5px !important;
+    }
+    
+    .iq-entry input {
+      margin-bottom: 5px !important;
+    }
+    
+    .filter-buttons {
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+    }
+    
+    .filter-buttons button {
+      flex: 1 1 calc(50% - 4px) !important;
+      min-width: 120px !important;
+    }
+    
+    .unassigned-directions {
+      flex-wrap: wrap !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .direction-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .filter-buttons button {
+      flex: 1 1 100% !important;
+      margin-bottom: 5px !important;
+    }
+    
+    body {
+      padding: 10px !important;
+    }
+    
+    .commander-card {
+      padding: 10px !important;
+    }
+  }
+`;
+document.head.appendChild(style);
 
 // Add land area control
 const landAreaContainer = document.createElement("div");
@@ -38,6 +108,7 @@ filterLabel.style.fontWeight = "bold";
 filterLabel.style.marginBottom = "10px";
 
 const filterButtons = document.createElement("div");
+filterButtons.className = "filter-buttons";
 filterButtons.style.display = "flex";
 filterButtons.style.gap = "10px";
 
@@ -137,6 +208,7 @@ function updateUnassignedDirections() {
     warningDiv.style.marginBottom = "10px";
     
     const directionsGrid = document.createElement("div");
+    directionsGrid.className = "unassigned-directions";
     directionsGrid.style.display = "flex";
     directionsGrid.style.gap = "8px";
     directionsGrid.style.flexWrap = "wrap";
@@ -200,13 +272,31 @@ function getCommanderType(iq) {
   return 'generalist';
 }
 
-function getCommanderDirections(commanderName) {
-  return directions.filter(dir => kingdoms[name].directionCommanders[dir] === commanderName);
-}
-
-function getCommandedArea(commanderName) {
-  const directionCount = getCommanderDirections(commanderName).length;
-  return (kingdoms[name].landArea / 8) * directionCount;
+function calculateEffectiveDefensiveIQ(commanderData, commandedArea) {
+  const commanderType = getCommanderType(commanderData.iq);
+  if (commanderType !== 'defender') return null;
+  
+  // Get defensive IQ traits
+  const defensiveTraits = ['defensive'];
+  let totalDefensiveIQ = 0;
+  let defensiveTraitCount = 0;
+  
+  Object.entries(commanderData.iq).forEach(([trait, value]) => {
+    if (defensiveTraits.some(def => trait.toLowerCase().includes(def))) {
+      totalDefensiveIQ += parseFloat(value) || 0;
+      defensiveTraitCount++;
+    }
+  });
+  
+  if (defensiveTraitCount === 0) return null;
+  
+  const averageDefensiveIQ = totalDefensiveIQ / defensiveTraitCount;
+  const effectiveIQ = getEffectiveDefensiveIQ(averageDefensiveIQ, commandedArea);
+  return {
+    original: averageDefensiveIQ,
+    penalty: averageDefensiveIQ - effectiveIQ,
+    effective: effectiveIQ
+  };
 }
 
 function renderCommanders() {
@@ -309,17 +399,34 @@ function renderCommanders() {
     let directionStatsDiv = null;
 
     if (!isAttacker) {
-      const commandedDirections = getCommanderDirections(commanderName);
-      const commandedArea = getCommandedArea(commanderName);
+      const commandedDirections = getCommanderDirections(kingdoms[name], commanderName);
+      const commandedArea = getCommandedArea(kingdoms[name], commanderName);
+      const effectiveDefIQ = calculateEffectiveDefensiveIQ(commanderData, commandedArea);
 
       // Always visible direction stats
       directionStatsDiv = document.createElement("div");
       directionStatsDiv.style.marginTop = "5px";
       directionStatsDiv.style.fontSize = "0.9em";
-      directionStatsDiv.innerHTML = `
+      
+      let statsHTML = `
         <div><strong>Directions:</strong> ${commandedDirections.join(', ') || 'None'}</div>
         <div><strong>Area Commanding:</strong> ${commandedArea.toFixed(1)} sq. km</div>
       `;
+      
+      // Add defensive IQ penalty info for defenders
+      if (effectiveDefIQ && commandedArea > 0) {
+        statsHTML += `
+          <div><strong>Defensive IQ:</strong> 
+            <span style="color: #6B7280; text-decoration: line-through">${effectiveDefIQ.original.toFixed(1)}</span>
+            ${effectiveDefIQ.penalty > 0 ? 
+              `<span style="color: #DC2626;"> → ${effectiveDefIQ.effective}</span>` : 
+              ''
+            }
+          </div>
+        `;
+      }
+      
+      directionStatsDiv.innerHTML = statsHTML;
 
       // Create collapsible details element for assignment controls
       const detailsElement = document.createElement("details");
@@ -404,6 +511,10 @@ function renderCommanders() {
       Object.entries(commanderData.iq).forEach(([key, value]) => {
         const row = document.createElement("div");
         row.className = "iq-entry";
+        row.style.display = "flex";
+        row.style.gap = "5px";
+        row.style.alignItems = "center";
+        row.style.marginBottom = "5px";
 
         const keyInput = document.createElement("input");
         keyInput.setAttribute("list", "traits");
@@ -421,6 +532,7 @@ function renderCommanders() {
 
         const valInput = document.createElement("input");
         valInput.type = "number";
+        valInput.step = "0.1";
         valInput.value = value;
         valInput.placeholder = "Value";
         valInput.onblur = () => {

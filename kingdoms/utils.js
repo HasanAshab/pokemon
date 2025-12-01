@@ -593,3 +593,22 @@ export function getFoodTierForBudget(budget) {
   }
   return lastTier
 }
+
+export function getCommanderDirections(kingdom, commanderName) {  
+  return Object.keys(kingdom.directionCommanders).filter(dir => kingdom.directionCommanders[dir] === commanderName);
+}
+
+export function getCommandedArea(kingdom, commanderName) {
+  const directionCount = getCommanderDirections(kingdom, commanderName).length;
+  return (kingdom.landArea / 8) * directionCount;
+}
+
+export function getEffectiveDefensiveIQ(iq, commandingArea) {  
+  const penalty = Math.floor(commandingArea / 100) * 0.1;
+  return parseFloat(Math.max(0, iq - penalty).toFixed(1));
+}
+
+export function getEffectiveOffensiveIQ(iq, attackedArea) {
+  const penalty = Math.floor(attackedArea / 10) * 0.1;
+  return parseFloat(Math.max(0, iq - penalty).toFixed(1));
+}

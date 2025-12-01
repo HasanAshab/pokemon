@@ -1,4 +1,6 @@
 * Tasks
+commander penalty
+
 App version (offline)
 
 * bug

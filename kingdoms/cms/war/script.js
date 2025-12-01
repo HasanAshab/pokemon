@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation } from "../../utils.js";
+import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ } from "../../utils.js";
 
 globalThis.wars = []
 var i = 0;
@@ -87,6 +87,19 @@ function renderWaves() {
       if (wave.commander === commanderId) option.selected = true;
       commanderSelect.appendChild(option);
     });
+    const setCommanderIQ = () => {
+      const atkKingdom = kingdoms[attackerSelect.value]
+      const defKingdom = kingdoms[defenderSelect.value]
+      const actualIQ = atkKingdom.commanders[commanderSelect.value].iq.offensive;
+      const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
+      const effectiveIQ = getEffectiveOffensiveIQ(actualIQ, attackedArea)      
+      iqLabel.textContent = `IQ: ${effectiveIQ}`;
+    };
+
+    const iqLabel = document.createElement("label");
+    setCommanderIQ();
+    commanderSelect.onchange = setCommanderIQ
+    setInterval(setCommanderIQ, 1000)
 
     const soldiersDiv = document.createElement("div");
     soldiersDiv.className = "soldiers-list";
@@ -228,6 +241,7 @@ function renderWaves() {
     };
 
     waveDiv.appendChild(commanderSelect);
+    waveDiv.appendChild(iqLabel);
     waveDiv.appendChild(soldiersDiv);
     waveDiv.appendChild(saveBtn);
     waveDiv.appendChild(deleteBtn);
@@ -240,6 +254,7 @@ function getActualDefenders() {
 }
 
 function generateDefendersReport(expLvl = 0) {
+  const defKingdom = kingdoms[defenderSelect.value];
   const actualDefenders = getActualDefenders();
   const reportLines = [];
   const totalUnits = actualDefenders.reduce((total, wave) => total += wave.soldiers.count(), 0)
@@ -247,12 +262,12 @@ function generateDefendersReport(expLvl = 0) {
   reportLines.push("Total"); 
   reportLines.push("Waves: " + actualDefenders.length);
   expLvl && reportLines.push("Units: " + totalUnits);
-  expLvl > 4 && reportLines.push(`Imbalance: ${getForceImbalanceRate(kingdoms[defenderSelect.value], 'soldiers', shiftSelect.value).toFixed(2)}%`);
+  expLvl > 4 && reportLines.push(`Imbalance: ${getForceImbalanceRate(defKingdom, 'soldiers', shiftSelect.value).toFixed(2)}%`);
 
   expLvl > 1 && actualDefenders.forEach((defenders, index) => {  
     reportLines.push("");
     reportLines.push(`Wave ${(index + 1)}:`);
-    expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${defenders.commander.iq.defensive})`);
+    expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${getEffectiveDefensiveIQ(defenders.commander.iq.defensive, getCommandedArea(defKingdom, defenders.commander.name))})`);
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
       
       const items = image.items.names().join(", ");
@@ -352,6 +367,11 @@ startWarBtn.onclick = () => {
     const kingdom = kingdoms[attackerSelect.value];
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers, 100, "emergency");
     const commander = prepareCommander(kingdom, wave.commander);    
+    const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
+    commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
+    dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
+    console.log(commander.iq.offensive, dwave.commander.iq.defensive);
+    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value));
     
