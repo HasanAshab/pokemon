@@ -1,6 +1,8 @@
 // Navigation utility to replace URL parameters with localStorage
 export const Navigation = {
-  prefix: this.isLocalhost() ? '' : '/pokemon',
+  get prefix() { 
+    return this.isLocalhost() ? '' : '/pokemon'
+  },
   isLocalhost() {
     const hostname = window.location.hostname;
     return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
