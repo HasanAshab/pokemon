@@ -1,7 +1,7 @@
 * Tasks
 
 * bug
-mirror 2 times cause copy
+mirror 2 sides cause copy
 
 abilities multiple opponent event system
 Bot shinobis hit a move in act of his team
