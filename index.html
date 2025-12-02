@@ -156,6 +156,37 @@
     </div>
   </div>
  
+  <!-- Cache Status Indicator -->
+  <div id="cache-status" style="
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 1000;
+    display: none;
+  ">
+    <span id="cache-text">Caching app...</span>
+    <div id="cache-progress" style="
+      width: 100px;
+      height: 4px;
+      background: #333;
+      border-radius: 2px;
+      margin-top: 4px;
+      overflow: hidden;
+    ">
+      <div id="cache-bar" style="
+        height: 100%;
+        background: #4CAF50;
+        width: 0%;
+        transition: width 0.3s ease;
+      "></div>
+    </div>
+  </div>
+
   <div class="link-wrapper">
   <button class="link-btn"><a href="./kingdoms/">Kingdoms</a></button>
   <button class="link-btn"><a href="./company/index.html">Company</a></button>
@@ -169,12 +200,63 @@
   // Register service worker for PWA functionality
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
+      const cacheStatus = document.getElementById('cache-status');
+      const cacheText = document.getElementById('cache-text');
+      const cacheBar = document.getElementById('cache-bar');
+      
+      // Show cache status
+      cacheStatus.style.display = 'block';
+      
       navigator.serviceWorker.register('./sw.js')
         .then(registration => {
           console.log('SW registered: ', registration);
+          
+          // Check cache status periodically
+          const checkCacheStatus = () => {
+            if (navigator.serviceWorker.controller) {
+              const messageChannel = new MessageChannel();
+              messageChannel.port1.onmessage = (event) => {
+                if (event.data.type === 'CACHE_STATUS') {
+                  const { cached, total, percentage } = event.data;
+                  cacheBar.style.width = percentage + '%';
+                  cacheText.textContent = `Cached: ${cached}/${total} (${percentage}%)`;
+                  
+                  if (percentage === 100) {
+                    cacheText.textContent = 'App ready offline! ✓';
+                    setTimeout(() => {
+                      cacheStatus.style.display = 'none';
+                    }, 3000);
+                  }
+                }
+              };
+              
+              navigator.serviceWorker.controller.postMessage(
+                { type: 'GET_CACHE_STATUS' },
+                [messageChannel.port2]
+              );
+            }
+          };
+          
+          // Check immediately and then every 2 seconds
+          checkCacheStatus();
+          const interval = setInterval(() => {
+            checkCacheStatus();
+            // Stop checking after 30 seconds
+            if (Date.now() - startTime > 30000) {
+              clearInterval(interval);
+              if (cacheStatus.style.display !== 'none') {
+                cacheText.textContent = 'Cache check timeout';
+                setTimeout(() => cacheStatus.style.display = 'none', 2000);
+              }
+            }
+          }, 2000);
+          
+          const startTime = Date.now();
         })
         .catch(registrationError => {
           console.log('SW registration failed: ', registrationError);
+          cacheText.textContent = 'Cache failed';
+          setTimeout(() => cacheStatus.style.display = 'none', 3000);
         });
     });
   }
