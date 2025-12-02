@@ -1,9 +1,13 @@
 // Navigation utility to replace URL parameters with localStorage
 export const Navigation = {
+  prefix: '/pokemon',
+  navigateTo(url) {
+    window.location.href = this.prefix + url;
+  },
   // Pokemon details navigation
   goToPokemonDetails(pokemonName) {
     localStorage.setItem('$last_poke_details', pokemonName);
-    window.location.href = 'poke_details.html';
+    this.navigateTo('/poke_details.html');
   },
 
   // Battle navigation
@@ -14,52 +18,52 @@ export const Navigation = {
     } else {
       localStorage.removeItem('$battle_system');
     }
-    window.location.href = 'battle.html';
+    this.navigateTo('/battle.html');
   },
 
   // Enemy selection navigation
   goToEnemySelect(pokemonName) {
     localStorage.setItem('$enemy_select_pokemon', pokemonName);
-    window.location.href = 'enemy.html';
+    this.navigateTo('/enemy.html');
   },
 
   // Data page navigation
   goToDataPage(pokemonName) {
     localStorage.setItem('$data_page_pokemon', pokemonName);
-    window.location.href = 'data.html';
+    this.navigateTo('/data.html');
   },
 
   // Kingdom navigation
   goToKingdom(kingdomName) {
     localStorage.setItem('$current_kingdom', kingdomName);
-    window.location.href = '/kingdoms/cms/';
+    this.navigateTo('/kingdoms/cms/');
   },
 
   goToKingdomSection(kingdomName, section) {
     localStorage.setItem('$current_kingdom', kingdomName);
-    window.location.href = `/kingdoms/cms/${section}/`;
+    this.navigateTo(`/kingdoms/cms/${section}/`);
   },
 
   goToKingdomMilitiaSection(kingdomName, section) {
     localStorage.setItem('$current_kingdom', kingdomName);
-    window.location.href = `/kingdoms/cms/militia/${section}/`;
+    this.navigateTo(`/kingdoms/cms/militia/${section}/`);
   },
 
   goToBarrackAmmo(kingdomName) {
     localStorage.setItem('$current_kingdom', kingdomName);
-    window.location.href = '/kingdoms/cms/militia/barrack/ammo/';
+    this.navigateTo('/kingdoms/cms/militia/barrack/ammo/');
   },
 
   // Stock market navigation
   goToStockCMS(stockName) {
     localStorage.setItem('$current_stock', stockName);
-    window.location.href = 'cms.html';
+    this.navigateTo('/stock_market/cms.html');
   },
 
   // Company navigation
   goToCompany(companyName) {
     localStorage.setItem('$current_company', companyName);
-    window.location.href = './cms.html';
+    this.navigateTo('/company/cms.html');
   },
 
   // Utility functions to get stored values
