@@ -711,13 +711,13 @@ export default {
       spe: -3
     }
   },
-  ninjaclaw: {
+  ninjaclawsmall: {
     num: 100013,
     accuracy: 100,
     multihit: 2,
-    basePower: 45,
+    basePower: 30,
     category: "Physical",
-    name: "Ninja Claw",
+    name: "Ninja Claw (Small)",
     pp: 15 * 3,
     priority: 0,
     flags: {
