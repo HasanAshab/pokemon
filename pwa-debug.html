@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Debug - Pokemon Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .install-button {
+            background: #28a745;
+            font-size: 16px;
+            padding: 15px 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Pokemon Game PWA Debug</h1>
+    
+    <div class="debug-section">
+        <h2>📱 Installation Status</h2>
+        <div id="install-status"></div>
+        <button id="manual-install" class="install-button" style="display: none;">Install App</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>🔧 PWA Requirements Check</h2>
+        <div id="pwa-requirements"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>📋 Manifest Info</h2>
+        <div id="manifest-info"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>⚙️ Service Worker Status</h2>
+        <div id="sw-status"></div>
+        <button onclick="updateServiceWorker()">Update Service Worker</button>
+        <button onclick="unregisterServiceWorker()">Unregister Service Worker</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>💾 Cache Status</h2>
+        <div id="cache-status"></div>
+        <button onclick="checkCacheStatus()">Check Cache</button>
+        <button onclick="clearAllCaches()">Clear All Caches</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>🌐 Network & URL Info</h2>
+        <div id="network-info"></div>
+    </div>
+
+    <script>
+        let deferredPrompt;
+
+        // Capture the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event fired');
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('manual-install').style.display = 'block';
+            updateInstallStatus('Install prompt available! 🎉', 'success');
+        });
+
+        // Manual install button
+        document.getElementById('manual-install').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                updateInstallStatus(`Install prompt result: ${outcome}`, outcome === 'accepted' ? 'success' : 'warning');
+                deferredPrompt = null;
+                document.getElementById('manual-install').style.display = 'none';
+            }
+        });
+
+        // Check if app is already installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            updateInstallStatus('App installed successfully! ✅', 'success');
+        });
+
+        function updateInstallStatus(message, type) {
+            document.getElementById('install-status').innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function checkPWARequirements() {
+            const requirements = [];
+            
+            // Check HTTPS
+            const isHTTPS = location.protocol === 'https:' || location.hostname === 'localhost';
+            requirements.push({
+                name: 'HTTPS',
+                status: isHTTPS,
+                message: isHTTPS ? 'Site served over HTTPS ✅' : 'Site must be served over HTTPS ❌'
+            });
+
+            // Check manifest
+            const manifestLink = document.querySelector('link[rel="manifest"]');
+            requirements.push({
+                name: 'Manifest',
+                status: !!manifestLink,
+                message: manifestLink ? 'Manifest linked ✅' : 'No manifest link found ❌'
+            });
+
+            // Check service worker
+            const hasSW = 'serviceWorker' in navigator;
+            requirements.push({
+                name: 'Service Worker Support',
+                status: hasSW,
+                message: hasSW ? 'Service Worker supported ✅' : 'Service Worker not supported ❌'
+            });
+
+            // Check if SW is registered
+            navigator.serviceWorker.getRegistration().then(registration => {
+                const isRegistered = !!registration;
+                requirements.push({
+                    name: 'Service Worker Registered',
+                    status: isRegistered,
+                    message: isRegistered ? 'Service Worker registered ✅' : 'Service Worker not registered ❌'
+                });
+                renderRequirements(requirements);
+            });
+
+            return requirements;
+        }
+
+        function renderRequirements(requirements) {
+            const html = requirements.map(req => 
+                `<div class="${req.status ? 'success' : 'error'}">${req.message}</div>`
+            ).join('');
+            document.getElementById('pwa-requirements').innerHTML = html;
+        }
+
+        async function loadManifestInfo() {
+            try {
+                const response = await fetch('./manifest.json');
+                const manifest = await response.json();
+                const html = `
+                    <div class="success">Manifest loaded successfully ✅</div>
+                    <pre>${JSON.stringify(manifest, null, 2)}</pre>
+                `;
+                document.getElementById('manifest-info').innerHTML = html;
+            } catch (error) {
+                document.getElementById('manifest-info').innerHTML = 
+                    `<div class="error">Failed to load manifest: ${error.message} ❌</div>`;
+            }
+        }
+
+        async function checkServiceWorkerStatus() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        const sw = registration.active || registration.waiting || registration.installing;
+                        const html = `
+                            <div class="success">Service Worker registered ✅</div>
+                            <div class="info">State: ${sw ? sw.state : 'unknown'}</div>
+                            <div class="info">Scope: ${registration.scope}</div>
+                            <div class="info">Update found: ${registration.waiting ? 'Yes' : 'No'}</div>
+                        `;
+                        document.getElementById('sw-status').innerHTML = html;
+                    } else {
+                        document.getElementById('sw-status').innerHTML = 
+                            '<div class="warning">Service Worker not registered ⚠️</div>';
+                    }
+                } catch (error) {
+                    document.getElementById('sw-status').innerHTML = 
+                        `<div class="error">Service Worker error: ${error.message} ❌</div>`;
+                }
+            } else {
+                document.getElementById('sw-status').innerHTML = 
+                    '<div class="error">Service Worker not supported ❌</div>';
+            }
+        }
+
+        async function checkCacheStatus() {
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    const html = `
+                        <div class="success">Cache API available ✅</div>
+                        <div class="info">Cache names: ${cacheNames.join(', ') || 'None'}</div>
+                        <div class="info">Total caches: ${cacheNames.length}</div>
+                    `;
+                    document.getElementById('cache-status').innerHTML = html;
+                } catch (error) {
+                    document.getElementById('cache-status').innerHTML = 
+                        `<div class="error">Cache error: ${error.message} ❌</div>`;
+                }
+            } else {
+                document.getElementById('cache-status').innerHTML = 
+                    '<div class="error">Cache API not supported ❌</div>';
+            }
+        }
+
+        function showNetworkInfo() {
+            const info = {
+                'URL': window.location.href,
+                'Origin': window.location.origin,
+                'Protocol': window.location.protocol,
+                'Host': window.location.host,
+                'Pathname': window.location.pathname,
+                'User Agent': navigator.userAgent.substring(0, 100) + '...',
+                'Online': navigator.onLine,
+                'Connection': navigator.connection ? navigator.connection.effectiveType : 'Unknown'
+            };
+
+            const html = Object.entries(info).map(([key, value]) => 
+                `<div class="info"><strong>${key}:</strong> ${value}</div>`
+            ).join('');
+            
+            document.getElementById('network-info').innerHTML = html;
+        }
+
+        async function updateServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        await registration.update();
+                        alert('Service Worker update triggered');
+                        checkServiceWorkerStatus();
+                    }
+                } catch (error) {
+                    alert('Update failed: ' + error.message);
+                }
+            }
+        }
+
+        async function unregisterServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        await registration.unregister();
+                        alert('Service Worker unregistered');
+                        checkServiceWorkerStatus();
+                    }
+                } catch (error) {
+                    alert('Unregister failed: ' + error.message);
+                }
+            }
+        }
+
+        async function clearAllCaches() {
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(cacheNames.map(name => caches.delete(name)));
+                    alert(`Cleared ${cacheNames.length} caches`);
+                    checkCacheStatus();
+                } catch (error) {
+                    alert('Clear caches failed: ' + error.message);
+                }
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            updateInstallStatus('Checking installation status...', 'info');
+            checkPWARequirements();
+            loadManifestInfo();
+            checkServiceWorkerStatus();
+            checkCacheStatus();
+            showNetworkInfo();
+
+            // Check if already installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                updateInstallStatus('App is already installed! 🎉', 'success');
+            } else if (window.navigator.standalone === true) {
+                updateInstallStatus('App is running in standalone mode (iOS)! 🎉', 'success');
+            } else {
+                updateInstallStatus('App not installed yet. Waiting for install prompt...', 'warning');
+            }
+        });
+    </script>
+</body>
+</html>

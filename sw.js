@@ -1,140 +1,131 @@
-const CACHE_NAME = 'pokemon-game-v4';
+const CACHE_NAME = 'pokemon-game-v5';
 const urlsToCache = [
   // Root pages
-  '/',
-  '/index.html',
-  '/battle.html',
-  '/enemy.html',
-  '/m_enemy.html',
-  '/poke_details.html',
-  '/storage.html',
-  '/compare.html',
-  '/data.html',
-  '/backup_ls.html',
-  '/offline.html',
+  './',
+  './index.html',
+  './battle.html',
+  './enemy.html',
+  './m_enemy.html',
+  './poke_details.html',
+  './storage.html',
+  './compare.html',
+  './data.html',
+  './backup_ls.html',
+  './offline.html',
+  './pwa-debug.html',
 
   // CSS files
-  '/assets/css/global.css',
-  '/assets/css/index.css',
-  '/assets/css/battle.css',
-  '/assets/css/enemy.css',
-  '/assets/css/move-card.css',
-  '/assets/css/multy-input-box.css',
-  '/assets/css/n_enemy.css',
-  '/assets/css/poke_details.css',
+  './assets/css/global.css',
+  './assets/css/index.css',
+  './assets/css/battle.css',
+  './assets/css/enemy.css',
+  './assets/css/move-card.css',
+  './assets/css/multy-input-box.css',
+  './assets/css/n_enemy.css',
+  './assets/css/poke_details.css',
 
   // JavaScript files
-  '/assets/js/index.js',
-  '/assets/js/battle.js',
-  '/assets/js/enemy.js',
-  '/assets/js/n_enemy.js',
-  '/assets/js/poke_details.js',
-  '/assets/js/processor.js',
-  '/assets/js/test.js',
-  '/assets/js/utils/models.js',
-  '/assets/js/utils/helpers.js',
-  '/assets/js/utils/dom.js',
-  '/assets/js/utils/navigation.js',
-  '/assets/js/utils/battle.js',
-  '/assets/js/utils/damage.js',
-  '/assets/js/utils/event.js',
+  './assets/js/index.js',
+  './assets/js/battle.js',
+  './assets/js/enemy.js',
+  './assets/js/n_enemy.js',
+  './assets/js/poke_details.js',
+  './assets/js/processor.js',
+  './assets/js/test.js',
+  './assets/js/utils/models.js',
+  './assets/js/utils/helpers.js',
+  './assets/js/utils/dom.js',
+  './assets/js/utils/navigation.js',
+  './assets/js/utils/battle.js',
+  './assets/js/utils/damage.js',
+  './assets/js/utils/event.js',
+  './assets/js/pwa-helper.js',
 
   // SVG files
-  '/assets/svg/sword.svg',
-  '/assets/svg/arrow-down.svg',
-  '/assets/svg/arrow-up.svg',
+  './assets/svg/sword.svg',
+  './assets/svg/arrow-down.svg',
+  './assets/svg/arrow-up.svg',
 
   // Data files
-  '/data/abilities.js',
-  '/data/beasts.js',
-  '/data/humans.js',
-  '/data/items.js',
-  '/data/moves.js',
-  '/data/moves_text.js',
-  '/data/natures.js',
-  '/data/pokemons.js',
-  '/data/types.js',
+  './data/abilities.js',
+  './data/beasts.js',
+  './data/humans.js',
+  './data/items.js',
+  './data/moves.js',
+  './data/moves_text.js',
+  './data/natures.js',
+  './data/pokemons.js',
+  './data/types.js',
 
   // Company section
-  '/company/index.html',
-  '/company/cms.html',
-  '/company/cms.css',
-  '/company/cms.js',
-  '/company/utils.js',
+  './company/index.html',
+  './company/cms.html',
+  './company/cms.css',
+  './company/cms.js',
+  './company/utils.js',
 
   // Stock market section
-  '/stock_market/index.html',
-  '/stock_market/cms.html',
-  '/stock_market/script.js',
-  '/stock_market/cms.js',
-  '/stock_market/style.css',
+  './stock_market/index.html',
+  './stock_market/script.js',
+  './stock_market/cms.js',
+  './stock_market/style.css',
 
   // Kingdoms section
-  '/kingdoms/',
-  '/kingdoms/index.html',
-  '/kingdoms/script.js',
-  '/kingdoms/styles.css',
-  '/kingdoms/utils.js',
-  '/kingdoms/war.js',
-  '/kingdoms/constraints.js',
+  './kingdoms/index.html',
+  './kingdoms/script.js',
+  './kingdoms/styles.css',
+  './kingdoms/utils.js',
+  './kingdoms/war.js',
+  './kingdoms/constraints.js',
 
   // Kingdoms CMS
-  '/kingdoms/cms/',
-  '/kingdoms/cms/index.html',
-  '/kingdoms/cms/script.js',
-  '/kingdoms/cms/styles.css',
+  './kingdoms/cms/index.html',
+  './kingdoms/cms/script.js',
+  './kingdoms/cms/styles.css',
 
   // Kingdoms CMS - Buildings
-  '/kingdoms/cms/buildings/',
-  '/kingdoms/cms/buildings/index.html',
-  '/kingdoms/cms/buildings/script.js',
-  '/kingdoms/cms/buildings/styles.css',
+  './kingdoms/cms/buildings/index.html',
+  './kingdoms/cms/buildings/script.js',
+  './kingdoms/cms/buildings/styles.css',
 
   // Kingdoms CMS - Storage
-  '/kingdoms/cms/storage/',
-  '/kingdoms/cms/storage/index.html',
-  '/kingdoms/cms/storage/script.js',
-  '/kingdoms/cms/storage/styles.css',
+  './kingdoms/cms/storage/index.html',
+  './kingdoms/cms/storage/script.js',
+  './kingdoms/cms/storage/styles.css',
 
   // Kingdoms CMS - War
-  '/kingdoms/cms/war/',
-  '/kingdoms/cms/war/index.html',
-  '/kingdoms/cms/war/script.js',
-  '/kingdoms/cms/war/styles.css',
+  './kingdoms/cms/war/index.html',
+  './kingdoms/cms/war/script.js',
+  './kingdoms/cms/war/styles.css',
 
   // Kingdoms CMS - Militia
-  '/kingdoms/cms/militia/',
-  '/kingdoms/cms/militia/index.html',
-  '/kingdoms/cms/militia/script.js',
-  '/kingdoms/cms/militia/styles.css',
+  './kingdoms/cms/militia/index.html',
+  './kingdoms/cms/militia/script.js',
+  './kingdoms/cms/militia/styles.css',
 
   // Kingdoms CMS - Militia - Barrack
-  '/kingdoms/cms/militia/barrack/',
-  '/kingdoms/cms/militia/barrack/index.html',
-  '/kingdoms/cms/militia/barrack/script.js',
-  '/kingdoms/cms/militia/barrack/styles.css',
+  './kingdoms/cms/militia/barrack/index.html',
+  './kingdoms/cms/militia/barrack/script.js',
+  './kingdoms/cms/militia/barrack/styles.css',
 
   // Kingdoms CMS - Militia - Barrack - Ammo
-  '/kingdoms/cms/militia/barrack/ammo/',
-  '/kingdoms/cms/militia/barrack/ammo/index.html',
-  '/kingdoms/cms/militia/barrack/ammo/script.js',
-  '/kingdoms/cms/militia/barrack/ammo/style.css',
+  './kingdoms/cms/militia/barrack/ammo/index.html',
+  './kingdoms/cms/militia/barrack/ammo/script.js',
+  './kingdoms/cms/militia/barrack/ammo/style.css',
 
   // Kingdoms CMS - Militia - Commanders
-  '/kingdoms/cms/militia/commanders/',
-  '/kingdoms/cms/militia/commanders/index.html',
-  '/kingdoms/cms/militia/commanders/script.js',
-  '/kingdoms/cms/militia/commanders/styles.css',
+  './kingdoms/cms/militia/commanders/index.html',
+  './kingdoms/cms/militia/commanders/script.js',
+  './kingdoms/cms/militia/commanders/styles.css',
 
   // Kingdoms CMS - Militia - Defence
-  '/kingdoms/cms/militia/defence/',
-  '/kingdoms/cms/militia/defence/index.html',
+  './kingdoms/cms/militia/defence/index.html',
 
   // Shared files
-  '/shared/chart.js',
+  './shared/chart.js',
 
   // Manifest
-  '/manifest.json'
+  './manifest.json'
 ];
 
 // Install event - cache resources

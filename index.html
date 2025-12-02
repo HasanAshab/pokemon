@@ -8,6 +8,7 @@
   <!-- PWA Meta Tags -->
   <meta name="description" content="A browser-based Pokemon game with battles, collection, and offline support">
   <meta name="theme-color" content="#3b82f6">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Pokedex">
@@ -263,39 +264,74 @@
 
   // Install prompt for PWA
   let deferredPrompt;
+  let installButton;
+  
   window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
+    console.log('beforeinstallprompt event fired');
     deferredPrompt = e;
     
-    // Show install button or banner
-    const installButton = document.createElement('button');
-    installButton.textContent = 'Install App';
-    installButton.style.cssText = `
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      padding: 10px 15px;
-      background: #3b82f6;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    `;
-    
-    installButton.addEventListener('click', () => {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-          installButton.remove();
-        }
-        deferredPrompt = null;
+    // Show install button
+    if (!installButton) {
+      installButton = document.createElement('button');
+      installButton.textContent = '📱 Install App';
+      installButton.style.cssText = `
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        padding: 10px 15px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+      `;
+      
+      installButton.addEventListener('mouseenter', () => {
+        installButton.style.background = '#218838';
+        installButton.style.transform = 'scale(1.05)';
       });
-    });
-    
-    document.body.appendChild(installButton);
+      
+      installButton.addEventListener('mouseleave', () => {
+        installButton.style.background = '#28a745';
+        installButton.style.transform = 'scale(1)';
+      });
+      
+      installButton.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const choiceResult = await deferredPrompt.userChoice;
+          console.log('User choice:', choiceResult.outcome);
+          
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          }
+          
+          deferredPrompt = null;
+          installButton.remove();
+          installButton = null;
+        }
+      });
+      
+      document.body.appendChild(installButton);
+    }
   });
+  
+  // Hide install button if app is already installed
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed');
+    if (installButton) {
+      installButton.remove();
+      installButton = null;
+    }
+  });
+  
+  // Check if already running as installed app
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    console.log('App is running in standalone mode');
+  }
 </script>
 </html>
