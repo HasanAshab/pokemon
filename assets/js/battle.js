@@ -158,9 +158,14 @@ globalThis.showEffectsEditForm = function (playerTag) {
   pokemon.state.effects.sync(...newEffects)
   setEffects(pokemon.state.effects.all(), playerTag)
 }
+
 globalThis.toggleMirror = function (playerTag, { currentTarget }) {
   currentTarget.classList.toggle("active")
   let opponentTeam = teams[opponentTag(playerTag)]
+
+  console.log("before");
+  opponentTeam.forEach(p => console.log(p.meta))
+  
 
   if (currentTarget.classList.contains("active")) {
     toggleMirrorChoosePokemons(playerTag)
@@ -173,14 +178,19 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
 
   else {
     toggleMirrorChoosePokemons(playerTag)
-    teams[opponentTag(playerTag)] = opponentTeam.filter(p => !p.meta.mirror)
+    opponentTeam.forEach((p, i) => {
+      if (p.meta.mirror)
+        opponentTeam.splice(i, 1)
+    })
+
     
     teams[playerTag].forEach(p => {
       p.meta.mirror = false
     })
-        clickOnFirstPokemonSwitch(opponentTag(playerTag))
-
+    clickOnFirstPokemonSwitch(opponentTag(playerTag))
   }
+  console.log("after");
+  opponentTeam.forEach(p => console.log(p.meta))
 
 }
 globalThis.showPlayerSettingsForm = function (playerTag) {
