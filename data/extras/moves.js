@@ -558,7 +558,7 @@ export default {
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      spe: -20
+      spe: -15
     },
   },
 
@@ -718,7 +718,7 @@ export default {
     basePower: 45,
     category: "Physical",
     name: "Ninja Claw",
-    pp: 20 * 3,
+    pp: 15 * 3,
     priority: 0,
     flags: {
       contact: 1,
@@ -728,11 +728,11 @@ export default {
       weapon: 1
     },
     secondary: {
-      chance: 15,
+      chance: 10,
       status: "bleed"
     },
     target: "normal",
-    type: "Poison",
+    type: "Steel",
     contestType: "Tough",
     tokenChanges: {
       spe: -10
@@ -1733,7 +1733,51 @@ export default {
     },
     target: "self",
     type: "Fighting",
-  }
+  },
+  dualblade: {
+    num: 100060,
+    accuracy: 100,
+    basePower: 40,
+    multihit: [2],
+    category: "Physical",
+    name: "Dual Blade",
+    pp: 15 * 3,
+    priority: 0,
+    flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+    secondary: {
+      chance: 5,
+      status: "bleed"
+    },
+    target: "normal",
+    type: "Steel",
+    contestType: "Tough",
+    tokenChanges: {
+      spe: -15
+    }
+  },
+    dualbladefoeSide: {
+    num: 100060,
+    accuracy: 100,
+    basePower: 40,
+    category: "Physical",
+    name: "Dual Blade (Foe Side)",
+    pp: 15 * 3,
+    priority: 0,
+    flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
+    secondary: {
+      chance: 5,
+      status: "bleed"
+    },
+    capacity: 2,
+    target: "foeSide",
+    type: "Steel",
+    contestType: "Tough",
+    tokenChanges: {
+      spe: -15
+    }
+  },
+  
+
 
 }
 
