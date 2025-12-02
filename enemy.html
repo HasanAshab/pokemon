@@ -6,6 +6,136 @@
   <link rel="stylesheet" href="./assets/css/global.css">
   <link rel="stylesheet" href="./assets/css/enemy.css">
   <style>
+    .edit-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .edit-modal-content {
+      background: white;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .edit-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      background-color: #f8f9fa;
+    }
+
+    .edit-modal-header h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .edit-modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edit-modal-close:hover {
+      color: #000;
+    }
+
+    .edit-modal-body {
+      padding: 20px;
+      max-height: calc(90vh - 120px);
+      overflow-y: auto;
+    }
+
+    .edit-modal-body label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .edit-modal-body input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .edit-modal-body textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      resize: vertical;
+      margin-bottom: 20px;
+    }
+
+    .edit-modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .edit-modal-actions button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .save-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .save-btn:hover {
+      background-color: #218838;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+
+    .cancel-btn {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .cancel-btn:hover {
+      background-color: #5a6268;
+    }
   </style> 
   <title>Enemy Selection</title>
 </head>
@@ -86,10 +216,12 @@
     <div class="history-stack-list"></div>
     <br>
     <button onclick="clearHistoryStack()" style="background-color: red; color: white">Clear</button>
+    <button onclick="editHistoryStack()" style="background-color: blue; color: white">Edit</button>
     <h4>Characters</h4>
     <div class="history-list"></div>
     <br>
     <button onclick="clearHistory()" style="background-color: red; color: white">Clear</button>
+    <button onclick="editHistory()" style="background-color: blue; color: white">Edit</button>
   </div>
   <br><br>  
 
@@ -298,6 +430,29 @@
   <datalist id="enemy-data-list"></datalist>
   <datalist id="moves-data-list"></datalist>
   <datalist id="natures-data-list"></datalist>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="edit-modal" style="display: none;">
+    <div class="edit-modal-content">
+      <div class="edit-modal-header">
+        <h3 id="edit-modal-title">Edit Entry</h3>
+        <button class="edit-modal-close" onclick="closeEditModal()">&times;</button>
+      </div>
+      <div class="edit-modal-body">
+        <label for="edit-name-input">Name:</label>
+        <input type="text" id="edit-name-input" placeholder="Entry name">
+        
+        <label for="edit-content-textarea">Content:</label>
+        <textarea id="edit-content-textarea" rows="20" placeholder="Enter JSON data or code here..."></textarea>
+        
+        <div class="edit-modal-actions">
+          <button onclick="saveEdit()" class="save-btn">Save</button>
+          <button onclick="deleteEntry()" class="delete-btn">Delete</button>
+          <button onclick="closeEditModal()" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 <script type="module" src="./assets/js/enemy.js"></script>
 </html>

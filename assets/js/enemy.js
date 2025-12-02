@@ -318,3 +318,159 @@ globalThis.clearHistoryStack = function() {
     localStorage.removeItem("$battle-stack-history")
     loadHistoryStack()
 }
+
+// Modal editing variables
+let currentEditType = null;
+let currentEditKey = null;
+let currentEditIndex = null;
+
+globalThis.editHistory = function() {
+    const history = JSON.parse(localStorage.getItem("battle-history")) || {};
+    const names = Object.keys(history);
+    
+    if (names.length === 0) {
+        alert("No battle history to edit");
+        return;
+    }
+    
+    const name = window.prompt(`Select entry to edit:\n${names.join('\n')}\n\nEnter name:`);
+    if (!name || !history[name]) {
+        alert("Invalid selection");
+        return;
+    }
+    
+    openEditModal('history', name, null, history[name]);
+}
+
+globalThis.editHistoryStack = function() {
+    const history = JSON.parse(localStorage.getItem("$battle-stack-history") || "[]").filter(Boolean);
+    
+    if (history.length === 0) {
+        alert("No battle stack history to edit");
+        return;
+    }
+    
+    const names = history.map((item, index) => `${index}: ${item.name}`);
+    const indexStr = window.prompt(`Select entry to edit:\n${names.join('\n')}\n\nEnter index number:`);
+    const index = parseInt(indexStr);
+    
+    if (isNaN(index) || index < 0 || index >= history.length) {
+        alert("Invalid index");
+        return;
+    }
+    
+    openEditModal('stack', history[index].name, index, history[index]);
+}
+
+function openEditModal(type, name, index, data) {
+    currentEditType = type;
+    currentEditKey = name;
+    currentEditIndex = index;
+    
+    const modal = document.getElementById('edit-modal');
+    const titleElement = document.getElementById('edit-modal-title');
+    const nameInput = document.getElementById('edit-name-input');
+    const contentTextarea = document.getElementById('edit-content-textarea');
+    
+    titleElement.textContent = `Edit ${type === 'history' ? 'Battle History' : 'Battle Stack'} Entry`;
+    nameInput.value = name;
+    
+    if (type === 'history') {
+        contentTextarea.value = JSON.stringify(data, null, 2);
+        contentTextarea.placeholder = 'Enter JSON battle data here...';
+    } else {
+        contentTextarea.value = data.code;
+        contentTextarea.placeholder = 'Enter battle code here...';
+    }
+    
+    modal.style.display = 'flex';
+    nameInput.focus();
+}
+
+globalThis.closeEditModal = function() {
+    const modal = document.getElementById('edit-modal');
+    modal.style.display = 'none';
+    currentEditType = null;
+    currentEditKey = null;
+    currentEditIndex = null;
+}
+
+globalThis.saveEdit = function() {
+    const nameInput = document.getElementById('edit-name-input');
+    const contentTextarea = document.getElementById('edit-content-textarea');
+    
+    const newName = nameInput.value.trim();
+    const newContent = contentTextarea.value.trim();
+    
+    if (!newName) {
+        alert('Name cannot be empty');
+        return;
+    }
+    
+    if (!newContent) {
+        alert('Content cannot be empty');
+        return;
+    }
+    
+    try {
+        if (currentEditType === 'history') {
+            const history = JSON.parse(localStorage.getItem("battle-history")) || {};
+            
+            // Parse JSON to validate
+            const parsedData = JSON.parse(newContent);
+            
+            // If name changed, delete old entry
+            if (newName !== currentEditKey) {
+                delete history[currentEditKey];
+            }
+            
+            history[newName] = parsedData;
+            localStorage.setItem("battle-history", JSON.stringify(history));
+            loadHistory();
+            
+        } else if (currentEditType === 'stack') {
+            const history = JSON.parse(localStorage.getItem("$battle-stack-history") || "[]").filter(Boolean);
+            
+            if (currentEditIndex >= 0 && currentEditIndex < history.length) {
+                history[currentEditIndex].name = newName;
+                history[currentEditIndex].code = newContent;
+                localStorage.setItem("$battle-stack-history", JSON.stringify(history));
+                loadHistoryStack();
+            }
+        }
+        
+        closeEditModal();
+        alert('Entry updated successfully!');
+        
+    } catch (e) {
+        if (currentEditType === 'history') {
+            alert('Invalid JSON format. Please check your syntax.');
+        } else {
+            alert('Error saving entry: ' + e.message);
+        }
+    }
+}
+
+globalThis.deleteEntry = function() {
+    if (!confirm(`Are you sure you want to delete "${currentEditKey}"?`)) {
+        return;
+    }
+    
+    if (currentEditType === 'history') {
+        const history = JSON.parse(localStorage.getItem("battle-history")) || {};
+        delete history[currentEditKey];
+        localStorage.setItem("battle-history", JSON.stringify(history));
+        loadHistory();
+        
+    } else if (currentEditType === 'stack') {
+        const history = JSON.parse(localStorage.getItem("$battle-stack-history") || "[]").filter(Boolean);
+        if (currentEditIndex >= 0 && currentEditIndex < history.length) {
+            history.splice(currentEditIndex, 1);
+            localStorage.setItem("$battle-stack-history", JSON.stringify(history));
+            loadHistoryStack();
+        }
+    }
+    
+    closeEditModal();
+    alert('Entry deleted successfully!');
+}

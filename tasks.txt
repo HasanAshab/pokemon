@@ -1,5 +1,4 @@
 * Tasks
-App version (offline)
 
 * bug
 mirror dirt
