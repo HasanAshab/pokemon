@@ -3,9 +3,9 @@ import {loadAbilitiesDataList,loadTypesDataList,loadItemsDataList, loadNaturesDa
 import { Pokemon, Move } from "./utils/models.js"
 import { getParam, getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js"
 import { Damage } from "./utils/damage.js"
+import { Navigation } from "./utils/navigation.js"
 
-
-var name = getParam("name")
+var name = Navigation.getCurrentPokemon() || getParam("name")
 var isMegaEvolved = false
 const updatablePokemonMetaList = ["items", "types", "abilities", "retreat","xp","nature","wins-count","loses-count"]
 
@@ -219,7 +219,7 @@ function loadName() {
     const display = document.getElementById("pokemon-name")
     display.innerText = `${name} (${pokemon.id})`  
     display.onclick = () => {
-      window.location = '/data.html?name=' + name
+      Navigation.goToDataPage(name);
     }
 }
 

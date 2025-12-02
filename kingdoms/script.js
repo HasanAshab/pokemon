@@ -28,8 +28,10 @@ Object.keys(kingdoms).forEach((name) => {
   card.appendChild(removeBtn);
 
   card.onclick = () => {
-    const encodedName = encodeURIComponent(name);
-    window.location.href = `/kingdoms/cms/?name=${encodedName}`;
+    // Import navigation utility dynamically
+    import('../assets/js/utils/navigation.js').then(({ Navigation }) => {
+      Navigation.goToKingdom(name);
+    });
   };
 
   container.appendChild(card);

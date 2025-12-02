@@ -9,8 +9,11 @@ import {
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
-const params = new URLSearchParams(window.location.search);
-const name = params.get("name");
+// Get kingdom name from localStorage (new method) or URL params (fallback)
+const name = localStorage.getItem('$current_kingdom') || (() => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("name");
+})();
 const barrackTitle = document.getElementById("barrackTitle");
 barrackTitle.textContent = name ? `${name}'s Barrack` : "Unknown Kingdom";
 
@@ -412,8 +415,10 @@ renderAllForces("soldier");
 loadPokemonsDatalist("pokemon-data-list");
 showImbalanceData();
 globalThis.redirectToAmmoPage = () => {
-  const encoded = encodeURIComponent(name);
-  window.location.href = `/kingdoms/cms/militia/barrack/ammo/?name=${encoded}`;
+  // Import navigation utility dynamically
+  import('../../../../assets/js/utils/navigation.js').then(({ Navigation }) => {
+    Navigation.goToBarrackAmmo(name);
+  });
 };
 // hide inactive tab
    document.querySelectorAll(`.tab:not(.active)`).forEach((tab) => {

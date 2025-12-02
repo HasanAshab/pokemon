@@ -5,10 +5,12 @@ let currentUser = 'Hasan';
 let currentStockName = '';
 let priceChart;
 
-// Get stock name from URL
+// Get stock name from localStorage (new method) or URL params (fallback)
 function getStockNameFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('name');
+    return localStorage.getItem('$current_stock') || (() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('name');
+    })();
 }
 
 // Load data from localStorage

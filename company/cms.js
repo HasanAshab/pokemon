@@ -1,8 +1,11 @@
 import { getAssetCost } from "./utils.js";
 
   const kingdoms = JSON.parse(localStorage.getItem("kingdoms"))
-const urlParams = new URLSearchParams(window.location.search);
-const companyName = urlParams.get('company');
+// Get company name from localStorage (new method) or URL params (fallback)
+const companyName = localStorage.getItem('$current_company') || (() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('company');
+})();
 const companies = JSON.parse(localStorage.getItem("companies")) || {};
 const company = companies[companyName];
 if (!company.monthlyChanges) company.monthlyChanges = {}

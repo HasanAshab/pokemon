@@ -1,7 +1,10 @@
 import { sumObj, calcNetProd, getStorage, getTransLogs, getPopulation, getPopulationGrowth, getMaintainedStorage } from '../../utils.js';
 
-const params = new URLSearchParams(window.location.search);
-const name = params.get("name");
+// Get kingdom name from localStorage (new method) or URL params (fallback)
+const name = localStorage.getItem('$current_kingdom') || (() => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("name");
+})();
 const kingdomNameEl = document.getElementById("kingdomName");
 const itemsContainer = document.getElementById("itemsContainer");
 const addItemBtn = document.getElementById("addItemBtn");

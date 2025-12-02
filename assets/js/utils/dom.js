@@ -218,7 +218,11 @@ export function startBattle(enemiesMeta, fields = [], system) {
   })
   localStorage.setItem("$enemies-base64-list", JSON.stringify(enemiesBase64List));
   localStorage.setItem("battle-history", JSON.stringify(history));
-  window.location = `battle.html?fields=${fields.join(',')}${system ? "&system=" + system : ''}`;
+  
+  // Import navigation utility
+  import('./navigation.js').then(({ Navigation }) => {
+    Navigation.goToBattle(fields, system);
+  });
 }
 
 export async function startUserBattle(name, popList = [], fields = [], system) {

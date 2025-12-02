@@ -14,8 +14,11 @@ import {
   getFoodTierForBudget
 } from "../utils.js";
 
-const urlParams = new URLSearchParams(window.location.search);
-const name = urlParams.get("name");
+// Get kingdom name from localStorage (new method) or URL params (fallback)
+const name = localStorage.getItem('$current_kingdom') || (() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("name");
+})();
 
 const landAreaInput = document.getElementById("landArea");
 const densityInput = document.getElementById("density");
@@ -288,8 +291,10 @@ document.querySelectorAll(".info-card").forEach((card) => {
   card.addEventListener("click", () => {
     const target = card.getAttribute("data-target");
     if (!name || !target) return;
-    const encoded = encodeURIComponent(name);
-    window.location.href = `/kingdoms/cms/${target}/?name=${encoded}`;
+    // Import navigation utility dynamically
+    import('../../assets/js/utils/navigation.js').then(({ Navigation }) => {
+      Navigation.goToKingdomSection(name, target);
+    });
   });
 });
 

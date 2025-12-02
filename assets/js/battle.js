@@ -5,6 +5,7 @@ import { Damage } from "./utils/damage.js"
 import { fixFloat, getParam, getPokemonsMeta, setPokemonMeta, getDamageDangerLevel, flagsToObj, objToFlags, shuffle, weightedRandomV2 } from "./utils/helpers.js"
 import { PopupMsgQueue } from "./utils/dom.js"
 import { loadMovesDatalist } from "./utils/dom.js";
+import { Navigation } from "./utils/navigation.js";
 
 
 globalThis.selectRandomFields = function(){
@@ -32,7 +33,7 @@ globalThis.selectRandomFields = function(){
 }
 
 const eventEmitter = new EventEmitter()
-const system = getParam("system") || "multiple"
+const system = Navigation.getBattleSystem() || getParam("system") || "multiple"
 let allAdjacentModeBy = null
 let shadowCloneBy = null
 
@@ -279,7 +280,6 @@ globalThis.showFieldsImpacts = function ({ currentTarget }) {
   }
 }
 globalThis.showActiveFieldsBtnClickHandler = function ({ currentTarget }) {
-   console.log(battle.fields[0].impacts())
   currentTarget.classList.toggle("active")
   const onlyActiveFieldsWrapper = currentTarget.parentElement.querySelector(".only-active-fields-wrapper")
   onlyActiveFieldsWrapper.innerHTML = ""
@@ -1668,7 +1668,7 @@ function clickOnFirstPokemonSwitch(playerTag,mirror = false) {
 
 window.onload = () => {
   globalThis.pokemonMap = {}
-  globalThis.fields = getParam("fields")?.split(',').filter(Boolean) ?? []
+  globalThis.fields = Navigation.getBattleFields().length > 0 ? Navigation.getBattleFields() : (getParam("fields")?.split(',').filter(Boolean) ?? [])
   loadTeams()
   registerBattle()
   loadChoosePokemon("you")

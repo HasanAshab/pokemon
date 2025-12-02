@@ -144,8 +144,8 @@
   </div>
 
   <div class="controls">
-    <button onclick="clearAppCache()" style="background-color: #ff4444; color: white; font-weight: bold;">Clear App Cache</button>
-    <button onclick="clearAllData()" style="background-color: #cc0000; color: white; font-weight: bold;">Clear All Data & Cache</button>
+    <button onclick="clearAppCache()" style="background-color: green; color: white; font-weight: bold;">Update App</button>
+    <!-- <button onclick="clearAllData()" style="background-color: #cc0000; color: white; font-weight: bold;">Clear All Data & Cache</button> -->
   </div>
 
   <div class="controls">
@@ -396,10 +396,6 @@
 
     // Cache clearing functions
     async function clearAppCache() {
-      if (!confirm("This will clear all cached app files. The app will need to reload from the network. Continue?")) {
-        return;
-      }
-
       try {
         // Clear all caches
         if ('caches' in window) {
@@ -419,7 +415,7 @@
           console.log('Service worker unregistered');
         }
 
-        alert("App cache cleared successfully! The page will reload.");
+        alert("App successfully updated!");
         window.location.reload(true); // Force reload from server
       } catch (error) {
         console.error('Error clearing cache:', error);

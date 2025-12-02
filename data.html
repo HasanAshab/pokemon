@@ -69,7 +69,7 @@
     }
 
     const ROOT_KEY = 'pokemons-meta';
-    const nameParam = getQueryParam('name');
+    const nameParam = localStorage.getItem('$data_page_pokemon') || getQueryParam('name');
     const nameDisplay = document.getElementById('name-display');
     const valueEditor = document.getElementById('value-editor');
     const copyBtn = document.getElementById('copy-btn');

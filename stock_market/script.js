@@ -466,7 +466,8 @@ function updatePortfolioChart() {
 
 // Go to stock CMS
 function goToStockCMS(stockName) {
-  window.location.href = `cms.html?name=${encodeURIComponent(stockName)}`;
+  localStorage.setItem('$current_stock', stockName);
+  window.location.href = 'cms.html';
 }
 
 // Initialize the application

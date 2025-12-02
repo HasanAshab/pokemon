@@ -1383,8 +1383,11 @@
     // Defence Waves Functionality
     import { prepareDefenceSoldiers } from "../../../utils.js";
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const name = urlParams.get("name");
+    // Get kingdom name from localStorage (new method) or URL params (fallback)
+    const name = localStorage.getItem('$current_kingdom') || (() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get("name");
+    })();
 
     let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
     if (!kingdoms[name]) kingdoms[name] = {};

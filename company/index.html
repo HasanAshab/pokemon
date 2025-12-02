@@ -38,7 +38,8 @@
     const companies = JSON.parse(localStorage.getItem("companies")) || {}
 
   function redirectToCompany(companyName){
-    window.location.href = `./cms.html?company=${companyName}`
+    localStorage.setItem('$current_company', companyName);
+    window.location.href = './cms.html';
   }
    function deleteCompany(companyName){
     delete companies[companyName]

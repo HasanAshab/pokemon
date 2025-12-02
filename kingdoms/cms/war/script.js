@@ -4,8 +4,11 @@ import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSo
 globalThis.wars = []
 var i = 0;
 var netWin = 0;
-const urlParams = new URLSearchParams(window.location.search);
-const name = urlParams.get('name');
+// Get kingdom name from localStorage (new method) or URL params (fallback)
+const name = localStorage.getItem('$current_kingdom') || (() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('name');
+})();
 const attackerSelect = document.getElementById('attacker');
 const defenderSelect = document.getElementById('defender');
 const strategySelect = document.getElementById('warStrategy')

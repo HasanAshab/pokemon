@@ -3,8 +3,11 @@ import { calcAmmoCost, getAmmoWithQuantity, saveKingdoms } from "../../../../uti
 import {initAllMultyInputBox,getMultyInputValues } from "../../../../../assets/js/utils/dom.js";
 var totalItemsMultyInputBox = 0
 globalThis.addInput = null
-const params = new URLSearchParams(window.location.search);
-const name = params.get("name");
+// Get kingdom name from localStorage (new method) or URL params (fallback)
+const name = localStorage.getItem('$current_kingdom') || (() => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("name");
+})();
 const encodedName =  encodeURIComponent(name);
 const kingdoms = JSON.parse(localStorage.getItem("kingdoms"))
 const kingdom = kingdoms[encodedName]

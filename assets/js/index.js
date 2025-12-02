@@ -1,6 +1,7 @@
 import { Pokemon } from "./utils/models.js";
 import { getPokemonsMeta, setPokemonMeta } from "./utils/helpers.js";
 import { loadPokemonsDatalist, loadNaturesDataList } from "./utils/dom.js";
+import { Navigation } from "./utils/navigation.js";
 
 //window.location = "/kingdoms/cms/militia/barrack/?name=Bengalia";
 
@@ -165,7 +166,7 @@ globalThis.deletePokemon = function deletePokemon(name) {
 };
 
 globalThis.pokemonClickHandler = function pokemonClickHandler(slug) {
-  window.location = `poke_details.html?name=${slug}`;
+  Navigation.goToPokemonDetails(slug);
 };
 globalThis.selectForMultyBattle = function (id, { currentTarget }) {
   const pokemonCard = currentTarget.parentElement.parentElement;
@@ -221,7 +222,7 @@ function loadAllPokemons() {
 }
 
 globalThis.openEnemyChooseInterface = function () {
-  window.location = `enemy.html?name=${name}`;
+  Navigation.goToEnemySelect(name);
 };
 globalThis.redirectToEnemyPage = function () {
   window.location = `m_enemy.html`;

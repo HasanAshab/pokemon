@@ -1,8 +1,11 @@
 import pokemons from '../../../../data/pokemons.js'
 import { getCommandedArea, getCommanderDirections, getEffectiveDefensiveIQ } from '../../../utils.js';
 
-const params = new URLSearchParams(window.location.search);
-const name = params.get("name");
+// Get kingdom name from localStorage (new method) or URL params (fallback)
+const name = localStorage.getItem('$current_kingdom') || (() => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("name");
+})();
 const commandersContainer = document.getElementById("commandersContainer");
 const addCommanderBtn = document.getElementById("addCommanderBtn");
 
