@@ -224,6 +224,12 @@ export default {
     }
   },
 
+  "ghost-speed": {
+    tokensPercent: {
+      spe: 12
+    }
+  },
+
   "gen-nation-bengal": {
     type: "nation_genetics",
     tokensPercent: {
@@ -263,6 +269,10 @@ export default {
       "spa": 3,
       "spd": 3
     }
+  },
+  "gen-age-under-18": {
+    type: "age_genetics",
+    tokensPercent: {}
   },
   "gen-age-18": {
     type: "age_genetics",
