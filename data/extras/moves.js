@@ -522,7 +522,7 @@ export default {
   kohgastar: {
     num: 100005,
     accuracy: 100,
-    basePower: 15,
+    basePower: 17,
     category: "Physical",
     name: "Kohga Star",
     pp: 15 * 3,
@@ -533,7 +533,7 @@ export default {
       status: "bleed"
     },
     target: "normal",
-    type: "Rock",
+    type: "Steel",
     contestType: "Tough",
     tokenChanges: {
       spe: -10
@@ -728,7 +728,7 @@ export default {
       weapon: 1
     },
     secondary: {
-      chance: 10,
+      chance: 3,
       status: "bleed"
     },
     target: "normal",
@@ -736,8 +736,7 @@ export default {
     contestType: "Tough",
     tokenChanges: {
       spe: -10
-    },
-    koRatio: 1
+    }
   },
   punch: {
     num: 100016,
@@ -1135,7 +1134,7 @@ export default {
     basePower: 1,
     category: "Special",
     name: "Chakra Absorb",
-    pp: 6 * 3,
+    pp: 12 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
     onBeforeMove(user, opponent, move) {
@@ -1150,7 +1149,7 @@ export default {
     },
     type: "Normal",
     target: "normal",
-    retreat: 3
+    retreat: 1
   },
   kunaishurikin: {
     num: 100034,
