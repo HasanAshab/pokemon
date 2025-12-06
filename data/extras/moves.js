@@ -1755,7 +1755,7 @@ export default {
     }
   },
     dualbladefoeSide: {
-    num: 100060,
+    num: 100061,
     accuracy: 100,
     basePower: 40,
     category: "Physical",
@@ -1776,7 +1776,7 @@ export default {
     }
   },
   neddle:{
-    num: 100061,
+    num: 100062,
     accuracy: 100,
     basePower: 1,
     category: "Physical",
@@ -1790,7 +1790,10 @@ export default {
     },
     target: "normal",
     type: "Steel",
-    contestType: "Cool"
+    contestType: "Cool",
+  tokenChanges: {
+    spe: -2
+  }
   },
 
 }
