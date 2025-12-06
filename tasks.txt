@@ -1,6 +1,4 @@
-* Tasks
-kokola weapon - "boostaff": jei move er shathe counter hoy 
- 
+* Tasks 
 Update moves weight (tokenChanges)
 
 * bug

@@ -820,11 +820,13 @@ class RechargingEffect extends ExpirableEffect {
 
     lifetime = { turns: 1 }
 
-    canUseMove() {
+    canUseMove(move) {
         if (
             this.state.battle.weathers.name() === "sunnyday"
             && this.source.flags.charge
         ) return true
+
+        if (!move.flags.offensive) return true
 
         return false
     }

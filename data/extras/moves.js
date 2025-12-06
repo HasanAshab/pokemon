@@ -1785,7 +1785,7 @@ export default {
     priority: 0,
     flags: { snatch: 1, metronome: 1, weapon: 1 },
     secondary: {
-      chance: 70,
+      chance: 85,
       status: "bleed"
     },
     target: "normal",
@@ -1809,6 +1809,14 @@ export default {
     contestType: "Cool",
     tokenChanges: {
       spe: -15
+    },
+    effects: {
+      self: [],
+      target: [{
+        name: "mustrecharge",
+        chance: 100,
+        isVolatile: true
+      }]
     }
   }
 }
