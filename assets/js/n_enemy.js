@@ -10,7 +10,15 @@ window.onload = () => {
     loadNaturesDataList("natures-data-list")
     loadMovesDatalist("moves-data-list")
     loadBattleSystems()
-    addEnemy()
+    
+    // Check if there's edit data to load
+    const editData = localStorage.getItem('ui-edit-data');
+    if (editData) {
+        loadEditData(JSON.parse(editData));
+        localStorage.removeItem('ui-edit-data'); // Clean up after loading
+    } else {
+        addEnemy()
+    }
 }
 
 let enemyCount = 0;
@@ -716,4 +724,129 @@ function generateStartBattleCode() {
         getActiveBattleFields(),
         sysSelect.value
     )
+}
+
+function loadEditData(editData) {
+    console.log('Loading edit data:', editData);
+    
+    if (editData.type === 'history') {
+        // Load battle history data (array of enemies)
+        const enemies = editData.data;
+        if (Array.isArray(enemies)) {
+            enemies.forEach((enemyData, index) => {
+                loadEnemyData(enemyData, index);
+            });
+        }
+    } else if (editData.type === 'stack') {
+        // Load battle stack data
+        const { enemies, fields, system } = editData.data;
+        
+        // Load enemies
+        if (Array.isArray(enemies)) {
+            enemies.forEach((enemyData, index) => {
+                loadEnemyData(enemyData, index);
+            });
+        }
+        
+        // Load fields
+        if (Array.isArray(fields)) {
+            loadBattleFields(fields);
+        }
+        
+        // Load system
+        if (system) {
+            const sysSelect = document.getElementById('sys-select');
+            sysSelect.value = system;
+        }
+    }
+}
+
+function loadEnemyData(enemyData, index) {
+    // Add enemy form if it doesn't exist
+    if (index >= enemyCount) {
+        addEnemy();
+    }
+    
+    const form = document.querySelector(`.pokemon-form[data-index="${index}"]`);
+    if (!form) return;
+    
+    // Load basic enemy data
+    if (enemyData.id) form.querySelector('.enemy').value = enemyData.id;
+    if (enemyData.name) form.querySelector('.name-inp').value = enemyData.name;
+    if (enemyData.xp !== undefined) {
+        const level = Math.floor(enemyData.xp / 100) + 1;
+        form.querySelector('.level-inp').value = level;
+    }
+    if (enemyData.retreat !== undefined) form.querySelector('.retreat-inp').value = enemyData.retreat;
+    if (enemyData.nature) form.querySelector('.nature-inp').value = enemyData.nature;
+    if (enemyData.mega && enemyData.mega.suffix) {
+        form.querySelector('.mega-suffix-select').value = enemyData.mega.suffix;
+    }
+    
+    // Load types
+    if (enemyData.types && Array.isArray(enemyData.types)) {
+        const typesBox = form.querySelector('.multy-input-box[data-property="types"]');
+        enemyData.types.forEach(type => {
+            if (globalThis.addInput) {
+                globalThis.addInput(typesBox, type);
+            }
+        });
+    }
+    
+    // Load abilities
+    if (enemyData.abilities && Array.isArray(enemyData.abilities)) {
+        const abilitiesBox = form.querySelector('.multy-input-box[data-property="abilities"]');
+        enemyData.abilities.forEach(ability => {
+            if (globalThis.addInput) {
+                globalThis.addInput(abilitiesBox, ability);
+            }
+        });
+    }
+    
+    // Load items (excluding genetics)
+    if (enemyData.items && Array.isArray(enemyData.items)) {
+        const itemsBox = form.querySelector('.multy-input-box[data-property="items"]');
+        const genetics = ['nation', 'age', 'food', 'body'];
+        enemyData.items.forEach(item => {
+            // Skip genetics items as they have their own selects
+            if (!genetics.some(gen => item.toLowerCase().includes(gen))) {
+                if (globalThis.addInput) {
+                    globalThis.addInput(itemsBox, item);
+                }
+            }
+        });
+    }
+    
+    // Load moves
+    if (enemyData.moves && Array.isArray(enemyData.moves)) {
+        enemyData.moves.forEach(move => {
+            addMove(null, false, move.id, move.grade || 0, form);
+        });
+    }
+    
+    // Load mega moves
+    if (enemyData.mega && enemyData.mega.moves && Array.isArray(enemyData.mega.moves)) {
+        enemyData.mega.moves.forEach(move => {
+            addMove(null, true, move.id, move.grade || 0, form);
+        });
+    }
+    
+    // Trigger stats update
+    const event = { target: form.querySelector('.enemy') };
+    showStats(event);
+}
+
+function loadBattleFields(fields) {
+    // Clear existing active fields
+    document.querySelectorAll('.fields-cont > .field').forEach(field => {
+        field.classList.remove('active');
+    });
+    
+    // Activate specified fields
+    fields.forEach(fieldName => {
+        const fieldElement = document.querySelector(`.fields-cont > .field.${fieldName.toLowerCase()}`);
+        if (fieldElement) {
+            fieldElement.classList.add('active');
+        }
+    });
 }

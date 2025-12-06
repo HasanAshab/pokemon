@@ -474,3 +474,58 @@ globalThis.deleteEntry = function() {
     closeEditModal();
     alert('Entry deleted successfully!');
 }
+
+globalThis.uiEdit = function() {
+    const contentTextarea = document.getElementById('edit-content-textarea');
+    const newContent = contentTextarea.value.trim();
+    
+    if (!newContent) {
+        alert('Content cannot be empty');
+        return;
+    }
+    
+    try {
+        if (currentEditType === 'history') {
+            // Validate JSON before saving
+            const parsedData = JSON.parse(newContent);
+            
+            // Save to localStorage for UI editing
+            localStorage.setItem('ui-edit-data', JSON.stringify({
+                type: 'history',
+                name: currentEditKey,
+                data: parsedData
+            }));
+            
+        } else if (currentEditType === 'stack') {
+            // For stack, we need to extract the battle data from the code
+            // This is more complex as we need to parse the startBattle call
+            const codeMatch = newContent.match(/startBattle\((\[.*?\]),\s*(\[.*?\]),\s*"([^"]+)"\)/s);
+            
+            if (codeMatch) {
+                const enemiesData = JSON.parse(codeMatch[1]);
+                const fieldsData = JSON.parse(codeMatch[2]);
+                const systemData = codeMatch[3];
+                
+                localStorage.setItem('ui-edit-data', JSON.stringify({
+                    type: 'stack',
+                    name: currentEditKey,
+                    data: {
+                        enemies: enemiesData,
+                        fields: fieldsData,
+                        system: systemData,
+                        originalCode: newContent
+                    }
+                }));
+            } else {
+                alert('Could not parse battle code. Please ensure it follows the correct format.');
+                return;
+            }
+        }
+        
+        // Redirect to m_enemy.html
+        window.location.href = 'm_enemy.html';
+        
+    } catch (e) {
+        alert('Invalid format. Please check your data: ' + e.message);
+    }
+}

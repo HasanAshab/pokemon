@@ -1,6 +1,5 @@
 * Tasks
 
-
 * bug
 mirror 2 sides cause copy
 
