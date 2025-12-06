@@ -835,6 +835,14 @@ function loadChoosePokemon(playerTag) {
 
 
 function makeMyPokemons() {
+  // Check if this is a friendly match
+  const isFriendlyMatch = localStorage.getItem('$friendly-match-mode') === 'true';
+  
+  if (isFriendlyMatch) {
+    const team1Data = JSON.parse(localStorage.getItem('$friendly-match-team1'));
+    return team1Data.map(meta => new Pokemon(meta.id, meta, "you"));
+  }
+  
   const pokemonsMeta = getPokemonsMeta()
   return Object.keys(pokemonsMeta)
     .map(id => new Pokemon(pokemonsMeta[id].id, pokemonsMeta[id], "you"))
@@ -842,6 +850,14 @@ function makeMyPokemons() {
 }
 
 function makeEnemyPokemons() {
+  // Check if this is a friendly match
+  const isFriendlyMatch = localStorage.getItem('$friendly-match-mode') === 'true';
+  
+  if (isFriendlyMatch) {
+    const team2Data = JSON.parse(localStorage.getItem('$friendly-match-team2'));
+    return team2Data.map(meta => new Pokemon(meta.id, meta, "enemy"));
+  }
+  
   const enemiesBase64List = JSON.parse(localStorage.getItem("$enemies-base64-list"))
   return enemiesBase64List.map(base64 => Pokemon.fromBase64(base64, "enemy"))
 }
@@ -1675,6 +1691,18 @@ function clickOnFirstPokemonSwitch(playerTag,mirror = false) {
   pokemonSwitchControler.querySelector(`.pokemon`).click()
   }
 }
+
+// Cleanup function for friendly matches
+function cleanupFriendlyMatch() {
+  if (localStorage.getItem('$friendly-match-mode') === 'true') {
+    localStorage.removeItem('$friendly-match-team1');
+    localStorage.removeItem('$friendly-match-team2');
+    localStorage.removeItem('$friendly-match-mode');
+  }
+}
+
+// Clean up when navigating away from battle
+window.addEventListener('beforeunload', cleanupFriendlyMatch);
 
 window.onload = () => {
   globalThis.pokemonMap = {}

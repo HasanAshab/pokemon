@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friendly Match - Pokemon Battle</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.json">
+
+  <link rel="stylesheet" href="./assets/css/global.css">
+  <link rel="stylesheet" href="./assets/css/friendly-match.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+      <h1>Friendly Match</h1>
+      <button class="start-battle-btn" onclick="startFriendlyBattle()" disabled>Start Battle</button>
+    </div>
+
+    <!-- Team Selection -->
+    <div class="teams-container">
+      <!-- Team 1 -->
+      <div class="team-section" data-team="1">
+        <div class="team-header">
+          <h2>Team 1</h2>
+          <span class="team-count">0 Pokemon</span>
+        </div>
+        <div class="team-pokemon-list" id="team1-list">
+          <div class="empty-team-message">
+            <p>Select Pokemon from your collection below</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS Divider -->
+      <div class="vs-divider">
+        <span>VS</span>
+      </div>
+
+      <!-- Team 2 -->
+      <div class="team-section" data-team="2">
+        <div class="team-header">
+          <h2>Team 2</h2>
+          <span class="team-count">0 Pokemon</span>
+        </div>
+        <div class="team-pokemon-list" id="team2-list">
+          <div class="empty-team-message">
+            <p>Select Pokemon from your collection below</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pokemon Collection -->
+    <div class="pokemon-collection">
+      <div class="collection-header">
+        <h3>Your Pokemon Collection</h3>
+        <div class="collection-controls">
+          <button class="clear-teams-btn" onclick="clearAllTeams()">Clear All Teams</button>
+          <button class="auto-balance-btn" onclick="autoBalanceTeams()">Auto Balance</button>
+        </div>
+      </div>
+      <div class="pokemon-grid" id="pokemon-collection">
+        <!-- Pokemon cards will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Battle Settings -->
+    <div class="battle-settings">
+      <h3>Battle Settings</h3>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label for="battle-field">Battle Field:</label>
+          <select id="battle-field">
+            <option value="">Random Field</option>
+            <option value="Fire">Fire Field</option>
+            <option value="Water">Water Field</option>
+            <option value="Electric">Electric Field</option>
+            <option value="Grass">Grass Field</option>
+            <option value="Ice">Ice Field</option>
+            <option value="Fighting">Fighting Field</option>
+            <option value="Poison">Poison Field</option>
+            <option value="Ground">Ground Field</option>
+            <option value="Flying">Flying Field</option>
+            <option value="Psychic">Psychic Field</option>
+            <option value="Bug">Bug Field</option>
+            <option value="Rock">Rock Field</option>
+            <option value="Ghost">Ghost Field</option>
+            <option value="Dragon">Dragon Field</option>
+            <option value="Dark">Dark Field</option>
+            <option value="Steel">Steel Field</option>
+            <option value="Fairy">Fairy Field</option>
+            <option value="Normal">Normal Field</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/js/friendly-match.js" type="module"></script>
+</body>
+
+</html>

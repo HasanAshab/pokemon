@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokemon-game-v5';
+const CACHE_NAME = 'pokemon-game-v6';
 const urlsToCache = [
   // Root pages
   './',
@@ -13,6 +13,7 @@ const urlsToCache = [
   './backup_ls.html',
   './offline.html',
   './pwa-debug.html',
+  './friendly_match.html',
 
   // CSS files
   './assets/css/global.css',
@@ -23,6 +24,7 @@ const urlsToCache = [
   './assets/css/multy-input-box.css',
   './assets/css/n_enemy.css',
   './assets/css/poke_details.css',
+  './assets/css/friendly-match.css',
 
   // JavaScript files
   './assets/js/index.js',
@@ -32,6 +34,7 @@ const urlsToCache = [
   './assets/js/poke_details.js',
   './assets/js/processor.js',
   './assets/js/test.js',
+  './assets/js/friendly-match.js',
   './assets/js/utils/models.js',
   './assets/js/utils/helpers.js',
   './assets/js/utils/dom.js',

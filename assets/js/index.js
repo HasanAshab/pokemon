@@ -228,6 +228,10 @@ globalThis.redirectToEnemyPage = function () {
   window.location = `m_enemy.html`;
 };
 
+globalThis.redirectToFriendlyMatch = function () {
+  window.location = `friendly_match.html`;
+};
+
 
 function loadTotalCP() {
   const pokemonsMeta = getPokemonsMeta();

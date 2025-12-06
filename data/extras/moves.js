@@ -1791,10 +1791,25 @@ export default {
     target: "normal",
     type: "Steel",
     contestType: "Cool",
-  tokenChanges: {
-    spe: -2
-  }
+    tokenChanges: {
+      spe: -1
+    }
   },
-
+  heavystaff:{
+    num: 100063,
+    accuracy: 100,
+    basePower: 70,
+    category: "Physical",
+    name: "Heavy Staff",
+    pp: 10 * 3,
+    priority: 0,
+    flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, shield: 1 },
+    target: "normal",
+    type: "Steel",
+    contestType: "Cool",
+    tokenChanges: {
+      spe: -15
+    }
+  }
 }
 

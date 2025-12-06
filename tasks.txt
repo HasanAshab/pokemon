@@ -1,6 +1,7 @@
 * Tasks
-Edit battle
-=======
+kokola weapon - "boostaff": jei move er shathe counter hoy 
+ 
+Update moves weight (tokenChanges)
 
 * bug
 mirror 2 sides cause copy
