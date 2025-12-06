@@ -119,6 +119,15 @@
       background-color: #218838;
     }
 
+    .ui-edit-btn {
+      background-color: #17a2b8;
+      color: white;
+    }
+
+    .ui-edit-btn:hover {
+      background-color: #138496;
+    }
+
     .delete-btn {
       background-color: #dc3545;
       color: white;
@@ -447,6 +456,7 @@
         
         <div class="edit-modal-actions">
           <button onclick="saveEdit()" class="save-btn">Save</button>
+          <button onclick="uiEdit()" class="ui-edit-btn">UI Edit</button>
           <button onclick="deleteEntry()" class="delete-btn">Delete</button>
           <button onclick="closeEditModal()" class="cancel-btn">Cancel</button>
         </div>
