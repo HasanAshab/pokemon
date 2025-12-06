@@ -65,7 +65,7 @@ export default {
   },
   latherarmor2: {
     type: "armor",
-    covers: 100,
+    covers: 40,
     stats: {
       def: 30
     },
@@ -78,7 +78,7 @@ export default {
     type: "armor",
     covers: 80,
     stats: {
-      def: 15
+      def: 30
     },
     tokens: {
       spe: -8
@@ -89,7 +89,7 @@ export default {
     type: "armor",
     covers: 20,
     stats: {
-      def: 25
+      def: 50
     },
     tokens: {
       spe: -3
@@ -100,7 +100,7 @@ export default {
     type: "armor",
     covers: 40,
     stats: {
-      def: 25
+      def: 50
     },
     tokens: {
       spe: -7
@@ -111,7 +111,7 @@ export default {
     type: "armor",
     covers: 80,
     stats: {
-      def: 25
+      def: 50
     },
     tokens: {
       spe: -12
@@ -122,7 +122,7 @@ export default {
     type: "armor",
     covers: 20,
     stats: {
-      def: 35
+      def: 68
     },
     tokens: {
       spe: -5
@@ -133,7 +133,7 @@ export default {
     type: "armor",
     covers: 40,
     stats: {
-      def: 35
+      def: 68
     },
     tokens: {
       spe: -10
@@ -144,7 +144,7 @@ export default {
     type: "armor",
     covers: 80,
     stats: {
-      def: 35
+      def: 68
     },
     tokens: {
       spe: -15

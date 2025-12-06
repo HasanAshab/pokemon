@@ -1775,8 +1775,23 @@ export default {
       spe: -15
     }
   },
-  
-
+  neddle:{
+    num: 100061,
+    accuracy: 100,
+    basePower: 1,
+    category: "Physical",
+    name: "Neddle",
+    pp: 10 * 3,
+    priority: 0,
+    flags: { snatch: 1, metronome: 1, weapon: 1 },
+    secondary: {
+      chance: 70,
+      status: "bleed"
+    },
+    target: "normal",
+    type: "Steel",
+    contestType: "Cool"
+  },
 
 }
 
