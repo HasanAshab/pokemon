@@ -1,10 +1,8 @@
 * Tasks
+fix PWA UI
 Update moves weight (tokenChanges)
-Auto soldier generation by might
 
 * bug
-mirror 2 sides cause copy
-
 abilities multiple opponent event system
 Bot shinobis hit a move in act of his team
 

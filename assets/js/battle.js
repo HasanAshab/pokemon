@@ -163,10 +163,6 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
   currentTarget.classList.toggle("active")
   let opponentTeam = teams[opponentTag(playerTag)]
 
-  console.log("before");
-  opponentTeam.forEach(p => console.log(p.meta))
-  
-
   if (currentTarget.classList.contains("active")) {
     toggleMirrorChoosePokemons(playerTag)
     teams[playerTag].forEach(p => {
@@ -178,9 +174,14 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
 
   else {
     toggleMirrorChoosePokemons(playerTag)
-    opponentTeam.forEach((p, i) => {
+    const indexes = []
+    let j = 0
+    opponentTeam.forEach((p, i) => {      
       if (p.meta.mirror)
-        opponentTeam.splice(i, 1)
+        indexes.push(i - j++)
+    })    
+    indexes.forEach(i => {
+      opponentTeam.splice(i, 1)
     })
 
     
@@ -189,9 +190,6 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
     })
     clickOnFirstPokemonSwitch(opponentTag(playerTag))
   }
-  console.log("after");
-  opponentTeam.forEach(p => console.log(p.meta))
-
 }
 globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
