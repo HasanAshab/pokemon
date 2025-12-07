@@ -12,11 +12,57 @@ Object.keys(kingdoms).forEach((name) => {
   label.textContent = name;
   label.className = "card-name";
 
+  // Create 3-dot menu container
+  const menuContainer = document.createElement("div");
+  menuContainer.className = "menu-container";
+
+  // Create 3-dot button
+  const moreBtn = document.createElement("button");
+  moreBtn.className = "more-btn";
+  moreBtn.innerHTML = `
+    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <g id="Menu / More_Grid_Big">
+          <g id="Vector">
+            <path d="M17 18C17 18.5523 17.4477 19 18 19C18.5523 19 19 18.5523 19 18C19 17.4477 18.5523 17 18 17C17.4477 17 17 17.4477 17 18Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M11 18C11 18.5523 11.4477 19 12 19C12.5523 19 13 18.5523 13 18C13 17.4477 12.5523 17 12 17C11.4477 17 11 17.4477 11 18Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.4477 6.55228 17 6 17C5.44772 17 5 17.4477 5 18Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M17 12C17 12.5523 17.4477 13 18 13C18.5523 13 19 12.5523 19 12C19 11.4477 18.5523 11 18 11C17.4477 11 17 11.4477 17 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M5 12C5 12.5523 5.44772 13 6 13C6.55228 13 7 12.5523 7 12C7 11.4477 6.55228 11 6 11C5.44772 11 5 11.4477 5 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5C17.4477 5 17 5.44772 17 6Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M11 6C11 6.55228 11.4477 7 12 7C12.5523 7 13 6.55228 13 6C13 5.44772 12.5523 5 12 5C11.4477 5 11 5.44772 11 6Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M5 6C5 6.55228 5.44772 7 6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5C5.44772 5 5 5.44772 5 6Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </g>
+      </g>
+    </svg>
+  `;
+  moreBtn.onclick = (e) => {
+    e.stopPropagation();
+    moreBtn.classList.toggle('active');
+  };
+
+  // Create dropdown menu
+  const dropdownMenu = document.createElement("div");
+  dropdownMenu.className = "dropdown-menu";
+
+  // Create duplicate button
+  const duplicateBtn = document.createElement("button");
+  duplicateBtn.textContent = "Duplicate";
+  duplicateBtn.onclick = (e) => {
+    e.stopPropagation();
+    duplicateKingdom(name);
+  };
+
+  // Create remove button
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "Remove";
-  removeBtn.className = "remove-btn";
+  removeBtn.className = "remove-option";
   removeBtn.onclick = (e) => {
-    e.stopPropagation(); // prevent card click
+    e.stopPropagation();
     if (confirm(`Delete kingdom "${name}"?`)) {
       delete kingdoms[name];
       localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -24,8 +70,14 @@ Object.keys(kingdoms).forEach((name) => {
     }
   };
 
+  // Assemble the menu
+  dropdownMenu.appendChild(duplicateBtn);
+  dropdownMenu.appendChild(removeBtn);
+  menuContainer.appendChild(moreBtn);
+  menuContainer.appendChild(dropdownMenu);
+
   card.appendChild(label);
-  card.appendChild(removeBtn);
+  card.appendChild(menuContainer);
 
   card.onclick = () => {
     // Import navigation utility dynamically
@@ -35,6 +87,15 @@ Object.keys(kingdoms).forEach((name) => {
   };
 
   container.appendChild(card);
+});
+
+// Close dropdown menus when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.menu-container')) {
+    document.querySelectorAll('.more-btn.active').forEach(btn => {
+      btn.classList.remove('active');
+    });
+  }
 });
 
 document.getElementById("addKingdomBtn").onclick = () => {
@@ -63,6 +124,57 @@ document.getElementById("addKingdomBtn").onclick = () => {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   location.reload();
 };
+
+// Kingdom Duplication Function
+function duplicateKingdom(originalName) {
+  const originalKingdom = kingdoms[originalName];
+  
+  if (!originalKingdom) {
+    alert("Kingdom not found!");
+    return;
+  }
+  
+  // Create a new name for the duplicate
+  let duplicateName = originalName + "_copy";
+  let counter = 1;
+  
+  // Ensure unique name
+  while (kingdoms[duplicateName]) {
+    duplicateName = originalName + "_copy" + counter;
+    counter++;
+  }
+  
+  // Create a deep copy of the original kingdom
+  const duplicateKingdom = JSON.parse(JSON.stringify(originalKingdom));
+  
+  // Update the ID to match the new name
+  duplicateKingdom.id = duplicateName;
+  
+  // Reset disaster state to a new random state
+  duplicateKingdom.disaster = {
+    current: {},
+    geoState: generateRandomGeoState()
+  };
+  
+  // Add some variation to make it interesting
+  // Slightly randomize some stats (±10%)
+  const variation = 0.1;
+  duplicateKingdom.landArea = Math.floor(duplicateKingdom.landArea * (1 + (Math.random() - 0.5) * variation));
+  duplicateKingdom.density = Math.floor(duplicateKingdom.density * (1 + (Math.random() - 0.5) * variation));
+  duplicateKingdom.pci = Math.floor(duplicateKingdom.pci * (1 + (Math.random() - 0.5) * variation));
+  
+  // Ensure minimum values
+  duplicateKingdom.landArea = Math.max(500, duplicateKingdom.landArea);
+  duplicateKingdom.density = Math.max(50, duplicateKingdom.density);
+  duplicateKingdom.pci = Math.max(25, duplicateKingdom.pci);
+  
+  // Add the duplicate to the kingdoms
+  kingdoms[duplicateName] = duplicateKingdom;
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  
+  // Reload the page to show the new kingdom
+  location.reload();
+}
 
 // Disaster System Functions
 function generateRandomGeoState() {

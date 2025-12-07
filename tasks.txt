@@ -1,5 +1,7 @@
-* Tasks 
+* Tasks
+heavystaff
 Update moves weight (tokenChanges)
+Auto soldier generation by might
 
 * bug
 mirror 2 sides cause copy

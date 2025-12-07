@@ -150,8 +150,24 @@ display: flex;
 }
 .pokemon > .right-controle-btns-cont > .more-btns-cont > button{
   width: 100%;
- background-color: inherit;
+  background-color: inherit;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
 
+.pokemon > .right-controle-btns-cont > .more-btns-cont > button:hover{
+  background-color: #e0e0ff;
+}
+
+.pokemon > .right-controle-btns-cont > .more-btns-cont > button:nth-child(2){
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.pokemon > .right-controle-btns-cont > .more-btns-cont > button:nth-child(2):hover{
+  background-color: #bbdefb;
 }
 .add-pokemon-form {
     display: flex;

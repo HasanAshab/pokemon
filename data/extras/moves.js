@@ -1784,9 +1784,13 @@ export default {
     pp: 10 * 3,
     priority: 0,
     flags: { snatch: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 85,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 85,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -1810,14 +1814,7 @@ export default {
     tokenChanges: {
       spe: -15
     },
-    effects: {
-      self: [],
-      target: [{
-        name: "mustrecharge",
-        chance: 100,
-        isVolatile: true
-      }]
-    }
+    
   }
 }
 
