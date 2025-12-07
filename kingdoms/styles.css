@@ -141,3 +141,42 @@ body {
   margin-bottom: 0.5rem;
   padding-right: 2rem; /* Make space for the 3-dot menu */
 }
+
+/* War state styling */
+.card.under-war {
+  border: 2px solid #dc3545;
+  background: linear-gradient(135deg, #fff 0%, #ffe6e6 100%);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.war-indicator {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #dc3545;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* War toggle button styling */
+.dropdown-menu button.war-start-option {
+  color: #dc3545;
+}
+
+.dropdown-menu button.war-start-option:hover {
+  background-color: #ffeaea;
+}
+
+.dropdown-menu button.war-end-option {
+  color: #28a745;
+}
+
+.dropdown-menu button.war-end-option:hover {
+  background-color: #e8f5e8;
+}

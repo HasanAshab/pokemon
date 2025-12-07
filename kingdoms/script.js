@@ -65,6 +65,15 @@ Object.keys(kingdoms).forEach((name) => {
     duplicateKingdom(name);
   };
 
+  // Create war toggle button
+  const warToggleBtn = document.createElement("button");
+  warToggleBtn.textContent = kingdoms[name].underWar ? "End War" : "Start War";
+  warToggleBtn.className = kingdoms[name].underWar ? "war-end-option" : "war-start-option";
+  warToggleBtn.onclick = (e) => {
+    e.stopPropagation();
+    toggleWarState(name);
+  };
+
   // Create remove button
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "Remove";
@@ -81,9 +90,19 @@ Object.keys(kingdoms).forEach((name) => {
   // Assemble the menu
   dropdownMenu.appendChild(renameBtn);
   dropdownMenu.appendChild(duplicateBtn);
+  dropdownMenu.appendChild(warToggleBtn);
   dropdownMenu.appendChild(removeBtn);
   menuContainer.appendChild(moreBtn);
   menuContainer.appendChild(dropdownMenu);
+
+  // Add war state visual indicator
+  if (kingdoms[name].underWar) {
+    card.classList.add('under-war');
+    const warIndicator = document.createElement("div");
+    warIndicator.className = "war-indicator";
+    warIndicator.textContent = "⚔️ AT WAR";
+    card.appendChild(warIndicator);
+  }
 
   card.appendChild(label);
   card.appendChild(menuContainer);
@@ -124,6 +143,7 @@ document.getElementById("addKingdomBtn").onclick = () => {
     taxRate: 0.3,
     buildings: [],
     storage: {},
+    underWar: false,
     disaster: {
       current: {},
       geoState: generateRandomGeoState()
@@ -178,6 +198,25 @@ function renameKingdom(oldName) {
   // Remove old kingdom and add with new name
   delete kingdoms[oldName];
   kingdoms[newName] = updatedKingdom;
+  
+  // Save to localStorage
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  
+  // Reload the page to reflect changes
+  location.reload();
+}
+
+// Kingdom War Toggle Function
+function toggleWarState(kingdomName) {
+  const kingdom = kingdoms[kingdomName];
+  
+  if (!kingdom) {
+    alert("Kingdom not found!");
+    return;
+  }
+  
+  // Toggle war state
+  kingdom.underWar = !kingdom.underWar;
   
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -410,13 +449,18 @@ document.getElementById('closeDisasterReport').onclick = () => {
   document.getElementById('disasterReport').style.display = 'none';
 };
 
-// Initialize disaster data for existing kingdoms that don't have it
+// Initialize disaster data and war state for existing kingdoms that don't have it
 Object.keys(kingdoms).forEach(name => {
   if (!kingdoms[name].disaster) {
     kingdoms[name].disaster = {
       current: {},
       geoState: generateRandomGeoState()
     };
+  }
+  
+  // Initialize underWar property if it doesn't exist
+  if (kingdoms[name].underWar === undefined) {
+    kingdoms[name].underWar = false;
   }
 });
 
