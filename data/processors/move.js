@@ -340,7 +340,7 @@ function setRetreat(move) {
       retreat = retreats[5]
   }
 
-  move.retreat = retreat
+  move.retreat = retreat + (move.retreatBonus || 0)
 }
 
 function setCapacity(move) {

@@ -151,7 +151,7 @@ export default {
     secondary: null,
     target: "self",
     type: "Normal",
-    retreat: 6,
+    retreatBonus: 4,
     flags: {},
     effects: {
       self: [{
@@ -173,7 +173,7 @@ export default {
     secondary: null,
     target: "self",
     type: "Normal",
-    retreat: 12,
+    retreatBonus: 11,
     flags: {},
     onBeforeMove(attacker) {
       attacker.toSageMode(true)
@@ -261,7 +261,7 @@ export default {
       }],
       target: []
     },
-    retreat: 5,
+    retreatBonus: 3,
   },
   shadowclone: {
     num: 1000001,
@@ -357,7 +357,7 @@ export default {
     type: "Normal",
     zMove: { boost: { atk: 1 } },
     contestType: "Cool",
-    retreat: 3.5
+    retreatBonus: 2
   },
   takeweapon: {
     num: 100015,
@@ -372,7 +372,7 @@ export default {
     target: "normal",
     type: "Normal",
     isOffensive: false,
-    retreat: 1.5,
+    retreatBonus: 0.5,
     effects: {
       self: [{
         name: "stall",
@@ -1020,7 +1020,8 @@ export default {
       protect: 1,
       mirror: 1,
       metronome: 1,
-      contact: 1
+      contact: 1,
+      shield: 1,
     },
     secondary: null,
     target: "normal",
@@ -1111,7 +1112,7 @@ export default {
     target: "normal",
     type: "Steel",
     contestType: "Tough",
-    retreat: 4.5
+    retreatBonus: 2
   },
   jungletrap: {
     num: 100033,
@@ -1452,7 +1453,7 @@ export default {
     secondary: null,
     target: "self",
     type: "Dragon",
-    retreat: 4,
+    retreatBonus: 3,
     flags: {},
     effects: {
       self: [{
@@ -1555,7 +1556,7 @@ export default {
     type: "Fairy",
     flags: { contact: 1 },
     healTarget: [1, 7],
-    retreat: 1
+    retreatBonus: 0.5
   },
   healingcircle: {
     capacity: 3,
@@ -1754,7 +1755,7 @@ export default {
       spe: -15
     }
   },
-    dualbladefoeSide: {
+  dualbladefoeSide: {
     num: 100061,
     accuracy: 100,
     basePower: 40,
@@ -1814,7 +1815,12 @@ export default {
     tokenChanges: {
       spe: -15
     },
-    
+    retreatBonus: 1,
+    onAfterMove(pokemon, target, move, targetMove) {
+      console.log(Math.round(targetMove.retreat * .5));
+
+      target.state.retreat -= Math.round(targetMove.retreat * .5)
+    }
   }
 }
 

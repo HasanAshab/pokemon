@@ -568,12 +568,12 @@ class BaseBattle extends EventEmitter {
     }
 
     if (move1.category === "Status" || d2 || instD2) {
-      this.pokemon1.state.emit("hitted-move", move1)
-      this.pokemon2.state.emit("hittee-move", move1)
+      this.pokemon1.state.emit("hitted-move", move1, move2)
+      this.pokemon2.state.emit("hittee-move", move1, move2)
     }
     if (move2.category === "Status" || d1 || instD1) {
-      this.pokemon2.state.emit("hitted-move", move2)
-      this.pokemon1.state.emit("hittee-move", move2)
+      this.pokemon2.state.emit("hitted-move", move2, move1)
+      this.pokemon1.state.emit("hittee-move", move2, move1)
     }
 
     // if ((move1.flags.contact && (d2 || instD2)) || (move2.flags.contact && (d1 || instD1))) {
@@ -974,10 +974,10 @@ class BattleState extends EventEmitter {
       move.finally?.(this.pokemon, opponent, move)
     })
 
-    this.on("hitted-move", move => {
+    this.on("hitted-move", (move, opponentMove) => {
       const opponent = this.battle.opponentOf(this.pokemon)
       move.onHit?.(this.pokemon, opponent)
-      move.onAfterMove(this.pokemon, opponent, move)
+      move.onAfterMove(this.pokemon, opponent, move, opponentMove)
     })
 
     this.on("move-added", move => {
