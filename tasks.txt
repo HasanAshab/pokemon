@@ -1,5 +1,4 @@
 * Tasks
-heavystaff
 Update moves weight (tokenChanges)
 Auto soldier generation by might
 

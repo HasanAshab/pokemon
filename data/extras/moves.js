@@ -1,6 +1,7 @@
 import { canDodge, modObj, sumObj } from "../../assets/js/utils/helpers.js"
 import typeChart from "../default/types.js"
 import entities from "../default/entities.js"
+import move from "../processors/move.js"
 
 
 function FieldAddingMove(type, name) {
@@ -1816,10 +1817,25 @@ export default {
       spe: -15
     },
     retreatBonus: 1,
-    onAfterMove(pokemon, target, move, targetMove) {
-      console.log(Math.round(targetMove.retreat * .5));
+    onTryMove(pokemon, target) {
+      const expiresAt = pokemon.state.battle.turnNo + 1
+      const listenerName = `pokemon::${pokemon.name}::move::heavystaff::retreat-absorb`
+      target.state.on("contacted", () => {
+        const moveId = target.state._data.movesHistory[0]
+        const move = target.state.moves.find(m => m.id === moveId)        
+        
+        target.state.retreat -= Math.round(move.retreat * .5)
+        const weaponDropChance = move.flags.weapon ? 15 : 0
 
-      target.state.retreat -= Math.round(targetMove.retreat * .5)
+        if (Math.random() * 100 < weaponDropChance) {
+          target.state.removeMove(moveId)
+        }
+
+        if (pokemon.state.battle.turnNo >= expiresAt) {
+          target.state.removeListener("contacted", listenerName)
+        }
+      }, listenerName)
+      return true
     }
   }
 }

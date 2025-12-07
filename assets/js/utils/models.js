@@ -408,10 +408,9 @@ export class Move {
     }
   
     get isNeverFails() {
-        if ('onTryMove' in this || 'onTryImmunity' in this)
-            return false
         return this.accuracy === true || this.category !== "Status"
     }
+
     get hits() {
         return 'hit' in this ? this.hit.hitCount() : 1
     }
@@ -493,12 +492,11 @@ export class Move {
     }
 
     _try(user, target, move) {
-        if (this.isNeverFails)
-          return true        
-
-        if (this.onTryMove && this.onTryMove(user, target, move) === null)
-          return false
-          
+        if (this.isNeverFails) {
+          if (this.onTryMove && this.onTryMove(user, target, move) === null)
+            return false
+          return true
+        }
         if (this.onTryImmunity?.(user, target) === true)
           return false
         
