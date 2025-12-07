@@ -14,8 +14,6 @@ const name = localStorage.getItem('$current_kingdom') || (() => {
   const params = new URLSearchParams(window.location.search);
   return params.get("name");
 })();
-const barrackTitle = document.getElementById("barrackTitle");
-barrackTitle.textContent = name ? `${name}'s Barrack` : "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
@@ -34,6 +32,46 @@ if (!kingdoms[name].barrack)
     }
   };
 const kingdom = kingdoms[name];
+
+// Data migration function: convert old salary system to percentage-based
+function migrateToPercentageSalaries() {
+  const kingdomPCI = kingdom.pci || 50;
+  let migrationNeeded = false;
+
+  // Migrate soldiers
+  ['day', 'night', 'emergency'].forEach(shift => {
+    if (kingdom.barrack.soldiers[shift]) {
+      kingdom.barrack.soldiers[shift].forEach(soldier => {
+        if (soldier.ivSalary !== undefined && soldier.ivSalaryPercent === undefined) {
+          soldier.ivSalaryPercent = kingdomPCI > 0 ? Math.round((soldier.ivSalary / kingdomPCI) * 100) : 70;
+          delete soldier.ivSalary;
+          migrationNeeded = true;
+        }
+      });
+    }
+  });
+
+  // Migrate police
+  ['day', 'night'].forEach(shift => {
+    if (kingdom.barrack.polices[shift]) {
+      kingdom.barrack.polices[shift].forEach(police => {
+        if (police.ivSalary !== undefined && police.ivSalaryPercent === undefined) {
+          police.ivSalaryPercent = kingdomPCI > 0 ? Math.round((police.ivSalary / kingdomPCI) * 100) : 80;
+          delete police.ivSalary;
+          migrationNeeded = true;
+        }
+      });
+    }
+  });
+
+  if (migrationNeeded) {
+    save();
+    console.log('Migrated salary data from fixed amounts to percentages');
+  }
+}
+
+// Run migration on page load
+migrateToPercentageSalaries();
 
 const academyLevelEl = document.getElementById("academyLevel");
 const academyCostEl = document.getElementById("academyCost");
@@ -63,7 +101,7 @@ document.getElementById("addDayPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.day.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
-    ivSalary: 0,
+    ivSalaryPercent: 80, // Default 80% of PCI for police
   });
   save();
   renderForceSection("day","police");
@@ -73,7 +111,7 @@ document.getElementById("addNightPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.night.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
-    ivSalary: 0,
+    ivSalaryPercent: 85, // Default 85% of PCI for night police (higher pay)
   });
   save();
   renderForceSection("night","police");
@@ -231,8 +269,11 @@ shiftsDataWrapper.innerHTML = "";
 };
 
 function calcTypeSalary(forces) {
+  const kingdomPCI = kingdom.pci || 50; // Default PCI if not set
   return forces.reduce((total, force) => {
-    return total + (force.quantity || 0) * (force.ivSalary || 0);
+    const salaryPercentage = force.ivSalaryPercent || 0;
+    const actualSalary = (kingdomPCI * salaryPercentage) / 100;
+    return total + (force.quantity || 0) * actualSalary;
   }, 0);
 }
 
@@ -275,19 +316,34 @@ function renderForceSection(type,forceType) {
         showImbalanceData();
     };
 
-    const ivSalaryInput = document.createElement("input");
-    ivSalaryInput.type = "number";
-    ivSalaryInput.value = force.ivSalary;
-    ivSalaryInput.onblur = () => {
-      force.ivSalary = parseFloat(ivSalaryInput.value) || 0;
+    // Data migration: convert old ivSalary to ivSalaryPercent if needed
+    if (force.ivSalary !== undefined && force.ivSalaryPercent === undefined) {
+      const kingdomPCI = kingdom.pci || 50;
+      force.ivSalaryPercent = kingdomPCI > 0 ? Math.round((force.ivSalary / kingdomPCI) * 100) : 70;
+      delete force.ivSalary; // Remove old property
+      save();
+    }
+
+    const ivSalaryPercentInput = document.createElement("input");
+    ivSalaryPercentInput.type = "number";
+    ivSalaryPercentInput.min = "0";
+    ivSalaryPercentInput.max = "500";
+    ivSalaryPercentInput.step = "5";
+    ivSalaryPercentInput.value = force.ivSalaryPercent || 70;
+    ivSalaryPercentInput.onblur = () => {
+      force.ivSalaryPercent = parseFloat(ivSalaryPercentInput.value) || 70;
       save();
       renderAllForces(forceType);
     };
 
-    const totalSalary = force.quantity * force.ivSalary;
+    const kingdomPCI = kingdom.pci || 50;
+    const actualSalaryPerPerson = (kingdomPCI * (force.ivSalaryPercent || 70)) / 100;
+    const totalSalary = force.quantity * actualSalaryPerPerson;
     const totalSalaryEl = document.createElement("div");
     totalSalaryEl.className = "total-salary";
-    totalSalaryEl.textContent = `Total Salary: ${totalSalary.toLocaleString()}$`;
+    totalSalaryEl.innerHTML = `
+      <div>${actualSalaryPerPerson.toFixed()}$ <br>Total: ${totalSalary.toLocaleString()}$</div>
+    `;
 
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
@@ -300,7 +356,7 @@ function renderForceSection(type,forceType) {
     div.appendChild(imageSelect);
     div.appendChild(createField("Level:", levelInput,forceType));
     div.appendChild(createField("Quantity:", quantityInput,forceType));
-    div.appendChild(createField("Salary/person:", ivSalaryInput,forceType));
+    div.appendChild(createField("Salary %:", ivSalaryPercentInput,forceType));
     div.appendChild(totalSalaryEl);
     div.appendChild(delBtn);
 
@@ -356,7 +412,7 @@ document.getElementById("addDaySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.day.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
-    ivSalary: 0,
+    ivSalaryPercent: 70, // Default 70% of PCI for day soldiers
   });
   save();
   renderForceSection("day","soldier");
@@ -366,7 +422,7 @@ document.getElementById("addNightSoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.night.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
-    ivSalary: 0,
+    ivSalaryPercent: 75, // Default 75% of PCI for night soldiers (higher pay)
   });
   save();
   renderForceSection("night","soldier");
@@ -376,7 +432,7 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.emergency.push({
     image: { id: "student", xp: 0 },
     quantity: 0,
-    ivSalary: 0,
+    ivSalaryPercent: 90, // Default 90% of PCI for emergency soldiers (highest pay)
   });
   save();
   renderForceSection("emergency","soldier");
