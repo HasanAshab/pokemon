@@ -276,6 +276,31 @@ globalThis.redirectToFriendlyMatch = function () {
   window.location = `friendly_match.html`;
 };
 
+globalThis.toggleBattleMenu = function (event) {
+  event.stopPropagation();
+  const menuContainer = event.currentTarget.parentElement;
+  const isActive = menuContainer.classList.contains('active');
+  
+  // Close all other dropdowns first
+  document.querySelectorAll('.battle-menu-container.active').forEach(container => {
+    container.classList.remove('active');
+  });
+  
+  // Toggle current dropdown
+  if (!isActive) {
+    menuContainer.classList.add('active');
+  }
+};
+
+// Close battle menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.battle-menu-container')) {
+    document.querySelectorAll('.battle-menu-container.active').forEach(container => {
+      container.classList.remove('active');
+    });
+  }
+});
+
 
 function loadTotalCP() {
   const pokemonsMeta = getPokemonsMeta();

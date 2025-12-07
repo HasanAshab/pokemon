@@ -30,17 +30,16 @@
     <!-- Header -->
     <div class="header">
      <span>Pokedex</span>  
-      <button class="fight-btn" onclick="openEnemyChooseInterface()">
-<img src="./assets/svg/sword.svg">
-</button>  
-     <button class="fight-btn" onclick="redirectToEnemyPage()">
-     New
- </button>
-     <button class="fight-btn" onclick="redirectToFriendlyMatch()">
-     Friendly
- </button>
-
-    
+     <div class="battle-menu-container">
+       <button class="fight-btn" onclick="toggleBattleMenu(event)">
+         <img src="./assets/svg/sword.svg">
+       </button>
+       <div class="battle-dropdown-menu">
+         <button onclick="openEnemyChooseInterface()">Legacy</button>
+         <button onclick="redirectToEnemyPage()">New</button>
+         <button onclick="redirectToFriendlyMatch()">Friendly</button>
+       </div>
+     </div>
     </div>
 
     <!-- Info -->

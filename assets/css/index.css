@@ -29,6 +29,72 @@
   width: 30px;
   height: 30px;
 }
+
+/* Battle Menu Dropdown */
+.battle-menu-container {
+  position: relative;
+}
+
+.battle-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 120px;
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.battle-menu-container.active .battle-dropdown-menu {
+  display: block;
+}
+
+.battle-dropdown-menu button {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  color: #333;
+}
+
+.battle-dropdown-menu button:hover {
+  background-color: #f5f5f5;
+}
+
+.battle-dropdown-menu button:first-child {
+  color: #666;
+}
+
+.battle-dropdown-menu button:nth-child(2) {
+  color: #2196F3;
+}
+
+.battle-dropdown-menu button:last-child {
+  color: #4CAF50;
+}
+
+.battle-dropdown-menu button:first-child:hover {
+  background-color: #f0f0f0;
+}
+
+.battle-dropdown-menu button:nth-child(2):hover {
+  background-color: #e3f2fd;
+}
+
+.battle-dropdown-menu button:last-child:hover {
+  background-color: #e8f5e8;
+}
 .info {
     margin: 20px 0;
 }
