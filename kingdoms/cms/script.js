@@ -173,7 +173,7 @@ function updateDisplay() {
   const density = parseFloat(densityInput.value) || 0;
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
-  const population = area * density;
+  const population = Math.floor(area * density);
   const populationGrowth = getPopulationGrowth(kingdom)
   const birthCount = calculateBirthCount(kingdom)
   const totalDeathCount = getTotalDeathCount(kingdom)

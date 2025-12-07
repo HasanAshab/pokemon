@@ -49,6 +49,14 @@ Object.keys(kingdoms).forEach((name) => {
   const dropdownMenu = document.createElement("div");
   dropdownMenu.className = "dropdown-menu";
 
+  // Create rename button
+  const renameBtn = document.createElement("button");
+  renameBtn.textContent = "Rename";
+  renameBtn.onclick = (e) => {
+    e.stopPropagation();
+    renameKingdom(name);
+  };
+
   // Create duplicate button
   const duplicateBtn = document.createElement("button");
   duplicateBtn.textContent = "Duplicate";
@@ -71,6 +79,7 @@ Object.keys(kingdoms).forEach((name) => {
   };
 
   // Assemble the menu
+  dropdownMenu.appendChild(renameBtn);
   dropdownMenu.appendChild(duplicateBtn);
   dropdownMenu.appendChild(removeBtn);
   menuContainer.appendChild(moreBtn);
@@ -125,6 +134,58 @@ document.getElementById("addKingdomBtn").onclick = () => {
   location.reload();
 };
 
+// Kingdom Rename Function
+function renameKingdom(oldName) {
+  const kingdom = kingdoms[oldName];
+  
+  if (!kingdom) {
+    alert("Kingdom not found!");
+    return;
+  }
+  
+  // Prompt for new name
+  const newName = prompt(`Enter new name for "${oldName}":`, oldName);
+  
+  if (!newName) {
+    return; // User cancelled
+  }
+  
+  if (newName === oldName) {
+    return; // No change needed
+  }
+  
+  // Check if new name already exists
+  if (kingdoms[newName]) {
+    alert(`Kingdom "${newName}" already exists. Please choose a different name.`);
+    return;
+  }
+  
+  // Validate name (basic validation)
+  if (newName.trim().length === 0) {
+    alert("Kingdom name cannot be empty.");
+    return;
+  }
+  
+  if (newName.length > 50) {
+    alert("Kingdom name is too long. Please use 50 characters or less.");
+    return;
+  }
+  
+  // Update the kingdom data
+  const updatedKingdom = { ...kingdom };
+  updatedKingdom.id = newName;
+  
+  // Remove old kingdom and add with new name
+  delete kingdoms[oldName];
+  kingdoms[newName] = updatedKingdom;
+  
+  // Save to localStorage
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  
+  // Reload the page to reflect changes
+  location.reload();
+}
+
 // Kingdom Duplication Function
 function duplicateKingdom(originalName) {
   const originalKingdom = kingdoms[originalName];
@@ -150,23 +211,17 @@ function duplicateKingdom(originalName) {
   // Update the ID to match the new name
   duplicateKingdom.id = duplicateName;
   
-  // Reset disaster state to a new random state
-  duplicateKingdom.disaster = {
-    current: {},
-    geoState: generateRandomGeoState()
-  };
+  // // Add some variation to make it interesting
+  // // Slightly randomize some stats (±10%)
+  // const variation = 0.1;
+  // duplicateKingdom.landArea = Math.floor(duplicateKingdom.landArea * (1 + (Math.random() - 0.5) * variation));
+  // duplicateKingdom.density = Math.floor(duplicateKingdom.density * (1 + (Math.random() - 0.5) * variation));
+  // duplicateKingdom.pci = Math.floor(duplicateKingdom.pci * (1 + (Math.random() - 0.5) * variation));
   
-  // Add some variation to make it interesting
-  // Slightly randomize some stats (±10%)
-  const variation = 0.1;
-  duplicateKingdom.landArea = Math.floor(duplicateKingdom.landArea * (1 + (Math.random() - 0.5) * variation));
-  duplicateKingdom.density = Math.floor(duplicateKingdom.density * (1 + (Math.random() - 0.5) * variation));
-  duplicateKingdom.pci = Math.floor(duplicateKingdom.pci * (1 + (Math.random() - 0.5) * variation));
-  
-  // Ensure minimum values
-  duplicateKingdom.landArea = Math.max(500, duplicateKingdom.landArea);
-  duplicateKingdom.density = Math.max(50, duplicateKingdom.density);
-  duplicateKingdom.pci = Math.max(25, duplicateKingdom.pci);
+  // // Ensure minimum values
+  // duplicateKingdom.landArea = Math.max(500, duplicateKingdom.landArea);
+  // duplicateKingdom.density = Math.max(50, duplicateKingdom.density);
+  // duplicateKingdom.pci = Math.max(25, duplicateKingdom.pci);
   
   // Add the duplicate to the kingdoms
   kingdoms[duplicateName] = duplicateKingdom;

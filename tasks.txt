@@ -9,7 +9,6 @@ abilities multiple opponent event system
 Bot shinobis hit a move in act of his team
 
 * Bottle neck
-kingdom clone
 
 * Pending
 ancient mode with selfish scar
