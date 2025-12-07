@@ -274,7 +274,8 @@ export function calcSoldiersSalary(kingdom, type) {
 
   if (type) {
     return kingdom.barrack.soldiers[type].reduce((total, soldier) => {
-      const soldierTotal = (soldier.quantity || 0) * (soldier.ivSalary || 0);
+      const ivSalary = kingdom.pci * (soldier.ivSalaryPercent || 0) / 100;
+      const soldierTotal = (soldier.quantity || 0) * (ivSalary || 0);
       return total + soldierTotal;
     }, 0);
   }
@@ -290,7 +291,8 @@ export function calcPoliceSalary(kingdom, type) {
 
   if (type) {
     return kingdom.barrack.polices[type].reduce((total, soldier) => {
-      const soldierTotal = (soldier.quantity || 0) * (soldier.ivSalary || 0);
+      const ivSalary = kingdom.pci * (soldier.ivSalaryPercent || 0) / 100;
+      const soldierTotal = (soldier.quantity || 0) * (ivSalary || 0);
       return total + soldierTotal;
     }, 0);
   }
