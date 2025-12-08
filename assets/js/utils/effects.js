@@ -835,20 +835,13 @@ class RechargingEffect extends ExpirableEffect {
 class GrabbedEffect extends ExpirableEffect {
     static effectName = "grabbed"
     lifetime = { turns: 1 }
-    status = { canMove: false }
 
-    onScene() {
-        this._grabberOldHp = this.source.hp
+    canUseMove() {
+        return false
     }
 
-    onSceneEnd() {
-      const proxyDamage = this._grabberOldHp - this.source.hp
-      console.log(proxyDamage);
-      
-    }
-
-    meta() {
-        return `${this.source.name}`
+    displayMeta() {
+        return `(${this.source.name})`
     }
 }
 
