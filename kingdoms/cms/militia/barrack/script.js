@@ -358,7 +358,7 @@ function renderForceSection(type,forceType) {
           <span class="war-salary-amount">${actualSalaryPerPerson.toFixed()}$ ⚔️</span>
           <br>
           Total: <span class="base-salary">${baseTotalSalary.toLocaleString()}$</span>
-          <span class="war-salary-amount">${totalSalary.toLocaleString()}$ ⚔️</span>
+          <span class="war-salary-amount">${Math.round(totalSalary).toLocaleString()}$ ⚔️</span>
         </div>
       `;
     } else {
@@ -433,7 +433,7 @@ function renderAllForces(forceType) {
     totalSalaryEl.innerHTML = `
       Total Force Salary: 
       <span class="base-salary">${baseTotalSalary.toLocaleString()}$</span>
-      <span class="war-salary-amount">${totalSalary.toLocaleString()}$ ⚔️</span>
+      <span class="war-salary-amount">${Math.round(totalSalary).toLocaleString()}$ ⚔️</span>
     `;
   } else {
     totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
