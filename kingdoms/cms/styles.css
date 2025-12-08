@@ -163,3 +163,81 @@ label {
   font-style: italic;
   margin: 0;
 }
+
+/* Closer Kingdoms Styles */
+.closer-kingdoms-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.closer-kingdom-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  transition: background-color 0.2s;
+}
+
+.closer-kingdom-item:hover {
+  background-color: #f5f5f5;
+}
+
+.closer-kingdom-item input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.closer-kingdom-label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.current-closer-kingdoms {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  border: 1px solid #b3d9ff;
+}
+
+.current-connections h4 {
+  margin: 0 0 0.8rem 0;
+  color: #1976d2;
+  font-size: 1rem;
+}
+
+.connections-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.connection-tag {
+  background-color: #2196f3;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.connection-info {
+  margin: 0;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.no-kingdoms, .no-connections {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin: 0;
+}

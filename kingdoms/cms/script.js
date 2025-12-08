@@ -74,6 +74,11 @@ if (!kingdom.disaster.geoState) {
   kingdom.disaster.geoState = {};
 }
 
+// Ensure closerKingdoms array exists
+if (!kingdom.closerKingdoms) {
+  kingdom.closerKingdoms = [];
+}
+
 landAreaInput.value = kingdom.landArea;
 densityInput.value = kingdom.density;
 pciInput.value = kingdom.pci;
@@ -155,6 +160,82 @@ function updateDisasterDescriptions() {
       descriptionsContainer.appendChild(descriptionItem);
     }
   });
+}
+
+function loadCloserKingdomsCheckboxes() {
+  const closerKingdomsContainer = document.getElementById("closerKingdomsCheckboxes");
+  const currentCloserKingdomsContainer = document.getElementById("currentCloserKingdoms");
+  
+  closerKingdomsContainer.innerHTML = "";
+  currentCloserKingdomsContainer.innerHTML = "";
+
+  // Get all other kingdoms (excluding current one)
+  const otherKingdoms = Object.keys(kingdoms).filter(kingdomName => kingdomName !== name);
+
+  if (otherKingdoms.length === 0) {
+    closerKingdomsContainer.innerHTML = "<p class='no-kingdoms'>No other kingdoms available</p>";
+    return;
+  }
+
+  // Create checkboxes for each kingdom
+  otherKingdoms.forEach(kingdomName => {
+    const checkboxWrapper = document.createElement("div");
+    checkboxWrapper.className = "closer-kingdom-item";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `closer-${kingdomName.replace(/\s+/g, '-').toLowerCase()}`;
+    checkbox.value = kingdomName;
+    checkbox.checked = kingdom.closerKingdoms.includes(kingdomName);
+
+    const label = document.createElement("label");
+    label.htmlFor = checkbox.id;
+    label.textContent = kingdomName;
+    label.className = "closer-kingdom-label";
+
+    checkbox.addEventListener("change", (e) => {
+      if (e.target.checked) {
+        if (!kingdom.closerKingdoms.includes(kingdomName)) {
+          kingdom.closerKingdoms.push(kingdomName);
+        }
+      } else {
+        kingdom.closerKingdoms = kingdom.closerKingdoms.filter(k => k !== kingdomName);
+      }
+      updateCurrentCloserKingdomsDisplay();
+    });
+
+    checkboxWrapper.appendChild(checkbox);
+    checkboxWrapper.appendChild(label);
+    closerKingdomsContainer.appendChild(checkboxWrapper);
+  });
+
+  updateCurrentCloserKingdomsDisplay();
+}
+
+function updateCurrentCloserKingdomsDisplay() {
+  const currentCloserKingdomsContainer = document.getElementById("currentCloserKingdoms");
+  
+  if (kingdom.closerKingdoms.length === 0) {
+    currentCloserKingdomsContainer.innerHTML = "<p class='no-connections'>No closer kingdoms selected</p>";
+    return;
+  }
+
+  const connectionsDiv = document.createElement("div");
+  connectionsDiv.className = "current-connections";
+  connectionsDiv.innerHTML = `
+    <h4>Current Connections:</h4>
+    <div class="connections-list">
+      ${kingdom.closerKingdoms.map(kingdomName => 
+        `<span class="connection-tag">🔗 ${kingdomName}</span>`
+      ).join('')}
+    </div>
+    <p class="connection-info">
+      <small>Disasters can spread between connected kingdoms with 50% chance and 60% power.</small>
+    </p>
+  `;
+  
+  currentCloserKingdomsContainer.innerHTML = '';
+  currentCloserKingdomsContainer.appendChild(connectionsDiv);
 }
 
 function loadFoodConsumptionTier() {
@@ -261,6 +342,9 @@ saveBtn.addEventListener("click", () => {
   kingdom.density = density;
   kingdom.pci = pci;
   kingdom.taxRate = taxRate;
+  
+  // Update the kingdoms object
+  kingdoms[name] = kingdom;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   alert("Kingdom saved!");
 });
@@ -299,4 +383,5 @@ document.querySelectorAll(".info-card").forEach((card) => {
 });
 
 loadDisasterCheckboxes();
+loadCloserKingdomsCheckboxes();
 updateDisplay();

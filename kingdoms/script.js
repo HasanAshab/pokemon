@@ -144,6 +144,7 @@ document.getElementById("addKingdomBtn").onclick = () => {
     buildings: [],
     storage: {},
     underWar: false,
+    closerKingdoms: [],
     disaster: {
       current: {},
       geoState: generateRandomGeoState()
@@ -157,51 +158,51 @@ document.getElementById("addKingdomBtn").onclick = () => {
 // Kingdom Rename Function
 function renameKingdom(oldName) {
   const kingdom = kingdoms[oldName];
-  
+
   if (!kingdom) {
     alert("Kingdom not found!");
     return;
   }
-  
+
   // Prompt for new name
   const newName = prompt(`Enter new name for "${oldName}":`, oldName);
-  
+
   if (!newName) {
     return; // User cancelled
   }
-  
+
   if (newName === oldName) {
     return; // No change needed
   }
-  
+
   // Check if new name already exists
   if (kingdoms[newName]) {
     alert(`Kingdom "${newName}" already exists. Please choose a different name.`);
     return;
   }
-  
+
   // Validate name (basic validation)
   if (newName.trim().length === 0) {
     alert("Kingdom name cannot be empty.");
     return;
   }
-  
+
   if (newName.length > 50) {
     alert("Kingdom name is too long. Please use 50 characters or less.");
     return;
   }
-  
+
   // Update the kingdom data
   const updatedKingdom = { ...kingdom };
   updatedKingdom.id = newName;
-  
+
   // Remove old kingdom and add with new name
   delete kingdoms[oldName];
   kingdoms[newName] = updatedKingdom;
-  
+
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
-  
+
   // Reload the page to reflect changes
   location.reload();
 }
@@ -209,18 +210,18 @@ function renameKingdom(oldName) {
 // Kingdom War Toggle Function
 function toggleWarState(kingdomName) {
   const kingdom = kingdoms[kingdomName];
-  
+
   if (!kingdom) {
     alert("Kingdom not found!");
     return;
   }
-  
+
   // Toggle war state
   kingdom.underWar = !kingdom.underWar;
-  
+
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
-  
+
   // Reload the page to reflect changes
   location.reload();
 }
@@ -228,44 +229,47 @@ function toggleWarState(kingdomName) {
 // Kingdom Duplication Function
 function duplicateKingdom(originalName) {
   const originalKingdom = kingdoms[originalName];
-  
+
   if (!originalKingdom) {
     alert("Kingdom not found!");
     return;
   }
-  
+
   // Create a new name for the duplicate
   let duplicateName = originalName + "_copy";
   let counter = 1;
-  
+
   // Ensure unique name
   while (kingdoms[duplicateName]) {
     duplicateName = originalName + "_copy" + counter;
     counter++;
   }
-  
+
   // Create a deep copy of the original kingdom
   const duplicateKingdom = JSON.parse(JSON.stringify(originalKingdom));
-  
+
   // Update the ID to match the new name
   duplicateKingdom.id = duplicateName;
-  
+
+  // Reset closerKingdoms for the duplicate (they should be set manually)
+  duplicateKingdom.closerKingdoms = [];
+
   // // Add some variation to make it interesting
   // // Slightly randomize some stats (±10%)
   // const variation = 0.1;
   // duplicateKingdom.landArea = Math.floor(duplicateKingdom.landArea * (1 + (Math.random() - 0.5) * variation));
   // duplicateKingdom.density = Math.floor(duplicateKingdom.density * (1 + (Math.random() - 0.5) * variation));
   // duplicateKingdom.pci = Math.floor(duplicateKingdom.pci * (1 + (Math.random() - 0.5) * variation));
-  
+
   // // Ensure minimum values
   // duplicateKingdom.landArea = Math.max(500, duplicateKingdom.landArea);
   // duplicateKingdom.density = Math.max(50, duplicateKingdom.density);
   // duplicateKingdom.pci = Math.max(25, duplicateKingdom.pci);
-  
+
   // Add the duplicate to the kingdoms
   kingdoms[duplicateName] = duplicateKingdom;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
-  
+
   // Reload the page to show the new kingdom
   location.reload();
 }
@@ -274,19 +278,19 @@ function duplicateKingdom(originalName) {
 function generateRandomGeoState() {
   const states = ['normal', 'prone', 'immune'];
   const geoState = {};
-  
+
   Object.keys(DISASTERS).forEach(disaster => {
     geoState[disaster] = states[Math.floor(Math.random() * states.length)];
   });
-  
+
   return geoState;
 }
 
 function getDisasterChance(disaster, geoState, isRelated = false) {
   const state = geoState[disaster];
-  
+
   if (state === 'immune') return 0;
-  
+
   if (isRelated) {
     return state === 'prone' ? 15 : 7; // related prone: 15%, related normal: 7%
   } else {
@@ -315,66 +319,131 @@ function simulateDisasters(kingdomName) {
       geoState: generateRandomGeoState()
     };
   }
-  
+
   // Clear current disasters
   kingdom.disaster.current = {};
-  
+
   // Shuffle disasters for random order
   const disasterNames = Object.keys(DISASTERS);
   const shuffledDisasters = [...disasterNames].sort(() => Math.random() - 0.5);
-  
+
   let primaryDisaster = null;
   let primaryPower = 0;
-  
+
   // Loop through shuffled disasters to find if one occurs
   for (const disaster of shuffledDisasters) {
     const chance = getDisasterChance(disaster, kingdom.disaster.geoState);
     const roll = Math.random() * 100;
-    
+
     if (roll < chance) {
       primaryDisaster = disaster;
       primaryPower = generateDisasterPower();
-      
+
       // Increase power if kingdom is prone to this disaster
       if (kingdom.disaster.geoState[disaster] === 'prone') {
         primaryPower = Math.min(10, primaryPower + 2);
       }
-      
+
       kingdom.disaster.current[disaster] = primaryPower;
       break; // Stop after first disaster occurs
     }
   }
-  
+
   // If a primary disaster occurred, check for related disasters
   if (primaryDisaster) {
     const relatedDisasters = DISASTERS[primaryDisaster].related;
-    
+
     for (const relatedDisaster of relatedDisasters) {
       const chance = getDisasterChance(relatedDisaster, kingdom.disaster.geoState, true);
       const roll = Math.random() * 100;
-      
+
       if (roll < chance) {
         const relatedPower = Math.max(1, Math.round(primaryPower / 2));
         kingdom.disaster.current[relatedDisaster] = relatedPower;
       }
     }
   }
-  
+
+  // Propagate disasters to nearby kingdoms
+  if (primaryDisaster) {
+    propagateDisastersToNearbyKingdoms(kingdomName, primaryDisaster, primaryPower);
+  }
+
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+}
+
+function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power) {
+  const kingdom = kingdoms[sourceKingdom];
+
+  // Check if kingdom has closer kingdoms defined
+  if (!kingdom.closerKingdoms || kingdom.closerKingdoms.length === 0) {
+    return;
+  }
+
+  // Propagate to each closer kingdom
+  kingdom.closerKingdoms.forEach(nearbyKingdomName => {
+    if (!kingdoms[nearbyKingdomName]) return; // Skip if kingdom doesn't exist
+
+    const nearbyKingdom = kingdoms[nearbyKingdomName];
+
+    // Initialize disaster data if not present
+    if (!nearbyKingdom.disaster) {
+      nearbyKingdom.disaster = {
+        current: {},
+        geoState: generateRandomGeoState()
+      };
+    }
+
+    // Skip if nearby kingdom is immune to this disaster
+    if (nearbyKingdom.disaster.geoState[disaster] === 'immune') {
+      return;
+    }
+
+    // 50% chance for disaster to propagate
+    const propagationChance = 50;
+    const roll = Math.random() * 100;
+
+    if (roll < propagationChance) {
+      // Calculate reduced power (60% of original, rounded)
+      const reducedPower = Math.max(1, Math.round(power * 0.6));
+
+      // Set the disaster in nearby kingdom (only if it doesn't already have a stronger version)
+      if (!nearbyKingdom.disaster.current[disaster] || nearbyKingdom.disaster.current[disaster] < reducedPower) {
+        nearbyKingdom.disaster.current[disaster] = reducedPower;
+      }
+
+      // Check for related disasters in the nearby kingdom
+      const relatedDisasters = DISASTERS[disaster].related;
+
+      for (const relatedDisaster of relatedDisasters) {
+        const relatedChance = getDisasterChance(relatedDisaster, nearbyKingdom.disaster.geoState, true);
+        const relatedRoll = Math.random() * 100;
+
+        if (relatedRoll < relatedChance) {
+          const relatedPower = Math.max(1, Math.round(reducedPower / 2));
+
+          // Set related disaster only if it doesn't already exist or is weaker
+          if (!nearbyKingdom.disaster.current[relatedDisaster] || nearbyKingdom.disaster.current[relatedDisaster] < relatedPower) {
+            nearbyKingdom.disaster.current[relatedDisaster] = relatedPower;
+          }
+        }
+      }
+    }
+  });
 }
 
 function displayDisasterReport() {
   const reportContent = document.getElementById('disasterContent');
   reportContent.innerHTML = '';
-  
+
   const kingdomNames = Object.keys(kingdoms);
-  
+
   if (kingdomNames.length === 0) {
     reportContent.innerHTML = '<p>No kingdoms found. Create some kingdoms first!</p>';
     return;
   }
-  
+
   // Display current disaster state (persistent)
   kingdomNames.forEach(name => {
     const kingdom = kingdoms[name];
@@ -384,15 +453,15 @@ function displayDisasterReport() {
     kingdomDiv.style.border = '1px solid #ccc';
     kingdomDiv.style.borderRadius = '5px';
     kingdomDiv.style.backgroundColor = '#f9f9f9';
-    
+
     const kingdomTitle = document.createElement('h3');
     kingdomTitle.textContent = `🏰 ${name}`;
     kingdomTitle.style.margin = '0 0 10px 0';
     kingdomTitle.style.color = '#333';
     kingdomDiv.appendChild(kingdomTitle);
-    
+
     const currentDisasters = kingdom.disaster.current;
-    
+
     if (Object.keys(currentDisasters).length === 0) {
       const noDisaster = document.createElement('p');
       noDisaster.textContent = '✅ No disasters currently affecting this kingdom';
@@ -403,10 +472,10 @@ function displayDisasterReport() {
       Object.entries(currentDisasters).forEach(([disaster, power]) => {
         const disasterDiv = document.createElement('div');
         disasterDiv.style.marginBottom = '5px';
-        
+
         const powerColor = power >= 7 ? '#dc3545' : power >= 4 ? '#fd7e14' : '#ffc107';
         const powerEmoji = power >= 7 ? '🔴' : power >= 4 ? '🟠' : '🟡';
-        
+
         disasterDiv.innerHTML = `
           ${powerEmoji} <strong>${disaster}</strong> - Power: ${power}/10
           <br><small style="color: #666;">${DISASTERS[disaster].description}</small>
@@ -415,22 +484,32 @@ function displayDisasterReport() {
         kingdomDiv.appendChild(disasterDiv);
       });
     }
-    
+
+    // Show closer kingdoms info
+    if (kingdom.closerKingdoms && kingdom.closerKingdoms.length > 0) {
+      const closerKingdomsDiv = document.createElement('div');
+      closerKingdomsDiv.style.marginTop = '8px';
+      closerKingdomsDiv.style.fontSize = '12px';
+      closerKingdomsDiv.style.color = '#666';
+      closerKingdomsDiv.innerHTML = `🔗 Connected to: ${kingdom.closerKingdoms.join(', ')}`;
+      kingdomDiv.appendChild(closerKingdomsDiv);
+    }
+
     reportContent.appendChild(kingdomDiv);
   });
 }
 
 function generateNewDisasters() {
   const kingdomNames = Object.keys(kingdoms);
-  
+
   if (kingdomNames.length === 0) {
     alert('No kingdoms found. Create some kingdoms first!');
     return;
   }
-  
+
   // Simulate new disasters for all kingdoms
   kingdomNames.forEach(name => simulateDisasters(name));
-  
+
   // Refresh the display
   displayDisasterReport();
 }
@@ -457,10 +536,15 @@ Object.keys(kingdoms).forEach(name => {
       geoState: generateRandomGeoState()
     };
   }
-  
+
   // Initialize underWar property if it doesn't exist
   if (kingdoms[name].underWar === undefined) {
     kingdoms[name].underWar = false;
+  }
+
+  // Initialize closerKingdoms property if it doesn't exist
+  if (!kingdoms[name].closerKingdoms) {
+    kingdoms[name].closerKingdoms = [];
   }
 });
 
