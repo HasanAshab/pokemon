@@ -270,9 +270,13 @@ shiftsDataWrapper.innerHTML = "";
 
 function calcTypeSalary(forces) {
   const kingdomPCI = kingdom.pci || 50; // Default PCI if not set
+  const isUnderWar = kingdom.underWar || false;
+  const warMultiplier = isUnderWar ? 1.1136 : 1;
+  
   return forces.reduce((total, force) => {
     const salaryPercentage = force.ivSalaryPercent || 0;
-    const actualSalary = (kingdomPCI * salaryPercentage) / 100;
+    const baseSalary = (kingdomPCI * salaryPercentage) / 100;
+    const actualSalary = baseSalary * warMultiplier;
     return total + (force.quantity || 0) * actualSalary;
   }, 0);
 }
@@ -337,13 +341,31 @@ function renderForceSection(type,forceType) {
     };
 
     const kingdomPCI = kingdom.pci || 50;
-    const actualSalaryPerPerson = (kingdomPCI * (force.ivSalaryPercent || 70)) / 100;
+    const isUnderWar = kingdom.underWar || false;
+    const warMultiplier = isUnderWar ? 1.1136 : 1;
+    const baseSalaryPerPerson = (kingdomPCI * (force.ivSalaryPercent || 70)) / 100;
+    const actualSalaryPerPerson = baseSalaryPerPerson * warMultiplier;
     const totalSalary = force.quantity * actualSalaryPerPerson;
+    
     const totalSalaryEl = document.createElement("div");
     totalSalaryEl.className = "total-salary";
-    totalSalaryEl.innerHTML = `
-      <div>${actualSalaryPerPerson.toFixed()}$ <br>Total: ${totalSalary.toLocaleString()}$</div>
-    `;
+    
+    if (isUnderWar) {
+      const baseTotalSalary = force.quantity * baseSalaryPerPerson;
+      totalSalaryEl.innerHTML = `
+        <div class="war-salary">
+          <span class="base-salary">${baseSalaryPerPerson.toFixed()}$</span>
+          <span class="war-salary-amount">${actualSalaryPerPerson.toFixed()}$ ⚔️</span>
+          <br>
+          Total: <span class="base-salary">${baseTotalSalary.toLocaleString()}$</span>
+          <span class="war-salary-amount">${totalSalary.toLocaleString()}$ ⚔️</span>
+        </div>
+      `;
+    } else {
+      totalSalaryEl.innerHTML = `
+        <div>${actualSalaryPerPerson.toFixed()}$ <br>Total: ${totalSalary.toLocaleString()}$</div>
+      `;
+    }
 
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
@@ -363,12 +385,24 @@ function renderForceSection(type,forceType) {
     container.appendChild(div);
   });
 
+  const isUnderWar = kingdom.underWar || false;
+  const warMultiplier = isUnderWar ? 1.1136 : 1;
   const typeTotalSalary = calcTypeSalary(barrackForce[type]);
   const typeTotalEl = document.createElement("div");
   typeTotalEl.className = "type-total-salary";
-  typeTotalEl.textContent = `Total ${
-    type.charAt(0).toUpperCase() + type.slice(1)
-  } Soldiers Salary: ${typeTotalSalary.toLocaleString()}$`;
+  
+  if (isUnderWar) {
+    const baseTypeTotalSalary = typeTotalSalary / warMultiplier;
+    typeTotalEl.innerHTML = `
+      Total ${type.charAt(0).toUpperCase() + type.slice(1)} ${forceType.charAt(0).toUpperCase() + forceType.slice(1)} Salary: 
+      <span class="base-salary">${baseTypeTotalSalary.toLocaleString()}$</span>
+      <span class="war-salary-amount">${Math.round(typeTotalSalary).toLocaleString()}$ ⚔️</span>
+    `;
+  } else {
+    typeTotalEl.textContent = `Total ${
+      type.charAt(0).toUpperCase() + type.slice(1)
+    } ${forceType.charAt(0).toUpperCase() + forceType.slice(1)} Salary: ${typeTotalSalary.toLocaleString()}$`;
+  }
   container.appendChild(typeTotalEl);
 
   const stack = getSoldierStack(barrackForce[type]);
@@ -384,15 +418,26 @@ function renderAllForces(forceType) {
  if (forceType === "soldiers")
   renderForceSection("emergency",forceType);
   const barrackForce = kingdoms[name].barrack[forceType]
+  const isUnderWar = kingdom.underWar || false;
+  const warMultiplier = isUnderWar ? 1.1136 : 1;
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
     return total + calcTypeSalary(barrackForce[type]);
   }, 0);
 
-  const totalSalaryEl =
-    document.getElementById("totalSalaryContainer")
+  const totalSalaryEl = document.getElementById("totalSalaryContainer");
   totalSalaryEl.id = "totalSalaryContainer";
   totalSalaryEl.className = "total-salary-container";
-  totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
+  
+  if (isUnderWar) {
+    const baseTotalSalary = totalSalary / warMultiplier;
+    totalSalaryEl.innerHTML = `
+      Total Force Salary: 
+      <span class="base-salary">${baseTotalSalary.toLocaleString()}$</span>
+      <span class="war-salary-amount">${totalSalary.toLocaleString()}$ ⚔️</span>
+    `;
+  } else {
+    totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
+  }
 
   const securityRate = getSecurityRate(kingdom,forceType)
   const securityRateEl = document.getElementById("securityRate")
