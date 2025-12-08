@@ -194,6 +194,7 @@ export default {
     retreat: 0.5
   },
   "mayangan:golden-eye": {
+    retreat: 1,
     onTryBoostOpponent(boost, target, source, opponent) {
       const hasIntelligentEye = opponent.hasAbility("mayangan:selfish-scar:golden");
       for (let i in boost) {        
@@ -203,7 +204,12 @@ export default {
           boost[i] = -boost[i];
       }
     },
-    retreat: 1
+    onActivate(pokemon) {      
+      pokemon.meta.types.push("Dragon")      
+    },
+    onDeactivate(pokemon) {
+      pokemon.meta.types = pokemon.meta.types.filter(type => type !== "Dragon")
+    }
   },
 
   // fushi

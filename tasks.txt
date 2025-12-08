@@ -1,5 +1,4 @@
 * Tasks
-ancient mod X Dragon, Golden eye = Dragon
 grab
 * bug
 abilities multiple opponent event system
