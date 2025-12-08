@@ -1,5 +1,6 @@
 * Tasks
-
+ancient mod X Dragon, Golden eye = Dragon
+grab
 * bug
 abilities multiple opponent event system
 Bot shinobis hit a move in act of his team

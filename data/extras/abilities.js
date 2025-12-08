@@ -164,8 +164,9 @@ export default {
   },
 
   // opponents time half , never flinch, heit
-  mayangan1: {
-    retreat: 3
+  "mayangan:aura-hair": {
+    retreat: 3,
+    dependencies: ["innerfocus"]
   },
   "mayangan:selfish-scar:silver": {
     retreat: 1.5,
@@ -192,7 +193,6 @@ export default {
     },
     retreat: 0.5
   },
-  // nakku
   "mayangan:golden-eye": {
     onTryBoostOpponent(boost, target, source, opponent) {
       const hasIntelligentEye = opponent.hasAbility("mayangan:selfish-scar:golden");
@@ -203,7 +203,7 @@ export default {
           boost[i] = -boost[i];
       }
     },
-    retreat: 1.5
+    retreat: 1
   },
 
   // fushi
