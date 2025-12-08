@@ -1,5 +1,4 @@
 * Tasks
-fix PWA UI
 Update moves weight (tokenChanges)
 
 * bug
@@ -8,7 +7,10 @@ Bot shinobis hit a move in act of his team
 
 * Bottle neck
 
-* Pending
+
+
+* Pendings
+
 ancient mode with selfish scar
 
 *ovi
