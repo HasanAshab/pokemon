@@ -517,7 +517,8 @@ export default {
     contestType: "Tough",
     tokenChanges: {
       spe: -10
-    }
+    },
+    koRatio: 10
   },
 
   kohgastar: {

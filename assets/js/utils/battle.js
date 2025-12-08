@@ -515,7 +515,6 @@ class BaseBattle extends EventEmitter {
       ? hit1.damage()
       : hit1.toContactDamage(damages.get(this.pokemon2))
 
-
     if (ajmode || move2.target !== "allySide") {
       if (!attackSelf2 && canMove2 && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
         this.pokemon1.state.emit("contacted", this.pokemon2, move2)
@@ -543,11 +542,11 @@ class BaseBattle extends EventEmitter {
 
     this.pokemon1.state.decreaseHealth(instD1)
     this.pokemon2.state.decreaseHealth(instD2)
-
+    
     // TEMP: block move support
     if (move1.priority === move2.priority) {
-      d1 -= d1 * this.pokemon1.state.damage.blockModifier()
-      d2 -= d2 * this.pokemon2.state.damage.blockModifier()
+      d1 -= d1 === Infinity ? 0 : d1 * this.pokemon1.state.damage.blockModifier()
+      d2 -= d2 === Infinity ? 0 : d2 * this.pokemon2.state.damage.blockModifier()
     }
 
     if (move2.priority > move1.priority && (clonemode1 || pokeEffect2 > 1 || move2.hit.criticalCount())) {
@@ -556,6 +555,7 @@ class BaseBattle extends EventEmitter {
     else if (move1.priority > move2.priority && (clonemode2 || pokeEffect1 > 1 || move1.hit.criticalCount())) {
       d1 = 0
     }
+
     if (d1) {
       this.pokemon1.state.decreaseHealth(d1, false, clonemode1)
       move2.drain && this.pokemon2.state.increaseHealth(move2.drainDamage(d1), false, clonemode2)
