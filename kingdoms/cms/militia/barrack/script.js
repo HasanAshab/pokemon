@@ -330,6 +330,7 @@ function renderForceSection(type,forceType) {
     }
 
     const ivSalaryPercentInput = document.createElement("input");
+    ivSalaryPercentInput.className = "iv-salary-percent";
     ivSalaryPercentInput.type = "number";
     ivSalaryPercentInput.min = "0";
     ivSalaryPercentInput.max = "500";
@@ -359,7 +360,7 @@ function renderForceSection(type,forceType) {
           <span class="base-salary">${baseSalaryPerPerson.toFixed()}$</span>
           <span class="war-salary-amount">${actualSalaryPerPerson.toFixed()}$ ⚔️</span>
           <br>
-          Total: <span class="base-salary">${baseTotalSalary.toLocaleString()}$</span>
+          <b>Total:</b> <span class="base-salary">${baseTotalSalary.toLocaleString()}$</span>
           <span class="war-salary-amount">${Math.round(totalSalary).toLocaleString()}$ ⚔️</span>
         </div>
       `;

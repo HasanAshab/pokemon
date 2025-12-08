@@ -12,7 +12,8 @@ body {
   }
 }
 
-h1, h2 {
+h1,
+h2 {
   margin-bottom: 10px;
   color: #333;
 }
@@ -38,6 +39,7 @@ h1, h2 {
 .ammo-btn:hover {
   background-color: #0056b3;
 }
+
 #main-header {
   display: flex;
   justify-content: center;
@@ -49,7 +51,7 @@ h1, h2 {
   flex-wrap: wrap;
 }
 
-#main-header > button {
+#main-header>button {
   flex: 1;
   min-width: 120px;
   padding: 10px 15px;
@@ -62,7 +64,7 @@ h1, h2 {
   transition: all 0.2s ease;
 }
 
-#main-header > button.active {
+#main-header>button.active {
   background-color: #333;
   color: #fff;
 }
@@ -71,8 +73,8 @@ h1, h2 {
   #main-header {
     padding: 20px 0;
   }
-  
-  #main-header > button {
+
+  #main-header>button {
     flex: none;
     min-width: 150px;
   }
@@ -92,6 +94,7 @@ section {
     padding: 15px;
   }
 }
+
 #forcesData {
   display: flex;
   justify-content: center;
@@ -106,38 +109,46 @@ section {
     gap: 4px;
   }
 }
-#imbalance-section.balanced > p {
+
+#imbalance-section.balanced>p {
   color: green;
 }
-#imbalance-section:not(.balanced) > p {
+
+#imbalance-section:not(.balanced)>p {
   display: none;
 }
 
-:is(#policesContainer,#soldiersContainer) {
+:is(#policesContainer, #soldiersContainer) {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-:is(.polices-card,.soldiers-card) {
+:is(.polices-card, .soldiers-card) {
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 6px;
   background: #fafafa;
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  /* display: grid;
   grid-template-columns: 1fr;
   gap: 8px;
-  align-items: stretch;
+  align-items: stretch; */
 }
 
 @media (min-width: 480px) {
-  :is(.polices-card,.soldiers-card) {
-    grid-template-columns: repeat(2, 1fr);
+  :is(.polices-card, .soldiers-card) {
+    /* grid-template-columns: repeat(2, 1fr); */
+
   }
 }
 
 @media (min-width: 768px) {
-  :is(.polices-card,.soldiers-card) {
+  :is(.polices-card, .soldiers-card) {
     padding: 12px;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 10px;
@@ -145,16 +156,18 @@ section {
   }
 }
 
-:is(.polices-card,.soldiers-card) :is(input, select) {
-  width: 100%;
+:is(.polices-card, .soldiers-card) :is(input, select) {
   padding: 8px 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  width: 100%;
 }
-
-:is(.polices-card,.soldiers-card) button {
+:is(.polices-card, .soldiers-card) :is(input:not(:first-child,.iv-salary-percent), select) {
+  width: 100px;
+}
+:is(.polices-card, .soldiers-card) button {
   padding: 8px 12px;
   background: #e74c3c;
   color: white;
@@ -165,7 +178,7 @@ section {
   min-height: 36px;
 }
 
-:is(.polices-card,.soldiers-card) button:hover {
+:is(.polices-card, .soldiers-card) button:hover {
   background: #c0392b;
 }
 
@@ -183,11 +196,11 @@ section {
 }
 
 @media (min-width: 768px) {
-  :is(.polices-card,.soldiers-card) :is(input, select) {
+  :is(.polices-card, .soldiers-card) :is(input, select) {
     padding: 6px 8px;
   }
-  
-  :is(.polices-card,.soldiers-card) button {
+
+  :is(.polices-card, .soldiers-card) button {
     padding: 6px 12px;
     min-height: auto;
   }
@@ -251,7 +264,7 @@ input[type="number"] {
     padding: 10px;
     font-size: 14px;
   }
-  
+
   .total-salary-container {
     margin-top: 30px;
     padding: 15px;
@@ -262,10 +275,12 @@ input[type="number"] {
 /* War salary styling */
 .war-salary {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 2px;
   font-size: 12px;
+
 }
 
 .base-salary {
@@ -300,7 +315,7 @@ input[type="number"] {
   .war-salary {
     font-size: 14px;
   }
-  
+
   .type-total-salary .base-salary,
   .total-salary-container .base-salary {
     margin-right: 8px;
@@ -313,24 +328,24 @@ input[type="number"] {
     font-size: 12px;
     text-align: center;
   }
-  
+
   h2 {
     font-size: 18px;
     text-align: center;
   }
-  
+
   h4 {
     font-size: 14px;
     text-align: center;
     margin: 8px 0;
   }
-  
+
   /* Improve button spacing on mobile */
   section button {
     width: 100%;
     margin: 5px 0;
   }
-  
+
   #main-header button {
     width: auto;
     margin: 2px;
