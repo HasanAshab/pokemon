@@ -1,5 +1,4 @@
 * Tasks
-Update moves weight (tokenChanges)
 
 * bug
 abilities multiple opponent event system

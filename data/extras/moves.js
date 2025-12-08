@@ -435,7 +435,7 @@ export default {
     type: "Rock",
     contestType: "Tough",
     tokenChanges: {
-      spe: -3
+      spe: -6
     }
   },
 
@@ -484,8 +484,8 @@ export default {
 
   bamboo: {
     num: 100003,
-    accuracy: 60,
-    basePower: 70,
+    accuracy: 80,
+    basePower: 60,
     category: "Physical",
     name: "Bamboo",
     pp: 25 * 3,
@@ -496,7 +496,7 @@ export default {
     type: "Normal",
     contestType: "Tough",
     tokenChanges: {
-      spe: -30
+      spe: -10
     }
   },
   ninjablade: {
@@ -552,14 +552,14 @@ export default {
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
     secondary: {
-      chance: 10,
+      chance: 8,
       status: "bleed"
     },
     target: "normal",
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      spe: -15
+      spe: -17
     },
   },
 
@@ -575,7 +575,7 @@ export default {
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
     critRatio: 2,
     secondary: {
-      chance: 10,
+      chance: 30,
       status: "bleed"
     },
     target: "normal",
@@ -583,16 +583,16 @@ export default {
     contestType: "Tough",
     tokenChanges: {
       spe: -25
-    },
-    koRatio: 1
+    }
   },
-  Shuriken: {
+  shuriken: {
     num: 100008,
     accuracy: 60,
     basePower: 130,
     category: "Physical",
     name: "Shuriken",
     pp: 2 * 3,
+    isOneTime: true,
     priority: 0,
     flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },
     statChanges: {
@@ -600,7 +600,6 @@ export default {
       self: { atk: -1 },
       target: {}
     },
-    critRatio: 2,
     secondary: {
       chance: 10,
       status: "bleed"
@@ -611,6 +610,7 @@ export default {
     tokenChanges: {
       spe: -45
     }
+
   },
   longsword: {
     num: 100009,
@@ -621,7 +621,6 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    critRatio: 2,
     secondary: {
       chance: 30,
       status: "bleed"
@@ -661,7 +660,7 @@ export default {
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      spe: -8
+      spe: -10
     }
   },
   ninechakublade: {
@@ -709,13 +708,12 @@ export default {
     type: "Poison",
     contestType: "Tough",
     tokenChanges: {
-      spe: -3
+      spe: -1
     }
   },
   ninjaclawsmall: {
     num: 100013,
     accuracy: 100,
-    multihit: 2,
     basePower: 30,
     category: "Physical",
     name: "Ninja Claw (Small)",
@@ -732,13 +730,43 @@ export default {
       chance: 3,
       status: "bleed"
     },
-    target: "normal",
+    target: "foeSide",
+    capacity: 2,
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
       spe: -10
     }
   },
+  ninjaclaw: {
+    num: 100013,
+    accuracy: 100,
+    basePower: 45,
+    category: "Physical",
+    name: "Ninja Claw",
+    pp: 15 * 3,
+    priority: 0,
+    flags: {
+      contact: 1,
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+      weapon: 1
+    },
+    secondary: {
+      chance: 30,
+      status: "bleed"
+    },
+    target: "foeSide",
+    capacity: 2,
+    type: "Steel",
+    contestType: "Tough",
+    tokenChanges: {
+      spe: -17
+    },
+    koRatio: 1
+  },
+
   punch: {
     num: 100016,
     accuracy: 100,
@@ -1588,6 +1616,7 @@ export default {
     type: "Grass",
     contestType: "Tough"
   },
+
   helpinghand: {
     num: 270,
     accuracy: true,
@@ -1634,7 +1663,7 @@ export default {
   },
   fireball: {
     num: 100057,
-    accuracy: 60,
+    accuracy: 70,
     basePower: 60,
     category: "Special",
     name: "Fireball",
@@ -1773,9 +1802,7 @@ export default {
     target: "foeSide",
     type: "Steel",
     contestType: "Tough",
-    tokenChanges: {
-      spe: -15
-    }
+  
   },
   neddle:{
     num: 100062,
@@ -1837,6 +1864,28 @@ export default {
       }, listenerName)
       return true
     }
-  }
+  },
+  ropedart: {
+    num: 100064,
+    accuracy: 70,
+    basePower: 5,
+    category: "Physical",
+    name: "Rope Dart",
+    pp: 15 * 3,
+    priority: 1,
+    flags: {
+      contact: 1,
+      protect: 1,
+      mirror: 1,
+      metronome: 1,
+      weapon: 1
+    },
+    target: "normal",
+    type: "Steel",
+    contestType: "Tough",
+    tokenChanges: {
+      spe: -1
+    }
+  },
 }
 
