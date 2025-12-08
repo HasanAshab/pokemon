@@ -1,38 +1,110 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 10px;
   background-color: #f9f9f9;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  body {
+    margin: 20px;
+    font-size: 16px;
+  }
 }
 
 h1, h2 {
   margin-bottom: 10px;
   color: #333;
 }
-#main-header{
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ammo-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.ammo-btn:hover {
+  background-color: #0056b3;
+}
+#main-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
-  border: 1px   solid #333;
+  padding: 15px 10px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-#main-header > button.active{
+
+#main-header > button {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 1px solid #333;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#main-header > button.active {
   background-color: #333;
   color: #fff;
 }
 
+@media (min-width: 768px) {
+  #main-header {
+    padding: 20px 0;
+  }
+  
+  #main-header > button {
+    flex: none;
+    min-width: 150px;
+  }
+}
+
 section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   background: #fff;
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-#forcesData{
+
+@media (min-width: 768px) {
+  section {
+    margin-bottom: 30px;
+    padding: 15px;
+  }
+}
+#forcesData {
   display: flex;
   justify-content: center;
   flex-direction: column;
   font-weight: bold;
-  gap: 4px;
+  gap: 8px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  #forcesData {
+    gap: 4px;
+  }
 }
 #imbalance-section.balanced > p {
   color: green;
@@ -49,47 +121,100 @@ section {
 
 :is(.polices-card,.soldiers-card) {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 10px;
   border-radius: 6px;
   background: #fafafa;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  align-items: stretch;
+}
+
+@media (min-width: 480px) {
+  :is(.polices-card,.soldiers-card) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  :is(.polices-card,.soldiers-card) {
+    padding: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    align-items: center;
+  }
 }
 
 :is(.polices-card,.soldiers-card) :is(input, select) {
   width: 100%;
-  padding: 6px 8px;
+  padding: 8px 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 :is(.polices-card,.soldiers-card) button {
-  padding: 6px 12px;
+  padding: 8px 12px;
   background: #e74c3c;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+  min-height: 36px;
 }
 
 :is(.polices-card,.soldiers-card) button:hover {
   background: #c0392b;
 }
 
+/* Field styling for mobile */
+:is(.polices-field, .soldiers-field) {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+:is(.polices-field, .soldiers-field) label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #555;
+}
+
+@media (min-width: 768px) {
+  :is(.polices-card,.soldiers-card) :is(input, select) {
+    padding: 6px 8px;
+  }
+  
+  :is(.polices-card,.soldiers-card) button {
+    padding: 6px 12px;
+    min-height: auto;
+  }
+}
+
 button {
-  padding: 6px 10px;
-  margin: 0 5px;
+  padding: 8px 12px;
+  margin: 2px;
   border: 1px solid #ccc;
   background: #f0f0f0;
   cursor: pointer;
   border-radius: 4px;
+  font-size: 14px;
+  min-height: 36px;
+  touch-action: manipulation;
 }
 
 button:hover {
   background: #e0e0e0;
+}
+
+@media (min-width: 768px) {
+  button {
+    padding: 6px 10px;
+    margin: 0 5px;
+    min-height: auto;
+  }
 }
 
 input[type="number"] {
@@ -97,24 +222,41 @@ input[type="number"] {
 }
 
 .type-total-salary {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 15px;
+  padding: 8px;
   background: #e6ffe6;
   border: 1px solid #99cc99;
   border-radius: 6px;
   font-weight: bold;
   text-align: center;
+  font-size: 13px;
+  word-break: break-word;
 }
 
 .total-salary-container {
-  margin-top: 30px;
-  padding: 15px;
+  margin-top: 20px;
+  padding: 10px;
   background: #ffe6e6;
   border: 1px solid #cc9999;
   border-radius: 6px;
   font-weight: bold;
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .type-total-salary {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .total-salary-container {
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 1.2em;
+  }
 }
 
 /* War salary styling */
@@ -123,6 +265,7 @@ input[type="number"] {
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  font-size: 12px;
 }
 
 .base-salary {
@@ -143,7 +286,7 @@ input[type="number"] {
   text-decoration: line-through;
   color: #666;
   opacity: 0.7;
-  margin-right: 8px;
+  margin-right: 4px;
 }
 
 .type-total-salary .war-salary-amount,
@@ -151,4 +294,45 @@ input[type="number"] {
   color: #dc3545;
   font-weight: bold;
   text-shadow: 0 0 2px rgba(220, 53, 69, 0.3);
+}
+
+@media (min-width: 768px) {
+  .war-salary {
+    font-size: 14px;
+  }
+  
+  .type-total-salary .base-salary,
+  .total-salary-container .base-salary {
+    margin-right: 8px;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 767px) {
+  .total-salary {
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  h4 {
+    font-size: 14px;
+    text-align: center;
+    margin: 8px 0;
+  }
+  
+  /* Improve button spacing on mobile */
+  section button {
+    width: 100%;
+    margin: 5px 0;
+  }
+  
+  #main-header button {
+    width: auto;
+    margin: 2px;
+  }
 }

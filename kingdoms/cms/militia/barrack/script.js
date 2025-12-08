@@ -268,10 +268,11 @@ shiftsDataWrapper.innerHTML = "";
   }
 };
 
-function calcTypeSalary(forces) {
+function calcTypeSalary(forces, forceType = 'soldiers') {
   const kingdomPCI = kingdom.pci || 50; // Default PCI if not set
   const isUnderWar = kingdom.underWar || false;
-  const warMultiplier = isUnderWar ? 1.1136 : 1;
+  // Only apply war multiplier to soldiers, not police
+  const warMultiplier = (isUnderWar && forceType === 'soldiers') ? 1.1136 : 1;
   
   return forces.reduce((total, force) => {
     const salaryPercentage = force.ivSalaryPercent || 0;
@@ -342,7 +343,8 @@ function renderForceSection(type,forceType) {
 
     const kingdomPCI = kingdom.pci || 50;
     const isUnderWar = kingdom.underWar || false;
-    const warMultiplier = isUnderWar ? 1.1136 : 1;
+    // Only apply war multiplier to soldiers, not police
+    const warMultiplier = (isUnderWar && forceType === 'soldiers') ? 1.1136 : 1;
     const baseSalaryPerPerson = (kingdomPCI * (force.ivSalaryPercent || 70)) / 100;
     const actualSalaryPerPerson = baseSalaryPerPerson * warMultiplier;
     const totalSalary = force.quantity * actualSalaryPerPerson;
@@ -350,7 +352,7 @@ function renderForceSection(type,forceType) {
     const totalSalaryEl = document.createElement("div");
     totalSalaryEl.className = "total-salary";
     
-    if (isUnderWar) {
+    if (isUnderWar && forceType === 'soldiers') {
       const baseTotalSalary = force.quantity * baseSalaryPerPerson;
       totalSalaryEl.innerHTML = `
         <div class="war-salary">
@@ -386,12 +388,12 @@ function renderForceSection(type,forceType) {
   });
 
   const isUnderWar = kingdom.underWar || false;
-  const warMultiplier = isUnderWar ? 1.1136 : 1;
-  const typeTotalSalary = calcTypeSalary(barrackForce[type]);
+  const warMultiplier = (isUnderWar && forceType === 'soldiers') ? 1.1136 : 1;
+  const typeTotalSalary = calcTypeSalary(barrackForce[type], forceType);
   const typeTotalEl = document.createElement("div");
   typeTotalEl.className = "type-total-salary";
   
-  if (isUnderWar) {
+  if (isUnderWar && forceType === 'soldiers') {
     const baseTypeTotalSalary = typeTotalSalary / warMultiplier;
     typeTotalEl.innerHTML = `
       Total ${type.charAt(0).toUpperCase() + type.slice(1)} ${forceType.charAt(0).toUpperCase() + forceType.slice(1)} Salary: 
@@ -419,16 +421,16 @@ function renderAllForces(forceType) {
   renderForceSection("emergency",forceType);
   const barrackForce = kingdoms[name].barrack[forceType]
   const isUnderWar = kingdom.underWar || false;
-  const warMultiplier = isUnderWar ? 1.1136 : 1;
+  const warMultiplier = (isUnderWar && forceType === 'soldiers') ? 1.1136 : 1;
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
-    return total + calcTypeSalary(barrackForce[type]);
+    return total + calcTypeSalary(barrackForce[type], forceType);
   }, 0);
 
   const totalSalaryEl = document.getElementById("totalSalaryContainer");
   totalSalaryEl.id = "totalSalaryContainer";
   totalSalaryEl.className = "total-salary-container";
   
-  if (isUnderWar) {
+  if (isUnderWar && forceType === 'soldiers') {
     const baseTotalSalary = totalSalary / warMultiplier;
     totalSalaryEl.innerHTML = `
       Total Force Salary: 
