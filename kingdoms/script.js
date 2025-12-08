@@ -288,15 +288,15 @@ function getDisasterChance(disaster, geoState, isRelated = false) {
   if (state === 'immune') return 0;
   
   if (isRelated) {
-    return state === 'prone' ? 15 : 7; // related prone: 30%, related normal: 15%
+    return state === 'prone' ? 15 : 7; // related prone: 15%, related normal: 7%
   } else {
-    return state === 'prone' ? 5 : 2; // prone: 10%, normal: 5%
+    return state === 'prone' ? 5 : 2; // prone: 5%, normal: 2%
   }
 }
 
 function generateDisasterPower() {
   const rand = Math.random() * 100;
-  
+
   // Power distribution: 4-6 (60%), 1-3 (30%), 7-10 (10%)
   if (rand < 60) {
     return Math.floor(Math.random() * 3) + 4; // 4, 5, 6
