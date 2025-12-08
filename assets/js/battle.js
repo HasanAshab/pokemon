@@ -1181,6 +1181,10 @@ function setEffects(effects, playerTag) {
     "mustrecharge": {
       "name": "Re-charging",
       "color": "Normal"
+    },
+    "grabbed": {
+      "name": "Grabbed",
+      "color": "Normal"
     }
   };
   const effectsDataColumn = document.querySelector(`.${playerTag}-controle-cont .effects-data-column`)

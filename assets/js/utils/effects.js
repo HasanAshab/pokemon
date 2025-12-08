@@ -832,6 +832,27 @@ class RechargingEffect extends ExpirableEffect {
     }
 }
 
+class GrabbedEffect extends ExpirableEffect {
+    static effectName = "grabbed"
+    lifetime = { turns: 1 }
+    status = { canMove: false }
+
+    onScene() {
+        this._grabberOldHp = this.source.hp
+    }
+
+    onSceneEnd() {
+      const proxyDamage = this._grabberOldHp - this.source.hp
+      console.log(proxyDamage);
+      
+    }
+
+    meta() {
+        return `${this.source.name}`
+    }
+}
+
+
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
     PoisonEffect,
@@ -856,6 +877,7 @@ export const EFFECTS = makeEffectsMap([
     AncientModeEffect,
     InnerGateEffect,
     RechargingEffect,
+    GrabbedEffect,
 ])
 
 

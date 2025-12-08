@@ -72,7 +72,6 @@ export class Damage {
         // console.debug(this.move.id, ' BP: ', bp)
 
         const stab = this.attacker.isTypeOf(this.move.type) ? Damage.STAB_MODIFIER : 1
-        this.move.type === "Dragon" && console.log(this.attacker.isTypeOf(this.move.type), this.attacker.name);
         
         const isSpecial = this.move.category === "Special";
         const attackStat = "state" in this.attacker 

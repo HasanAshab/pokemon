@@ -1,7 +1,6 @@
 import { canDodge, modObj, sumObj } from "../../assets/js/utils/helpers.js"
 import typeChart from "../default/types.js"
 import entities from "../default/entities.js"
-import move from "../processors/move.js"
 
 
 function FieldAddingMove(type, name) {
@@ -518,7 +517,6 @@ export default {
     tokenChanges: {
       spe: -10
     },
-    koRatio: 10
   },
 
   kohgastar: {
@@ -1887,6 +1885,39 @@ export default {
     tokenChanges: {
       spe: -1
     }
+  },
+  grab: {
+    num: 100065,
+    accuracy: true,
+    basePower: 0,
+    category: "Physical",
+    name: "Grab",
+    pp: null,
+    priority: 0,
+    flags: { offensive: 0, contact: 1 },
+    secondary: null,
+    target: "normal",
+    type: "Normal",
+    isOffensive: false,
+    retreatBonus: 0.5,
+    effects: {
+      self: [{
+        name: "stall",
+        chance: 70,
+        isVolatile: true
+      }],
+      target: []
+    },
+    onTryMove(attacker, defender, move) {
+      if (!(move.flags.contact || !move.flags.offensive)) return false;
+
+      const chance = 0.65 + (attacker.level - defender.level) / (2 * (attacker.level + defender.level));
+      const rand = Math.random()
+      if (rand > chance) return false
+
+      defender.state.effects.add(attacker, "grabbed")
+      return true
+    },
   },
 }
 
