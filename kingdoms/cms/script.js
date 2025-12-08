@@ -195,11 +195,28 @@ function loadCloserKingdomsCheckboxes() {
 
     checkbox.addEventListener("change", (e) => {
       if (e.target.checked) {
+        // Add connection from current kingdom to selected kingdom
         if (!kingdom.closerKingdoms.includes(kingdomName)) {
           kingdom.closerKingdoms.push(kingdomName);
         }
+        
+        // Add bidirectional connection - add current kingdom to the selected kingdom's closerKingdoms
+        if (kingdoms[kingdomName]) {
+          if (!kingdoms[kingdomName].closerKingdoms) {
+            kingdoms[kingdomName].closerKingdoms = [];
+          }
+          if (!kingdoms[kingdomName].closerKingdoms.includes(name)) {
+            kingdoms[kingdomName].closerKingdoms.push(name);
+          }
+        }
       } else {
+        // Remove connection from current kingdom to selected kingdom
         kingdom.closerKingdoms = kingdom.closerKingdoms.filter(k => k !== kingdomName);
+        
+        // Remove bidirectional connection - remove current kingdom from selected kingdom's closerKingdoms
+        if (kingdoms[kingdomName] && kingdoms[kingdomName].closerKingdoms) {
+          kingdoms[kingdomName].closerKingdoms = kingdoms[kingdomName].closerKingdoms.filter(k => k !== name);
+        }
       }
       updateCurrentCloserKingdomsDisplay();
     });
