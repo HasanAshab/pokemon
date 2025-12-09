@@ -675,7 +675,7 @@ Object.keys(kingdoms).forEach(name => {
 // Save updated kingdoms data
 localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 
-// Function to draw connection lines between kingdoms
+// Function to draw connection lines between kingdoms (disabled for card view)
 function drawConnectionLines() {
   const svg = document.getElementById('connectionLines');
   const container = document.getElementById('cardContainer');
@@ -683,155 +683,14 @@ function drawConnectionLines() {
   // Clear existing lines
   svg.innerHTML = '';
 
-  // Set SVG dimensions to match container
-  const containerRect = container.getBoundingClientRect();
-  svg.style.width = containerRect.width + 'px';
-  svg.style.height = containerRect.height + 'px';
-
+  // Remove connection styling from all cards
   const cards = container.querySelectorAll('.card');
-  const cardPositions = new Map();
-
-  // Get positions of all cards
-  cards.forEach((card) => {
-    const cardRect = card.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-    const kingdomName = card.querySelector('.card-name').textContent;
-
-    cardPositions.set(kingdomName, {
-      x: cardRect.left - containerRect.left + cardRect.width / 2,
-      y: cardRect.top - containerRect.top + cardRect.height / 2,
-      width: cardRect.width,
-      height: cardRect.height,
-      element: card
-    });
-  });
-
-  // Track which kingdoms have connections and avoid duplicate lines
-  const connectedKingdoms = new Set();
-  const drawnConnections = new Set();
-
-  // Draw curved lines for each connection
-  Object.keys(kingdoms).forEach(kingdomName => {
-    const kingdom = kingdoms[kingdomName];
-    if (!kingdom.closerKingdoms || kingdom.closerKingdoms.length === 0) return;
-
-    const fromPos = cardPositions.get(kingdomName);
-    if (!fromPos) return;
-
-    connectedKingdoms.add(kingdomName);
-
-    kingdom.closerKingdoms.forEach(connectedKingdom => {
-      const toPos = cardPositions.get(connectedKingdom);
-      if (!toPos) return;
-
-      connectedKingdoms.add(connectedKingdom);
-
-      // Create unique connection identifier to avoid duplicate lines
-      const connectionId = [kingdomName, connectedKingdom].sort().join('-');
-      if (drawnConnections.has(connectionId)) return;
-      drawnConnections.add(connectionId);
-
-      // Calculate curved path to avoid overlapping other cards
-      const path = createCurvedPath(fromPos, toPos, cardPositions);
-
-      // Create path element instead of line
-      const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      pathElement.setAttribute('d', path);
-      pathElement.setAttribute('stroke', '#2196f3');
-      pathElement.setAttribute('stroke-width', '3');
-      pathElement.setAttribute('stroke-dasharray', '8,4');
-      pathElement.setAttribute('fill', 'none');
-      pathElement.setAttribute('opacity', '0.8');
-
-      // Add glow effect
-      pathElement.setAttribute('filter', 'drop-shadow(0 0 3px rgba(33, 150, 243, 0.5))');
-
-      // Add animation
-      const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-      animate.setAttribute('attributeName', 'stroke-dashoffset');
-      animate.setAttribute('values', '0;12');
-      animate.setAttribute('dur', '1.5s');
-      animate.setAttribute('repeatCount', 'indefinite');
-      pathElement.appendChild(animate);
-
-      svg.appendChild(pathElement);
-    });
-  });
-
-  // Add visual indicators to connected cards
   cards.forEach(card => {
-    const kingdomName = card.querySelector('.card-name').textContent;
-    if (connectedKingdoms.has(kingdomName)) {
-      card.classList.add('connected');
-    } else {
-      card.classList.remove('connected');
-    }
+    card.classList.remove('connected');
   });
 }
 
-// Function to create curved path that avoids other cards
-function createCurvedPath(fromPos, toPos, allPositions) {
-  const dx = toPos.x - fromPos.x;
-  const dy = toPos.y - fromPos.y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
 
-  // For short distances, use a simple curve
-  if (distance < 200) {
-    const midX = (fromPos.x + toPos.x) / 2;
-    const midY = (fromPos.y + toPos.y) / 2;
-
-    // Add slight curve perpendicular to the line
-    const perpX = -dy / distance * 30;
-    const perpY = dx / distance * 30;
-
-    const controlX = midX + perpX;
-    const controlY = midY + perpY;
-
-    return `M ${fromPos.x} ${fromPos.y} Q ${controlX} ${controlY} ${toPos.x} ${toPos.y}`;
-  }
-
-  // For longer distances, create a more pronounced curve that goes around other cards
-  const midX = (fromPos.x + toPos.x) / 2;
-  const midY = (fromPos.y + toPos.y) / 2;
-
-  // Calculate curve direction to avoid cards
-  let curveOffset = 60;
-  let perpX = -dy / distance * curveOffset;
-  let perpY = dx / distance * curveOffset;
-
-  // Check if the curve would intersect with other cards and adjust
-  const testControlX = midX + perpX;
-  const testControlY = midY + perpY;
-
-  // If curve intersects with cards, try the opposite direction
-  let intersectsCards = false;
-  for (const [name, pos] of allPositions) {
-    if (name === fromPos.element.querySelector('.card-name').textContent ||
-      name === toPos.element.querySelector('.card-name').textContent) continue;
-
-    const cardLeft = pos.x - pos.width / 2;
-    const cardRight = pos.x + pos.width / 2;
-    const cardTop = pos.y - pos.height / 2;
-    const cardBottom = pos.y + pos.height / 2;
-
-    if (testControlX >= cardLeft && testControlX <= cardRight &&
-      testControlY >= cardTop && testControlY <= cardBottom) {
-      intersectsCards = true;
-      break;
-    }
-  }
-
-  // If intersects, try opposite curve direction
-  if (intersectsCards) {
-    perpX = -perpX;
-    perpY = -perpY;
-  }
-
-  const controlX = midX + perpX;
-  const controlY = midY + perpY;
-
-  return `M ${fromPos.x} ${fromPos.y} Q ${controlX} ${controlY} ${toPos.x} ${toPos.y}`;
-}
 
 // Redraw connections when window is resized
 window.addEventListener('resize', () => {
@@ -894,7 +753,7 @@ function drawNetworkTopology() {
     // Calculate node size based on land area
     const landArea = kingdom.landArea || 1000;
     let nodeSize;
-    
+
     if (maxLandArea === minLandArea) {
       // All kingdoms have the same land area
       nodeSize = (minNodeSize + maxNodeSize) / 2;
@@ -903,7 +762,7 @@ function drawNetworkTopology() {
       const normalizedArea = (landArea - minLandArea) / (maxLandArea - minLandArea);
       nodeSize = minNodeSize + (normalizedArea * (maxNodeSize - minNodeSize));
     }
-    
+
     const nodeRadius = nodeSize / 2;
 
     const node = document.createElement('div');
