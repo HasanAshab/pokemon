@@ -707,6 +707,7 @@ document.getElementById('cardViewBtn').addEventListener('click', () => {
 });
 
 document.getElementById('networkViewBtn').addEventListener('click', () => {
+
   document.getElementById('cardView').style.display = 'none';
   document.getElementById('networkView').style.display = 'flex';
   document.getElementById('cardViewBtn').classList.remove('active');
@@ -759,10 +760,10 @@ function drawNetworkTopology() {
       nodeSize = (minNodeSize + maxNodeSize) / 2;
     } else {
       // Scale node size proportionally to land area
-      const normalizedArea = (landArea - minLandArea) / (maxLandArea - minLandArea);
+      const normalizedArea = ((landArea - minLandArea) / (maxLandArea - minLandArea)) * 5;
       nodeSize = minNodeSize + (normalizedArea * (maxNodeSize - minNodeSize));
     }
-
+     nodeSize *= 0.4; 
     const nodeRadius = nodeSize / 2;
 
     const node = document.createElement('div');
@@ -928,3 +929,4 @@ function highlightConnections(kingdomName, highlight) {
     }
   });
 }
+
