@@ -149,7 +149,7 @@ document.getElementById("addKingdomBtn").onclick = () => {
     underWar: false,
     closerKingdoms: [],
     disaster: {
-      current: {},
+      current: [],
       geoState: generateRandomGeoState()
     }
   };
@@ -318,13 +318,13 @@ function simulateDisasters(kingdomName) {
   const kingdom = kingdoms[kingdomName];
   if (!kingdom.disaster) {
     kingdom.disaster = {
-      current: {},
+      current: [],
       geoState: generateRandomGeoState()
     };
   }
 
   // Clear current disasters
-  kingdom.disaster.current = {};
+  kingdom.disaster.current = [];
 
   // Shuffle disasters for random order
   const disasterNames = Object.keys(DISASTERS);
@@ -347,7 +347,12 @@ function simulateDisasters(kingdomName) {
         primaryPower = Math.min(10, primaryPower + 2);
       }
 
-      kingdom.disaster.current[disaster] = primaryPower;
+      // Add primary disaster to array
+      kingdom.disaster.current.push({
+        name: disaster,
+        power: primaryPower,
+        source: "nature"
+      });
       break; // Stop after first disaster occurs
     }
   }
@@ -362,7 +367,11 @@ function simulateDisasters(kingdomName) {
 
       if (roll < chance) {
         const relatedPower = Math.max(1, Math.round(primaryPower / 2));
-        kingdom.disaster.current[relatedDisaster] = relatedPower;
+        kingdom.disaster.current.push({
+          name: relatedDisaster,
+          power: relatedPower,
+          source: "nature"
+        });
       }
     }
   }
@@ -376,7 +385,13 @@ function simulateDisasters(kingdomName) {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 }
 
-function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power) {
+function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visitedKingdoms = new Set(), sourceChain = "nature") {
+  // Prevent infinite loops
+  if (visitedKingdoms.has(sourceKingdom)) {
+    return;
+  }
+  visitedKingdoms.add(sourceKingdom);
+
   const kingdom = kingdoms[sourceKingdom];
 
   // Check if kingdom has closer kingdoms defined
@@ -387,13 +402,14 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power) {
   // Propagate to each closer kingdom
   kingdom.closerKingdoms.forEach(nearbyKingdomName => {
     if (!kingdoms[nearbyKingdomName]) return; // Skip if kingdom doesn't exist
+    if (visitedKingdoms.has(nearbyKingdomName)) return; // Skip if already visited
 
     const nearbyKingdom = kingdoms[nearbyKingdomName];
 
     // Initialize disaster data if not present
     if (!nearbyKingdom.disaster) {
       nearbyKingdom.disaster = {
-        current: {},
+        current: [],
         geoState: generateRandomGeoState()
       };
     }
@@ -406,31 +422,66 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power) {
     // 50% chance for disaster to propagate
     const propagationChance = 50;
     const roll = Math.random() * 100;
+    console.log(roll, nearbyKingdomName);
+    
 
     if (roll < propagationChance) {
       // Calculate reduced power (60% of original, rounded)
       const reducedPower = Math.max(1, Math.round(power * 0.6));
 
-      // Set the disaster in nearby kingdom (only if it doesn't already have a stronger version)
-      if (!nearbyKingdom.disaster.current[disaster] || nearbyKingdom.disaster.current[disaster] < reducedPower) {
-        nearbyKingdom.disaster.current[disaster] = reducedPower;
-      }
+      // Check if disaster already exists with higher power
+      const existingDisaster = nearbyKingdom.disaster.current.find(d => d.name === disaster);
+      if (!existingDisaster || existingDisaster.power < reducedPower) {
+        // Remove existing weaker disaster if present
+        if (existingDisaster) {
+          const index = nearbyKingdom.disaster.current.indexOf(existingDisaster);
+          nearbyKingdom.disaster.current.splice(index, 1);
+        }
 
-      // Check for related disasters in the nearby kingdom
-      const relatedDisasters = DISASTERS[disaster].related;
+        // Add new disaster
+        nearbyKingdom.disaster.current.push({
+          name: disaster,
+          power: reducedPower,
+          source: sourceKingdom
+        });
 
-      for (const relatedDisaster of relatedDisasters) {
-        const relatedChance = getDisasterChance(relatedDisaster, nearbyKingdom.disaster.geoState, true);
-        const relatedRoll = Math.random() * 100;
+        // Check for related disasters in the nearby kingdom
+        const relatedDisasters = DISASTERS[disaster].related;
 
-        if (relatedRoll < relatedChance) {
-          const relatedPower = Math.max(1, Math.round(reducedPower / 2));
+        for (const relatedDisaster of relatedDisasters) {
+          const relatedChance = getDisasterChance(relatedDisaster, nearbyKingdom.disaster.geoState, true);
+          const relatedRoll = Math.random() * 100;
 
-          // Set related disaster only if it doesn't already exist or is weaker
-          if (!nearbyKingdom.disaster.current[relatedDisaster] || nearbyKingdom.disaster.current[relatedDisaster] < relatedPower) {
-            nearbyKingdom.disaster.current[relatedDisaster] = relatedPower;
+          if (relatedRoll < relatedChance) {
+            const relatedPower = Math.max(1, Math.round(reducedPower / 2));
+
+            // Check if related disaster already exists
+            const existingRelated = nearbyKingdom.disaster.current.find(d => d.name === relatedDisaster);
+            if (!existingRelated || existingRelated.power < relatedPower) {
+              // Remove existing weaker related disaster if present
+              if (existingRelated) {
+                const index = nearbyKingdom.disaster.current.indexOf(existingRelated);
+                nearbyKingdom.disaster.current.splice(index, 1);
+              }
+
+              // Add related disaster
+              nearbyKingdom.disaster.current.push({
+                name: relatedDisaster,
+                power: relatedPower,
+                source: `${disaster}_${sourceKingdom}`
+              });
+            }
           }
         }
+
+        // Continue propagation to connected kingdoms of connected kingdoms
+        propagateDisastersToNearbyKingdoms(
+          nearbyKingdomName,
+          disaster,
+          reducedPower,
+          new Set(visitedKingdoms), // Pass copy of visited kingdoms
+          sourceKingdom
+        );
       }
     }
   });
@@ -463,25 +514,83 @@ function displayDisasterReport() {
     kingdomTitle.style.color = '#333';
     kingdomDiv.appendChild(kingdomTitle);
 
-    const currentDisasters = kingdom.disaster.current;
+    let currentDisasters = kingdom.disaster.current || [];
 
-    if (Object.keys(currentDisasters).length === 0) {
+    if (!Array.isArray(currentDisasters)) {
+      currentDisasters = []
+    }
+
+    if (currentDisasters.length === 0) {
       const noDisaster = document.createElement('p');
       noDisaster.textContent = '✅ No disasters currently affecting this kingdom';
       noDisaster.style.color = '#28a745';
       noDisaster.style.margin = '0';
       kingdomDiv.appendChild(noDisaster);
     } else {
-      Object.entries(currentDisasters).forEach(([disaster, power]) => {
+      // Group disasters by name and combine their powers and sources
+      const combinedDisasters = {};
+
+      currentDisasters.forEach(disasterObj => {
+        if (!combinedDisasters[disasterObj.name]) {
+          combinedDisasters[disasterObj.name] = {
+            name: disasterObj.name,
+            totalPower: 0,
+            sources: []
+          };
+        }
+
+        combinedDisasters[disasterObj.name].totalPower += disasterObj.power;
+        combinedDisasters[disasterObj.name].sources.push({
+          source: disasterObj.source,
+          power: disasterObj.power
+        });
+      });
+
+      // Display combined disasters
+      Object.values(combinedDisasters).forEach(combinedDisaster => {
         const disasterDiv = document.createElement('div');
-        disasterDiv.style.marginBottom = '5px';
+        disasterDiv.style.marginBottom = '8px';
+        disasterDiv.style.padding = '8px';
+        disasterDiv.style.borderLeft = '3px solid';
+        disasterDiv.style.backgroundColor = '#f8f9fa';
+        disasterDiv.style.borderRadius = '4px';
 
-        const powerColor = power >= 7 ? '#dc3545' : power >= 4 ? '#fd7e14' : '#ffc107';
-        const powerEmoji = power >= 7 ? '🔴' : power >= 4 ? '🟠' : '🟡';
+        const totalPower = Math.min(10, combinedDisaster.totalPower); // Cap at 10
+        const powerColor = totalPower >= 7 ? '#dc3545' : totalPower >= 4 ? '#fd7e14' : '#ffc107';
+        const powerEmoji = totalPower >= 7 ? '🔴' : totalPower >= 4 ? '🟠' : '🟡';
 
+        // Format sources
+        const sourcesText = combinedDisaster.sources.map(sourceObj => {
+          let sourceIcon = '';
+          let sourceText = '';
+
+          if (sourceObj.source === 'nature') {
+            sourceIcon = '🌍';
+            sourceText = `Natural (${sourceObj.power})`;
+          } else if (sourceObj.source.includes('_')) {
+            sourceIcon = '🔗';
+            const parts = sourceObj.source.split('_');
+            sourceText = `${parts[0]} from ${parts[1]} (${sourceObj.power})`;
+          } else {
+            sourceIcon = '🏰';
+            sourceText = `From ${sourceObj.source} (${sourceObj.power})`;
+          }
+
+          return `${sourceIcon} ${sourceText}`;
+        }).join(', ');
+
+        disasterDiv.style.borderLeftColor = powerColor;
         disasterDiv.innerHTML = `
-          ${powerEmoji} <strong>${disaster}</strong> - Power: ${power}/10
-          <br><small style="color: #666;">${DISASTERS[disaster].description}</small>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+            <span style="font-weight: bold;">
+              ${powerEmoji} <strong>${combinedDisaster.name}</strong> - Total Power: ${totalPower}/10
+              ${combinedDisaster.sources.length > 1 ? `<small style="color: #666;"> (${combinedDisaster.sources.length} sources)</small>` : ''}
+            </span>
+          </div>
+          <div style="font-size: 0.85em; color: #666; margin-bottom: 4px;">
+            <strong>Sources:</strong> ${sourcesText}
+          </div>
+          <small style="color: #666; font-style: italic;">${DISASTERS[combinedDisaster.name].description}</small>
         `;
         disasterDiv.style.color = powerColor;
         kingdomDiv.appendChild(disasterDiv);
@@ -535,9 +644,23 @@ document.getElementById('closeDisasterReport').onclick = () => {
 Object.keys(kingdoms).forEach(name => {
   if (!kingdoms[name].disaster) {
     kingdoms[name].disaster = {
-      current: {},
+      current: [],
       geoState: generateRandomGeoState()
     };
+  }
+
+  // Convert old disaster format to new array format
+  if (kingdoms[name].disaster.current && !Array.isArray(kingdoms[name].disaster.current)) {
+    const oldDisasters = kingdoms[name].disaster.current;
+    kingdoms[name].disaster.current = [];
+
+    Object.entries(oldDisasters).forEach(([disasterName, power]) => {
+      kingdoms[name].disaster.current.push({
+        name: disasterName,
+        power: power,
+        source: "nature"
+      });
+    });
   }
 
   // Initialize underWar property if it doesn't exist
@@ -558,24 +681,24 @@ localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 function drawConnectionLines() {
   const svg = document.getElementById('connectionLines');
   const container = document.getElementById('cardContainer');
-  
+
   // Clear existing lines
   svg.innerHTML = '';
-  
+
   // Set SVG dimensions to match container
   const containerRect = container.getBoundingClientRect();
   svg.style.width = containerRect.width + 'px';
   svg.style.height = containerRect.height + 'px';
-  
+
   const cards = container.querySelectorAll('.card');
   const cardPositions = new Map();
-  
+
   // Get positions of all cards
   cards.forEach((card) => {
     const cardRect = card.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
     const kingdomName = card.querySelector('.card-name').textContent;
-    
+
     cardPositions.set(kingdomName, {
       x: cardRect.left - containerRect.left + cardRect.width / 2,
       y: cardRect.top - containerRect.top + cardRect.height / 2,
@@ -584,35 +707,35 @@ function drawConnectionLines() {
       element: card
     });
   });
-  
+
   // Track which kingdoms have connections and avoid duplicate lines
   const connectedKingdoms = new Set();
   const drawnConnections = new Set();
-  
+
   // Draw curved lines for each connection
   Object.keys(kingdoms).forEach(kingdomName => {
     const kingdom = kingdoms[kingdomName];
     if (!kingdom.closerKingdoms || kingdom.closerKingdoms.length === 0) return;
-    
+
     const fromPos = cardPositions.get(kingdomName);
     if (!fromPos) return;
-    
+
     connectedKingdoms.add(kingdomName);
-    
+
     kingdom.closerKingdoms.forEach(connectedKingdom => {
       const toPos = cardPositions.get(connectedKingdom);
       if (!toPos) return;
-      
+
       connectedKingdoms.add(connectedKingdom);
-      
+
       // Create unique connection identifier to avoid duplicate lines
       const connectionId = [kingdomName, connectedKingdom].sort().join('-');
       if (drawnConnections.has(connectionId)) return;
       drawnConnections.add(connectionId);
-      
+
       // Calculate curved path to avoid overlapping other cards
       const path = createCurvedPath(fromPos, toPos, cardPositions);
-      
+
       // Create path element instead of line
       const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       pathElement.setAttribute('d', path);
@@ -621,10 +744,10 @@ function drawConnectionLines() {
       pathElement.setAttribute('stroke-dasharray', '8,4');
       pathElement.setAttribute('fill', 'none');
       pathElement.setAttribute('opacity', '0.8');
-      
+
       // Add glow effect
       pathElement.setAttribute('filter', 'drop-shadow(0 0 3px rgba(33, 150, 243, 0.5))');
-      
+
       // Add animation
       const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
       animate.setAttribute('attributeName', 'stroke-dashoffset');
@@ -632,11 +755,11 @@ function drawConnectionLines() {
       animate.setAttribute('dur', '1.5s');
       animate.setAttribute('repeatCount', 'indefinite');
       pathElement.appendChild(animate);
-      
+
       svg.appendChild(pathElement);
     });
   });
-  
+
   // Add visual indicators to connected cards
   cards.forEach(card => {
     const kingdomName = card.querySelector('.card-name').textContent;
@@ -653,62 +776,62 @@ function createCurvedPath(fromPos, toPos, allPositions) {
   const dx = toPos.x - fromPos.x;
   const dy = toPos.y - fromPos.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
-  
+
   // For short distances, use a simple curve
   if (distance < 200) {
     const midX = (fromPos.x + toPos.x) / 2;
     const midY = (fromPos.y + toPos.y) / 2;
-    
+
     // Add slight curve perpendicular to the line
     const perpX = -dy / distance * 30;
     const perpY = dx / distance * 30;
-    
+
     const controlX = midX + perpX;
     const controlY = midY + perpY;
-    
+
     return `M ${fromPos.x} ${fromPos.y} Q ${controlX} ${controlY} ${toPos.x} ${toPos.y}`;
   }
-  
+
   // For longer distances, create a more pronounced curve that goes around other cards
   const midX = (fromPos.x + toPos.x) / 2;
   const midY = (fromPos.y + toPos.y) / 2;
-  
+
   // Calculate curve direction to avoid cards
   let curveOffset = 60;
   let perpX = -dy / distance * curveOffset;
   let perpY = dx / distance * curveOffset;
-  
+
   // Check if the curve would intersect with other cards and adjust
   const testControlX = midX + perpX;
   const testControlY = midY + perpY;
-  
+
   // If curve intersects with cards, try the opposite direction
   let intersectsCards = false;
   for (const [name, pos] of allPositions) {
-    if (name === fromPos.element.querySelector('.card-name').textContent || 
-        name === toPos.element.querySelector('.card-name').textContent) continue;
-    
+    if (name === fromPos.element.querySelector('.card-name').textContent ||
+      name === toPos.element.querySelector('.card-name').textContent) continue;
+
     const cardLeft = pos.x - pos.width / 2;
     const cardRight = pos.x + pos.width / 2;
     const cardTop = pos.y - pos.height / 2;
     const cardBottom = pos.y + pos.height / 2;
-    
+
     if (testControlX >= cardLeft && testControlX <= cardRight &&
-        testControlY >= cardTop && testControlY <= cardBottom) {
+      testControlY >= cardTop && testControlY <= cardBottom) {
       intersectsCards = true;
       break;
     }
   }
-  
+
   // If intersects, try opposite curve direction
   if (intersectsCards) {
     perpX = -perpX;
     perpY = -perpY;
   }
-  
+
   const controlX = midX + perpX;
   const controlY = midY + perpY;
-  
+
   return `M ${fromPos.x} ${fromPos.y} Q ${controlX} ${controlY} ${toPos.x} ${toPos.y}`;
 }
 
