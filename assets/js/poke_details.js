@@ -19,6 +19,19 @@ globalThis.upgradeMove = function(id) {
     loadMoves()
 }
 
+globalThis.downgradeMove = function(id) {
+    const meta = getPokemonsMeta(name)
+    const moveMeta = meta.moves.find(m => m.id === id)
+    if (moveMeta.grade && moveMeta.grade > 0) {
+        moveMeta.grade = moveMeta.grade - 1
+        if (moveMeta.grade === 0) {
+            delete moveMeta.grade
+        }
+        setPokemonMeta(name, meta)
+        loadMoves()
+    }
+}
+
 globalThis.megaBtnClickHandler = function({currentTarget}){
    currentTarget.classList.toggle("active")
    isMegaEvolved = currentTarget.classList.contains("active")
@@ -215,6 +228,123 @@ globalThis.forgetMove = function(id) {
     loadMoves()
 }
 
+// Ability Manager Functions
+globalThis.showAbilityManager = function() {
+    const modal = document.querySelectorAll('.blur-bg')[3]
+    modal.classList.add('active')
+    loadAbilitiesDataList("abilities-data-list")
+    loadCurrentAbilities()
+}
+
+globalThis.closeAbilityManager = function() {
+    const modal = document.querySelectorAll('.blur-bg')[3]
+    modal.classList.remove('active')
+}
+
+globalThis.addAbility = function() {
+    const input = document.getElementById('ability-search')
+    const ability = input.value.trim()
+    if (ability) {
+        const meta = getPokemonsMeta(name)
+        if (!meta.abilities) meta.abilities = []
+        if (!meta.abilities.includes(ability)) {
+            meta.abilities.push(ability)
+            setPokemonMeta(name, meta)
+            loadCurrentAbilities()
+            loadAbilitiesList()
+        }
+        input.value = ''
+    }
+}
+
+globalThis.removeAbility = function(ability) {
+    const meta = getPokemonsMeta(name)
+    if (meta.abilities) {
+        meta.abilities = meta.abilities.filter(a => a !== ability)
+        setPokemonMeta(name, meta)
+        loadCurrentAbilities()
+        loadAbilitiesList()
+    }
+}
+
+// Item Manager Functions
+globalThis.showItemManager = function() {
+    const modal = document.querySelectorAll('.blur-bg')[4]
+    modal.classList.add('active')
+    loadItemsDataList("items-data-list")
+    loadCurrentItems()
+}
+
+globalThis.closeItemManager = function() {
+    const modal = document.querySelectorAll('.blur-bg')[4]
+    modal.classList.remove('active')
+}
+
+globalThis.addItem = function() {
+    const input = document.getElementById('item-search')
+    const item = input.value.trim()
+    if (item) {
+        const meta = getPokemonsMeta(name)
+        if (!meta.items) meta.items = []
+        if (!meta.items.includes(item)) {
+            meta.items.push(item)
+            setPokemonMeta(name, meta)
+            loadCurrentItems()
+            loadItemsList()
+        }
+        input.value = ''
+    }
+}
+
+globalThis.removeItem = function(item) {
+    const meta = getPokemonsMeta(name)
+    if (meta.items) {
+        meta.items = meta.items.filter(i => i !== item)
+        setPokemonMeta(name, meta)
+        loadCurrentItems()
+        loadItemsList()
+    }
+}
+
+// Type Manager Functions
+globalThis.showTypeManager = function() {
+    const modal = document.querySelectorAll('.blur-bg')[5]
+    modal.classList.add('active')
+    loadTypesDataList("types-data-list")
+    loadCurrentTypes()
+}
+
+globalThis.closeTypeManager = function() {
+    const modal = document.querySelectorAll('.blur-bg')[5]
+    modal.classList.remove('active')
+}
+
+globalThis.addType = function() {
+    const input = document.getElementById('type-search')
+    const type = input.value.trim()
+    if (type) {
+        const meta = getPokemonsMeta(name)
+        if (!meta.types) meta.types = []
+        if (!meta.types.includes(type)) {
+            meta.types.push(type)
+            setPokemonMeta(name, meta)
+            loadCurrentTypes()
+            loadTypesList()
+        }
+        input.value = ''
+    }
+}
+
+globalThis.removeType = function(type) {
+    const meta = getPokemonsMeta(name)
+    if (meta.types) {
+        meta.types = meta.types.filter(t => t !== type)
+        setPokemonMeta(name, meta)
+        loadCurrentTypes()
+        loadTypesList()
+    }
+}
+
 function loadName() {
     const display = document.getElementById("pokemon-name")
     display.innerText = `${name} (${pokemon.id})`  
@@ -231,10 +361,6 @@ function loadStats() {
     setStat("xp", pokemon.meta.xp)
     setStat("retreat", pokemon.meta.retreat)
     setStat("weight", (pokemon.getWeight() / 10) + "kg")
-    setStat("abilities", pokemon.abilities.names().join(', '))
-    setStat("items", pokemon.items.names().join(', '))
-    setStat("types", pokemon.types.join(','))
-    setStat("abilities", pokemon.abilities.names().join(','))
     setStat("wins-count", pokemon.meta["wins-count"])
     setStat("loses-count", pokemon.meta["loses-count"])
         
@@ -247,6 +373,112 @@ function loadStats() {
       }
     }
     setStat("total", pokemon.cp())
+    
+    // Load the new UI lists
+    loadAbilitiesList()
+    loadItemsList()
+    loadTypesList()
+}
+
+function loadAbilitiesList() {
+    const container = document.getElementById('abilities-list')
+    container.innerHTML = ''
+    
+    const abilities = pokemon.abilities.names()
+    abilities.forEach(ability => {
+        const tag = document.createElement('div')
+        tag.className = 'ability-tag'
+        tag.innerHTML = `
+            ${ability}
+            <button class="remove-btn" onclick="removeAbility('${ability}')">×</button>
+        `
+        container.appendChild(tag)
+    })
+}
+
+function loadItemsList() {
+    const container = document.getElementById('items-list')
+    container.innerHTML = ''
+    
+    const items = pokemon.items.names()
+    items.forEach(item => {
+        const tag = document.createElement('div')
+        tag.className = 'item-tag'
+        tag.innerHTML = `
+            ${item}
+            <button class="remove-btn" onclick="removeItem('${item}')">×</button>
+        `
+        container.appendChild(tag)
+    })
+}
+
+function loadTypesList() {
+    const container = document.getElementById('types-list')
+    container.innerHTML = ''
+    
+    const types = pokemon.types
+    types.forEach(type => {
+        const tag = document.createElement('div')
+        tag.className = 'type-tag'
+        tag.style.backgroundColor = `var(--${type}-type-color, #999)`
+        tag.innerHTML = `
+            ${type}
+            <button class="remove-btn" onclick="removeType('${type}')">×</button>
+        `
+        container.appendChild(tag)
+    })
+}
+
+function loadCurrentAbilities() {
+    const container = document.getElementById('current-abilities')
+    container.innerHTML = '<h4>Current Abilities:</h4>'
+    
+    const abilities = pokemon.abilities.names()
+    abilities.forEach(ability => {
+        const tag = document.createElement('div')
+        tag.className = 'ability-tag'
+        tag.style.margin = '5px'
+        tag.innerHTML = `
+            ${ability}
+            <button class="remove-btn" onclick="removeAbility('${ability}')">×</button>
+        `
+        container.appendChild(tag)
+    })
+}
+
+function loadCurrentItems() {
+    const container = document.getElementById('current-items')
+    container.innerHTML = '<h4>Current Items:</h4>'
+    
+    const items = pokemon.items.names()
+    items.forEach(item => {
+        const tag = document.createElement('div')
+        tag.className = 'item-tag'
+        tag.style.margin = '5px'
+        tag.innerHTML = `
+            ${item}
+            <button class="remove-btn" onclick="removeItem('${item}')">×</button>
+        `
+        container.appendChild(tag)
+    })
+}
+
+function loadCurrentTypes() {
+    const container = document.getElementById('current-types')
+    container.innerHTML = '<h4>Current Types:</h4>'
+    
+    const types = pokemon.types
+    types.forEach(type => {
+        const tag = document.createElement('div')
+        tag.className = 'type-tag'
+        tag.style.margin = '5px'
+        tag.style.backgroundColor = `var(--${type}-type-color, #999)`
+        tag.innerHTML = `
+            ${type}
+            <button class="remove-btn" onclick="removeType('${type}')">×</button>
+        `
+        container.appendChild(tag)
+    })
 }
 function loadGenetics() {
  const nationGenSelect = document.querySelector('.nation-select');
@@ -473,6 +705,7 @@ function loadMoves() {
           <div class="bottom-btns-cont">
          <button onclick="forgetMove('${move.id}')" class="forget-btn">Forgot move</button>
          <button onclick="upgradeMove('${move.id}')" class="upgrade-btn">Upgrade move</button>
+         <button onclick="downgradeMove('${move.id}')" class="downgrade-btn">Downgrade move</button>
           </div>
       
       </div>

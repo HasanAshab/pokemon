@@ -237,5 +237,176 @@ transition:color,background-color .4s;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+}
 
+/* New UI Components */
+.stat-group {
+  margin: 10px 0;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.add-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-btn:active {
+  background: #45a049;
+}
+
+.abilities-list, .items-list, .types-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.item-tag {
+  background: #e3f2fd;
+  border: 1px solid #2196F3;
+  border-radius: 15px;
+  padding: 4px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ability-tag {
+  background: #f3e5f5;
+  border: 1px solid #9c27b0;
+  border-radius: 15px;
+  padding: 4px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.type-tag {
+  border-radius: 15px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.remove-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-btn:active {
+  background: #d32f2f;
+}
+
+/* Manager Modal Styles */
+.manager-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.search-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.manager-search {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.add-item-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-item-btn:active {
+  background: #45a049;
+}
+
+.current-items {
+  margin: 15px 0;
+  min-height: 100px;
+  border: 1px dashed #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.current-items h4 {
+  margin: 0 0 10px 0;
+  color: #666;
+}
+
+.close-manager-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+.close-manager-btn:active {
+  background: #d32f2f;
+}
+
+/* Downgrade button styles */
+.downgrade-btn {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.downgrade-btn:active {
+  background: #f57c00;
 }

@@ -49,6 +49,45 @@
 <button class="cancel-btn">cancel</button>
 </div>
 </div>
+
+<!-- Ability Manager Modal -->
+<div class="blur-bg">
+<div class="manager-modal">
+<h3>Manage Abilities</h3>
+<div class="search-section">
+  <input list="abilities-data-list" class="manager-search" id="ability-search" placeholder="Search abilities...">
+  <button class="add-item-btn" onclick="addAbility()">Add</button>
+</div>
+<div class="current-items" id="current-abilities"></div>
+<button class="close-manager-btn" onclick="closeAbilityManager()">Close</button>
+</div>
+</div>
+
+<!-- Item Manager Modal -->
+<div class="blur-bg">
+<div class="manager-modal">
+<h3>Manage Items</h3>
+<div class="search-section">
+  <input list="items-data-list" class="manager-search" id="item-search" placeholder="Search items...">
+  <button class="add-item-btn" onclick="addItem()">Add</button>
+</div>
+<div class="current-items" id="current-items"></div>
+<button class="close-manager-btn" onclick="closeItemManager()">Close</button>
+</div>
+</div>
+
+<!-- Type Manager Modal -->
+<div class="blur-bg">
+<div class="manager-modal">
+<h3>Manage Types</h3>
+<div class="search-section">
+  <input list="types-data-list" class="manager-search" id="type-search" placeholder="Search types...">
+  <button class="add-item-btn" onclick="addType()">Add</button>
+</div>
+<div class="current-items" id="current-types"></div>
+<button class="close-manager-btn" onclick="closeTypeManager()">Close</button>
+</div>
+</div>
 <!-- Header -->
 <div class="header">
 <button class="back-btn" onclick="history.back()">←</button>
@@ -86,25 +125,43 @@
    </label>
  </div>
 <div class="stats-header-secondary">
-<div data-value="none" onclick="statClickHandler(event)" class="stat abilities">
-<strong>Abilities:</strong>
-</div>
-  <div data-value="none" onclick="statClickHandler(event)" class="stat nature">
-<strong>Nature:</strong>
-</div>
-<div data-value="" onclick="statClickHandler(event)" class="stat items">
-<strong>Items:</strong>
-</div>
+  <!-- Abilities Section -->
+  <div class="stat-group abilities-group">
+    <div class="stat-header">
+      <strong>Abilities:</strong>
+      <button class="add-btn" onclick="showAbilityManager()">+</button>
+    </div>
+    <div class="abilities-list" id="abilities-list"></div>
+  </div>
 
-<div data-value="" onclick="statClickHandler(event)" class="stat types">
-<strong>types:</strong>
-</div>
- <div onclick="statClickHandler(event)" data-value="0" class="stat wins-count">
-     <strong style="color:darkgreen">Wins:</strong>
- </div>
- <div onclick="statClickHandler(event)" data-value="0" class="stat loses-count">
-     <strong style="color:darkred">Loses:</strong>
- </div>
+  <!-- Items Section -->
+  <div class="stat-group items-group">
+    <div class="stat-header">
+      <strong>Items:</strong>
+      <button class="add-btn" onclick="showItemManager()">+</button>
+    </div>
+    <div class="items-list" id="items-list"></div>
+  </div>
+
+  <!-- Types Section -->
+  <div class="stat-group types-group">
+    <div class="stat-header">
+      <strong>Types:</strong>
+      <button class="add-btn" onclick="showTypeManager()">+</button>
+    </div>
+    <div class="types-list" id="types-list"></div>
+  </div>
+
+  <!-- Nature and Stats -->
+  <div data-value="none" onclick="statClickHandler(event)" class="stat nature">
+    <strong>Nature:</strong>
+  </div>
+  <div onclick="statClickHandler(event)" data-value="0" class="stat wins-count">
+    <strong style="color:darkgreen">Wins:</strong>
+  </div>
+  <div onclick="statClickHandler(event)" data-value="0" class="stat loses-count">
+    <strong style="color:darkred">Loses:</strong>
+  </div>
 </div>
 <div class="mega-controller">
     <button class="mega-btn" onclick="megaBtnClickHandler(event)">Mega</button>
