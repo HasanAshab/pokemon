@@ -1,61 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta class="mobile-meta" name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta class="mobile-meta" name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta class="mobile-meta" http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Kingdom Cards</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="top-controls">
     <button id="addKingdomBtn">Add Kingdom</button>
     <div class="view-toggle">
-      <button id="cardViewBtn" class="view-btn active">Card View</button>
-      <button id="networkViewBtn" class="view-btn">Network View</button>
+      <button id="networkViewBtn" class="view-btn" onclick="window.location.href='network.html'">Network View</button>
     </div>
   </div>
-  
+
   <!-- Card View -->
   <div id="cardView" class="kingdoms-network">
     <svg id="connectionLines" class="connection-svg"></svg>
     <div class="card-container" id="cardContainer"></div>
   </div>
-  
-  <!-- Network Topology View -->
-  <div id="networkView" class="network-topology" style="display: none;">
-    <div class="topology-container">
-      <svg id="topologyCanvas" class="topology-canvas"></svg>
-      <div id="topologyNodes" class="topology-nodes"></div>
-    </div>
-    <div class="network-legend">
-      <h3>Legend</h3>
-      <div class="legend-item">
-        <div class="legend-node normal"></div>
-        <span>Normal Kingdom</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-node war"></div>
-        <span>At War</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-node disaster"></div>
-        <span>Has Disasters</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-line"></div>
-        <span>Connection</span>
-      </div>
-    </div>
-  </div>
-  <div id="disasterReport" style="display: none; margin-top: 20px; padding: 20px; border: 2px solid #ff6b6b; border-radius: 8px; background-color: #ffe0e0;">
+  <div id="disasterReport"
+    style="display: none; margin-top: 20px; padding: 20px; border: 2px solid #ff6b6b; border-radius: 8px; background-color: #ffe0e0;">
     <h2>🚨 Current Disaster Report</h2>
     <div id="disasterContent"></div>
     <div style="margin-top: 10px;">
-      <button id="generateNewDisasters" style="margin-right: 10px; background-color: #dc3545; color: white;">Generate New Disasters</button>
+      <button id="generateNewDisasters" style="margin-right: 10px; background-color: #dc3545; color: white;">Generate
+        New Disasters</button>
       <button id="closeDisasterReport">Close Report</button>
     </div>
   </div>
   <script type="module" src="script.js"></script>
 </body>
+
 </html>

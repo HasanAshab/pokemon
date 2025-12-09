@@ -80,6 +80,8 @@ const urlsToCache = [
   './kingdoms/utils.js',
   './kingdoms/war.js',
   './kingdoms/constraints.js',
+  './kingdoms/network.html',
+  './kingdoms/network.js',
 
   // Kingdoms CMS
   './kingdoms/cms/index.html',

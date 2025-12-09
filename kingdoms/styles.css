@@ -1,4 +1,4 @@
-#addKingdomBtn {
+#addKingdomBtn, #backToCardsBtn {
   margin-bottom: 1rem;
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
@@ -9,8 +9,16 @@
   cursor: pointer;
 }
 
-#addKingdomBtn:hover {
+#addKingdomBtn:hover, #backToCardsBtn:hover {
   background-color: #388e3c;
+}
+
+#backToCardsBtn {
+  background-color: #2196f3;
+}
+
+#backToCardsBtn:hover {
+  background-color: #1976d2;
 }
 
 body {
