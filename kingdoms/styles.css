@@ -221,3 +221,224 @@ body {
 .dropdown-menu button.war-end-option:hover {
   background-color: #e8f5e8;
 }
+
+/* Top Controls */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.view-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #f8f9fa;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  background: #e9ecef;
+}
+
+.view-btn.active {
+  background: #2196f3;
+  color: white;
+}
+
+/* Network Topology View */
+.network-topology {
+  display: flex;
+  gap: 1rem;
+  height: 80vh;
+  background: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.topology-container {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(45deg, #f0f2f5 25%, transparent 25%), 
+              linear-gradient(-45deg, #f0f2f5 25%, transparent 25%), 
+              linear-gradient(45deg, transparent 75%, #f0f2f5 75%), 
+              linear-gradient(-45deg, transparent 75%, #f0f2f5 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.topology-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.topology-nodes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.topology-node {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border: 3px solid #fff;
+}
+
+.topology-node:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+.topology-node.normal {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+}
+
+.topology-node.war {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+  animation: pulse-war 2s infinite;
+}
+
+.topology-node.disaster {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+  animation: pulse-disaster 3s infinite;
+}
+
+.topology-node.war.disaster {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+  animation: pulse-critical 1.5s infinite;
+}
+
+@keyframes pulse-war {
+  0%, 100% { box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(244, 67, 54, 0.6); }
+}
+
+@keyframes pulse-disaster {
+  0%, 100% { box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(255, 152, 0, 0.6); }
+}
+
+@keyframes pulse-critical {
+  0%, 100% { box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(156, 39, 176, 0.6); }
+}
+
+.topology-node-icon {
+  font-size: 24px;
+  margin-bottom: 2px;
+}
+
+.topology-node-name {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topology-connection {
+  stroke: #2196f3;
+  stroke-width: 3;
+  fill: none;
+  opacity: 0.8;
+  filter: drop-shadow(0 2px 4px rgba(33, 150, 243, 0.3));
+}
+
+.topology-connection.active {
+  stroke: #4CAF50;
+  stroke-width: 4;
+  opacity: 1;
+  animation: flow 2s linear infinite;
+}
+
+@keyframes flow {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 20; }
+}
+
+/* Network Legend */
+.network-legend {
+  width: 200px;
+  background: white;
+  padding: 1rem;
+  border-left: 1px solid #ddd;
+}
+
+.network-legend h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.legend-node {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.legend-node.normal {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.legend-node.war {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+.legend-node.disaster {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.legend-line {
+  width: 30px;
+  height: 3px;
+  background: #2196f3;
+  border-radius: 2px;
+}
