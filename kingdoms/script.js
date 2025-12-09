@@ -879,15 +879,39 @@ function drawNetworkTopology() {
   // Draw connections first (so they appear behind nodes)
   drawTopologyConnections(canvas, positions);
 
+  // Calculate node sizes based on land area
+  const landAreas = kingdomNames.map(name => kingdoms[name].landArea || 1000);
+  const minLandArea = Math.min(...landAreas);
+  const maxLandArea = Math.max(...landAreas);
+  const minNodeSize = 40; // Minimum node size in pixels
+  const maxNodeSize = 120; // Maximum node size in pixels
+
   // Draw nodes
   kingdomNames.forEach(name => {
     const kingdom = kingdoms[name];
     const pos = positions[name];
 
+    // Calculate node size based on land area
+    const landArea = kingdom.landArea || 1000;
+    let nodeSize;
+    
+    if (maxLandArea === minLandArea) {
+      // All kingdoms have the same land area
+      nodeSize = (minNodeSize + maxNodeSize) / 2;
+    } else {
+      // Scale node size proportionally to land area
+      const normalizedArea = (landArea - minLandArea) / (maxLandArea - minLandArea);
+      nodeSize = minNodeSize + (normalizedArea * (maxNodeSize - minNodeSize));
+    }
+    
+    const nodeRadius = nodeSize / 2;
+
     const node = document.createElement('div');
     node.className = 'topology-node';
-    node.style.left = (pos.x - 40) + 'px';
-    node.style.top = (pos.y - 40) + 'px';
+    node.style.width = nodeSize + 'px';
+    node.style.height = nodeSize + 'px';
+    node.style.left = (pos.x - nodeRadius) + 'px';
+    node.style.top = (pos.y - nodeRadius) + 'px';
 
     // Determine node state
     const hasDisasters = kingdom.disaster && kingdom.disaster.current && kingdom.disaster.current.length > 0;
@@ -903,14 +927,21 @@ function drawNetworkTopology() {
       node.classList.add('normal');
     }
 
-    // Node content
+    // Node content with scaled font sizes
     const icon = document.createElement('div');
     icon.className = 'topology-node-icon';
     icon.textContent = isAtWar ? '⚔️' : hasDisasters ? '⚠️' : '🏰';
+    // Scale icon size based on node size (base size 24px for 80px node)
+    const iconSize = Math.round((nodeSize / 80) * 24);
+    icon.style.fontSize = iconSize + 'px';
 
     const nameLabel = document.createElement('div');
     nameLabel.className = 'topology-node-name';
     nameLabel.textContent = name;
+    // Scale text size based on node size (base size 10px for 80px node)
+    const textSize = Math.max(8, Math.round((nodeSize / 80) * 10));
+    nameLabel.style.fontSize = textSize + 'px';
+    nameLabel.style.maxWidth = (nodeSize - 10) + 'px';
 
     node.appendChild(icon);
     node.appendChild(nameLabel);
