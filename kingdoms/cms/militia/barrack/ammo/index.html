@@ -48,6 +48,32 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="bulk-operations-container">
+    <h3>Bulk Operations</h3>
+    <div class="bulk-operation-section">
+      <h4>Add Item to All Soldiers with Same Image</h4>
+      <div class="bulk-controls">
+        <select id="soldier-image-select">
+          <option value="">Select Soldier Image</option>
+        </select>
+        <input type="text" id="bulk-add-item" placeholder="Item name" />
+        <button onclick="bulkAddItem()">Add to All</button>
+      </div>
+    </div>
+    
+    <div class="bulk-operation-section">
+      <h4>Remove Item from All Soldiers with Same Image</h4>
+      <div class="bulk-controls">
+        <select id="soldier-image-select-remove">
+          <option value="">Select Soldier Image</option>
+        </select>
+        <input type="text" id="bulk-remove-item" placeholder="Item name" />
+        <button onclick="bulkRemoveItem()">Remove from All</button>
+      </div>
+    </div>
+  </div></select>h3>
 </body>
 <script type="module" src="script.js"></script>
 

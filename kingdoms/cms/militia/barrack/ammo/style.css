@@ -69,3 +69,74 @@ tr:hover {
   background-color: white;
   
 }
+
+.bulk-operations-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.bulk-operations-container h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.bulk-operation-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+}
+
+.bulk-operation-section h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.bulk-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bulk-controls select,
+.bulk-controls input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.bulk-controls select {
+  min-width: 200px;
+}
+
+.bulk-controls input {
+  min-width: 150px;
+}
+
+.bulk-controls button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.bulk-controls button:hover {
+  background-color: #0056b3;
+}
+
+.bulk-controls button:active {
+  background-color: #004085;
+}

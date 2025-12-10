@@ -198,5 +198,103 @@ window.onload = ()=>{
   setItemsTable(savedPriceChange)
   loadMainHeading()
   loadSoldierShiftsContainer()
+  loadSoldierImageOptions()
 
+}
+
+// Bulk Operations Functions
+function loadSoldierImageOptions() {
+  const soldierImages = new Set()
+  
+  // Collect all unique soldier image IDs
+  Object.values(kingdom.barrack.soldiers).forEach(shiftSoldiers => {
+    shiftSoldiers.forEach(soldier => {
+      soldierImages.add(soldier.image.id)
+    })
+  })
+  
+  // Populate both select dropdowns
+  const addSelect = document.getElementById("soldier-image-select")
+  const removeSelect = document.getElementById("soldier-image-select-remove")
+  
+  addSelect.innerHTML = '<option value="">Select Soldier Image</option>'
+  removeSelect.innerHTML = '<option value="">Select Soldier Image</option>'
+  
+  soldierImages.forEach(imageId => {
+    addSelect.innerHTML += `<option value="${imageId}">${imageId}</option>`
+    removeSelect.innerHTML += `<option value="${imageId}">${imageId}</option>`
+  })
+}
+
+globalThis.bulkAddItem = function() {
+  const selectedImageId = document.getElementById("soldier-image-select").value
+  const itemToAdd = document.getElementById("bulk-add-item").value.trim()
+  
+  if (!selectedImageId || !itemToAdd) {
+    alert("Please select a soldier image and enter an item name")
+    return
+  }
+  
+  let addedCount = 0
+  
+  // Add item to all soldiers with matching image ID across all shifts
+  Object.keys(kingdom.barrack.soldiers).forEach(shift => {
+    kingdom.barrack.soldiers[shift].forEach(soldier => {
+      if (soldier.image.id === selectedImageId) {
+        if (!soldier.image.items) {
+          soldier.image.items = []
+        }
+        // Check if item already exists to avoid duplicates
+        if (!soldier.image.items.includes(itemToAdd)) {
+          soldier.image.items.push(itemToAdd)
+          addedCount++
+        }
+      }
+    })
+  })
+  
+  if (addedCount > 0) {
+    saveKingdoms(kingdoms)
+    loadSoldierShiftsContainer()
+    setItemsTable(kingdom.barrack.ammoPriceChange)
+    alert(`Added "${itemToAdd}" to ${addedCount} soldiers with image "${selectedImageId}"`)
+    document.getElementById("bulk-add-item").value = ""
+  } else {
+    alert(`No soldiers found with image "${selectedImageId}" or item already exists`)
+  }
+}
+
+globalThis.bulkRemoveItem = function() {
+  const selectedImageId = document.getElementById("soldier-image-select-remove").value
+  const itemToRemove = document.getElementById("bulk-remove-item").value.trim()
+  
+  if (!selectedImageId || !itemToRemove) {
+    alert("Please select a soldier image and enter an item name")
+    return
+  }
+  
+  let removedCount = 0
+  
+  // Remove item from all soldiers with matching image ID across all shifts
+  Object.keys(kingdom.barrack.soldiers).forEach(shift => {
+    kingdom.barrack.soldiers[shift].forEach(soldier => {
+      if (soldier.image.id === selectedImageId && soldier.image.items) {
+        const itemIndex = soldier.image.items.indexOf(itemToRemove)
+        if (itemIndex > -1) {
+          soldier.image.items.splice(itemIndex, 1)
+          removedCount++
+        }
+      }
+    })
+  })
+  
+  if (removedCount > 0) {
+    saveKingdoms(kingdoms)
+    loadSoldierShiftsContainer()
+    setItemsTable(kingdom.barrack.ammoPriceChange)
+    alert(`Removed "${itemToRemove}" from ${removedCount} soldiers with image "${selectedImageId}"`)
+    document.getElementById("bulk-remove-item").value = ""
+  } else {
+    alert(`No soldiers found with image "${selectedImageId}" or item doesn't exist`)
+  }
 }
