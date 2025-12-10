@@ -76,7 +76,7 @@ function loadDatalist(index, multyInputBox) {
 function removeInput(inputElm) {
   inputElm.parentElement.removeChild(inputElm)
 }
-function handleCallBacks(callBackObj, index, value) {
+function handleCallBacks(callBackObj, index, value) {  
   if (callBackObj["all"]) callBackObj["all"](index, value)
   if (callBackObj[index]) callBackObj[index](index, value)
 }
@@ -94,9 +94,12 @@ function addInput(multyInputBox, value,callBackObj) {
   const removeBtn = document.createElement("button")
   removeBtn.classList = "remove-btn"
   removeBtn.textContent = "x"
+
   removeBtn.onclick = () => { 
+    
     removeInput(newInputElm)
     if (callBackObj){
+
       handleCallBacks(callBackObj, realIndex , valueInput.value)
     }
   }
@@ -118,7 +121,6 @@ function setIndex(index, multyInputBox) {
   }
 }
 export function getMultyInputValues(propertyName, index = null) {
-  console.log(propertyName, index);
   
   let multyInputBox = null
   const values = []

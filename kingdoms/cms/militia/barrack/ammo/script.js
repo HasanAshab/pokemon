@@ -18,12 +18,13 @@ document.getElementById("main-heading")
 .textContent = `${encodedName}'s Ammo`
 }
 function saveCardItems(cardIndex){
+  
   const items = getMultyInputValues("items",cardIndex)
+
   const ammoCard = document.querySelector(`.soldier-ammo-card[data-index="${cardIndex}"]`)
   const shift = ammoCard.dataset.shift
 const index = Array.prototype.indexOf.call(ammoCard.parentElement.children,ammoCard)  
   const soldierData = kingdom.barrack.soldiers[shift][index]
-  console.log(soldierData,shift,cardIndex);
   
   soldierData.image.items = items
   saveKingdoms(kingdoms)
@@ -39,7 +40,7 @@ function loadAllCardItems(){
      const items = kingdom.barrack.soldiers[shiftElement.dataset.shift][i++].image.items
      if (addInput && items) { 
       for (const item of items) {
-        addInput(multyInputBox,item)
+        addInput(multyInputBox,item,{all:saveCardItems})
       }
      }
   }
