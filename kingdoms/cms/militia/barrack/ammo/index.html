@@ -55,10 +55,11 @@
     <div class="bulk-operation-section">
       <h4>Add Item to All Soldiers with Same Image</h4>
       <div class="bulk-controls">
-        <select id="soldier-image-select">
+        <select id="soldier-image-select" onchange="updateBulkAddDatalist()">
           <option value="">Select Soldier Image</option>
         </select>
-        <input type="text" id="bulk-add-item" placeholder="Item name" />
+        <input type="text" id="bulk-add-item" placeholder="Item name" list="bulk-add-datalist" />
+        <datalist id="bulk-add-datalist"></datalist>
         <button onclick="bulkAddItem()">Add to All</button>
       </div>
     </div>
@@ -66,14 +67,15 @@
     <div class="bulk-operation-section">
       <h4>Remove Item from All Soldiers with Same Image</h4>
       <div class="bulk-controls">
-        <select id="soldier-image-select-remove">
+        <select id="soldier-image-select-remove" onchange="updateBulkRemoveDatalist()">
           <option value="">Select Soldier Image</option>
         </select>
-        <input type="text" id="bulk-remove-item" placeholder="Item name" />
+        <input type="text" id="bulk-remove-item" placeholder="Item name" list="bulk-remove-datalist" />
+        <datalist id="bulk-remove-datalist"></datalist>
         <button onclick="bulkRemoveItem()">Remove from All</button>
       </div>
     </div>
-  </div></select>h3>
+  </div>
 </body>
 <script type="module" src="script.js"></script>
 

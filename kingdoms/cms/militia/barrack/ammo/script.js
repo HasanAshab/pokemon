@@ -1,6 +1,7 @@
 // import humans from "../../../../../data/humans.js";
 import { getAmmoWithQuantity, saveKingdoms } from "../../../../utils.js";
 import {initAllMultyInputBox,getMultyInputValues } from "../../../../../assets/js/utils/dom.js";
+import items from "../../../../../data/items.js";
 var totalItemsMultyInputBox = 0
 globalThis.addInput = null
 // Get kingdom name from localStorage (new method) or URL params (fallback)
@@ -30,7 +31,6 @@ const index = Array.prototype.indexOf.call(ammoCard.parentElement.children,ammoC
 function loadAllCardItems(){
   const shiftElements = document.querySelectorAll(".shift")
   for (const shiftElement of shiftElements) {
-  console.log(shiftElement.dataset.shift);
 
   const soldierAmmoCards = shiftElement.querySelectorAll(".soldier-ammo-cards-container > .soldier-ammo-card")
   let i = 0
@@ -42,11 +42,6 @@ function loadAllCardItems(){
         addInput(multyInputBox,item)
       }
      }
-    //  const items = soldier.image.items  
-    //  items.forEach(item => {
-    //      
-    //     })
-    //  })
   }
   
 }
@@ -154,7 +149,7 @@ function setItemsTable(priceChangePercent = 0){
     adjustedTotalCost += adjustedItemCost
 
     const priceDisplay = priceChangePercent !== 0 
-      ? `${Math.round(adjustedPrice)}$`
+      ? `${basePrice}$ → ${adjustedPrice.toFixed(2)}$`
       : `${basePrice}$`
 
     itemsTableBody.innerHTML += `<tr>
@@ -185,23 +180,6 @@ function setItemsTable(priceChangePercent = 0){
     </tr>`
 }
 
-
-window.onload = ()=>{
-  if (!kingdom.barrack.ammo){
-      kingdom.barrack.ammo = {}
-    }
-  if (!kingdom.barrack.ammoPriceChange){
-      kingdom.barrack.ammoPriceChange = 0
-    }
-  
-  const savedPriceChange = kingdom.barrack.ammoPriceChange
-  setItemsTable(savedPriceChange)
-  loadMainHeading()
-  loadSoldierShiftsContainer()
-  loadSoldierImageOptions()
-
-}
-
 // Bulk Operations Functions
 function loadSoldierImageOptions() {
   const soldierImages = new Set()
@@ -223,6 +201,54 @@ function loadSoldierImageOptions() {
   soldierImages.forEach(imageId => {
     addSelect.innerHTML += `<option value="${imageId}">${imageId}</option>`
     removeSelect.innerHTML += `<option value="${imageId}">${imageId}</option>`
+  })
+}
+
+// Get all items from the main datalist (same as other item inputs)
+function getAllAvailableItems() {
+  return Object.keys(items)
+}
+
+// Get items that soldiers with specific image ID currently have
+function getItemsForImageId(imageId) {
+  const items = new Set()
+  
+  Object.values(kingdom.barrack.soldiers).forEach(shiftSoldiers => {
+    shiftSoldiers.forEach(soldier => {
+      if (soldier.image.id === imageId && soldier.image.items) {
+        soldier.image.items.forEach(item => items.add(item))
+      }
+    })
+  })
+  
+  return Array.from(items)
+}
+
+// Update datalist for bulk add (uses same items as main datalist)
+globalThis.updateBulkAddDatalist = function() {
+  const datalist = document.getElementById("bulk-add-datalist")
+  const availableItems = getAllAvailableItems()
+  
+  datalist.innerHTML = ""
+  availableItems.forEach(item => {
+    datalist.innerHTML += `<option value="${item}">`
+  })
+}
+
+// Update datalist for bulk remove (uses items from selected image soldiers)
+globalThis.updateBulkRemoveDatalist = function() {
+  const selectedImageId = document.getElementById("soldier-image-select-remove").value
+  const datalist = document.getElementById("bulk-remove-datalist")
+  
+  if (!selectedImageId) {
+    datalist.innerHTML = ""
+    return
+  }
+  
+  const imageItems = getItemsForImageId(selectedImageId)
+  datalist.innerHTML = ""
+  imageItems.forEach(item => {
+    datalist.innerHTML += `<option value="${item}">`
   })
 }
 
@@ -259,6 +285,8 @@ globalThis.bulkAddItem = function() {
     setItemsTable(kingdom.barrack.ammoPriceChange)
     alert(`Added "${itemToAdd}" to ${addedCount} soldiers with image "${selectedImageId}"`)
     document.getElementById("bulk-add-item").value = ""
+    // Update remove datalist in case the same image is selected there
+    updateBulkRemoveDatalist()
   } else {
     alert(`No soldiers found with image "${selectedImageId}" or item already exists`)
   }
@@ -294,7 +322,24 @@ globalThis.bulkRemoveItem = function() {
     setItemsTable(kingdom.barrack.ammoPriceChange)
     alert(`Removed "${itemToRemove}" from ${removedCount} soldiers with image "${selectedImageId}"`)
     document.getElementById("bulk-remove-item").value = ""
+    // Update the datalist to reflect the removal
+    updateBulkRemoveDatalist()
   } else {
     alert(`No soldiers found with image "${selectedImageId}" or item doesn't exist`)
   }
+}
+
+window.onload = ()=>{
+  if (!kingdom.barrack.ammo){
+      kingdom.barrack.ammo = {}
+    }
+  if (!kingdom.barrack.ammoPriceChange){
+      kingdom.barrack.ammoPriceChange = 0
+    }
+  
+  const savedPriceChange = kingdom.barrack.ammoPriceChange
+  setItemsTable(savedPriceChange)
+  loadMainHeading()
+  loadSoldierShiftsContainer()
+  loadSoldierImageOptions()
 }

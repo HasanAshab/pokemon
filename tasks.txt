@@ -1,4 +1,6 @@
 * Tasks
+Items remove without adding not saves
+
 
 * bug
 abilities multiple opponent event system
