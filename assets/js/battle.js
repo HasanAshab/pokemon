@@ -191,6 +191,12 @@ globalThis.toggleMirror = function (playerTag, { currentTarget }) {
     clickOnFirstPokemonSwitch(opponentTag(playerTag))
   }
 }
+
+function loadPokeMeta(playerTag) {
+  const pokeMetaCont = document.getElementById("poke-meta")
+  pokeMetaCont.innerText = JSON.stringify(pokemonMap[playerTag].meta, null, 2)
+}
+
 globalThis.showPlayerSettingsForm = function (playerTag) {
   const playerSettingsForm = document.querySelector(".player-settings-form")
   playerSettingsForm.parentElement.classList.add("active")
@@ -203,6 +209,7 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   loadItems(playerTag)
   loadEasyStats(playerTag)
   loadTokenStats(playerTag)
+  loadPokeMeta(playerTag)
   // global
   loadActiveFeilds()
 }
@@ -374,10 +381,10 @@ function loadWeatherIndicator() {
 }
 
 
-function syncStatsMeta(pokemon) {
-  pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
-  setPokemonMeta(pokemon.id, pokemon.meta)
-}
+// function syncStatsMeta(pokemon) {
+//   pokemon.meta.stats.hp = pokemon.state.stats.get("hp")
+//   setPokemonMeta(pokemon.id, pokemon.meta)
+// }
 
 function setBattleListeners() {
   battle.on(["wave", "turn"], function () {
@@ -604,9 +611,7 @@ function chooseBotMove(playerTag) {
   return moveId
 }
 
-
 function loadPokemonData(playerTag) {
-
   const pokemon = pokemonMap[playerTag]
   const hp = pokemon.state.stats.get("hp")
   const oldHp = pokemon.state.stats.prev.get("hp")
@@ -622,7 +627,7 @@ function loadPokemonData(playerTag) {
   loadMoves(playerTag)  
   setRetreatPerWave(pokemonMap[playerTag].meta.retreat,playerTag)
  // setRetreatChargeForAbilities(pokemon.abilities.retreatCost(), playerTag)
- 
+  
   if (hp !== oldHp) {
     const hpDist = fixFloat(hp - oldHp)
     const msg = `${0 < hpDist ? '+' : ''} ${hpDist} ${0 > hpDist ? `(${getDamageDangerLevel(pokemon, -hpDist)})` : ''}`
