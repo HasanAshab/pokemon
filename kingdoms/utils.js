@@ -410,7 +410,9 @@ export function getAmmoWithQuantity(kingdom){
 export function calcAmmoCost(kingdom) {
   const ammo = getAmmoWithQuantity(kingdom);  
   return Object.keys(ammo).reduce((acc, key) => {
-    return acc + (ammo[key] * kingdom.barrack.ammo[key])
+    const basePrice = kingdom.barrack.ammo[key]
+    const actualCost = basePrice + (basePrice * (kingdom.barrack.ammoPriceChange / 100))
+    return acc + (ammo[key] * actualCost)
   }, 0)
 }
 
