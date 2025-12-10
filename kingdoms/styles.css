@@ -213,6 +213,38 @@ body {
   z-index: 10;
 }
 
+/* Disaster protection state styling */
+.card.disaster-protected {
+  border: 2px solid #17a2b8;
+  background: linear-gradient(135deg, #fff 0%, #e6f7ff 100%);
+  box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
+.protection-indicator {
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  background: #17a2b8;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* Combined war and protection styling */
+.card.under-war.disaster-protected {
+  border: 2px solid #6f42c1;
+  background: linear-gradient(135deg, #fff 0%, #f3e5f5 100%);
+  box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+.card.under-war .protection-indicator {
+  top: 15px; /* Move down when war indicator is present */
+}
+
 /* War toggle button styling */
 .dropdown-menu button.war-start-option {
   color: #dc3545;
@@ -228,6 +260,23 @@ body {
 
 .dropdown-menu button.war-end-option:hover {
   background-color: #e8f5e8;
+}
+
+/* Disaster protection toggle button styling */
+.dropdown-menu button.protection-add-option {
+  color: #17a2b8;
+}
+
+.dropdown-menu button.protection-add-option:hover {
+  background-color: #e6f7ff;
+}
+
+.dropdown-menu button.protection-remove-option {
+  color: #6c757d;
+}
+
+.dropdown-menu button.protection-remove-option:hover {
+  background-color: #f8f9fa;
 }
 
 /* Top Controls */
@@ -350,6 +399,17 @@ body {
   animation: pulse-critical 1.5s infinite;
 }
 
+.topology-node.protected {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+  color: white;
+  animation: pulse-protected 4s infinite;
+}
+
+@keyframes pulse-protected {
+  0%, 100% { box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(23, 162, 184, 0.6); }
+}
+
 @keyframes pulse-war {
   0%, 100% { box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3); }
   50% { box-shadow: 0 4px 20px rgba(244, 67, 54, 0.6); }
@@ -442,6 +502,10 @@ body {
 
 .legend-node.disaster {
   background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.legend-node.protected {
+  background: linear-gradient(135deg, #17a2b8, #138496);
 }
 
 .legend-line {

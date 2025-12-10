@@ -89,8 +89,11 @@ function drawNetworkTopology() {
     // Determine node state
     const hasDisasters = kingdom.disaster && kingdom.disaster.current && kingdom.disaster.current.length > 0;
     const isAtWar = kingdom.underWar;
+    const isProtected = kingdom.disaster && kingdom.disaster.protected;
 
-    if (isAtWar && hasDisasters) {
+    if (isProtected) {
+      node.classList.add('protected');
+    } else if (isAtWar && hasDisasters) {
       node.classList.add('war', 'disaster');
     } else if (isAtWar) {
       node.classList.add('war');
@@ -103,7 +106,7 @@ function drawNetworkTopology() {
     // Node content with scaled font sizes
     const icon = document.createElement('div');
     icon.className = 'topology-node-icon';
-    icon.textContent = isAtWar ? '⚔️' : hasDisasters ? '⚠️' : '🏰';
+    icon.textContent = isProtected ? '🛡️' : isAtWar ? '⚔️' : hasDisasters ? '⚠️' : '🏰';
     // Scale icon size based on node size (base size 24px for 80px node)
     const iconSize = Math.round((nodeSize / 80) * 24);
     icon.style.fontSize = iconSize + 'px';

@@ -74,6 +74,16 @@ Object.keys(kingdoms).forEach((name) => {
     toggleWarState(name);
   };
 
+  // Create disaster protection toggle button
+  const protectionToggleBtn = document.createElement("button");
+  const isProtected = kingdoms[name].disaster?.protected || false;
+  protectionToggleBtn.textContent = isProtected ? "Remove Protection" : "Add Protection";
+  protectionToggleBtn.className = isProtected ? "protection-remove-option" : "protection-add-option";
+  protectionToggleBtn.onclick = (e) => {
+    e.stopPropagation();
+    toggleDisasterProtection(name);
+  };
+
   // Create remove button
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "Remove";
@@ -91,6 +101,7 @@ Object.keys(kingdoms).forEach((name) => {
   dropdownMenu.appendChild(renameBtn);
   dropdownMenu.appendChild(duplicateBtn);
   dropdownMenu.appendChild(warToggleBtn);
+  dropdownMenu.appendChild(protectionToggleBtn);
   dropdownMenu.appendChild(removeBtn);
   menuContainer.appendChild(moreBtn);
   menuContainer.appendChild(dropdownMenu);
@@ -102,6 +113,15 @@ Object.keys(kingdoms).forEach((name) => {
     warIndicator.className = "war-indicator";
     warIndicator.textContent = "⚔️ AT WAR";
     card.appendChild(warIndicator);
+  }
+
+  // Add disaster protection visual indicator
+  if (kingdoms[name].disaster?.protected) {
+    card.classList.add('disaster-protected');
+    const protectionIndicator = document.createElement("div");
+    protectionIndicator.className = "protection-indicator";
+    protectionIndicator.textContent = "🛡️ PROTECTED";
+    card.appendChild(protectionIndicator);
   }
 
   card.appendChild(label);
@@ -150,7 +170,8 @@ document.getElementById("addKingdomBtn").onclick = () => {
     closerKingdoms: [],
     disaster: {
       current: [],
-      geoState: generateRandomGeoState()
+      geoState: generateRandomGeoState(),
+      protected: false
     }
   };
 
@@ -221,6 +242,39 @@ function toggleWarState(kingdomName) {
 
   // Toggle war state
   kingdom.underWar = !kingdom.underWar;
+
+  // Save to localStorage
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+
+  // Reload the page to reflect changes
+  location.reload();
+}
+
+// Kingdom Disaster Protection Toggle Function
+function toggleDisasterProtection(kingdomName) {
+  const kingdom = kingdoms[kingdomName];
+
+  if (!kingdom) {
+    alert("Kingdom not found!");
+    return;
+  }
+
+  // Initialize disaster object if it doesn't exist
+  if (!kingdom.disaster) {
+    kingdom.disaster = {
+      current: [],
+      geoState: generateRandomGeoState(),
+      protected: false
+    };
+  }
+
+  // Toggle protection state
+  kingdom.disaster.protected = !kingdom.disaster.protected;
+
+  // If protection is enabled, clear current disasters
+  if (kingdom.disaster.protected) {
+    kingdom.disaster.current = [];
+  }
 
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -319,8 +373,14 @@ function simulateDisasters(kingdomName) {
   if (!kingdom.disaster) {
     kingdom.disaster = {
       current: [],
-      geoState: generateRandomGeoState()
+      geoState: generateRandomGeoState(),
+      protected: false
     };
+  }
+
+  // Skip disaster simulation if kingdom is protected
+  if (kingdom.disaster.protected) {
+    return;
   }
 
   // Clear current disasters
@@ -410,8 +470,14 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
     if (!nearbyKingdom.disaster) {
       nearbyKingdom.disaster = {
         current: [],
-        geoState: generateRandomGeoState()
+        geoState: generateRandomGeoState(),
+        protected: false
       };
+    }
+
+    // Skip if nearby kingdom is protected from disasters
+    if (nearbyKingdom.disaster.protected) {
+      return;
     }
 
     // Skip if nearby kingdom is immune to this disaster
@@ -507,9 +573,10 @@ function displayDisasterReport() {
     kingdomDiv.style.backgroundColor = '#f9f9f9';
 
     const kingdomTitle = document.createElement('h3');
-    kingdomTitle.textContent = `🏰 ${name}`;
+    const isProtected = kingdom.disaster?.protected || false;
+    kingdomTitle.textContent = `🏰 ${name} ${isProtected ? '🛡️' : ''}`;
     kingdomTitle.style.margin = '0 0 10px 0';
-    kingdomTitle.style.color = '#333';
+    kingdomTitle.style.color = isProtected ? '#28a745' : '#333';
     kingdomDiv.appendChild(kingdomTitle);
 
     let currentDisasters = kingdom.disaster.current || [];
@@ -520,7 +587,10 @@ function displayDisasterReport() {
 
     if (currentDisasters.length === 0) {
       const noDisaster = document.createElement('p');
-      noDisaster.textContent = '✅ No disasters currently affecting this kingdom';
+      const isProtected = kingdom.disaster?.protected || false;
+      noDisaster.textContent = isProtected ? 
+        '🛡️ Kingdom is protected from disasters' : 
+        '✅ No disasters currently affecting this kingdom';
       noDisaster.style.color = '#28a745';
       noDisaster.style.margin = '0';
       kingdomDiv.appendChild(noDisaster);
@@ -643,8 +713,14 @@ Object.keys(kingdoms).forEach(name => {
   if (!kingdoms[name].disaster) {
     kingdoms[name].disaster = {
       current: [],
-      geoState: generateRandomGeoState()
+      geoState: generateRandomGeoState(),
+      protected: false
     };
+  }
+
+  // Initialize protected property if it doesn't exist
+  if (kingdoms[name].disaster.protected === undefined) {
+    kingdoms[name].disaster.protected = false;
   }
 
   // Convert old disaster format to new array format
