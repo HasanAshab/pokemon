@@ -66,7 +66,7 @@ function mergeDefault(move) {
         canUse(pokemon) {
             return true
         },
-        onAfterMove(pokemon, target, move) {
+        onAfterMove(pokemon, target, move) {            
             if ('heal' in move) {
                 let healTarget
                 if (move.target === "normal")

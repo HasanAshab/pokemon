@@ -1,5 +1,4 @@
 * Tasks
-Items remove without adding not saves
 
 
 * bug

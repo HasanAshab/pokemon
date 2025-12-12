@@ -164,8 +164,8 @@ class BaseBattle extends EventEmitter {
     this.sync(data)
   }
 
-  opponentOf(pokemon) {
-    return pokemon._tag === this.pokemon1._tag ? this.pokemon2 : this.pokemon1;
+  opponentOf(pokemon) {    
+    return pokemon.name === this.pokemon1.name ? this.pokemon2 : this.pokemon1;
   }
 
   state(pokemon) {
@@ -976,7 +976,7 @@ class BattleState extends EventEmitter {
 
     this.on("hitted-move", (move, opponentMove) => {      
       const opponent = this.battle.opponentOf(this.pokemon)
-      move.onHit?.(this.pokemon, opponent)
+      move.onHit?.(this.pokemon, opponent)      
       move.onAfterMove(this.pokemon, opponent, move, opponentMove)
     })
 
@@ -1173,8 +1173,6 @@ class BattleState extends EventEmitter {
       throw new Error(`${this.pokemon.name} cannot summon ${id}.`);
 
     const level = ((sourceMove._meta.grade || 0) * 3) || 1
-    console.log(level, Math.max(3, level));
-
     const summon = new Pokemon(id, {
       xp: (level - 1) * 100,
       retreat: Math.max(3, level),
@@ -1331,7 +1329,6 @@ class StatsManager {
       }
     }
     else if (on === "target") {
-      move.id === "howl" && console.log("2", this.state.pokemon.name, attacker.name);
       this.state.pokemon.abilities.onTryBoost(move.statChanges.target, this.state.pokemon, attacker, attacker)
       attacker.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
       this.state.battle._realOpponent?.abilities.onTryBoostOpponent(move.statChanges.target, this.state.pokemon, attacker, attacker)
@@ -1551,7 +1548,6 @@ class ArmorManager {
   forCategory(category) {
     for (const item of this._triggeredArmors()) {
       const defStat = this._getDefStatFor(item, category)
-      console.log(defStat);
 
       if (defStat > 0 && item.armor._hp > 0) {
         return {
