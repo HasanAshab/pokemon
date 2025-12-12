@@ -264,9 +264,11 @@ export function calculateTax(kingdom) {
 
 export function calcCommandersSalary(kingdom) {
   if (!kingdom?.commanders) return 0;
-  return Object.entries(kingdom.commanders).reduce((total, [_, commander]) => {
+  const actualSalary = Object.entries(kingdom.commanders).reduce((total, [_, commander]) => {
     return total + commander.salary;
   }, 0);
+  const warMod = kingdom.underWar ? 2 : 1;
+  return actualSalary * warMod;
 }
 
 export function calcSoldiersSalary(kingdom, type) {
