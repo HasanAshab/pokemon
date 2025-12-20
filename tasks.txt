@@ -1,4 +1,6 @@
 * Tasks
+show warning before leaving battle
+bug: when save kingdom/building, ammonation glitches
 
 
 * bug
