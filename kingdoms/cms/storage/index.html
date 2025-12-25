@@ -6,13 +6,61 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Storage</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .lifetime-tracker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 5px;
+    }
+    
+    .lifetime-tracker label {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .lifetime-tracker input {
+      width: 60px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      text-align: center;
+    }
+    
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    header h1 {
+      margin: 0;
+    }
+    
+    .header-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1 id="kingdomName">Kingdom Storage</h1>
-      <button id="newMonthBtn" class="btn special-btn">New Month</button>
-      <button id="addItemBtn" class="btn primary-btn">Add New Item</button>
+      <div class="lifetime-tracker">
+        <label>Kingdom Age:</label>
+        <input type="number" id="lifetimeYears" placeholder="Years" min="0"> Years
+        <input type="number" id="lifetimeMonths" placeholder="Months" min="0" max="11"> Months
+      </div>
+      <div class="header-controls">
+        <button id="newMonthBtn" class="btn special-btn">New Month</button>
+        <button id="addItemBtn" class="btn primary-btn">Add New Item</button>
+      </div>
     </header>
 
     <div id="itemsContainer" class="items-container"></div>

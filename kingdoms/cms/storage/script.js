@@ -14,6 +14,7 @@ kingdomNameEl.textContent = name ? `${name}'s Storage` : "Unknown Kingdom";
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].storage) kingdoms[name].storage = {};
+if (!kingdoms[name].lifetime) kingdoms[name].lifetime = { years: 0, months: 0 };
 
 function saveAndRefresh(storage) {
   Object.keys(getMaintainedStorage(kingdoms[name])).forEach(item => {
@@ -127,8 +128,69 @@ newMonthBtn.onclick = () => {
   const newDensity = (getPopulation(kingdoms[name]) + getPopulationGrowth(kingdoms[name])) / kingdoms[name].landArea
   kingdoms[name].density = newDensity 
 
+  // Increment lifetime counter
+  kingdoms[name].lifetime.months++;
+  if (kingdoms[name].lifetime.months >= 12) {
+    kingdoms[name].lifetime.years++;
+    kingdoms[name].lifetime.months = 0;
+  }
+
   saveAndRefresh(kingdoms[name].storage);
+  updateLifetimeDisplay();
 };
+
+// Lifetime tracking functions
+function updateLifetimeDisplay() {
+  const yearsInput = document.getElementById('lifetimeYears');
+  const monthsInput = document.getElementById('lifetimeMonths');
+  
+  if (yearsInput && monthsInput) {
+    yearsInput.value = kingdoms[name].lifetime.years;
+    monthsInput.value = kingdoms[name].lifetime.months;
+  }
+}
+
+function updateLifetime() {
+  const years = parseInt(document.getElementById('lifetimeYears').value) || 0;
+  const months = parseInt(document.getElementById('lifetimeMonths').value) || 0;
+  
+  if (months >= 12) {
+    alert('Months should be less than 12. Use years for values 12 and above.');
+    document.getElementById('lifetimeMonths').value = kingdoms[name].lifetime.months;
+    return;
+  }
+  
+  kingdoms[name].lifetime.years = years;
+  kingdoms[name].lifetime.months = months;
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+}
+
+// Auto-save lifetime on blur
+function setupLifetimeAutoSave() {
+  const yearsInput = document.getElementById('lifetimeYears');
+  const monthsInput = document.getElementById('lifetimeMonths');
+  
+  if (yearsInput && monthsInput) {
+    yearsInput.addEventListener('blur', updateLifetime);
+    monthsInput.addEventListener('blur', updateLifetime);
+    
+    yearsInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        yearsInput.blur();
+      }
+    });
+    
+    monthsInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        monthsInput.blur();
+      }
+    });
+  }
+}
 
 
 renderItems();
+updateLifetimeDisplay();
+setupLifetimeAutoSave();
