@@ -257,14 +257,17 @@ class FreezeEffect extends ExpirableEffect {
     
     setup() {
         super.setup()
-        this.status.canMove = false
+        this.state.stats._statChanges.evasion -= 2
     }
-
     teardown() {
         super.teardown()
-        this.status.canMove = true
+        this.state.stats._statChanges.evasion += 2
     }
-    
+
+    canUseMove(move) {
+        return !move.flags.offensive
+    }
+
     onTurnEnd() {
         this._thawChance += FreezeEffect.THAW_CHANCE
     }
