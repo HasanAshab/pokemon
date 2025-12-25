@@ -95,6 +95,8 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            min-height: 0; /* Important for flex scrolling */
+            overflow: hidden; /* Prevent panel from expanding beyond container */
         }
         
         .json-editor {
@@ -108,6 +110,7 @@
             outline: none;
             background: #fafafa;
             display: none;
+            min-height: 0; /* Important for flex scrolling */
         }
         
         .json-editor.active {
@@ -118,12 +121,15 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            overflow-x: auto;
             font-family: 'Courier New', monospace;
             font-size: 14px;
             line-height: 1.5;
             background: #f8f9fa;
             white-space: pre-wrap;
             display: none;
+            min-height: 0; /* Important for flex scrolling */
+            max-height: 100%; /* Ensure it doesn't exceed container */
         }
         
         .json-preview.active {
