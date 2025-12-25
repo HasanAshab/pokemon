@@ -436,6 +436,13 @@ function renderStorageItems() {
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = itemName;
+    nameInput.addEventListener('blur', () => handleStorageItemEdit(itemName, 'name', nameInput.value));
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        nameInput.blur();
+      }
+    });
     nameDiv.appendChild(nameLabel);
     nameDiv.appendChild(nameInput);
    
@@ -445,6 +452,13 @@ function renderStorageItems() {
     const quantityInput = document.createElement('input');
     quantityInput.type = 'number';
     quantityInput.value = storage[itemName];
+    quantityInput.addEventListener('blur', () => handleStorageItemEdit(itemName, 'quantity', quantityInput.value));
+    quantityInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        quantityInput.blur();
+      }
+    });
     quantityDiv.appendChild(quantityLabel);
     quantityDiv.appendChild(quantityInput);
 
@@ -455,6 +469,13 @@ function renderStorageItems() {
     changeInput.type = 'number';
     changeInput.value = monthlyChanges[itemName] || 0;
     changeInput.placeholder = '0';
+    changeInput.addEventListener('blur', () => handleStorageItemEdit(itemName, 'change', changeInput.value));
+    changeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        changeInput.blur();
+      }
+    });
     changeDiv.appendChild(changeLabel);
     changeDiv.appendChild(changeInput);
 
@@ -475,34 +496,6 @@ function renderStorageItems() {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'storage-actions';
 
-    const saveBtn = document.createElement('button');
-    saveBtn.className = 'btn primary-btn';
-    saveBtn.textContent = 'Save';
-    saveBtn.onclick = () => {
-      const newName = nameInput.value.trim();
-      const quantity = parseInt(quantityInput.value) || 0;
-      const change = parseInt(changeInput.value) || 0;
-
-      if (!newName) {
-        alert('Item name cannot be empty');
-        return;
-      }
-
-      // If name changed, remove old entry
-      if (newName !== itemName) {
-        delete storage[itemName];
-        delete monthlyChanges[itemName];
-      }
-
-      storage[newName] = quantity;
-      monthlyChanges[newName] = change;
-
-      company.storage = storage;
-      company.monthlyChanges = monthlyChanges;
-      saveAllData();
-      renderStorageItems();
-    };
-
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'btn secondary-btn';
     deleteBtn.textContent = 'Delete';
@@ -517,7 +510,6 @@ function renderStorageItems() {
       }
     };
 
-    actionsDiv.appendChild(saveBtn);
     actionsDiv.appendChild(deleteBtn);
 
     itemDiv.appendChild(nameDiv);
@@ -528,6 +520,46 @@ function renderStorageItems() {
 
     itemsContainer.appendChild(itemDiv);
   });
+}
+
+function handleStorageItemEdit(originalItemName, field, newValue) {
+  const trimmedValue = newValue.trim();
+  
+  if (field === 'name') {
+    if (!trimmedValue) {
+      alert('Item name cannot be empty');
+      renderStorageItems();
+      return;
+    }
+    
+    if (trimmedValue !== originalItemName) {
+      // Check if new name already exists
+      if (storage[trimmedValue] !== undefined) {
+        alert('Item with this name already exists');
+        renderStorageItems();
+        return;
+      }
+      
+      // Move data to new name
+      storage[trimmedValue] = storage[originalItemName];
+      monthlyChanges[trimmedValue] = monthlyChanges[originalItemName] || 0;
+      
+      // Remove old entries
+      delete storage[originalItemName];
+      delete monthlyChanges[originalItemName];
+    }
+  } else if (field === 'quantity') {
+    const quantity = parseInt(trimmedValue) || 0;
+    storage[originalItemName] = quantity;
+  } else if (field === 'change') {
+    const change = parseInt(trimmedValue) || 0;
+    monthlyChanges[originalItemName] = change;
+  }
+  
+  company.storage = storage;
+  company.monthlyChanges = monthlyChanges;
+  saveAllData();
+  renderStorageItems();
 }
 
 globalThis.addNewStorageItem = function () {
