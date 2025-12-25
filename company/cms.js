@@ -56,6 +56,8 @@ function updateCoins() {
  console.log(contracts, company.employees)
   company.storage.coins = (company.storage.coins || 0) + totalIncome;
   
+  // Save the updated storage to localStorage
+  saveAllData();
   renderStorageItems();
 
 }
