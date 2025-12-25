@@ -13,6 +13,22 @@
 <body>
   <div class="container">
     <h1 id="companyName">Company Name</h1>
+    <!-- Lifetime Display -->
+    
+    <div class="section">
+      <div>
+        <strong>Company Lifetime: </strong>
+        <span id="lifetimeDisplay">0 Years, 0 Months</span>
+      </div>
+  
+      <!-- Manual Lifetime Update -->
+      <div>
+        <label>Set Lifetime:</label>
+        <input type="number" id="lifetimeYears" placeholder="Years" min="0">
+        <input type="number" id="lifetimeMonths" placeholder="Months" min="0" max="11">
+        <button onclick="updateLifetime()">Update Lifetime</button>
+      </div>
+    </div>
 
     <div class="section storage">
       <h2>Storage Management</h2>

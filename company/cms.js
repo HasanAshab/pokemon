@@ -10,6 +10,7 @@ const companies = JSON.parse(localStorage.getItem("companies")) || {};
 const company = companies[companyName];
 if (!company.monthlyChanges) company.monthlyChanges = {}
 if (!company.storage) company.storage = {}
+if (!company.lifetime) company.lifetime = { years: 0, months: 0 }
 let revenueChart;
 let chartData = {
   labels: [],
@@ -122,17 +123,38 @@ globalThis.addRevenue =()=> {
   chartData.labels.push(monthNames[nextMonth]);
   chartData.datasets[0].data.push(selectedRevenue);
 
+  // Increment lifetime counter
+  company.lifetime.months++;
+  if (company.lifetime.months >= 12) {
+    company.lifetime.years++;
+    company.lifetime.months = 0;
+  }
+
   revenueChart.update();
   saveChartData();
   updateCoins();
+  updateLifetimeDisplay();
 }
 
 globalThis.deleteLastMonthRevenue = ()=> {
     company.revenue.labels.pop();
     company.revenue.data.pop();
+    
+    // Decrement lifetime counter
+    company.lifetime.months--;
+    if (company.lifetime.months < 0) {
+      if (company.lifetime.years > 0) {
+        company.lifetime.years--;
+        company.lifetime.months = 11;
+      } else {
+        company.lifetime.months = 0;
+      }
+    }
+    
     saveAllData();
     document.getElementById('companyWorth').textContent = 'Total Worth $: 0';
     revenueChart.update();
+    updateLifetimeDisplay();
 }
 
 // Employee Salary Management
@@ -584,6 +606,29 @@ globalThis.addNewStorageItem = function () {
   renderStorageItems();
 }
 
+// Lifetime tracking functions
+function updateLifetimeDisplay() {
+  const lifetimeElement = document.getElementById('lifetimeDisplay');
+  if (lifetimeElement) {
+    lifetimeElement.textContent = `${company.lifetime.years} Years, ${company.lifetime.months} Months`;
+  }
+}
+
+globalThis.updateLifetime = function() {
+  const years = parseInt(document.getElementById('lifetimeYears').value) || 0;
+  const months = parseInt(document.getElementById('lifetimeMonths').value) || 0;
+  
+  if (months >= 12) {
+    alert('Months should be less than 12. Use years for values 12 and above.');
+    return;
+  }
+  
+  company.lifetime.years = years;
+  company.lifetime.months = months;
+  saveAllData();
+  updateLifetimeDisplay();
+}
+
 
 // Initialize everything on page load
 window.onload = function () {
@@ -596,6 +641,7 @@ window.onload = function () {
   loadKingdomsDataList();
   // renderAssetsTable();
   processMonthlyChanges();
+  updateLifetimeDisplay();
 
   // Add event listeners for storage system
   document.getElementById('addItemBtn').onclick = addNewStorageItem;
