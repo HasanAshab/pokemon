@@ -354,6 +354,12 @@ saveBtn.addEventListener("click", () => {
   const pci = parseFloat(pciInput.value) || 0;
   const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
 
+  const kingdoms = localStorage.getItem("kingdoms")
+    ? JSON.parse(localStorage.getItem("kingdoms"))
+    : {};
+  const kingdom = kingdoms[name];
+
+  // Update the kingdom
   kingdom.id = name;
   kingdom.landArea = area;
   kingdom.density = density;
