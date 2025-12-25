@@ -8,13 +8,17 @@ let originalJson = '';
 const kingdomSelect = document.getElementById('kingdom-select');
 const kingdomInfo = document.getElementById('kingdom-info');
 const jsonEditor = document.getElementById('json-editor');
-const previewContent = document.getElementById('preview-content');
+const jsonPreview = document.getElementById('json-preview');
 const jsonPath = document.getElementById('json-path');
 const statusDiv = document.getElementById('status');
 const formatBtn = document.getElementById('format-btn');
 const validateBtn = document.getElementById('validate-btn');
 const saveBtn = document.getElementById('save-btn');
 const resetBtn = document.getElementById('reset-btn');
+const previewTab = document.getElementById('preview-tab');
+const editTab = document.getElementById('edit-tab');
+
+let currentMode = 'preview'; // Default to preview mode
 
 // Initialize the editor
 function init() {
@@ -74,6 +78,9 @@ function loadKingdom(encodedName) {
     // Update preview
     updatePreview();
     
+    // Switch to preview mode by default
+    switchMode('preview');
+    
     showStatus('Kingdom loaded successfully', 'success');
 }
 
@@ -82,10 +89,32 @@ function clearEditor() {
     currentKingdom = null;
     originalJson = '';
     jsonEditor.value = '';
-    previewContent.innerHTML = '';
+    jsonPreview.innerHTML = '';
     kingdomInfo.textContent = '';
     jsonPath.textContent = '';
     hideStatus();
+}
+
+// Switch between preview and edit modes
+function switchMode(mode) {
+    currentMode = mode;
+    
+    if (mode === 'preview') {
+        previewTab.classList.add('active');
+        editTab.classList.remove('active');
+        jsonPreview.classList.add('active');
+        jsonEditor.classList.remove('active');
+        updatePreview();
+    } else {
+        editTab.classList.add('active');
+        previewTab.classList.remove('active');
+        jsonEditor.classList.add('active');
+        jsonPreview.classList.remove('active');
+        // Sync editor content when switching to edit mode
+        if (jsonEditor.value !== originalJson) {
+            updatePreview();
+        }
+    }
 }
 
 // Update preview panel
@@ -93,19 +122,19 @@ function updatePreview() {
     try {
         const jsonText = jsonEditor.value.trim();
         if (!jsonText) {
-            previewContent.innerHTML = '<em>No content to preview</em>';
+            jsonPreview.innerHTML = '<em style="color: #7f8c8d;">No content to preview</em>';
             return;
         }
         
         const parsed = JSON.parse(jsonText);
         const formatted = JSON.stringify(parsed, null, 2);
         
-        // Syntax highlighting (basic)
+        // Syntax highlighting for preview mode
         const highlighted = syntaxHighlight(formatted);
-        previewContent.innerHTML = highlighted;
+        jsonPreview.innerHTML = highlighted;
         
     } catch (error) {
-        previewContent.innerHTML = `<span style="color: #e74c3c;">Invalid JSON: ${error.message}</span>`;
+        jsonPreview.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">Invalid JSON:</span>\n<span style="color: #e74c3c;">${error.message}</span>`;
     }
 }
 
@@ -234,7 +263,18 @@ function setupEventListeners() {
     });
     
     jsonEditor.addEventListener('input', () => {
-        updatePreview();
+        if (currentMode === 'preview') {
+            updatePreview();
+        }
+    });
+    
+    // Mode switching
+    previewTab.addEventListener('click', () => {
+        switchMode('preview');
+    });
+    
+    editTab.addEventListener('click', () => {
+        switchMode('edit');
     });
     
     formatBtn.addEventListener('click', formatJson);
@@ -243,7 +283,7 @@ function setupEventListeners() {
     resetBtn.addEventListener('click', resetChanges);
     
     // Keyboard shortcuts
-    jsonEditor.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (e) => {
         // Ctrl+S to save
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
@@ -256,7 +296,21 @@ function setupEventListeners() {
             formatJson();
         }
         
-        // Tab key for indentation
+        // Ctrl+E to switch to edit mode
+        if (e.ctrlKey && e.key === 'e') {
+            e.preventDefault();
+            switchMode('edit');
+        }
+        
+        // Ctrl+P to switch to preview mode
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            switchMode('preview');
+        }
+    });
+    
+    // Tab key for indentation in edit mode
+    jsonEditor.addEventListener('keydown', (e) => {
         if (e.key === 'Tab') {
             e.preventDefault();
             const start = e.target.selectionStart;

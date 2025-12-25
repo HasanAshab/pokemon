@@ -52,21 +52,49 @@
         
         .editor-container {
             display: flex;
+            flex-direction: column;
             height: 70vh;
+        }
+        
+        .mode-controls {
+            background: #ecf0f1;
+            padding: 10px 20px;
+            border-bottom: 1px solid #bdc3c7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mode-tabs {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .mode-tab {
+            padding: 8px 16px;
+            border: none;
+            background: #bdc3c7;
+            color: #2c3e50;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .mode-tab.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .mode-tab:hover:not(.active) {
+            background: #95a5a6;
         }
         
         .editor-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
-        }
-        
-        .panel-header {
-            background: #ecf0f1;
-            padding: 10px 20px;
-            border-bottom: 1px solid #bdc3c7;
-            font-weight: bold;
-            color: #2c3e50;
+            position: relative;
         }
         
         .json-editor {
@@ -79,21 +107,31 @@
             resize: none;
             outline: none;
             background: #fafafa;
+            display: none;
+        }
+        
+        .json-editor.active {
+            display: block;
+        }
+        
+        .json-preview {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #f8f9fa;
+            white-space: pre-wrap;
+            display: none;
+        }
+        
+        .json-preview.active {
+            display: block;
         }
         
         .preview-panel {
-            flex: 1;
-            border-left: 1px solid #bdc3c7;
-        }
-        
-        .preview-content {
-            padding: 20px;
-            height: calc(100% - 40px);
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            line-height: 1.4;
-            background: #f8f9fa;
+            display: none;
         }
         
         .controls {
@@ -189,21 +227,17 @@
         
         @media (max-width: 768px) {
             .editor-container {
-                flex-direction: column;
                 height: auto;
             }
             
-            .preview-panel {
-                border-left: none;
-                border-top: 1px solid #bdc3c7;
+            .json-editor, .json-preview {
+                height: 400px;
             }
             
-            .json-editor {
-                height: 300px;
-            }
-            
-            .preview-content {
-                height: 200px;
+            .mode-controls {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
             }
         }
     </style>
@@ -223,15 +257,17 @@
         </div>
         
         <div class="editor-container">
-            <div class="editor-panel">
-                <div class="panel-header">JSON Editor</div>
-                <textarea id="json-editor" class="json-editor" placeholder="Select a kingdom to start editing..."></textarea>
+            <div class="mode-controls">
+                <div class="mode-tabs">
+                    <button id="preview-tab" class="mode-tab active">Preview</button>
+                    <button id="edit-tab" class="mode-tab">Edit</button>
+                </div>
+                <div class="json-path" id="json-path"></div>
             </div>
             
-            <div class="preview-panel">
-                <div class="panel-header">Formatted Preview</div>
-                <div class="json-path" id="json-path"></div>
-                <div id="preview-content" class="preview-content"></div>
+            <div class="editor-panel">
+                <div id="json-preview" class="json-preview active"></div>
+                <textarea id="json-editor" class="json-editor" placeholder="Select a kingdom to start editing..."></textarea>
             </div>
         </div>
         
