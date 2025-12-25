@@ -1,6 +1,4 @@
 * Tasks
-bug: when save kingdom/building, ammonation glitches
-
 
 * bug
 abilities multiple opponent event system
