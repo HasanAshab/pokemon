@@ -146,7 +146,15 @@ globalThis.showStatEditForm = function (playerTag) {
   setStatChanges(pokemon.state.stats._statChanges, playerTag)
 }
 
+window.addEventListener("beforeunload", function (e) {
+    var confirmationMessage = 'Are you serious? The state will be lost.';
+    return confirmationMessage;
+});
 
+window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        e.returnValue = '';
+});
 
 globalThis.showEffectsEditForm = function (playerTag) {
   const pokemon = pokemonMap[playerTag]
