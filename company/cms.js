@@ -608,9 +608,12 @@ globalThis.addNewStorageItem = function () {
 
 // Lifetime tracking functions
 function updateLifetimeDisplay() {
-  const lifetimeElement = document.getElementById('lifetimeDisplay');
-  if (lifetimeElement) {
-    lifetimeElement.textContent = `${company.lifetime.years} Years, ${company.lifetime.months} Months`;
+  const yearsInput = document.getElementById('lifetimeYears');
+  const monthsInput = document.getElementById('lifetimeMonths');
+  
+  if (yearsInput && monthsInput) {
+    yearsInput.value = company.lifetime.years;
+    monthsInput.value = company.lifetime.months;
   }
 }
 
@@ -620,13 +623,38 @@ globalThis.updateLifetime = function() {
   
   if (months >= 12) {
     alert('Months should be less than 12. Use years for values 12 and above.');
+    document.getElementById('lifetimeMonths').value = company.lifetime.months;
     return;
   }
   
   company.lifetime.years = years;
   company.lifetime.months = months;
   saveAllData();
-  updateLifetimeDisplay();
+}
+
+// Auto-save lifetime on blur
+function setupLifetimeAutoSave() {
+  const yearsInput = document.getElementById('lifetimeYears');
+  const monthsInput = document.getElementById('lifetimeMonths');
+  
+  if (yearsInput && monthsInput) {
+    yearsInput.addEventListener('blur', updateLifetime);
+    monthsInput.addEventListener('blur', updateLifetime);
+    
+    yearsInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        yearsInput.blur();
+      }
+    });
+    
+    monthsInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        monthsInput.blur();
+      }
+    });
+  }
 }
 
 
@@ -642,6 +670,7 @@ window.onload = function () {
   // renderAssetsTable();
   processMonthlyChanges();
   updateLifetimeDisplay();
+  setupLifetimeAutoSave();
 
   // Add event listeners for storage system
   document.getElementById('addItemBtn').onclick = addNewStorageItem;
