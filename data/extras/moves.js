@@ -1405,7 +1405,7 @@ export default {
   "$paperbomb:explode": {
     num: 100045,
     accuracy: true,
-    basePower: 100,
+    basePower: 85,
     category: "Physical",
     name: "Paper Bomb (Explode)",
     pp: null,

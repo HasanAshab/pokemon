@@ -598,22 +598,25 @@ class PaperBombEffect extends Effect {
     onUsedMove(move) {
         const lowMovement = this.state.pokemon.level 
         const midMovement = lowMovement * 2
+        const usedBp = move._bp * move.hits
         const armorRemoved = this._cachedArmors.some(id => !this.state.armor._items.some(armor => armor.id === id))
+        console.log(usedBp);
         
         let explodeChance
-        if (move._bp > midMovement) {
+        if (usedBp > midMovement) {
             explodeChance = 50
         }
-        else if (move._bp > lowMovement) {
-            explodeChance = 20
+        else if (usedBp > lowMovement) {
+            explodeChance = 30
         }
         else {
-            explodeChance = 2
+            explodeChance = 4
         }
 
         if (armorRemoved) {
             explodeChance += 30
         }
+        console.log(`${this.state.pokemon.name}: explode chance: ${explodeChance}`);
         
         if (Math.random() * 100 < explodeChance) {
             this._explode()

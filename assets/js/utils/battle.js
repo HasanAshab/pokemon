@@ -526,9 +526,7 @@ class BaseBattle extends EventEmitter {
       if (!attackSelf1 && canMove1 && (d2 || move1.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove2)) {
         this.pokemon2.state.emit("contacted", this.pokemon1, move1)
         this.pokemon2.state.effects.apply(move1, { on: "target" })
-        this.pokemon2.state.stats.apply("target", move1)
-        console.log("Yeassh");
-        
+        this.pokemon2.state.stats.apply("target", move1)        
       }
     }
     if (attackSelf1) {
