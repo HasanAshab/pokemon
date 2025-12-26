@@ -5,6 +5,7 @@ import { Move } from "./models.js"
 
 class Effect {
     static immuneTo = []
+    static bypassArmor = true
 
     static isImmune(pokemon) {
         const abilityTrigger = pokemon.abilities.isEnabled() && pokemon.abilities.isImmune(this.effectName)
@@ -144,9 +145,10 @@ class ExpirableEffect extends Effect {
 }
 
 class BurnEffect extends Effect {
-    static immuneTo = ["Fire"]
     static effectName = "brn"
-    
+    static immuneTo = ["Fire"]
+    static bypassArmor = false
+
     onScene() {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
         const shouldReverse = this.state.pokemon.abilities.isActive("mayangan:silver-eye")
@@ -156,25 +158,27 @@ class BurnEffect extends Effect {
     }
 
     onTurn() {
-        this.state.decreaseHealthNonContact(this._calculateEffectDamage(), "Physical")
+        this.state.decreaseHealthNonContact(this._calculateEffectDamage(), "Special")
     }
-    
+
     _calculateEffectDamage() {
         const effectDamage = Math.floor(this.state.pokemon.maxhp / 16); // 1/16th HP loss
+        console.log(effectDamage, this.state.pokemon.maxhp);
+        
         return effectDamage;
     }
 }
 
 class PoisonEffect extends Effect {
-    static immuneTo = ["Poison", "Steel"]
     static effectName = "psn"
+    static immuneTo = ["Poison", "Steel"]
+    static bypassArmor = false
 
     onTurn() {
-        this.state.decreaseHealth(this._calculateEffectDamage(), true)
+        this.state.decreaseHealthNonContact(this._calculateEffectDamage(), "Special")
     }
 
     _calculateEffectDamage() {
-        const maxHP = this.state.pokemon.stats.hp;
         const poisonDamage = Math.floor(this.state.pokemon.maxhp / 8); // 1/8th HP loss
         return poisonDamage;
     }
@@ -186,7 +190,7 @@ class AquaRingEffect extends Effect {
     onScene() {
         this._increaseHealth()
     }
-    
+
     onWave() {
         this._increaseHealth()
     }
@@ -237,6 +241,7 @@ class SleepEffect extends ExpirableEffect {
         this.status.canMove = true
     }
 }
+
 class  TailWindEffect extends ExpirableEffect {
     static effectName = "tailwind"
     lifetime = { turns: 2 }
@@ -249,10 +254,11 @@ class  TailWindEffect extends ExpirableEffect {
 }
 
 class FreezeEffect extends ExpirableEffect {
-    static immuneTo = ["Ice"]
     static effectName = "frz"
+    static immuneTo = ["Ice"]
+    static bypassArmor = false
     static THAW_CHANCE = 0.10
-    
+
     _thawChance = FreezeEffect.THAW_CHANCE
     
     setup() {
@@ -314,6 +320,7 @@ class FlinchEffect extends ExpirableEffect {
 class ParalyzeEffect extends Effect {
     static immuneTo = ["Electric", "Ground"]
     static effectName = "par"
+    static bypassArmor = false
 
     onScene() {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
@@ -340,7 +347,8 @@ class ParalyzeEffect extends Effect {
 class ConfusionEffect extends ExpirableEffect {
     static effectName = "confusion"
     static ATK_SELF_CHANCE = 0.33
-    
+    static bypassArmor = false
+
     setup() {
         super.setup()
         const lifetime = weightedRandom([2, 3, 4, 5], [0.30, 0.50, 0.20, 0.05])
@@ -370,6 +378,7 @@ class ConfusionEffect extends ExpirableEffect {
 class LeechSeedEffect extends Effect {
     static immuneTo = ["Grass"]
     static effectName = "leechseed"
+    static bypassArmor = false
 
     onWave() {
         const opponent = this.state.battle.opponentOf(this.state.pokemon)
@@ -523,7 +532,6 @@ class DoubleTeamEffect extends ExpirableEffect {
     }
 }
 
-
 class ShadowCloneEffect extends Effect {
     static effectName = "shadowclone"
     static COST_PER_CLONE = 2
@@ -623,11 +631,23 @@ class PaperBombEffect extends Effect {
     }
 }
 
-
 class BleedEffect extends Effect {
     static effectName = "bleed"
     static immuneTo = ["steel"]
+    static bypassArmor = false
+    static MAX_LEVEL = 6
+
     _lastMovement = null
+    _level = null
+
+    setup() {
+        super.setup()
+        
+        const wasCritical = this.source?.hit?.criticalCount() > 0
+        this._level = wasCritical 
+            ? this.constructor.MAX_LEVEL
+            : Math.floor(Math.random() * this.constructor.MAX_LEVEL) + 1
+    }
 
     onUsedMove(move) {
         const lowMovement = this.state.pokemon.level 
@@ -645,13 +665,17 @@ class BleedEffect extends Effect {
 
     onSceneEnd() {
         const map = {
-          "LOW": 0.02,
-          "MID": 0.04,
-          "HIGH": 0.1
+          "LOW": 0.02 * this._level,
+          "MID": 0.04 * this._level,
+          "HIGH": 0.1 * this._level,
         }
         const damageRate = map[this._lastMovement ?? "LOW"]
         this.state.decreaseHealth(this.state.pokemon.maxhp * damageRate)
         this._lastMovement = null
+    }
+
+    displayMeta() {
+        return `~ ${this._level}`
     }
 }
 
@@ -674,7 +698,6 @@ class MammothSkinEffect extends Effect {
         this._move.flags.shield = 1
     }
 }
-
 
 class AreaSplashEffect extends Effect {
     static effectName = "areasplash"
@@ -909,7 +932,10 @@ export class EffectManager {
     
     add(source, effectName) {      
         if (this._freezed) return null
+
         const EffectClass = EFFECTS[effectName]
+        if (this.state._data.armorUsed && !EffectClass.bypassArmor) return null
+
         const isImmune = EffectClass?.isImmune(this.state.pokemon)
         if (EffectClass && !isImmune && !this.has(effectName)) {
             const effect = new EffectClass(this.state, source)
@@ -951,8 +977,6 @@ export class EffectManager {
     }
 
     apply(move, { on, pre = false }) {        
-        if (this.state._data.armorUsed) return
-
         const abilitiesMap = {
           "brn": "blueflame",
           "par": "purplethunder"
@@ -973,7 +997,7 @@ export class EffectManager {
                     const chance = attacker.abilities.isActive(abilitiesMap[effect.name])
                         ? 100
                         : effect.chance * move.hits
-                    
+
                     if (Math.random() < (chance / 100)) {                      
                         this.add(move, effect.name)
                     }

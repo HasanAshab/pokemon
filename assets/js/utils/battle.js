@@ -513,7 +513,7 @@ class BaseBattle extends EventEmitter {
 
     let d2 = "damage" in move1 || "damageCallback" in move1
       ? hit1.damage()
-      : hit1.toContactDamage(damages.get(this.pokemon2))
+      : hit1.toContactDamage(damages.get(this.pokemon2))    
 
     if (ajmode || move2.target !== "allySide") {
       if (!attackSelf2 && canMove2 && (d1 || move2.category === "Status" || (move1.flags.contact && move2.flags.contact) || !canMove1)) {
@@ -527,6 +527,8 @@ class BaseBattle extends EventEmitter {
         this.pokemon2.state.emit("contacted", this.pokemon1, move1)
         this.pokemon2.state.effects.apply(move1, { on: "target" })
         this.pokemon2.state.stats.apply("target", move1)
+        console.log("Yeassh");
+        
       }
     }
     if (attackSelf1) {
@@ -950,7 +952,7 @@ class BattleState extends EventEmitter {
       this.retreat -= move.retreat
       this.reducePP(move.id)
 
-      if (move.succeed) {
+      if (move.succeed) {        
         opponent.state.effects.apply(move, { on: "self" })
         opponent.state.effects.apply(move, {
           on: "target",
