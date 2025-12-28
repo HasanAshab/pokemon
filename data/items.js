@@ -216,14 +216,90 @@ export default {
       spe: -25
     }
   },
-  locket1: {
+  bronzelocket1: {
     type: "armor",
-    covers: 50,
+    covers: 20,
     stats: {
-      spd: 20
+      spd: 25 
     }
   },
-
+    bronzelocket2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      spd: 25
+    }
+  },
+    bronzelocket3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      spd: 25
+    }
+  },
+    silverlocket1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      spd: 40 
+    }
+  },
+    silverlocket2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      spd: 40
+    }
+  },
+    silverlocket3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      spd: 40
+    }
+  },
+   goldlocket1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      spd: 55 
+    }
+  },
+   goldlocket2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      spd: 55
+    }
+  },
+    goldlocket3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      spd: 55
+    }
+  },
+   crystallocket1: {
+    type: "armor",
+    covers: 20,
+    stats: {
+      spd: 70
+    }
+  },
+   crystallocket2: {
+    type: "armor",
+    covers: 40,
+    stats: {
+      spd: 70
+    }
+  },
+    crystallocket3: {
+    type: "armor",
+    covers: 80,
+    stats: {
+      spd: 70
+    }
+  },
   "ghost-speed": {
     tokensPercent: {
       spe: 12

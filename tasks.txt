@@ -1,4 +1,9 @@
 * Tasks
+Bronze
+kingdom contracts
+Kingdom Buildings better ui
+offline summon
+
 
 * bug
 abilities multiple opponent event system
