@@ -95,18 +95,22 @@ export function calculateLandPrice(
   quality = 5,
   k = 2       // balancing factor
 ) {
+  // Clamp quality to valid range
+  quality = Math.min(9, Math.max(1, quality));
+
   const landArea = kingdom.landArea;
-   const density = kingdom.density;
-    const population = landArea * density;
+  const density = kingdom.density;
+  const population = landArea * density;
   const perCapitaIncome = kingdom.pci;
   const taxRate = kingdom.taxRate;
 
-    const totalUsedLand =
-      calculateBuildUsedLandArea(kingdom) +
-      calculatePeopleUsedLandArea(population, perCapitaIncome, taxRate);
-  const freeLandArea = Math.max(landArea - totalUsedLand, 0); 
+  const totalUsedLand =
+    calculateBuildUsedLandArea(kingdom) +
+    calculatePeopleUsedLandArea(population, perCapitaIncome, taxRate);
+
+  const freeLandArea = Math.max(landArea - totalUsedLand, 1); // avoid infinity
   const densityMod = Math.pow(density * 3.2, 2);
-  
+
   // Step 1: Base price from PCI
   let basePrice = perCapitaIncome * k * densityMod;
 
@@ -116,18 +120,25 @@ export function calculateLandPrice(
   // Step 3: Adjust for tax (lower tax → higher price)
   let afterTaxPrice = adjustedPrice * (1 - taxRate);
 
-  // Step 4: Scarcity factor (less free land = higher price)
+  // Step 4: Scarcity factor
   let scarcityFactor = landArea / freeLandArea;
 
-  // Final price
-  let finalPrice = area * afterTaxPrice * scarcityFactor;
+  // Step 5: Quality scaling (power-based, centered at 5)
+  const qualityMultiplier = Math.pow(2, (quality - 5) / 2);
 
+  let finalPrice =
+    area *
+    afterTaxPrice *
+    scarcityFactor *
+    qualityMultiplier;
 
+  
   if (method === "rent")
     finalPrice /= 24;
 
-  return Math.round(finalPrice)
+  return Math.round(finalPrice);
 }
+
 
 export function saveKingdoms(kingdoms) {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));

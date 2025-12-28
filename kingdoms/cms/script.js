@@ -287,8 +287,8 @@ function updateDisplay() {
   const landCost = calculateLandPrice(
     parseInt(priceForAreaInput.value),
     kingdom,
-    parseInt(landCostMethod.value),
-    landQuality.value
+    landCostMethod.value,
+    parseInt(landQuality.value)
   );
   const tax = calculateTax(kingdom);
 
@@ -345,6 +345,7 @@ densityInput.addEventListener("input", updateDisplay);
 pciInput.addEventListener("input", updateDisplay);
 taxRateInput.addEventListener("input", updateDisplay);
 landCostMethod.addEventListener("change", updateDisplay);
+landQuality.addEventListener("change", updateDisplay);
 
 birthRateInput.onchange = () => {
   kingdom.birthRate = birthRateInput.value
@@ -379,9 +380,10 @@ globalThis.updateCostForLand = function ({ currentTarget }) {
   const area = currentTarget.value
 
   const landCost = calculateLandPrice(
-    area,
+    parseInt(area),
     kingdom,
-    landCostMethod.value
+    landCostMethod.value,
+    parseInt(landQuality.value)
   );
 
   landAreaLabel.textContent = area

@@ -137,6 +137,18 @@ const urlsToCache = [
 self.addEventListener('install', event => {
   console.log('Service Worker installing...');
 
+  // Check if we're running on localhost or 127.0.0.1
+  const isLocalhost = self.location.hostname === 'localhost' || 
+                     self.location.hostname === '127.0.0.1' ||
+                     self.location.hostname === '0.0.0.0';
+
+  if (isLocalhost) {
+    console.log('Running on localhost - skipping cache installation');
+    // Force activation without caching
+    event.waitUntil(self.skipWaiting());
+    return;
+  }
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -169,6 +181,17 @@ self.addEventListener('install', event => {
 
 // Fetch event - serve from cache when offline
 self.addEventListener('fetch', event => {
+  // Check if we're running on localhost or 127.0.0.1
+  const isLocalhost = self.location.hostname === 'localhost' || 
+                     self.location.hostname === '127.0.0.1' ||
+                     self.location.hostname === '0.0.0.0';
+
+  if (isLocalhost) {
+    // On localhost, always fetch from network (no caching)
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -201,11 +224,21 @@ self.addEventListener('fetch', event => {
 
 // Helper function to try network then fallback
 function tryNetworkThenFallback(request) {
+  // Check if we're running on localhost or 127.0.0.1
+  const isLocalhost = self.location.hostname === 'localhost' || 
+                     self.location.hostname === '127.0.0.1' ||
+                     self.location.hostname === '0.0.0.0';
+
   const fetchRequest = request.clone();
 
   return fetch(fetchRequest).then(response => {
     // Check if we received a valid response
     if (!response || response.status !== 200 || response.type !== 'basic') {
+      return response;
+    }
+
+    // Skip caching on localhost
+    if (isLocalhost) {
       return response;
     }
 

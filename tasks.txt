@@ -1,5 +1,4 @@
 * Tasks
-land price low1 -> high3
 building cost (actual cost + profit)
 kingdom contracts
 
