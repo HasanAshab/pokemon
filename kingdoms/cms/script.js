@@ -48,6 +48,7 @@ const freeLandLabel = document.getElementById("freeLandLabel");
 const priceForAreaInput = document.getElementById("price-for-area-input")
 const landCostLabel = document.getElementById("landCostLabel");
 const landCostMethod = document.getElementById("landCostMethod")
+const landQuality = document.getElementById("landQuality")
 const saveBtn = document.getElementById("saveBtn");
 
 kingdomName.textContent = name || "Unknown Kingdom";
@@ -286,7 +287,8 @@ function updateDisplay() {
   const landCost = calculateLandPrice(
     parseInt(priceForAreaInput.value),
     kingdom,
-    landCostMethod.value
+    parseInt(landCostMethod.value),
+    landQuality.value
   );
   const tax = calculateTax(kingdom);
 
@@ -375,15 +377,7 @@ saveBtn.addEventListener("click", () => {
 globalThis.updateCostForLand = function ({ currentTarget }) {
   const landAreaLabel = document.getElementById("landAreaLabel")
   const area = currentTarget.value
-  const totalKigndomArea = parseFloat(landAreaInput.value) || 0;
-  const density = parseFloat(densityInput.value) || 0;
-  const pci = parseFloat(pciInput.value) || 0;
-  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
-  const population = totalKigndomArea * density;
-  const totalUsedLand =
-    calculateBuildUsedLandArea(kingdom) +
-    calculatePeopleUsedLandArea(population, pci, taxRate);
-  const freeLand = Math.max(totalKigndomArea - totalUsedLand, 0);
+
   const landCost = calculateLandPrice(
     area,
     kingdom,

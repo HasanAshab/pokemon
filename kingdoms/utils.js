@@ -92,6 +92,7 @@ export function calculateLandPrice(
   area,       // want land area (km²)
   kingdom,
   method,
+  quality = 5,
   k = 2       // balancing factor
 ) {
   const landArea = kingdom.landArea;
