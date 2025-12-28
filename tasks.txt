@@ -1,9 +1,9 @@
 * Tasks
 land price low1 -> high3
 building cost (actual cost + profit)
+kingdom contracts
 
 Bronze armors
-kingdom contracts
 Kingdom Buildings better ui
 
 

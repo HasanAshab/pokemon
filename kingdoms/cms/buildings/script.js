@@ -411,3 +411,26 @@ globalThis.showQuickFindForm = () => {
     el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox);
   });
 }
+// Go to top functionality
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+// Show/hide go to top button based on scroll position
+function toggleGoToTopButton() {
+  const goToTopBtn = document.getElementById('goToTopBtn');
+  if (window.pageYOffset > 300) {
+    goToTopBtn.classList.add('show');
+  } else {
+    goToTopBtn.classList.remove('show');
+  }
+}
+
+// Add scroll event listener
+window.addEventListener('scroll', toggleGoToTopButton);
+
+// Make scrollToTop function globally available
+globalThis.scrollToTop = scrollToTop;

@@ -6,6 +6,42 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Buildings</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .go-to-top-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: none;
+    }
+    
+    .go-to-top-btn:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    }
+    
+    .go-to-top-btn.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -60,6 +96,11 @@
     </header>
 
     <div id="buildingsContainer" class="buildings-container"></div>
+    
+    <!-- Sticky Go to Top Button -->
+    <button id="goToTopBtn" class="go-to-top-btn" onclick="scrollToTop()" title="Go to top">
+      ↑
+    </button>
   </div>
   <datalist id="companiesDataList"></datalist>
   <script type="module" src="script.js"></script>
