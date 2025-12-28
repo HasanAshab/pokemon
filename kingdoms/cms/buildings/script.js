@@ -193,8 +193,13 @@ function renderBuildings() {
 
     const upgradeBtn = document.createElement("button");
     upgradeBtn.className = "btn primary-btn";
-    const upgradeCost = upgradePrice(building.basePrice, building.currentLevel);
-    upgradeBtn.textContent = `Upgrade (Cost: ${upgradeCost} coins)`;
+    const upgradeCost = upgradePrice(building.basePrice, building.currentLevel) * building.quantity;
+    upgradeBtn.textContent = building.quantity > 1 
+    ? `Upgrade (${(upgradeCost / building.quantity).toLocaleString()} X ${building.quantity} = ${upgradeCost.toLocaleString()}$)`
+    : `Upgrade (${upgradeCost.toLocaleString()}$)`
+
+    if (upgradeCost === 0)
+      upgradeBtn.style.display = "none";
 
     // Disable upgrade button if building is disabled
     if (building.state === "disabled") {

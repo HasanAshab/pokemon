@@ -1,7 +1,13 @@
 * Tasks
-Bronze
+extreme tens
+land price low1 -> high3
+building cost (actual cost + profit)
+
+Bronze armors
 kingdom contracts
 Kingdom Buildings better ui
+
+
 offline summon
 
 
