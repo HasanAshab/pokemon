@@ -415,9 +415,11 @@
     .building-tension-select.medium {
       background: linear-gradient(to bottom, #f39c12, #e67e22);
     }
-
     .building-tension-select.high {
       background: linear-gradient(to bottom, #27ae60, #2ecc71);
+    }
+    .building-tension-select.extreme {
+      background: mediumorchid;
     }
 
     .building-tension-select.none {
@@ -854,6 +856,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -863,6 +866,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -872,6 +876,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -881,6 +886,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -890,6 +896,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -899,6 +906,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -908,6 +916,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -917,6 +926,7 @@
             <option value="2">Low (2)</option>
             <option value="4" selected>Mid (4)</option>
             <option value="8">High (8)</option>
+            <option value="16">Extreme (16)</option>
           </select>
         </div>
 
@@ -992,6 +1002,12 @@
   </div>
 
   <script type="module">
+     const mapping = {
+        2: "low",
+        4: "medium",
+        8: "high",
+        16: "extreme"
+      }
     // Tab switching functionality
     window.switchTab = function (tabName) {
       // Hide all tab contents
@@ -1045,10 +1061,8 @@
             if (savedValue) {
               select.value = savedValue;
               // Update visual class
-              select.classList.remove('high', 'medium', 'low');
-              if (savedValue == 8) select.classList.add('high');
-              else if (savedValue == 4) select.classList.add('medium');
-              else select.classList.add('low');
+              select.classList.remove(...Object.values(mapping));
+              select.classList.add(mapping[savedValue]);
             }
           });
         }
@@ -1115,10 +1129,15 @@
           highOption.value = '8';
           highOption.textContent = 'High (8)';
 
+          const extremeOption = document.createElement('option');
+          extremeOption.value = '16';
+          extremeOption.textContent = 'Extreme (16)';
+
           tensionSelect.appendChild(noneOption);
           tensionSelect.appendChild(lowOption);
           tensionSelect.appendChild(mediumOption);
           tensionSelect.appendChild(highOption);
+          tensionSelect.appendChild(extremeOption);
 
           // Load saved value
           if (building.militaryTension !== undefined) {
@@ -1264,16 +1283,10 @@
       tensionSelects.forEach(select => {
         select.addEventListener('change', function () {
           // Remove all tension classes
-          this.classList.remove('high', 'medium', 'low');
+          this.classList.remove(Object.values(mapping));
 
           // Add the appropriate class based on selection
-          if (this.value === '8') {
-            this.classList.add('high');
-          } else if (this.value === '4') {
-            this.classList.add('medium');
-          } else {
-            this.classList.add('low');
-          }
+          this.classList.add(mapping[this.value]);
 
           updateTensionBudget();
           saveTensionValues();

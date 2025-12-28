@@ -455,7 +455,8 @@ export function getMilitaryTensionMod(kingdom, direction) {
   const mapping = {
     2: 1,
     4: 2,
-    8: 3.5
+    8: 3.5,
+    16: 7
   }
   return mapping[kingdom.militaryTension[direction]];
 }
@@ -475,8 +476,7 @@ export function prepareSoldiers(
 
     const tensionMod = direction 
       ? getMilitaryTensionMod(kingdom, direction) 
-      : 1
-
+      : 1    
     const quantity = Math.min(total, Math.round(total * (soldier.percentage / 100) * (areaPercentage / 100) * tensionMod));    
     return [image, quantity];
   });
