@@ -70,13 +70,31 @@ function renderItems() {
     saveBtn.textContent = "Save";
     saveBtn.onclick = () => {
       const newName = nameInput.value.trim();
-      const quantity = parseInt(qtyInput.value) || 0;
+      let quantity = parseInt(qtyInput.value) || 0;
+
       if (newName !== itemName) {
         delete storage[itemName];
       }
+
+      if (newName === "coins") {
+        quantity = parseInt(quantity)
+      }
+
       storage[newName] = quantity;
 
       saveAndRefresh(storage);
+    };
+    
+    const operateBtn = document.createElement("button");
+    operateBtn.className = "btn special-btn";
+    operateBtn.textContent = "Operate (+)";
+    operateBtn.onclick = () => {
+      const quantity = parseInt(qtyInput.value) || 0;
+      const amount = window.prompt("Enter the amount to add:");
+      if (!amount) return
+        
+      qtyInput.value = quantity + parseInt(amount);
+      saveBtn.click();
     };
 
     const delBtn = document.createElement("button");
@@ -88,6 +106,7 @@ function renderItems() {
     };
 
     itemActions.appendChild(saveBtn);
+    itemActions.appendChild(operateBtn);
     itemActions.appendChild(delBtn);
 
     const logs = document.createElement("details");

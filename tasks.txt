@@ -1,5 +1,4 @@
 * Tasks
-operate item
 construct time
 predict disaster + direction
 
