@@ -641,3 +641,24 @@ export function getEffectiveOffensiveIQ(iq, attackedArea) {
   const penalty = Math.floor(attackedArea / 10) * 0.1;
   return parseFloat(Math.max(0, iq - penalty).toFixed(1));
 }
+
+export function getRequiredArchLevel(floor, durability) {
+  return Math.max(1,
+    ((floor * 5) - 5) + (durability - 1)
+  )
+}
+
+export function getArchCost(kingdom, archLevel) {
+  return (kingdom.pci * 0.8) * archLevel
+}
+
+export function getMaterialCost(kingdom, size, floor, durability) {
+  return (kingdom.pci * 0.12) * size * (floor * 1.1) * (durability * 1.3) 
+}
+
+export function getBuildCost(kingdom, size, floor, durability) {
+  const reqiredArchLevel = getRequiredArchLevel(floor, durability);  
+  const archCost = getArchCost(kingdom, reqiredArchLevel);
+  const materialCost = getMaterialCost(kingdom, size, floor, durability);
+  return archCost + materialCost
+}
