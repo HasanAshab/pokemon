@@ -12,7 +12,6 @@ import {
   getDiedForAge,
   calculateBirthCount,
   getFoodTierForBudget,
-  getBuildCost
 } from "../utils.js";
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
@@ -339,7 +338,7 @@ function updateDisplay() {
 
   loadFoodConsumptionTier();
 }
-console.log(getBuildCost(kingdom, 15, 1, 3).toLocaleString());
+
 priceForAreaInput.addEventListener("change", updateDisplay);
 landAreaInput.addEventListener("input", updateDisplay);
 densityInput.addEventListener("input", updateDisplay);

@@ -549,7 +549,7 @@ function calculateConstructionCost() {
   
   // Calculate costs using utility functions
   const requiredArchLevel = getRequiredArchLevel(floor, durability);
-  const archCost = getArchCost(kingdom, requiredArchLevel);
+  const archCost = getArchCost(kingdom, requiredArchLevel, size, floor);
   const materialCost = getMaterialCost(kingdom, size, floor, durability);
   const totalCost = getBuildCost(kingdom, size, floor, durability);
   

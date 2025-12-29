@@ -1,6 +1,7 @@
 * Tasks
-building cost (actual cost + profit)
+operate item
 construct time
+predict disaster + direction
 
 Bronze armors
 Kingdom Buildings better ui

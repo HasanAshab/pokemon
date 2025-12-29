@@ -155,51 +155,52 @@
     <header>
       <h1 id="kingdomName">Kingdom Buildings</h1>
       
-      <!-- Build Construction Cost Estimator -->
-      <div id="costEstimator" class="cost-estimator">
-        <h3>Build Construction Cost Estimator</h3>
-        <div class="estimator-inputs">
-          <div class="input-group">
-            <label for="sizeInput">Size (sq.m):</label>
-            <input type="number" id="sizeInput" min="1" value="100" />
-          </div>
-          <div class="input-group">
-            <label for="floorInput">Floor:</label>
-            <input type="number" id="floorInput" min="1" value="1" />
-          </div>
-          <div class="input-group">
-            <label for="durabilityInput">Durability:</label>
-            <input type="number" id="durabilityInput" min="1" value="1" />
-          </div>
-          <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
-        </div>
-        <div id="costResults" class="cost-results" style="display: none;">
-          <div class="result-item">
-            <span class="label">Required Arch Level:</span>
-            <span id="archLevel" class="value">-</span>
-          </div>
-          <div class="result-item">
-            <span class="label">Company Commission:</span>
-            <span id="archCost" class="value">-</span>
-          </div>
-          <div class="result-item">
-            <span class="label">Material Cost:</span>
-            <span id="materialCost" class="value">-</span>
-          </div>
-          <div class="result-item total">
-            <span class="label">Total Cost:</span>
-            <span id="totalCost" class="value">-</span>
-          </div>
-        </div>
-      </div>
-      
       <div class="header-controls">
         <button id="addBuildingBtn" class="btn primary-btn">Add New Building</button>
         <button id="deleteDisabledBtn" class="btn danger-btn">Delete All Disabled</button>
         <button id="deleteExpiredBtn" class="btn warning-btn">Delete All Expired</button>
         <button id="quickFindBtn" onclick="showQuickFindForm()">Quick Find</button>
       </div>
+    </header>
+
+    <!-- Build Construction Cost Estimator -->
+    <div id="costEstimator" class="cost-estimator">
+      <h3>Build Construction Cost Estimator</h3>
+      <div class="estimator-inputs">
+        <div class="input-group">
+          <label for="sizeInput">Size (sq.m):</label>
+          <input type="number" id="sizeInput" min="1" value="100" />
+        </div>
+        <div class="input-group">
+          <label for="floorInput">Floor:</label>
+          <input type="number" id="floorInput" min="1" value="1" />
+        </div>
+        <div class="input-group">
+          <label for="durabilityInput">Durability:</label>
+          <input type="number" id="durabilityInput" min="1" value="1" />
+        </div>
+        <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
       </div>
+      <div id="costResults" class="cost-results" style="display: none;">
+        <div class="result-item">
+          <span class="label">Required Arch Level:</span>
+          <span id="archLevel" class="value">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Company Commission:</span>
+          <span id="archCost" class="value">-</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Material Cost:</span>
+          <span id="materialCost" class="value">-</span>
+        </div>
+        <div class="result-item total">
+          <span class="label">Total Cost:</span>
+          <span id="totalCost" class="value">-</span>
+        </div>
+      </div>
+    </div>
+
     <div id="quickFindForm">
       <div class="header">
         <h3>quick find</h3>
