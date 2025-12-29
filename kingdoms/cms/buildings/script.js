@@ -198,6 +198,26 @@ function renderBuildings() {
     lifespanControls.appendChild(permanentCheckbox);
     lifespanControls.appendChild(permanentLabel);
 
+    // Durability level display and controls
+    const durabilityLabel = document.createElement("label");
+    durabilityLabel.textContent = "Durability Level";
+    
+    const durabilityDisplay = document.createElement("div");
+    // Set default durability if not exists
+    if (building.durability === undefined) {
+      building.durability = 1;
+    }
+    durabilityDisplay.textContent = `Level ${building.durability}`;
+    durabilityDisplay.style.fontWeight = "bold";
+    
+    const durabilityInput = document.createElement("input");
+    durabilityInput.type = "number";
+    durabilityInput.min = "1";
+    durabilityInput.value = building.durability;
+    durabilityInput.className = "editable";
+    durabilityInput.style.display = "none";
+    durabilityInput.style.width = "80px";
+
     const levelLabel = document.createElement("label");
     levelLabel.textContent = "Current Level";
 
@@ -356,6 +376,7 @@ function renderBuildings() {
       baseSizeInput.style.display = "block";
       baseMaintainsInput.style.display = "block";
       quantityInput.style.display = "block";
+      durabilityInput.style.display = "block";
       lifespanControls.style.display = "flex";
       
       editBtn.textContent = "Save";
@@ -367,6 +388,7 @@ function renderBuildings() {
         building.baseSize = parseFloat(baseSizeInput.value);
         building.baseMaintains = flagsToObj(baseMaintainsInput.value);
         building.quantity = parseInt(quantityInput.value) || 1;
+        building.durability = parseInt(durabilityInput.value) || 1;
 
         // Handle lifespan
         if (permanentCheckbox.checked) {
@@ -429,6 +451,9 @@ function renderBuildings() {
     div.appendChild(lifespanDisplay);
     div.appendChild(lifespanControls);
 
+    div.appendChild(durabilityLabel);
+    div.appendChild(durabilityDisplay);
+
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
 
@@ -442,6 +467,7 @@ function renderBuildings() {
 
     div.appendChild(quantityLabel);
     div.appendChild(quantityInput);
+    div.appendChild(durabilityInput);
     div.appendChild(document.createElement("br"));
     div.appendChild(basePriceInput);
    
@@ -464,6 +490,7 @@ addBuildingBtn.onclick = () => {
     baseMaintains: { defence: 0 },
     currentLevel: 1,
     quantity: 1,
+    durability: 1,
     produces: {},
     consumes: {},
     state: "enabled" // Default to enabled

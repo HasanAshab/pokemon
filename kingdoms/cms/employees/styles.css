@@ -1,5 +1,5 @@
 * {
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   margin: 0;
   padding: 0;
 }
@@ -44,18 +44,28 @@ header h1 {
 
 .employees-container {
   padding: 20px;
+  overflow-x: auto;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 table {
   width: 100%;
+  min-width: 100px;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin: 0;
 }
 
 th, td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  width: max-content;
 }
 
 th {
@@ -109,10 +119,11 @@ tr:hover {
   border: 1px solid #ddd;
   padding: 4px 8px;
   border-radius: 3px;
-  width: 100%;
+  width: 20%;
   font-size: 14px;
 }
-
+.editable-input.post-name {
+   width: 80%; }
 .editable-input:focus {
   outline: none;
   border-color: #007bff;
@@ -141,15 +152,36 @@ tr:hover {
     text-align: center;
   }
   
+  .employees-container {
+    padding: 10px;
+  }
+  
+  .table-wrapper {
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
   table {
-    font-size: 12px;
+    min-width: 700px; /* Minimum width for mobile */
   }
   
   th, td {
-    padding: 8px 4px;
+    padding: 8px 6px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .editable-input {
+    min-width: 80px;
+    font-size: 14px;
   }
   
   .actions-cell {
-    flex-direction: column;
+    min-width: 80px;
+  }
+  
+  .btn {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 }

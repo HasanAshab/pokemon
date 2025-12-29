@@ -53,7 +53,7 @@ function renderEmployees() {
     
     row.innerHTML = `
       <td>
-        <input type="text" class="editable-input" value="${employee.postName}" 
+        <input type="text" class="editable-input post-name" value="${employee.postName}" 
                onblur="updateEmployee(${index}, 'postName', this.value)"
                onkeydown="handleEnterKey(event)">
       </td>
@@ -61,7 +61,7 @@ function renderEmployees() {
         <input type="number" class="editable-input" value="${employee.salaryPercent}" 
                min="0" max="100" step="0.1"
                onblur="updateEmployee(${index}, 'salaryPercent', this.value)"
-               onkeydown="handleEnterKey(event)">%
+               onkeydown="handleEnterKey(event)">
       </td>
       <td>
         <input type="number" class="editable-input" value="${employee.quantity}" 
