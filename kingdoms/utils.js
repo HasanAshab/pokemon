@@ -283,6 +283,15 @@ export function calcCommandersSalary(kingdom) {
   return actualSalary * warMod;
 }
 
+export function calcEmployeeSalary(kingdom) {
+  if (!kingdom?.employees) return 0;
+  
+  return kingdom.employees.reduce((total, employee) => {
+    const perManSalary = kingdom.pci * (employee.salaryPercent / 100);
+    return total + (perManSalary * employee.quantity);
+  }, 0);
+}
+
 export function calcSoldiersSalary(kingdom, type) {
   if (!kingdom?.barrack?.soldiers) return 0;
 
@@ -369,6 +378,7 @@ export function getTransLogs(kingdom, itemName) {
     logs.push(`Commanders Salary &#x2190; <span style="color: red; font-weight: bold">${calcCommandersSalary(kingdom).toLocaleString()}</span>`);
     logs.push(`Soldiers Salary &#x2190; <span style="color: red; font-weight: bold">${calcSoldiersSalary(kingdom).toLocaleString()}</span>`);
     logs.push(`Police Salary &#x2190; <span style="color: red; font-weight: bold">${calcPoliceSalary(kingdom).toLocaleString()}</span>`);
+    logs.push(`Employee Salary &#x2190; <span style="color: red; font-weight: bold">${calcEmployeeSalary(kingdom).toLocaleString()}</span>`);
   }
 
   getEnabledBuildings(kingdom).forEach(build => {
@@ -440,7 +450,8 @@ export function calcNetProd(kingdom, localize = false) {
       calcSoldiersSalary(kingdom) +
       calcPoliceSalary(kingdom) +
       calcAmmoCost(kingdom) +
-      calcCommandersSalary(kingdom),
+      calcCommandersSalary(kingdom) +
+      calcEmployeeSalary(kingdom),
   };
   
   const buildProd = calcBuildNetProd(kingdom);

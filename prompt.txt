@@ -4,5 +4,5 @@ employees will have: post name, salary will be percentage of PCI (kingdom.pci se
 
 lastly show total employee salary at top
 
-also make utils at for salary calc etc so it will be easy for me to calc the total overall prod and cons
+also make utils at for salary calc etc also add Employee Salary (Total only) to getTransLogs  
 persist data in kingdom.employees
