@@ -22,6 +22,54 @@ function saveAndRefresh() {
   renderBuildings();
 }
 
+// Auto-save function for produce/consume changes
+function autoSaveProduceConsume(building, producesContainer, consumesContainer) {
+  const extractValues = (container) => {
+    const result = {};
+    [...container.querySelectorAll(".item-pair")].forEach(pair => {
+      const inputs = pair.querySelectorAll("input");
+      const k = inputs[0].value.trim();
+      const v = parseFloat(inputs[1].value);
+      if (k) result[k] = isNaN(v) ? 0 : v;
+    });
+    return result;
+  };
+
+  building.produces = extractValues(producesContainer);
+  building.consumes = extractValues(consumesContainer);
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+}
+
+// Check and update building expiry
+function updateBuildingExpiry() {
+  kingdoms[name].buildings.forEach(building => {
+    if (building.lifespan !== undefined && building.lifespan > 0) {
+      building.lifespan--;
+      if (building.lifespan <= 0) {
+        building.state = "disabled";
+        building.expired = true;
+      }
+    }
+  });
+}
+
+// Calculate remaining lifespan display
+function getLifespanDisplay(building) {
+  if (building.lifespan === undefined) return "";
+  if (building.lifespan <= 0) return "Expired";
+  
+  const years = Math.floor(building.lifespan / 12);
+  const months = building.lifespan % 12;
+  
+  if (years > 0 && months > 0) {
+    return `${years}y ${months}m`;
+  } else if (years > 0) {
+    return `${years}y`;
+  } else {
+    return `${months}m`;
+  }
+}
+
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   kingdoms[name].buildings.forEach((building, index) => {
@@ -91,9 +139,57 @@ function renderBuildings() {
     statusLabel.textContent = "Status";
     
     const statusDisplay = document.createElement("div");
-    statusDisplay.textContent = building.state === "disabled" ? "Disabled" : "Enabled";
+    const statusText = building.state === "disabled" ? 
+      (building.expired ? "Expired" : "Disabled") : "Enabled";
+    statusDisplay.textContent = statusText;
     statusDisplay.style.fontWeight = "bold";
-    statusDisplay.style.color = building.state === "disabled" ? "#ff4444" : "#44ff44";
+    statusDisplay.style.color = building.state === "disabled" ? 
+      (building.expired ? "#ff8800" : "#ff4444") : "#44ff44";
+
+    // Lifespan display and controls
+    const lifespanLabel = document.createElement("label");
+    lifespanLabel.textContent = "Lifespan";
+    
+    const lifespanDisplay = document.createElement("div");
+    const lifespanText = getLifespanDisplay(building);
+    lifespanDisplay.textContent = lifespanText || "Permanent";
+    lifespanDisplay.style.fontWeight = "bold";
+    lifespanDisplay.style.color = building.lifespan !== undefined && building.lifespan <= 3 ? "#ff4444" : "#333";
+    
+    const lifespanControls = document.createElement("div");
+    lifespanControls.style.display = "none";
+    lifespanControls.style.gap = "5px";
+    lifespanControls.style.alignItems = "center";
+    
+    const lifespanYearsInput = document.createElement("input");
+    lifespanYearsInput.type = "number";
+    lifespanYearsInput.placeholder = "Years";
+    lifespanYearsInput.min = "0";
+    lifespanYearsInput.style.width = "60px";
+    lifespanYearsInput.value = building.lifespan ? Math.floor(building.lifespan / 12) : 0;
+    
+    const lifespanMonthsInput = document.createElement("input");
+    lifespanMonthsInput.type = "number";
+    lifespanMonthsInput.placeholder = "Months";
+    lifespanMonthsInput.min = "0";
+    lifespanMonthsInput.max = "11";
+    lifespanMonthsInput.style.width = "60px";
+    lifespanMonthsInput.value = building.lifespan ? building.lifespan % 12 : 0;
+    
+    const permanentCheckbox = document.createElement("input");
+    permanentCheckbox.type = "checkbox";
+    permanentCheckbox.checked = building.lifespan === undefined;
+    
+    const permanentLabel = document.createElement("label");
+    permanentLabel.textContent = "Permanent";
+    permanentLabel.style.fontSize = "12px";
+    
+    lifespanControls.appendChild(lifespanYearsInput);
+    lifespanControls.appendChild(document.createTextNode("y "));
+    lifespanControls.appendChild(lifespanMonthsInput);
+    lifespanControls.appendChild(document.createTextNode("m "));
+    lifespanControls.appendChild(permanentCheckbox);
+    lifespanControls.appendChild(permanentLabel);
 
     const levelLabel = document.createElement("label");
     levelLabel.textContent = "Current Level";
@@ -157,11 +253,16 @@ function renderBuildings() {
         valInput.placeholder = "Amount";
         valInput.value = value;
 
+        // Auto-save on blur for both inputs
+        keyInput.addEventListener('blur', () => autoSaveProduceConsume(building, producesContainer, consumesContainer));
+        valInput.addEventListener('blur', () => autoSaveProduceConsume(building, producesContainer, consumesContainer));
+
         const delBtn = document.createElement("button");
         delBtn.textContent = "−";
         delBtn.onclick = () => {
           delete items[key];
           renderKeyValueSection(container, items, label);
+          autoSaveProduceConsume(building, producesContainer, consumesContainer);
         };
 
         pairDiv.appendChild(keyInput);
@@ -248,6 +349,7 @@ function renderBuildings() {
       baseSizeInput.style.display = "block";
       baseMaintainsInput.style.display = "block";
       quantityInput.style.display = "block";
+      lifespanControls.style.display = "flex";
       
       editBtn.textContent = "Save";
       editBtn.onclick = () => {
@@ -258,6 +360,22 @@ function renderBuildings() {
         building.baseSize = parseFloat(baseSizeInput.value);
         building.baseMaintains = flagsToObj(baseMaintainsInput.value);
         building.quantity = parseInt(quantityInput.value) || 1;
+
+        // Handle lifespan
+        if (permanentCheckbox.checked) {
+          delete building.lifespan;
+          delete building.expired;
+        } else {
+          const years = parseInt(lifespanYearsInput.value) || 0;
+          const months = parseInt(lifespanMonthsInput.value) || 0;
+          building.lifespan = years * 12 + months;
+          if (building.lifespan <= 0) {
+            building.state = "disabled";
+            building.expired = true;
+          } else {
+            building.expired = false;
+          }
+        }
 
         const extractValues = (container) => {
           const result = {};
@@ -299,6 +417,10 @@ function renderBuildings() {
 
     div.appendChild(statusLabel);
     div.appendChild(statusDisplay);
+
+    div.appendChild(lifespanLabel);
+    div.appendChild(lifespanDisplay);
+    div.appendChild(lifespanControls);
 
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
@@ -343,6 +465,35 @@ addBuildingBtn.onclick = () => {
   saveAndRefresh();
 };
 
+// Bulk delete functions
+document.getElementById("deleteDisabledBtn").onclick = () => {
+  const disabledBuildings = kingdoms[name].buildings.filter(b => b.state === "disabled");
+  if (disabledBuildings.length === 0) {
+    alert("No disabled buildings to delete.");
+    return;
+  }
+  
+  if (confirm(`Delete ${disabledBuildings.length} disabled buildings? This cannot be undone.`)) {
+    kingdoms[name].buildings = kingdoms[name].buildings.filter(b => b.state !== "disabled");
+    saveAndRefresh();
+    alert(`Deleted ${disabledBuildings.length} disabled buildings.`);
+  }
+};
+
+document.getElementById("deleteExpiredBtn").onclick = () => {
+  const expiredBuildings = kingdoms[name].buildings.filter(b => b.expired === true);
+  if (expiredBuildings.length === 0) {
+    alert("No expired buildings to delete.");
+    return;
+  }
+  
+  if (confirm(`Delete ${expiredBuildings.length} expired buildings? This cannot be undone.`)) {
+    kingdoms[name].buildings = kingdoms[name].buildings.filter(b => b.expired !== true);
+    saveAndRefresh();
+    alert(`Deleted ${expiredBuildings.length} expired buildings.`);
+  }
+};
+
 renderBuildings();
 
 globalThis.hideQuickFindForm = () => {
@@ -350,7 +501,7 @@ globalThis.hideQuickFindForm = () => {
   quickFindForm.classList.remove("active");
 }
 
-function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox) {
+function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox) {
   const linksContainer = quickFindForm.querySelector(".links-container");
   linksContainer.innerHTML = "";
   let buildings = kingdoms[name].buildings;
@@ -360,6 +511,11 @@ function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBy
   
   if (propertySel.value !== "all")
     buildings = buildings.filter(b => b.property === propertySel.value);
+  
+  // Filter to show only expirable buildings if checkbox is checked
+  if (showOnlyExpirableCheckBox.checked) {
+    buildings = buildings.filter(b => b.lifespan !== undefined);
+  }
   
   if (sortBySizeCheckBox.checked) {
     buildings = [...buildings].sort((b1, b2) => {
@@ -376,8 +532,26 @@ function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBy
   buildings.forEach((building) => {
     const btn = document.createElement("button");
     // Add status indicator to quick find
-    const statusIndicator = building.state === "disabled" ? " 🔴" : " 🟢";
-    btn.textContent = `${building.name}${statusIndicator} ${showQuantityCheckBox.checked ? "( " + building.quantity + " )" : ""} ${showSizeCheckBox.checked ? calculateSize(building.baseSize, building.currentLevel) + " sq.m" : ""}`;
+    const statusIndicator = building.state === "disabled" ? 
+      (building.expired ? " 🟠" : " 🔴") : " 🟢";
+    
+    let buttonText = `${building.name}${statusIndicator}`;
+    
+    if (showQuantityCheckBox.checked) {
+      buttonText += ` (${building.quantity})`;
+    }
+    
+    if (showSizeCheckBox.checked) {
+      buttonText += ` ${calculateSize(building.baseSize, building.currentLevel)} sq.m`;
+    }
+    
+    // Always show expiry for expirable buildings in quick find
+    const lifespanText = getLifespanDisplay(building);
+    if (lifespanText) {
+      buttonText += ` [${lifespanText}]`;
+    }
+    
+    btn.textContent = buttonText;
     btn.onclick = () => {
       const id = CSS.escape(building.name); // ensures valid selector
       const targetedBuilding = buildingsContainer.querySelector(`#${id}`);
@@ -404,11 +578,12 @@ globalThis.showQuickFindForm = () => {
   const sortBySizeCheckBox = controlerBar.querySelector(".sort-by-size");
   const showSizeCheckBox = controlerBar.querySelector(".show-size");
   const showQuantityCheckBox = controlerBar.querySelector(".show-quantity");
+  const showOnlyExpirableCheckBox = controlerBar.querySelector(".show-only-expirable");
   setupOwnedBySelect(ownedBySel);
-  renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox);
-  const controlers = [ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox];
+  renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox);
+  const controlers = [ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox];
   controlers.forEach(el => {
-    el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox);
+    el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox);
   });
 }
 // Go to top functionality

@@ -128,6 +128,19 @@ newMonthBtn.onclick = () => {
   const newDensity = (getPopulation(kingdoms[name]) + getPopulationGrowth(kingdoms[name])) / kingdoms[name].landArea
   kingdoms[name].density = newDensity 
 
+  // Update building expiry
+  if (kingdoms[name].buildings) {
+    kingdoms[name].buildings.forEach(building => {
+      if (building.lifespan !== undefined && building.lifespan > 0) {
+        building.lifespan--;
+        if (building.lifespan <= 0) {
+          building.state = "disabled";
+          building.expired = true;
+        }
+      }
+    });
+  }
+
   // Increment lifetime counter
   kingdoms[name].lifetime.months++;
   if (kingdoms[name].lifetime.months >= 12) {
