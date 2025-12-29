@@ -146,15 +146,22 @@ function renderBuildings() {
     statusDisplay.style.color = building.state === "disabled" ? 
       (building.expired ? "#ff8800" : "#ff4444") : "#44ff44";
 
-    // Lifespan display and controls
+    // Lifespan display and controls (only show for non-permanent buildings)
     const lifespanLabel = document.createElement("label");
     lifespanLabel.textContent = "Lifespan";
     
     const lifespanDisplay = document.createElement("div");
     const lifespanText = getLifespanDisplay(building);
-    lifespanDisplay.textContent = lifespanText || "Permanent";
+    lifespanDisplay.textContent = lifespanText;
     lifespanDisplay.style.fontWeight = "bold";
     lifespanDisplay.style.color = building.lifespan !== undefined && building.lifespan <= 3 ? "#ff4444" : "#333";
+    
+    // Hide lifespan section for permanent buildings
+    const isExpirable = building.lifespan !== undefined;
+    if (!isExpirable) {
+      lifespanLabel.style.display = "none";
+      lifespanDisplay.style.display = "none";
+    }
     
     const lifespanControls = document.createElement("div");
     lifespanControls.style.display = "none";

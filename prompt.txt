@@ -1,1 +1,8 @@
-Add a new section Road level.
+at , i may manage govt employees of shinobi time.
+
+employees will have: post name, salary will be percentage of PCI (kingdom.pci see ), quantity, show per man actual salary (calculate by PCI and percentage), show total post salary.
+
+lastly show total employee salary at top
+
+also make utils at for salary calc etc so it will be easy for me to calc the total overall prod and cons
+persist data in kingdom.employees
