@@ -42,6 +42,96 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
+    .cost-estimator {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .cost-estimator h3 {
+      margin: 0 0 15px 0;
+      color: #495057;
+    }
+    
+    .estimator-inputs {
+      display: flex;
+      gap: 15px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .input-group label {
+      font-weight: 500;
+      color: #495057;
+      font-size: 14px;
+    }
+    
+    .input-group input {
+      padding: 8px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      width: 100px;
+    }
+    
+    .cost-results {
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 15px;
+    }
+    
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f3f4;
+    }
+    
+    .result-item:last-child {
+      border-bottom: none;
+    }
+    
+    .result-item.total {
+      font-weight: bold;
+      font-size: 16px;
+      border-top: 2px solid #007bff;
+      margin-top: 10px;
+      padding-top: 15px;
+    }
+    
+    .result-item .label {
+      color: #495057;
+    }
+    
+    .result-item .value {
+      color: #007bff;
+      font-weight: 500;
+    }
+    
+    .result-item.total .value {
+      color: #28a745;
+    }
+    
+    @media (max-width: 768px) {
+      .estimator-inputs {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .input-group input {
+        width: 100%;
+      }
+    }
+    
     .header-controls {
       display: flex;
       gap: 10px;
@@ -64,6 +154,45 @@
   <div class="container">
     <header>
       <h1 id="kingdomName">Kingdom Buildings</h1>
+      
+      <!-- Build Construction Cost Estimator -->
+      <div id="costEstimator" class="cost-estimator">
+        <h3>Build Construction Cost Estimator</h3>
+        <div class="estimator-inputs">
+          <div class="input-group">
+            <label for="sizeInput">Size (sq.m):</label>
+            <input type="number" id="sizeInput" min="1" value="100" />
+          </div>
+          <div class="input-group">
+            <label for="floorInput">Floor:</label>
+            <input type="number" id="floorInput" min="1" value="1" />
+          </div>
+          <div class="input-group">
+            <label for="durabilityInput">Durability:</label>
+            <input type="number" id="durabilityInput" min="1" value="1" />
+          </div>
+          <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
+        </div>
+        <div id="costResults" class="cost-results" style="display: none;">
+          <div class="result-item">
+            <span class="label">Required Arch Level:</span>
+            <span id="archLevel" class="value">-</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Company Commission:</span>
+            <span id="archCost" class="value">-</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Material Cost:</span>
+            <span id="materialCost" class="value">-</span>
+          </div>
+          <div class="result-item total">
+            <span class="label">Total Cost:</span>
+            <span id="totalCost" class="value">-</span>
+          </div>
+        </div>
+      </div>
+      
       <div class="header-controls">
         <button id="addBuildingBtn" class="btn primary-btn">Add New Building</button>
         <button id="deleteDisabledBtn" class="btn danger-btn">Delete All Disabled</button>

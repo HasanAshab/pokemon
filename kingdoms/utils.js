@@ -649,11 +649,11 @@ export function getRequiredArchLevel(floor, durability) {
 }
 
 export function getArchCost(kingdom, archLevel) {
-  return (kingdom.pci * 0.8) * archLevel
+  return (kingdom.pci * 1.8) * archLevel
 }
 
 export function getMaterialCost(kingdom, size, floor, durability) {
-  return (kingdom.pci * 0.12) * size * (floor * 1.1) * (durability * 1.3) 
+  return (kingdom.pci * 0.08) * size * (floor * 1.1) * (durability * 1.3) 
 }
 
 export function getBuildCost(kingdom, size, floor, durability) {

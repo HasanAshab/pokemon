@@ -1,5 +1,5 @@
 import { flagsToObj, objToFlags } from '../../../assets/js/utils/helpers.js';
-import { calculateMaintains, calculateSize, upgradePrice } from '../../utils.js'
+import { calculateMaintains, calculateSize, upgradePrice, getRequiredArchLevel, getArchCost, getMaterialCost, getBuildCost } from '../../utils.js'
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
 const name = localStorage.getItem('$current_kingdom') || (() => {
@@ -529,6 +529,51 @@ document.getElementById("deleteExpiredBtn").onclick = () => {
 };
 
 renderBuildings();
+
+// Cost Estimator functionality
+function calculateConstructionCost() {
+  const size = parseInt(document.getElementById('sizeInput').value) || 0;
+  const floor = parseInt(document.getElementById('floorInput').value) || 1;
+  const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
+  
+  if (size <= 0) {
+    alert('Please enter a valid size greater than 0');
+    return;
+  }
+  
+  const kingdom = kingdoms[name];
+  if (!kingdom) {
+    alert('Kingdom data not found');
+    return;
+  }
+  
+  // Calculate costs using utility functions
+  const requiredArchLevel = getRequiredArchLevel(floor, durability);
+  const archCost = getArchCost(kingdom, requiredArchLevel);
+  const materialCost = getMaterialCost(kingdom, size, floor, durability);
+  const totalCost = getBuildCost(kingdom, size, floor, durability);
+  
+  // Display results
+  document.getElementById('archLevel').textContent = requiredArchLevel;
+  document.getElementById('archCost').textContent = `$${archCost.toLocaleString()}`;
+  document.getElementById('materialCost').textContent = `$${materialCost.toLocaleString()}`;
+  document.getElementById('totalCost').textContent = `$${totalCost.toLocaleString()}`;
+  
+  // Show results section
+  document.getElementById('costResults').style.display = 'block';
+}
+
+// Add event listeners for cost estimator
+document.getElementById('calculateBtn').addEventListener('click', calculateConstructionCost);
+
+// Auto-calculate on input change
+['sizeInput', 'floorInput', 'durabilityInput'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    if (document.getElementById('costResults').style.display !== 'none') {
+      calculateConstructionCost();
+    }
+  });
+});
 
 globalThis.hideQuickFindForm = () => {
   const quickFindForm = document.getElementById("quickFindForm");
