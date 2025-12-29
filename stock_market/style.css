@@ -115,6 +115,15 @@ h1, h2 {
     background-color: #1e7e34;
 }
 
+.warning-btn {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.warning-btn:hover {
+    background-color: #e0a800;
+}
+
 .danger-btn {
     background-color: #dc3545;
     color: white;

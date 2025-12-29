@@ -339,6 +339,50 @@ function createStock() {
   document.getElementById('maxChangeDisplay').textContent = '15%';
 }
 
+// Sell all shares
+function sellAllShares() {
+  const userdata = getCurrentUserData();
+  const portfolio = userdata.portfolio;
+  
+  // Check if user has any shares
+  const totalShares = Object.values(portfolio).reduce((sum, shares) => sum + shares, 0);
+  if (totalShares === 0) {
+    alert('You don\'t have any shares to sell.');
+    return;
+  }
+  
+  // Calculate total value and create summary
+  let totalValue = 0;
+  let sharesSummary = [];
+  
+  Object.keys(portfolio).forEach(stockName => {
+    const shares = portfolio[stockName];
+    if (shares > 0) {
+      const currentPrice = stockData[stockName]?.currentPrice || 0;
+      const value = shares * currentPrice;
+      totalValue += value;
+      sharesSummary.push(`${stockName}: ${shares} shares = $${value.toFixed(2)}`);
+    }
+  });
+  
+  // Confirm the sale
+  const confirmMessage = `Are you sure you want to sell ALL your shares?\n\n${sharesSummary.join('\n')}\n\nTotal Value: $${totalValue.toFixed(2)}`;
+  
+  if (!confirm(confirmMessage)) {
+    return;
+  }
+  
+  // Execute the sale
+  userdata.coins += totalValue;
+  userdata.portfolio = {}; // Clear all shares
+  
+  saveData();
+  renderWallet();
+  renderStocksTable();
+  
+  alert(`Successfully sold all shares for $${totalValue.toFixed(2)}!\nYour new balance: $${userdata.coins.toFixed(2)}`);
+}
+
 // Delete stock
 function deleteStock(stockName) {
   if (!confirm(`Are you sure you want to delete ${stockName}? This action cannot be undone.`)) {

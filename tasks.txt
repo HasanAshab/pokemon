@@ -1,6 +1,7 @@
 * Tasks
 building cost (actual cost + profit)
-kingdom contracts
+kingdom build expiry
+construct time
 
 Bronze armors
 Kingdom Buildings better ui
