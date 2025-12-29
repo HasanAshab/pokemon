@@ -535,7 +535,7 @@ globalThis.hideQuickFindForm = () => {
   quickFindForm.classList.remove("active");
 }
 
-function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox) {
+function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox) {
   const linksContainer = quickFindForm.querySelector(".links-container");
   linksContainer.innerHTML = "";
   let buildings = kingdoms[name].buildings;
@@ -560,6 +560,14 @@ function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBy
         size2 = size2 * b2.quantity;
       }
       return size2 - size1;
+    });
+  }
+  
+  if (sortByDurabilityCheckBox.checked) {
+    buildings = [...buildings].sort((b1, b2) => {
+      const durability1 = b1.durability || 1;
+      const durability2 = b2.durability || 1;
+      return durability2 - durability1; // Sort highest durability first
     });
   }
   
@@ -613,11 +621,12 @@ globalThis.showQuickFindForm = () => {
   const showSizeCheckBox = controlerBar.querySelector(".show-size");
   const showQuantityCheckBox = controlerBar.querySelector(".show-quantity");
   const showOnlyExpirableCheckBox = controlerBar.querySelector(".show-only-expirable");
+  const sortByDurabilityCheckBox = controlerBar.querySelector(".sort-by-durability");
   setupOwnedBySelect(ownedBySel);
-  renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox);
-  const controlers = [ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox];
+  renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox);
+  const controlers = [ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox];
   controlers.forEach(el => {
-    el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox);
+    el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox);
   });
 }
 // Go to top functionality

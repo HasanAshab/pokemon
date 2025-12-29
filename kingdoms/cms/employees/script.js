@@ -59,7 +59,6 @@ function renderEmployees() {
       </td>
       <td>
         <input type="number" class="editable-input" value="${employee.salaryPercent}" 
-               min="0" max="100" step="0.1"
                onblur="updateEmployee(${index}, 'salaryPercent', this.value)"
                onkeydown="handleEnterKey(event)">
       </td>

@@ -1,6 +1,5 @@
 * Tasks
 building cost (actual cost + profit)
-kingdom build expiry
 construct time
 
 Bronze armors
