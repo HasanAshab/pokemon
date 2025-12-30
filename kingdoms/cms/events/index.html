@@ -139,6 +139,20 @@
       display: block;
     }
     
+    .countdown-inputs {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .countdown-inputs.disabled {
+      opacity: 0.5;
+    }
+    
+    .countdown-inputs.disabled input {
+      background: #f8f9fa;
+      cursor: not-allowed;
+    }
+    
     @media (max-width: 768px) {
       .event-form {
         flex-direction: column;
@@ -167,10 +181,16 @@
             <input type="text" id="eventTitle" placeholder="Event title" />
           </div>
           <div class="form-group">
+            <label>
+              <input type="checkbox" id="hasCountdown" checked />
+              Has Countdown
+            </label>
+          </div>
+          <div class="form-group countdown-inputs">
             <label for="eventYears">Years:</label>
             <input type="number" id="eventYears" min="0" value="0" />
           </div>
-          <div class="form-group">
+          <div class="form-group countdown-inputs">
             <label for="eventMonths">Months:</label>
             <input type="number" id="eventMonths" min="0" value="1" />
           </div>

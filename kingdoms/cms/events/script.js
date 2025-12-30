@@ -11,6 +11,31 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].events) kingdoms[name].events = { future: [], past: [] };
 
+// Migrate existing events to include hasCountdown property
+function migrateEvents() {
+  let needsSave = false;
+  
+  kingdoms[name].events.future.forEach(event => {
+    if (event.hasCountdown === undefined) {
+      event.hasCountdown = event.remainingMonths !== null && event.remainingMonths !== undefined;
+      needsSave = true;
+    }
+  });
+  
+  kingdoms[name].events.past.forEach(event => {
+    if (event.hasCountdown === undefined) {
+      event.hasCountdown = true; // Assume past events had countdown
+      needsSave = true;
+    }
+  });
+  
+  if (needsSave) {
+    saveKingdoms();
+  }
+}
+
+migrateEvents();
+
 function saveKingdoms() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 }
@@ -57,12 +82,15 @@ function getCountdownDisplay(remainingMonths) {
 
 // Check for happening events (events with 0 or negative remaining months)
 function getHappeningEventsCount() {
-  return kingdoms[name].events.future.filter(event => event.remainingMonths <= 0).length;
+  return kingdoms[name].events.future.filter(event => 
+    event.hasCountdown && event.remainingMonths <= 0
+  ).length;
 }
 
 // Add new event
 function addEvent() {
   const title = document.getElementById('eventTitle').value.trim();
+  const hasCountdown = document.getElementById('hasCountdown').checked;
   const years = parseInt(document.getElementById('eventYears').value) || 0;
   const months = parseInt(document.getElementById('eventMonths').value) || 0;
   const isSecret = document.getElementById('eventSecret').checked;
@@ -72,16 +100,20 @@ function addEvent() {
     return;
   }
   
-  const totalMonths = calculateTotalMonths(years, months);
-  if (totalMonths <= 0) {
-    alert('Event must be scheduled for at least 1 month in the future');
-    return;
+  let totalMonths = null;
+  if (hasCountdown) {
+    totalMonths = calculateTotalMonths(years, months);
+    if (totalMonths <= 0) {
+      alert('Event with countdown must be scheduled for at least 1 month in the future');
+      return;
+    }
   }
   
   const event = {
     id: Date.now(), // Simple ID generation
     title: isSecret ? encodeSecret(title) : title,
     remainingMonths: totalMonths,
+    hasCountdown,
     isSecret,
     isHappened: false
   };
@@ -91,9 +123,11 @@ function addEvent() {
   
   // Clear form
   document.getElementById('eventTitle').value = '';
+  document.getElementById('hasCountdown').checked = true;
   document.getElementById('eventYears').value = '0';
   document.getElementById('eventMonths').value = '1';
   document.getElementById('eventSecret').checked = false;
+  toggleCountdownInputs(); // Reset form state
   
   renderEvents();
 }
@@ -158,20 +192,35 @@ function renderFutureEvents() {
   const container = document.getElementById('futureEventsList');
   container.innerHTML = '';
   
-  // Sort by remaining months (ascending)
-  const sortedEvents = [...kingdoms[name].events.future].sort((a, b) => a.remainingMonths - b.remainingMonths);
+  // Sort by remaining months (ascending), reminders at the end
+  const sortedEvents = [...kingdoms[name].events.future].sort((a, b) => {
+    if (!a.hasCountdown && !b.hasCountdown) return 0;
+    if (!a.hasCountdown) return 1;
+    if (!b.hasCountdown) return -1;
+    return a.remainingMonths - b.remainingMonths;
+  });
   
   sortedEvents.forEach(event => {
+    const isHappening = event.hasCountdown && event.remainingMonths <= 0;
+    const showCountdown = event.hasCountdown && (!event.isSecret || event.remainingMonths <= 0);
+    
     const eventDiv = document.createElement('div');
-    eventDiv.className = `event-item ${event.remainingMonths <= 0 ? 'happening' : ''} ${event.isSecret ? 'secret' : ''}`;
+    eventDiv.className = `event-item ${isHappening ? 'happening' : ''} ${event.isSecret ? 'secret' : ''}`;
     
     const displayTitle = event.title;
-    const countdownText = getCountdownDisplay(event.remainingMonths);
+    let countdownHtml = '';
+    
+    if (event.hasCountdown && showCountdown) {
+      const countdownText = getCountdownDisplay(event.remainingMonths);
+      countdownHtml = `<div class="event-countdown ${isHappening ? 'happening' : ''}">${countdownText}</div>`;
+    } else if (!event.hasCountdown) {
+      countdownHtml = `<div class="event-countdown">Reminder</div>`;
+    }
     
     eventDiv.innerHTML = `
       <div class="event-header">
         <div class="event-title ${event.isSecret ? 'event-description' : ''}">${displayTitle}</div>
-        <div class="event-countdown ${event.remainingMonths <= 0 ? 'happening' : ''}">${countdownText}</div>
+        ${countdownHtml}
       </div>
       <div class="event-controls">
         <label>
@@ -240,9 +289,38 @@ function togglePastEvents() {
 // Reduce event countdowns (called from storage page)
 function reduceEventCountdowns() {
   kingdoms[name].events.future.forEach(event => {
-    event.remainingMonths = Math.max(0, event.remainingMonths - 1);
+    if (event.hasCountdown) {
+      event.remainingMonths = Math.max(0, event.remainingMonths - 1);
+    }
   });
   saveKingdoms();
+}
+
+// Toggle countdown inputs based on hasCountdown checkbox
+function toggleCountdownInputs() {
+  const hasCountdown = document.getElementById('hasCountdown').checked;
+  const countdownInputs = document.querySelectorAll('.countdown-inputs');
+  const yearsInput = document.getElementById('eventYears');
+  const monthsInput = document.getElementById('eventMonths');
+  
+  countdownInputs.forEach(input => {
+    if (hasCountdown) {
+      input.classList.remove('disabled');
+    } else {
+      input.classList.add('disabled');
+    }
+  });
+  
+  yearsInput.disabled = !hasCountdown;
+  monthsInput.disabled = !hasCountdown;
+  
+  if (!hasCountdown) {
+    yearsInput.value = '0';
+    monthsInput.value = '0';
+  } else {
+    yearsInput.value = '0';
+    monthsInput.value = '1';
+  }
 }
 
 // Make functions globally available
@@ -255,6 +333,10 @@ globalThis.getHappeningEventsCount = getHappeningEventsCount;
 // Event listeners
 document.getElementById('addEventBtn').addEventListener('click', addEvent);
 document.getElementById('togglePastEventsBtn').addEventListener('click', togglePastEvents);
+document.getElementById('hasCountdown').addEventListener('change', toggleCountdownInputs);
+
+// Initialize form state
+toggleCountdownInputs();
 
 // Initial render
 renderEvents();
