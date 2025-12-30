@@ -880,6 +880,20 @@ function advanceToNextMonth() {
     }
   });
 
+  // After all kingdoms have advanced, trigger propagation for new current month disasters
+  kingdomNames.forEach(name => {
+    const kingdom = kingdoms[name];
+    if (!kingdom.disaster || !kingdom.disaster.current[0]) return;
+
+    // Propagate each disaster that is now current (moved from month 1 to month 0)
+    kingdom.disaster.current[0].forEach(disaster => {
+      if (disaster.source === "nature") {
+        // Only propagate natural disasters to avoid double propagation
+        propagateDisastersToNearbyKingdoms(name, disaster.name, disaster.power, new Set(), "nature", disaster.direction);
+      }
+    });
+  });
+
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 
