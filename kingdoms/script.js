@@ -2,6 +2,46 @@ import { DISASTERS } from './constraints.js';
 
 const kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 
+// Initialize disaster suppressor input
+const disasterSuppressorInput = document.getElementById("disasterSuppressor");
+
+// Load saved suppressor value or default to 1.0
+function loadDisasterSuppressor() {
+  const savedSuppressor = localStorage.getItem("globalDisasterSuppressor");
+  const suppressorValue = savedSuppressor ? parseFloat(savedSuppressor) : 1.0;
+  disasterSuppressorInput.value = suppressorValue;
+  return suppressorValue;
+}
+
+// Save suppressor value and update all kingdoms
+function saveDisasterSuppressor() {
+  const suppressorValue = parseFloat(disasterSuppressorInput.value) || 1.0;
+  localStorage.setItem("globalDisasterSuppressor", suppressorValue.toString());
+  
+  // Update all kingdoms with the new suppressor value
+  Object.keys(kingdoms).forEach(kingdomName => {
+    if (!kingdoms[kingdomName].disaster) {
+      kingdoms[kingdomName].disaster = {
+        current: [],
+        geoState: generateRandomGeoState(),
+        protected: false,
+        suppressMod: suppressorValue
+      };
+    } else {
+      kingdoms[kingdomName].disaster.suppressMod = suppressorValue;
+    }
+  });
+  
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+}
+
+// Add event listener for suppressor input changes
+disasterSuppressorInput.addEventListener('input', saveDisasterSuppressor);
+disasterSuppressorInput.addEventListener('change', saveDisasterSuppressor);
+
+// Load initial suppressor value
+loadDisasterSuppressor();
+
 const container = document.getElementById("cardContainer");
 
 Object.keys(kingdoms).forEach((name) => {
@@ -171,7 +211,8 @@ document.getElementById("addKingdomBtn").onclick = () => {
     disaster: {
       current: [],
       geoState: generateRandomGeoState(),
-      protected: false
+      protected: false,
+      suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
     }
   };
 
@@ -355,17 +396,25 @@ function getDisasterChance(disaster, geoState, isRelated = false) {
   }
 }
 
-function generateDisasterPower() {
+function generateDisasterPower(kingdom) {
   const rand = Math.random() * 100;
 
   // Power distribution: 4-6 (60%), 1-3 (30%), 7-10 (10%)
+  let basePower;
   if (rand < 60) {
-    return Math.floor(Math.random() * 3) + 4; // 4, 5, 6
+    basePower = Math.floor(Math.random() * 3) + 4; // 4, 5, 6
   } else if (rand < 90) {
-    return Math.floor(Math.random() * 3) + 1; // 1, 2, 3
+    basePower = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
   } else {
-    return Math.floor(Math.random() * 4) + 7; // 7, 8, 9, 10
+    basePower = Math.floor(Math.random() * 4) + 7; // 7, 8, 9, 10
   }
+
+  // Apply suppressor modifier
+  const suppressMod = kingdom.disaster?.suppressMod || 1.0;
+  const modifiedPower = Math.round(basePower * suppressMod);
+  
+  // Ensure power is at least 0 and at most 10
+  return Math.max(0, Math.min(10, modifiedPower));
 }
 
 function simulateDisasters(kingdomName) {
@@ -374,12 +423,18 @@ function simulateDisasters(kingdomName) {
     kingdom.disaster = {
       current: [],
       geoState: generateRandomGeoState(),
-      protected: false
+      protected: false,
+      suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
     };
   }
 
-  // Skip disaster simulation if kingdom is protected
-  if (kingdom.disaster.protected) {
+  // Ensure suppressMod is set
+  if (kingdom.disaster.suppressMod === undefined) {
+    kingdom.disaster.suppressMod = parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0;
+  }
+
+  // Skip disaster simulation if kingdom is protected or suppressor is 0
+  if (kingdom.disaster.protected || kingdom.disaster.suppressMod === 0) {
     return;
   }
 
@@ -400,25 +455,29 @@ function simulateDisasters(kingdomName) {
 
     if (roll < chance) {
       primaryDisaster = disaster;
-      primaryPower = generateDisasterPower();
+      primaryPower = generateDisasterPower(kingdom);
 
-      // Increase power if kingdom is prone to this disaster
+      // Increase power if kingdom is prone to this disaster (before suppressor is applied)
       if (kingdom.disaster.geoState[disaster] === 'prone') {
-        primaryPower = Math.min(10, primaryPower + 2);
+        const basePower = Math.round(primaryPower / kingdom.disaster.suppressMod);
+        const bonusPower = Math.min(10, basePower + 2);
+        primaryPower = Math.round(bonusPower * kingdom.disaster.suppressMod);
       }
 
-      // Add primary disaster to array
-      kingdom.disaster.current.push({
-        name: disaster,
-        power: primaryPower,
-        source: "nature"
-      });
+      // Add primary disaster to array (only if power > 0)
+      if (primaryPower > 0) {
+        kingdom.disaster.current.push({
+          name: disaster,
+          power: primaryPower,
+          source: "nature"
+        });
+      }
       break; // Stop after first disaster occurs
     }
   }
 
   // If a primary disaster occurred, check for related disasters
-  if (primaryDisaster) {
+  if (primaryDisaster && primaryPower > 0) {
     const relatedDisasters = DISASTERS[primaryDisaster].related;
 
     for (const relatedDisaster of relatedDisasters) {
@@ -426,18 +485,22 @@ function simulateDisasters(kingdomName) {
       const roll = Math.random() * 100;
 
       if (roll < chance) {
-        const relatedPower = Math.max(1, Math.round(primaryPower / 2));
-        kingdom.disaster.current.push({
-          name: relatedDisaster,
-          power: relatedPower,
-          source: "nature"
-        });
+        const basePower = Math.max(1, Math.round(primaryPower / kingdom.disaster.suppressMod / 2));
+        const relatedPower = Math.round(basePower * kingdom.disaster.suppressMod);
+        
+        if (relatedPower > 0) {
+          kingdom.disaster.current.push({
+            name: relatedDisaster,
+            power: relatedPower,
+            source: "nature"
+          });
+        }
       }
     }
   }
 
   // Propagate disasters to nearby kingdoms
-  if (primaryDisaster) {
+  if (primaryDisaster && primaryPower > 0) {
     propagateDisastersToNearbyKingdoms(kingdomName, primaryDisaster, primaryPower);
   }
 
@@ -490,62 +553,70 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
     const roll = Math.random() * 100;
 
     if (roll < propagationChance) {
-      // Calculate reduced power (60% of original, rounded)
-      const reducedPower = Math.max(1, Math.round(power * 0.6));
+      // Calculate reduced power (60% of original, then apply suppressor)
+      const basePower = Math.max(1, Math.round(power * 0.6));
+      const suppressMod = nearbyKingdom.disaster.suppressMod || 1.0;
+      const reducedPower = Math.round(basePower * suppressMod);
 
-      // Check if disaster already exists with higher power
-      const existingDisaster = nearbyKingdom.disaster.current.find(d => d.name === disaster);
-      if (!existingDisaster || existingDisaster.power < reducedPower) {
-        // Remove existing weaker disaster if present
-        if (existingDisaster) {
-          const index = nearbyKingdom.disaster.current.indexOf(existingDisaster);
-          nearbyKingdom.disaster.current.splice(index, 1);
-        }
+      // Only proceed if power > 0
+      if (reducedPower > 0) {
+        // Check if disaster already exists with higher power
+        const existingDisaster = nearbyKingdom.disaster.current.find(d => d.name === disaster);
+        if (!existingDisaster || existingDisaster.power < reducedPower) {
+          // Remove existing weaker disaster if present
+          if (existingDisaster) {
+            const index = nearbyKingdom.disaster.current.indexOf(existingDisaster);
+            nearbyKingdom.disaster.current.splice(index, 1);
+          }
 
-        // Add new disaster
-        nearbyKingdom.disaster.current.push({
-          name: disaster,
-          power: reducedPower,
-          source: sourceKingdom
-        });
+          // Add new disaster
+          nearbyKingdom.disaster.current.push({
+            name: disaster,
+            power: reducedPower,
+            source: sourceKingdom
+          });
 
-        // Check for related disasters in the nearby kingdom
-        const relatedDisasters = DISASTERS[disaster].related;
+          // Check for related disasters in the nearby kingdom
+          const relatedDisasters = DISASTERS[disaster].related;
 
-        for (const relatedDisaster of relatedDisasters) {
-          const relatedChance = getDisasterChance(relatedDisaster, nearbyKingdom.disaster.geoState, true);
-          const relatedRoll = Math.random() * 100;
+          for (const relatedDisaster of relatedDisasters) {
+            const relatedChance = getDisasterChance(relatedDisaster, nearbyKingdom.disaster.geoState, true);
+            const relatedRoll = Math.random() * 100;
 
-          if (relatedRoll < relatedChance) {
-            const relatedPower = Math.max(1, Math.round(reducedPower / 2));
+            if (relatedRoll < relatedChance) {
+              const baseRelatedPower = Math.max(1, Math.round(reducedPower / suppressMod / 2));
+              const relatedPower = Math.round(baseRelatedPower * suppressMod);
 
-            // Check if related disaster already exists
-            const existingRelated = nearbyKingdom.disaster.current.find(d => d.name === relatedDisaster);
-            if (!existingRelated || existingRelated.power < relatedPower) {
-              // Remove existing weaker related disaster if present
-              if (existingRelated) {
-                const index = nearbyKingdom.disaster.current.indexOf(existingRelated);
-                nearbyKingdom.disaster.current.splice(index, 1);
+              if (relatedPower > 0) {
+                // Check if related disaster already exists
+                const existingRelated = nearbyKingdom.disaster.current.find(d => d.name === relatedDisaster);
+                if (!existingRelated || existingRelated.power < relatedPower) {
+                  // Remove existing weaker related disaster if present
+                  if (existingRelated) {
+                    const index = nearbyKingdom.disaster.current.indexOf(existingRelated);
+                    nearbyKingdom.disaster.current.splice(index, 1);
+                  }
+
+                  // Add related disaster
+                  nearbyKingdom.disaster.current.push({
+                    name: relatedDisaster,
+                    power: relatedPower,
+                    source: `${disaster}_${sourceKingdom}`
+                  });
+                }
               }
-
-              // Add related disaster
-              nearbyKingdom.disaster.current.push({
-                name: relatedDisaster,
-                power: relatedPower,
-                source: `${disaster}_${sourceKingdom}`
-              });
             }
           }
-        }
 
-        // Continue propagation to connected kingdoms of connected kingdoms
-        propagateDisastersToNearbyKingdoms(
-          nearbyKingdomName,
-          disaster,
-          reducedPower,
-          new Set(visitedKingdoms), // Pass copy of visited kingdoms
-          sourceKingdom
-        );
+          // Continue propagation to connected kingdoms of connected kingdoms
+          propagateDisastersToNearbyKingdoms(
+            nearbyKingdomName,
+            disaster,
+            reducedPower,
+            new Set(visitedKingdoms), // Pass copy of visited kingdoms
+            sourceKingdom
+          );
+        }
       }
     }
   });
@@ -714,8 +785,14 @@ Object.keys(kingdoms).forEach(name => {
     kingdoms[name].disaster = {
       current: [],
       geoState: generateRandomGeoState(),
-      protected: false
+      protected: false,
+      suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
     };
+  }
+
+  // Initialize suppressMod property if it doesn't exist
+  if (kingdoms[name].disaster.suppressMod === undefined) {
+    kingdoms[name].disaster.suppressMod = parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0;
   }
 
   // Initialize protected property if it doesn't exist

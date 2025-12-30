@@ -1,6 +1,4 @@
 * Tasks
-disaster supressor + afterEffects
-construct time
 predict disaster + direction
 
 Bronze armors

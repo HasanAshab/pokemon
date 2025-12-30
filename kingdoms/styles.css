@@ -289,6 +289,35 @@ body {
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.disaster-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.disaster-controls label {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+.disaster-controls input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 80px;
+  font-size: 0.9rem;
+}
+
+.disaster-controls small {
+  color: #666;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .view-toggle {
