@@ -68,9 +68,7 @@ function confirmEventModal() {
   
   if (createEvent(currentEventTitle, years, months)) {
     closeEventModal();
-    if (currentEventCallback) {
-      currentEventCallback();
-    }
+    // No callback execution needed - events are just for tracking
   } else {
     alert('Failed to create event');
   }
@@ -411,14 +409,15 @@ function renderBuildings() {
         showEventModal(
           "Set Upgrade Time",
           `How long will it take to upgrade ${building.name}?`,
-          () => {
-            storage.coins -= upgradeCost;
-            building.currentLevel++;
-            saveAndRefresh();
-          }
+          null // No callback needed
         );
         // Update the current event title for the modal
         currentEventTitle = eventTitle;
+        
+        // Perform upgrade immediately
+        storage.coins -= upgradeCost;
+        building.currentLevel++;
+        saveAndRefresh();
       } else {
         alert("Not enough coins!");
       }
@@ -456,22 +455,19 @@ function renderBuildings() {
       editBtn.onclick = () => {
         const buildingName = nameInput.value.trim();
         
+        // Save building changes first
+        saveBuildingChanges();
+        
         // Ask if construction is required
         if (confirm("Does it require construction?")) {
           const eventTitle = `${buildingName} Construction Complete!`;
           showEventModal(
             "Set Construction Time",
             `How long will it take to construct ${buildingName}?`,
-            () => {
-              // Save building after event is created
-              saveBuildingChanges();
-            }
+            null // No callback needed
           );
           // Update the current event title for the modal
           currentEventTitle = eventTitle;
-        } else {
-          // Save building without event
-          saveBuildingChanges();
         }
         
         function saveBuildingChanges() {
