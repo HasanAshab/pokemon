@@ -209,7 +209,7 @@ document.getElementById("addKingdomBtn").onclick = () => {
     underWar: false,
     closerKingdoms: [],
     disaster: {
-      current: [],
+      current: [[], [], [], [], [], []], // Initialize as 6-month array
       geoState: generateRandomGeoState(),
       protected: false,
       suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
@@ -421,7 +421,7 @@ function simulateDisasters(kingdomName) {
   const kingdom = kingdoms[kingdomName];
   if (!kingdom.disaster) {
     kingdom.disaster = {
-      current: [],
+      current: [[], [], [], [], [], []], // Initialize as 6-month array
       geoState: generateRandomGeoState(),
       protected: false,
       suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
@@ -433,82 +433,92 @@ function simulateDisasters(kingdomName) {
     kingdom.disaster.suppressMod = parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0;
   }
 
-  // Skip disaster simulation if kingdom is protected or suppressor is 0
-  if (kingdom.disaster.protected || kingdom.disaster.suppressMod === 0) {
-    return;
+  // Initialize 6-month disaster array if not exists or wrong format
+  if (!Array.isArray(kingdom.disaster.current) || !Array.isArray(kingdom.disaster.current[0])) {
+    kingdom.disaster.current = [[], [], [], [], [], []]; // 6 months
   }
 
-  // Clear current disasters
-  kingdom.disaster.current = [];
+  // Skip disaster simulation if kingdom is protected or suppressor is 0
+  if (kingdom.disaster.protected || kingdom.disaster.suppressMod === 0) {
+    // Clear all future disasters but keep the structure
+    kingdom.disaster.current = [[], [], [], [], [], []];
+    return;
+  }
 
   // 8 directions for disasters (using shortcuts)
   const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
-  // Shuffle disasters for random order
-  const disasterNames = Object.keys(DISASTERS);
-  const shuffledDisasters = [...disasterNames].sort(() => Math.random() - 0.5);
+  // Generate disasters for all 6 months
+  for (let monthIndex = 0; monthIndex < 6; monthIndex++) {
+    // Clear current month disasters
+    kingdom.disaster.current[monthIndex] = [];
 
-  let primaryDisaster = null;
-  let primaryPower = 0;
-  let primaryDirection = null;
+    // Shuffle disasters for random order
+    const disasterNames = Object.keys(DISASTERS);
+    const shuffledDisasters = [...disasterNames].sort(() => Math.random() - 0.5);
 
-  // Loop through shuffled disasters to find if one occurs
-  for (const disaster of shuffledDisasters) {
-    const chance = getDisasterChance(disaster, kingdom.disaster.geoState);
-    const roll = Math.random() * 100;
+    let primaryDisaster = null;
+    let primaryPower = 0;
+    let primaryDirection = null;
 
-    if (roll < chance) {
-      primaryDisaster = disaster;
-      primaryPower = generateDisasterPower(kingdom);
-      primaryDirection = directions[Math.floor(Math.random() * directions.length)];
-
-      // Increase power if kingdom is prone to this disaster (before suppressor is applied)
-      if (kingdom.disaster.geoState[disaster] === 'prone') {
-        const basePower = Math.round(primaryPower / kingdom.disaster.suppressMod);
-        const bonusPower = Math.min(10, basePower + 2);
-        primaryPower = Math.round(bonusPower * kingdom.disaster.suppressMod);
-      }
-
-      // Add primary disaster to array (only if power > 0)
-      if (primaryPower > 0) {
-        kingdom.disaster.current.push({
-          name: disaster,
-          power: primaryPower,
-          source: "nature",
-          direction: primaryDirection
-        });
-      }
-      break; // Stop after first disaster occurs
-    }
-  }
-
-  // If a primary disaster occurred, check for related disasters
-  if (primaryDisaster && primaryPower > 0) {
-    const relatedDisasters = DISASTERS[primaryDisaster].related;
-
-    for (const relatedDisaster of relatedDisasters) {
-      const chance = getDisasterChance(relatedDisaster, kingdom.disaster.geoState, true);
+    // Loop through shuffled disasters to find if one occurs
+    for (const disaster of shuffledDisasters) {
+      const chance = getDisasterChance(disaster, kingdom.disaster.geoState);
       const roll = Math.random() * 100;
 
       if (roll < chance) {
-        const basePower = Math.max(1, Math.round(primaryPower / kingdom.disaster.suppressMod / 2));
-        const relatedPower = Math.round(basePower * kingdom.disaster.suppressMod);
-        
-        if (relatedPower > 0) {
-          kingdom.disaster.current.push({
-            name: relatedDisaster,
-            power: relatedPower,
+        primaryDisaster = disaster;
+        primaryPower = generateDisasterPower(kingdom);
+        primaryDirection = directions[Math.floor(Math.random() * directions.length)];
+
+        // Increase power if kingdom is prone to this disaster (before suppressor is applied)
+        if (kingdom.disaster.geoState[disaster] === 'prone') {
+          const basePower = Math.round(primaryPower / kingdom.disaster.suppressMod);
+          const bonusPower = Math.min(10, basePower + 2);
+          primaryPower = Math.round(bonusPower * kingdom.disaster.suppressMod);
+        }
+
+        // Add primary disaster to array (only if power > 0)
+        if (primaryPower > 0) {
+          kingdom.disaster.current[monthIndex].push({
+            name: disaster,
+            power: primaryPower,
             source: "nature",
-            direction: primaryDirection // Child disasters inherit parent direction
+            direction: primaryDirection
           });
+        }
+        break; // Stop after first disaster occurs
+      }
+    }
+
+    // If a primary disaster occurred, check for related disasters
+    if (primaryDisaster && primaryPower > 0) {
+      const relatedDisasters = DISASTERS[primaryDisaster].related;
+
+      for (const relatedDisaster of relatedDisasters) {
+        const chance = getDisasterChance(relatedDisaster, kingdom.disaster.geoState, true);
+        const roll = Math.random() * 100;
+
+        if (roll < chance) {
+          const basePower = Math.max(1, Math.round(primaryPower / kingdom.disaster.suppressMod / 2));
+          const relatedPower = Math.round(basePower * kingdom.disaster.suppressMod);
+          
+          if (relatedPower > 0) {
+            kingdom.disaster.current[monthIndex].push({
+              name: relatedDisaster,
+              power: relatedPower,
+              source: "nature",
+              direction: primaryDirection // Child disasters inherit parent direction
+            });
+          }
         }
       }
     }
-  }
 
-  // Propagate disasters to nearby kingdoms
-  if (primaryDisaster && primaryPower > 0) {
-    propagateDisastersToNearbyKingdoms(kingdomName, primaryDisaster, primaryPower, new Set(), "nature", primaryDirection);
+    // Propagate disasters to nearby kingdoms (only for current month)
+    if (monthIndex === 0 && primaryDisaster && primaryPower > 0) {
+      propagateDisastersToNearbyKingdoms(kingdomName, primaryDisaster, primaryPower, new Set(), "nature", primaryDirection);
+    }
   }
 
   // Save to localStorage
@@ -539,9 +549,10 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
     // Initialize disaster data if not present
     if (!nearbyKingdom.disaster) {
       nearbyKingdom.disaster = {
-        current: [],
+        current: [[], [], [], [], [], []], // Initialize as 6-month array
         geoState: generateRandomGeoState(),
-        protected: false
+        protected: false,
+        suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
       };
     }
 
@@ -567,17 +578,17 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
 
       // Only proceed if power > 0
       if (reducedPower > 0) {
-        // Check if disaster already exists with higher power
-        const existingDisaster = nearbyKingdom.disaster.current.find(d => d.name === disaster);
+        // Check if disaster already exists with higher power in current month
+        const existingDisaster = nearbyKingdom.disaster.current[0].find(d => d.name === disaster);
         if (!existingDisaster || existingDisaster.power < reducedPower) {
           // Remove existing weaker disaster if present
           if (existingDisaster) {
-            const index = nearbyKingdom.disaster.current.indexOf(existingDisaster);
-            nearbyKingdom.disaster.current.splice(index, 1);
+            const index = nearbyKingdom.disaster.current[0].indexOf(existingDisaster);
+            nearbyKingdom.disaster.current[0].splice(index, 1);
           }
 
-          // Add new disaster
-          nearbyKingdom.disaster.current.push({
+          // Add new disaster to current month (index 0)
+          nearbyKingdom.disaster.current[0].push({
             name: disaster,
             power: reducedPower,
             source: sourceKingdom,
@@ -596,17 +607,17 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
               const relatedPower = Math.round(baseRelatedPower * suppressMod);
 
               if (relatedPower > 0) {
-                // Check if related disaster already exists
-                const existingRelated = nearbyKingdom.disaster.current.find(d => d.name === relatedDisaster);
+                // Check if related disaster already exists in current month
+                const existingRelated = nearbyKingdom.disaster.current[0].find(d => d.name === relatedDisaster);
                 if (!existingRelated || existingRelated.power < relatedPower) {
                   // Remove existing weaker related disaster if present
                   if (existingRelated) {
-                    const index = nearbyKingdom.disaster.current.indexOf(existingRelated);
-                    nearbyKingdom.disaster.current.splice(index, 1);
+                    const index = nearbyKingdom.disaster.current[0].indexOf(existingRelated);
+                    nearbyKingdom.disaster.current[0].splice(index, 1);
                   }
 
-                  // Add related disaster
-                  nearbyKingdom.disaster.current.push({
+                  // Add related disaster to current month (index 0)
+                  nearbyKingdom.disaster.current[0].push({
                     name: relatedDisaster,
                     power: relatedPower,
                     source: `${disaster}_${sourceKingdom}`,
@@ -662,7 +673,10 @@ function displayDisasterReport() {
 
     let currentDisasters = kingdom.disaster.current || [];
 
-    if (!Array.isArray(currentDisasters)) {
+    // Handle new 6-month array format - only show current month (index 0)
+    if (Array.isArray(currentDisasters) && Array.isArray(currentDisasters[0])) {
+      currentDisasters = currentDisasters[0] || [];
+    } else if (!Array.isArray(currentDisasters)) {
       currentDisasters = []
     }
 
@@ -777,13 +791,115 @@ function generateNewDisasters() {
   displayDisasterReport();
 }
 
+function advanceToNextMonth() {
+  const kingdomNames = Object.keys(kingdoms);
+
+  kingdomNames.forEach(name => {
+    const kingdom = kingdoms[name];
+    if (!kingdom.disaster) return;
+
+    // Initialize 6-month disaster array if not exists or wrong format
+    if (!Array.isArray(kingdom.disaster.current) || !Array.isArray(kingdom.disaster.current[0])) {
+      kingdom.disaster.current = [[], [], [], [], [], []]; // 6 months
+      return;
+    }
+
+    // Shift disasters: remove first month, move others forward, generate new 6th month
+    kingdom.disaster.current.shift(); // Remove current month
+    kingdom.disaster.current.push([]); // Add empty 6th month
+
+    // Generate disasters for the new 6th month
+    const monthIndex = 5; // 6th month (0-indexed)
+    const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+
+    // Skip if kingdom is protected or suppressor is 0
+    if (kingdom.disaster.protected || (kingdom.disaster.suppressMod || 1.0) === 0) {
+      return;
+    }
+
+    // Shuffle disasters for random order
+    const disasterNames = Object.keys(DISASTERS);
+    const shuffledDisasters = [...disasterNames].sort(() => Math.random() - 0.5);
+
+    let primaryDisaster = null;
+    let primaryPower = 0;
+    let primaryDirection = null;
+
+    // Loop through shuffled disasters to find if one occurs
+    for (const disaster of shuffledDisasters) {
+      const chance = getDisasterChance(disaster, kingdom.disaster.geoState);
+      const roll = Math.random() * 100;
+
+      if (roll < chance) {
+        primaryDisaster = disaster;
+        primaryPower = generateDisasterPower(kingdom);
+        primaryDirection = directions[Math.floor(Math.random() * directions.length)];
+
+        // Increase power if kingdom is prone to this disaster
+        if (kingdom.disaster.geoState[disaster] === 'prone') {
+          const basePower = Math.round(primaryPower / kingdom.disaster.suppressMod);
+          const bonusPower = Math.min(10, basePower + 2);
+          primaryPower = Math.round(bonusPower * kingdom.disaster.suppressMod);
+        }
+
+        // Add primary disaster to array (only if power > 0)
+        if (primaryPower > 0) {
+          kingdom.disaster.current[monthIndex].push({
+            name: disaster,
+            power: primaryPower,
+            source: "nature",
+            direction: primaryDirection
+          });
+        }
+        break;
+      }
+    }
+
+    // If a primary disaster occurred, check for related disasters
+    if (primaryDisaster && primaryPower > 0) {
+      const relatedDisasters = DISASTERS[primaryDisaster].related;
+
+      for (const relatedDisaster of relatedDisasters) {
+        const chance = getDisasterChance(relatedDisaster, kingdom.disaster.geoState, true);
+        const roll = Math.random() * 100;
+
+        if (roll < chance) {
+          const basePower = Math.max(1, Math.round(primaryPower / kingdom.disaster.suppressMod / 2));
+          const relatedPower = Math.round(basePower * kingdom.disaster.suppressMod);
+          
+          if (relatedPower > 0) {
+            kingdom.disaster.current[monthIndex].push({
+              name: relatedDisaster,
+              power: relatedPower,
+              source: "nature",
+              direction: primaryDirection
+            });
+          }
+        }
+      }
+    }
+  });
+
+  // Save to localStorage
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+
+  // Refresh the display
+  displayDisasterReport();
+}
+
 
 displayDisasterReport();
 document.getElementById('disasterReport').style.display = 'block';
 
 document.getElementById('generateNewDisasters').onclick = () => {
-  if (confirm('Generate new disasters for all kingdoms? This will replace current disaster states.')) {
+  if (confirm('Generate new 6-month disaster forecast for all kingdoms? This will replace current forecasts.')) {
     generateNewDisasters();
+  }
+};
+
+document.getElementById('nextMonthBtn').onclick = () => {
+  if (confirm('Advance to next month? Current disasters will be replaced by next month\'s forecast.')) {
+    advanceToNextMonth();
   }
 };
 
@@ -795,7 +911,7 @@ document.getElementById('closeDisasterReport').onclick = () => {
 Object.keys(kingdoms).forEach(name => {
   if (!kingdoms[name].disaster) {
     kingdoms[name].disaster = {
-      current: [],
+      current: [[], [], [], [], [], []], // Initialize as 6-month array
       geoState: generateRandomGeoState(),
       protected: false,
       suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
@@ -815,12 +931,12 @@ Object.keys(kingdoms).forEach(name => {
   // Convert old disaster format to new array format
   if (kingdoms[name].disaster.current && !Array.isArray(kingdoms[name].disaster.current)) {
     const oldDisasters = kingdoms[name].disaster.current;
-    kingdoms[name].disaster.current = [];
+    kingdoms[name].disaster.current = [[], [], [], [], [], []]; // Initialize 6-month array
 
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
     Object.entries(oldDisasters).forEach(([disasterName, power]) => {
-      kingdoms[name].disaster.current.push({
+      kingdoms[name].disaster.current[0].push({
         name: disasterName,
         power: power,
         source: "nature",
@@ -829,13 +945,37 @@ Object.keys(kingdoms).forEach(name => {
     });
   }
 
+  // Convert old single array format to 6-month array format
+  if (Array.isArray(kingdoms[name].disaster.current) && !Array.isArray(kingdoms[name].disaster.current[0])) {
+    const oldDisasters = kingdoms[name].disaster.current;
+    kingdoms[name].disaster.current = [[], [], [], [], [], []]; // Initialize 6-month array
+    
+    const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+    
+    oldDisasters.forEach(disaster => {
+      if (!disaster.direction) {
+        disaster.direction = directions[Math.floor(Math.random() * directions.length)];
+      }
+      kingdoms[name].disaster.current[0].push(disaster);
+    });
+  }
+
+  // Ensure 6-month array format
+  if (!Array.isArray(kingdoms[name].disaster.current) || !Array.isArray(kingdoms[name].disaster.current[0])) {
+    kingdoms[name].disaster.current = [[], [], [], [], [], []];
+  }
+
   // Add direction to existing disasters that don't have it
   if (kingdoms[name].disaster.current && Array.isArray(kingdoms[name].disaster.current)) {
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
     
-    kingdoms[name].disaster.current.forEach(disaster => {
-      if (!disaster.direction) {
-        disaster.direction = directions[Math.floor(Math.random() * directions.length)];
+    kingdoms[name].disaster.current.forEach(monthDisasters => {
+      if (Array.isArray(monthDisasters)) {
+        monthDisasters.forEach(disaster => {
+          if (!disaster.direction) {
+            disaster.direction = directions[Math.floor(Math.random() * directions.length)];
+          }
+        });
       }
     });
   }

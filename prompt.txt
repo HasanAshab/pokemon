@@ -1,4 +1,4 @@
-now at # instead of generating disaster of current.
+now instead of generating disaster of current.
 generate disasters of next 6 months and store it like 
 kingdom.disaster.current = [
     [
