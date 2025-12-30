@@ -5,19 +5,22 @@ kingdom.disaster.current = [
       {
         "name": "Drought",
         "power": 4,
-        "source": "smog"
+        "source": "smog",
+        "direction": "SE"
       },
       {
         "name": "Wildfire",
         "power": 2,
-        "source": "Drought_smog"
+        "source": "Drought_smog",
+        "direction": "SE"
       }
     ],
     [
       {
         "name": "Earthquake",
         "power": 4,
-        "source": "nature"
+        "source": "nature",
+        "direction": "W"
       }
     ],
 

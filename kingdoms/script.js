@@ -441,8 +441,8 @@ function simulateDisasters(kingdomName) {
   // Clear current disasters
   kingdom.disaster.current = [];
 
-  // 8 directions for disasters
-  const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+  // 8 directions for disasters (using shortcuts)
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
   // Shuffle disasters for random order
   const disasterNames = Object.keys(DISASTERS);
@@ -817,7 +817,7 @@ Object.keys(kingdoms).forEach(name => {
     const oldDisasters = kingdoms[name].disaster.current;
     kingdoms[name].disaster.current = [];
 
-    const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+    const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
     Object.entries(oldDisasters).forEach(([disasterName, power]) => {
       kingdoms[name].disaster.current.push({
@@ -831,7 +831,7 @@ Object.keys(kingdoms).forEach(name => {
 
   // Add direction to existing disasters that don't have it
   if (kingdoms[name].disaster.current && Array.isArray(kingdoms[name].disaster.current)) {
-    const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+    const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
     
     kingdoms[name].disaster.current.forEach(disaster => {
       if (!disaster.direction) {
