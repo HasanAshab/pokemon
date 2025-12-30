@@ -148,6 +148,81 @@
     .warning-btn:hover {
       background-color: #e0a800;
     }
+    
+    /* Event Modal Styles */
+    .event-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .event-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 8px;
+      width: 400px;
+      max-width: 90%;
+    }
+    
+    .event-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .event-modal-header h3 {
+      margin: 0;
+      color: #495057;
+    }
+    
+    .event-modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #aaa;
+    }
+    
+    .event-modal-close:hover {
+      color: #000;
+    }
+    
+    .event-modal-body {
+      margin-bottom: 20px;
+    }
+    
+    .event-modal-inputs {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      margin: 15px 0;
+    }
+    
+    .event-modal-inputs label {
+      font-weight: 500;
+      color: #495057;
+    }
+    
+    .event-modal-inputs input {
+      padding: 8px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      width: 80px;
+    }
+    
+    .event-modal-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -264,6 +339,29 @@
     <button id="goToTopBtn" class="go-to-top-btn" onclick="scrollToTop()" title="Go to top">
       ↑
     </button>
+    
+    <!-- Event Modal -->
+    <div id="eventModal" class="event-modal">
+      <div class="event-modal-content">
+        <div class="event-modal-header">
+          <h3 id="eventModalTitle">Set Construction Time</h3>
+          <button class="event-modal-close" onclick="closeEventModal()">&times;</button>
+        </div>
+        <div class="event-modal-body">
+          <p id="eventModalMessage">How long will this take to complete?</p>
+          <div class="event-modal-inputs">
+            <label for="eventModalYears">Years:</label>
+            <input type="number" id="eventModalYears" min="0" value="0" />
+            <label for="eventModalMonths">Months:</label>
+            <input type="number" id="eventModalMonths" min="0" value="1" />
+          </div>
+        </div>
+        <div class="event-modal-footer">
+          <button class="btn secondary-btn" onclick="closeEventModal()">Cancel</button>
+          <button class="btn primary-btn" onclick="confirmEventModal()">Create Event</button>
+        </div>
+      </div>
+    </div>
   </div>
   <datalist id="companiesDataList"></datalist>
   <script type="module" src="script.js"></script>

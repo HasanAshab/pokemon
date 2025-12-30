@@ -63,8 +63,7 @@ function renderEmployees() {
                onkeydown="handleEnterKey(event)">
       </td>
       <td>
-        <input type="number" class="editable-input" value="${employee.quantity}" 
-               min="1"
+        <input type="number" class="editable-input" value="${employee.quantity}"
                onblur="updateEmployee(${index}, 'quantity', this.value)"
                onkeydown="handleEnterKey(event)">
       </td>
@@ -93,19 +92,9 @@ function updateEmployee(index, field, value) {
     employee[field] = value.trim();
   } else if (field === 'salaryPercent') {
     const numValue = parseFloat(value);
-    if (isNaN(numValue) || numValue < 0 || numValue > 100) {
-      alert('Salary percentage must be between 0 and 100');
-      renderEmployees();
-      return;
-    }
     employee[field] = numValue;
   } else if (field === 'quantity') {
     const numValue = parseInt(value);
-    if (isNaN(numValue) || numValue < 1) {
-      alert('Quantity must be at least 1');
-      renderEmployees();
-      return;
-    }
     employee[field] = numValue;
   }
   

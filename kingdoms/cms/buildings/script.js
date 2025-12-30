@@ -16,6 +16,69 @@ kingdomNameEl.textContent = name ? `${name}'s Buildings` : "Unknown Kingdom";
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].buildings) kingdoms[name].buildings = [];
+if (!kingdoms[name].events) kingdoms[name].events = { future: [], past: [] };
+
+// Event modal variables
+let currentEventCallback = null;
+let currentEventTitle = "";
+
+// Event creation functions
+function createEvent(title, years, months) {
+  const totalMonths = (years * 12) + months;
+  if (totalMonths <= 0) return false;
+  
+  const event = {
+    id: Date.now(),
+    title: title,
+    remainingMonths: totalMonths,
+    isSecret: false,
+    isHappened: false
+  };
+  
+  kingdoms[name].events.future.push(event);
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  return true;
+}
+
+function showEventModal(title, message, callback) {
+  currentEventCallback = callback;
+  currentEventTitle = title;
+  
+  document.getElementById('eventModalTitle').textContent = title;
+  document.getElementById('eventModalMessage').textContent = message;
+  document.getElementById('eventModalYears').value = '0';
+  document.getElementById('eventModalMonths').value = '1';
+  document.getElementById('eventModal').style.display = 'block';
+}
+
+function closeEventModal() {
+  document.getElementById('eventModal').style.display = 'none';
+  currentEventCallback = null;
+  currentEventTitle = "";
+}
+
+function confirmEventModal() {
+  const years = parseInt(document.getElementById('eventModalYears').value) || 0;
+  const months = parseInt(document.getElementById('eventModalMonths').value) || 0;
+  
+  if (years === 0 && months === 0) {
+    alert('Please enter at least 1 month');
+    return;
+  }
+  
+  if (createEvent(currentEventTitle, years, months)) {
+    closeEventModal();
+    if (currentEventCallback) {
+      currentEventCallback();
+    }
+  } else {
+    alert('Failed to create event');
+  }
+}
+
+// Make modal functions globally available
+globalThis.closeEventModal = closeEventModal;
+globalThis.confirmEventModal = confirmEventModal;
 
 function saveAndRefresh() {
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -343,9 +406,19 @@ function renderBuildings() {
       
       const storage = kingdoms[name].storage;
       if ((storage.coins || 0) >= upgradeCost) {
-        storage.coins -= upgradeCost;
-        building.currentLevel++;
-        saveAndRefresh();
+        // Show event modal for upgrade
+        const eventTitle = `${building.name} Upgrade Complete!`;
+        showEventModal(
+          "Set Upgrade Time",
+          `How long will it take to upgrade ${building.name}?`,
+          () => {
+            storage.coins -= upgradeCost;
+            building.currentLevel++;
+            saveAndRefresh();
+          }
+        );
+        // Update the current event title for the modal
+        currentEventTitle = eventTitle;
       } else {
         alert("Not enough coins!");
       }
@@ -381,45 +454,67 @@ function renderBuildings() {
       
       editBtn.textContent = "Save";
       editBtn.onclick = () => {
-        building.name = nameInput.value.trim();
-        building.ownedBy = ownedBySelect.value;
-        building.property = propertySelect.value;
-        building.basePrice = parseFloat(basePriceInput.value);
-        building.baseSize = parseFloat(baseSizeInput.value);
-        building.baseMaintains = flagsToObj(baseMaintainsInput.value);
-        building.quantity = parseInt(quantityInput.value) || 1;
-        building.durability = parseInt(durabilityInput.value) || 1;
-
-        // Handle lifespan
-        if (permanentCheckbox.checked) {
-          delete building.lifespan;
-          delete building.expired;
+        const buildingName = nameInput.value.trim();
+        
+        // Ask if construction is required
+        if (confirm("Does it require construction?")) {
+          const eventTitle = `${buildingName} Construction Complete!`;
+          showEventModal(
+            "Set Construction Time",
+            `How long will it take to construct ${buildingName}?`,
+            () => {
+              // Save building after event is created
+              saveBuildingChanges();
+            }
+          );
+          // Update the current event title for the modal
+          currentEventTitle = eventTitle;
         } else {
-          const years = parseInt(lifespanYearsInput.value) || 0;
-          const months = parseInt(lifespanMonthsInput.value) || 0;
-          building.lifespan = years * 12 + months;
-          if (building.lifespan <= 0) {
-            building.state = "disabled";
-            building.expired = true;
-          } else {
-            building.expired = false;
-          }
+          // Save building without event
+          saveBuildingChanges();
         }
+        
+        function saveBuildingChanges() {
+          building.name = buildingName;
+          building.ownedBy = ownedBySelect.value;
+          building.property = propertySelect.value;
+          building.basePrice = parseFloat(basePriceInput.value);
+          building.baseSize = parseFloat(baseSizeInput.value);
+          building.baseMaintains = flagsToObj(baseMaintainsInput.value);
+          building.quantity = parseInt(quantityInput.value) || 1;
+          building.durability = parseInt(durabilityInput.value) || 1;
 
-        const extractValues = (container) => {
-          const result = {};
-          [...container.querySelectorAll(".item-pair")].forEach(pair => {
-            const inputs = pair.querySelectorAll("input");
-            const k = inputs[0].value.trim();
-            const v = parseFloat(inputs[1].value);
-            if (k) result[k] = isNaN(v) ? 0 : v;
-          });
-          return result;
-        };
+          // Handle lifespan
+          if (permanentCheckbox.checked) {
+            delete building.lifespan;
+            delete building.expired;
+          } else {
+            const years = parseInt(lifespanYearsInput.value) || 0;
+            const months = parseInt(lifespanMonthsInput.value) || 0;
+            building.lifespan = years * 12 + months;
+            if (building.lifespan <= 0) {
+              building.state = "disabled";
+              building.expired = true;
+            } else {
+              building.expired = false;
+            }
+          }
 
-        building.produces = extractValues(producesContainer);
-        building.consumes = extractValues(consumesContainer);
-        saveAndRefresh();
+          const extractValues = (container) => {
+            const result = {};
+            [...container.querySelectorAll(".item-pair")].forEach(pair => {
+              const inputs = pair.querySelectorAll("input");
+              const k = inputs[0].value.trim();
+              const v = parseFloat(inputs[1].value);
+              if (k) result[k] = isNaN(v) ? 0 : v;
+            });
+            return result;
+          };
+
+          building.produces = extractValues(producesContainer);
+          building.consumes = extractValues(consumesContainer);
+          saveAndRefresh();
+        }
       };
     };
 
