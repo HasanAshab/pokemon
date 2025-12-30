@@ -279,7 +279,7 @@ export function calcCommandersSalary(kingdom) {
   const actualSalary = Object.entries(kingdom.commanders).reduce((total, [_, commander]) => {
     return total + commander.salary;
   }, 0);
-  const warMod = kingdom.underWar ? 2 : 1;
+  const warMod = kingdom.underWar ? 1.5 : 1;
   return actualSalary * warMod;
 }
 

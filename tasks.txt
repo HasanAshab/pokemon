@@ -1,5 +1,6 @@
 * Tasks
-disaster supressor
+Events + encrypted
+disaster supressor + afterEffects
 construct time
 predict disaster + direction
 

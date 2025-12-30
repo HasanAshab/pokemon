@@ -1,0 +1,70 @@
+/* Basic styling for events page */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header {
+  margin-bottom: 30px;
+}
+
+header h1 {
+  margin: 0;
+  color: #333;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.btn.primary-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn.primary-btn:hover {
+  background-color: #0056b3;
+}
+
+.btn.secondary-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn.secondary-btn:hover {
+  background-color: #545b62;
+}
+
+.btn.success-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn.success-btn:hover {
+  background-color: #1e7e34;
+}
+
+.btn.danger-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn.danger-btn:hover {
+  background-color: #c82333;
+}

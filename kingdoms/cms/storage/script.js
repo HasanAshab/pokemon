@@ -160,6 +160,13 @@ newMonthBtn.onclick = () => {
     });
   }
 
+  // Reduce event countdowns
+  if (kingdoms[name].events && kingdoms[name].events.future) {
+    kingdoms[name].events.future.forEach(event => {
+      event.remainingMonths = Math.max(0, event.remainingMonths - 1);
+    });
+  }
+
   // Increment lifetime counter
   kingdoms[name].lifetime.months++;
   if (kingdoms[name].lifetime.months >= 12) {

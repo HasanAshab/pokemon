@@ -80,6 +80,56 @@ if (!kingdom.closerKingdoms) {
   kingdom.closerKingdoms = [];
 }
 
+// Ensure events object exists
+if (!kingdom.events) {
+  kingdom.events = { future: [], past: [] };
+}
+
+// Function to get happening events count
+function getHappeningEventsCount() {
+  if (!kingdom.events || !kingdom.events.future) return 0;
+  return kingdom.events.future.filter(event => event.remainingMonths <= 0).length;
+}
+
+// Function to update events badge
+function updateEventsBadge() {
+  const eventsCard = document.querySelector('.info-card[data-target="events"]');
+  if (!eventsCard) return;
+  
+  // Remove existing badge
+  const existingBadge = eventsCard.querySelector('.events-badge');
+  if (existingBadge) {
+    existingBadge.remove();
+  }
+  
+  const happeningCount = getHappeningEventsCount();
+  if (happeningCount > 0) {
+    const badge = document.createElement('span');
+    badge.className = 'events-badge';
+    badge.textContent = happeningCount;
+    badge.style.cssText = `
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    `;
+    
+    // Make sure the events card has relative positioning
+    eventsCard.style.position = 'relative';
+    eventsCard.appendChild(badge);
+  }
+}
+
 landAreaInput.value = kingdom.landArea;
 densityInput.value = kingdom.density;
 pciInput.value = kingdom.pci;
@@ -404,3 +454,7 @@ document.querySelectorAll(".info-card").forEach((card) => {
 loadDisasterCheckboxes();
 loadCloserKingdomsCheckboxes();
 updateDisplay();
+updateEventsBadge();
+
+// Update events badge periodically (in case events data changes)
+setInterval(updateEventsBadge, 5000);
