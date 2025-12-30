@@ -441,12 +441,16 @@ function simulateDisasters(kingdomName) {
   // Clear current disasters
   kingdom.disaster.current = [];
 
+  // 8 directions for disasters
+  const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+
   // Shuffle disasters for random order
   const disasterNames = Object.keys(DISASTERS);
   const shuffledDisasters = [...disasterNames].sort(() => Math.random() - 0.5);
 
   let primaryDisaster = null;
   let primaryPower = 0;
+  let primaryDirection = null;
 
   // Loop through shuffled disasters to find if one occurs
   for (const disaster of shuffledDisasters) {
@@ -456,6 +460,7 @@ function simulateDisasters(kingdomName) {
     if (roll < chance) {
       primaryDisaster = disaster;
       primaryPower = generateDisasterPower(kingdom);
+      primaryDirection = directions[Math.floor(Math.random() * directions.length)];
 
       // Increase power if kingdom is prone to this disaster (before suppressor is applied)
       if (kingdom.disaster.geoState[disaster] === 'prone') {
@@ -469,7 +474,8 @@ function simulateDisasters(kingdomName) {
         kingdom.disaster.current.push({
           name: disaster,
           power: primaryPower,
-          source: "nature"
+          source: "nature",
+          direction: primaryDirection
         });
       }
       break; // Stop after first disaster occurs
@@ -492,7 +498,8 @@ function simulateDisasters(kingdomName) {
           kingdom.disaster.current.push({
             name: relatedDisaster,
             power: relatedPower,
-            source: "nature"
+            source: "nature",
+            direction: primaryDirection // Child disasters inherit parent direction
           });
         }
       }
@@ -501,14 +508,14 @@ function simulateDisasters(kingdomName) {
 
   // Propagate disasters to nearby kingdoms
   if (primaryDisaster && primaryPower > 0) {
-    propagateDisastersToNearbyKingdoms(kingdomName, primaryDisaster, primaryPower);
+    propagateDisastersToNearbyKingdoms(kingdomName, primaryDisaster, primaryPower, new Set(), "nature", primaryDirection);
   }
 
   // Save to localStorage
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
 }
 
-function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visitedKingdoms = new Set(), sourceChain = "nature") {
+function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visitedKingdoms = new Set(), sourceChain = "nature", direction = null) {
   // Prevent infinite loops
   if (visitedKingdoms.has(sourceKingdom)) {
     return;
@@ -573,7 +580,8 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
           nearbyKingdom.disaster.current.push({
             name: disaster,
             power: reducedPower,
-            source: sourceKingdom
+            source: sourceKingdom,
+            direction: direction // Inherit direction from source
           });
 
           // Check for related disasters in the nearby kingdom
@@ -601,7 +609,8 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
                   nearbyKingdom.disaster.current.push({
                     name: relatedDisaster,
                     power: relatedPower,
-                    source: `${disaster}_${sourceKingdom}`
+                    source: `${disaster}_${sourceKingdom}`,
+                    direction: direction // Related disasters inherit same direction
                   });
                 }
               }
@@ -614,7 +623,8 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
             disaster,
             reducedPower,
             new Set(visitedKingdoms), // Pass copy of visited kingdoms
-            sourceKingdom
+            sourceKingdom,
+            direction // Pass direction along
           );
         }
       }
@@ -681,7 +691,8 @@ function displayDisasterReport() {
         combinedDisasters[disasterObj.name].totalPower += disasterObj.power;
         combinedDisasters[disasterObj.name].sources.push({
           source: disasterObj.source,
-          power: disasterObj.power
+          power: disasterObj.power,
+          direction: disasterObj.direction || 'Unknown'
         });
       });
 
@@ -702,17 +713,18 @@ function displayDisasterReport() {
         const sourcesText = combinedDisaster.sources.map(sourceObj => {
           let sourceIcon = '';
           let sourceText = '';
+          const directionText = sourceObj.direction ? ` [${sourceObj.direction}]` : '';
 
           if (sourceObj.source === 'nature') {
             sourceIcon = '🌍';
-            sourceText = `Natural (${sourceObj.power})`;
+            sourceText = `Natural (${sourceObj.power})${directionText}`;
           } else if (sourceObj.source.includes('_')) {
             sourceIcon = '🔗';
             const parts = sourceObj.source.split('_');
-            sourceText = `${parts[0]} from ${parts[1]} (${sourceObj.power})`;
+            sourceText = `${parts[0]} from ${parts[1]} (${sourceObj.power})${directionText}`;
           } else {
             sourceIcon = '🏰';
-            sourceText = `From ${sourceObj.source} (${sourceObj.power})`;
+            sourceText = `From ${sourceObj.source} (${sourceObj.power})${directionText}`;
           }
 
           return `${sourceIcon} ${sourceText}`;
@@ -805,12 +817,26 @@ Object.keys(kingdoms).forEach(name => {
     const oldDisasters = kingdoms[name].disaster.current;
     kingdoms[name].disaster.current = [];
 
+    const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+
     Object.entries(oldDisasters).forEach(([disasterName, power]) => {
       kingdoms[name].disaster.current.push({
         name: disasterName,
         power: power,
-        source: "nature"
+        source: "nature",
+        direction: directions[Math.floor(Math.random() * directions.length)]
       });
+    });
+  }
+
+  // Add direction to existing disasters that don't have it
+  if (kingdoms[name].disaster.current && Array.isArray(kingdoms[name].disaster.current)) {
+    const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
+    
+    kingdoms[name].disaster.current.forEach(disaster => {
+      if (!disaster.direction) {
+        disaster.direction = directions[Math.floor(Math.random() * directions.length)];
+      }
     });
   }
 

@@ -1,8 +1,27 @@
-at , i may manage govt employees of shinobi time.
+now at # instead of generating disaster of current.
+generate disasters of next 6 months and store it like 
+kingdom.disaster.current = [
+    [
+      {
+        "name": "Drought",
+        "power": 4,
+        "source": "smog"
+      },
+      {
+        "name": "Wildfire",
+        "power": 2,
+        "source": "Drought_smog"
+      }
+    ],
+    [
+      {
+        "name": "Earthquake",
+        "power": 4,
+        "source": "nature"
+      }
+    ],
 
-employees will have: post name, salary will be percentage of PCI (kingdom.pci see ), quantity, show per man actual salary (calculate by PCI and percentage), show total post salary.
+    // 4 more ...
+]
 
-lastly show total employee salary at top
-
-also make utils at for salary calc etc also add Employee Salary (Total only) to getTransLogs  
-persist data in kingdom.employees
+on each generate new disasters click. remove prev disaster from the list and push another for the 6th month
