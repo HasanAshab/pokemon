@@ -91,23 +91,33 @@ function getHappeningEventsCount() {
   return kingdom.events.future.filter(event => event.remainingMonths <= 0).length;
 }
 
+// Function to get upcoming events count (2 months or less, but more than 0)
+function getUpcomingEventsCount() {
+  if (!kingdom.events || !kingdom.events.future) return 0;
+  return kingdom.events.future.filter(event => event.remainingMonths > 0 && event.remainingMonths <= 2).length;
+}
+
 // Function to update events badge
 function updateEventsBadge() {
   const eventsCard = document.querySelector('.info-card[data-target="events"]');
   if (!eventsCard) return;
   
-  // Remove existing badge
-  const existingBadge = eventsCard.querySelector('.events-badge');
-  if (existingBadge) {
-    existingBadge.remove();
-  }
+  // Remove existing badges
+  const existingBadges = eventsCard.querySelectorAll('.events-badge');
+  existingBadges.forEach(badge => badge.remove());
   
   const happeningCount = getHappeningEventsCount();
+  const upcomingCount = getUpcomingEventsCount();
+  
+  // Make sure the events card has relative positioning
+  eventsCard.style.position = 'relative';
+  
+  // Add red badge for happening events
   if (happeningCount > 0) {
-    const badge = document.createElement('span');
-    badge.className = 'events-badge';
-    badge.textContent = happeningCount;
-    badge.style.cssText = `
+    const redBadge = document.createElement('span');
+    redBadge.className = 'events-badge happening-badge';
+    redBadge.textContent = happeningCount;
+    redBadge.style.cssText = `
       position: absolute;
       top: -5px;
       right: -5px;
@@ -123,10 +133,31 @@ function updateEventsBadge() {
       justify-content: center;
       z-index: 10;
     `;
-    
-    // Make sure the events card has relative positioning
-    eventsCard.style.position = 'relative';
-    eventsCard.appendChild(badge);
+    eventsCard.appendChild(redBadge);
+  }
+  
+  // Add yellow badge for upcoming events (position it to the left if red badge exists)
+  if (upcomingCount > 0) {
+    const yellowBadge = document.createElement('span');
+    yellowBadge.className = 'events-badge upcoming-badge';
+    yellowBadge.textContent = upcomingCount;
+    yellowBadge.style.cssText = `
+      position: absolute;
+      top: -5px;
+      ${happeningCount > 0 ? 'right: 20px;' : 'right: -5px;'}
+      background: #ffc107;
+      color: #212529;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    `;
+    eventsCard.appendChild(yellowBadge);
   }
 }
 
