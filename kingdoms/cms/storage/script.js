@@ -15,6 +15,7 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].storage) kingdoms[name].storage = {};
 if (!kingdoms[name].lifetime) kingdoms[name].lifetime = { years: 0, months: 0 };
+if (!kingdoms[name].marketplace) kingdoms[name].marketplace = [];
 
 function saveAndRefresh(storage) {
   Object.keys(getMaintainedStorage(kingdoms[name])).forEach(item => {
@@ -233,3 +234,192 @@ function setupLifetimeAutoSave() {
 renderItems();
 updateLifetimeDisplay();
 setupLifetimeAutoSave();
+setupTabs();
+setupMarketplace();
+
+// Tab functionality
+function setupTabs() {
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetTab = tab.getAttribute('data-tab');
+      
+      // Remove active class from all tabs and contents
+      tabs.forEach(t => t.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      // Add active class to clicked tab and corresponding content
+      tab.classList.add('active');
+      document.getElementById(targetTab + 'Tab').classList.add('active');
+      
+      // Update marketplace items dropdown when switching to marketplace tab
+      if (targetTab === 'marketplace') {
+        updateMarketplaceItemsDropdown();
+      }
+    });
+  });
+}
+
+// Marketplace functionality
+function setupMarketplace() {
+  const sellAllCheckbox = document.getElementById('sellAll');
+  const quantityGroup = document.getElementById('quantityGroup');
+  const addMarketItemBtn = document.getElementById('addMarketItemBtn');
+  
+  // Toggle quantity input based on "Sell All" checkbox
+  sellAllCheckbox.addEventListener('change', () => {
+    if (sellAllCheckbox.checked) {
+      quantityGroup.style.display = 'none';
+    } else {
+      quantityGroup.style.display = 'block';
+    }
+  });
+  
+  // Add marketplace item
+  addMarketItemBtn.addEventListener('click', addMarketplaceItem);
+  
+  // Initial render
+  updateMarketplaceItemsDropdown();
+  renderMarketplace();
+}
+
+function updateMarketplaceItemsDropdown() {
+  const select = document.getElementById('marketItemSelect');
+  const storage = getStorage(kingdoms[name]);
+  
+  // Clear existing options except the first one
+  select.innerHTML = '<option value="">Select an item</option>';
+  
+  // Add storage items to dropdown
+  Object.keys(storage).forEach(itemName => {
+    const option = document.createElement('option');
+    option.value = itemName;
+    option.textContent = `${itemName} (${storage[itemName].toLocaleString()})`;
+    select.appendChild(option);
+  });
+}
+
+function addMarketplaceItem() {
+  const itemSelect = document.getElementById('marketItemSelect');
+  const unitPriceInput = document.getElementById('unitPrice');
+  const sellAllCheckbox = document.getElementById('sellAll');
+  const quantityInput = document.getElementById('quantity');
+  
+  const itemName = itemSelect.value;
+  const unitPrice = parseFloat(unitPriceInput.value);
+  const sellAll = sellAllCheckbox.checked;
+  const quantity = parseInt(quantityInput.value) || 1;
+  
+  if (!itemName) {
+    alert('Please select an item');
+    return;
+  }
+  
+  if (isNaN(unitPrice)) {
+    alert('Please enter a valid unit price');
+    return;
+  }
+  
+  const storage = getStorage(kingdoms[name]);
+  if (!storage[itemName] || storage[itemName] <= 0) {
+    alert('Item not available in storage or quantity is 0');
+    return;
+  }
+  
+  if (!sellAll && (quantity <= 0 || quantity > storage[itemName])) {
+    alert(`Invalid quantity. Available: ${storage[itemName]}`);
+    return;
+  }
+  
+  // Check if item already exists in marketplace
+  const existingIndex = kingdoms[name].marketplace.findIndex(item => item.itemName === itemName);
+  
+  const marketItem = {
+    itemName,
+    unitPrice,
+    sellAll,
+    quantity: sellAll ? storage[itemName] : quantity
+  };
+  
+  if (existingIndex !== -1) {
+    // Update existing item
+    kingdoms[name].marketplace[existingIndex] = marketItem;
+  } else {
+    // Add new item
+    kingdoms[name].marketplace.push(marketItem);
+  }
+  
+  // Clear form
+  itemSelect.value = '';
+  unitPriceInput.value = '';
+  sellAllCheckbox.checked = false;
+  quantityInput.value = '1';
+  quantityInput.parentElement.style.display = 'block';
+  
+  // Save and refresh
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  renderMarketplace();
+}
+
+function removeMarketplaceItem(index) {
+  if (confirm('Remove this item from marketplace?')) {
+    kingdoms[name].marketplace.splice(index, 1);
+    localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+    renderMarketplace();
+  }
+}
+
+function renderMarketplace() {
+  const tableBody = document.getElementById('marketplaceTableBody');
+  const overallProfitValue = document.getElementById('overallProfitValue');
+  const storage = getStorage(kingdoms[name]);
+  
+  tableBody.innerHTML = '';
+  let totalProfit = 0;
+  
+  kingdoms[name].marketplace.forEach((item, index) => {
+    const row = document.createElement('tr');
+    
+    // Update quantity if "Sell All" is checked
+    const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
+    const totalItemProfit = actualQuantity * item.unitPrice;
+    totalProfit += totalItemProfit;
+    
+    // Determine profit class
+    let profitClass = 'profit-neutral';
+    if (totalItemProfit > 0) profitClass = 'profit-positive';
+    else if (totalItemProfit < 0) profitClass = 'profit-negative';
+    
+    row.innerHTML = `
+      <td>${item.itemName}</td>
+      <td>${item.unitPrice >= 0 ? '$' : '-$'}${Math.abs(item.unitPrice).toLocaleString()}</td>
+      <td>${actualQuantity.toLocaleString()}${item.sellAll ? ' (All)' : ''}</td>
+      <td class="${profitClass}">${totalItemProfit >= 0 ? '$' : '-$'}${Math.abs(totalItemProfit).toLocaleString()}</td>
+      <td>
+        <button class="btn danger-btn" onclick="removeMarketplaceItem(${index})" style="padding: 4px 8px; font-size: 12px;">Remove</button>
+      </td>
+    `;
+    
+    tableBody.appendChild(row);
+  });
+  
+  // Update overall profit
+  let overallProfitClass = 'profit-neutral';
+  if (totalProfit > 0) overallProfitClass = 'profit-positive';
+  else if (totalProfit < 0) overallProfitClass = 'profit-negative';
+  
+  overallProfitValue.textContent = `${totalProfit >= 0 ? '$' : '-$'}${Math.abs(totalProfit).toLocaleString()}`;
+  overallProfitValue.className = overallProfitClass;
+  
+  // Show message if no items
+  if (kingdoms[name].marketplace.length === 0) {
+    const row = document.createElement('tr');
+    row.innerHTML = '<td colspan="5" style="text-align: center; color: #6c757d; font-style: italic;">No items in marketplace</td>';
+    tableBody.appendChild(row);
+  }
+}
+
+// Make removeMarketplaceItem globally available
+globalThis.removeMarketplaceItem = removeMarketplaceItem;

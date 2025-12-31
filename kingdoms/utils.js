@@ -396,6 +396,26 @@ export function getTransLogs(kingdom, itemName) {
     logs.push(`Employee Salary &#x2190; <span style="color: red; font-weight: bold">${calcEmployeeSalary(kingdom).toLocaleString()}</span>`);
   }
 
+  // Add marketplace entries
+  if (kingdom.marketplace && kingdom.marketplace.length > 0) {
+    const storage = getStorage(kingdom);
+    kingdom.marketplace.forEach(item => {
+      const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
+      const profit = actualQuantity * item.unitPrice;
+      
+      if (itemName === "coins" && profit !== 0) {
+        const arrow = profit > 0 ? "&#x2192;" : "&#x2190;";
+        const color = profit > 0 ? "green" : "red";
+        const sign = profit > 0 ? "+" : "";
+        logs.push(`Marketplace (${item.itemName}) ${arrow} <span style="color: ${color}; font-weight: bold">${sign}${profit.toLocaleString()}</span>`);
+      }
+      
+      if (itemName === item.itemName && actualQuantity > 0) {
+        logs.push(`Marketplace &#x2190; <span style="color: red; font-weight: bold">-${actualQuantity.toLocaleString()}</span>`);
+      }
+    });
+  }
+
   getEnabledBuildings(kingdom).forEach(build => {
     if (build.produces[itemName]) {
       const q = build.produces[itemName] * build.quantity
@@ -468,6 +488,24 @@ export function calcNetProd(kingdom, localize = false) {
       calcCommandersSalary(kingdom) +
       calcEmployeeSalary(kingdom),
   };
+  
+  // Add marketplace profits/losses
+  if (kingdom.marketplace && kingdom.marketplace.length > 0) {
+    const storage = getStorage(kingdom);
+    kingdom.marketplace.forEach(item => {
+      const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
+      const profit = actualQuantity * item.unitPrice;
+      
+      if (!sysProd.coins) sysProd.coins = 0;
+      sysProd.coins += profit;
+      
+      // Subtract the sold items from production (they're being sold)
+      if (item.itemName !== 'coins') {
+        if (!sysCons[item.itemName]) sysCons[item.itemName] = 0;
+        sysCons[item.itemName] += actualQuantity;
+      }
+    });
+  }
   
   const buildProd = calcBuildNetProd(kingdom);
   const prod = sumObj(sumObj(sysProd, buildProd), modObj(sysCons, -1));

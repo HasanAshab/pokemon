@@ -46,6 +46,178 @@
       gap: 10px;
       align-items: center;
     }
+    
+    /* Tab Styles */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #dee2e6;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 12px 24px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-bottom: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: #495057;
+      transition: all 0.3s ease;
+    }
+    
+    .tab:first-child {
+      border-top-left-radius: 6px;
+    }
+    
+    .tab:last-child {
+      border-top-right-radius: 6px;
+    }
+    
+    .tab.active {
+      background: white;
+      color: #007bff;
+      border-bottom: 2px solid white;
+      margin-bottom: -2px;
+    }
+    
+    .tab:hover:not(.active) {
+      background: #e9ecef;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Marketplace Styles */
+    .marketplace-container {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .marketplace-form {
+      display: flex;
+      gap: 10px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .form-group label {
+      font-weight: 500;
+      color: #495057;
+      font-size: 14px;
+    }
+    
+    .form-group input, .form-group select {
+      padding: 8px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+    }
+    
+    .form-group input[type="number"] {
+      width: 100px;
+    }
+    
+    .form-group input[type="checkbox"] {
+      width: auto;
+    }
+    
+    .marketplace-table {
+      width: 100%;
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      background: white;
+    }
+    
+    .marketplace-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .marketplace-table th,
+    .marketplace-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+      white-space: nowrap;
+    }
+    
+    .marketplace-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #495057;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .marketplace-table tr:hover {
+      background: #f8f9fa;
+    }
+    
+    .profit-positive {
+      color: #28a745;
+      font-weight: bold;
+    }
+    
+    .profit-negative {
+      color: #dc3545;
+      font-weight: bold;
+    }
+    
+    .profit-neutral {
+      color: #6c757d;
+    }
+    
+    .overall-profit {
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .marketplace-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .form-group input, .form-group select {
+        width: 100%;
+      }
+      
+      .marketplace-table {
+        font-size: 14px;
+      }
+      
+      .marketplace-table th,
+      .marketplace-table td {
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -63,7 +235,67 @@
       </div>
     </header>
 
-    <div id="itemsContainer" class="items-container"></div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="items">Items</div>
+      <div class="tab" data-tab="marketplace">Marketplace</div>
+    </div>
+
+    <!-- Items Tab Content -->
+    <div id="itemsTab" class="tab-content active">
+      <div id="itemsContainer" class="items-container"></div>
+    </div>
+
+    <!-- Marketplace Tab Content -->
+    <div id="marketplaceTab" class="tab-content">
+      <div class="marketplace-container">
+        <h3>Add Marketplace Item</h3>
+        <div class="marketplace-form">
+          <div class="form-group">
+            <label for="marketItemSelect">Item:</label>
+            <select id="marketItemSelect">
+              <option value="">Select an item</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="unitPrice">Unit Price:</label>
+            <input type="number" id="unitPrice" step="0.01" placeholder="Can be negative" />
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="sellAll" />
+              Sell All
+            </label>
+          </div>
+          <div class="form-group" id="quantityGroup">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="1" value="1" />
+          </div>
+          <button id="addMarketItemBtn" class="btn primary-btn">Add to Marketplace</button>
+        </div>
+      </div>
+
+      <div class="marketplace-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Unit Price</th>
+              <th>Quantity</th>
+              <th>Total Profit</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="marketplaceTableBody">
+            <!-- Marketplace items will be populated here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="overallProfit" class="overall-profit">
+        Overall Profit: <span id="overallProfitValue">$0</span>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="script.js"></script>
