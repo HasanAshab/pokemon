@@ -50,7 +50,8 @@ const landCostLabel = document.getElementById("landCostLabel");
 const landCostMethod = document.getElementById("landCostMethod")
 const landQuality = document.getElementById("landQuality")
 const saveBtn = document.getElementById("saveBtn");
-
+const disasterResearchersVisionRange = document.getElementById("disasterResearchersVisionRange");
+const disasterResearchersVisionRangeValue = document.getElementById("disasterResearchersVisionRangeValue");
 kingdomName.textContent = name || "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -63,6 +64,7 @@ let kingdom = kingdoms[name] || {
   buildings: [],
   storage: {},
   disaster: {
+    visionRange: 1,
     geoState: {}
   }
 };
@@ -85,6 +87,9 @@ if (!kingdom.events) {
   kingdom.events = { future: [], past: [] };
 }
 
+disasterResearchersVisionRange.oninput = () => {
+  disasterResearchersVisionRangeValue.textContent = disasterResearchersVisionRange.value
+}
 // Function to get happening events count
 function getHappeningEventsCount() {
   if (!kingdom.events || !kingdom.events.future) return 0;

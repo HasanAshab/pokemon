@@ -662,3 +662,15 @@ export function getBuildCost(kingdom, size, floor, durability) {
   const materialCost = getMaterialCost(kingdom, size, floor, durability);
   return archCost + materialCost
 }
+
+
+export function getResearchersAccuracy(kingdom) {
+  const area = kingdom.landArea;
+  const visionRange = kingdom.disaster.visionRange || 1;
+  const researchersCount = getStorage(kingdom).researcher || 0;
+  return 
+}
+
+export function predictNextDisasters(kingdom) {
+
+}

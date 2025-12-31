@@ -1,8 +1,11 @@
 * Tasks
-predict disaster + direction
-
-Bronze armors
+predict disaster + direction 
 Kingdom Buildings better ui
+
+*ovi
+Bronze armors
+disaster vision range better
+color extreme tens
 
 
 offline summon
@@ -19,11 +22,6 @@ Bot shinobis hit a move in act of his team
 * Pendings
 
 ancient mode with selfish scar
-
-*ovi
-
-same bot button on each team
-fix retreat of beast abilities
 
 * Scenario
 phy 1 -> phy 1 = x - y d 

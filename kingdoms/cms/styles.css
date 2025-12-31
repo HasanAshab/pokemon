@@ -244,3 +244,6 @@ label {
   font-style: italic;
   margin: 0;
 }
+#disasterResearchersVisionRange{
+  width: 150px;
+}
