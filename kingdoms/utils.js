@@ -668,9 +668,31 @@ export function getResearchersAccuracy(kingdom) {
   const area = kingdom.landArea;
   const visionRange = kingdom.disaster.visionRange || 1;
   const researchersCount = getStorage(kingdom).researcher || 0;
-  return 
+
+  // --- Area vs Researchers (arithmetical) ---
+  const areaPerResearcher = 125;
+  const baseAccuracy = (researchersCount * areaPerResearcher / area) * 100;
+
+  // --- Vision penalty (multiplicative, 1–6) ---
+  let visionMultiplier;
+
+  if (visionRange === 1) visionMultiplier = 1;
+  else if (visionRange === 2) visionMultiplier = 0.7;
+  else if (visionRange === 3) visionMultiplier = 0.3;
+  else {
+    // exponential decay for 4–6
+    visionMultiplier = 0.3 * Math.pow(0.5, visionRange - 3);
+  }
+
+  const finalAccuracy = baseAccuracy * visionMultiplier;
+
+  return Math.max(0, Math.min(100, Math.round(finalAccuracy)));
 }
 
-export function predictNextDisasters(kingdom) {
 
+export function predictNextDisasters(kingdom) {
+  const accuracy = getResearchersAccuracy(kingdom);
+  const futureDisasters = kingdom.disaster.current.slice(1);
+  console.log(futureDisasters);
+  
 }

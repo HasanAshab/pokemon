@@ -1,12 +1,11 @@
 * Tasks
-predict disaster + direction 
+storage marketplace
+predict disaster + direction
 Kingdom Buildings better ui
 
 *ovi
 Bronze armors
-disaster vision range better
 color extreme tens
-
 
 offline summon
 

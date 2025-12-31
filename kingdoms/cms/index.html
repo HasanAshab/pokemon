@@ -117,10 +117,9 @@
   <div class="container">
     
     <h2>Disaster Stats</h2>
-    <h4>Disaster Researchers:</h4>
+    <h4 ondblclick="showDisasterResearchersAccuracy()">Disaster Researchers:</h4>
     <label for="disasterResearchersVisionRange">Vision Range: <strong id="disasterResearchersVisionRangeValue">1</strong> Months</label>
     <input type="range" id="disasterResearchersVisionRange" value="1" min="1" max="6">
-    <button class="btn" style="background-color: rgb(218, 131, 0);" onclick="showDisasterResearchersAccuracy()">See Accuracy</button>
     <br>
     <h4>Most Probable Disasters:</h4>
     <div id="disasterCheckboxes" class="disaster-checkboxes">

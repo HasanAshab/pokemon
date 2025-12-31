@@ -1,30 +1,19 @@
-now instead of generating disaster of current.
-generate disasters of next 6 months and store it like 
-kingdom.disaster.current = [
-    [
-      {
-        "name": "Drought",
-        "power": 4,
-        "source": "smog",
-        "direction": "SE"
-      },
-      {
-        "name": "Wildfire",
-        "power": 2,
-        "source": "Drought_smog",
-        "direction": "SE"
-      }
-    ],
-    [
-      {
-        "name": "Earthquake",
-        "power": 4,
-        "source": "nature",
-        "direction": "W"
-      }
-    ],
+complete the algo, it has 3 params
+Area (Decreases accuracy arithmatically),
+Vision Range (Decreases accuracy multiplically)
+Researchers Count (Increases accuracy arithmatically)
 
-    // 4 more ...
-]
+export function getResearchersAccuracy(kingdom) {
+  const area = kingdom.landArea;
+  const visionRange = kingdom.disaster.visionRange || 1;
+  const researchersCount = getStorage(kingdom).researcher || 0;
+  return 
+}
 
-on each generate new disasters click. remove prev disaster from the list and push another for the 6th month
+here are some input output examples, scale for other inputs dynamically and logically
+Area: 2000, Vison: 1, Researchers: 16 = Accuracy: 100
+Area: 2000, Vison: 2, Researchers: 16 = Accuracy: 70
+Area: 2000, Vison: 3, Researchers: 16 = Accuracy: 30
+Area: 3000, Vison: 1, Researchers: 24 = Accuracy: 100
+Area: 4000, Vison: 1, Researchers: 32 = Accuracy: 100
+Area: 4000, Vison: 2, Researchers: 32 = Accuracy: 70

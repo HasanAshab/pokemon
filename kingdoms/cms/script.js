@@ -12,6 +12,7 @@ import {
   getDiedForAge,
   calculateBirthCount,
   getFoodTierForBudget,
+  getResearchersAccuracy,
 } from "../utils.js";
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
@@ -89,7 +90,16 @@ if (!kingdom.events) {
 
 disasterResearchersVisionRange.oninput = () => {
   disasterResearchersVisionRangeValue.textContent = disasterResearchersVisionRange.value
+  kingdom.disaster.visionRange = disasterResearchersVisionRange.value
 }
+
+globalThis.showDisasterResearchersAccuracy = () => {
+  if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+    if (prompt("Are you ovi?", "yes") !== "no") return
+  }
+  alert(getResearchersAccuracy(kingdom))
+}
+
 // Function to get happening events count
 function getHappeningEventsCount() {
   if (!kingdom.events || !kingdom.events.future) return 0;
