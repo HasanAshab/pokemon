@@ -59,32 +59,45 @@ function renderItems() {
 
     const prodSpan = document.createElement("span");
     prodSpan.className = "production";
-    const rawVal = parseInt(netProd[itemName] || 0);
+    const netVal = parseInt(netProd[itemName] || 0);
     
-    // Calculate marketplace impact for this item
+    // Calculate base production and marketplace impact for breakdown display
+    let baseProduction = netVal;
     let marketplaceImpact = 0;
+    let marketplaceCoinProfit = 0;
+    
     if (kingdoms[name].marketplace) {
       kingdoms[name].marketplace.forEach(marketItem => {
         if (marketItem.itemName === itemName) {
           const actualQuantity = marketItem.sellAll ? (storage[itemName] || 0) : marketItem.quantity;
-          marketplaceImpact -= actualQuantity; // Negative because items are being sold
+          marketplaceImpact -= actualQuantity; // Items being sold (negative)
+          baseProduction = netVal - marketplaceImpact; // Remove marketplace impact to get base
+        }
+        if (itemName === 'coins' && marketItem.itemName !== 'coins') {
+          const actualQuantity = marketItem.sellAll ? (storage[marketItem.itemName] || 0) : marketItem.quantity;
+          marketplaceCoinProfit += actualQuantity * marketItem.unitPrice; // Coin profit from sales
         }
       });
+      
+      // For coins, show marketplace profit separately
+      if (itemName === 'coins' && marketplaceCoinProfit !== 0) {
+        baseProduction = netVal - marketplaceCoinProfit;
+        marketplaceImpact = marketplaceCoinProfit;
+      }
     }
     
-    const netChange = rawVal + marketplaceImpact;
-    const displayText = netChange >= 0 ? `+${netChange.toLocaleString()}` : netChange.toLocaleString();
+    const displayText = netVal >= 0 ? `+${netVal.toLocaleString()}` : netVal.toLocaleString();
     
     // Show breakdown if marketplace impact exists
     if (marketplaceImpact !== 0) {
-      const productionText = rawVal >= 0 ? `+${rawVal.toLocaleString()}` : rawVal.toLocaleString();
+      const productionText = baseProduction >= 0 ? `+${baseProduction.toLocaleString()}` : baseProduction.toLocaleString();
       const marketText = marketplaceImpact >= 0 ? `+${marketplaceImpact.toLocaleString()}` : marketplaceImpact.toLocaleString();
       prodSpan.innerHTML = `${displayText} <small style="color: #666;">(${productionText} ${marketText})</small>`;
     } else {
       prodSpan.textContent = displayText;
     }
     
-    prodSpan.classList.add(netChange >= 0 ? "prod-positive" : "prod-negative");
+    prodSpan.classList.add(netVal >= 0 ? "prod-positive" : "prod-negative");
 
     const itemActions = document.createElement("div");
     itemActions.className = "item-actions";

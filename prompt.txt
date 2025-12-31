@@ -1,7 +1,0 @@
-at storage, put the current content in Items tab
-i want another tab, Marketplace.
-in which i may get a table (scrollable, as targeting mobile users)
-in that, i may add a item by name (check if it exist on storage),
- set unit price (can be negetive also),
- set checkbox `Sell All` if not checked show quantity input,
- show total profit from it
