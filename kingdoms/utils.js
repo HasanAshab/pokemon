@@ -60,10 +60,12 @@ export function getDiedForSecurity(kingdom) {
 }
 
 export function getTotalSecurityRate(kingdom){
-  return Math.min(
-      getSecurityRate(kingdom, "polices")
-    + getSecurityRate(kingdom, "soldiers")
-  , 100)
+  const mpSecurity = getSecurityRate(kingdom, "polices") + getSecurityRate(kingdom, "soldiers")
+  const stationSecurity = getPoliceStationSecurityRate(kingdom)
+  const actualSecurity = mpSecurity + Math.min(50, stationSecurity)
+  console.log(mpSecurity, stationSecurity, actualSecurity);
+  
+  return Math.min(100, actualSecurity)
 }
 
 export function getSecurityRate(kingdom, forceType){
@@ -74,6 +76,21 @@ export function getSecurityRate(kingdom, forceType){
   const closeness = (ratio / target) * 100;
   return Number(closeness.toFixed(2))
 }
+
+export function getPoliceStationSecurityRate(kingdom) {
+  const station = getStorage(kingdom).station || 0;
+  const area = kingdom.landArea;
+
+  if (area <= 0) return 0;
+
+  const requiredStations = area / 200;
+
+  // 1 station per 200 area = 50 security
+  const securityRate = (station / requiredStations) * 50;
+
+  return Math.max(0, Math.min(100, Math.round(securityRate)));
+}
+
 
 export function getMight(kingdom, forceType, shift) {
   const soldiers = kingdom.barrack[forceType]?.[shift]

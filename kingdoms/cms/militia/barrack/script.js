@@ -5,7 +5,8 @@ import {
   // calcHospitalCost,
   getHospitalCapacity,
   getForceImbalanceRate,
-  getSecurityRate
+  getSecurityRate,
+  getPoliceStationSecurityRate
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
@@ -442,9 +443,13 @@ function renderAllForces(forceType) {
     totalSalaryEl.textContent = `Total Force Salary: ${totalSalary.toLocaleString()}$`;
   }
 
-  const securityRate = getSecurityRate(kingdom,forceType)
+  const securityRate = getSecurityRate(kingdom, forceType)
   const securityRateEl = document.getElementById("securityRate")
   securityRateEl.textContent = securityRate
+
+  if (forceType === "polices") {
+    securityRateEl.textContent += ` (+${getPoliceStationSecurityRate(kingdom)})`
+  }
 
   let totalMight = 0;
   Object.keys(barrackForce).forEach((type) => {
