@@ -62,9 +62,7 @@ export function getDiedForSecurity(kingdom) {
 export function getTotalSecurityRate(kingdom){
   const mpSecurity = getSecurityRate(kingdom, "polices") + getSecurityRate(kingdom, "soldiers")
   const stationSecurity = getPoliceStationSecurityRate(kingdom)
-  const actualSecurity = mpSecurity + Math.min(50, stationSecurity)
-  console.log(mpSecurity, stationSecurity, actualSecurity);
-  
+  const actualSecurity = mpSecurity + Math.min(50, stationSecurity)  
   return Math.min(100, actualSecurity)
 }
 

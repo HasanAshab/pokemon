@@ -209,7 +209,7 @@ document.getElementById("addKingdomBtn").onclick = () => {
     underWar: false,
     closerKingdoms: [],
     disaster: {
-      current: [[], [], [], [], [], []], // Initialize as 6-month array
+      current: [[], [], [], [], [], [], []], // Initialize as 7-month array
       geoState: generateRandomGeoState(),
       protected: false,
       suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
@@ -397,31 +397,54 @@ function getDisasterChance(disaster, geoState, isRelated = false) {
 }
 
 function generateDisasterPower(kingdom) {
+  // Available power values (decimals allowed)
+  const allowedPowers = [
+    0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 
+    4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 
+    8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
+  ];
+
   const rand = Math.random() * 100;
 
   // Power distribution: 4-6 (60%), 1-3 (30%), 7-10 (10%)
-  let basePower;
+  let basePowerRange;
   if (rand < 60) {
-    basePower = Math.floor(Math.random() * 3) + 4; // 4, 5, 6
+    // 4-6 range: indices 16-24 in allowedPowers array
+    basePowerRange = allowedPowers.slice(16, 25); // 4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6
   } else if (rand < 90) {
-    basePower = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
+    // 1-3 range: indices 4-12 in allowedPowers array
+    basePowerRange = allowedPowers.slice(4, 13); // 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3
   } else {
-    basePower = Math.floor(Math.random() * 4) + 7; // 7, 8, 9, 10
+    // 7-10 range: indices 28-40 in allowedPowers array
+    basePowerRange = allowedPowers.slice(28, 41); // 7, 7.25, 7.5, 7.75, 8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
   }
+
+  const basePower = basePowerRange[Math.floor(Math.random() * basePowerRange.length)];
 
   // Apply suppressor modifier
   const suppressMod = kingdom.disaster?.suppressMod || 1.0;
-  const modifiedPower = Math.round(basePower * suppressMod);
+  const modifiedPower = basePower * suppressMod;
   
-  // Ensure power is at least 0 and at most 10
-  return Math.max(0, Math.min(10, modifiedPower));
+  // Find closest allowed power value
+  let closestPower = allowedPowers[0];
+  let minDiff = Math.abs(modifiedPower - closestPower);
+  
+  for (const power of allowedPowers) {
+    const diff = Math.abs(modifiedPower - power);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestPower = power;
+    }
+  }
+  
+  return closestPower;
 }
 
 function simulateDisasters(kingdomName) {
   const kingdom = kingdoms[kingdomName];
   if (!kingdom.disaster) {
     kingdom.disaster = {
-      current: [[], [], [], [], [], []], // Initialize as 6-month array
+      current: [[], [], [], [], [], [], []], // Initialize as 7-month array
       geoState: generateRandomGeoState(),
       protected: false,
       suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
@@ -433,23 +456,23 @@ function simulateDisasters(kingdomName) {
     kingdom.disaster.suppressMod = parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0;
   }
 
-  // Initialize 6-month disaster array if not exists or wrong format
+  // Initialize 7-month disaster array if not exists or wrong format
   if (!Array.isArray(kingdom.disaster.current) || !Array.isArray(kingdom.disaster.current[0])) {
-    kingdom.disaster.current = [[], [], [], [], [], []]; // 6 months
+    kingdom.disaster.current = [[], [], [], [], [], [], []]; // 7 months
   }
 
   // Skip disaster simulation if kingdom is protected or suppressor is 0
   if (kingdom.disaster.protected || kingdom.disaster.suppressMod === 0) {
     // Clear all future disasters but keep the structure
-    kingdom.disaster.current = [[], [], [], [], [], []];
+    kingdom.disaster.current = [[], [], [], [], [], [], []];
     return;
   }
 
   // 8 directions for disasters (using shortcuts)
   const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
-  // Generate disasters for all 6 months
-  for (let monthIndex = 0; monthIndex < 6; monthIndex++) {
+  // Generate disasters for all 7 months
+  for (let monthIndex = 0; monthIndex < 7; monthIndex++) {
     // Clear current month disasters
     kingdom.disaster.current[monthIndex] = [];
 
@@ -473,9 +496,29 @@ function simulateDisasters(kingdomName) {
 
         // Increase power if kingdom is prone to this disaster (before suppressor is applied)
         if (kingdom.disaster.geoState[disaster] === 'prone') {
-          const basePower = Math.round(primaryPower / kingdom.disaster.suppressMod);
+          const allowedPowers = [
+            0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 
+            4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 
+            8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
+          ];
+          
+          const basePower = primaryPower / kingdom.disaster.suppressMod;
           const bonusPower = Math.min(10, basePower + 2);
-          primaryPower = Math.round(bonusPower * kingdom.disaster.suppressMod);
+          const modifiedPower = bonusPower * kingdom.disaster.suppressMod;
+          
+          // Find closest allowed power value
+          let closestPower = allowedPowers[0];
+          let minDiff = Math.abs(modifiedPower - closestPower);
+          
+          for (const power of allowedPowers) {
+            const diff = Math.abs(modifiedPower - power);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestPower = power;
+            }
+          }
+          
+          primaryPower = closestPower;
         }
 
         // Add primary disaster to array (only if power > 0)
@@ -500,13 +543,31 @@ function simulateDisasters(kingdomName) {
         const roll = Math.random() * 100;
 
         if (roll < chance) {
-          const basePower = Math.max(1, Math.round(primaryPower / kingdom.disaster.suppressMod / 2));
-          const relatedPower = Math.round(basePower * kingdom.disaster.suppressMod);
+          const allowedPowers = [
+            0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 
+            4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 
+            8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
+          ];
           
-          if (relatedPower > 0) {
+          const basePower = Math.max(0.25, primaryPower / kingdom.disaster.suppressMod / 2);
+          const modifiedPower = basePower * kingdom.disaster.suppressMod;
+          
+          // Find closest allowed power value
+          let closestPower = allowedPowers[0];
+          let minDiff = Math.abs(modifiedPower - closestPower);
+          
+          for (const power of allowedPowers) {
+            const diff = Math.abs(modifiedPower - power);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestPower = power;
+            }
+          }
+          
+          if (closestPower > 0) {
             kingdom.disaster.current[monthIndex].push({
               name: relatedDisaster,
-              power: relatedPower,
+              power: closestPower,
               source: "nature",
               direction: primaryDirection // Child disasters inherit parent direction
             });
@@ -549,7 +610,7 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
     // Initialize disaster data if not present
     if (!nearbyKingdom.disaster) {
       nearbyKingdom.disaster = {
-        current: [[], [], [], [], [], []], // Initialize as 6-month array
+        current: [[], [], [], [], [], [], []], // Initialize as 7-month array
         geoState: generateRandomGeoState(),
         protected: false,
         suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
@@ -572,15 +633,33 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
 
     if (roll < propagationChance) {
       // Calculate reduced power (60% of original, then apply suppressor)
-      const basePower = Math.max(1, Math.round(power * 0.6));
+      const allowedPowers = [
+        0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 
+        4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 
+        8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
+      ];
+      
+      const basePower = Math.max(0.25, power * 0.6);
       const suppressMod = nearbyKingdom.disaster.suppressMod || 1.0;
-      const reducedPower = Math.round(basePower * suppressMod);
+      const modifiedPower = basePower * suppressMod;
+      
+      // Find closest allowed power value
+      let closestPower = allowedPowers[0];
+      let minDiff = Math.abs(modifiedPower - closestPower);
+      
+      for (const allowedPower of allowedPowers) {
+        const diff = Math.abs(modifiedPower - allowedPower);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestPower = allowedPower;
+        }
+      }
 
       // Only proceed if power > 0
-      if (reducedPower > 0) {
+      if (closestPower > 0) {
         // Check if disaster already exists with higher power in current month
         const existingDisaster = nearbyKingdom.disaster.current[0].find(d => d.name === disaster);
-        if (!existingDisaster || existingDisaster.power < reducedPower) {
+        if (!existingDisaster || existingDisaster.power < closestPower) {
           // Remove existing weaker disaster if present
           if (existingDisaster) {
             const index = nearbyKingdom.disaster.current[0].indexOf(existingDisaster);
@@ -590,7 +669,7 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
           // Add new disaster to current month (index 0)
           nearbyKingdom.disaster.current[0].push({
             name: disaster,
-            power: reducedPower,
+            power: closestPower,
             source: sourceKingdom,
             direction: direction // Inherit direction from source
           });
@@ -603,13 +682,25 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
             const relatedRoll = Math.random() * 100;
 
             if (relatedRoll < relatedChance) {
-              const baseRelatedPower = Math.max(1, Math.round(reducedPower / suppressMod / 2));
-              const relatedPower = Math.round(baseRelatedPower * suppressMod);
+              const baseRelatedPower = Math.max(0.25, closestPower / suppressMod / 2);
+              const modifiedRelatedPower = baseRelatedPower * suppressMod;
+              
+              // Find closest allowed power value for related disaster
+              let closestRelatedPower = allowedPowers[0];
+              let minRelatedDiff = Math.abs(modifiedRelatedPower - closestRelatedPower);
+              
+              for (const allowedPower of allowedPowers) {
+                const diff = Math.abs(modifiedRelatedPower - allowedPower);
+                if (diff < minRelatedDiff) {
+                  minRelatedDiff = diff;
+                  closestRelatedPower = allowedPower;
+                }
+              }
 
-              if (relatedPower > 0) {
+              if (closestRelatedPower > 0) {
                 // Check if related disaster already exists in current month
                 const existingRelated = nearbyKingdom.disaster.current[0].find(d => d.name === relatedDisaster);
-                if (!existingRelated || existingRelated.power < relatedPower) {
+                if (!existingRelated || existingRelated.power < closestRelatedPower) {
                   // Remove existing weaker related disaster if present
                   if (existingRelated) {
                     const index = nearbyKingdom.disaster.current[0].indexOf(existingRelated);
@@ -619,7 +710,7 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
                   // Add related disaster to current month (index 0)
                   nearbyKingdom.disaster.current[0].push({
                     name: relatedDisaster,
-                    power: relatedPower,
+                    power: closestRelatedPower,
                     source: `${disaster}_${sourceKingdom}`,
                     direction: direction // Related disasters inherit same direction
                   });
@@ -632,7 +723,7 @@ function propagateDisastersToNearbyKingdoms(sourceKingdom, disaster, power, visi
           propagateDisastersToNearbyKingdoms(
             nearbyKingdomName,
             disaster,
-            reducedPower,
+            closestPower,
             new Set(visitedKingdoms), // Pass copy of visited kingdoms
             sourceKingdom,
             direction // Pass direction along
@@ -798,18 +889,18 @@ function advanceToNextMonth() {
     const kingdom = kingdoms[name];
     if (!kingdom.disaster) return;
 
-    // Initialize 6-month disaster array if not exists or wrong format
+    // Initialize 7-month disaster array if not exists or wrong format
     if (!Array.isArray(kingdom.disaster.current) || !Array.isArray(kingdom.disaster.current[0])) {
-      kingdom.disaster.current = [[], [], [], [], [], []]; // 6 months
+      kingdom.disaster.current = [[], [], [], [], [], [], []]; // 7 months
       return;
     }
 
-    // Shift disasters: remove first month, move others forward, generate new 6th month
+    // Shift disasters: remove first month, move others forward, generate new 7th month
     kingdom.disaster.current.shift(); // Remove current month
-    kingdom.disaster.current.push([]); // Add empty 6th month
+    kingdom.disaster.current.push([]); // Add empty 7th month
 
-    // Generate disasters for the new 6th month
-    const monthIndex = 5; // 6th month (0-indexed)
+    // Generate disasters for the new 7th month
+    const monthIndex = 6; // 7th month (0-indexed)
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
     // Skip if kingdom is protected or suppressor is 0
@@ -837,9 +928,29 @@ function advanceToNextMonth() {
 
         // Increase power if kingdom is prone to this disaster
         if (kingdom.disaster.geoState[disaster] === 'prone') {
-          const basePower = Math.round(primaryPower / kingdom.disaster.suppressMod);
+          const allowedPowers = [
+            0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 
+            4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 
+            8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
+          ];
+          
+          const basePower = primaryPower / kingdom.disaster.suppressMod;
           const bonusPower = Math.min(10, basePower + 2);
-          primaryPower = Math.round(bonusPower * kingdom.disaster.suppressMod);
+          const modifiedPower = bonusPower * kingdom.disaster.suppressMod;
+          
+          // Find closest allowed power value
+          let closestPower = allowedPowers[0];
+          let minDiff = Math.abs(modifiedPower - closestPower);
+          
+          for (const power of allowedPowers) {
+            const diff = Math.abs(modifiedPower - power);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestPower = power;
+            }
+          }
+          
+          primaryPower = closestPower;
         }
 
         // Add primary disaster to array (only if power > 0)
@@ -864,13 +975,31 @@ function advanceToNextMonth() {
         const roll = Math.random() * 100;
 
         if (roll < chance) {
-          const basePower = Math.max(1, Math.round(primaryPower / kingdom.disaster.suppressMod / 2));
-          const relatedPower = Math.round(basePower * kingdom.disaster.suppressMod);
+          const allowedPowers = [
+            0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 
+            4, 4.25, 4.5, 4.75, 5, 5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 
+            8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10
+          ];
           
-          if (relatedPower > 0) {
+          const basePower = Math.max(0.25, primaryPower / kingdom.disaster.suppressMod / 2);
+          const modifiedPower = basePower * kingdom.disaster.suppressMod;
+          
+          // Find closest allowed power value
+          let closestPower = allowedPowers[0];
+          let minDiff = Math.abs(modifiedPower - closestPower);
+          
+          for (const power of allowedPowers) {
+            const diff = Math.abs(modifiedPower - power);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestPower = power;
+            }
+          }
+          
+          if (closestPower > 0) {
             kingdom.disaster.current[monthIndex].push({
               name: relatedDisaster,
-              power: relatedPower,
+              power: closestPower,
               source: "nature",
               direction: primaryDirection
             });
@@ -906,7 +1035,7 @@ displayDisasterReport();
 document.getElementById('disasterReport').style.display = 'block';
 
 document.getElementById('generateNewDisasters').onclick = () => {
-  if (confirm('Generate new 6-month disaster forecast for all kingdoms? This will replace current forecasts.')) {
+  if (confirm('Generate new 7-month disaster forecast for all kingdoms? This will replace current forecasts.')) {
     generateNewDisasters();
   }
 };
@@ -925,14 +1054,14 @@ document.getElementById('closeDisasterReport').onclick = () => {
 Object.keys(kingdoms).forEach(name => {
   if (!kingdoms[name].disaster) {
     kingdoms[name].disaster = {
-      current: [[], [], [], [], [], []], // Initialize as 6-month array
+      current: [[], [], [], [], [], [], []], // Initialize as 7-month array
       geoState: generateRandomGeoState(),
       protected: false,
       suppressMod: parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0
     };
   }
 
-  // Initialize suppressMod property if it doesn't exist
+  // Ensure suppressMod is set
   if (kingdoms[name].disaster.suppressMod === undefined) {
     kingdoms[name].disaster.suppressMod = parseFloat(localStorage.getItem("globalDisasterSuppressor")) || 1.0;
   }
@@ -945,7 +1074,7 @@ Object.keys(kingdoms).forEach(name => {
   // Convert old disaster format to new array format
   if (kingdoms[name].disaster.current && !Array.isArray(kingdoms[name].disaster.current)) {
     const oldDisasters = kingdoms[name].disaster.current;
-    kingdoms[name].disaster.current = [[], [], [], [], [], []]; // Initialize 6-month array
+    kingdoms[name].disaster.current = [[], [], [], [], [], [], []]; // Initialize 7-month array
 
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
@@ -959,10 +1088,10 @@ Object.keys(kingdoms).forEach(name => {
     });
   }
 
-  // Convert old single array format to 6-month array format
+  // Convert old single array format to 7-month array format
   if (Array.isArray(kingdoms[name].disaster.current) && !Array.isArray(kingdoms[name].disaster.current[0])) {
     const oldDisasters = kingdoms[name].disaster.current;
-    kingdoms[name].disaster.current = [[], [], [], [], [], []]; // Initialize 6-month array
+    kingdoms[name].disaster.current = [[], [], [], [], [], [], []]; // Initialize 7-month array
     
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
     
@@ -974,9 +1103,12 @@ Object.keys(kingdoms).forEach(name => {
     });
   }
 
-  // Ensure 6-month array format
+  // Ensure 7-month array format and extend 6-month arrays to 7-month
   if (!Array.isArray(kingdoms[name].disaster.current) || !Array.isArray(kingdoms[name].disaster.current[0])) {
-    kingdoms[name].disaster.current = [[], [], [], [], [], []];
+    kingdoms[name].disaster.current = [[], [], [], [], [], [], []];
+  } else if (kingdoms[name].disaster.current.length === 6) {
+    // Extend 6-month array to 7-month array
+    kingdoms[name].disaster.current.push([]);
   }
 
   // Add direction to existing disasters that don't have it
