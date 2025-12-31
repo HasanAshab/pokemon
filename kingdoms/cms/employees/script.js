@@ -45,7 +45,16 @@ function updateTotalSalaryDisplay() {
 function renderEmployees() {
   employeesTableBody.innerHTML = "";
   
-  kingdoms[name].employees.forEach((employee, index) => {
+  // Sort employees by salary percentage (highest first)
+  const sortedEmployees = [...kingdoms[name].employees].sort((a, b) => b.salaryPercent - a.salaryPercent);
+  
+  sortedEmployees.forEach((employee) => {
+    // Find original index for update/remove operations
+    const originalIndex = kingdoms[name].employees.findIndex(emp => 
+      emp.postName === employee.postName && 
+      emp.salaryPercent === employee.salaryPercent && 
+      emp.quantity === employee.quantity
+    );
     const row = document.createElement("tr");
     
     const perManSalary = calculatePerManSalary(employee.salaryPercent);
@@ -54,23 +63,23 @@ function renderEmployees() {
     row.innerHTML = `
       <td>
         <input type="text" class="editable-input post-name" value="${employee.postName}" 
-               onblur="updateEmployee(${index}, 'postName', this.value)"
+               onblur="updateEmployee(${originalIndex}, 'postName', this.value)"
                onkeydown="handleEnterKey(event)">
       </td>
       <td>
         <input type="number" class="editable-input" value="${employee.salaryPercent}" 
-               onblur="updateEmployee(${index}, 'salaryPercent', this.value)"
+               onblur="updateEmployee(${originalIndex}, 'salaryPercent', this.value)"
                onkeydown="handleEnterKey(event)">
       </td>
       <td>
         <input type="number" class="editable-input" value="${employee.quantity}"
-               onblur="updateEmployee(${index}, 'quantity', this.value)"
+               onblur="updateEmployee(${originalIndex}, 'quantity', this.value)"
                onkeydown="handleEnterKey(event)">
       </td>
       <td class="salary-display">$${perManSalary.toLocaleString()}</td>
       <td class="salary-display">$${totalPostSalary.toLocaleString()}</td>
       <td class="actions-cell">
-        <button class="btn btn-danger" onclick="removeEmployee(${index})">Remove</button>
+        <button class="btn btn-danger" onclick="removeEmployee(${originalIndex})">Remove</button>
       </td>
     `;
     
