@@ -1,7 +1,6 @@
 * Tasks
-security score
-tension works on defense score?
 predict disaster + direction
+tension works on defense score?
 storage marketplace
 
 

@@ -448,7 +448,7 @@ function renderAllForces(forceType) {
   securityRateEl.textContent = securityRate
 
   if (forceType === "polices") {
-    securityRateEl.textContent += ` (+${getPoliceStationSecurityRate(kingdom)})`
+    securityRateEl.textContent = `${getSecurityRate(kingdom, "polices") + getPoliceStationSecurityRate(kingdom)} (${getSecurityRate(kingdom, "polices").toFixed()} + ${getPoliceStationSecurityRate(kingdom)})`
   }
 
   let totalMight = 0;

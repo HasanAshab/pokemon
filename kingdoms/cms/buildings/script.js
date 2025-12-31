@@ -588,6 +588,14 @@ addBuildingBtn.onclick = () => {
   };
   kingdoms[name].buildings.push(newBuilding);
   saveAndRefresh();
+  
+  // Auto-scroll to bottom after adding new building
+  setTimeout(() => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, 100); // Small delay to ensure DOM is updated
 };
 
 // Bulk delete functions
@@ -765,7 +773,7 @@ globalThis.showQuickFindForm = () => {
     el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox);
   });
 }
-// Go to top functionality
+// Smart scroll functionality
 function scrollToTop() {
   window.scrollTo({
     top: 0,
@@ -773,18 +781,56 @@ function scrollToTop() {
   });
 }
 
-// Show/hide go to top button based on scroll position
-function toggleGoToTopButton() {
-  const goToTopBtn = document.getElementById('goToTopBtn');
-  if (window.pageYOffset > 300) {
-    goToTopBtn.classList.add('show');
+function scrollToBottom() {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth'
+  });
+}
+
+function smartScroll() {
+  const scrollPosition = window.pageYOffset;
+  const documentHeight = document.body.scrollHeight;
+  const windowHeight = window.innerHeight;
+  const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+  
+  // If we're in the top half, scroll to bottom; if in bottom half, scroll to top
+  if (scrollPercentage < 0.5) {
+    scrollToBottom();
   } else {
-    goToTopBtn.classList.remove('show');
+    scrollToTop();
+  }
+}
+
+// Show/hide smart scroll button and update icon based on scroll position
+function toggleSmartScrollButton() {
+  const smartScrollBtn = document.getElementById('smartScrollBtn');
+  const scrollPosition = window.pageYOffset;
+  const documentHeight = document.body.scrollHeight;
+  const windowHeight = window.innerHeight;
+  const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+  
+  // Show button after scrolling 300px
+  if (scrollPosition > 300) {
+    smartScrollBtn.classList.add('show');
+    
+    // Update button icon and title based on position
+    if (scrollPercentage < 0.5) {
+      smartScrollBtn.innerHTML = '↓';
+      smartScrollBtn.title = 'Go to bottom';
+    } else {
+      smartScrollBtn.innerHTML = '↑';
+      smartScrollBtn.title = 'Go to top';
+    }
+  } else {
+    smartScrollBtn.classList.remove('show');
   }
 }
 
 // Add scroll event listener
-window.addEventListener('scroll', toggleGoToTopButton);
+window.addEventListener('scroll', toggleSmartScrollButton);
 
-// Make scrollToTop function globally available
+// Make functions globally available
 globalThis.scrollToTop = scrollToTop;
+globalThis.scrollToBottom = scrollToBottom;
+globalThis.smartScroll = smartScroll;
