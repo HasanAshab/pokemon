@@ -60,8 +60,31 @@ function renderItems() {
     const prodSpan = document.createElement("span");
     prodSpan.className = "production";
     const rawVal = parseInt(netProd[itemName] || 0);
-    prodSpan.textContent = rawVal >= 0 ? `+${rawVal.toLocaleString()}` : rawVal.toLocaleString();
-    prodSpan.classList.add(rawVal >= 0 ? "prod-positive" : "prod-negative");
+    
+    // Calculate marketplace impact for this item
+    let marketplaceImpact = 0;
+    if (kingdoms[name].marketplace) {
+      kingdoms[name].marketplace.forEach(marketItem => {
+        if (marketItem.itemName === itemName) {
+          const actualQuantity = marketItem.sellAll ? (storage[itemName] || 0) : marketItem.quantity;
+          marketplaceImpact -= actualQuantity; // Negative because items are being sold
+        }
+      });
+    }
+    
+    const netChange = rawVal + marketplaceImpact;
+    const displayText = netChange >= 0 ? `+${netChange.toLocaleString()}` : netChange.toLocaleString();
+    
+    // Show breakdown if marketplace impact exists
+    if (marketplaceImpact !== 0) {
+      const productionText = rawVal >= 0 ? `+${rawVal.toLocaleString()}` : rawVal.toLocaleString();
+      const marketText = marketplaceImpact >= 0 ? `+${marketplaceImpact.toLocaleString()}` : marketplaceImpact.toLocaleString();
+      prodSpan.innerHTML = `${displayText} <small style="color: #666;">(${productionText} ${marketText})</small>`;
+    } else {
+      prodSpan.textContent = displayText;
+    }
+    
+    prodSpan.classList.add(netChange >= 0 ? "prod-positive" : "prod-negative");
 
     const itemActions = document.createElement("div");
     itemActions.className = "item-actions";
@@ -161,10 +184,22 @@ newMonthBtn.onclick = () => {
     });
   }
 
+  // Process marketplace sales - remove sold items from storage
+  if (kingdoms[name].marketplace && kingdoms[name].marketplace.length > 0) {
+    kingdoms[name].marketplace.forEach(item => {
+      const actualQuantity = item.sellAll ? (kingdoms[name].storage[item.itemName] || 0) : item.quantity;
+      if (kingdoms[name].storage[item.itemName]) {
+        kingdoms[name].storage[item.itemName] = Math.max(0, kingdoms[name].storage[item.itemName] - actualQuantity);
+      }
+    });
+  }
+
   // Reduce event countdowns
   if (kingdoms[name].events && kingdoms[name].events.future) {
     kingdoms[name].events.future.forEach(event => {
-      event.remainingMonths = Math.max(0, event.remainingMonths - 1);
+      if (event.hasCountdown) {
+        event.remainingMonths = Math.max(0, event.remainingMonths - 1);
+      }
     });
   }
 
@@ -177,6 +212,9 @@ newMonthBtn.onclick = () => {
 
   saveAndRefresh(kingdoms[name].storage);
   updateLifetimeDisplay();
+  
+  // Update marketplace display after processing sales
+  renderMarketplace();
 };
 
 // Lifetime tracking functions
@@ -352,11 +390,7 @@ function addMarketplaceItem() {
   }
   
   // Clear form
-  itemSelect.value = '';
-  unitPriceInput.value = '';
-  sellAllCheckbox.checked = false;
-  quantityInput.value = '1';
-  quantityInput.parentElement.style.display = 'block';
+  resetMarketplaceForm();
   
   // Save and refresh
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -371,6 +405,92 @@ function removeMarketplaceItem(index) {
   }
 }
 
+function editMarketplaceItem(index) {
+  const item = kingdoms[name].marketplace[index];
+  if (!item) return;
+  
+  // Populate form with existing values
+  document.getElementById('marketItemSelect').value = item.itemName;
+  document.getElementById('unitPrice').value = item.unitPrice;
+  document.getElementById('sellAll').checked = item.sellAll;
+  document.getElementById('quantity').value = item.quantity;
+  
+  // Show/hide quantity input based on sellAll
+  const quantityGroup = document.getElementById('quantityGroup');
+  quantityGroup.style.display = item.sellAll ? 'none' : 'block';
+  
+  // Change button text to indicate editing
+  const addBtn = document.getElementById('addMarketItemBtn');
+  addBtn.textContent = 'Update Item';
+  addBtn.onclick = () => updateMarketplaceItem(index);
+  
+  // Switch to marketplace tab if not already there
+  const marketplaceTab = document.querySelector('[data-tab="marketplace"]');
+  if (!marketplaceTab.classList.contains('active')) {
+    marketplaceTab.click();
+  }
+}
+
+function updateMarketplaceItem(index) {
+  const itemSelect = document.getElementById('marketItemSelect');
+  const unitPriceInput = document.getElementById('unitPrice');
+  const sellAllCheckbox = document.getElementById('sellAll');
+  const quantityInput = document.getElementById('quantity');
+  
+  const itemName = itemSelect.value;
+  const unitPrice = parseFloat(unitPriceInput.value);
+  const sellAll = sellAllCheckbox.checked;
+  const quantity = parseInt(quantityInput.value) || 1;
+  
+  if (!itemName) {
+    alert('Please select an item');
+    return;
+  }
+  
+  if (isNaN(unitPrice)) {
+    alert('Please enter a valid unit price');
+    return;
+  }
+  
+  const storage = getStorage(kingdoms[name]);
+  if (!storage[itemName] || storage[itemName] <= 0) {
+    alert('Item not available in storage or quantity is 0');
+    return;
+  }
+  
+  if (!sellAll && (quantity <= 0 || quantity > storage[itemName])) {
+    alert(`Invalid quantity. Available: ${storage[itemName]}`);
+    return;
+  }
+  
+  // Update the item
+  kingdoms[name].marketplace[index] = {
+    itemName,
+    unitPrice,
+    sellAll,
+    quantity: sellAll ? storage[itemName] : quantity
+  };
+  
+  // Reset form
+  resetMarketplaceForm();
+  
+  // Save and refresh
+  localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+  renderMarketplace();
+}
+
+function resetMarketplaceForm() {
+  document.getElementById('marketItemSelect').value = '';
+  document.getElementById('unitPrice').value = '';
+  document.getElementById('sellAll').checked = false;
+  document.getElementById('quantity').value = '1';
+  document.getElementById('quantityGroup').style.display = 'block';
+  
+  const addBtn = document.getElementById('addMarketItemBtn');
+  addBtn.textContent = 'Add to Marketplace';
+  addBtn.onclick = addMarketplaceItem;
+}
+
 function renderMarketplace() {
   const tableBody = document.getElementById('marketplaceTableBody');
   const overallProfitValue = document.getElementById('overallProfitValue');
@@ -379,7 +499,23 @@ function renderMarketplace() {
   tableBody.innerHTML = '';
   let totalProfit = 0;
   
-  kingdoms[name].marketplace.forEach((item, index) => {
+  // Sort marketplace items by total profit (highest first)
+  const sortedMarketplace = [...kingdoms[name].marketplace].sort((a, b) => {
+    const aQuantity = a.sellAll ? (storage[a.itemName] || 0) : a.quantity;
+    const bQuantity = b.sellAll ? (storage[b.itemName] || 0) : b.quantity;
+    const aProfit = aQuantity * a.unitPrice;
+    const bProfit = bQuantity * b.unitPrice;
+    return bProfit - aProfit; // Descending order
+  });
+  
+  sortedMarketplace.forEach((item, originalIndex) => {
+    // Find original index for editing
+    const actualIndex = kingdoms[name].marketplace.findIndex(original => 
+      original.itemName === item.itemName && 
+      original.unitPrice === item.unitPrice && 
+      original.sellAll === item.sellAll
+    );
+    
     const row = document.createElement('tr');
     
     // Update quantity if "Sell All" is checked
@@ -398,7 +534,8 @@ function renderMarketplace() {
       <td>${actualQuantity.toLocaleString()}${item.sellAll ? ' (All)' : ''}</td>
       <td class="${profitClass}">${totalItemProfit >= 0 ? '$' : '-$'}${Math.abs(totalItemProfit).toLocaleString()}</td>
       <td>
-        <button class="btn danger-btn" onclick="removeMarketplaceItem(${index})" style="padding: 4px 8px; font-size: 12px;">Remove</button>
+        <button class="btn primary-btn" onclick="editMarketplaceItem(${actualIndex})" style="padding: 4px 8px; font-size: 12px; margin-right: 5px;">Edit</button>
+        <button class="btn danger-btn" onclick="removeMarketplaceItem(${actualIndex})" style="padding: 4px 8px; font-size: 12px;">Remove</button>
       </td>
     `;
     
@@ -421,5 +558,6 @@ function renderMarketplace() {
   }
 }
 
-// Make removeMarketplaceItem globally available
+// Make functions globally available
 globalThis.removeMarketplaceItem = removeMarketplaceItem;
+globalThis.editMarketplaceItem = editMarketplaceItem;
