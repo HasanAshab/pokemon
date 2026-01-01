@@ -225,9 +225,11 @@ export const sumMap = (map1, map2) => {
   return result;
 };
 
-export const calculateBuildDefenceScore = (kingdom, areaPercentage) => {
-  const buildDefence = (getStorage(kingdom).defence || 0) * (areaPercentage / 100);
-  return buildDefence;
+export const calculateBuildDefenceScore = (kingdom, areaPercentage, direction) => {
+  const defScore = getStorage(kingdom).defence
+  const buildDefence = (defScore || 0) * (areaPercentage / 100);
+  const tensMod = getMilitaryTensionMod(kingdom, direction);
+  return Math.min(defScore, buildDefence * tensMod);
 }
 
 
@@ -561,9 +563,7 @@ export function prepareSoldiers(
 }
 
 export function prepareDefenceCommanders(kingdom, direction) {
-  return kingdom.defenceWaves.map((wave) => {
-    console.log(kingdom.directionCommanders, direction);
-    
+  return kingdom.defenceWaves.map((wave) => {    
     return prepareCommander(kingdom, kingdom.directionCommanders[direction]);
     // return prepareCommander(kingdom, wave.commander);
   });

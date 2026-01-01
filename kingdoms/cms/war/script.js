@@ -384,7 +384,7 @@ startWarBtn.onclick = () => {
     console.log(commander.iq.offensive, dwave.commander.iq.defensive);
 
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
-    const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value));
+    const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
 
     const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts, buildDefenceScore);
 
