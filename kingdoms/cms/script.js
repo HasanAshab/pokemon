@@ -88,9 +88,11 @@ if (!kingdom.events) {
   kingdom.events = { future: [], past: [] };
 }
 
+disasterResearchersVisionRange.value = kingdom.disaster.visionRange
+disasterResearchersVisionRangeValue.textContent = kingdom.disaster.visionRange
 disasterResearchersVisionRange.oninput = () => {
   disasterResearchersVisionRangeValue.textContent = disasterResearchersVisionRange.value
-  kingdom.disaster.visionRange = disasterResearchersVisionRange.value
+  kingdom.disaster.visionRange = parseInt(disasterResearchersVisionRange.value)
 }
 
 globalThis.showDisasterResearchersAccuracy = () => {
@@ -448,23 +450,19 @@ birthRateInput.onchange = () => {
   updateDisplay()
 }
 saveBtn.addEventListener("click", () => {
-  const area = parseFloat(landAreaInput.value) || 0;
-  const density = parseFloat(densityInput.value) || 0;
-  const pci = parseFloat(pciInput.value) || 0;
-  const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
-
   const kingdoms = localStorage.getItem("kingdoms")
     ? JSON.parse(localStorage.getItem("kingdoms"))
     : {};
-  const kingdom = kingdoms[name];
+  const _kingdom = kingdoms[name];
 
-  // Update the kingdom
-  kingdom.id = name;
-  kingdom.landArea = area;
-  kingdom.density = density;
-  kingdom.pci = pci;
-  kingdom.taxRate = taxRate;
-  
+  _kingdom.landArea = kingdom.landArea;
+  _kingdom.density = kingdom.density;
+  _kingdom.pci = kingdom.pci;
+  _kingdom.taxRate = kingdom.taxRate;
+  _kingdom.birthRate = kingdom.birthRate
+  _kingdom.closerKingdoms = kingdom.closerKingdoms;
+  _kingdom.disaster = kingdom.disaster;
+
   // Update the kingdoms object
   kingdoms[name] = kingdom;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));

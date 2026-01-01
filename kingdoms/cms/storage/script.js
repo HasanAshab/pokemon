@@ -1,4 +1,4 @@
-import { sumObj, calcNetProd, getStorage, getTransLogs, getPopulation, getPopulationGrowth, getMaintainedStorage } from '../../utils.js';
+import { sumObj, calcNetProd, getStorage, getTransLogs, getPopulation, getPopulationGrowth, getMaintainedStorage, predictNextDisasters } from '../../utils.js';
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
 const name = localStorage.getItem('$current_kingdom') || (() => {
@@ -223,12 +223,33 @@ newMonthBtn.onclick = () => {
     kingdoms[name].lifetime.months = 0;
   }
 
+  pushDisasterEvents(kingdoms[name]);
+
   saveAndRefresh(kingdoms[name].storage);
   updateLifetimeDisplay();
   
   // Update marketplace display after processing sales
   renderMarketplace();
 };
+
+function pushDisasterEvents(kingdom) {
+  const disasters = predictNextDisasters(kingdom);
+  for (const i in disasters) {
+    const disasterList = disasters[i];
+    for (const disaster of disasterList) {
+      const title = `Expecting ${disaster.name} (~ ${disaster.power}) From ${disaster.source} in ${disaster.direction} direction`;      
+      const event = {
+        id: Date.now(),
+        title: title,
+        remainingMonths: parseInt(i) + 1,
+        isSecret: false,
+        isHappened: false
+      };
+      kingdom.events.future.push(event);
+    }
+  }
+}
+
 
 // Lifetime tracking functions
 function updateLifetimeDisplay() {

@@ -1,3 +1,4 @@
+import { DISASTERS, ALLOWED_POWERS, DIRECTIONS } from "./constraints.js";
 import { getItemsOfType } from "../assets/js/utils/dom.js";
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
@@ -719,7 +720,7 @@ export function getBuildCost(kingdom, size, floor, durability) {
 
 export function getResearchersAccuracy(kingdom) {
   const area = kingdom.landArea;
-  const visionRange = kingdom.disaster.visionRange || 1;
+  const visionRange = kingdom.disaster.visionRange || 1;  
   const researchersCount = getStorage(kingdom).researcher || 0;
 
   // --- Area vs Researchers (arithmetical) ---
@@ -743,9 +744,120 @@ export function getResearchersAccuracy(kingdom) {
 }
 
 
-export function predictNextDisasters(kingdom) {
-  const accuracy = getResearchersAccuracy(kingdom);
-  const futureDisasters = kingdom.disaster.current.slice(1);
-  console.log(futureDisasters);
-  
+
+export function predictNextDisasters(kingdom) { 
+  const chance = (p) => Math.random() * 100 < p;
+
+  const randomFrom = (arr) => {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+  const randomizeAccuracy = (x) => {
+    let min = 0.8;
+    let max = 1.2;
+    // 2. Generate the random multiplier
+    let multiplier = Math.random() * (max - min) + min;
+
+    // 3. Apply it to x
+    let result = x * multiplier;
+
+    return Math.max(0, Math.min(100, parseInt(result)))
+  }
+
+  const closestAllowedPower = (power) => {
+    const closest = ALLOWED_POWERS.reduce((prev, curr) => {
+      return Math.abs(curr - power) < Math.abs(prev - power) ? curr : prev;
+    });
+    return closest;
+  }
+
+
+  const accuracy = randomizeAccuracy(getResearchersAccuracy(kingdom));  
+  const visionRange = kingdom.disaster.visionRange || 1;
+
+  const futureDisasters =
+    kingdom.disaster.current.slice(1, 1 + visionRange);
+
+  const predictedDisasters = [];
+
+  for (let i = 0; i < futureDisasters.length; i++) {
+    const realMonth = futureDisasters[i];
+
+    // ---- Miss entire month ----
+    if (realMonth.length && chance(Math.max(0, 60 - accuracy))) {
+      predictedDisasters.push([]);
+      continue;
+    }
+
+    const predictedMonth = [];
+
+    // ---- Real disasters (with faults) ----
+    for (const disaster of realMonth) {
+      if (chance(Math.max(0, 50 - accuracy))) continue;
+
+      let predicted = { ...disaster };
+
+      // name fault
+      if (chance(Math.max(0, 55 - accuracy))) {
+        const related = DISASTERS[disaster.name]?.related || [];
+        if (related.length) predicted.name = randomFrom(related);
+      }
+
+      // power fault (step-based)
+      const baseIndex = ALLOWED_POWERS.indexOf(disaster.power);
+      if (baseIndex !== -1) {
+        const maxShift = Math.ceil((100 - accuracy) / 15);
+        const shift =
+          Math.floor(Math.random() * (maxShift * 2 + 1)) - maxShift;
+        predicted.power =
+          ALLOWED_POWERS[
+            Math.max(
+              0,
+              Math.min(ALLOWED_POWERS.length - 1, baseIndex + shift)
+            )
+          ];
+      }
+
+      // direction drift
+      if (chance(Math.max(0, 60 - accuracy))) {
+        const idx = DIRECTIONS.indexOf(disaster.direction);
+        if (idx !== -1) {
+          const drift = Math.random() < 0.5 ? -1 : 1;
+          predicted.direction =
+            DIRECTIONS[(idx + drift + DIRECTIONS.length) % DIRECTIONS.length];
+        }
+      }
+
+      predictedMonth.push(predicted);
+    }
+
+    // ---- False positives ----
+    const falsePositiveChance = Math.max(0, 45 - accuracy);
+    const maxFalse = accuracy < 40 ? 2 : 1;
+
+    if (chance(falsePositiveChance)) {
+      const falseCount =
+        Math.floor(Math.random() * maxFalse) + 1;
+
+      for (let f = 0; f < falseCount; f++) {
+        const base =
+          realMonth[Math.floor(Math.random() * realMonth.length)];
+
+        if (!base) continue;
+
+        const related =
+          DISASTERS[base.name]?.related || [];
+
+        predictedMonth.push({
+          name: related.length ? randomFrom(related) : base.name,
+          power: closestAllowedPower(randomFrom(ALLOWED_POWERS) * kingdom.disaster.suppressMod),
+          source: base.source,
+          direction: randomFrom(DIRECTIONS)
+        });
+      }
+    }
+
+    predictedDisasters.push(predictedMonth);
+  }
+
+  return predictedDisasters;
 }

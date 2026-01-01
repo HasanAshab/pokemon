@@ -1,7 +1,5 @@
 * Tasks
-predict disaster + direction
 tension works on defense score?
-
 
 *ovi
 Bronze armors
