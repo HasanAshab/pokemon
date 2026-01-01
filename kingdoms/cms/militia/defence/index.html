@@ -1254,13 +1254,13 @@
       function getDirectionKey(direction) {
         const directionMap = {
           'north': 'N',
-          'northeast': 'N.E',
+          'northeast': 'NE',
           'east': 'E',
-          'southeast': 'S.E',
+          'southeast': 'SE',
           'south': 'S',
-          'southwest': 'S.W',
+          'southwest': 'SW',
           'west': 'W',
-          'northwest': 'N.W'
+          'northwest': 'NW'
         };
         return directionMap[direction] || direction;
       }
@@ -1408,10 +1408,13 @@
     if (!kingdoms[name].defenceWaves) kingdoms[name].defenceWaves = [];
     if (!kingdoms[name].militaryTension) {
       kingdoms[name].militaryTension = {
-        "N": 4, "N.E": 4, "E": 4, "S.E": 4,
-        "S": 4, "S.W": 4, "W": 4, "N.W": 4
+        "N": 4, "NE": 4, "E": 4, "SE": 4,
+        "S": 4, "SW": 4, "W": 4, "NW": 4
       };
     }
+
+    
+
 
     const shiftSelect = document.getElementById("shift");
 

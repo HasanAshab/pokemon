@@ -562,6 +562,8 @@ export function prepareSoldiers(
 
 export function prepareDefenceCommanders(kingdom, direction) {
   return kingdom.defenceWaves.map((wave) => {
+    console.log(kingdom.directionCommanders, direction);
+    
     return prepareCommander(kingdom, kingdom.directionCommanders[direction]);
     // return prepareCommander(kingdom, wave.commander);
   });

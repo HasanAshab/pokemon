@@ -42,7 +42,8 @@ function loadDirectionData() {
   const directionList = document.getElementById("direction");
   directionList.innerHTML = "";
   Object.keys(defender.militaryTension).forEach(direction => {
-    const option = document.createElement('option');
+    if (direction.includes('.')) return
+    const option = document.createElement('option');    
     option.value = direction;
     option.textContent = direction;
     directionList.appendChild(option);
