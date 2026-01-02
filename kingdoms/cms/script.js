@@ -435,6 +435,11 @@ function updateDisplay() {
   landCostLabel.textContent = landCost.toLocaleString();
 
   loadFoodConsumptionTier();
+
+  kingdom.landArea = area;
+  kingdom.density = density;
+  kingdom.pci = pci;
+  kingdom.taxRate = taxRate;
 }
 
 priceForAreaInput.addEventListener("change", updateDisplay);

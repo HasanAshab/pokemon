@@ -1,8 +1,12 @@
 * Tasks
-ammo bug at war (no items)
-artilary on report
+artilary on report + break artilary (quantity)
 better numbering might vs def score
-send spy
+send spy + refactor espionage
+auto generate military
+military + police no level
+new compare 
+initial upgrade cost + construct cost
+pwa is culpit?
 
 *ovi
 Bronze armors
