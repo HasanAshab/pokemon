@@ -255,6 +255,10 @@
           <label for="durabilityInput">Durability:</label>
           <input type="number" id="durabilityInput" min="1" value="1" />
         </div>
+        <div class="input-group">
+          <label for="quantityInput">Quantity:</label>
+          <input type="number" id="quantityInput" min="1" value="1" />
+        </div>
         <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
       </div>
       <div id="costResults" class="cost-results" style="display: none;">
@@ -273,6 +277,9 @@
         <div class="result-item total">
           <span class="label">Total Cost:</span>
           <span id="totalCost" class="value">-</span>
+        </div>
+        <div class="result-item" id="payButtonContainer" style="display: none; justify-content: center; border: none; padding-top: 15px;">
+          <button id="payBtn" class="btn success-btn" onclick="payForConstruction()">Pay</button>
         </div>
       </div>
     </div>

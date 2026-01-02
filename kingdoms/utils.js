@@ -4,9 +4,6 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 
-export function foo (size,kingdom){
-
-}
 export function getPopulation(kingdom) {
   return kingdom.landArea * kingdom.density;
 }
@@ -283,7 +280,7 @@ export function calculateMaintains(baseMaintains, level) {
 }
 
 export function upgradePrice(basePrice, level, rate = 1.5) {
-  return Math.round(basePrice * Math.pow(rate, level - 1));
+  return Math.round(basePrice * Math.pow(rate, level));
 }
 
 export function calculatePeopleUsedLandArea(population, pci, taxRate) {

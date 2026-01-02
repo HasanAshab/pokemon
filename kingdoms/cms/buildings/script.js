@@ -576,9 +576,9 @@ function renderBuildings() {
 addBuildingBtn.onclick = () => {
   const newBuilding = {
     name: "New Building",
-    basePrice: 100,
-    baseSize: 50,
-    baseMaintains: { defence: 0 },
+    basePrice: 0,
+    baseSize: 0,
+    baseMaintains: { defence: 0, station: 0, doctor: 0, revive: 0, researcher: 0 },
     currentLevel: 1,
     quantity: 1,
     durability: 1,
@@ -634,9 +634,15 @@ function calculateConstructionCost() {
   const size = parseInt(document.getElementById('sizeInput').value) || 0;
   const floor = parseInt(document.getElementById('floorInput').value) || 1;
   const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
+  const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
   
   if (size <= 0) {
     alert('Please enter a valid size greater than 0');
+    return;
+  }
+  
+  if (quantity <= 0) {
+    alert('Please enter a valid quantity greater than 0');
     return;
   }
   
@@ -646,27 +652,77 @@ function calculateConstructionCost() {
     return;
   }
   
-  // Calculate costs using utility functions
+  // Calculate costs using utility functions (per unit)
   const requiredArchLevel = getRequiredArchLevel(floor, durability);
-  const archCost = getArchCost(kingdom, requiredArchLevel, size, floor);
-  const materialCost = getMaterialCost(kingdom, size, floor, durability);
-  const totalCost = getBuildCost(kingdom, size, floor, durability);
+  const archCostPerUnit = getArchCost(kingdom, requiredArchLevel, size, floor);
+  const materialCostPerUnit = getMaterialCost(kingdom, size, floor, durability);
+  const totalCostPerUnit = getBuildCost(kingdom, size, floor, durability);
+  
+  // Calculate total costs for all quantities
+  const totalArchCost = archCostPerUnit * quantity;
+  const totalMaterialCost = materialCostPerUnit * quantity;
+  const totalCost = totalCostPerUnit * quantity;
   
   // Display results
   document.getElementById('archLevel').textContent = requiredArchLevel;
-  document.getElementById('archCost').textContent = `$${archCost.toLocaleString()}`;
-  document.getElementById('materialCost').textContent = `$${materialCost.toLocaleString()}`;
-  document.getElementById('totalCost').textContent = `$${totalCost.toLocaleString()}`;
+  document.getElementById('archCost').textContent = quantity > 1 ? 
+    `${archCostPerUnit.toLocaleString()} × ${quantity} = ${totalArchCost.toLocaleString()}` :
+    `${totalArchCost.toLocaleString()}`;
+  document.getElementById('materialCost').textContent = quantity > 1 ?
+    `${materialCostPerUnit.toLocaleString()} × ${quantity} = ${totalMaterialCost.toLocaleString()}` :
+    `${totalMaterialCost.toLocaleString()}`;
+  document.getElementById('totalCost').textContent = quantity > 1 ?
+    `${totalCostPerUnit.toLocaleString()} × ${quantity} = ${totalCost.toLocaleString()}` :
+    `${totalCost.toLocaleString()}`;
   
-  // Show results section
+  // Show results section and pay button
   document.getElementById('costResults').style.display = 'block';
+  document.getElementById('payButtonContainer').style.display = 'flex';
+  
+  // Store current calculation for payment
+  window.currentConstructionCost = totalCost;
 }
+
+// Payment function for construction
+function payForConstruction() {
+  if (!window.currentConstructionCost) {
+    alert('Please calculate cost first');
+    return;
+  }
+  
+  const kingdom = kingdoms[name];
+  const storage = kingdom.storage || {};
+  const totalCost = window.currentConstructionCost;
+  
+  if ((storage.coins || 0) < totalCost) {
+    alert(`Insufficient funds! You need ${totalCost.toLocaleString()} coins but only have ${(storage.coins || 0).toLocaleString()}.`);
+    return;
+  }
+  
+  if (confirm(`Pay ${totalCost.toLocaleString()} coins for construction?`)) {
+    // Deduct cost from kingdom storage
+    if (!kingdom.storage) kingdom.storage = {};
+    kingdom.storage.coins = (kingdom.storage.coins || 0) - totalCost;
+    
+    // Save changes
+    localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+    
+    // Clear current cost and hide pay button
+    window.currentConstructionCost = null;
+    document.getElementById('payButtonContainer').style.display = 'none';
+    
+    alert(`Payment successful! ${totalCost.toLocaleString()} coins deducted. Remaining balance: ${kingdom.storage.coins.toLocaleString()} coins.`);
+  }
+}
+
+// Make payForConstruction globally available
+globalThis.payForConstruction = payForConstruction;
 
 // Add event listeners for cost estimator
 document.getElementById('calculateBtn').addEventListener('click', calculateConstructionCost);
 
 // Auto-calculate on input change
-['sizeInput', 'floorInput', 'durabilityInput'].forEach(id => {
+['sizeInput', 'floorInput', 'durabilityInput', 'quantityInput'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => {
     if (document.getElementById('costResults').style.display !== 'none') {
       calculateConstructionCost();
@@ -834,3 +890,4 @@ window.addEventListener('scroll', toggleSmartScrollButton);
 globalThis.scrollToTop = scrollToTop;
 globalThis.scrollToBottom = scrollToBottom;
 globalThis.smartScroll = smartScroll;
+

@@ -7,7 +7,8 @@ military + police no level
 new compare 
 initial upgrade cost + construct cost
 pwa is culpit?
-
+building floor + take data from estimator
+artilary cost estimator
 *ovi
 Bronze armors
 Kingdom Buildings, war better ui

@@ -71,7 +71,6 @@ function renderItems() {
         if (marketItem.itemName === itemName) {
           const actualQuantity = marketItem.sellAll ? (storage[itemName] || 0) : marketItem.quantity;
           marketplaceImpact -= actualQuantity; // Items being sold (negative)
-          baseProduction = netVal - marketplaceImpact; // Remove marketplace impact to get base
         }
         if (itemName === 'coins' && marketItem.itemName !== 'coins') {
           const actualQuantity = marketItem.sellAll ? (storage[marketItem.itemName] || 0) : marketItem.quantity;
@@ -79,10 +78,12 @@ function renderItems() {
         }
       });
       
-      // For coins, show marketplace profit separately
+      // Calculate base production correctly
       if (itemName === 'coins' && marketplaceCoinProfit !== 0) {
         baseProduction = netVal - marketplaceCoinProfit;
         marketplaceImpact = marketplaceCoinProfit;
+      } else if (marketplaceImpact !== 0) {
+        baseProduction = netVal + Math.abs(marketplaceImpact); // Add back the sold items to get base production
       }
     }
     
