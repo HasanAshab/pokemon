@@ -613,9 +613,13 @@ addBuildingBtn.onclick = () => {
     const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
     const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
     
+    // Calculate per-unit base price from total estimated cost
+    const totalCost = window.currentConstructionCost;
+    const basePrice = Math.round(totalCost / quantity);
+    
     newBuilding = {
       name: "New Building",
-      basePrice: 100,
+      basePrice: basePrice,
       baseSize: size,
       baseMaintains: { defence: 0, station: 0, doctor: 0, revive: 0, researcher: 0 },
       currentLevel: 1,
