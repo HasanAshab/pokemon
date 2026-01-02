@@ -75,6 +75,16 @@
         <button onclick="bulkRemoveItem()">Remove from All</button>
       </div>
     </div>
+    <div class="bulk-operation-section">
+      <h4>Copy From Another Kingdom</h4>
+      <div class="bulk-controls">
+        <select id="copy-from-kingdom-select">
+          <option value="">Select Kingdom</option>
+        </select>
+        <datalist id="bulk-remove-datalist"></datalist>
+        <button onclick="copyFromAnotherKingdom()">Copy</button>
+      </div>
+    </div>
   </div>
 </body>
 <script type="module" src="script.js"></script>

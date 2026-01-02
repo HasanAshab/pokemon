@@ -330,7 +330,16 @@ globalThis.bulkRemoveItem = function() {
   }
 }
 
+function loadCopyFromKingdomSelect() { 
+  const copyFromKingdomSelect = document.getElementById("copy-from-kingdom-select")
+  
+  copyFromKingdomSelect.innerHTML = ""
+  Object.keys(kingdoms).forEach(kingdom => {
+    copyFromKingdomSelect.innerHTML += `<option value="${kingdom}">${kingdom}</option>`
+  })
+}
 window.onload = ()=>{
+
   if (!kingdom.barrack.ammo){
       kingdom.barrack.ammo = {}
     }
@@ -343,4 +352,5 @@ window.onload = ()=>{
   loadMainHeading()
   loadSoldierShiftsContainer()
   loadSoldierImageOptions()
+  loadCopyFromKingdomSelect()
 }
