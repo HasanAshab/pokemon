@@ -9,12 +9,10 @@ initial upgrade cost + construct cost
 pwa is culpit?
 building floor + take data from estimator
 artilary cost estimator
+offline summon
 
 *ovi
 Kingdom Buildings, war better ui
-color extreme tens
-
-offline summon
 
 
 * bug

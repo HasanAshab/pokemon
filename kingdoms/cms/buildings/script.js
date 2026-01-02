@@ -261,15 +261,9 @@ function renderBuildings() {
 
     // Durability level display and controls
     const durabilityLabel = document.createElement("label");
-    durabilityLabel.textContent = "Durability Level";
+    durabilityLabel.textContent = "Durability Level: " + building.durability;
     
-    const durabilityDisplay = document.createElement("div");
-    // Set default durability if not exists
-    if (building.durability === undefined) {
-      building.durability = 1;
-    }
-    durabilityDisplay.textContent = `Level ${building.durability}`;
-    durabilityDisplay.style.fontWeight = "bold";
+    
     
     const durabilityInput = document.createElement("input");
     durabilityInput.type = "number";
@@ -277,25 +271,20 @@ function renderBuildings() {
     durabilityInput.value = building.durability;
     durabilityInput.className = "editable";
     durabilityInput.style.display = "none";
-    durabilityInput.style.width = "80px";
 
     const levelLabel = document.createElement("label");
     levelLabel.textContent = "Current Level";
 
     const levelDisplay = document.createElement("div");
     levelDisplay.textContent = `Level ${building.currentLevel}`;
+    levelDisplay.style.fontWeight = "bold";
+    levelDisplay.style.color = "darkblue";
 
     // Floor attribute display and controls
     const floorLabel = document.createElement("label");
-    floorLabel.textContent = "Floor";
+    floorLabel.textContent = "Floor: " + building.floor;
     
-    const floorDisplay = document.createElement("div");
-    // Set default floor if not exists
-    if (building.floor === undefined) {
-      building.floor = 1;
-    }
-    floorDisplay.textContent = `Floor ${building.floor}`;
-    floorDisplay.style.fontWeight = "bold";
+
     
     const floorInput = document.createElement("input");
     floorInput.type = "number";
@@ -303,14 +292,11 @@ function renderBuildings() {
     floorInput.value = building.floor;
     floorInput.className = "editable";
     floorInput.style.display = "none";
-    floorInput.style.width = "80px";
 
     const sizeLabel = document.createElement("label");
-    sizeLabel.textContent = "Current Size";
+    sizeLabel.textContent = `Current Size: ${calculateSize(building.baseSize, building.currentLevel)} sq.m`;
 
-    const sizeDisplay = document.createElement("div");
-    sizeDisplay.textContent = `${calculateSize(building.baseSize, building.currentLevel)} sq.m`;
-    
+ 
     const MaintainsLabel = document.createElement("label");
     MaintainsLabel.textContent = "Maintains";
 
@@ -560,21 +546,20 @@ function renderBuildings() {
     div.appendChild(statusLabel);
     div.appendChild(statusDisplay);
 
+    div.appendChild(levelDisplay);
+
     div.appendChild(lifespanLabel);
     div.appendChild(lifespanDisplay);
     div.appendChild(lifespanControls);
 
     div.appendChild(durabilityLabel);
-    div.appendChild(durabilityDisplay);
+    div.appendChild(durabilityInput);
 
-    div.appendChild(levelLabel);
-    div.appendChild(levelDisplay);
 
+   
     div.appendChild(floorLabel);
-    div.appendChild(floorDisplay);
-
+    div.appendChild(floorInput);
     div.appendChild(sizeLabel);
-    div.appendChild(sizeDisplay);
     div.appendChild(baseSizeInput);
 
     div.appendChild(MaintainsLabel);
@@ -583,8 +568,7 @@ function renderBuildings() {
 
     div.appendChild(quantityLabel);
     div.appendChild(quantityInput);
-    div.appendChild(durabilityInput);
-    div.appendChild(floorInput);
+    
     div.appendChild(document.createElement("br"));
     div.appendChild(basePriceInput);
    
