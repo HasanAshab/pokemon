@@ -302,7 +302,33 @@ function renderBuildings() {
     MaintainsDisplay.textContent = objToFlags(calculateMaintains(building.baseMaintains || {}, building.currentLevel));
 
     const quantityLabel = document.createElement("label");
-    quantityLabel.textContent = "Quantity: " + building.quantity || 1;
+    quantityLabel.textContent = "Quantity: " + (building.quantity || 1);
+
+    // Broken quantity display and controls
+    const brokenQuantityLabel = document.createElement("label");
+    brokenQuantityLabel.textContent = "Broken Quantity";
+    
+    const brokenQuantityDisplay = document.createElement("div");
+    // Set default brokenQuantity if not exists
+    if (building.brokenQuantity === undefined) {
+      building.brokenQuantity = 0;
+    }
+    
+    const workingQuantity = (building.quantity || 1) - building.brokenQuantity;
+    brokenQuantityDisplay.textContent = building.brokenQuantity > 0 ? 
+      `${building.brokenQuantity} broken (${workingQuantity} working)` : 
+      "All working";
+    brokenQuantityDisplay.style.fontWeight = "bold";
+    brokenQuantityDisplay.style.color = building.brokenQuantity > 0 ? "#ff4444" : "#44ff44";
+    
+    const brokenQuantityInput = document.createElement("input");
+    brokenQuantityInput.type = "number";
+    brokenQuantityInput.min = "0";
+    brokenQuantityInput.max = building.quantity || 1;
+    brokenQuantityInput.value = building.brokenQuantity;
+    brokenQuantityInput.className = "editable";
+    brokenQuantityInput.style.display = "none";
+    brokenQuantityInput.style.width = "80px";
 
     const quantityInput = document.createElement("input");
     quantityInput.type = "number";
@@ -427,6 +453,61 @@ function renderBuildings() {
       }
     };
 
+    // Repair Button (only show if there are broken buildings)
+    const repairBtn = document.createElement("button");
+    repairBtn.className = "btn warning-btn";
+    
+    if (building.brokenQuantity > 0) {
+      const repairCostPerUnit = Math.round(upgradePrice(building.basePrice, building.currentLevel - 1) / 4);
+      const totalRepairCost = repairCostPerUnit * building.brokenQuantity;
+      
+      repairBtn.textContent = building.brokenQuantity > 1 ? 
+        `Repair All (${repairCostPerUnit.toLocaleString()} X ${building.brokenQuantity} = ${totalRepairCost.toLocaleString()}$)` :
+        `Repair (${repairCostPerUnit.toLocaleString()}$)`;
+      
+      repairBtn.onclick = () => {
+        if (building.state === "disabled") {
+          alert("Cannot repair a disabled building!");
+          return;
+        }
+        
+        let quantityToRepair = building.brokenQuantity;
+        
+        // If more than 1 broken, ask how many to repair
+        if (building.brokenQuantity > 1) {
+          const input = prompt(`How many buildings do you want to repair? (1-${building.brokenQuantity})`);
+          const parsed = parseInt(input);
+          
+          if (isNaN(parsed) || parsed < 1 || parsed > building.brokenQuantity) {
+            alert("Invalid quantity!");
+            return;
+          }
+          
+          quantityToRepair = parsed;
+        }
+        
+        const finalRepairCost = repairCostPerUnit * quantityToRepair;
+        const storage = kingdoms[name].storage;
+        
+        if ((storage.coins || 0) >= finalRepairCost) {
+          if (confirm(`Repair ${quantityToRepair} building(s) for ${finalRepairCost.toLocaleString()} coins?`)) {
+            // Deduct repair cost
+            storage.coins -= finalRepairCost;
+            
+            // Reduce broken quantity
+            building.brokenQuantity -= quantityToRepair;
+            
+            saveAndRefresh();
+            alert(`Successfully repaired ${quantityToRepair} building(s)!`);
+          }
+        } else {
+          alert(`Not enough coins! Need ${finalRepairCost.toLocaleString()} but only have ${(storage.coins || 0).toLocaleString()}.`);
+        }
+      };
+    } else {
+      repairBtn.style.display = "none";
+    }
+
     // Toggle Enable/Disable Button
     const toggleStatusBtn = document.createElement("button");
     toggleStatusBtn.className = building.state === "disabled" ? "btn success-btn" : "btn warning-btn";
@@ -454,6 +535,7 @@ function renderBuildings() {
       quantityInput.style.display = "block";
       durabilityInput.style.display = "block";
       floorInput.style.display = "block";
+      brokenQuantityInput.style.display = "block";
       lifespanControls.style.display = "flex";
       
       editBtn.textContent = "Save";
@@ -485,6 +567,7 @@ function renderBuildings() {
           building.quantity = parseInt(quantityInput.value) || 1;
           building.durability = parseInt(durabilityInput.value) || 1;
           building.floor = parseInt(floorInput.value) || 1;
+          building.brokenQuantity = Math.min(parseInt(brokenQuantityInput.value) || 0, building.quantity);
 
           // Handle lifespan
           if (permanentCheckbox.checked) {
@@ -567,6 +650,10 @@ function renderBuildings() {
     div.appendChild(quantityLabel);
     div.appendChild(quantityInput);
     
+    div.appendChild(brokenQuantityLabel);
+    div.appendChild(brokenQuantityDisplay);
+    div.appendChild(brokenQuantityInput);
+    
     div.appendChild(document.createElement("br"));
     div.appendChild(basePriceInput);
    
@@ -575,6 +662,7 @@ function renderBuildings() {
     div.appendChild(consumesLabel);
     div.appendChild(consumesContainer);
     div.appendChild(upgradeBtn);
+    div.appendChild(repairBtn);
     div.appendChild(itemActions);
 
     buildingsContainer.appendChild(div);
@@ -590,7 +678,7 @@ addBuildingBtn.onclick = () => {
   
   if (hasEstimation) {
     // Use values from cost estimator inputs
-    const size = parseInt(document.getElementById('sizeInput').value) || 50;
+    const size = parseInt(document.getElementById('sizeInput').value) || 0;
     const floor = parseInt(document.getElementById('floorInput').value) || 1;
     const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
     const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
@@ -608,6 +696,7 @@ addBuildingBtn.onclick = () => {
       quantity: quantity,
       durability: durability,
       floor: floor,
+      brokenQuantity: 0,
       produces: {},
       consumes: {},
       state: "enabled"
@@ -623,6 +712,7 @@ addBuildingBtn.onclick = () => {
       quantity: 1,
       durability: 1,
       floor: 1,
+      brokenQuantity: 0,
       produces: {},
       consumes: {},
       state: "enabled"

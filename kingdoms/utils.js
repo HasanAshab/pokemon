@@ -12,7 +12,6 @@ export function calculateBirthCount(kingdom) {
   const population = getPopulation(kingdom)
   const annualBirths = population * (kingdom.birthRate ?? 0.02);
   return Math.round(annualBirths)
-  return Math.floor(annualBirths / 12);
 }
 
 export function getPopulationGrowth(kingdom){

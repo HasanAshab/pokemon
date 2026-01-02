@@ -1,5 +1,5 @@
 * Tasks
-artilary on report + break artilary (quantity)
+artilary on report + break artilary
 send spy + refactor espionage
 better numbering might vs def score
 
