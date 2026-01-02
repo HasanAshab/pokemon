@@ -263,8 +263,6 @@ function renderBuildings() {
     const durabilityLabel = document.createElement("label");
     durabilityLabel.textContent = "Durability Level: " + building.durability;
     
-    
-    
     const durabilityInput = document.createElement("input");
     durabilityInput.type = "number";
     durabilityInput.min = "1";

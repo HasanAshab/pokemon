@@ -1,14 +1,14 @@
 * Tasks
 artilary on report + break artilary (quantity)
-better numbering might vs def score
 send spy + refactor espionage
+better numbering might vs def score
+
 auto generate military
 military + police no level
-new compare 
-initial upgrade cost + construct cost
-pwa is culpit?
-building floor + take data from estimator
 artilary cost estimator
+
+bfcache prob
+new compare 
 offline summon
 
 *ovi
