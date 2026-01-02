@@ -571,6 +571,8 @@ export function prepareSoldiers(
     const { image, quantity: total } = kingdom.barrack.soldiers[shift].find(
       (s) => s.image.id === soldier.image,
     );
+    console.log(image.items, soldier.items);
+    
     image.items = soldier.items;
 
     const tensionMod = direction 

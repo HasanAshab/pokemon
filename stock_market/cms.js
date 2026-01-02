@@ -287,7 +287,8 @@ function sellStock() {
 
 // Go back to main market
 function goBack() {
-    window.location.href = 'index.html';
+    // window.location.href = 'index.html';
+    window.history.back();
 }
 
 // Initialize the CMS

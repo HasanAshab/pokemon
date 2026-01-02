@@ -1,4 +1,5 @@
 * Tasks
+ammo bug at war (no items)
 artilary on report
 better numbering might vs def score
 send spy

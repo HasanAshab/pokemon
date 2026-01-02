@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ } from "../../utils.js";
+import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence } from "../../utils.js";
 
 globalThis.wars = []
 var i = 0;
@@ -260,6 +260,8 @@ function getActualDefenders() {
 function generateDefendersReport(expLvl = 0) {
   const defKingdom = kingdoms[defenderSelect.value];
   const actualDefenders = getActualDefenders();
+  const artillaries = getArtilleriesAtDefence(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
+
   const reportLines = [];
   const totalUnits = actualDefenders.reduce((total, wave) => total += wave.soldiers.count(), 0)
 
@@ -272,6 +274,7 @@ function generateDefendersReport(expLvl = 0) {
     reportLines.push("");
     reportLines.push(`Wave ${(index + 1)}:`);
     expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${getEffectiveDefensiveIQ(defenders.commander.iq.defensive, getCommandedArea(defKingdom, defenders.commander.name))})`);
+    reportLines.push(`Units: ${defenders.soldiers.count()}`);
     expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
 
       const items = image.items.names().join(", ");
@@ -280,7 +283,6 @@ function generateDefendersReport(expLvl = 0) {
       const moreData = `${level} ${items && (" with " + items)}`
       reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
     })
-    reportLines.push(`Units: ${defenders.soldiers.count()}`);
   });
   return reportLines.join("<br>");
 }
@@ -305,7 +307,6 @@ globalThis.showDefenderData = () => {
 globalThis.addDataRow = (containerId) => {
   const container = document.querySelector(`.container.data-box#${containerId}`);
   const dataRowsWrapper = container.querySelector(".data-rows-wrapper");
-  const rowIndex = dataRowsWrapper.children.length;
   const dataRow = document.createElement("div");
   dataRow.className = "data-row";
   dataRow.innerHTML = `
@@ -382,7 +383,7 @@ startWarBtn.onclick = () => {
     const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
     commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
     dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
-
+    
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
 
