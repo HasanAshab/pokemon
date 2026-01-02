@@ -372,6 +372,7 @@ startWarBtn.onclick = () => {
   defenderOpts.cpModifiers.push(
     getSoldierImbalancePenalty(defKingdom, shiftSelect.value),
   )
+
   const handleWave = (wave, index) => {
     resultDiv.innerHTML += `<h3>Wave ${index + 1}</h3>`
     const dwave = defenceWaves[index];
@@ -381,7 +382,6 @@ startWarBtn.onclick = () => {
     const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
     commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
     dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
-    console.log(commander.iq.offensive, dwave.commander.iq.defensive);
 
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);

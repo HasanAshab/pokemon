@@ -225,11 +225,27 @@ export const sumMap = (map1, map2) => {
   return result;
 };
 
-export const calculateBuildDefenceScore = (kingdom, areaPercentage, direction) => {
-  const defScore = getStorage(kingdom).defence
-  const buildDefence = (defScore || 0) * (areaPercentage / 100);
-  const tensMod = getMilitaryTensionMod(kingdom, direction);
-  return Math.min(defScore, buildDefence * tensMod);
+export function getArtilleries(kingdom) {  
+  return kingdom.buildings.filter((build) => calcBuildMaintains(build).defence > 0);
+}
+
+export function getArtilleriesAtDefence(kingdom, areaPercentage, direction) {
+  const tensionMod = getMilitaryTensionMod(kingdom, direction);
+  const artillaries = getArtilleries(kingdom);
+  return artillaries.reduce((acc, build) => {
+    const quantity = Math.min(build.quantity, Math.round(build.quantity * (areaPercentage / 100) * tensionMod))
+    quantity > 0 && acc.push({
+      name: build.name,
+      defence: calcBuildMaintains(build).defence,
+      quantity,
+    })
+    return acc
+  }, [])
+}
+
+export function calculateBuildDefenceScore(kingdom, areaPercentage, direction) {
+  const artillaries = getArtilleriesAtDefence(kingdom, areaPercentage, direction);
+  return artillaries.reduce((acc, build) => acc + build.defence * build.quantity, 0);
 }
 
 
@@ -370,11 +386,15 @@ export function calcBuildNetProd(kingdom) {
   return sumObj(prod, cons);
 }
 
+export function calcBuildMaintains(build) {
+  return build.baseMaintains
+    ? calculateMaintains(build.baseMaintains, build.currentLevel)
+    : {};
+}
+
 export function getMaintainedStorage(kingdom) {
   return getEnabledBuildings(kingdom).reduce((acc, build) => {
-    const maintains = build.baseMaintains
-      ? calculateMaintains(build.baseMaintains, build.currentLevel)
-      : {};
+    const maintains = calcBuildMaintains(build);
     return sumObj(acc, modObj(maintains, build.quantity));
   }, {});  
 }
