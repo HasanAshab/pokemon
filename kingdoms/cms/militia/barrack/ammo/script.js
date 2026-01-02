@@ -330,6 +330,39 @@ globalThis.bulkRemoveItem = function() {
   }
 }
 
+globalThis.copyFromAnotherKingdom = function() {
+  let abort = null
+  Object.keys(kingdom.barrack.soldiers).forEach(shift => {
+    if (abort !== null) return
+    const soldiers = kingdom.barrack.soldiers[shift]
+    soldiers.forEach(soldier => {
+      if (soldier.image?.items?.length > 0) {
+        if (!confirm('It will overwrite existing items. Are you sure?')) {
+          abort = true
+        }
+        else {
+          abort = false
+        }
+      }
+    })
+  })
+
+  if (abort === true) return
+  const selectedKingdom = kingdoms[document.getElementById("copy-from-kingdom-select").value]
+  if (selectedKingdom) {
+    Object.entries(kingdom.barrack.soldiers).forEach(([shift, soldiers]) => {
+      soldiers.forEach(soldier => {
+        const relatedSoldier = selectedKingdom.barrack.soldiers[shift].find(s => s.image.id === soldier.image.id)        
+        soldier.image.items = relatedSoldier.image.items
+      })
+    })
+    saveKingdoms(kingdoms)
+    loadSoldierShiftsContainer()
+    setItemsTable(kingdom.barrack.ammoPriceChange)
+    alert('Copied successfully')
+  }
+}
+
 function loadCopyFromKingdomSelect() { 
   const copyFromKingdomSelect = document.getElementById("copy-from-kingdom-select")
   

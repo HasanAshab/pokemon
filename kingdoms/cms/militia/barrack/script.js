@@ -302,16 +302,6 @@ function renderForceSection(type,forceType) {
       save();
     };
 
-    const levelInput = document.createElement("input");
-    levelInput.type = "number";
-    levelInput.value = force.image.xp / 100 + 1;
-    levelInput.onblur = () => {
-      const newLevel = parseInt(levelInput.value) || 1;
-      force.image.xp = (newLevel - 1) * 100;
-      save();
-      renderAllForces(forceType);
-    };
-
     const quantityInput = document.createElement("input");
     quantityInput.type = "number";
     quantityInput.value = force.quantity;
@@ -380,7 +370,6 @@ function renderForceSection(type,forceType) {
     };
 
     div.appendChild(imageSelect);
-    div.appendChild(createField("Level:", levelInput,forceType));
     div.appendChild(createField("Quantity:", quantityInput,forceType));
     div.appendChild(createField("Salary %:", ivSalaryPercentInput,forceType));
     div.appendChild(totalSalaryEl);
