@@ -285,6 +285,26 @@ function renderBuildings() {
     const levelDisplay = document.createElement("div");
     levelDisplay.textContent = `Level ${building.currentLevel}`;
 
+    // Floor attribute display and controls
+    const floorLabel = document.createElement("label");
+    floorLabel.textContent = "Floor";
+    
+    const floorDisplay = document.createElement("div");
+    // Set default floor if not exists
+    if (building.floor === undefined) {
+      building.floor = 1;
+    }
+    floorDisplay.textContent = `Floor ${building.floor}`;
+    floorDisplay.style.fontWeight = "bold";
+    
+    const floorInput = document.createElement("input");
+    floorInput.type = "number";
+    floorInput.min = "1";
+    floorInput.value = building.floor;
+    floorInput.className = "editable";
+    floorInput.style.display = "none";
+    floorInput.style.width = "80px";
+
     const sizeLabel = document.createElement("label");
     sizeLabel.textContent = "Current Size";
 
@@ -449,6 +469,7 @@ function renderBuildings() {
       baseMaintainsInput.style.display = "block";
       quantityInput.style.display = "block";
       durabilityInput.style.display = "block";
+      floorInput.style.display = "block";
       lifespanControls.style.display = "flex";
       
       editBtn.textContent = "Save";
@@ -479,6 +500,7 @@ function renderBuildings() {
           building.baseMaintains = flagsToObj(baseMaintainsInput.value);
           building.quantity = parseInt(quantityInput.value) || 1;
           building.durability = parseInt(durabilityInput.value) || 1;
+          building.floor = parseInt(floorInput.value) || 1;
 
           // Handle lifespan
           if (permanentCheckbox.checked) {
@@ -548,6 +570,9 @@ function renderBuildings() {
     div.appendChild(levelLabel);
     div.appendChild(levelDisplay);
 
+    div.appendChild(floorLabel);
+    div.appendChild(floorDisplay);
+
     div.appendChild(sizeLabel);
     div.appendChild(sizeDisplay);
     div.appendChild(baseSizeInput);
@@ -559,6 +584,7 @@ function renderBuildings() {
     div.appendChild(quantityLabel);
     div.appendChild(quantityInput);
     div.appendChild(durabilityInput);
+    div.appendChild(floorInput);
     div.appendChild(document.createElement("br"));
     div.appendChild(basePriceInput);
    
@@ -574,18 +600,49 @@ function renderBuildings() {
 }
 
 addBuildingBtn.onclick = () => {
-  const newBuilding = {
-    name: "New Building",
-    basePrice: 0,
-    baseSize: 0,
-    baseMaintains: { defence: 0, station: 0, doctor: 0, revive: 0, researcher: 0 },
-    currentLevel: 1,
-    quantity: 1,
-    durability: 1,
-    produces: {},
-    consumes: {},
-    state: "enabled" // Default to enabled
-  };
+  // Check if cost estimator has been used
+  const hasEstimation = window.currentConstructionCost && 
+                       document.getElementById('costResults').style.display !== 'none';
+  
+  let newBuilding;
+  
+  if (hasEstimation) {
+    // Use values from cost estimator inputs
+    const size = parseInt(document.getElementById('sizeInput').value) || 50;
+    const floor = parseInt(document.getElementById('floorInput').value) || 1;
+    const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
+    const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
+    
+    newBuilding = {
+      name: "New Building",
+      basePrice: 100,
+      baseSize: size,
+      baseMaintains: { defence: 0, station: 0, doctor: 0, revive: 0, researcher: 0 },
+      currentLevel: 1,
+      quantity: quantity,
+      durability: durability,
+      floor: floor,
+      produces: {},
+      consumes: {},
+      state: "enabled"
+    };
+  } else {
+    // Use default values
+    newBuilding = {
+      name: "New Building",
+      basePrice: 100,
+      baseSize: 50,
+      baseMaintains: { defence: 0, station: 0, doctor: 0, revive: 0, researcher: 0 },
+      currentLevel: 1,
+      quantity: 1,
+      durability: 1,
+      floor: 1,
+      produces: {},
+      consumes: {},
+      state: "enabled"
+    };
+  }
+  
   kingdoms[name].buildings.push(newBuilding);
   saveAndRefresh();
   

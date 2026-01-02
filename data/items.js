@@ -85,7 +85,7 @@ export default {
     }
   },
 
-  chainarmor1: {
+  bronzearmor1: {
     type: "armor",
     covers: 20,
     stats: {
@@ -96,7 +96,7 @@ export default {
     }
   },
 
-  chainarmor2: {
+  bronzearmor2: {
     type: "armor",
     covers: 40,
     stats: {
@@ -107,7 +107,7 @@ export default {
     }
   },
 
-  chainarmor3: {
+  bronzearmor3: {
     type: "armor",
     covers: 80,
     stats: {
