@@ -231,12 +231,12 @@ class War {
       return wounded
 
     if (this.result.win) {
-      const per = Math.max((this.result.scores.def * 100) / this.result.scores.atk, 0);      
-      wounded.atk = this.attackers.soldiers.resize(per);
+      this.result._woundedPer = Math.max((this.result.scores.def * 100) / this.result.scores.atk, 0);      
+      wounded.atk = this.attackers.soldiers.resize(this.result._woundedPer);
       wounded.def = this.defenders.soldiers;
     } else {
-      const per = Math.max((this.result.scores.atk * 100) / this.result.scores.def, 0);
-      wounded.def = this.defenders.soldiers.resize(per);
+      this.result._woundedPer = Math.max((this.result.scores.atk * 100) / this.result.scores.def, 0);
+      wounded.def = this.defenders.soldiers.resize(this.result._woundedPer);
       wounded.atk = this.attackers.soldiers;
     }
     return wounded

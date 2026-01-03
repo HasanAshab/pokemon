@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence } from "../../utils.js";
+import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getArtilleriesBroken } from "../../utils.js";
 
 globalThis.wars = []
 var i = 0;
@@ -170,17 +170,17 @@ function renderWaves() {
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
 
-      const itemsInput = document.createElement("input");
-      itemsInput.type = "text";
-      itemsInput.className = "items-inp";
-      itemsInput.placeholder = "Items (comma-separated)";
-      itemsInput.value = soldier.items?.join(",") || "";
+      // const itemsInput = document.createElement("input");
+      // itemsInput.type = "text";
+      // itemsInput.className = "items-inp";
+      // itemsInput.placeholder = "Items (comma-separated)";
+      // itemsInput.value = soldier.items?.join(",") || "";
 
-      const abilitiesInput = document.createElement("input");
-      abilitiesInput.type = "text";
-      abilitiesInput.className = "abilities-inp";
-      abilitiesInput.placeholder = "Abilities (comma-separated)";
-      abilitiesInput.value = soldier.abilities?.join(",") || "";
+      // const abilitiesInput = document.createElement("input");
+      // abilitiesInput.type = "text";
+      // abilitiesInput.className = "abilities-inp";
+      // abilitiesInput.placeholder = "Abilities (comma-separated)";
+      // abilitiesInput.value = soldier.abilities?.join(",") || "";
 
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-soldier-btn";
@@ -192,10 +192,10 @@ function renderWaves() {
       soldierDiv.appendChild(percentageInput);
       soldierDiv.appendChild(percentageLabel);
       soldierDiv.appendChild(document.createElement("br"));
-      soldierDiv.appendChild(itemsInput);
-      soldierDiv.appendChild(document.createElement("br"));
-      soldierDiv.appendChild(abilitiesInput);
-      soldierDiv.appendChild(document.createElement("br"));
+      // soldierDiv.appendChild(itemsInput);
+      // soldierDiv.appendChild(document.createElement("br"));
+      // soldierDiv.appendChild(abilitiesInput);
+      // soldierDiv.appendChild(document.createElement("br"));
       soldierDiv.appendChild(removeBtn);
 
       return soldierDiv;
@@ -218,20 +218,24 @@ function renderWaves() {
       const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
       soldierEntries.forEach((entry) => {
         const image = entry.querySelector("span").textContent;
-        const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;
-        const items = entry
-          .querySelector('input.items-inp')
-          .value.split(",")
-          .map((item) => item.trim())
-          .filter((item) => item);
-        const abilities = entry
-          .querySelector('input.abilities-inp')
-          .value.split(",")
-          .map((ability) => ability.trim())
-          .filter((ability) => ability);
+        const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;        
+        const items = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(s => s.image.id === image).image.items || []
+        // const items = entry
+        //   .querySelector('input.items-inp')
+        //   .value.split(",")
+        //   .map((item) => item.trim())
+        //   .filter((item) => item);
+        const abilities = []
+        // const abilities = entry
+        //   .querySelector('input.abilities-inp')
+        //   .value.split(",")
+        //   .map((ability) => ability.trim())
+        //   .filter((ability) => ability);
 
         newWave.soldiers.push({ image, percentage, items, abilities });
       });
+      console.log(newWave);
+      
 
       attackWaves[index] = newWave;
       renderWaves();
@@ -392,6 +396,9 @@ startWarBtn.onclick = () => {
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
 
+    const defArtilleries = getArtilleriesAtDefence(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
+    const defArtilleriesBroken = getArtilleriesBroken;
+
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {
       setTimeout(() => {
@@ -401,8 +408,8 @@ startWarBtn.onclick = () => {
           ${war.result.raisedWhiteFlag ? "Defender raised White Flag!<br>" : ""}
           Scores: <br>
           Attacker: ${Math.round(war.result.scores.atk).toLocaleString()}<br>
-          Defender: ${Math.round(war.result.scores.def).toLocaleString()}<br>
-          Defence Build: ${Math.round(buildDefenceScore).toLocaleString()}<br>
+          Defender: ${Math.round(war.result.scores.def - buildDefenceScore).toLocaleString()}<br>
+          Defence Artillery: ${Math.round(buildDefenceScore).toLocaleString()}<br>
           Diff (ATK view): ${Math.round(war.scoreDiff()).toLocaleString()} (${parseInt(war.scoreDiffPercent())}%) <br>
           Wounded Units: <br>
           Attacker:<br>
