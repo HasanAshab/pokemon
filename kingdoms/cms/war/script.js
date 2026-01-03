@@ -259,35 +259,152 @@ function getActualDefenders() {
   return prepareDefenceWaves(kingdoms[defenderSelect.value], parseInt(areaPercentageInput.value), shiftSelect.value, directionSelect.value);
 }
 
-function generateDefendersReport(expLvl = 0) {
-  const defKingdom = kingdoms[defenderSelect.value];
-  const actualDefenders = getActualDefenders();
-  const artillaries = getArtilleriesAtDefence(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
+function getCommonUnitItems(soldiers) {
+  const allItems = [];
 
-  const reportLines = [];
-  const totalUnits = actualDefenders.reduce((total, wave) => total += wave.soldiers.count(), 0)
-
-  reportLines.push("Total");
-  reportLines.push("Waves: " + actualDefenders.length);
-  expLvl && reportLines.push("Units: " + totalUnits);
-  expLvl > 4 && reportLines.push(`Imbalance: ${getForceImbalanceRate(defKingdom, 'soldiers', shiftSelect.value).toFixed(2)}%`);
-
-  expLvl > 1 && actualDefenders.forEach((defenders, index) => {
-    reportLines.push("");
-    reportLines.push(`Wave ${(index + 1)}:`);
-    expLvl > 4 && reportLines.push(`Commander: ${defenders.commander.name} (IQ ${getEffectiveDefensiveIQ(defenders.commander.iq.defensive, getCommandedArea(defKingdom, defenders.commander.name))})`);
-    reportLines.push(`Units: ${defenders.soldiers.count()}`);
-    expLvl > 2 && defenders.soldiers.forEach((quantity, image) => {
-
-      const items = image.items.names().join(", ");
-
-      const level = `(lvl ${image.level})`;
-      const moreData = `${level} ${items && (" with " + items)}`
-      reportLines.push(`${quantity} ${image.id}'s ${expLvl > 3 ? moreData : ""}`);
-    })
+  soldiers.forEach((_, unit) => {
+    allItems.push(new Set(unit.items.names()));
   });
-  return reportLines.join("<br>");
+
+  if (!allItems.length) return [];
+
+  return [...allItems[0]].filter(item =>
+    allItems.every(set => set.has(item))
+  );
 }
+
+
+function generateDefendersReport(expLvl = 0) {
+  if (expLvl <= 0) return "";
+
+  const defKingdom = kingdoms[defenderSelect.value];
+  const defenders = getActualDefenders();
+  defenders.length = 1; // single-wave workaround
+
+  const artilleries = getArtilleriesAtDefence(
+    defKingdom,
+    parseInt(areaPercentageInput.value),
+    directionSelect.value
+  );
+
+  const totalUnits = defenders.reduce(
+    (sum, wave) => sum + wave.soldiers.count(),
+    0
+  );
+
+  let html = `<section class="esp-report">`;
+
+  // ───────────────────────────
+  // SUMMARY
+  // ───────────────────────────
+  html += `
+    <section>
+      <div>Total Units: <strong>${totalUnits}</strong></div>
+  `;
+
+  if (expLvl >= 5) {
+    html += `
+      <div>
+        Imbalance: 
+        <strong>
+          ${getForceImbalanceRate(
+            defKingdom,
+            "soldiers",
+            shiftSelect.value
+          ).toFixed(2)}%
+        </strong>
+      </div>
+    `;
+  }
+
+  html += `</section>`;
+
+  // ───────────────────────────
+  // WAVE DETAILS
+  // ───────────────────────────
+  if (expLvl >= 2) {
+    defenders.forEach(wave => {
+      const iq = getEffectiveDefensiveIQ(
+        wave.commander.iq.defensive,
+        getCommandedArea(defKingdom, wave.commander.name)
+      );
+
+      html += `
+        <section>
+        <div>
+            Commander: <i>${wave.commander.name}</i> · <strong>${iq}</strong> IQ
+          </div>
+          <br>
+      `;
+
+      let commonItems = [];
+      if (expLvl >= 4) {
+        commonItems = getCommonUnitItems(wave.soldiers);
+        if (commonItems.length) {
+          html += `
+            <div>
+              Common Gear:
+              <strong>${commonItems.join(", ")}</strong>
+            </div>
+          `;
+        }
+      }
+
+      if (expLvl >= 3) {
+        html += `<ul>`;
+        wave.soldiers.forEach((quantity, unit) => {
+          let extra = "";
+
+          if (expLvl >= 4) {
+            const uniqueItems = unit.items
+              .names()
+              .filter(i => !commonItems.includes(i));
+
+            if (uniqueItems.length) {
+              extra = ` · <pre>${uniqueItems.join(",  ")} </pre>`;
+            }
+          }
+
+          html += `
+            <li>
+              <strong>${quantity}</strong> × ${unit.id}${extra}
+            </li>
+          `;
+        });
+        html += `</ul>`;
+      }
+
+      html += `</section>`;
+    });
+  }
+
+  // ───────────────────────────
+  // ARTILLERY
+  // ───────────────────────────
+  if (expLvl >= 6 && artilleries.length) {
+    html += `
+      <section>
+        <h4>Artillery</h4>
+        <ul>
+    `;
+    artilleries.forEach(art => {
+      html += `
+        <li>
+          <strong>${art.quantity}</strong> × ${art.name}
+          · ${art.defence} P
+        </li>
+      `;
+    });
+    html += `
+        </ul>
+      </section>
+    `;
+  }
+
+  html += `</section>`;
+  return html;
+}
+
 
 function getDataBoxData(containerId) {
   const container = document.querySelector(`.container.data-box#${containerId}`);

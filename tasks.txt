@@ -2,8 +2,9 @@
 gen data
 break artilary
 send spy + refactor espionage
-better numbering might vs def score
 
+
+better numbering might vs def score
 auto generate military
 artilary cost estimator
 
