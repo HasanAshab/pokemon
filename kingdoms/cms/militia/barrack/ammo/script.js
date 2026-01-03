@@ -199,6 +199,10 @@ function loadSoldierImageOptions() {
   addSelect.innerHTML = '<option value="">Select Soldier Image</option>'
   removeSelect.innerHTML = '<option value="">Select Soldier Image</option>'
   
+  // Add the "all images" option
+  addSelect.innerHTML += '<option value="*">* (All Images)</option>'
+  removeSelect.innerHTML += '<option value="*">* (All Images)</option>'
+  
   soldierImages.forEach(imageId => {
     addSelect.innerHTML += `<option value="${imageId}">${imageId}</option>`
     removeSelect.innerHTML += `<option value="${imageId}">${imageId}</option>`
@@ -217,6 +221,21 @@ function getItemsForImageId(imageId) {
   Object.values(kingdom.barrack.soldiers).forEach(shiftSoldiers => {
     shiftSoldiers.forEach(soldier => {
       if (soldier.image.id === imageId && soldier.image.items) {
+        soldier.image.items.forEach(item => items.add(item))
+      }
+    })
+  })
+  
+  return Array.from(items)
+}
+
+// Get all items from all soldiers (for * selection)
+function getAllItemsFromAllSoldiers() {
+  const items = new Set()
+  
+  Object.values(kingdom.barrack.soldiers).forEach(shiftSoldiers => {
+    shiftSoldiers.forEach(soldier => {
+      if (soldier.image.items) {
         soldier.image.items.forEach(item => items.add(item))
       }
     })
@@ -246,7 +265,15 @@ globalThis.updateBulkRemoveDatalist = function() {
     return
   }
   
-  const imageItems = getItemsForImageId(selectedImageId)
+  let imageItems
+  if (selectedImageId === "*") {
+    // Get all items from all soldiers
+    imageItems = getAllItemsFromAllSoldiers()
+  } else {
+    // Get items from specific image ID
+    imageItems = getItemsForImageId(selectedImageId)
+  }
+  
   datalist.innerHTML = ""
   imageItems.forEach(item => {
     datalist.innerHTML += `<option value="${item}">`
@@ -264,10 +291,13 @@ globalThis.bulkAddItem = function() {
   
   let addedCount = 0
   
-  // Add item to all soldiers with matching image ID across all shifts
+  // Add item to soldiers based on selection
   Object.keys(kingdom.barrack.soldiers).forEach(shift => {
     kingdom.barrack.soldiers[shift].forEach(soldier => {
-      if (soldier.image.id === selectedImageId) {
+      // Check if we should add to this soldier (either specific image or all images with *)
+      const shouldAdd = selectedImageId === "*" || soldier.image.id === selectedImageId
+      
+      if (shouldAdd) {
         if (!soldier.image.items) {
           soldier.image.items = []
         }
@@ -284,12 +314,14 @@ globalThis.bulkAddItem = function() {
     saveKingdoms(kingdoms)
     loadSoldierShiftsContainer()
     setItemsTable(kingdom.barrack.ammoPriceChange)
-    alert(`Added "${itemToAdd}" to ${addedCount} soldiers with image "${selectedImageId}"`)
+    const targetDescription = selectedImageId === "*" ? "all soldiers" : `soldiers with image "${selectedImageId}"`
+    alert(`Added "${itemToAdd}" to ${addedCount} ${targetDescription}`)
     document.getElementById("bulk-add-item").value = ""
     // Update remove datalist in case the same image is selected there
     updateBulkRemoveDatalist()
   } else {
-    alert(`No soldiers found with image "${selectedImageId}" or item already exists`)
+    const targetDescription = selectedImageId === "*" ? "soldiers" : `soldiers with image "${selectedImageId}"`
+    alert(`No ${targetDescription} found or item already exists`)
   }
 }
 
@@ -304,10 +336,13 @@ globalThis.bulkRemoveItem = function() {
   
   let removedCount = 0
   
-  // Remove item from all soldiers with matching image ID across all shifts
+  // Remove item from soldiers based on selection
   Object.keys(kingdom.barrack.soldiers).forEach(shift => {
     kingdom.barrack.soldiers[shift].forEach(soldier => {
-      if (soldier.image.id === selectedImageId && soldier.image.items) {
+      // Check if we should remove from this soldier (either specific image or all images with *)
+      const shouldRemove = selectedImageId === "*" || soldier.image.id === selectedImageId
+      
+      if (shouldRemove && soldier.image.items) {
         const itemIndex = soldier.image.items.indexOf(itemToRemove)
         if (itemIndex > -1) {
           soldier.image.items.splice(itemIndex, 1)
@@ -321,12 +356,14 @@ globalThis.bulkRemoveItem = function() {
     saveKingdoms(kingdoms)
     loadSoldierShiftsContainer()
     setItemsTable(kingdom.barrack.ammoPriceChange)
-    alert(`Removed "${itemToRemove}" from ${removedCount} soldiers with image "${selectedImageId}"`)
+    const targetDescription = selectedImageId === "*" ? "all soldiers" : `soldiers with image "${selectedImageId}"`
+    alert(`Removed "${itemToRemove}" from ${removedCount} ${targetDescription}`)
     document.getElementById("bulk-remove-item").value = ""
     // Update the datalist to reflect the removal
     updateBulkRemoveDatalist()
   } else {
-    alert(`No soldiers found with image "${selectedImageId}" or item doesn't exist`)
+    const targetDescription = selectedImageId === "*" ? "soldiers" : `soldiers with image "${selectedImageId}"`
+    alert(`No ${targetDescription} found or item doesn't exist`)
   }
 }
 

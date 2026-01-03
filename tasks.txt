@@ -1,5 +1,4 @@
 * Tasks
-bulk image add all ( ammo )
 break artilary
 send spy
 
