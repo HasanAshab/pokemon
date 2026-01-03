@@ -4,7 +4,6 @@ send spy + refactor espionage
 better numbering might vs def score
 
 auto generate military
-military + police no level
 artilary cost estimator
 
 bfcache prob

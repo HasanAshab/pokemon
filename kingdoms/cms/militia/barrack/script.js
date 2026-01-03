@@ -100,7 +100,7 @@ renderAllForces(tabName);
 if (tabName === "police"){
 document.getElementById("addDayPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.day.push({
-    image: { id: "student", xp: 0 },
+    image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
     ivSalaryPercent: 80, // Default 80% of PCI for police
   });
@@ -110,7 +110,7 @@ document.getElementById("addDayPoliceBtn").onclick = () => {
 
 document.getElementById("addNightPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.night.push({
-    image: { id: "student", xp: 0 },
+    image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
     ivSalaryPercent: 85, // Default 85% of PCI for night police (higher pay)
   });
@@ -299,6 +299,7 @@ function renderForceSection(type,forceType) {
     imageSelect.value = force.image.id;
     imageSelect.onblur = () => {
       force.image.id = imageSelect.value;
+      force.image.xp = getInitialXp(force.image.id);
       save();
     };
 
@@ -449,10 +450,19 @@ function renderAllForces(forceType) {
   const totalMightEl = document.getElementById("forcesMight");
   totalMightEl.textContent = totalMight.toLocaleString();
 }
+
+function getInitialXp(imageId) {
+  const image = pokemons[imageId]
+  let lvl = 1
+  if (image.type === "human")
+    lvl = (image.num - 1) * 10  
+  return Math.max(1, lvl)
+  
+}
 // soldiers
 document.getElementById("addDaySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.day.push({
-    image: { id: "student", xp: 0 },
+    image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
     ivSalaryPercent: 70, // Default 70% of PCI for day soldiers
   });
@@ -462,7 +472,7 @@ document.getElementById("addDaySoldierBtn").onclick = () => {
 
 document.getElementById("addNightSoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.night.push({
-    image: { id: "student", xp: 0 },
+    image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
     ivSalaryPercent: 75, // Default 75% of PCI for night soldiers (higher pay)
   });
@@ -472,7 +482,7 @@ document.getElementById("addNightSoldierBtn").onclick = () => {
 
 document.getElementById("addEmergencySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.emergency.push({
-    image: { id: "student", xp: 0 },
+    image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
     ivSalaryPercent: 90, // Default 90% of PCI for emergency soldiers (highest pay)
   });

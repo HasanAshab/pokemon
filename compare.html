@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Object Comparator</title>
+  <title>Pokémon Comparator</title>
   <style>
     * {
       box-sizing: border-box;
@@ -28,115 +27,413 @@
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    textarea {
+    .comparison-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .pokemon-card {
+      text-align: center;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f8f9fa;
+    }
+    .pokemon-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .pokemon-types {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .type-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .comparison-table {
       width: 100%;
-      height: 200px;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .comparison-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+    .stat-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stat-bar-fill {
+      height: 8px;
+      border-radius: 4px;
+      background: #e5e7eb;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    .stat-bar-value {
+      height: 100%;
+      border-radius: 4px;
+    }
+    .positive { color: #ffffff; background-color: #10b981; }
+    .negative { color: #ffffff; background-color: #ef4444; }
+    .neutral { color: #6b7280; }
+    .difference {
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .section-header {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 1.5rem 0 0.5rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    input {
+      width: 100%;
       padding: 0.5rem;
-      font-family: monospace;
       border: 1px solid #ccc;
       border-radius: 5px;
-      resize: vertical;
+      font-size: 1rem;
     }
     button {
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border: none;
       border-radius: 5px;
       background: #2563eb;
       color: white;
       font-weight: bold;
       cursor: pointer;
+      font-size: 1rem;
     }
-    .results {
-      white-space: pre-wrap;
-      font-family: monospace;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 1rem;
-    }
-    .green { color: green; }
-    .red { color: red; }
-    .gray { color: gray; }
-    .collapsible {
-      margin-left: 1rem;
-      padding-left: 1rem;
-      border-left: 2px dashed #ddd;
+    button:hover {
+      background: #1d4ed8;
     }
     @media (min-width: 600px) {
       .object-inputs {
         display: flex;
         gap: 1rem;
       }
+      .pokemon-cards {
+        display: flex;
+        gap: 2rem;
+      }
+      .pokemon-card {
+        flex: 1;
+      }
     }
+
+    /* Type colors */
+    .type-Normal { background: #A8A878; }
+    .type-Fire { background: #F08030; }
+    .type-Water { background: #6890F0; }
+    .type-Electric { background: #F8D030; }
+    .type-Grass { background: #78C850; }
+    .type-Ice { background: #98D8D8; }
+    .type-Fighting { background: #C03028; }
+    .type-Poison { background: #A040A0; }
+    .type-Ground { background: #E0C068; }
+    .type-Flying { background: #A890F0; }
+    .type-Psychic { background: #F85888; }
+    .type-Bug { background: #A8B820; }
+    .type-Rock { background: #B8A038; }
+    .type-Ghost { background: #705898; }
+    .type-Dragon { background: #7038F8; }
+    .type-Dark { background: #705848; }
+    .type-Steel { background: #B8B8D0; }
+    .type-Fairy { background: #EE99AC; }
   </style>
 </head>
 <body>
-  <datalist id="pokemon-data-list"></datalist>
   <div class="container">
+    <div class="panel">
+      <h1>Pokémon Comparator</h1>
+      <p>Compare stats and attributes between two Pokémon</p>
+    </div>
+
     <div class="object-inputs">
       <div class="panel">
-        <h3>Object Foo</h3>
-        <input id="fooInput" list="pokemon-data-list">
+        <h3>First Pokémon</h3>
+        <label for="fooInput">ID: </label>
+        <input id="fooInput" list="pokemon-data-list" placeholder="Enter Pokémon name...">
+        <label for="fooLevel">Level: </label>
+        <input id="fooLevel" type="number" value="1" placeholder="Level">
       </div>
       <div class="panel">
-        <h3>Object Bar</h3>
-        <input id="barInput" list="pokemon-data-list">
+        <h3>Second Pokémon</h3>
+        <label for="barInput">ID: </label>
+        <input id="barInput" list="pokemon-data-list" placeholder="Enter Pokémon name...">
+        <label for="barLevel">Level: </label>
+        <input id="barLevel" type="number" value="1" placeholder="Level">
       </div>
     </div>
-    <button onclick="compareObjects()">Compare</button>
-    <h2>Bar - Foo</h2>
-    <div class="results" id="result"></div>
-  </div>
-  <script type="module">
-    import pokemons from "./data/pokemons.js"
-    import { loadPokemonsDatalist } from "./assets/js/utils/dom.js";
-    
-    window.onload = () => {
-        loadPokemonsDatalist("pokemon-data-list")
-    }
 
+    <button onclick="compareObjects()">Compare Pokémon</button>
+
+    <div id="comparisonResult">
+      <!-- Comparative table will be inserted here -->
+    </div>
+  </div>
+
+  <datalist id="pokemon-data-list"></datalist>
+
+  <script type="module">
+    import { loadPokemonsDatalist } from "./assets/js/utils/dom.js";
+    import { Pokemon } from "./assets/js/utils/models.js";
+
+    window.onload = () => {
+      loadPokemonsDatalist("pokemon-data-list");
+    }
 
     function compareObjects() {
-      const fooId = document.getElementById('fooInput').value
-      const barId = document.getElementById('barInput').value
-      const foo = pokemons[fooId];
-      const bar = pokemons[barId];
-      const result = compare(foo, bar);
-      document.getElementById('result').innerHTML = result;
-    }
+      const fooId = document.getElementById('fooInput').value.toLowerCase();
+      const barId = document.getElementById('barInput').value.toLowerCase();
 
-    function compare(obj1, obj2, path = '') {
-      let html = '';
-      const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
-      keys.forEach(key => {
-        const val1 = obj1[key];
-        const val2 = obj2[key];
-        const type1 = typeof val1;
-        const type2 = typeof val2;
+      if (!fooId || !barId) {
+        document.getElementById('comparisonResult').innerHTML = `
+          <div class="panel">
+            <p style="color: red;">Please select valid Pokémon names from both inputs.</p>
+          </div>
+        `;
+        return;
+      }
 
-        if (val1 !== undefined && val2 !== undefined && type1 === 'object' && !Array.isArray(val1) && !Array.isArray(val2)) {
-          html += `<div><strong>${key}:</strong></div>`;
-          html += `<div class="collapsible">${compare(val1, val2, path + key + '.')}</div>`;
-        } else if (Array.isArray(val1) && Array.isArray(val2)) {
-          const added = val2.filter(x => !val1.includes(x));
-          const removed = val1.filter(x => !val2.includes(x));
-          html += `<div><strong>${key}:</strong> <span class="green">+${added.join(', ')}</span> <span class="red">-${removed.join(', ')}</span></div>`;
-        } else if (type1 === 'number' && type2 === 'number') {
-          const diff = val2 - val1;
-          const perc = val1 !== 0 ? ((diff / val1) * 100).toFixed(1) : '∞';
-          const cls = diff > 0 ? 'green' : (diff < 0 ? 'red' : '');
-          const arrow = diff > 0 ? '▲' : (diff < 0 ? '▼' : '→');
-          html += `<div><strong>${key}:</strong> <span class="${cls}">${arrow} ${diff} (${perc}%)</span></div>`;
-        } else if (val1 !== val2) {
-          html += `<div><strong>${key}:</strong> <span class="red">${JSON.stringify(val1)}</span> → <span class="green">${JSON.stringify(val2)}</span></div>`;
-        } else {
-          html += `<div><strong>${key}:</strong> ${JSON.stringify(val1)}</div>`;
-        }
+      let foo = new Pokemon(fooId, {
+        xp: (document.getElementById('fooLevel').value - 1) * 100
       });
-      return html;
+      let bar = new Pokemon(barId, {
+        xp: (document.getElementById('barLevel').value - 1) * 100
+      });
+      
+      const fooPoke = structuredClone(foo._pokemon)
+      fooPoke.baseStats = foo.stats
+      foo = fooPoke
+      
+      const barPoke = structuredClone(bar._pokemon)
+      barPoke.baseStats = bar.stats
+      bar = barPoke
+      
+      const result = renderComparisonTable(foo, bar);
+      document.getElementById('comparisonResult').innerHTML = result;
     }
 
-    globalThis.compareObjects = compareObjects
+    function renderComparisonTable(pokemon1, pokemon2) {
+      const totalStats1 = calculateTotalStats(pokemon1.baseStats);
+      const totalStats2 = calculateTotalStats(pokemon2.baseStats);
+      const totalDiff = totalStats2 - totalStats1;
+
+      return `
+        <div class="panel">
+          <div class="comparison-header">
+            <h2>Comparison: ${pokemon1.name} vs ${pokemon2.name}</h2>
+          </div>
+
+          <!-- Pokémon Cards -->
+          <div class="pokemon-cards">
+            ${renderPokemonCard(pokemon1)}
+            ${renderPokemonCard(pokemon2)}
+          </div>
+
+          <!-- Base Stats Comparison -->
+          <div class="section-header">Base Stats Comparison</div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Stat</th>
+                <th>${pokemon1.name}</th>
+                <th>${pokemon2.name}</th>
+                <th>Difference</th>
+                <th>Comparison</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${renderStatRow('HP', pokemon1.baseStats.hp, pokemon2.baseStats.hp)}
+              ${renderStatRow('Attack', pokemon1.baseStats.atk, pokemon2.baseStats.atk)}
+              ${renderStatRow('Defense', pokemon1.baseStats.def, pokemon2.baseStats.def)}
+              ${renderStatRow('Sp. Atk', pokemon1.baseStats.spa, pokemon2.baseStats.spa)}
+              ${renderStatRow('Sp. Def', pokemon1.baseStats.spd, pokemon2.baseStats.spd)}
+              ${renderStatRow('Speed', pokemon1.baseStats.spe, pokemon2.baseStats.spe)}
+              ${renderStatRow('Total', totalStats1, totalStats2, true)}
+            </tbody>
+          </table>
+
+          <!-- Physical Attributes -->
+          <div class="section-header">Physical Attributes</div>
+          <table class="comparison-table">
+            <tbody>
+              ${renderAttributeRow('Height', `${pokemon1.heightm}m`, `${pokemon2.heightm}m`)}
+              ${renderAttributeRow('Weight', `${pokemon1.weightkg}kg`, `${pokemon2.weightkg}kg`)}
+              ${renderAttributeRow('Color', pokemon1.color, pokemon2.color)}
+            </tbody>
+          </table>
+
+          <!-- Type & Abilities -->
+          <div class="section-header">Type & Abilities</div>
+          <table class="comparison-table">
+            <tbody>
+              ${renderTypesRow('Types', pokemon1.types, pokemon2.types)}
+              ${renderAbilitiesRow('Abilities', pokemon1.abilities, pokemon2.abilities)}
+              ${renderGenderRatioRow('Gender Ratio', pokemon1.genderRatio, pokemon2.genderRatio)}
+            </tbody>
+          </table>
+
+          <!-- Evolution & Breeding -->
+          <div class="section-header">Evolution & Breeding</div>
+          <table class="comparison-table">
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderPokemonCard(pokemon) {
+      return `
+        <div class="pokemon-card">
+          <div class="pokemon-name">#${pokemon.num} ${pokemon.name}</div>
+          <div class="pokemon-types">
+            ${pokemon.types.map(type => `
+              <span class="type-badge type-${type}">${type}</span>
+            `).join('')}
+          </div>
+          <div><strong>Total Stats:</strong> ${calculateTotalStats(pokemon.baseStats)}</div>
+        </div>
+      `;
+    }
+
+    function renderStatRow(statName, value1, value2, isTotal = false) {
+      const diff = value2 - value1;
+      const diffClass = diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral';
+      const diffSymbol = diff > 0 ? '+' : '';
+      const maxStat = isTotal ? 780 : 255; // Approximate max values for scaling
+      
+      return `
+        <tr>
+          <td><strong>${statName}</strong></td>
+          <td>${value1}</td>
+          <td>${value2}</td>
+          <td class="${diffClass}">${diffSymbol}${diff}</td>
+          <td>
+            <div class="stat-bar">
+              <span>${value1}</span>
+              <div class="stat-bar-fill">
+                <div class="stat-bar-value" style="width: ${(value1 / maxStat) * 100}%; background: #3b82f6;"></div>
+              </div>
+              <span>${value2}</span>
+              <div class="stat-bar-fill">
+                <div class="stat-bar-value" style="width: ${(value2 / maxStat) * 100}%; background: #10b981;"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderAttributeRow(attribute, value1, value2) {
+      const isDifferent = value1 !== value2;
+      return `
+        <tr>
+          <td><strong>${attribute}</strong></td>
+          <td>${value1}</td>
+          <td>${value2}</td>
+          <td colspan="2" class="${isDifferent ? 'positive' : 'neutral'}">
+            ${isDifferent ? 'Different' : 'Same'}
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderTypesRow(label, types1, types2) {
+      const types1Str = types1.join(', ');
+      const types2Str = types2.join(', ');
+      const isDifferent = types1Str !== types2Str;
+      
+      return `
+        <tr>
+          <td><strong>${label}</strong></td>
+          <td>
+            ${types1.map(type => `<span class="type-badge type-${type}">${type}</span>`).join('')}
+          </td>
+          <td>
+            ${types2.map(type => `<span class="type-badge type-${type}">${type}</span>`).join('')}
+          </td>
+          <td colspan="2" class="${isDifferent ? 'positive' : 'neutral'}">
+            ${isDifferent ? 'Different' : 'Same'}
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderAbilitiesRow(label, abilities1, abilities2) {
+      const abilities1Str = Object.values(abilities1).join(', ');
+      const abilities2Str = Object.values(abilities2).join(', ');
+      const isDifferent = abilities1Str !== abilities2Str;
+      
+      return `
+        <tr>
+          <td><strong>${label}</strong></td>
+          <td>${abilities1Str}</td>
+          <td>${abilities2Str}</td>
+          <td colspan="2" class="${isDifferent ? 'positive' : 'neutral'}">
+            ${isDifferent ? 'Different' : 'Same'}
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderGenderRatioRow(label, ratio1, ratio2) {
+      return 0
+      const ratio1Str = `${(ratio1.M * 100)}%♂ / ${(ratio1.F * 100)}%♀`;
+      const ratio2Str = `${(ratio2.M * 100)}%♂ / ${(ratio2.F * 100)}%♀`;
+      const isDifferent = ratio1Str !== ratio2Str;
+      
+      return `
+        <tr>
+          <td><strong>${label}</strong></td>
+          <td>${ratio1Str}</td>
+          <td>${ratio2Str}</td>
+          <td colspan="2" class="${isDifferent ? 'positive' : 'neutral'}">
+            ${isDifferent ? 'Different' : 'Same'}
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderEvolutionRow(label, evos1, evos2) {
+      const evos1Str = evos1 ? evos1.join(', ') : 'None';
+      const evos2Str = evos2 ? evos2.join(', ') : 'None';
+      const isDifferent = evos1Str !== evos2Str;
+      
+      return `
+        <tr>
+          <td><strong>${label}</strong></td>
+          <td>${evos1Str}</td>
+          <td>${evos2Str}</td>
+          <td colspan="2" class="${isDifferent ? 'positive' : 'neutral'}">
+            ${isDifferent ? 'Different' : 'Same'}
+          </td>
+        </tr>
+      `;
+    }
+
+    function calculateTotalStats(stats) {
+      return stats.hp + stats.atk + stats.def + stats.spa + stats.spd + stats.spe;
+    }
+
+    globalThis.compareObjects = compareObjects;
   </script>
 </body>
 </html>
