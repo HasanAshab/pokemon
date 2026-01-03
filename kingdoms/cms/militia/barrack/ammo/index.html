@@ -75,6 +75,27 @@
         <button onclick="bulkRemoveItem()">Remove from All</button>
       </div>
     </div>
+    
+    <div class="bulk-operation-section">
+      <h4>Copy From Shift to Shift</h4>
+      <div class="bulk-controls">
+        <select id="copy-from-shift-select">
+          <option value="">Select Source Shift</option>
+          <option value="day">Day</option>
+          <option value="night">Night</option>
+          <option value="emergency">Emergency</option>
+        </select>
+        <span>to</span>
+        <select id="copy-to-shift-select">
+          <option value="">Select Target Shift</option>
+          <option value="day">Day</option>
+          <option value="night">Night</option>
+          <option value="emergency">Emergency</option>
+        </select>
+        <button onclick="copyFromShiftToShift()">Copy</button>
+      </div>
+    </div>
+    
     <div class="bulk-operation-section">
       <h4>Copy From Another Kingdom</h4>
       <div class="bulk-controls">

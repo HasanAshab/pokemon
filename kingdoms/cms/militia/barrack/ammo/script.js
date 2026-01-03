@@ -330,6 +330,60 @@ globalThis.bulkRemoveItem = function() {
   }
 }
 
+globalThis.copyFromShiftToShift = function() {
+  const sourceShift = document.getElementById("copy-from-shift-select").value
+  const targetShift = document.getElementById("copy-to-shift-select").value
+  
+  if (!sourceShift || !targetShift) {
+    alert("Please select both source and target shifts")
+    return
+  }
+  
+  if (sourceShift === targetShift) {
+    alert("Source and target shifts cannot be the same")
+    return
+  }
+  
+  // Check if target shift has existing items and confirm overwrite
+  let hasExistingItems = false
+  kingdom.barrack.soldiers[targetShift].forEach(soldier => {
+    if (soldier.image?.items?.length > 0) {
+      hasExistingItems = true
+    }
+  })
+  
+  if (hasExistingItems) {
+    if (!confirm(`This will overwrite existing items in ${targetShift} shift. Are you sure?`)) {
+      return
+    }
+  }
+  
+  let copiedCount = 0
+  
+  // Copy items from source shift to target shift for matching soldier images
+  kingdom.barrack.soldiers[targetShift].forEach(targetSoldier => {
+    const sourceSoldier = kingdom.barrack.soldiers[sourceShift].find(s => s.image.id === targetSoldier.image.id)
+    
+    if (sourceSoldier && sourceSoldier.image?.items) {
+      // Deep copy the items array to avoid reference issues
+      targetSoldier.image.items = [...sourceSoldier.image.items]
+      copiedCount++
+    } else {
+      // Clear items if no matching soldier found in source shift
+      targetSoldier.image.items = []
+    }
+  })
+  
+  if (copiedCount > 0) {
+    saveKingdoms(kingdoms)
+    loadSoldierShiftsContainer()
+    setItemsTable(kingdom.barrack.ammoPriceChange)
+    alert(`Successfully copied items from ${sourceShift} to ${targetShift} shift for ${copiedCount} matching soldiers`)
+  } else {
+    alert(`No matching soldiers found between ${sourceShift} and ${targetShift} shifts`)
+  }
+}
+
 globalThis.copyFromAnotherKingdom = function() {
   let abort = null
   Object.keys(kingdom.barrack.soldiers).forEach(shift => {
