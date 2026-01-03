@@ -1,3 +1,4 @@
+import './migrations.js'
 import { DISASTERS } from './constraints.js';
 
 const kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -1161,6 +1162,7 @@ function drawConnectionLines() {
 window.addEventListener('resize', () => {
   setTimeout(drawConnectionLines, 100);
 });
+
 
 
 

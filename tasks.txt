@@ -1,6 +1,5 @@
 * Tasks
 gen data
-migrate all soldiers level
 break artilary
 send spy + refactor espionage
 better numbering might vs def score
