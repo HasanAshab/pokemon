@@ -87,7 +87,7 @@ class Wave {
   }
 
   cp() {
-    return this.commander.image.cp() + this.soldiers.cp()
+    return this.soldiers.cp()
   }
 
   statOf(stat) {    
@@ -205,7 +205,7 @@ class War {
     }
     return commentLines
   }
-  
+
   _generateResult() {
     this.result.scores.atk = this._calcScore(this.attackers);
     this.result.scores.def = this._calcScore(this.defenders);    
@@ -213,7 +213,7 @@ class War {
     this.result.win = this.result.raisedWhiteFlag || this._canWin()
     this.result.wounded = this._calcWounded()
   }
-  
+
   _raisedWhiteFlag() {
     return false
   }
@@ -249,12 +249,16 @@ class War {
   }
 
   _calcScore(w1) {
-    const w2 = this._opponentOf(w1)
-    const imageBonusMod = this._getImageBonusMod(w1)    
-    const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
-    const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
-    const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore() + w1._extraScore    
-    return phyScore + spScore + otherScore
+    const mods = this._getImageBonusMod(w1)
+    const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore() + w1._extraScore
+    return baseScore * mods
+
+    // const w2 = this._opponentOf(w1)
+    // const imageBonusMod = this._getImageBonusMod(w1)    
+    // const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
+    // const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
+    // const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore() + w1._extraScore    
+    // return phyScore + spScore + otherScore
   }
 
   _getImageBonusMod(w1) {
