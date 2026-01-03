@@ -938,7 +938,6 @@ class ItemManager {
         )
         this._items = this._rawItems.filter(id => {
             if (Item.exists(id)) return true
-            console.log(`${this.pokemon.name} has invalid item: ${id}`)
             return false
         }).map(id => {
             return new Item(id, this)

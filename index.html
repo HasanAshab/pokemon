@@ -200,7 +200,7 @@
   </div>
 </body>
 <script src="./assets/js/index.js" type="module"></script>
-<!-- <script src="./assets/js/test.js" type="module"></script> -->
+<script src="./assets/js/test.js" type="module"></script>
 <script>
   // Register service worker for PWA functionality
   if ('serviceWorker' in navigator) {
@@ -213,9 +213,7 @@
       cacheStatus.style.display = 'block';
       
       navigator.serviceWorker.register('./sw.js')
-        .then(registration => {
-          console.log('SW registered: ', registration);
-          
+        .then(registration => {          
           // Check cache status periodically
           const checkCacheStatus = () => {
             if (navigator.serviceWorker.controller) {
@@ -271,7 +269,6 @@
   let installButton;
   
   window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('beforeinstallprompt event fired');
     deferredPrompt = e;
     
     // Show install button
@@ -308,7 +305,6 @@
         if (deferredPrompt) {
           deferredPrompt.prompt();
           const choiceResult = await deferredPrompt.userChoice;
-          console.log('User choice:', choiceResult.outcome);
           
           if (choiceResult.outcome === 'accepted') {
             console.log('User accepted the install prompt');
