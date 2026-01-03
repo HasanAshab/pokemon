@@ -1,8 +1,7 @@
 * Tasks
-gen data
+bulk image add all ( ammo )
 break artilary
 send spy
-
 
 better numbering might vs def score
 auto generate military

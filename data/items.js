@@ -300,9 +300,15 @@ export default {
       spd: 70
     }
   },
-  "ghost-speed": {
+  "scream-storm": {
     tokensPercent: {
-      spe: 12
+      spe: 25
+    }
+  },
+  "scream-shell": {
+    tokensPercent: {
+      def: 15,
+      spd: 15
     }
   },
 
@@ -324,7 +330,7 @@ export default {
       "spd": -10
     }
   },
-  "gen-nation-grass": {
+  "gen-nation-wood": {
     type: "nation_genetics",
     tokensPercent: {
       "hp": 20,
@@ -346,6 +352,7 @@ export default {
       "spd": 3
     }
   },
+  
   "gen-age-under-18": {
     type: "age_genetics",
     tokensPercent: {}
