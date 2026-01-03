@@ -233,9 +233,7 @@ function renderWaves() {
         //   .filter((ability) => ability);
 
         newWave.soldiers.push({ image, percentage, items, abilities });
-      });
-      console.log(newWave);
-      
+      });      
 
       attackWaves[index] = newWave;
       renderWaves();
