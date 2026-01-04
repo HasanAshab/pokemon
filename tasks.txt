@@ -1,6 +1,7 @@
 * Tasks
-better numbering might vs def score
-break artilary
+N tier MP BP AP
+
+break artilary, remove beasts
 send spy
 
 auto generate military

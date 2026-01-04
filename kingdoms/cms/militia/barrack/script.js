@@ -159,6 +159,7 @@ function getSoldierStack(soldiers) {
     const image = pokemons[soldier.image.id];
     image.id = soldier.image.id;
     image.xp = soldier.image.xp;
+    image.items = soldier.image.items;
     return [image, soldier.quantity];
   });
   return new SoldierStack(stackData);
@@ -399,10 +400,15 @@ function renderForceSection(type,forceType) {
   }
   container.appendChild(typeTotalEl);
 
-  const stack = getSoldierStack(barrackForce[type]);
-  const might = stack.cp();
+  const stack = getSoldierStack(barrackForce[type])
+  const might = stack.baseCP();
+  const weaponMight = stack.cp() - might;
+  const armorMight = stack.armorScore();
+  const ammoMight = weaponMight + armorMight;
+  const totalMight = might + ammoMight;
+  
   const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Might`);
-  mightEl.textContent = might.toLocaleString() + " here";
+  mightEl.textContent = `${might.toLocaleString()} + ${ammoMight.toLocaleString()} = ${totalMight.toLocaleString()}`;
 }
 
 function renderAllForces(forceType) {
@@ -440,15 +446,23 @@ function renderAllForces(forceType) {
   if (forceType === "polices") {
     securityRateEl.textContent = `${getSecurityRate(kingdom, "polices") + getPoliceStationSecurityRate(kingdom)} (${getSecurityRate(kingdom, "polices").toFixed()} + ${getPoliceStationSecurityRate(kingdom)})`
   }
+  
 
   let totalMight = 0;
+  let baseMight = 0;
+  let ammoMight = 0;
   Object.keys(barrackForce).forEach((type) => {
     const stack = getSoldierStack(barrackForce[type]);
-    totalMight += stack.cp();
+    const might = stack.baseCP();
+    const weaponMight = stack.cp() - might;
+    const armorMight = stack.armorScore();
+    baseMight += might;
+    ammoMight += weaponMight + armorMight;
+    totalMight += might + ammoMight;
   });
   
   const totalMightEl = document.getElementById("forcesMight");
-  totalMightEl.textContent = totalMight.toLocaleString() + " here";
+  totalMightEl.textContent = `${baseMight.toLocaleString()} + ${ammoMight.toLocaleString()} = ${totalMight.toLocaleString()}`;
 }
 
 function getInitialXp(imageId) {

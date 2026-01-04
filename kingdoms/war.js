@@ -31,10 +31,16 @@ export class SoldierStack extends Map {
   reduce() {    
     return Array.from(this.entries()).reduce(...arguments)
   }
-  
+
   cp() {
     return this.reduce((sum, [image, quantity]) => {      
       return sum + image.cp() * quantity;
+    }, 0);
+  }
+
+  baseCP() {
+    return this.reduce((sum, [image, quantity]) => {      
+      return sum + image.baseCP() * quantity;
     }, 0);
   }
   
