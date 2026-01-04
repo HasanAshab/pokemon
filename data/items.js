@@ -1,19 +1,21 @@
+import { modObj } from "../assets/js/utils/helpers.js"
 import moves from "./moves.js"
 
 function convertMoveToItem(move) {
-  const atkStatName = move.flags.contact ? "atk" : "spa"
+  const atkStatName = move.flags.contact ? "atk" : "spa"  
   return {
     type: "weapon",
     tokensPercent: {
-      [atkStatName]: 10 * move.retreat,
+      [atkStatName]: 12 * move.retreat,
     },
+    tokens: modObj(move.tokenChanges, 0.7)
   }
 }
 
 function makeWeaponizedItems() {
   return Object.entries(moves)
     .filter(([id, move]) => move.flags.weapon)
-    .reduce((acc, [id, move]) => {      
+    .reduce((acc, [id, move]) => {            
       acc[id] = convertMoveToItem(move)      
       return acc
     }, {})

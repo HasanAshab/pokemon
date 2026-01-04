@@ -41,7 +41,7 @@ function assert(w1, w2, expectedWinner) {
   const assertResult = actualWinner === expectedWinner
   
   const getSTR = (w1) => w1.map(([p, q]) => `${q}${p.id.charAt(0).toUpperCase()}`).join(', ')
-  console.log(`${assertResult ? "PASS" : "FAIL"}: ${getSTR(w1)} vs ${getSTR(w2)} : ${actualWinner}`);
+  console[assertResult ? "log" : "warn"](`${assertResult ? "PASS" : "FAIL"}: ${getSTR(w1)} vs ${getSTR(w2)} : ${expectedWinner} -> ${actualWinner}`);
   console.log(war.result.scores.atk, war.result.scores.def)
   // console.log(war.comments())
   console.log('');
@@ -51,11 +51,12 @@ function assert(w1, w2, expectedWinner) {
 
 let rookie = new Pokemon("rookie", {
     "xp": 1000,
-    // "items": ["ironarmor"]
+    "items": []
 })
 
 let genin = new Pokemon("genin", {
     "xp": 2000,
+    "items": ["ninjablade"]
 })
 
 let chunin = new Pokemon("chunin", {

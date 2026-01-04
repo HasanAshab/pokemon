@@ -690,12 +690,12 @@ export default {
       spe: -10
     }
   },
-  dirt: {
+  dart: {
     num: 100012,
     accuracy: 100,
     basePower: 20,
     category: "Physical",
-    name: "Dirt",
+    name: "Dart",
     pp: 15 * 3,
     priority: 0,
     flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },

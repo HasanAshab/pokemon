@@ -1,3 +1,4 @@
+import { sumObj } from "../assets/js/utils/helpers.js";
 import { Pokemon } from "../assets/js/utils/models.js";
 
 
@@ -51,17 +52,19 @@ export class SoldierStack extends Map {
   
   armorScore() {
     return this.reduce((score, [image, quantity]) => {
-      const ahp = image.items._items.reduce((ahp, item) => {
-        if (item.type === "armor") {
+      const ahp = image.items._items.reduce((ahp, item) => {        
+        if (item.type === "armor") {          
           const totalStat = Object.values(item.stats).reduce((sum, stat) => sum + stat, 0)
           ahp += totalStat * (item.covers / 100)
+          ahp += Object.values(item.tokens).reduce((sum, stat) => sum + stat, 0)
         }
         return ahp
       }, 0)
       return score + (ahp * quantity)
     }, 0)
   }
-  
+
+ 
   resize(percent) {
     const result = new SoldierStack();
     const mod = percent / 100
