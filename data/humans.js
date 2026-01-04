@@ -120,9 +120,9 @@ export default {
     color: "Gold",
     evos: ["Sage"],
   },
-  sage: {
+  legendarysannin: {
     num: 12,
-    name: "Sage",
+    name: "Legendary Sannin",
     types: ["Normal"],
     baseStats: { hp: 62, atk: 88, def: 58, spa: 110, spd: 58, spe: 118 },
     abilities: {},

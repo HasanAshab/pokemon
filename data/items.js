@@ -309,8 +309,7 @@ export default {
   },
   "scream-shell": {
     tokensPercent: {
-      def: 15,
-      spd: 15
+     hp: 30
     }
   },
 

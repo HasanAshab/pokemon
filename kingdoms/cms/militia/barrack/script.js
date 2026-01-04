@@ -402,7 +402,7 @@ function renderForceSection(type,forceType) {
   const stack = getSoldierStack(barrackForce[type]);
   const might = stack.cp();
   const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Might`);
-  mightEl.textContent = might.toLocaleString();
+  mightEl.textContent = might.toLocaleString() + " here";
 }
 
 function renderAllForces(forceType) {
@@ -448,7 +448,7 @@ function renderAllForces(forceType) {
   });
   
   const totalMightEl = document.getElementById("forcesMight");
-  totalMightEl.textContent = totalMight.toLocaleString();
+  totalMightEl.textContent = totalMight.toLocaleString() + " here";
 }
 
 function getInitialXp(imageId) {
@@ -534,3 +534,6 @@ globalThis.redirectToAmmoPage = () => {
     tab.style.display = "none";
   });
   
+function getActualMight() {
+  return 100
+}
