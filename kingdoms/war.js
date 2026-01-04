@@ -252,7 +252,7 @@ class War {
   }
 
   _calcScore(w1) {
-    const mods = this._getImageBonusMod(w1)
+    const mods = 1 //this._getImageBonusMod(w1) * this._getFriendBonusMod(w1)
     const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore() + w1._extraScore
     return baseScore * mods
 
@@ -274,7 +274,7 @@ class War {
           const baseCP2 = image2.baseCP()
           let ratio = (baseCP1 / baseCP2)
           if (ratio > 1) {
-            ratio *= Math.pow(quantity1 * 3.6, 1.1)
+            ratio *= Math.pow(quantity1 * 2, 1.1)
           }
           else {
             ratio *= Math.pow(quantity2 * 0.8, 0.6)
@@ -283,7 +283,17 @@ class War {
         }, 1)
     }, 1)
   }
-  
+
+  _getFriendBonusMod(w1) {
+     return w1.soldiers.reduce((mod, [image, quantity]) => {
+        if (quantity <= 1) return mod
+        const ratio = Math.pow(1.1, quantity * 0.35)
+        console.log(ratio);
+         
+        return mod * ratio
+    }, 1)
+  }
+
   _vsQuantStr() {
     const atk = this.attackers.soldiers.count()
     const def = this.defenders.soldiers.count()

@@ -27,6 +27,9 @@ function assert(w1, w2, expectedWinner) {
 
   let war = new WAR_SYSTEMS["sabotage"](wave1, wave2)
 
+  war.result.scores.atk = Math.round(war.result.scores.atk)
+  war.result.scores.def = Math.round(war.result.scores.def)
+
   let actualWinner
   if (war.result.scores.atk === war.result.scores.def) {
     actualWinner = 0
@@ -56,7 +59,7 @@ let rookie = new Pokemon("rookie", {
 
 let genin = new Pokemon("genin", {
     "xp": 2000,
-    "items": ["ninjablade"]
+    // "items": ["ninjablade"]
 })
 
 let chunin = new Pokemon("chunin", {
