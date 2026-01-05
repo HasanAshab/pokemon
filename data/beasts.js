@@ -30,7 +30,7 @@ drago: {
 gobking: {
   num: 4,
   name: "Gobking",
-  types: ["Poison", "Fairy"],
+  types: ["Poison"],
   baseStats: { hp: 105, atk: 130, def: 120, spa: 80, spd: 95, spe: 40 },
   abilities: {},
   heightm: 1.5
