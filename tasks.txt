@@ -1,5 +1,7 @@
 * Tasks
 N tier MP BP AP
+barrack showing baseCp is without level
+
 
 break artilary, remove beasts
 send spy

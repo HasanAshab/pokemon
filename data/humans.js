@@ -9,6 +9,7 @@ export default {
     weightkg: 45,
     color: "Blue",
     evos: ["Rookie"],
+    notMapsTier: true,
   },
   rookie: {
     num: 2,
@@ -20,6 +21,7 @@ export default {
     weightkg: 47,
     color: "Blue",
     evos: ["Genin"],
+    notMapsTier: true,
   },
   genin: {
     num: 3,

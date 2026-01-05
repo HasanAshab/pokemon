@@ -6,7 +6,8 @@ import {
   getHospitalCapacity,
   getForceImbalanceRate,
   getSecurityRate,
-  getPoliceStationSecurityRate
+  getPoliceStationSecurityRate,
+  getInitialFixedXp
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
@@ -466,13 +467,9 @@ function renderAllForces(forceType) {
 }
 
 function getInitialXp(imageId) {
-  const image = pokemons[imageId]
-  let lvl = 1
-  if (image.type === "human")
-    lvl = (image.num - 1) * 10  
-  return Math.max(1, lvl)
-  
+  return getInitialFixedXp(imageId);
 }
+
 // soldiers
 document.getElementById("addDaySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.day.push({

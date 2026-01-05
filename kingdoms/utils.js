@@ -3,6 +3,7 @@ import { getItemsOfType } from "../assets/js/utils/dom.js";
 import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
+import pokemons from "../data/pokemons.js";
 
 export function getPopulation(kingdom) {
   return kingdom.landArea * kingdom.density;
@@ -879,4 +880,33 @@ export function predictNextDisasters(kingdom) {
   }
 
   return predictedDisasters;
+}
+
+
+export function getInitialFixedXp(imageId) {
+  const image = pokemons[imageId];
+  if (image.type === "human") {
+    return (image.num - 1) * 1000;
+  }
+
+  if (image.type === "beast") {
+    return 0;
+  }
+}
+
+export function getTiers() {
+  const tiers = []
+  for (const id in humans) {
+    const human = humans[id]
+    if (human.notMapsTier) continue    
+    const pokemon = new Pokemon(id, {
+      xp: getInitialFixedXp(id),
+    })
+    tiers.push(pokemon.cp())
+  }
+  return tiers
+}
+
+export function getTierOf(pokeId) {
+  const pokemon = new Pokemon(pokeId)
 }

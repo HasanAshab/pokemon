@@ -1,19 +1,12 @@
 import pokemons from "../data/pokemons.js"
+import { getInitialFixedXp } from "./utils.js"
 
 // MIGRATIONS
 function FIXED_FORCES_LEVEL_BASED_ON_IMAGE(kingdom) {
-    const getInitialXp = image => {
-        const pokemon = pokemons[image]
-        let lvl = 1
-        if (pokemon.type === "human")
-            lvl = (pokemon.num - 1) * 10
-        return Math.max(1, lvl)
-    }
-
     const fixForce = force => {
         for (const shift in force) {
             for (const { image } of force[shift]) {                
-                image.xp = getInitialXp(image.id)
+                image.xp = getInitialFixedXp(image.id)
             }
         }
     }
