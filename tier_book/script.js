@@ -18,14 +18,14 @@ function createTierDisplay() {
 
         const tierNumber = document.createElement('div');
         tierNumber.className = 'tier-number';
-        tierNumber.textContent = `Tier ${i + 1}`;
+        tierNumber.textContent = `Tier ${i + 1} - ${tiers[i].source}`;
         
         const tierRange = document.createElement('div');
         tierRange.className = 'tier-range';
         
         // Calculate range
-        const lowerBound = i === 0 ? 0 : tiers[i - 1] + 1;
-        const upperBound = tiers[i];
+        const lowerBound = i === 0 ? 0 : tiers[i - 1].minMight + 1;
+        const upperBound = tiers[i].minMight;
         
         // Format numbers with toLocaleString()
         const formattedLower = lowerBound.toLocaleString();
@@ -45,11 +45,11 @@ function createTierDisplay() {
         
         const finalTierNumber = document.createElement('div');
         finalTierNumber.className = 'tier-number';
-        finalTierNumber.textContent = `Tier ${tiers.length + 1}`;
+        finalTierNumber.textContent = `Tier ${tiers.length + 1} - Ultimate`;
         
         const finalTierRange = document.createElement('div');
         finalTierRange.className = 'tier-range';
-        const finalLowerBound = (tiers[tiers.length - 1] + 1).toLocaleString();
+        const finalLowerBound = (tiers[tiers.length - 1].minMight + 1).toLocaleString();
         finalTierRange.textContent = `(${finalLowerBound}+)`;
         
         finalTierItem.appendChild(finalTierNumber);
