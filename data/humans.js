@@ -21,7 +21,6 @@ export default {
     weightkg: 47,
     color: "Blue",
     evos: ["Genin"],
-    notMapsTier: true,
   },
   genin: {
     num: 3,

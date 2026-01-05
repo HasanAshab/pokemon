@@ -1,10 +1,11 @@
 * Tasks
-barrack showing baseCp is without level
-jinchuriki all
-researcher -> min bp, quantity
-
 break artilary, remove beasts
 send spy
+
+barrack showing baseCp is without level
+researcher -> min bp, quantity
+jinchuriki all
+
 
 marketplace buy (+ all)
 auto generate military

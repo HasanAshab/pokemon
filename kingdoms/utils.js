@@ -910,14 +910,26 @@ export function getTiers() {
   return tiers
 }
 
-export function getTierOfBeast(id) {
+export function getTierOfMight(m) {
   const tiers = getTiers()
-  const beast = new Pokemon(id)
   let tier = 1
   for (let i = 0; i < tiers.length; i++) {
-    if (beast.cp() > tiers[i].minMight) {
+    if (m > tiers[i].minMight) {
       tier = i + 1
     }
     else return tier
   }
+}
+
+export function getTierOf(id) {
+  const tiers = getTiers()
+  const pokemon = new Pokemon(id)
+
+  if (pokemon.type === 'human') {
+    for (let i = 0; i < tiers.length; i++) {
+      if (pokemon.name === tiers[i].source) return i + 1
+    }
+    return 1
+  }
+  return getTierOfMight(pokemon.cp())
 }

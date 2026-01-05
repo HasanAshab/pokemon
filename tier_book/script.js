@@ -1,6 +1,6 @@
 import { Pokemon } from "../assets/js/utils/models.js";
 import pokemons from "../data/pokemons.js";
-import { getTierOfBeast, getTiers } from "../kingdoms/utils.js";
+import { getTierOf, getTiers } from "../kingdoms/utils.js";
 
 function getBeastsWithTiers() {
     const list = [];
@@ -10,7 +10,7 @@ function getBeastsWithTiers() {
         list.push({
             id,
             picture: pokemon.picture,
-            tier: getTierOfBeast(id)
+            tier: getTierOf(id)
         });
     }
     return list;

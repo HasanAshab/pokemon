@@ -1,5 +1,5 @@
-import { sumObj } from "../assets/js/utils/helpers.js";
 import { Pokemon } from "../assets/js/utils/models.js";
+import { getTierOf } from "./utils.js";
 
 
 export class SoldierStack extends Map {
@@ -70,7 +70,6 @@ export class SoldierStack extends Map {
     }, 0)
   }
 
- 
   resize(percent) {
     const result = new SoldierStack();
     const mod = percent / 100
@@ -83,10 +82,10 @@ export class SoldierStack extends Map {
 
 
 class Wave {
-  constructor(commander, soldiers, options = {}, extraScore = 0) {
+  constructor(commander, soldiers, options = {}, artilleries = []) {
     this.commander = commander
     this.soldiers = soldiers
-    this._extraScore = extraScore
+    this.artilleries = artilleries
     this._processOptions(options)
   }
 
@@ -105,6 +104,22 @@ class Wave {
   
   cpModifier() {    
     return this._cpModifiers.reduce((acc, mod) => acc * mod, 1)
+  }
+
+  getSoldiersScore() {
+    return this.soldiers.reduce((score, [image, quantity]) => {
+      const tierMod = Math.pow(1.1, getTierOf(image.id) * 8);      
+      // const tierMod = getTierOf(image.id) * 2.5;
+      console.log(tierMod);   
+
+      return score + image.cp() * quantity * tierMod
+    }, 0)
+  }
+
+  getArtilleriesScore() {
+    return this.artilleries.reduce((score, artillery) => {
+      return score + artillery.score
+    }, 0)
   }
 
   _processOptions(options) {
@@ -258,9 +273,8 @@ class War {
   }
 
   _calcScore(w1) {
-    const mods = 1 //this._getImageBonusMod(w1) * this._getFriendBonusMod(w1)
-    const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore() + w1._extraScore
-    return baseScore * mods
+    // const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore()
+    return w1.getSoldiersScore() + w1.getArtilleriesScore()
 
     // const w2 = this._opponentOf(w1)
     // const imageBonusMod = this._getImageBonusMod(w1)    

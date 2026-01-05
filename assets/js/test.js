@@ -66,6 +66,13 @@ let chunin = new Pokemon("chunin", {
     "xp": 3000,
 })
 
+let elchunin = new Pokemon("elitechunin", {
+    "xp": 4000,
+})
+let jonin = new Pokemon("jonin", {
+    "xp": 5000,
+})
+
 
 assert(
 [
@@ -82,39 +89,17 @@ assert(
   [chunin, 1]
 ],
 [
-  [genin, 3]
+  [genin, 4]
 ],
 0
 )
 
 assert(
 [
-  [chunin, 1]
+  [jonin, 1]
 ],
 [
-  [rookie, 7]
+  [elchunin, 5]
 ],
 0
 )
-
-assert(
-[
-  [chunin, 1],
-  [rookie, 2]
-],
-[
-  [rookie, 9]
-],
-1
-)
-
-assert(
-[
-  [genin, 2]
-],
-[
-  [rookie, 7]
-],
-0
-)
-
