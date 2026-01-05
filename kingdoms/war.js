@@ -1,6 +1,9 @@
 import { Pokemon } from "../assets/js/utils/models.js";
 import { getTierOf } from "./utils.js";
 
+function getTierMod(tier) {
+  return Math.pow(1.05, tier * 22.6) * 0.5;
+}
 
 export class SoldierStack extends Map {
   constructor(data = []) {
@@ -108,10 +111,7 @@ class Wave {
 
   getSoldiersScore() {
     return this.soldiers.reduce((score, [image, quantity]) => {
-      const tierMod = Math.pow(1.1, getTierOf(image.id) * 8);      
-      // const tierMod = getTierOf(image.id) * 2.5;
-      console.log(tierMod);   
-
+      const tierMod = getTierMod(getTierOf(image.id));
       return score + image.cp() * quantity * tierMod
     }, 0)
   }

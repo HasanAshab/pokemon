@@ -922,6 +922,8 @@ export function getTierOfMight(m) {
 }
 
 export function getTierOf(id) {
+  if (typeof id === "number") return getTierOfMight(id)
+
   const tiers = getTiers()
   const pokemon = new Pokemon(id)
 

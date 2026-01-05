@@ -79,7 +79,7 @@ assert(
   [genin, 1]
 ],
 [
-  [rookie, 3]
+  [rookie, 4]
 ],
 0
 )
@@ -99,7 +99,17 @@ assert(
   [jonin, 1]
 ],
 [
-  [elchunin, 5]
+  [elchunin, 3]
+],
+0
+)
+
+assert(
+[
+  [genin, 1]
+],
+[
+  [new Pokemon("laimonk"), 1]
 ],
 0
 )
