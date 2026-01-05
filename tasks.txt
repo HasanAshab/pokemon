@@ -1,5 +1,4 @@
 * Tasks
-N tier MP BP AP
 barrack showing baseCp is without level
 jinchuriki all
 researcher -> min bp, quantity

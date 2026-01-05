@@ -9,7 +9,7 @@ function getBeastsWithTiers() {
         if (pokemon.type !== "beast") continue;
         list.push({
             id,
-            picture: `${window.location.origin}/data/poke_pics/${id}.png`,
+            picture: pokemon.picture,
             tier: getTierOfBeast(id)
         });
     }
