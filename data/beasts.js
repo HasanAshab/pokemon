@@ -139,34 +139,73 @@ tails9: {
   baseStats: { hp: 700, atk: 500, def: 550, spa: 500, spd: 350, spe: 150 },
   abilities: {},
   heightm: 18.0
+},
+
+  blacktai: {
+  num: 17,
+  name: "Black Tai",
+  types: ["Fighting"], // based on its rocky, grounded appearance
+  baseStats: { hp: 40, atk: 60, def: 45, spa: 15, spd: 30, spe: 10  },
+  abilities: {},
+  heightm: 1.2,
+  },
+
+
+ rocktri: {
+  num: 18,
+  name: "Rock Tri",
+  types: ["Fighting", "Rock"],
+  baseStats: {  hp: 75, atk: 75, def: 85, spa: 20, spd: 70, spe: 20  },
+  abilities: {},
+  heightm: 1.4,
+  desc:`Has 30% to repeat user used move if make contact = true.
+    it has 3 hands so it can repeat 3 times`
+  },
+ 
+roaringhands: {
+  num: 19,
+  name: "Roaring Hands",
+  types: ["Fighting", "Rock", "Dark"],
+  baseStats: {  hp: 200, atk: 170, def: 150, spa: 50, spd: 150, spe: 50  },
+  abilities: {},
+  heightm: 1.6,
+  desc:`Has 30% to repeat user used move if make contact = true.
+    it has 6 hands so it can repeat 6 times`
+  },
+
+gigazardx: {
+  num: 20,
+  name: "Gigazard X",
+  types: ["Fire", "Dragon"],
+  baseStats: { 
+    hp: 550, 
+    atk: 700, 
+    def: 550, 
+    spa: 300, 
+    spd: 400, 
+    spe: 200 
+  },
+  abilities: {  },
+  heightm: 4.5,
+  description: "A mutant four-armed titan. Its physical strength is unmatched, allowing it to crush mountains with its bare hands."
+},
+
+gigazardy: {
+  num: 21,
+  name: "Gigazard Y",
+  types: ["Fire", "Flying"],
+  baseStats: { 
+    hp: 350, 
+    atk: 300, 
+    def: 400, 
+    spa: 750, 
+    spd: 550, 
+    spe: 300 
+  },
+  abilities: { 0: "Drought" },
+  heightm: 4.2,
+  description: "An evolved aerial mutant. It can incinerate entire landscapes with a single blast of special draconic energy."
 }
-
-  // blacktai: {
-  // num: 2,
-  // name: "Black Tai",
-  // types: ["Fighting"], // based on its rocky, grounded appearance
-  // baseStats: { hp: 40, atk: 60, def: 45, spa: 15, spd: 30, spe: 10  }, // total = 150
-  // abilities: {},
-  // heightm: 1.8,
-  // animeName: "blackTai"
-  // },
-
-
-
-
-//  rocktri: {
-//   num: 12,
-//   name: "Rock Tri",
-//   types: ["Fighting", "Rock"],
-//   baseStats: { hp: 70, atk: 85, def: 55, spa: 10, spd: 15, spe: 15 },
-//   abilities: {},
-//   heightm: 2.1,
-//   desc:`Has 30% to repeat user used move if make contact = true.
-//     it has 3 hands so it can repeat 3 times`
-//   },
-
-
-
 
 //   tails9: {
 //     num: 1,
