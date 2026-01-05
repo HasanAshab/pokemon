@@ -192,17 +192,17 @@ class War {
     const defendersCP = this.defenders.soldiers.cp();
     const luckDiff = this.attackers.meta.luckModifier - this.defenders.meta.luckModifier;
     const iqDiff = this.attackers.meta.iqModifier - this.defenders.meta.iqModifier;
-    const cpDiff = attackersCP - defendersCP;    
+    const cpDiff = attackersCP - defendersCP;
   
     // Units quantity
     commentLines.push(this._vsQuantStr());
   
     // Stronger units
-    if (cpDiff > 0) {
-      commentLines.push("Attacker has stronger units");
-    } else {
-      commentLines.push("Defender has stronger units");
-    }
+    // if (cpDiff > 0) {
+    //   commentLines.push("Attacker has stronger units");
+    // } else {
+    //   commentLines.push("Defender has stronger units");
+    // }
 
     // Units advantage
     // if (attackersScore > defendersScore !== attackersCP > defendersCP) {
@@ -258,11 +258,11 @@ class War {
     if (this.result.win) {
       this.result._woundedPer = Math.max((this.result.scores.def * 100) / this.result.scores.atk, 0);      
       wounded.atk = this.attackers.soldiers.resize(this.result._woundedPer);
-      wounded.def = this.defenders.soldiers;
+      wounded.def = this.defenders.soldiers.resize(95);
     } else {
       this.result._woundedPer = Math.max((this.result.scores.atk * 100) / this.result.scores.def, 0);
       wounded.def = this.defenders.soldiers.resize(this.result._woundedPer);
-      wounded.atk = this.attackers.soldiers;
+      wounded.atk = this.attackers.soldiers.resize(95);
     }
     return wounded
   }
@@ -302,16 +302,6 @@ class War {
           }
           return mod * ratio
         }, 1)
-    }, 1)
-  }
-
-  _getFriendBonusMod(w1) {
-     return w1.soldiers.reduce((mod, [image, quantity]) => {
-        if (quantity <= 1) return mod
-        const ratio = Math.pow(1.1, quantity * 0.35)
-        console.log(ratio);
-         
-        return mod * ratio
     }, 1)
   }
 

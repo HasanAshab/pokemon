@@ -1,5 +1,6 @@
 * Tasks
 break artilary, remove beasts
+MP > AP > BP > MP
 send spy
 
 barrack showing baseCp is without level
