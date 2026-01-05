@@ -145,6 +145,10 @@ export class Pokemon extends PSPokemon {
         return [ ... new Set([ ...this._pokemon.types, ...(this.meta.types ?? [])]) ]
     }
 
+    get type() {
+        return this._pokemon.type
+    }
+
     get level() {
         const xp = this.meta.xp ?? 0;        
         return Pokemon.calculateLevel(xp); // Level starts at 1
@@ -159,6 +163,10 @@ export class Pokemon extends PSPokemon {
 
     get isHuman() {
         return !["entity", "beast"].includes(this._pokemon.type)
+    }
+
+    get picture() {
+        return `${window.location.origin}/data/poke_pics/${this.id}.png`
     }
 
     isTypeOf(type) {

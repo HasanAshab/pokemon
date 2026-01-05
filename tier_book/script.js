@@ -1,9 +1,61 @@
-import { getTiers } from "../kingdoms/utils.js";
+import { Pokemon } from "../assets/js/utils/models.js";
+import pokemons from "../data/pokemons.js";
+import { getTierOfBeast, getTiers } from "../kingdoms/utils.js";
 
+function getBeastsWithTiers() {
+    const list = [];
+    for (const id in pokemons) {
+        const pokemon = new Pokemon(id);
+        if (pokemon.type !== "beast") continue;
+        list.push({
+            id,
+            picture: `${window.location.origin}/data/poke_pics/${id}.png`,
+            tier: getTierOfBeast(id)
+        });
+    }
+    return list;
+}
+
+// Function to create beast display for a specific tier
+function createBeastDisplay(tierIndex, showBeasts) {
+    if (!showBeasts) return null;
+    
+    const beasts = getBeastsWithTiers();
+    const tierBeasts = beasts.filter(beast => beast.tier === tierIndex + 1);
+    
+    if (tierBeasts.length === 0) return null;
+    
+    const beastsContainer = document.createElement('div');
+    beastsContainer.className = 'beasts-container';
+    
+    tierBeasts.forEach(beast => {
+        const beastItem = document.createElement('div');
+        beastItem.className = 'beast-item';
+        
+        const beastImage = document.createElement('img');
+        beastImage.className = 'beast-image';
+        beastImage.src = beast.picture;
+        beastImage.alt = `Beast ${beast.id}`;
+        beastImage.onerror = function() {
+            this.style.display = 'none';
+        };
+        
+        const beastId = document.createElement('div');
+        beastId.className = 'beast-id';
+        beastId.textContent = beast.id;
+        
+        beastItem.appendChild(beastImage);
+        beastItem.appendChild(beastId);
+        beastsContainer.appendChild(beastItem);
+    });
+    
+    return beastsContainer;
+}
 
 // Function to create tier display
 function createTierDisplay() {
     const tiers = getTiers();
+    const showBeasts = document.getElementById('show-beasts-checkbox').checked;
     
     // Get tier list element    
     const tierListElement = document.getElementById('tier-list');
@@ -35,6 +87,13 @@ function createTierDisplay() {
         
         tierItem.appendChild(tierNumber);
         tierItem.appendChild(tierRange);
+        
+        // Add beasts if checkbox is checked
+        const beastDisplay = createBeastDisplay(i, showBeasts);
+        if (beastDisplay) {
+            tierItem.appendChild(beastDisplay);
+        }
+        
         tierListElement.appendChild(tierItem);
     }
     
@@ -54,6 +113,13 @@ function createTierDisplay() {
         
         finalTierItem.appendChild(finalTierNumber);
         finalTierItem.appendChild(finalTierRange);
+        
+        // Add beasts for final tier if checkbox is checked
+        const finalBeastDisplay = createBeastDisplay(tiers.length, showBeasts);
+        if (finalBeastDisplay) {
+            finalTierItem.appendChild(finalBeastDisplay);
+        }
+        
         tierListElement.appendChild(finalTierItem);
     }
 }
@@ -62,6 +128,9 @@ function createTierDisplay() {
 document.addEventListener('DOMContentLoaded', function() {
     createTierDisplay();
     
-    // Log the tiers array for debugging
-    console.log('Generated tiers:', getTiers());
+    // Add event listener for checkbox
+    const checkbox = document.getElementById('show-beasts-checkbox');
+    checkbox.addEventListener('change', function() {
+        createTierDisplay();
+    });
 });

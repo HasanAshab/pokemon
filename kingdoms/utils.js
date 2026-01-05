@@ -741,7 +741,7 @@ export function getBuildCost(kingdom, size, floor, durability) {
 export function getResearchersAccuracy(kingdom) {
   const area = kingdom.landArea;
   const visionRange = kingdom.disaster.visionRange || 1;  
-  const researchersCount = getStorage(kingdom).researcher || 0;
+  const researchersCount = getStorage(kingdom).dRes || 0;
 
   // --- Area vs Researchers (arithmetical) ---
   const areaPerResearcher = 125;
@@ -910,6 +910,14 @@ export function getTiers() {
   return tiers
 }
 
-export function getTierOf(pokeId) {
-  const pokemon = new Pokemon(pokeId)
+export function getTierOfBeast(id) {
+  const tiers = getTiers()
+  const beast = new Pokemon(id)
+  let tier = 1
+  for (let i = 0; i < tiers.length; i++) {
+    if (beast.cp() > tiers[i].minMight) {
+      tier = i + 1
+    }
+    else return tier
+  }
 }

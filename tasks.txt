@@ -2,10 +2,12 @@
 N tier MP BP AP
 barrack showing baseCp is without level
 jinchuriki all
+researcher -> min bp, quantity
 
 break artilary, remove beasts
 send spy
 
+marketplace buy (+ all)
 auto generate military
 artilary cost estimator
 
