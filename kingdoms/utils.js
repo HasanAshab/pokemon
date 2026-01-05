@@ -902,7 +902,10 @@ export function getTiers() {
     const pokemon = new Pokemon(id, {
       xp: getInitialFixedXp(id),
     })
-    tiers.push(pokemon.cp())
+    tiers.push({
+      source: human.name,
+      minMight: pokemon.cp()
+    })
   }
   return tiers
 }
