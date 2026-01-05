@@ -21,9 +21,9 @@ function processEntity(entity) {
 
 function processBeast(beast) {
   beast.type = "beast"
-  for (const stat in beast.baseStats) {
-    beast.baseStats[stat] = Math.floor(beast.baseStats[stat] * 1.5)
-  }
+  // for (const stat in beast.baseStats) {
+  //   beast.baseStats[stat] = Math.floor(beast.baseStats[stat] * 1.5)
+  // }
 }
 
 

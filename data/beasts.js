@@ -136,7 +136,7 @@ tails9: {
   num: 16,
   name: "tails9( kurama )",
   types: ["Normal"],
-  baseStats: { hp: 700, atk: 500, def: 550, spa: 500, spd: 350, spe: 150 },
+  baseStats: { hp: 500, atk: 500, def: 350, spa: 500, spd: 350, spe: 150 },
   abilities: {},
   heightm: 18.0
 },
