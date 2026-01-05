@@ -112,13 +112,14 @@ class Wave {
   getSoldiersScore() {
     return this.soldiers.reduce((score, [image, quantity]) => {
       const tierMod = getTierMod(getTierOf(image.id));
-      return score + image.cp() * quantity * tierMod
+      return score + (image.cp() * quantity * tierMod)
     }, 0)
   }
 
   getArtilleriesScore() {
     return this.artilleries.reduce((score, artillery) => {
-      return score + artillery.score
+      const tierMod = getTierMod(getTierOf(artillery.defence));      
+      return score + (artillery.defence * artillery.quantity * tierMod)
     }, 0)
   }
 

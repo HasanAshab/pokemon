@@ -912,12 +912,12 @@ export function getTiers() {
 
 export function getTierOfMight(m) {
   const tiers = getTiers()
-  let tier = 1
-  for (let i = 0; i < tiers.length; i++) {
-    if (m > tiers[i].minMight) {
-      tier = i + 1
+  let currentTier = 1
+  for (const tier of tiers) {
+    if (m > tier.minMight) {
+      currentTier++
     }
-    else return tier
+    else return currentTier
   }
 }
 

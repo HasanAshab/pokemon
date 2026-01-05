@@ -1,7 +1,7 @@
 import { AttackWave, DefenseWave, SoldierStack, WAR_SYSTEMS } from "../../kingdoms/war.js";
 import { Pokemon } from "./utils/models.js";
 
-function assert(w1, w2, expectedWinner) {
+function assert(w1, w2, expectedWinner, art1 = [], art2 = []) {
   const com1 = {
     image: genin, // image means assume another genin the commander
     iq: {
@@ -19,9 +19,9 @@ function assert(w1, w2, expectedWinner) {
     }
   }
 
-  let wave1 = new AttackWave(com1, new SoldierStack(w1), {luck: 1})
+  let wave1 = new AttackWave(com1, new SoldierStack(w1), {luck: 1}, art1)
 
-  let wave2 = new DefenseWave(com2, new SoldierStack(w2), {luck: 1})
+  let wave2 = new DefenseWave(com2, new SoldierStack(w2), {luck: 1}, art2)
 
   
 
@@ -79,9 +79,15 @@ assert(
   [genin, 1]
 ],
 [
-  [rookie, 4]
+  // [rookie, 4]
 ],
-0
+0,
+[],
+[{
+      name: "test",
+      defence: 399,
+      quantity: 1,
+}]
 )
 
 assert(

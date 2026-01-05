@@ -504,9 +504,12 @@ startWarBtn.onclick = () => {
     dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
     
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
-    const buildDefenceScore = calculateBuildDefenceScore(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
-
-    const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts, buildDefenceScore);
+    const artillaries = getArtilleriesAtDefence(
+      defKingdom,
+      parseInt(areaPercentageInput.value),
+      directionSelect.value
+    )
+    const defWave = new DefenseWave(dwave.commander, dwave.soldiers, defenderOpts, artillaries);
 
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
