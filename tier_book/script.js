@@ -15,7 +15,7 @@ function createTierDisplay() {
     for (let i = 0; i < tiers.length; i++) {
         const tierItem = document.createElement('div');
         tierItem.className = 'tier-item';
-        
+
         const tierNumber = document.createElement('div');
         tierNumber.className = 'tier-number';
         tierNumber.textContent = `Tier ${i + 1}`;

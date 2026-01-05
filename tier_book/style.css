@@ -52,76 +52,88 @@ h1 {
 }
 
 .tier-item:nth-child(1) {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #333;
 }
 
 .tier-item:nth-child(2) {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+    color: #333;
 }
 
 .tier-item:nth-child(3) {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    background: linear-gradient(135deg, #90caf9 0%, #64b5f6 100%);
+    color: #333;
 }
 
 .tier-item:nth-child(4) {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
     color: #333;
 }
 
 .tier-item:nth-child(5) {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-    color: #333;
+    background: linear-gradient(135deg, #42a5f5 0%, #2196f3 100%);
+    color: white;
 }
 
 .tier-item:nth-child(6) {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+    color: white;
 }
 
 .tier-item:nth-child(7) {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #1e88e5 0%, #1976d2 100%);
+    color: white;
 }
 
 .tier-item:nth-child(8) {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+    color: white;
 }
 
 .tier-item:nth-child(9) {
-    background: linear-gradient(135deg, #ffb347 0%, #ffcc33 100%);
-    color: #333;
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    color: white;
 }
 
 .tier-item:nth-child(10) {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    background: linear-gradient(135deg, #0d47a1 0%, #0a3d91 100%);
+    color: white;
 }
 
 .tier-item:nth-child(11) {
-    background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+    background: linear-gradient(135deg, #0a3d91 0%, #083481 100%);
+    color: white;
 }
 
 .tier-item:nth-child(12) {
-    background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+    background: linear-gradient(135deg, #083481 0%, #062a71 100%);
+    color: white;
 }
 
 .tier-item:nth-child(13) {
-    background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+    background: linear-gradient(135deg, #062a71 0%, #042061 100%);
+    color: white;
 }
 
 .tier-item:nth-child(14) {
-    background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
-    color: #333;
+    background: linear-gradient(135deg, #042061 0%, #021751 100%);
+    color: white;
 }
 
 .tier-item:nth-child(15) {
-    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    background: linear-gradient(135deg, #021751 0%, #010d41 100%);
+    color: white;
 }
 
 .tier-item:nth-child(16) {
-    background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
-    color: #333;
+    background: linear-gradient(135deg, #010d41 0%, #000331 100%);
+    color: white;
 }
 
 .tier-item:nth-child(n+17) {
-    background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+    background: linear-gradient(135deg, #000331 0%, #000021 100%);
+    color: white;
 }
 
 .tier-number {
