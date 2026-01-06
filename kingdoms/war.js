@@ -73,11 +73,11 @@ export class SoldierStack extends Map {
     }, 0)
   }
 
-  resize(percent) {
+  resize(percent, mode = 'ceil') {
     const result = new SoldierStack();
     const mod = percent / 100
     for (const [image, quantity] of this.entries()) {
-      result.set(image, Math.ceil(quantity * mod));
+      result.set(image, Math[mode](quantity * mod));
     }
     return result;
   }
@@ -110,10 +110,14 @@ class Wave {
   }
 
   getSoldiersScore() {
-    return this.soldiers.reduce((score, [image, quantity]) => {
+    const baseScore = this.soldiers.reduce((score, [image, quantity]) => {
       const tierMod = getTierMod(getTierOf(image.id));
       return score + (image.cp() * quantity * tierMod)
     }, 0)
+    const mpMod = this.soldiers.count() * 2.5
+    console.log(mpMod);
+    
+    return baseScore * mpMod
   }
 
   getArtilleriesScore() {
@@ -246,7 +250,7 @@ class War {
   _canWin() {
     return this.result.scores.atk > this.result.scores.def;
   }
-  
+
   _calcWounded() {
     const wounded = {
       atk: new SoldierStack(),
@@ -255,14 +259,17 @@ class War {
     if (this.result.raisedWhiteFlag)
       return wounded
 
+    const resizeMode = 'floor'
+    const scoreDiff = this.scoreDiffPercent()
     if (this.result.win) {
-      this.result._woundedPer = Math.max((this.result.scores.def * 100) / this.result.scores.atk, 0);      
-      wounded.atk = this.attackers.soldiers.resize(this.result._woundedPer);
-      wounded.def = this.defenders.soldiers.resize(95);
+      const woundedPercent = Math.max(0, 100 - scoreDiff)
+      wounded.atk = this.attackers.soldiers.resize(woundedPercent, resizeMode);
+      wounded.def = this.defenders.soldiers.resize(95, resizeMode);
     } else {
-      this.result._woundedPer = Math.max((this.result.scores.atk * 100) / this.result.scores.def, 0);
-      wounded.def = this.defenders.soldiers.resize(this.result._woundedPer);
-      wounded.atk = this.attackers.soldiers.resize(95);
+      const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
+      console.log(woundedPercent);
+      wounded.def = this.defenders.soldiers.resize(woundedPercent, resizeMode);
+      wounded.atk = this.attackers.soldiers.resize(95, resizeMode);
     }
     return wounded
   }
@@ -275,7 +282,7 @@ class War {
 
   _calcScore(w1) {
     // const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore()
-    return w1.getSoldiersScore() + w1.getArtilleriesScore()
+    return (w1.getSoldiersScore() + w1.getArtilleriesScore()) * w1.cpModifier()
 
     // const w2 = this._opponentOf(w1)
     // const imageBonusMod = this._getImageBonusMod(w1)    
@@ -329,8 +336,7 @@ class War {
   
     if (atk === 0 && def === 0) return 0; // avoid NaN
   
-    // percent relative to defender
-    return ((atk - def) / Math.max(def, 1)) * 100;
+    return ((100 * atk) / def) - 100;
   }  
 }
 

@@ -81,48 +81,58 @@ let jonin = new Pokemon("jonin", {
 })
 
 
-assert(
-[
-  [genin, 1]
-],
-[
-  // [rookie, 4]
-],
-0,
-[],
-[{
-      name: "test",
-      defence: 399,
-      quantity: 1,
-}]
-)
+// assert(
+// [
+//   [genin, 1]
+// ],
+// [
+//   // [rookie, 4]
+// ],
+// 0,
+// [],
+// [{
+//       name: "test",
+//       defence: 399,
+//       quantity: 1,
+// }]
+// )
 
 assert(
 [
-  [chunin, 1]
+  [genin, 5]
 ],
 [
-  [genin, 4]
+  [chunin, 2]
 ],
 0
 )
 
 assert(
 [
-  [jonin, 1]
+  [chunin, 2]
 ],
 [
-  [elchunin, 3]
+  [genin, 10]
 ],
 0
 )
 
-assert(
-[
-  [genin, 1]
-],
-[
-  [new Pokemon("laimonk"), 1]
-],
-0
-)
+// assert(
+// [
+//   [jonin, 1]
+// ],
+// [
+//   [elchunin, 3]
+// ],
+// 0
+// )
+
+// assert(
+// [
+//   [genin, 1]
+// ],
+// [
+//   [new Pokemon("laimonk"), 1]
+// ],
+// 0
+// )
