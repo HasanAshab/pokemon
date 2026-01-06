@@ -11,6 +11,7 @@ function getBeastsWithTiers() {
         
         const pokemon = new Pokemon(id);
         if (pokemon.type !== "beast") continue;
+  console.log(id, pokemon.cp());
 
         list.push({
             id,

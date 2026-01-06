@@ -1,10 +1,9 @@
 export default {
-
   laimonk: {
     num: 1,
     name: "Laimonk",
     types: ["Fighting"],
-   baseStats: { hp: 60, atk: 85, def: 65, spa: 60, spd: 65, spe: 64 }, // 399
+    baseStats: { hp: 60, atk: 85, def: 65, spa: 60, spd: 65, spe: 64 }, // total = 399
     abilities: {},
     heightm: 1.2
   },
@@ -13,8 +12,8 @@ export default {
     num: 2,
     name: "Devil",
     types: ["Dark"],
-     baseStats: { hp: 85, atk: 95, def: 85, spa: 120, spd: 85, spe: 60 }, // 530 
-      abilities: {},
+    baseStats:  { hp: 85, atk: 95, def: 85, spa: 120, spd: 85, spe: 60 }, // total = 530
+    abilities: {},
     heightm: 1.3
   },
 
@@ -22,7 +21,7 @@ export default {
     num: 3,
     name: "Drago",
     types: ["Dragon", "Flying"],
-    baseStats: { hp: 95, atk: 120, def: 95, spa: 120, spd: 98, spe: 50 }, // 678
+    baseStats: { hp: 95, atk: 120, def: 95, spa: 120, spd: 98, spe: 50 }, // total = 678
     abilities: {},
     heightm: 1.4
   },
@@ -31,7 +30,7 @@ export default {
     num: 4,
     name: "Gobking",
     types: ["Poison"],
-    baseStats: { hp: 130, atk: 145, def: 130, spa: 110, spd: 115, spe: 79 },// 809
+    baseStats: { hp: 130, atk: 145, def: 130, spa: 110, spd: 115, spe: 79 }, // total = 809
     abilities: {},
     heightm: 1.5
   },
@@ -40,7 +39,7 @@ export default {
     num: 5,
     name: "Elef",
     types: ["Normal"],
-    baseStats: { hp: 170, atk: 165, def: 160, spa: 140, spd: 135, spe: 75 }, // 985
+    baseStats: { hp: 170, atk: 165, def: 160, spa: 140, spd: 135, spe: 75 }, // total = 985
     abilities: {},
     heightm: 1.8
   },
@@ -49,7 +48,14 @@ export default {
     num: 6,
     name: "Dino",
     types: ["Dragon", "Dark"],
-    baseStats:{ hp: 190, atk: 230, def: 185, spa: 185, spd: 165, spe: 23 }, // 1178
+    baseStats:  {
+    hp: 200,
+    atk: 220,
+    def: 260,
+    spa: 180,
+    spd: 298,
+    spe: 20
+  }, // total = 1178
     abilities: {},
     heightm: 2
   },
@@ -58,11 +64,10 @@ export default {
     num: 7,
     name: "Knight",
     types: ["Steel"],
-    baseStats: { hp: 240, atk: 260, def: 290, spa: 170, spd: 290, spe: 136 }, // 1386
+    baseStats: { hp: 240, atk: 260, def: 290, spa: 170, spd: 290, spe: 136 }, // total = 1386
     abilities: {},
     heightm: 2.3
   },
-
   tails1: {
     num: 8,
     name: "tails1( shukaku )",
