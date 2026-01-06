@@ -85,13 +85,14 @@ let jonin = new Pokemon("jonin", {
 
 assert(
 [
-  [genin, 3]
+  [genin, 1]
 ],
 [
-  [rookie, 6]
+  [rookie, 3]
 ],
 0,
 [],
+// [],
 [{
       name: "Kunai Thrower",
       defence: 277,

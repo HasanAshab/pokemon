@@ -886,7 +886,7 @@ export function predictNextDisasters(kingdom) {
 export function getInitialFixedXp(imageId) {
   const image = pokemons[imageId];
   if (image.type === "human") {
-    return (image.num - 1) * 1000;
+    return ((image.num - 1) * 1000) + 100;
   }
 
   if (image.type === "beast") {
@@ -933,5 +933,7 @@ export function getTierOf(id) {
     }
     return 1
   }
+  console.log(pokemon.id);
+  
   return getTierOfMight(pokemon.cp())
 }
