@@ -4,6 +4,7 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 import pokemons from "../data/pokemons.js";
+import beasts from "../data/beasts.js";
 
 export function getPopulation(kingdom) {
   return kingdom.landArea * kingdom.density;
@@ -764,13 +765,13 @@ export function getResearchersAccuracy(kingdom) {
 }
 
 
+export const randomFrom = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 export function predictNextDisasters(kingdom) { 
   const chance = (p) => Math.random() * 100 < p;
 
-  const randomFrom = (arr) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
   const randomizeAccuracy = (x) => {
     let min = 0.8;
     let max = 1.2;
@@ -921,9 +922,7 @@ export function getTierOfMight(m) {
   }
 }
 
-export function getTierOf(id) {
-  console.log(id);
-  
+export function getTierOf(id) {  
   if (typeof id === "number") return getTierOfMight(id)
 
   const tiers = getTiers()
@@ -939,5 +938,32 @@ export function getTierOf(id) {
 }
 
 export function getMaxSearchableMightOfBeasts(kingdom) {
-  return 500 // TODO
+  const researcherScore = getStorage(kingdom).bRes || 0;
+  return Math.round(researcherScore * 5);
+}
+
+export function searchForBeasts(kingdom) {
+  const maxMight = getMaxSearchableMightOfBeasts(kingdom)
+
+  const beastIds = Object.keys(beasts)
+    .filter(id => new Pokemon(id).cp() <= maxMight)
+
+  if (!beastIds.length) return null
+
+  const id = randomFrom(beastIds)
+  const beastCP = new Pokemon(id).cp()
+
+  let maxQty = Math.floor(maxMight / beastCP)
+  if (maxQty < 1) maxQty = 1
+
+  // generosity curve (tune 6–10)
+  const k = 8
+  const bias = 1 - Math.exp(-maxQty / k)
+
+  const quantity = Math.max(
+    1,
+    Math.ceil(maxQty * Math.pow(Math.random(), 1 - bias))
+  )
+
+  return { id, quantity }
 }
