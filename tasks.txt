@@ -1,14 +1,12 @@
 * Tasks
 researcher -> min bp, quantity
 ap on battle
-jinchuriki all
 
 send spy
 barrack showing baseCp is without level
 break artilary, remove beasts
 
 
-marketplace buy (+ all)
 auto generate military
 artilary cost estimator
 

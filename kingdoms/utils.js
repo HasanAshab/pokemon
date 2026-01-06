@@ -922,6 +922,8 @@ export function getTierOfMight(m) {
 }
 
 export function getTierOf(id) {
+  console.log(id);
+  
   if (typeof id === "number") return getTierOfMight(id)
 
   const tiers = getTiers()
@@ -933,7 +935,5 @@ export function getTierOf(id) {
     }
     return 1
   }
-  console.log(pokemon.id);
-  
   return getTierOfMight(pokemon.cp())
 }

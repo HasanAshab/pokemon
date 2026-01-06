@@ -1,6 +1,6 @@
 import { Damage } from "../../assets/js/utils/damage.js"
 import { weightedRandom } from "../../assets/js/utils/helpers.js"
-import types from "../types.js"
+import beasts from "../beasts.js"
 
 function SharinganAbility({ blind, copycat, retreat, dependencies = [] }) {
   return {
@@ -70,7 +70,22 @@ function SharedEyeAbility({ blind, retreat, dependencies = [] }) {
   }
 }
 
+
+function getJinchurikiAbilities() {
+  const abilities = {}
+  for (const beastId in beasts) {
+    abilities[`${beastId}beast`] = {
+      type: 'beast',
+      beastImage: beastId,
+    }
+  }
+  console.log(abilities);
+  
+  return abilities
+}
+
 export default {
+  ...getJinchurikiAbilities(),
   // secret
   sharedeye: SharedEyeAbility({blind: 0.125, retreat: -1, dependencies: []}), // ["mayangan:silver-eye", "mayangan:selfish-scar:silver"]}),
   // gets 6 seconds
@@ -724,11 +739,11 @@ export default {
     dependencies: ['chakrafarm'],
   },
 
-  tails10beast: {
-    type: 'beast',
-    beastImage: false,
-    dependencies: ["tails1beast", "tails2beast", "tails3beast", "tails5beast", "tails6beast", "tails8beast", "tails9beast"],
-  },
+  // tails10beast: {
+  //   type: 'beast',
+  //   beastImage: false,
+  //   dependencies: ["tails1beast", "tails2beast", "tails3beast", "tails5beast", "tails6beast", "tails8beast", "tails9beast"],
+  // },
 
   charizardbeast: {
     retreat: 2,
@@ -753,10 +768,10 @@ export default {
     },
   },
 
-  killerbeebeast: {
+  tails7beast: {
     retreat: 2,
     type: 'beast',
-    beastImage: 'killerbee',
+    beastImage: 'tails7',
     onTurn(pokemon) {
         if (!this._summonAfterTurns) {
             this._summonAfterTurns = this._summonAfterTurns === undefined

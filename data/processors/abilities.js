@@ -1,5 +1,6 @@
 import { processor } from "./helpers.js"
 import { sumObj, modObj } from "../../assets/js/utils/helpers.js"
+import { getTierOf } from "../../kingdoms/utils.js"
 
 
 const makeCtx = (ability) => ({
@@ -113,7 +114,12 @@ function addCtxMixer(ability) {
 
 function setRetreat(ability) {
     if ("retreat" in ability) return
-    ability.retreat = parseFloat((Math.max(ability.rating ?? 0, 0) * 0.6).toFixed(2))
+    if ("rating" in ability) {
+        ability.retreat = parseFloat((Math.max(ability.rating ?? 0, 0) * 0.6).toFixed(2))
+    }
+    if (ability.type === "beast") {
+        ability.retreat = getTierOf(ability.beastImage) * 2
+    }
 }
 
 export default processor([

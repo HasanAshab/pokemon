@@ -69,12 +69,29 @@ function renderItems() {
     if (kingdoms[name].marketplace) {
       kingdoms[name].marketplace.forEach(marketItem => {
         if (marketItem.itemName === itemName) {
-          const actualQuantity = marketItem.sellAll ? (storage[itemName] || 0) : marketItem.quantity;
-          marketplaceImpact -= actualQuantity; // Items being sold (negative)
+          if (marketItem.actionType === 'sell') {
+            const actualQuantity = marketItem.sellAll ? (storage[itemName] || 0) : marketItem.quantity;
+            marketplaceImpact -= actualQuantity; // Items being sold (negative)
+          } else if (marketItem.actionType === 'buy') {
+            const actualQuantity = marketItem.buyWholeDemand ? 
+              Math.abs(calcNetProd(kingdoms[name])[itemName] || 0) : 
+              marketItem.quantity;
+            marketplaceImpact += actualQuantity; // Items being bought (positive)
+          }
         }
+        
+        // Calculate coin profit/cost from all transactions
         if (itemName === 'coins' && marketItem.itemName !== 'coins') {
-          const actualQuantity = marketItem.sellAll ? (storage[marketItem.itemName] || 0) : marketItem.quantity;
-          marketplaceCoinProfit += actualQuantity * marketItem.unitPrice; // Coin profit from sales
+          let actualQuantity;
+          if (marketItem.actionType === 'sell') {
+            actualQuantity = marketItem.sellAll ? (storage[marketItem.itemName] || 0) : marketItem.quantity;
+            marketplaceCoinProfit += actualQuantity * marketItem.unitPrice; // Coin profit from sales
+          } else if (marketItem.actionType === 'buy') {
+            actualQuantity = marketItem.buyWholeDemand ? 
+              Math.abs(calcNetProd(kingdoms[name])[marketItem.itemName] || 0) : 
+              marketItem.quantity;
+            marketplaceCoinProfit -= actualQuantity * marketItem.unitPrice; // Coin cost from purchases
+          }
         }
       });
       
@@ -83,7 +100,7 @@ function renderItems() {
         baseProduction = netVal - marketplaceCoinProfit;
         marketplaceImpact = marketplaceCoinProfit;
       } else if (marketplaceImpact !== 0) {
-        baseProduction = netVal + Math.abs(marketplaceImpact); // Add back the sold items to get base production
+        baseProduction = netVal - marketplaceImpact; // Subtract marketplace impact to get base production
       }
     }
     
@@ -198,12 +215,25 @@ newMonthBtn.onclick = () => {
     });
   }
 
-  // Process marketplace sales - remove sold items from storage
+  // Process marketplace transactions - both sales and purchases
   if (kingdoms[name].marketplace && kingdoms[name].marketplace.length > 0) {
     kingdoms[name].marketplace.forEach(item => {
-      const actualQuantity = item.sellAll ? (kingdoms[name].storage[item.itemName] || 0) : item.quantity;
-      if (kingdoms[name].storage[item.itemName]) {
-        kingdoms[name].storage[item.itemName] = Math.max(0, kingdoms[name].storage[item.itemName] - actualQuantity);
+      if (item.actionType === 'sell') {
+        // Handle selling - remove items from storage
+        const actualQuantity = item.sellAll ? (kingdoms[name].storage[item.itemName] || 0) : item.quantity;
+        if (kingdoms[name].storage[item.itemName]) {
+          kingdoms[name].storage[item.itemName] = Math.max(0, kingdoms[name].storage[item.itemName] - actualQuantity);
+        }
+      } else if (item.actionType === 'buy') {
+        // Handle buying - add items to storage
+        const actualQuantity = item.buyWholeDemand ? 
+          Math.abs(netProd[item.itemName] || 0) : // Use absolute value of negative production
+          item.quantity;
+        
+        if (!kingdoms[name].storage[item.itemName]) {
+          kingdoms[name].storage[item.itemName] = 0;
+        }
+        kingdoms[name].storage[item.itemName] += actualQuantity;
       }
     });
   }
@@ -337,17 +367,40 @@ function setupTabs() {
 
 // Marketplace functionality
 function setupMarketplace() {
+  const actionTypeSelect = document.getElementById('actionType');
   const sellAllCheckbox = document.getElementById('sellAll');
+  const buyWholeDemandCheckbox = document.getElementById('buyWholeDemand');
+  const sellAllGroup = document.getElementById('sellAllGroup');
+  const buyWholeDemandGroup = document.getElementById('buyWholeDemandGroup');
   const quantityGroup = document.getElementById('quantityGroup');
   const addMarketItemBtn = document.getElementById('addMarketItemBtn');
   
+  // Toggle between sell/buy options
+  actionTypeSelect.addEventListener('change', () => {
+    const isBuying = actionTypeSelect.value === 'buy';
+    
+    if (isBuying) {
+      sellAllGroup.style.display = 'none';
+      buyWholeDemandGroup.style.display = 'block';
+      sellAllCheckbox.checked = false;
+    } else {
+      sellAllGroup.style.display = 'block';
+      buyWholeDemandGroup.style.display = 'none';
+      buyWholeDemandCheckbox.checked = false;
+    }
+    
+    // Reset quantity visibility
+    quantityGroup.style.display = 'block';
+  });
+  
   // Toggle quantity input based on "Sell All" checkbox
   sellAllCheckbox.addEventListener('change', () => {
-    if (sellAllCheckbox.checked) {
-      quantityGroup.style.display = 'none';
-    } else {
-      quantityGroup.style.display = 'block';
-    }
+    quantityGroup.style.display = sellAllCheckbox.checked ? 'none' : 'block';
+  });
+  
+  // Toggle quantity input based on "Buy Whole Demand" checkbox
+  buyWholeDemandCheckbox.addEventListener('change', () => {
+    quantityGroup.style.display = buyWholeDemandCheckbox.checked ? 'none' : 'block';
   });
   
   // Add marketplace item
@@ -361,15 +414,21 @@ function setupMarketplace() {
 function updateMarketplaceItemsDropdown() {
   const select = document.getElementById('marketItemSelect');
   const storage = getStorage(kingdoms[name]);
+  const netProd = calcNetProd(kingdoms[name]);
   
   // Clear existing options except the first one
   select.innerHTML = '<option value="">Select an item</option>';
   
-  // Add storage items to dropdown
-  Object.keys(storage).forEach(itemName => {
+  // Get all unique items from storage and netProd
+  const allItems = new Set([...Object.keys(storage), ...Object.keys(netProd)]);
+  
+  // Add items to dropdown
+  Array.from(allItems).sort().forEach(itemName => {
     const option = document.createElement('option');
     option.value = itemName;
-    option.textContent = `${itemName} (${storage[itemName].toLocaleString()})`;
+    const currentQty = storage[itemName] || 0;
+    const monthlyChange = netProd[itemName] || 0;
+    option.textContent = `${itemName} (${currentQty.toLocaleString()}, ${monthlyChange >= 0 ? '+' : ''}${monthlyChange.toLocaleString()}/month)`;
     select.appendChild(option);
   });
 }
@@ -377,12 +436,16 @@ function updateMarketplaceItemsDropdown() {
 function addMarketplaceItem() {
   const itemSelect = document.getElementById('marketItemSelect');
   const unitPriceInput = document.getElementById('unitPrice');
+  const actionTypeSelect = document.getElementById('actionType');
   const sellAllCheckbox = document.getElementById('sellAll');
+  const buyWholeDemandCheckbox = document.getElementById('buyWholeDemand');
   const quantityInput = document.getElementById('quantity');
   
   const itemName = itemSelect.value;
   const unitPrice = parseFloat(unitPriceInput.value);
+  const actionType = actionTypeSelect.value;
   const sellAll = sellAllCheckbox.checked;
+  const buyWholeDemand = buyWholeDemandCheckbox.checked;
   const quantity = parseInt(quantityInput.value) || 1;
   
   if (!itemName) {
@@ -396,24 +459,54 @@ function addMarketplaceItem() {
   }
   
   const storage = getStorage(kingdoms[name]);
-  if (!storage[itemName] || storage[itemName] <= 0) {
-    alert('Item not available in storage or quantity is 0');
-    return;
+  const netProd = calcNetProd(kingdoms[name]);
+  
+  // Validation for selling
+  if (actionType === 'sell') {
+    if (!storage[itemName] || storage[itemName] <= 0) {
+      alert('Item not available in storage or quantity is 0');
+      return;
+    }
+    
+    if (!sellAll && (quantity <= 0 || quantity > storage[itemName])) {
+      alert(`Invalid quantity. Available: ${storage[itemName]}`);
+      return;
+    }
   }
   
-  if (!sellAll && (quantity <= 0 || quantity > storage[itemName])) {
-    alert(`Invalid quantity. Available: ${storage[itemName]}`);
-    return;
+  // Validation for buying
+  if (actionType === 'buy') {
+    if (!buyWholeDemand && quantity <= 0) {
+      alert('Please enter a valid quantity to buy');
+      return;
+    }
+  }
+  
+  // Calculate quantity for "Buy Whole Demand"
+  let finalQuantity = quantity;
+  if (actionType === 'buy' && buyWholeDemand) {
+    const monthlyDecrease = netProd[itemName] || 0;
+    if (monthlyDecrease >= 0) {
+      alert('This item is not decreasing monthly. Cannot calculate demand.');
+      return;
+    }
+    finalQuantity = Math.abs(monthlyDecrease); // Convert negative to positive
+  } else if (actionType === 'sell' && sellAll) {
+    finalQuantity = storage[itemName] || 0;
   }
   
   // Check if item already exists in marketplace
-  const existingIndex = kingdoms[name].marketplace.findIndex(item => item.itemName === itemName);
+  const existingIndex = kingdoms[name].marketplace.findIndex(item => 
+    item.itemName === itemName && item.actionType === actionType
+  );
   
   const marketItem = {
     itemName,
     unitPrice,
-    sellAll,
-    quantity: sellAll ? storage[itemName] : quantity
+    actionType,
+    sellAll: actionType === 'sell' ? sellAll : false,
+    buyWholeDemand: actionType === 'buy' ? buyWholeDemand : false,
+    quantity: finalQuantity
   };
   
   if (existingIndex !== -1) {
@@ -447,12 +540,24 @@ function editMarketplaceItem(index) {
   // Populate form with existing values
   document.getElementById('marketItemSelect').value = item.itemName;
   document.getElementById('unitPrice').value = item.unitPrice;
-  document.getElementById('sellAll').checked = item.sellAll;
-  document.getElementById('quantity').value = item.quantity;
+  document.getElementById('actionType').value = item.actionType || 'sell';
   
-  // Show/hide quantity input based on sellAll
-  const quantityGroup = document.getElementById('quantityGroup');
-  quantityGroup.style.display = item.sellAll ? 'none' : 'block';
+  // Handle sell/buy specific fields
+  if (item.actionType === 'sell') {
+    document.getElementById('sellAll').checked = item.sellAll || false;
+    document.getElementById('buyWholeDemand').checked = false;
+    document.getElementById('sellAllGroup').style.display = 'block';
+    document.getElementById('buyWholeDemandGroup').style.display = 'none';
+    document.getElementById('quantityGroup').style.display = item.sellAll ? 'none' : 'block';
+  } else {
+    document.getElementById('sellAll').checked = false;
+    document.getElementById('buyWholeDemand').checked = item.buyWholeDemand || false;
+    document.getElementById('sellAllGroup').style.display = 'none';
+    document.getElementById('buyWholeDemandGroup').style.display = 'block';
+    document.getElementById('quantityGroup').style.display = item.buyWholeDemand ? 'none' : 'block';
+  }
+  
+  document.getElementById('quantity').value = item.quantity;
   
   // Change button text to indicate editing
   const addBtn = document.getElementById('addMarketItemBtn');
@@ -469,12 +574,16 @@ function editMarketplaceItem(index) {
 function updateMarketplaceItem(index) {
   const itemSelect = document.getElementById('marketItemSelect');
   const unitPriceInput = document.getElementById('unitPrice');
+  const actionTypeSelect = document.getElementById('actionType');
   const sellAllCheckbox = document.getElementById('sellAll');
+  const buyWholeDemandCheckbox = document.getElementById('buyWholeDemand');
   const quantityInput = document.getElementById('quantity');
   
   const itemName = itemSelect.value;
   const unitPrice = parseFloat(unitPriceInput.value);
+  const actionType = actionTypeSelect.value;
   const sellAll = sellAllCheckbox.checked;
+  const buyWholeDemand = buyWholeDemandCheckbox.checked;
   const quantity = parseInt(quantityInput.value) || 1;
   
   if (!itemName) {
@@ -488,22 +597,50 @@ function updateMarketplaceItem(index) {
   }
   
   const storage = getStorage(kingdoms[name]);
-  if (!storage[itemName] || storage[itemName] <= 0) {
-    alert('Item not available in storage or quantity is 0');
-    return;
+  const netProd = calcNetProd(kingdoms[name]);
+  
+  // Validation for selling
+  if (actionType === 'sell') {
+    if (!storage[itemName] || storage[itemName] <= 0) {
+      alert('Item not available in storage or quantity is 0');
+      return;
+    }
+    
+    if (!sellAll && (quantity <= 0 || quantity > storage[itemName])) {
+      alert(`Invalid quantity. Available: ${storage[itemName]}`);
+      return;
+    }
   }
   
-  if (!sellAll && (quantity <= 0 || quantity > storage[itemName])) {
-    alert(`Invalid quantity. Available: ${storage[itemName]}`);
-    return;
+  // Validation for buying
+  if (actionType === 'buy') {
+    if (!buyWholeDemand && quantity <= 0) {
+      alert('Please enter a valid quantity to buy');
+      return;
+    }
+  }
+  
+  // Calculate quantity for "Buy Whole Demand"
+  let finalQuantity = quantity;
+  if (actionType === 'buy' && buyWholeDemand) {
+    const monthlyDecrease = netProd[itemName] || 0;
+    if (monthlyDecrease >= 0) {
+      alert('This item is not decreasing monthly. Cannot calculate demand.');
+      return;
+    }
+    finalQuantity = Math.abs(monthlyDecrease);
+  } else if (actionType === 'sell' && sellAll) {
+    finalQuantity = storage[itemName] || 0;
   }
   
   // Update the item
   kingdoms[name].marketplace[index] = {
     itemName,
     unitPrice,
-    sellAll,
-    quantity: sellAll ? storage[itemName] : quantity
+    actionType,
+    sellAll: actionType === 'sell' ? sellAll : false,
+    buyWholeDemand: actionType === 'buy' ? buyWholeDemand : false,
+    quantity: finalQuantity
   };
   
   // Reset form
@@ -517,9 +654,13 @@ function updateMarketplaceItem(index) {
 function resetMarketplaceForm() {
   document.getElementById('marketItemSelect').value = '';
   document.getElementById('unitPrice').value = '';
+  document.getElementById('actionType').value = 'sell';
   document.getElementById('sellAll').checked = false;
+  document.getElementById('buyWholeDemand').checked = false;
   document.getElementById('quantity').value = '1';
   document.getElementById('quantityGroup').style.display = 'block';
+  document.getElementById('sellAllGroup').style.display = 'block';
+  document.getElementById('buyWholeDemandGroup').style.display = 'none';
   
   const addBtn = document.getElementById('addMarketItemBtn');
   addBtn.textContent = 'Add to Marketplace';
@@ -530,16 +671,22 @@ function renderMarketplace() {
   const tableBody = document.getElementById('marketplaceTableBody');
   const overallProfitValue = document.getElementById('overallProfitValue');
   const storage = getStorage(kingdoms[name]);
+  const netProd = calcNetProd(kingdoms[name]);
   
   tableBody.innerHTML = '';
   let totalProfit = 0;
   
   // Sort marketplace items by total profit (highest first)
   const sortedMarketplace = [...kingdoms[name].marketplace].sort((a, b) => {
-    const aQuantity = a.sellAll ? (storage[a.itemName] || 0) : a.quantity;
-    const bQuantity = b.sellAll ? (storage[b.itemName] || 0) : b.quantity;
-    const aProfit = aQuantity * a.unitPrice;
-    const bProfit = bQuantity * b.unitPrice;
+    const aQuantity = a.actionType === 'sell' 
+      ? (a.sellAll ? (storage[a.itemName] || 0) : a.quantity)
+      : (a.buyWholeDemand ? Math.abs(netProd[a.itemName] || 0) : a.quantity);
+    const bQuantity = b.actionType === 'sell'
+      ? (b.sellAll ? (storage[b.itemName] || 0) : b.quantity)
+      : (b.buyWholeDemand ? Math.abs(netProd[b.itemName] || 0) : b.quantity);
+    
+    const aProfit = aQuantity * a.unitPrice * (a.actionType === 'sell' ? 1 : -1);
+    const bProfit = bQuantity * b.unitPrice * (b.actionType === 'sell' ? 1 : -1);
     return bProfit - aProfit; // Descending order
   });
   
@@ -548,14 +695,22 @@ function renderMarketplace() {
     const actualIndex = kingdoms[name].marketplace.findIndex(original => 
       original.itemName === item.itemName && 
       original.unitPrice === item.unitPrice && 
-      original.sellAll === item.sellAll
+      original.actionType === item.actionType &&
+      ((original.sellAll === item.sellAll && item.actionType === 'sell') ||
+       (original.buyWholeDemand === item.buyWholeDemand && item.actionType === 'buy'))
     );
     
     const row = document.createElement('tr');
     
-    // Update quantity if "Sell All" is checked
-    const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
-    const totalItemProfit = actualQuantity * item.unitPrice;
+    // Calculate actual quantity and profit
+    let actualQuantity;
+    if (item.actionType === 'sell') {
+      actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
+    } else {
+      actualQuantity = item.buyWholeDemand ? Math.abs(netProd[item.itemName] || 0) : item.quantity;
+    }
+    
+    const totalItemProfit = actualQuantity * item.unitPrice * (item.actionType === 'sell' ? 1 : -1);
     totalProfit += totalItemProfit;
     
     // Determine profit class
@@ -563,10 +718,19 @@ function renderMarketplace() {
     if (totalItemProfit > 0) profitClass = 'profit-positive';
     else if (totalItemProfit < 0) profitClass = 'profit-negative';
     
+    // Create quantity display text
+    let quantityText = actualQuantity.toLocaleString();
+    if (item.actionType === 'sell' && item.sellAll) {
+      quantityText += ' (All)';
+    } else if (item.actionType === 'buy' && item.buyWholeDemand) {
+      quantityText += ' (Demand)';
+    }
+    
     row.innerHTML = `
       <td>${item.itemName}</td>
+      <td><span style="color: ${item.actionType === 'sell' ? '#dc3545' : '#28a745'}; font-weight: bold;">${item.actionType.toUpperCase()}</span></td>
       <td>${item.unitPrice >= 0 ? '$' : '-$'}${Math.abs(item.unitPrice).toLocaleString()}</td>
-      <td>${actualQuantity.toLocaleString()}${item.sellAll ? ' (All)' : ''}</td>
+      <td>${quantityText}</td>
       <td class="${profitClass}">${totalItemProfit >= 0 ? '$' : '-$'}${Math.abs(totalItemProfit).toLocaleString()}</td>
       <td>
         <button class="btn primary-btn" onclick="editMarketplaceItem(${actualIndex})" style="padding: 4px 8px; font-size: 12px; margin-right: 5px;">Edit</button>
@@ -588,7 +752,7 @@ function renderMarketplace() {
   // Show message if no items
   if (kingdoms[name].marketplace.length === 0) {
     const row = document.createElement('tr');
-    row.innerHTML = '<td colspan="5" style="text-align: center; color: #6c757d; font-style: italic;">No items in marketplace</td>';
+    row.innerHTML = '<td colspan="6" style="text-align: center; color: #6c757d; font-style: italic;">No items in marketplace</td>';
     tableBody.appendChild(row);
   }
 }
