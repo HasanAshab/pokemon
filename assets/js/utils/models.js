@@ -331,10 +331,9 @@ export class Pokemon extends PSPokemon {
         const stats = {};
 
         Object.keys(this._pokemon.baseStats).forEach(statName => {
-          const baseStat = this._pokemon.baseStats[statName];
-          stats[statName] = calcLevelStat(statName, baseStat, this.level);
+          const baseStat = this._pokemon.baseStats[statName];          
+          stats[statName] = calcLevelStat(statName, baseStat, this.level - 1);
         });
-          
         return stats;
       }
       
@@ -364,9 +363,7 @@ export class Pokemon extends PSPokemon {
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
         const tokenStats = this._calculateTokenStat();
-        
         const totalStats = {};
-        
         Object.keys(baseStats).forEach(statName => {
           totalStats[statName] =
           baseStats[statName] + levelStats[statName] + natureStats[statName] + tokenStats[statName];

@@ -157,7 +157,8 @@ export function logUniqueMethodKeys(obj) {
   console.log([...uniqueMethodKeys]);
 }
 
-export function calcLevelStat(statName, baseStat, level) {    
+export function calcLevelStat(statName, baseStat, level) {
+    if (level === 0) return 0
     const ev = 0; // Effort values from `efforts`
     const iv = 35; // Default IV value
 

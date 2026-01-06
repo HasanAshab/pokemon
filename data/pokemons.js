@@ -26,7 +26,6 @@ function processBeast(beast) {
   // }
 }
 
-
 for (const human of Object.values(humans)) {
   processHuman(human)
 }
