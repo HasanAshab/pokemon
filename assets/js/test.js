@@ -46,9 +46,14 @@ function assert(w1, w2, expectedWinner, art1 = [], art2 = []) {
   const getSTR = (w1) => w1.map(([p, q]) => `${q}${p.id.charAt(0).toUpperCase()}`).join(', ')
   console[assertResult ? "log" : "warn"](`${assertResult ? "PASS" : "FAIL"}: ${getSTR(w1)} vs ${getSTR(w2)} : ${expectedWinner} -> ${actualWinner}`);
   console.log(war.result.scores.atk, war.result.scores.def)
-  console.log(war.comments())
-  console.log(war.scoreDiffPercent())
-  console.log(war.result.wounded)
+  // console.log(war.comments())
+  console.log("score diff", war.scoreDiffPercent())
+  console.log(`Wounded Units:
+          Attacker:
+          ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}`, "")}
+          Defender:
+          ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}`, "")}
+       `);
   console.log('');
 }
 

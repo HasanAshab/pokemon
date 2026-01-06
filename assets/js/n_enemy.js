@@ -290,8 +290,11 @@ function addMove(event,isMega = false, moveId = '' , grade =0 , form ) {
 async function suggestFromLearnset(pokemon) {
   const filename = pokemon.image.replace(/mega(.)$/, '$1');  
   const { default: learnset } = await import(`../../data/learnsets/${filename}.js`)
+  console.log(learnset);
+  
   return learnset
-    .filter(ls => ls.required_level <= pokemon.level && ls.source === "level")
+    // .filter(ls => ls.required_level <= pokemon.level && ls.source === "level")
+    .filter(ls => ls.required_level <= pokemon.level)
     .map(ls => ls.name)
 }
 
@@ -517,7 +520,6 @@ async function setMoveAutomatic(event,isMega = false) {
     level: form.querySelector('.level-inp').value,
     nature: form.querySelector('.nature-inp').value
   })));
-  console.log(`${form.querySelector('.enemy').value}${isMega ? form.querySelector('.mega-suffix-select').value : ''}`);
   
   const automaticCreatedMoves = await suggestMoves(flagsToObj(prompt), {
     image: `${form.querySelector('.enemy').value}${isMega ? form.querySelector('.mega-suffix-select').value : ''}`,
