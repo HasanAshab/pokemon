@@ -11,13 +11,12 @@ function getBeastsWithTiers() {
         
         const pokemon = new Pokemon(id);
         if (pokemon.type !== "beast") continue;
-        
 
         list.push({
             id,
             picture: pokemon.picture,
-            tier: getTierOf(id)
-        });
+            tier: getTierOf(id) || getTiers().length + 1
+        });        
     }
     return list;
 }

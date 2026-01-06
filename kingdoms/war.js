@@ -259,15 +259,18 @@ class War {
       return wounded
 
     const resizeMode = 'floor'
+    const looserMode = ['floor', 'ceil'][Math.floor(Math.random() * 2)]
+    const looserWoundPercent = Math.floor(Math.random() * (100 - 95 + 1)) + 95;
     const scoreDiff = this.scoreDiffPercent()
+    const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
+    console.log(looserWoundPercent);
+    
     if (this.result.win) {
-      const woundedPercent = Math.max(0, 100 - scoreDiff)
       wounded.atk = this.attackers.soldiers.resize(woundedPercent, resizeMode);
-      wounded.def = this.defenders.soldiers.resize(95, resizeMode);
+      wounded.def = this.defenders.soldiers.resize(looserWoundPercent, looserMode);
     } else {
-      const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
       wounded.def = this.defenders.soldiers.resize(woundedPercent, resizeMode);
-      wounded.atk = this.attackers.soldiers.resize(95, resizeMode);
+      wounded.atk = this.attackers.soldiers.resize(looserWoundPercent, looserMode);
     }
     return wounded
   }
