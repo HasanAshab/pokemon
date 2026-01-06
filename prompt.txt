@@ -1,5 +1,15 @@
-now all other beasts from 3 tailed to 9 tailed.
+i want a fix basestat. 
 details:
+   laimonk: 399
+   devil: 530
+   drago: 678
+   gobking: 809
+   elef: 985
+   dino: 1178
+   knight: 1386
+
+   
+
   3 tails: rock type and total 1450 bst
   4 tails: with 3 types ( normal, fire and fighting ) and total 1640  bst
   5 tails:  with 2 types (Fairy and Psychic ) and total 1750 bst

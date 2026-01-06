@@ -2,11 +2,17 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import pokemons from "../data/pokemons.js";
 import { getTierOf, getTiers } from "../kingdoms/utils.js";
 
+
+  
 function getBeastsWithTiers() {
     const list = [];
+  
     for (const id in pokemons) {
+        
         const pokemon = new Pokemon(id);
         if (pokemon.type !== "beast") continue;
+        
+
         list.push({
             id,
             picture: pokemon.picture,
