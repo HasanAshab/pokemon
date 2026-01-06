@@ -1,22 +1,20 @@
 * Tasks
 researcher -> min bp, quantity
 ap on battle
-
 send spy
+
+
 barrack showing baseCp is without level
 break artilary, remove beasts
-
-
 auto generate military
 artilary cost estimator
 
+
 bfcache prob
-new compare 
 offline summon
 
 *ovi
 Kingdom Buildings, war better ui
-
 
 * bug
 abilities multiple opponent event system

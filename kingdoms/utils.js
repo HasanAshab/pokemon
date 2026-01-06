@@ -937,3 +937,7 @@ export function getTierOf(id) {
   }
   return getTierOfMight(pokemon.cp())
 }
+
+export function getMaxSearchableMightOfBeasts(kingdom) {
+  return 500 // TODO
+}

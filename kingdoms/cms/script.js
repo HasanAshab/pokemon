@@ -13,6 +13,7 @@ import {
   calculateBirthCount,
   getFoodTierForBudget,
   getResearchersAccuracy,
+  getMaxSearchableMightOfBeasts,
 } from "../utils.js";
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
@@ -53,6 +54,10 @@ const landQuality = document.getElementById("landQuality")
 const saveBtn = document.getElementById("saveBtn");
 const disasterResearchersVisionRange = document.getElementById("disasterResearchersVisionRange");
 const disasterResearchersVisionRangeValue = document.getElementById("disasterResearchersVisionRangeValue");
+const beastResearchersMinMight = document.getElementById("beastResearchersMinMight");
+const beastResearchersMinMightValue = document.getElementById("beastResearchersMinMightValue");
+const beastResearchersMaxMightLabel = document.getElementById("beastResearchersMaxMightLabel");
+const beastResearchersMaxMightBar = document.getElementById("beastResearchersMaxMightBar");
 kingdomName.textContent = name || "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -67,6 +72,11 @@ let kingdom = kingdoms[name] || {
   disaster: {
     visionRange: 1,
     geoState: {}
+  },
+  beasts: {
+    researchers: {
+      minMight: 0
+    }
   }
 };
 
@@ -88,11 +98,54 @@ if (!kingdom.events) {
   kingdom.events = { future: [], past: [] };
 }
 
+// Ensure beasts object exists
+if (!kingdom.beasts) {
+  kingdom.beasts = {
+    researchers: {
+      minMight: 0
+    }
+  };
+}
+if (!kingdom.beasts.researchers) {
+  kingdom.beasts.researchers = {
+    minMight: 0
+  };
+}
+
 disasterResearchersVisionRange.value = kingdom.disaster.visionRange
 disasterResearchersVisionRangeValue.textContent = kingdom.disaster.visionRange
 disasterResearchersVisionRange.oninput = () => {
   disasterResearchersVisionRangeValue.textContent = disasterResearchersVisionRange.value
   kingdom.disaster.visionRange = parseInt(disasterResearchersVisionRange.value)
+}
+
+beastResearchersMinMight.value = kingdom.beasts.researchers.minMight
+beastResearchersMinMightValue.textContent = kingdom.beasts.researchers.minMight
+beastResearchersMinMight.oninput = () => {
+  const minMight = parseInt(beastResearchersMinMight.value) || 0
+  beastResearchersMinMightValue.textContent = minMight
+  kingdom.beasts.researchers.minMight = minMight
+  updateBeastResearchersDisplay()
+}
+
+function updateBeastResearchersDisplay() {
+  const maxMight = getMaxSearchableMightOfBeasts(kingdom);
+  const minMight = kingdom.beasts.researchers.minMight;
+  
+  beastResearchersMaxMightLabel.textContent = maxMight.toLocaleString();
+  
+  // Calculate bar width based on min might vs max might
+  const barWidth = maxMight > 0 ? Math.min((minMight / maxMight) * 100, 100) : 0;
+  beastResearchersMaxMightBar.style.width = barWidth + "%";
+  
+  // Color the bar based on the ratio
+  if (barWidth < 30) {
+    beastResearchersMaxMightBar.style.backgroundColor = "#28a745"; // Green - low range
+  } else if (barWidth < 70) {
+    beastResearchersMaxMightBar.style.backgroundColor = "#ffc107"; // Yellow - medium range
+  } else {
+    beastResearchersMaxMightBar.style.backgroundColor = "#dc3545"; // Red - high range
+  }
 }
 
 globalThis.showDisasterResearchersAccuracy = () => {
@@ -467,6 +520,7 @@ saveBtn.addEventListener("click", () => {
   _kingdom.birthRate = kingdom.birthRate
   _kingdom.closerKingdoms = kingdom.closerKingdoms;
   _kingdom.disaster = kingdom.disaster;
+  _kingdom.beasts = kingdom.beasts;
 
   // Update the kingdoms object
   kingdoms[name] = kingdom;
@@ -504,6 +558,7 @@ loadDisasterCheckboxes();
 loadCloserKingdomsCheckboxes();
 updateDisplay();
 updateEventsBadge();
+updateBeastResearchersDisplay();
 
 // Update events badge periodically (in case events data changes)
 setInterval(updateEventsBadge, 5000);
