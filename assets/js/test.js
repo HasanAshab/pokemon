@@ -117,15 +117,36 @@ assert(
 0
 )
 
-// assert(
-// [
-//   [jonin, 1]
-// ],
-// [
-//   [elchunin, 3]
-// ],
-// 0
-// )
+
+assert(
+[
+  [chunin, 1]
+],
+[
+  [genin, 3]
+],
+0
+)
+
+assert(
+[
+  [jonin, 1]
+],
+[
+  [elchunin, 3]
+],
+0
+)
+
+assert(
+[
+  [genin, 1]
+],
+[
+  [rookie, 6]
+],
+0
+)
 
 // assert(
 // [

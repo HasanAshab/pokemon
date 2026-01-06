@@ -2,7 +2,7 @@ import { Pokemon } from "../assets/js/utils/models.js";
 import { getTierOf } from "./utils.js";
 
 function getTierMod(tier) {
-  return Math.pow(1.05, tier * 22.6) * 0.5;
+  return Math.pow(1.055, tier * 38.043) * 0.2;
 }
 
 export class SoldierStack extends Map {
@@ -17,7 +17,7 @@ export class SoldierStack extends Map {
     })
     super(data)
   }
-  
+
   get (id) {
     return this.entries().find(([image]) => image.id === id) ?? null
   }
@@ -114,9 +114,7 @@ class Wave {
       const tierMod = getTierMod(getTierOf(image.id));
       return score + (image.cp() * quantity * tierMod)
     }, 0)
-    const mpMod = this.soldiers.count() * 2.5
-    console.log(mpMod);
-    
+    const mpMod = this.soldiers.count() * 2
     return baseScore * mpMod
   }
 
@@ -241,6 +239,7 @@ class War {
     this.result.raisedWhiteFlag = this._raisedWhiteFlag()
     this.result.win = this.result.raisedWhiteFlag || this._canWin()
     this.result.wounded = this._calcWounded()
+    this.result.brokenArtilleries = this._calcBrokenArtilleries()
   }
 
   _raisedWhiteFlag() {
@@ -267,11 +266,32 @@ class War {
       wounded.def = this.defenders.soldiers.resize(95, resizeMode);
     } else {
       const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
-      console.log(woundedPercent);
       wounded.def = this.defenders.soldiers.resize(woundedPercent, resizeMode);
       wounded.atk = this.attackers.soldiers.resize(95, resizeMode);
     }
     return wounded
+  }
+
+  _calcBrokenArtilleries() {
+    const brokenArtilleries = {
+      atk: [],
+      def: []
+    }
+
+    if (this.result.raisedWhiteFlag)
+      return brokenArtilleries
+
+    const scoreDiff = this.scoreDiffPercent()
+    if (this.result.win) {
+      const woundedPercent = Math.max(0, 100 - scoreDiff)
+      console.log(woundedPercent);
+      
+      // brokenArtilleries.atk.
+    } else {
+      const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
+    }
+
+    return brokenArtilleries
   }
 
   _opponentOf(w) {
