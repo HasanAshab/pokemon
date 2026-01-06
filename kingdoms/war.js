@@ -124,6 +124,28 @@ class Wave {
       return score + (artillery.defence * artillery.quantity * tierMod)
     }, 0)
   }
+  
+  countings() {
+     let shinobi = this.soldiers.reduce((acc, [image, quantity]) => {
+      if (image.type !== "human") return acc
+      return acc + quantity
+    }, 0)
+    
+    let beast = this.soldiers.reduce((acc, [image, quantity]) => {
+      if (image.type !== "beast") return acc
+      return acc + quantity
+    }, 0)
+
+    let artillery = this.artilleries.reduce((acc, artillery) => {
+      return acc + artillery.quantity
+    }, 0)
+
+    return {
+      shinobi,
+      beast,
+      artillery
+    }
+  }
 
   _processOptions(options) {
     this.options = options
@@ -181,8 +203,10 @@ class War {
     this.attackers = attackers
     this.defenders = defenders
     this.result = {
-      scores: {}
+      scores: {},
+      meta: {}
     }
+    this.beforeResult()
     this._generateResult()
   }
 
@@ -230,7 +254,67 @@ class War {
     else if (iqDiff < 0) {
       commentLines.push("Defender has better commander");
     }
+
+    // Counter Effect
+    if (this.result.meta.counterEffect.atk > this.result.meta.counterEffect.def) {
+      commentLines.push(`Attacker gave better counter (${((this.result.meta.counterEffect.atk * 100) - 100).toFixed(0)}%)`);
+    } else if (this.result.meta.counterEffect.atk < this.result.meta.counterEffect.def) {
+      commentLines.push(`Defender gave better counter (${((this.result.meta.counterEffect.def * 100) - 100).toFixed(0)}%)`);
+    }
     return commentLines
+  }
+
+  beforeResult() {
+    this.result.meta.counterEffect = {
+      atk: this._getCounterModifier(this.attackers),
+      def: this._getCounterModifier(this.defenders),
+    }
+    
+    this.attackers._cpModifiers.push(this.result.meta.counterEffect.atk)
+    this.defenders._cpModifiers.push(this.result.meta.counterEffect.def)
+  }
+
+  // Shinobi > Artillery > Beast > Shinobi
+  _getCounterModifier(wave) {
+    const enemy = this._opponentOf(wave)
+
+    const a = wave.countings()
+    const b = enemy.countings()
+
+    const totalA = a.shinobi + a.beast + a.artillery || 1
+    const totalB = b.shinobi + b.beast + b.artillery || 1
+
+    // normalize to ratios (0–1)
+    const ra = {
+      shinobi: a.shinobi / totalA,
+      beast: a.beast / totalA,
+      artillery: a.artillery / totalA
+    }
+
+    const rb = {
+      shinobi: b.shinobi / totalB,
+      beast: b.beast / totalB,
+      artillery: b.artillery / totalB
+    }
+
+    let score = 0
+
+    // cyclic dominance
+    score += ra.shinobi   * rb.artillery   // shinobi beats artillery
+    score += ra.artillery * rb.beast       // artillery beats beast
+    score += ra.beast     * rb.shinobi     // beast beats shinobi
+
+    score -= rb.shinobi   * ra.artillery
+    score -= rb.artillery * ra.beast
+    score -= rb.beast     * ra.shinobi
+
+    // scale + clamp (soft counter)
+    const MAX_BONUS = 0.35   // ±35% max impact
+    const mod = 1 + Math.max(
+      -MAX_BONUS,
+      Math.min(MAX_BONUS, score)
+    )
+    return mod
   }
 
   _generateResult() {
@@ -325,7 +409,6 @@ class War {
     // const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore()
     return (w1.getSoldiersScore() + w1.getArtilleriesScore()) * w1.cpModifier()
 
-    // const w2 = this._opponentOf(w1)
     // const imageBonusMod = this._getImageBonusMod(w1)    
     // const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
     // const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
