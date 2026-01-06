@@ -82,13 +82,28 @@ let jonin = new Pokemon("jonin", {
     "xp": 5000,
 })
 
-
+// draw
 assert(
 [
-  [genin, 1]
+  [rookie, 2]
 ],
 [
-  [rookie, 3]
+  [rookie, 2]
+],
+0,
+[],
+// [],
+[]
+)
+
+
+//attackers win (LOL)
+assert(
+[
+  [rookie, 5]
+],
+[
+  [rookie, 2]
 ],
 0,
 [],
@@ -96,9 +111,26 @@ assert(
 [{
       name: "Kunai Thrower",
       defence: 277,
-      quantity: 3,
+      quantity: 5,
 }]
 )
+
+// assert(
+// [
+//   [genin, 1]
+// ],
+// [
+//   [rookie, 3]
+// ],
+// 0,
+// [],
+// // [],
+// [{
+//       name: "Kunai Thrower",
+//       defence: 277,
+//       quantity: 3,
+// }]
+// )
 
 // assert(
 // [

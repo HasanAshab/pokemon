@@ -30,6 +30,10 @@ export class SoldierStack extends Map {
     const stack = this.entries().find(([image]) => image.id === id) ?? [0, 0]
     return stack[1]
   }
+
+  forEach() {
+    return Array.from(this.entries()).forEach(...arguments)
+  }
   
   reduce() {    
     return Array.from(this.entries()).reduce(...arguments)
@@ -118,11 +122,46 @@ class Wave {
     return baseScore * mpMod
   }
 
+  // Get soldiers score with localized counter penalties applied
+  getSoldiersScoreWithCounters(counterPenalties) {
+    let shinobiScore = 0
+    let beastScore = 0
+    let otherScore = 0 // For units that are neither shinobi nor beast
+    
+    this.soldiers.forEach(([image, quantity]) => {
+      const tierMod = getTierMod(getTierOf(image.id))
+      const unitScore = image.cp() * quantity * tierMod
+      
+      if (image.type === "human") {
+        shinobiScore += unitScore
+      } else if (image.type === "beast") {
+        beastScore += unitScore
+      } else {
+        otherScore += unitScore
+      }
+    })
+    
+    // Apply counter penalties only to affected unit types
+    const effectiveShinobiScore = shinobiScore * (1 - counterPenalties.shinobi)
+    const effectiveBeastScore = beastScore * (1 - counterPenalties.beast)
+    
+    const totalEffectiveScore = effectiveShinobiScore + effectiveBeastScore + otherScore
+    const mpMod = this.soldiers.count() * 2
+    return totalEffectiveScore * mpMod
+  }
+
   getArtilleriesScore() {
     return this.artilleries.reduce((score, artillery) => {
       const tierMod = getTierMod(getTierOf(artillery.defence));      
       return score + (artillery.defence * artillery.quantity * tierMod)
     }, 0)
+  }
+
+  // Get artillery score with localized counter penalties applied
+  getArtilleriesScoreWithCounters(counterPenalties) {
+    const baseScore = this.getArtilleriesScore()
+    // Apply counter penalty only to artillery
+    return baseScore * (1 - counterPenalties.artillery)
   }
   
   countings() {
@@ -255,66 +294,54 @@ class War {
       commentLines.push("Defender has better commander");
     }
 
-    // Counter Effect
-    if (this.result.meta.counterEffect.atk > this.result.meta.counterEffect.def) {
-      commentLines.push(`Attacker gave better counter (${((this.result.meta.counterEffect.atk * 100) - 100).toFixed(0)}%)`);
-    } else if (this.result.meta.counterEffect.atk < this.result.meta.counterEffect.def) {
-      commentLines.push(`Defender gave better counter (${((this.result.meta.counterEffect.def * 100) - 100).toFixed(0)}%)`);
+    // Counter Effect - now shows localized penalties instead of global modifiers
+    const atkPenalties = this.result.meta.counterPenalties.atk
+    const defPenalties = this.result.meta.counterPenalties.def
+    
+    // Calculate average penalty for display purposes
+    const atkAvgPenalty = (atkPenalties.shinobi + atkPenalties.beast + atkPenalties.artillery) / 3
+    const defAvgPenalty = (defPenalties.shinobi + defPenalties.beast + defPenalties.artillery) / 3
+    
+    if (atkAvgPenalty < defAvgPenalty) {
+      commentLines.push(`Attacker has better unit composition (${((1 - atkAvgPenalty) * 100).toFixed(0)}% vs ${((1 - defAvgPenalty) * 100).toFixed(0)}%)`);
+    } else if (atkAvgPenalty > defAvgPenalty) {
+      commentLines.push(`Defender has better unit composition (${((1 - defAvgPenalty) * 100).toFixed(0)}% vs ${((1 - atkAvgPenalty) * 100).toFixed(0)}%)`);
     }
     return commentLines
   }
 
   beforeResult() {
-    this.result.meta.counterEffect = {
-      atk: this._getCounterModifier(this.attackers),
-      def: this._getCounterModifier(this.defenders),
+    // Calculate localized counter penalties for each unit type
+    this.result.meta.counterPenalties = {
+      atk: this._getCounterPenalties(this.attackers),
+      def: this._getCounterPenalties(this.defenders),
     }
-    
-    this.attackers._cpModifiers.push(this.result.meta.counterEffect.atk)
-    this.defenders._cpModifiers.push(this.result.meta.counterEffect.def)
   }
 
-  // Shinobi > Artillery > Beast > Shinobi
-  _getCounterModifier(wave) {
+  // Calculate localized counter penalties for each unit type
+  // Shinobi > Artillery > Beast > Shinobi (cyclic dominance)
+  _getCounterPenalties(wave) {
     const enemy = this._opponentOf(wave)
+    const waveCount = wave.countings()
+    const enemyCount = enemy.countings()
 
-    const a = wave.countings()
-    const b = enemy.countings()
-
-    const totalA = a.shinobi + a.beast + a.artillery || 1
-    const totalB = b.shinobi + b.beast + b.artillery || 1
-
-    // normalize to ratios (0–1)
-    const ra = {
-      shinobi: a.shinobi / totalA,
-      beast: a.beast / totalA,
-      artillery: a.artillery / totalA
+    return {
+      shinobi: this._calculateUnitPenalty(enemyCount.beast, waveCount.shinobi),     // Beast counters Shinobi
+      beast: this._calculateUnitPenalty(enemyCount.artillery, waveCount.beast),     // Artillery counters Beast
+      artillery: this._calculateUnitPenalty(enemyCount.shinobi, waveCount.artillery) // Shinobi counters Artillery
     }
+  }
 
-    const rb = {
-      shinobi: b.shinobi / totalB,
-      beast: b.beast / totalB,
-      artillery: b.artillery / totalB
+  // Calculate penalty using exponential dampening formula
+  // penalty = min(0.7, 1 - e^(-counterCount / targetCount))
+  _calculateUnitPenalty(counterCount, targetCount) {
+    if (targetCount === 0 || counterCount === 0) {
+      return 0 // No penalty if no targets or no counters
     }
-
-    let score = 0
-
-    // cyclic dominance
-    score += ra.shinobi   * rb.artillery   // shinobi beats artillery
-    score += ra.artillery * rb.beast       // artillery beats beast
-    score += ra.beast     * rb.shinobi     // beast beats shinobi
-
-    score -= rb.shinobi   * ra.artillery
-    score -= rb.artillery * ra.beast
-    score -= rb.beast     * ra.shinobi
-
-    // scale + clamp (soft counter)
-    const MAX_BONUS = 0.35   // ±35% max impact
-    const mod = 1 + Math.max(
-      -MAX_BONUS,
-      Math.min(MAX_BONUS, score)
-    )
-    return mod
+    
+    const ratio = counterCount / targetCount
+    const penalty = Math.min(0.7, 1 - Math.exp(-ratio))
+    return penalty
   }
 
   _generateResult() {
@@ -405,15 +432,18 @@ class War {
       : this.attackers
   }
 
-  _calcScore(w1) {
-    // const baseScore = w1.soldiers.cp() + w1.soldiers.armorScore()
-    return (w1.getSoldiersScore() + w1.getArtilleriesScore()) * w1.cpModifier()
-
-    // const imageBonusMod = this._getImageBonusMod(w1)    
-    // const phyScore = (w1.statOf('def') * imageBonusMod) - w2.statOf('atk')
-    // const spScore = (w1.statOf('spd') * imageBonusMod) - w2.statOf('spa')
-    // const otherScore = w1.statOf('hp') + w1.statOf('spe') + w1.soldiers.armorScore() + w1._extraScore    
-    // return phyScore + spScore + otherScore
+  _calcScore(wave) {
+    // Get counter penalties for this wave
+    const penalties = wave === this.attackers 
+      ? this.result.meta.counterPenalties.atk 
+      : this.result.meta.counterPenalties.def
+    
+    // Calculate scores with localized counter penalties
+    const soldiersScore = wave.getSoldiersScoreWithCounters(penalties)
+    const artilleriesScore = wave.getArtilleriesScoreWithCounters(penalties)
+    
+    // Apply other modifiers (morale, IQ, luck) but NOT counter modifiers
+    return (soldiersScore + artilleriesScore) * wave.cpModifier()
   }
 
   _getImageBonusMod(w1) {

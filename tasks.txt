@@ -1,5 +1,4 @@
 * Tasks
-MP > AP > BP > MP
 researcher -> min bp, quantity
 ap on battle
 jinchuriki all
