@@ -55,7 +55,6 @@ const saveBtn = document.getElementById("saveBtn");
 const disasterResearchersVisionRange = document.getElementById("disasterResearchersVisionRange");
 const disasterResearchersVisionRangeValue = document.getElementById("disasterResearchersVisionRangeValue");
 const beastResearchersMinMight = document.getElementById("beastResearchersMinMight");
-const beastResearchersMinMightValue = document.getElementById("beastResearchersMinMightValue");
 const beastResearchersMaxMightLabel = document.getElementById("beastResearchersMaxMightLabel");
 const beastResearchersMaxMightBar = document.getElementById("beastResearchersMaxMightBar");
 kingdomName.textContent = name || "Unknown Kingdom";
@@ -120,10 +119,8 @@ disasterResearchersVisionRange.oninput = () => {
 }
 
 beastResearchersMinMight.value = kingdom.beasts.researchers.minMight
-beastResearchersMinMightValue.textContent = kingdom.beasts.researchers.minMight
 beastResearchersMinMight.oninput = () => {
   const minMight = parseInt(beastResearchersMinMight.value) || 0
-  beastResearchersMinMightValue.textContent = minMight
   kingdom.beasts.researchers.minMight = minMight
   updateBeastResearchersDisplay()
 }
