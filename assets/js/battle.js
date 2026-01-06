@@ -205,9 +205,9 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   playerSettingsForm.parentElement.classList.add("active")
   playerSettingsForm.querySelector(".header .primary .name").textContent = pokemonMap[playerTag].name
   playerSettingsForm.querySelector(".header .primary .pokemon-pic").src = pokemonMap[playerTag].picture
-  
   setupBotModeBtn(playerTag)
   loadCurrentHealthPercentage(playerTag)
+  setTeamAPInput(playerTag)
   loadAbilities(playerTag)
   loadItems(playerTag)
   loadEasyStats(playerTag)
@@ -216,7 +216,21 @@ globalThis.showPlayerSettingsForm = function (playerTag) {
   // global
   loadActiveFeilds()
 }
+function setTeamAPInput(playerTag){
+  const apInput = document.querySelector(".player-settings-form .team-ap-input")
+  if (!battle.teamsAP)
+    battle.teamsAP = {
+      [playerTag]: 0
+    }
+  apInput.value = battle.teamsAP[playerTag] 
+  apInput.dataset.playerTag = playerTag
+  
+}
+globalThis.updateTeamAP = function({currentTarget}){
+  const playerTag = currentTarget.dataset.playerTag
+  battle.teamsAP[playerTag] = currentTarget.value
 
+}
  function setupBotModeBtn(playerTag){
   const botModeBtn =  document.querySelector(".player-settings-form .bot-mode-btn:not(.team)") 
   const botModeTeamBtn =  document.querySelector(".player-settings-form .bot-mode-btn.team") 
