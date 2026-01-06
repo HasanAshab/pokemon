@@ -54,6 +54,8 @@ function assert(w1, w2, expectedWinner, art1 = [], art2 = []) {
           Defender:
           ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}`, "")}
        `);
+  console.log(`art broken: ${war.result.brokenArtilleries.def.reduce((str, ar) => str += `${ar.name}: ${ar.quantity}`, "")}`);
+  
   console.log('');
 }
 
@@ -81,72 +83,72 @@ let jonin = new Pokemon("jonin", {
 })
 
 
+assert(
+[
+  [genin, 3]
+],
+[
+  [rookie, 6]
+],
+0,
+[],
+[{
+      name: "Kunai Thrower",
+      defence: 277,
+      quantity: 3,
+}]
+)
+
+// assert(
+// [
+//   [genin, 5]
+// ],
+// [
+//   [chunin, 2]
+// ],
+// 0
+// )
+
+// assert(
+// [
+//   [chunin, 2]
+// ],
+// [
+//   [genin, 10]
+// ],
+// 0
+// )
+
+
+// assert(
+// [
+//   [chunin, 1]
+// ],
+// [
+//   [genin, 3]
+// ],
+// 0
+// )
+
+// assert(
+// [
+//   [jonin, 1]
+// ],
+// [
+//   [elchunin, 3]
+// ],
+// 0
+// )
+
 // assert(
 // [
 //   [genin, 1]
 // ],
 // [
-//   // [rookie, 4]
+//   [rookie, 6]
 // ],
-// 0,
-// [],
-// [{
-//       name: "test",
-//       defence: 399,
-//       quantity: 1,
-// }]
+// 0
 // )
-
-assert(
-[
-  [genin, 5]
-],
-[
-  [chunin, 2]
-],
-0
-)
-
-assert(
-[
-  [chunin, 2]
-],
-[
-  [genin, 10]
-],
-0
-)
-
-
-assert(
-[
-  [chunin, 1]
-],
-[
-  [genin, 3]
-],
-0
-)
-
-assert(
-[
-  [jonin, 1]
-],
-[
-  [elchunin, 3]
-],
-0
-)
-
-assert(
-[
-  [genin, 1]
-],
-[
-  [rookie, 6]
-],
-0
-)
 
 // assert(
 // [

@@ -1,12 +1,12 @@
 * Tasks
-break artilary, remove beasts
 MP > AP > BP > MP
-send spy
-
-ap on battle
-barrack showing baseCp is without level
 researcher -> min bp, quantity
+ap on battle
 jinchuriki all
+
+send spy
+barrack showing baseCp is without level
+break artilary, remove beasts
 
 
 marketplace buy (+ all)

@@ -1,5 +1,5 @@
 import { Pokemon } from "../assets/js/utils/models.js";
-import { getTierOf } from "./utils.js";
+import { getTierOf, modObj } from "./utils.js";
 
 function getTierMod(tier) {
   return Math.pow(1.055, tier * 38.043) * 0.2;
@@ -250,6 +250,24 @@ class War {
     return this.result.scores.atk > this.result.scores.def;
   }
 
+  _calcWoundedPercent() {
+    const per = {
+      atk: 0,
+      def: 0
+    }
+    const looserWoundPercent = Math.floor(Math.random() * (100 - 95 + 1)) + 95;
+    const scoreDiff = this.scoreDiffPercent()
+    const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))    
+    if (this.result.win) {
+      per.atk = woundedPercent;
+      per.def = looserWoundPercent;
+    } else {
+      per.def = woundedPercent;
+      per.atk = looserWoundPercent;
+    }
+    return per
+  }
+
   _calcWounded() {
     const wounded = {
       atk: new SoldierStack(),
@@ -258,20 +276,12 @@ class War {
     if (this.result.raisedWhiteFlag)
       return wounded
 
-    const resizeMode = 'floor'
+    const woundedPercents = this._calcWoundedPercent()
+    const winnerMode = 'floor'
     const looserMode = ['floor', 'ceil'][Math.floor(Math.random() * 2)]
-    const looserWoundPercent = Math.floor(Math.random() * (100 - 95 + 1)) + 95;
-    const scoreDiff = this.scoreDiffPercent()
-    const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
-    console.log(looserWoundPercent);
     
-    if (this.result.win) {
-      wounded.atk = this.attackers.soldiers.resize(woundedPercent, resizeMode);
-      wounded.def = this.defenders.soldiers.resize(looserWoundPercent, looserMode);
-    } else {
-      wounded.def = this.defenders.soldiers.resize(woundedPercent, resizeMode);
-      wounded.atk = this.attackers.soldiers.resize(looserWoundPercent, looserMode);
-    }
+    wounded.atk = this.attackers.soldiers.resize(woundedPercents.atk, this.result.win ? winnerMode : looserMode);
+    wounded.def = this.defenders.soldiers.resize(woundedPercents.def, this.result.win ? looserMode : winnerMode);
     return wounded
   }
 
@@ -284,16 +294,24 @@ class War {
     if (this.result.raisedWhiteFlag)
       return brokenArtilleries
 
-    const scoreDiff = this.scoreDiffPercent()
-    if (this.result.win) {
-      const woundedPercent = Math.max(0, 100 - scoreDiff)
-      console.log(woundedPercent);
-      
-      // brokenArtilleries.atk.
-    } else {
-      const woundedPercent = Math.max(0, 100 - Math.abs(scoreDiff))
-    }
+    const woundedPercents = this._calcWoundedPercent()
+    
+    const brokenPercents = modObj(woundedPercents, 0.75)
+    const mode = ['floor', 'ceil'][Math.floor(Math.random() * 2)]
+    
+    this.attackers.artilleries.forEach(artillery => {
+      brokenArtilleries.atk.push({
+        name: artillery.name,
+        quantity: Math[mode](artillery.quantity * (brokenPercents.atk / 100))
+      })
+    })
 
+    this.defenders.artilleries.forEach(artillery => {
+        brokenArtilleries.def.push({
+          name: artillery.name,
+          quantity: Math[mode](artillery.quantity * (brokenPercents.def / 100))
+        })
+    })    
     return brokenArtilleries
   }
 

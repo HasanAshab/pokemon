@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, calculateBuildDefenceScore, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getArtilleriesBroken } from "../../utils.js";
+import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getArtilleriesBroken } from "../../utils.js";
 
 globalThis.wars = []
 var i = 0;
@@ -526,14 +526,15 @@ startWarBtn.onclick = () => {
           ${war.result.raisedWhiteFlag ? "Defender raised White Flag!<br>" : ""}
           Scores: <br>
           Attacker: ${Math.round(war.result.scores.atk).toLocaleString()}<br>
-          Defender: ${Math.round(war.result.scores.def - buildDefenceScore).toLocaleString()}<br>
-          Defence Artillery: ${Math.round(buildDefenceScore).toLocaleString()}<br>
+          Defender: ${Math.round(war.result.scores.def).toLocaleString()}<br>
           Diff (ATK view): ${Math.round(war.scoreDiff()).toLocaleString()} (${parseInt(war.scoreDiffPercent())}%) <br>
           Wounded Units: <br>
-          Attacker:<br>
-          ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
-          Defender:<br>
-          ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
+            Attacker:<br>
+            ${war.result.wounded.atk.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
+            Defender:<br>
+            ${war.result.wounded.def.reduce((str, [k, v]) => str += `${k.id}: ${v}<br>`, "")}<br>
+          Artilleries Broken: <br>
+            ${war.result.brokenArtilleries.def.reduce((str, ar) => str += `${ar.name}: ${ar.quantity}<br>`, "")}<br>
           <button style="background-color: blue; color: white" onclick="confirmResult(this)">Confirm</button>
         `
         globalThis.confirmResult = (btn) => {
