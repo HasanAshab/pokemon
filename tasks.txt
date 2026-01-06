@@ -1,5 +1,4 @@
 * Tasks
-beast image make bigger + not show
 break artilary, remove beasts
 MP > AP > BP > MP
 send spy
