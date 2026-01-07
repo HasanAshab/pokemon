@@ -1,12 +1,18 @@
-now at #index.html before Espionage report, add another section `Send Espionage`. there will be:
+now add another section after it. 
 
-Target's Security: range(1 - 100), if not provided, use getTotalSecurityRate (pass defender kingdon)
-Data Level: number
-Mans: number
+Artilary Price Calculator. 
 
-on input of these, show these updated:
-Risk: range(1 - 100), chance of being caught, use getEspionageRisk
-Cost: use getEspionageCost
+there will be:
 
-Lastly a button, Send.
-when clicked do a random chance of success or caught
+Power (AP): number
+
+Lifetime (M): number
+
+Size (sq.m): number
+
+Quantity: number
+
+
+
+on edit, show Price (use #calculateArtilleryPrice)
+and a pay button, when clicked, cut coins from storage (see how build cost estimator does that)

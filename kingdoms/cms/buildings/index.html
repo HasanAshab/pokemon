@@ -46,13 +46,45 @@
       background: #f8f9fa;
       border: 1px solid #dee2e6;
       border-radius: 8px;
-      padding: 20px;
       margin: 20px 0;
     }
     
-    .cost-estimator h3 {
-      margin: 0 0 15px 0;
+    .cost-estimator-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .cost-estimator-header:hover {
+      background: #e9ecef;
+      border-radius: 8px;
+    }
+    
+    .cost-estimator-header h3 {
+      margin: 0;
       color: #495057;
+    }
+    
+    .cost-estimator-toggle {
+      font-size: 18px;
+      color: #6c757d;
+      transition: transform 0.3s ease;
+    }
+    
+    .cost-estimator.expanded .cost-estimator-toggle {
+      transform: rotate(180deg);
+    }
+    
+    .cost-estimator-body {
+      display: none;
+      padding: 0 20px 20px 20px;
+    }
+    
+    .cost-estimator.expanded .cost-estimator-body {
+      display: block;
     }
     
     .estimator-inputs {
@@ -241,45 +273,50 @@
 
     <!-- Build Construction Cost Estimator -->
     <div id="costEstimator" class="cost-estimator">
-      <h3>Build Construction Cost Estimator</h3>
-      <div class="estimator-inputs">
-        <div class="input-group">
-          <label for="sizeInput">Size (sq.m):</label>
-          <input type="number" id="sizeInput" min="1" value="10" />
-        </div>
-        <div class="input-group">
-          <label for="floorInput">Floor:</label>
-          <input type="number" id="floorInput" min="1" value="1" />
-        </div>
-        <div class="input-group">
-          <label for="durabilityInput">Durability:</label>
-          <input type="number" id="durabilityInput" min="1" value="1" />
-        </div>
-        <div class="input-group">
-          <label for="quantityInput">Quantity:</label>
-          <input type="number" id="quantityInput" min="1" value="1" />
-        </div>
-        <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
+      <div class="cost-estimator-header" onclick="toggleCostEstimator()">
+        <h3>Build Construction Cost Estimator</h3>
+        <span class="cost-estimator-toggle">▼</span>
       </div>
-      <div id="costResults" class="cost-results" style="display: none;">
-        <div class="result-item">
-          <span class="label">Required Arch Level:</span>
-          <span id="archLevel" class="value">-</span>
+      <div class="cost-estimator-body">
+        <div class="estimator-inputs">
+          <div class="input-group">
+            <label for="sizeInput">Size (sq.m):</label>
+            <input type="number" id="sizeInput" min="1" value="10" />
+          </div>
+          <div class="input-group">
+            <label for="floorInput">Floor:</label>
+            <input type="number" id="floorInput" min="1" value="1" />
+          </div>
+          <div class="input-group">
+            <label for="durabilityInput">Durability:</label>
+            <input type="number" id="durabilityInput" min="1" value="1" />
+          </div>
+          <div class="input-group">
+            <label for="quantityInput">Quantity:</label>
+            <input type="number" id="quantityInput" min="1" value="1" />
+          </div>
+          <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
         </div>
-        <div class="result-item">
-          <span class="label">Company Commission:</span>
-          <span id="archCost" class="value">-</span>
-        </div>
-        <div class="result-item">
-          <span class="label">Material Cost:</span>
-          <span id="materialCost" class="value">-</span>
-        </div>
-        <div class="result-item total">
-          <span class="label">Total Cost:</span>
-          <span id="totalCost" class="value">-</span>
-        </div>
-        <div class="result-item" id="payButtonContainer" style="display: none; justify-content: center; border: none; padding-top: 15px;">
-          <button id="payBtn" class="btn success-btn" onclick="payForConstruction()">Pay</button>
+        <div id="costResults" class="cost-results" style="display: none;">
+          <div class="result-item">
+            <span class="label">Required Arch Level:</span>
+            <span id="archLevel" class="value">-</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Company Commission:</span>
+            <span id="archCost" class="value">-</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Material Cost:</span>
+            <span id="materialCost" class="value">-</span>
+          </div>
+          <div class="result-item total">
+            <span class="label">Total Cost:</span>
+            <span id="totalCost" class="value">-</span>
+          </div>
+          <div class="result-item" id="payButtonContainer" style="display: none; justify-content: center; border: none; padding-top: 15px;">
+            <button id="payBtn" class="btn success-btn" onclick="payForConstruction()">Pay</button>
+          </div>
         </div>
       </div>
     </div>

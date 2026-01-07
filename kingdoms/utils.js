@@ -994,10 +994,12 @@ export function getEspionageRisk(targetSecurityRate, dataLevel, manCount) {
   return risk;
 }
 
-
-
 export function getEspionageCost(kingdom, targetSecurityRate, dataLevel, manCount) {
   const espionageRisk = getEspionageRisk(targetSecurityRate, dataLevel, manCount)
   const costPerMan = (kingdom.pci * 2.5) * (1 + (espionageRisk / 100))
   return costPerMan * manCount
+}
+
+export function calculateArtilleryPrice(power, lifetime, size) {
+  return (power * lifetime * size)
 }

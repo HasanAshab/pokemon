@@ -1024,3 +1024,9 @@ globalThis.scrollToTop = scrollToTop;
 globalThis.scrollToBottom = scrollToBottom;
 globalThis.smartScroll = smartScroll;
 
+// Cost Estimator toggle
+function toggleCostEstimator() {
+  const estimator = document.getElementById('costEstimator');
+  estimator.classList.toggle('expanded');
+}
+globalThis.toggleCostEstimator = toggleCostEstimator;

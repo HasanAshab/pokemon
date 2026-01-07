@@ -1,10 +1,11 @@
 * Tasks
+artilary cost estimator
+
 ap on battle
 beast oil
 barrack showing baseCp is without level
 break artilary, remove beasts
 auto generate military
-artilary cost estimator
 
 
 bfcache prob

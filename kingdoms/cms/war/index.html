@@ -11,37 +11,45 @@
 
 <body>
 
-   <div class="container data-box" id="harvest">
-    <h4 class="title">Harvest Options</h4>
-    <div class="data-rows-wrapper">
-    </div>
-    <button id="add-data" onclick="addDataRow('harvest')">Add Data</button>
-  </div>
-  <br>
+    <div class="container">
 
-  <div class="container data-box" id="atk">
-    <h4 class="title">Attacker Options</h4>
-    <div class="data-rows-wrapper">
-      <div class="data-row">
-        <input type="text" class="key" placeholder="Key" value="morality"/>
-        <input type="text" class="value" placeholder="Value" value="100"/>
-        <button class="remove-btn" onclick="removeRow('atk', event)">-</button> 
+    <h1 id="kingdomName">Kingdom</h1>
+    <div class="war-settings">
+      <div class="form-group">
+        <label for="attacker">Attacker:</label>
+        <select id="attacker"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="defender">Defender:</label>
+        <select id="defender"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="warStrategy">Strategy:</label>
+        <select id="warStrategy"></select>
+        <label for="shift">Shift:</label>
+        <select id="shift">
+          <option value="day">Day</option>
+          <option value="night">Night</option>
+        </select>
+        <label for="direction">Direction:</label>
+        <select id="direction"></select>
+      </div>
+      <p class="msg good">good</p>
+      <p class="msg bad">bad</p>
+      <div class="form-group">
+        <label for="areaPercentage">Area Percentage:</label>
+        <input type="range" id="areaPercentage" min="0" max="100" value="100">
+        <span id="areaPercentageLabel">100%</span>
+        <input type="number"  id="actualArea" placeholder="actual Area"/>
       </div>
     </div>
-    <button id="add-data" onclick="addDataRow('atk')">Add Data</button>
+
+    <div id="wavesList" class="waves-list"></div>
+    <button id="addWaveBtn" class="add-wave-btn">Add Attack Wave</button>
+    <button id="startWar" class="start-war-btn">Start War</button>
   </div>
-  <br>
-  <div class="container data-box" id="def">
-    <h4 class="title">Deffender Options</h4>
-    <div class="data-rows-wrapper">
-      <div class="data-row">
-        <input type="text" class="key" placeholder="Key" value="morality"/>
-        <input type="text" class="value" placeholder="Value" value="100"/>
-        <button class="remove-btn" onclick="removeRow('def', event)">-</button> 
-      </div>
-    </div>
-    <button id="add-data" onclick="addDataRow('def')">Add Data</button>
-  </div>  
   <br>
   <div class="container">
     <h3>Send Espionage</h3>
@@ -82,44 +90,36 @@
     <input style="width: 25px;" type="number" id="expose-level-inp" value="0" min="0" oninput="showDefenderData()" />
   </div>
   <br>
-  <div class="container">
 
-    <h1 id="kingdomName">Kingdom</h1>
-    <div class="war-settings">
-      <div class="form-group">
-        <label for="attacker">Attacker:</label>
-        <select id="attacker"></select>
-      </div>
-
-      <div class="form-group">
-        <label for="defender">Defender:</label>
-        <select id="defender"></select>
-      </div>
-
-      <div class="form-group">
-        <label for="warStrategy">Strategy:</label>
-        <select id="warStrategy"></select>
-        <label for="shift">Shift:</label>
-        <select id="shift">
-          <option value="day">Day</option>
-          <option value="night">Night</option>
-        </select>
-        <label for="direction">Direction:</label>
-        <select id="direction"></select>
-      </div>
-      <p class="msg good">good</p>
-      <p class="msg bad">bad</p>
-      <div class="form-group">
-        <label for="areaPercentage">Area Percentage:</label>
-        <input type="range" id="areaPercentage" min="0" max="100" value="100">
-        <span id="areaPercentageLabel">100%</span>
-        <input type="number"  id="actualArea" placeholder="actual Area"/>
+  <div class="container data-box" id="atk">
+    <h4 class="title">Attacker Options</h4>
+    <div class="data-rows-wrapper">
+      <div class="data-row">
+        <input type="text" class="key" placeholder="Key" value="morality"/>
+        <input type="text" class="value" placeholder="Value" value="100"/>
+        <button class="remove-btn" onclick="removeRow('atk', event)">-</button> 
       </div>
     </div>
-
-    <div id="wavesList" class="waves-list"></div>
-    <button id="addWaveBtn" class="add-wave-btn">Add Attack Wave</button>
-    <button id="startWar" class="start-war-btn">Start War</button>
+    <button id="add-data" onclick="addDataRow('atk')">Add Data</button>
+  </div>
+  <br>
+  <div class="container data-box" id="def">
+    <h4 class="title">Deffender Options</h4>
+    <div class="data-rows-wrapper">
+      <div class="data-row">
+        <input type="text" class="key" placeholder="Key" value="morality"/>
+        <input type="text" class="value" placeholder="Value" value="100"/>
+        <button class="remove-btn" onclick="removeRow('def', event)">-</button> 
+      </div>
+    </div>
+    <button id="add-data" onclick="addDataRow('def')">Add Data</button>
+  </div>
+  <br>
+     <div class="container data-box" id="harvest">
+    <h4 class="title">Harvest Options</h4>
+    <div class="data-rows-wrapper">
+    </div>
+    <button id="add-data" onclick="addDataRow('harvest')">Add Data</button>
   </div>
   <br>
   <div class="container">
