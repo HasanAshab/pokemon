@@ -967,13 +967,37 @@ export function searchForBeasts(kingdom) {
   };
 }
 
+export function getEspionageRisk(targetSecurityRate, dataLevel, manCount) { 
+  // clamp & sanitize inputs
+  targetSecurityRate = Math.max(1, Math.min(100, Number(targetSecurityRate)));
+  dataLevel = Math.max(1, Math.min(6, Number(dataLevel)));
+  manCount = Math.max(1, Number(manCount));
 
-export function getEspionageRisk(targetSecurityRate, dataLevel, manCount) {
-  return 30
+  // factors
+  const securityFactor = targetSecurityRate / 100; // 0.01–1
+  const dataFactor = dataLevel / 6;                // ~0.17–1
+
+  // spy protection factor:
+  // more spies -> less risk, diminishing effect
+  // goes from ~1 (one spy → almost full risk) down toward 0
+  const spyReduction = 1 / Math.log2(manCount + 1);
+
+  // combine effects
+  let risk = (
+    0.6 * securityFactor +
+    0.4 * dataFactor
+  ) * 100 * spyReduction;
+
+  // clamp to 1–100
+  risk = Math.max(1, Math.min(100, Math.round(risk)));
+
+  return risk;
 }
+
+
 
 export function getEspionageCost(kingdom, targetSecurityRate, dataLevel, manCount) {
   const espionageRisk = getEspionageRisk(targetSecurityRate, dataLevel, manCount)
-  const costPerMan = kingdom.pci
+  const costPerMan = (kingdom.pci * 2.5) * (1 + (espionageRisk / 100))
   return costPerMan * manCount
 }

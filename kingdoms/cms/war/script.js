@@ -262,7 +262,7 @@ function getActualDefenders() {
 function getCommonUnitItems(soldiers) {
   const allItems = [];
 
-  soldiers.forEach((_, unit) => {
+  soldiers.forEach(([unit]) => {
     allItems.push(new Set(unit.items.names()));
   });
 
@@ -352,7 +352,8 @@ function generateDefendersReport(expLvl = 0) {
 
       if (expLvl >= 3) {
         html += `<ul>`;
-        wave.soldiers.forEach((quantity, unit) => {
+        wave.soldiers.forEach(([unit, quantity]) => {
+          
           let extra = "";
 
           if (expLvl >= 4) {
@@ -391,7 +392,7 @@ function generateDefendersReport(expLvl = 0) {
       html += `
         <li>
           <strong>${art.quantity}</strong> × ${art.name}
-          · ${art.defence} P
+          · ${art.defence} AP
         </li>
       `;
     });
@@ -497,19 +498,19 @@ function sendEspionage() {
   const risk = getEspionageRisk(actualTargetSecurity, dataLevel, manCount);
   const cost = getEspionageCost(kingdoms[attackerSelect.value], actualTargetSecurity, dataLevel, manCount);
   
-  // Check if attacker has enough resources
+  // // Check if attacker has enough resources
   const attackerKingdom = kingdoms[attackerSelect.value];
-  if (!attackerKingdom.storage || !attackerKingdom.storage.money || attackerKingdom.storage.money < cost) {
-    resultDiv.innerHTML = `<div style="color: red; padding: 10px; background: #ffe6e6; border: 1px solid #ff9999; border-radius: 4px; margin-top: 10px;">
-      <strong>Insufficient Funds!</strong><br>
-      Required: ${cost.toLocaleString()}<br>
-      Available: ${(attackerKingdom.storage?.money || 0).toLocaleString()}
-    </div>`;
-    return;
-  }
+  // if (!attackerKingdom.storage || !attackerKingdom.storage.coins || attackerKingdom.storage.coins < cost) {
+  //   resultDiv.innerHTML = `<div style="color: red; padding: 10px; background: #ffe6e6; border: 1px solid #ff9999; border-radius: 4px; margin-top: 10px;">
+  //     <strong>Insufficient Funds!</strong><br>
+  //     Required: ${cost.toLocaleString()}<br>
+  //     Available: ${(attackerKingdom.storage?.coins || 0).toLocaleString()}
+  //   </div>`;
+  //   return;
+  // }
   
   // Deduct cost
-  attackerKingdom.storage.money -= cost;
+  attackerKingdom.storage.coins -= cost;
   
   // Determine success/failure based on risk
   const random = Math.random() * 100;

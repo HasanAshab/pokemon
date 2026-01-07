@@ -1,5 +1,4 @@
 * Tasks
-send spy
 ap on battle
 
 beast oil
