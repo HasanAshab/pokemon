@@ -1,5 +1,4 @@
 * Tasks
-researcher -> min bp, quantity
 ap on battle
 send spy
 

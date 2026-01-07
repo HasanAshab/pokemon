@@ -946,7 +946,7 @@ export function searchForBeasts(kingdom) {
   // 40% chance to get nothing
   if (Math.random() > 0.4) return null;
 
-  const minMight = kingdom.beasts.researchers.minMight || 0;
+  const minMight = kingdom.beasts?.researchers?.minMight || 0;
   const maxMight = getMaxSearchableMightOfBeasts(kingdom);
 
   const beastIds = Object.keys(beasts)

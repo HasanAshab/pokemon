@@ -285,7 +285,7 @@ function pushBeastCounterEvents(kingdom) {
   const beasts = searchForBeasts(kingdom);
 
   if (beasts) {
-    const title = `Found (${beasts.quantity}) ${beasts.id} beasts!`;
+    const title = `Found ${beasts.quantity} ${beasts.id} beast!`;
     const event = {
       id: Date.now(),
       title: title,
@@ -744,7 +744,7 @@ function renderMarketplace() {
     
     row.innerHTML = `
       <td>${item.itemName}</td>
-      <td><span style="color: ${item.actionType === 'sell' ? '#dc3545' : '#28a745'}; font-weight: bold;">${item.actionType.toUpperCase()}</span></td>
+      <td><span style="color: ${item.actionType === 'sell' ? '#dc3545' : '#28a745'}; font-weight: bold;">${(item.actionType ?? 'sell').toUpperCase()}</span></td>
       <td>${item.unitPrice >= 0 ? '$' : '-$'}${Math.abs(item.unitPrice).toLocaleString()}</td>
       <td>${quantityText}</td>
       <td class="${profitClass}">${totalItemProfit >= 0 ? '$' : '-$'}${Math.abs(totalItemProfit).toLocaleString()}</td>
