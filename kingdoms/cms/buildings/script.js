@@ -1,5 +1,5 @@
 import { flagsToObj, objToFlags } from '../../../assets/js/utils/helpers.js';
-import { calculateMaintains, calculateSize, upgradePrice, getRequiredArchLevel, getArchCost, getMaterialCost, getBuildCost } from '../../utils.js'
+import { calculateMaintains, calculateSize, upgradePrice, getRequiredArchLevel, getArchCost, getMaterialCost, getBuildCost, calculateArtilleryPrice } from '../../utils.js'
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
 const name = localStorage.getItem('$current_kingdom') || (() => {
@@ -1030,3 +1030,61 @@ function toggleCostEstimator() {
   estimator.classList.toggle('expanded');
 }
 globalThis.toggleCostEstimator = toggleCostEstimator;
+
+// Artillery Calculator toggle
+function toggleArtilleryCalculator() {
+  const calculator = document.getElementById('artilleryCalculator');
+  calculator.classList.toggle('expanded');
+}
+globalThis.toggleArtilleryCalculator = toggleArtilleryCalculator;
+
+// Artillery price calculation
+function calculateArtilleryTotalPrice() {
+  const power = parseInt(document.getElementById('artilleryPowerInput').value) || 0;
+  const lifetime = parseInt(document.getElementById('artilleryLifetimeInput').value) || 0;
+  const size = parseInt(document.getElementById('artillerySizeInput').value) || 0;
+  const quantity = parseInt(document.getElementById('artilleryQuantityInput').value) || 1;
+  
+  const unitPrice = calculateArtilleryPrice(power, lifetime, size);
+  const totalPrice = unitPrice * quantity;
+  
+  window.currentArtilleryPrice = totalPrice;
+  document.getElementById('artilleryTotalPrice').textContent = totalPrice.toLocaleString();
+}
+
+// Payment function for artillery
+function payForArtillery() {
+  if (!window.currentArtilleryPrice || window.currentArtilleryPrice <= 0) {
+    alert('Please enter valid artillery parameters');
+    return;
+  }
+  
+  const kingdom = kingdoms[name];
+  const storage = kingdom.storage || {};
+  const totalPrice = window.currentArtilleryPrice;
+  
+  if ((storage.coins || 0) < totalPrice) {
+    alert(`Insufficient funds! You need ${totalPrice.toLocaleString()} coins but only have ${(storage.coins || 0).toLocaleString()}.`);
+    return;
+  }
+  
+  if (confirm(`Pay ${totalPrice.toLocaleString()} coins for artillery?`)) {
+    // Deduct cost from kingdom storage
+    if (!kingdom.storage) kingdom.storage = {};
+    kingdom.storage.coins = (kingdom.storage.coins || 0) - totalPrice;
+    
+    // Save changes
+    localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+    
+    alert(`Payment successful! ${totalPrice.toLocaleString()} coins deducted. Remaining balance: ${kingdom.storage.coins.toLocaleString()} coins.`);
+  }
+}
+globalThis.payForArtillery = payForArtillery;
+
+// Add event listeners for artillery calculator
+['artilleryPowerInput', 'artilleryLifetimeInput', 'artillerySizeInput', 'artilleryQuantityInput'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calculateArtilleryTotalPrice);
+});
+
+// Initial artillery calculation
+calculateArtilleryTotalPrice();

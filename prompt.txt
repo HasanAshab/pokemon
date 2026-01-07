@@ -1,18 +1,1 @@
-now add another section after it. 
-
-Artilary Price Calculator. 
-
-there will be:
-
-Power (AP): number
-
-Lifetime (M): number
-
-Size (sq.m): number
-
-Quantity: number
-
-
-
-on edit, show Price (use #calculateArtilleryPrice)
-and a pay button, when clicked, cut coins from storage (see how build cost estimator does that)
+now make this page elegance but simple and not overwhelming. and easy UI/UX

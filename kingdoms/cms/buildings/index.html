@@ -321,6 +321,43 @@
       </div>
     </div>
 
+    <!-- Artillery Price Calculator -->
+    <div id="artilleryCalculator" class="cost-estimator">
+      <div class="cost-estimator-header" onclick="toggleArtilleryCalculator()">
+        <h3>Artillery Price Calculator</h3>
+        <span class="cost-estimator-toggle">▼</span>
+      </div>
+      <div class="cost-estimator-body">
+        <div class="estimator-inputs">
+          <div class="input-group">
+            <label for="artilleryPowerInput">Power (AP):</label>
+            <input type="number" id="artilleryPowerInput" min="1" value="10" />
+          </div>
+          <div class="input-group">
+            <label for="artilleryLifetimeInput">Lifetime (M):</label>
+            <input type="number" id="artilleryLifetimeInput" min="1" value="12" />
+          </div>
+          <div class="input-group">
+            <label for="artillerySizeInput">Size (sq.m):</label>
+            <input type="number" id="artillerySizeInput" min="1" value="5" />
+          </div>
+          <div class="input-group">
+            <label for="artilleryQuantityInput">Quantity:</label>
+            <input type="number" id="artilleryQuantityInput" min="1" value="1" />
+          </div>
+        </div>
+        <div id="artilleryResults" class="cost-results">
+          <div class="result-item total">
+            <span class="label">Total Price:</span>
+            <span id="artilleryTotalPrice" class="value">0</span>
+          </div>
+          <div class="result-item" id="artilleryPayButtonContainer" style="justify-content: center; border: none; padding-top: 15px;">
+            <button id="artilleryPayBtn" class="btn success-btn" onclick="payForArtillery()">Pay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="quickFindForm">
       <div class="header">
         <h3>quick find</h3>
