@@ -1285,7 +1285,7 @@ function setCurrentHealth(className, hp, playerTag) {
   //   healthProgressBar.querySelector(".current-hp").textContent += `(${Math.round((hp * 100) / pokemon.maxhp)}%)`
   const progress = className === "health"
     ? (hp / pokemon.maxhp) * 100
-    : (hp / pokemon.state.armor.maxhp()) * 100
+    : (hp / pokemon.state.armor.maxhp(className.substr(0, 1))) * 100
   healthProgressBar.querySelector(".inner").style.width = `${progress < 0 ? 0 : progress}%`
 }
 
