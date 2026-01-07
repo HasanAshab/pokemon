@@ -233,6 +233,20 @@ button:hover {
   background: #0056b3;
 }
 
+.btn.secondary-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.btn.secondary-btn:hover {
+  background: #545b62;
+}
+
+.security-override {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .espionage-result {
   margin-top: 1rem;
 }

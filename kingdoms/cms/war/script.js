@@ -443,14 +443,16 @@ globalThis.removeRow = (containerId, { currentTarget }) => {
 }
 
 // Espionage functionality
+let useSecurityOverride = false;
+
 function updateEspionageInfo() {
   const targetSecurity = parseInt(document.getElementById('targetSecurity').value);
   const dataLevel = parseInt(document.getElementById('dataLevel').value);
   const manCount = parseInt(document.getElementById('manCount').value);
   
-  // Use defender kingdom's security if available, otherwise use input value
+  // Use manual security override if enabled, otherwise use defender kingdom's security
   let actualTargetSecurity = targetSecurity;
-  if (defenderSelect.value && kingdoms[defenderSelect.value]) {
+  if (!useSecurityOverride && defenderSelect.value && kingdoms[defenderSelect.value]) {
     actualTargetSecurity = getTotalSecurityRate(kingdoms[defenderSelect.value]);
   }
   
@@ -461,15 +463,34 @@ function updateEspionageInfo() {
   document.getElementById('costDisplay').textContent = cost.toLocaleString();
 }
 
+function toggleSecurityOverride() {
+  const securityOverride = document.getElementById('securityOverride');
+  const setSecurityBtn = document.getElementById('setSecurityBtn');
+  
+  if (useSecurityOverride) {
+    // Hide security override
+    securityOverride.style.display = 'none';
+    setSecurityBtn.textContent = 'Set Security Rate';
+    useSecurityOverride = false;
+  } else {
+    // Show security override
+    securityOverride.style.display = 'flex';
+    setSecurityBtn.textContent = 'Use Auto Security';
+    useSecurityOverride = true;
+  }
+  
+  updateEspionageInfo();
+}
+
 function sendEspionage() {
   const targetSecurity = parseInt(document.getElementById('targetSecurity').value);
   const dataLevel = parseInt(document.getElementById('dataLevel').value);
   const manCount = parseInt(document.getElementById('manCount').value);
   const resultDiv = document.getElementById('espionageResult');
   
-  // Use defender kingdom's security if available
+  // Use manual security override if enabled, otherwise use defender kingdom's security
   let actualTargetSecurity = targetSecurity;
-  if (defenderSelect.value && kingdoms[defenderSelect.value]) {
+  if (!useSecurityOverride && defenderSelect.value && kingdoms[defenderSelect.value]) {
     actualTargetSecurity = getTotalSecurityRate(kingdoms[defenderSelect.value]);
   }
   
@@ -678,6 +699,10 @@ const targetSecurityLabel = document.getElementById('targetSecurityLabel');
 const dataLevelInput = document.getElementById('dataLevel');
 const manCountInput = document.getElementById('manCount');
 const sendEspionageBtn = document.getElementById('sendEspionageBtn');
+const setSecurityBtn = document.getElementById('setSecurityBtn');
+
+// Set security rate button
+setSecurityBtn.onclick = toggleSecurityOverride;
 
 // Update target security display
 targetSecurityInput.oninput = () => {
@@ -689,11 +714,13 @@ targetSecurityInput.oninput = () => {
 dataLevelInput.oninput = updateEspionageInfo;
 manCountInput.oninput = updateEspionageInfo;
 
-// Update espionage info when defender changes (to use actual security)
+// Update espionage info when defender changes (only if not using override)
 const originalDefenderChange = defenderSelect.onchange;
 defenderSelect.onchange = () => {
   originalDefenderChange();
-  updateEspionageInfo();
+  if (!useSecurityOverride) {
+    updateEspionageInfo();
+  }
 };
 
 // Send espionage button

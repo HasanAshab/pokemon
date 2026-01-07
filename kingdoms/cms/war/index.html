@@ -46,7 +46,9 @@
   <div class="container">
     <h3>Send Espionage</h3>
     <div class="espionage-form">
-      <div class="form-group">
+      <button id="setSecurityBtn" class="btn secondary-btn">Set Security Rate</button>
+      
+      <div class="form-group security-override" id="securityOverride" style="display: none;">
         <label for="targetSecurity">Target's Security:</label>
         <input type="range" id="targetSecurity" min="1" max="100" value="50">
         <span id="targetSecurityLabel">50</span>

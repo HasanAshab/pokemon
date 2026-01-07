@@ -969,8 +969,6 @@ export function searchForBeasts(kingdom) {
 
 
 export function getEspionageRisk(targetSecurityRate, dataLevel, manCount) {
-  console.log(targetSecurityRate, dataLevel, manCount);
-  
   return 30
 }
 
