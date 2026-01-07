@@ -637,9 +637,12 @@ function loadPokemonData(playerTag) {
   setCurrentRetreat(pokemon.state.retreat, playerTag)
   setStatChanges(pokemon.state.stats._statChanges, playerTag)
   loadHealth(playerTag)
-  loadAHealth(playerTag)
+  loadAHP(playerTag)
   setCurrentHealth("health", hp, playerTag)
-  setCurrentHealth("armor-hp", pokemon.state.armor.hp(), playerTag)
+  // armor ( G, P, S )
+  setCurrentHealth("G.armor-hp", pokemon.state.armor.hp("G"), playerTag)
+  setCurrentHealth("P.armor-hp", pokemon.state.armor.hp("P"), playerTag)
+  setCurrentHealth("S.armor-hp", pokemon.state.armor.hp("S"), playerTag)
   setDoubleTeamData(pokemon.state.manCount, playerTag)
   loadMoves(playerTag)  
   setRetreatPerWave(pokemonMap[playerTag].meta.retreat,playerTag)
@@ -1264,6 +1267,7 @@ function setHealthPercentData(percent,playerTag) {
 
 function setTotalHealth(className, hp, playerTag) {
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
+  if (!healthProgressBar) return
   healthProgressBar.setAttribute("data-total-hp", hp)
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".inner").style.width = '100%'
@@ -1274,6 +1278,7 @@ function setTotalHealth(className, hp, playerTag) {
 function setCurrentHealth(className, hp, playerTag) {
   const pokemon = pokemonMap[playerTag]
   const healthProgressBar = document.querySelector(`.${playerTag}-controle-cont .${className}.progress-bar`)
+  if (!healthProgressBar) return
   healthProgressBar.setAttribute("data-current-hp", hp)
   healthProgressBar.querySelector(".current-hp").textContent = parseInt(hp)
   // if (className === "health")
@@ -1628,10 +1633,15 @@ function loadRetreat(playerTag) {
 function loadHealth(playerTag) {
   const hp = pokemonMap[playerTag].stats.hp
   setTotalHealth("health", hp, playerTag)
+  
 }
-function loadAHealth(playerTag) {
-  const hp = pokemonMap[playerTag].state.armor.maxhp()
-  setTotalHealth("armor-hp", hp, playerTag)
+function loadAHP(playerTag) {
+  const ghp = pokemonMap[playerTag].state.armor.maxhp("G")
+  const php = pokemonMap[playerTag].state.armor.maxhp("P")
+  const shp = pokemonMap[playerTag].state.armor.maxhp("S")
+  setTotalHealth("G.armor-hp", ghp, playerTag)
+  setTotalHealth("P.armor-hp", php, playerTag)
+  setTotalHealth("S.armor-hp", shp, playerTag)
 }
 
 

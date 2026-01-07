@@ -447,7 +447,15 @@ function renderAllForces(forceType) {
   if (forceType === "polices") {
     securityRateEl.textContent = `${getSecurityRate(kingdom, "polices") + getPoliceStationSecurityRate(kingdom)} (${getSecurityRate(kingdom, "polices").toFixed()} + ${getPoliceStationSecurityRate(kingdom)})`
   }
-  
+
+  let forcesTotalQuantity = 0;
+  Object.keys(barrackForce).forEach((type) => {
+    for (const force of barrackForce[type]) {
+      forcesTotalQuantity += force.quantity
+    }
+  })
+  const forcesTotalQuantityEl = document.getElementById("forcesTotalQuantity")
+  forcesTotalQuantityEl.textContent = forcesTotalQuantity
 
   let totalMight = 0;
   let baseMight = 0;

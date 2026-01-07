@@ -406,6 +406,10 @@ stroke: gold;
 .primary-data-nav  .armor-hp.progress-bar {
  height: 10px;
 }
+.primary-data-nav  .armor-hp.progress-bar[data-current-hp="0"] {
+ display: none;
+}
+
 .primary-data-nav  .progress-bar .inner {
   width: 100%;
   height: 100%;
@@ -419,6 +423,12 @@ stroke: gold;
 }
 .primary-data-nav  .armor-hp.progress-bar .inner {
   background-color: royalblue;
+}
+.primary-data-nav  .P.armor-hp.progress-bar .inner {
+  background-color: grey;
+}
+.primary-data-nav  .S.armor-hp.progress-bar .inner {
+  background-color: darkgoldenrod;
 }
 .primary-data-nav  .progress-bar .health-data {
   color: black;

@@ -103,7 +103,13 @@ section {
   gap: 8px;
   text-align: center;
 }
-
+.forces-quantity-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  
+}
 @media (min-width: 768px) {
   #forcesData {
     gap: 4px;
