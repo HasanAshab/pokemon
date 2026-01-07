@@ -69,7 +69,7 @@ export class SoldierStack extends Map {
         if (item.type === "armor") {          
           const totalStat = Object.values(item.stats).reduce((sum, stat) => sum + stat, 0)
           ahp += totalStat * (item.covers / 100)
-          ahp += Object.values(item.tokens).reduce((sum, stat) => sum + stat, 0)
+          ahp += Object.values(item.tokens || {}).reduce((sum, stat) => sum + stat, 0)
         }
         return ahp
       }, 0)
