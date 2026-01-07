@@ -1500,14 +1500,23 @@ class ArmorManager {
       .forEach(item => this.add(item))
   }
 
-  maxhp() {
+  _isCategoryOf(item, category) {    
+    if (category === 'G' &&  !(item.stats.def && item.stats.spd)) return false
+    if (category === 'P' &&  !item.stats.def) return false
+    if (category === 'S' &&  !item.stats.spd) return false
+    return true
+  }
+
+  maxhp(category = null) {
     return this._items.reduce((hp, item) => {
-      return hp + item.armor.hp
+        if (category && !this._isCategoryOf(item, category)) return hp
+        return hp + item.armor.hp
     }, 0)
   }
 
-  hp() {
+  hp(category = null) {
     return Math.round(this._items.reduce((hp, item) => {
+      if (category && !this._isCategoryOf(item, category)) return hp
       return hp + item.armor._hp
     }, 0))
   }
