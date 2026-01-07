@@ -411,6 +411,8 @@ function loadFoodConsumptionTier() {
   const foodBudget = savedIncome * 0.5
   const foodConsumptionTier = getFoodTierForBudget(foodBudget)
   const tierLabel = document.getElementById("peopleFoodBudget");
+  if (!foodConsumptionTier)
+      return tierLabel.innerHTML = `<b>No Budget!</b>`;
   const tier = foodConsumptionTier.replace("gen-food-", "").replace("-", " - ")
   tierLabel.innerHTML = `<b>${tier}</b> ($${items[foodConsumptionTier].meta.budget})`;
 }
@@ -508,8 +510,7 @@ saveBtn.addEventListener("click", () => {
   const kingdoms = localStorage.getItem("kingdoms")
     ? JSON.parse(localStorage.getItem("kingdoms"))
     : {};
-  const _kingdom = kingdoms[name];
-
+  const _kingdom = kingdoms[name];  
   _kingdom.landArea = kingdom.landArea;
   _kingdom.density = kingdom.density;
   _kingdom.pci = kingdom.pci;
@@ -520,7 +521,7 @@ saveBtn.addEventListener("click", () => {
   _kingdom.beasts = kingdom.beasts;
 
   // Update the kingdoms object
-  kingdoms[name] = kingdom;
+  kingdoms[name] = _kingdom;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
   alert("Kingdom saved!");
 });
