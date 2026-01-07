@@ -3,7 +3,7 @@ researcher -> min bp, quantity
 ap on battle
 send spy
 
-
+beast oil
 barrack showing baseCp is without level
 break artilary, remove beasts
 auto generate military

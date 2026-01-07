@@ -1,4 +1,4 @@
-import { sumObj, calcNetProd, getStorage, getTransLogs, getPopulation, getPopulationGrowth, getMaintainedStorage, predictNextDisasters } from '../../utils.js';
+import { sumObj, calcNetProd, getStorage, getTransLogs, getPopulation, getPopulationGrowth, getMaintainedStorage, predictNextDisasters, searchForBeasts } from '../../utils.js';
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
 const name = localStorage.getItem('$current_kingdom') || (() => {
@@ -255,11 +255,10 @@ newMonthBtn.onclick = () => {
   }
 
   pushDisasterEvents(kingdoms[name]);
+  pushBeastCounterEvents(kingdoms[name]);
 
   saveAndRefresh(kingdoms[name].storage);
   updateLifetimeDisplay();
-  
-  // Update marketplace display after processing sales
   renderMarketplace();
 };
 
@@ -278,6 +277,23 @@ function pushDisasterEvents(kingdom) {
       };
       kingdom.events.future.push(event);
     }
+  }
+}
+
+
+function pushBeastCounterEvents(kingdom) {
+  const beasts = searchForBeasts(kingdom);
+
+  if (beasts) {
+    const title = `Found (${beasts.quantity}) ${beasts.id} beasts!`;
+    const event = {
+      id: Date.now(),
+      title: title,
+      remainingMonths: 2,
+      isSecret: false,
+      isHappened: false
+    };
+    kingdom.events.future.push(event);
   }
 }
 

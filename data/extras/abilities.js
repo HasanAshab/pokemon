@@ -78,9 +78,7 @@ function getJinchurikiAbilities() {
       type: 'beast',
       beastImage: beastId,
     }
-  }
-  console.log(abilities);
-  
+  }  
   return abilities
 }
 

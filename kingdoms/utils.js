@@ -943,27 +943,26 @@ export function getMaxSearchableMightOfBeasts(kingdom) {
 }
 
 export function searchForBeasts(kingdom) {
-  const maxMight = getMaxSearchableMightOfBeasts(kingdom)
+  // 40% chance to get nothing
+  if (Math.random() > 0.4) return null;
+
+  const minMight = kingdom.beasts.researchers.minMight || 0;
+  const maxMight = getMaxSearchableMightOfBeasts(kingdom);
 
   const beastIds = Object.keys(beasts)
     .filter(id => new Pokemon(id).cp() <= maxMight)
+    .filter(id => new Pokemon(id).cp() >= minMight);
 
-  if (!beastIds.length) return null
+  if (beastIds.length === 0) {
+    return { id: null, quantity: 0 };
+  }
 
-  const id = randomFrom(beastIds)
-  const beastCP = new Pokemon(id).cp()
+  const id = randomFrom(beastIds);
+  const beastCp = new Pokemon(id).cp();  
+  const quantity = Math.round((maxMight + (minMight * 0.5)) / beastCp);
 
-  let maxQty = Math.floor(maxMight / beastCP)
-  if (maxQty < 1) maxQty = 1
-
-  // generosity curve (tune 6–10)
-  const k = 8
-  const bias = 1 - Math.exp(-maxQty / k)
-
-  const quantity = Math.max(
-    1,
-    Math.ceil(maxQty * Math.pow(Math.random(), 1 - bias))
-  )
-
-  return { id, quantity }
+  return {
+    id,
+    quantity,
+  };
 }

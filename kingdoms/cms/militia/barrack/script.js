@@ -553,6 +553,3 @@ globalThis.redirectToAmmoPage = () => {
     tab.style.display = "none";
   });
   
-function getActualMight() {
-  return 100
-}
