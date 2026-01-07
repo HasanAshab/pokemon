@@ -171,3 +171,84 @@ button:hover {
   padding: 0;
   margin: 0;
 }
+
+/* Espionage Section Styles */
+.espionage-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.espionage-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.espionage-form .form-group label {
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+}
+
+.espionage-form input[type="range"] {
+  width: 100px;
+}
+
+.espionage-form input[type="number"] {
+  width: 80px;
+}
+
+.espionage-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.espionage-info div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.espionage-info span {
+  font-weight: bold;
+  color: #495057;
+}
+
+.btn.primary-btn {
+  background: #007bff;
+  color: white;
+}
+
+.btn.primary-btn:hover {
+  background: #0056b3;
+}
+
+.espionage-result {
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .espionage-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .espionage-form .form-group {
+    min-width: auto;
+  }
+  
+  .espionage-form input[type="range"],
+  .espionage-form input[type="number"] {
+    width: 100%;
+  }
+}

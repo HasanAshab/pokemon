@@ -43,6 +43,36 @@
     <button id="add-data" onclick="addDataRow('def')">Add Data</button>
   </div>  
   <br>
+  <div class="container">
+    <h3>Send Espionage</h3>
+    <div class="espionage-form">
+      <div class="form-group">
+        <label for="targetSecurity">Target's Security:</label>
+        <input type="range" id="targetSecurity" min="1" max="100" value="50">
+        <span id="targetSecurityLabel">50</span>
+      </div>
+      
+      <div class="form-group">
+        <label for="dataLevel">Data Level:</label>
+        <input type="number" id="dataLevel" min="0" max="10" value="1">
+      </div>
+      
+      <div class="form-group">
+        <label for="manCount">Mans:</label>
+        <input type="number" id="manCount" min="1" value="1">
+      </div>
+      
+      <div class="espionage-info">
+        <div>Risk: <span id="riskDisplay">30%</span></div>
+        <div>Cost: <span id="costDisplay">3000</span></div>
+      </div>
+      
+      <button id="sendEspionageBtn" class="btn primary-btn">Send</button>
+    </div>
+    
+    <div id="espionageResult" class="espionage-result"></div>
+  </div>
+  <br>
    <div class="container defender-data">
     <h3>Espionage Report</h3>
     <div id="defender-data"></div>

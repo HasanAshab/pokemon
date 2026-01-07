@@ -1,19 +1,12 @@
-i want a fix basestat. 
-details:
-   laimonk: 399
-   devil: 530
-   drago: 678
-   gobking: 809
-   elef: 985
-   dino: 1178
-   knight: 1386
+now at #index.html before Espionage report, add another section `Send Espionage`. there will be:
 
-   
+Target's Security: range(1 - 100), if not provided, use getTotalSecurityRate (pass defender kingdon)
+Data Level: number
+Mans: number
 
-  3 tails: rock type and total 1450 bst
-  4 tails: with 3 types ( normal, fire and fighting ) and total 1640  bst
-  5 tails:  with 2 types (Fairy and Psychic ) and total 1750 bst
-  6 tails:  with 2 types ( Poison and Bug ) and total 1900 bst
-  7 tails:  with 2 types ( Bug, Flying ) and total 2050 bst
-  8 tails:  with 2 types ( Water and Dark ) and total 2200 bst
-  9 tails:  with 1 type ( Normal ) and total 2600 bst
+on input of these, show these updated:
+Risk: range(1 - 100), chance of being caught, use getEspionageRisk
+Cost: use getEspionageCost
+
+Lastly a button, Send.
+when clicked do a random chance of success or caught

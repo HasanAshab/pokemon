@@ -966,3 +966,16 @@ export function searchForBeasts(kingdom) {
     quantity,
   };
 }
+
+
+export function getEspionageRisk(targetSecurityRate, dataLevel, manCount) {
+  console.log(targetSecurityRate, dataLevel, manCount);
+  
+  return 30
+}
+
+export function getEspionageCost(kingdom, targetSecurityRate, dataLevel, manCount) {
+  const espionageRisk = getEspionageRisk(targetSecurityRate, dataLevel, manCount)
+  const costPerMan = kingdom.pci
+  return costPerMan * manCount
+}

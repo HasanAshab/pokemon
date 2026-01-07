@@ -1,6 +1,6 @@
 * Tasks
-ap on battle
 send spy
+ap on battle
 
 beast oil
 barrack showing baseCp is without level

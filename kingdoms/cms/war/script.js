@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getArtilleriesBroken } from "../../utils.js";
+import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getArtilleriesBroken, getEspionageRisk, getEspionageCost } from "../../utils.js";
 
 globalThis.wars = []
 var i = 0;
@@ -442,6 +442,83 @@ globalThis.removeRow = (containerId, { currentTarget }) => {
   dataRowsWrapper.removeChild(currentTarget.parentElement);
 }
 
+// Espionage functionality
+function updateEspionageInfo() {
+  const targetSecurity = parseInt(document.getElementById('targetSecurity').value);
+  const dataLevel = parseInt(document.getElementById('dataLevel').value);
+  const manCount = parseInt(document.getElementById('manCount').value);
+  
+  // Use defender kingdom's security if available, otherwise use input value
+  let actualTargetSecurity = targetSecurity;
+  if (defenderSelect.value && kingdoms[defenderSelect.value]) {
+    actualTargetSecurity = getTotalSecurityRate(kingdoms[defenderSelect.value]);
+  }
+  
+  const risk = getEspionageRisk(actualTargetSecurity, dataLevel, manCount);
+  const cost = getEspionageCost(kingdoms[attackerSelect.value], actualTargetSecurity, dataLevel, manCount);
+  
+  document.getElementById('riskDisplay').textContent = `${risk}%`;
+  document.getElementById('costDisplay').textContent = cost.toLocaleString();
+}
+
+function sendEspionage() {
+  const targetSecurity = parseInt(document.getElementById('targetSecurity').value);
+  const dataLevel = parseInt(document.getElementById('dataLevel').value);
+  const manCount = parseInt(document.getElementById('manCount').value);
+  const resultDiv = document.getElementById('espionageResult');
+  
+  // Use defender kingdom's security if available
+  let actualTargetSecurity = targetSecurity;
+  if (defenderSelect.value && kingdoms[defenderSelect.value]) {
+    actualTargetSecurity = getTotalSecurityRate(kingdoms[defenderSelect.value]);
+  }
+  
+  const risk = getEspionageRisk(actualTargetSecurity, dataLevel, manCount);
+  const cost = getEspionageCost(kingdoms[attackerSelect.value], actualTargetSecurity, dataLevel, manCount);
+  
+  // Check if attacker has enough resources
+  const attackerKingdom = kingdoms[attackerSelect.value];
+  if (!attackerKingdom.storage || !attackerKingdom.storage.money || attackerKingdom.storage.money < cost) {
+    resultDiv.innerHTML = `<div style="color: red; padding: 10px; background: #ffe6e6; border: 1px solid #ff9999; border-radius: 4px; margin-top: 10px;">
+      <strong>Insufficient Funds!</strong><br>
+      Required: ${cost.toLocaleString()}<br>
+      Available: ${(attackerKingdom.storage?.money || 0).toLocaleString()}
+    </div>`;
+    return;
+  }
+  
+  // Deduct cost
+  attackerKingdom.storage.money -= cost;
+  
+  // Determine success/failure based on risk
+  const random = Math.random() * 100;
+  const success = random > risk;
+  
+  if (success) {
+    // Success - show espionage data
+    document.getElementById('expose-level-inp').value = dataLevel;
+    showDefenderData();
+    
+    resultDiv.innerHTML = `<div style="color: green; padding: 10px; background: #e6ffe6; border: 1px solid #99ff99; border-radius: 4px; margin-top: 10px;">
+      <strong>Espionage Successful!</strong><br>
+      Cost: ${cost.toLocaleString()}<br>
+      Data Level ${dataLevel} intelligence gathered.<br>
+      Check the Espionage Report below for details.
+    </div>`;
+  } else {
+    // Failure - caught
+    resultDiv.innerHTML = `<div style="color: red; padding: 10px; background: #ffe6e6; border: 1px solid #ff9999; border-radius: 4px; margin-top: 10px;">
+      <strong>Espionage Failed - Agents Caught!</strong><br>
+      Cost: ${cost.toLocaleString()}<br>
+      ${manCount} agent(s) were captured.<br>
+      No intelligence gathered.
+    </div>`;
+  }
+  
+  // Save kingdoms data
+  localStorage.setItem('kingdoms', JSON.stringify(kingdoms));
+}
+
 shiftSelect.onchange = () => renderWaves();
 
 document.getElementById("addWaveBtn").onclick = () => {
@@ -593,4 +670,34 @@ renderStrategySelect();
 renderKingdomSelects();
 loadDirectionData();
 renderWaves();
-showDefenderData()
+showDefenderData();
+
+// Initialize espionage functionality
+const targetSecurityInput = document.getElementById('targetSecurity');
+const targetSecurityLabel = document.getElementById('targetSecurityLabel');
+const dataLevelInput = document.getElementById('dataLevel');
+const manCountInput = document.getElementById('manCount');
+const sendEspionageBtn = document.getElementById('sendEspionageBtn');
+
+// Update target security display
+targetSecurityInput.oninput = () => {
+  targetSecurityLabel.textContent = targetSecurityInput.value;
+  updateEspionageInfo();
+};
+
+// Update espionage info when inputs change
+dataLevelInput.oninput = updateEspionageInfo;
+manCountInput.oninput = updateEspionageInfo;
+
+// Update espionage info when defender changes (to use actual security)
+const originalDefenderChange = defenderSelect.onchange;
+defenderSelect.onchange = () => {
+  originalDefenderChange();
+  updateEspionageInfo();
+};
+
+// Send espionage button
+sendEspionageBtn.onclick = sendEspionage;
+
+// Initial espionage info update
+updateEspionageInfo();
