@@ -181,6 +181,65 @@ function deleteEvent(eventId, isFuture = true) {
   }
 }
 
+// Bulk Operations
+function deleteAllPastEvents() {
+  if (kingdoms[name].events.past.length === 0) {
+    alert('No past events to delete.');
+    return;
+  }
+  
+  const count = kingdoms[name].events.past.length;
+  if (confirm(`Are you sure you want to delete all ${count} past events? This action cannot be undone.`)) {
+    kingdoms[name].events.past = [];
+    saveKingdoms();
+    renderEvents();
+    alert(`Deleted ${count} past events.`);
+  }
+}
+
+function markAllHappeningEventsAsHappened() {
+  const happeningEvents = kingdoms[name].events.future.filter(event => 
+    event.hasCountdown && event.remainingMonths <= 0
+  );
+  
+  if (happeningEvents.length === 0) {
+    alert('No happening events to mark as happened.');
+    return;
+  }
+  
+  const count = happeningEvents.length;
+  if (confirm(`Are you sure you want to mark all ${count} happening events as happened?`)) {
+    // Move happening events from future to past
+    kingdoms[name].events.future = kingdoms[name].events.future.filter(event => {
+      if (event.hasCountdown && event.remainingMonths <= 0) {
+        event.isHappened = true;
+        kingdoms[name].events.past.push(event);
+        return false; // Remove from future
+      }
+      return true; // Keep in future
+    });
+    
+    saveKingdoms();
+    renderEvents();
+    alert(`Marked ${count} happening events as happened.`);
+  }
+}
+
+function deleteAllFutureEvents() {
+  if (kingdoms[name].events.future.length === 0) {
+    alert('No future events to delete.');
+    return;
+  }
+  
+  const count = kingdoms[name].events.future.length;
+  if (confirm(`Are you sure you want to delete all ${count} future events? This action cannot be undone.`)) {
+    kingdoms[name].events.future = [];
+    saveKingdoms();
+    renderEvents();
+    alert(`Deleted ${count} future events.`);
+  }
+}
+
 // Render events
 function renderEvents() {
   renderFutureEvents();
@@ -334,6 +393,11 @@ globalThis.getHappeningEventsCount = getHappeningEventsCount;
 document.getElementById('addEventBtn').addEventListener('click', addEvent);
 document.getElementById('togglePastEventsBtn').addEventListener('click', togglePastEvents);
 document.getElementById('hasCountdown').addEventListener('change', toggleCountdownInputs);
+
+// Bulk operation event listeners
+document.getElementById('deleteAllPastBtn').addEventListener('click', deleteAllPastEvents);
+document.getElementById('markAllHappeningBtn').addEventListener('click', markAllHappeningEventsAsHappened);
+document.getElementById('deleteAllFutureBtn').addEventListener('click', deleteAllFutureEvents);
 
 // Initialize form state
 toggleCountdownInputs();
