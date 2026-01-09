@@ -843,7 +843,7 @@ export default {
   },
   chiduri: {
     num: 100019,
-    accuracy: 60,
+    accuracy: 70,
     basePower: 50,
     category: "Physical",
     name: "Chiduri",
@@ -852,7 +852,7 @@ export default {
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1 },
     target: "normal",
     type: "Electric",
-    koRatio: 3
+    koRatio: 0.7
   },
   firesoul: {
     num: 100020,

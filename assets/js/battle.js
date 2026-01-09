@@ -668,7 +668,7 @@ const _alreadySubscribedPokemons = []
 
 function setBattleStateListeners(playerTag) {
   const pokemon = pokemonMap[playerTag]
-  const opponent = pokemonMap[opponentTag(playerTag)]
+  const opponent = pokemonMap[opponentTag(playerTag)]  
 
   if (_alreadySubscribedPokemons.includes(pokemon.name)) return
   _alreadySubscribedPokemons.push(pokemon.name)
@@ -753,6 +753,7 @@ function setBattleStateListeners(playerTag) {
     }
     return new Promise((resolve, _) => {
       eventEmitter.once("move-card-select", (card, tag) => {
+        const opponent = pokemonMap[opponentTag(playerTag)]
         if (playerTag !== tag) return
         const storedMove = pokemon.state.moves.find(move => move.id === card.dataset.moveId)
         const move = new Move(card.dataset.moveId, storedMove._meta)
