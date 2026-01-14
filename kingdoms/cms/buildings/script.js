@@ -1060,6 +1060,9 @@ function calculateArtilleryTotalPrice() {
   document.getElementById('artilleryMaterialCost').textContent = (materialCost * quantity).toLocaleString();
   document.getElementById('artilleryTotalPrice').textContent = totalPrice.toLocaleString();
   
+  // Show results
+  document.getElementById('artilleryResults').style.display = 'block';
+  
   window.currentArtilleryPrice = totalPrice;
 }
 
@@ -1093,9 +1096,16 @@ function payForArtillery() {
 globalThis.payForArtillery = payForArtillery;
 
 // Add event listeners for artillery calculator
+document.getElementById('calculateArtilleryBtn').addEventListener('click', calculateArtilleryTotalPrice);
+
+// Auto-calculate on input change if results are already visible
 ['artilleryPowerInput', 'artilleryLifetimeInput', 'artillerySizeInput', 'artilleryQuantityInput'].forEach(id => {
-  document.getElementById(id).addEventListener('input', calculateArtilleryTotalPrice);
+  document.getElementById(id).addEventListener('input', () => {
+    if (document.getElementById('artilleryResults').style.display !== 'none') {
+      calculateArtilleryTotalPrice();
+    }
+  });
 });
 
-// Initial artillery calculation
-calculateArtilleryTotalPrice();
+// Remove initial artillery calculation
+// calculateArtilleryTotalPrice();
