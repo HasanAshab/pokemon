@@ -613,7 +613,7 @@ export function removeSoldiers(kingdom, soldierStack, shift) {
   });
 }
 
-export function reducePopulation(kingdom, quantity) {
+export function reducePopulation(kingdom, quantity) {  
   kingdom.density = kingdom.density - (quantity / kingdom.landArea)
 }
 
@@ -625,7 +625,7 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
     
     if (!soldierStack.has(s.image.id))
       return s
-    
+
     let [image, quantity] = soldierStack.get(s.image.id);
     quantity = Math.min(s.quantity, quantity)
     hospitalCap -= quantity;
@@ -633,11 +633,6 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
       const woundedCount = Math.abs(hospitalCap)
       s.quantity -= woundedCount;
       reducePopulation(kingdom, woundedCount);
-      // image.items._items.forEach(item => {
-      //   console.log(item.id, "-", woundedCount);
-      //   if (!kingdom.storage[item.id]) return
-      //   kingdom.storage[item.id] -= woundedCount
-      // });
       hospitalCap = 0;
     }
     return s;

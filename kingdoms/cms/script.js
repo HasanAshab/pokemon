@@ -14,6 +14,7 @@ import {
   getFoodTierForBudget,
   getResearchersAccuracy,
   getMaxSearchableMightOfBeasts,
+  reducePopulation,
 } from "../utils.js";
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
@@ -539,6 +540,14 @@ globalThis.updateCostForLand = function ({ currentTarget }) {
 
   landAreaLabel.textContent = area
   landCostLabel.textContent = landCost.toLocaleString()
+}
+
+globalThis.changePopulation = function () {
+  const amount = window.prompt("Enter amount: ", 0)
+  if (!amount) return
+  reducePopulation(kingdom, -parseInt(amount))
+  densityInput.value = kingdom.density
+  updateDisplay()
 }
 
 document.querySelectorAll(".info-card").forEach((card) => {
