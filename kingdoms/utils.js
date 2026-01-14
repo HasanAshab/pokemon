@@ -708,28 +708,6 @@ export function getEffectiveOffensiveIQ(iq, attackedArea) {
   return parseFloat(Math.max(0, iq - penalty).toFixed(1));
 }
 
-export function getRequiredArchLevel(floor, durability) {
-  return Math.max(1,
-    ((floor * 5) - 5) + (durability - 1)
-  )
-}
-
-export function getArchCost(kingdom, archLevel, size, floor) {
-  return (kingdom.pci * 1.5) * archLevel * (size * floor * 0.1)
-}
-
-export function getMaterialCost(kingdom, size, floor, durability) {
-  return (kingdom.pci * 0.085) * size * floor * (durability * 1.3) 
-}
-
-export function getBuildCost(kingdom, size, floor, durability) {
-  const reqiredArchLevel = getRequiredArchLevel(floor, durability);  
-  const archCost = getArchCost(kingdom, reqiredArchLevel, size, floor);
-  const materialCost = getMaterialCost(kingdom, size, floor, durability);
-  return archCost + materialCost
-}
-
-
 export function getResearchersAccuracy(kingdom) {
   const area = kingdom.landArea;
   const visionRange = kingdom.disaster.visionRange || 1;  
@@ -991,6 +969,42 @@ export function getEspionageCost(kingdom, targetSecurityRate, dataLevel, manCoun
   return costPerMan * manCount
 }
 
-export function calculateArtilleryPrice(power, lifetime, size) {
-  return (power * lifetime * size)
+export function getRequiredArchLevel(floor, durability) {
+  return Math.max(1,
+    ((floor * 5) - 5) + (durability - 1)
+  )
+}
+
+export function getArchCost(kingdom, archLevel, size, floor) {
+  return (kingdom.pci * 1.5) * archLevel * (size * floor * 0.1)
+}
+
+export function getMaterialCost(kingdom, size, floor, durability) {
+  return (kingdom.pci * 0.085) * size * floor * (durability * 1.3) 
+}
+
+export function getBuildCost(kingdom, size, floor, durability) {
+  const reqiredArchLevel = getRequiredArchLevel(floor, durability);  
+  const archCost = getArchCost(kingdom, reqiredArchLevel, size, floor);
+  const materialCost = getMaterialCost(kingdom, size, floor, durability);
+  return archCost + materialCost
+}
+
+export function getRequiredMechanicLevel(power, size) {
+  return power * (1/size)
+}
+
+export function getMechanicCost(kingdom, mechanicLevel) {
+  return (kingdom.pci * 2.5) * (mechanicLevel * 1.2)
+}
+
+export function getArtilleryMaterialCost(kingdom, lifetime, size) {
+  return (kingdom.pci * 0.1) * lifetime * size
+}
+
+export function calculateArtilleryPrice(kingdom, power, lifetime, size) {
+  const requiredMechanicLevel = getRequiredMechanicLevel(power, size);
+  const mechanicCost = getMechanicCost(kingdom, requiredMechanicLevel);
+  const materialCost = getArtilleryMaterialCost(kingdom, lifetime, size);
+  return mechanicCost + materialCost
 }

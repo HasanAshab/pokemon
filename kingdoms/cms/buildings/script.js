@@ -1,5 +1,5 @@
 import { flagsToObj, objToFlags } from '../../../assets/js/utils/helpers.js';
-import { calculateMaintains, calculateSize, upgradePrice, getRequiredArchLevel, getArchCost, getMaterialCost, getBuildCost, calculateArtilleryPrice } from '../../utils.js'
+import { calculateMaintains, calculateSize, upgradePrice, getRequiredArchLevel, getArchCost, getMaterialCost, getBuildCost, calculateArtilleryPrice, getRequiredMechanicLevel, getMechanicCost, getArtilleryMaterialCost } from '../../utils.js'
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
 const name = localStorage.getItem('$current_kingdom') || (() => {
@@ -1045,11 +1045,22 @@ function calculateArtilleryTotalPrice() {
   const size = parseInt(document.getElementById('artillerySizeInput').value) || 0;
   const quantity = parseInt(document.getElementById('artilleryQuantityInput').value) || 1;
   
-  const unitPrice = calculateArtilleryPrice(power, lifetime, size);
+  const kingdom = kingdoms[name];
+  
+  // Calculate breakdown for single unit
+  const requiredMechanicLevel = getRequiredMechanicLevel(power, size);
+  const mechanicCost = getMechanicCost(kingdom, requiredMechanicLevel);
+  const materialCost = getArtilleryMaterialCost(kingdom, lifetime, size);
+  const unitPrice = calculateArtilleryPrice(kingdom, power, lifetime, size);
   const totalPrice = unitPrice * quantity;
   
-  window.currentArtilleryPrice = totalPrice;
+  // Update display
+  document.getElementById('artilleryMechanicLevel').textContent = requiredMechanicLevel.toFixed(2);
+  document.getElementById('artilleryMechanicCost').textContent = (mechanicCost * quantity).toLocaleString();
+  document.getElementById('artilleryMaterialCost').textContent = (materialCost * quantity).toLocaleString();
   document.getElementById('artilleryTotalPrice').textContent = totalPrice.toLocaleString();
+  
+  window.currentArtilleryPrice = totalPrice;
 }
 
 // Payment function for artillery
