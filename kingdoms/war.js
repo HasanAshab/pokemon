@@ -50,6 +50,12 @@ export class SoldierStack extends Map {
       return sum + image.baseCP() * quantity;
     }, 0);
   }
+
+  withoutAmmoCP() {
+    return this.reduce((sum, [image, quantity]) => {      
+      return sum + image.withoutAmmoCP() * quantity;
+    }, 0);
+  }
   
   count() {
     return this.reduce((sum, [image, quantity]) => {

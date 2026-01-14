@@ -402,8 +402,10 @@ function renderForceSection(type,forceType) {
   container.appendChild(typeTotalEl);
 
   const stack = getSoldierStack(barrackForce[type])
-  const might = stack.baseCP();
+  const might = stack.withoutAmmoCP();
   const weaponMight = stack.cp() - might;
+  console.log(stack.cp(), might);
+  
   const armorMight = stack.armorScore();
   const ammoMight = weaponMight + armorMight;
   const totalMight = might + ammoMight;
@@ -462,7 +464,7 @@ function renderAllForces(forceType) {
   let ammoMight = 0;
   Object.keys(barrackForce).forEach((type) => {
     const stack = getSoldierStack(barrackForce[type]);
-    const might = stack.baseCP();
+    const might = stack.withoutAmmoCP();
     const weaponMight = stack.cp() - might;
     const armorMight = stack.armorScore();
     baseMight += might;

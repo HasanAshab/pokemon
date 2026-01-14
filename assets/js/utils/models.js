@@ -213,6 +213,16 @@ export class Pokemon extends PSPokemon {
       return Math.round(total)
     }
 
+    withoutAmmoCP() {
+      let total = 0
+      const levelStats = this._calculateLevelStat();
+      for (const stat in this._pokemon.baseStats) {
+        const statValue = this._pokemon.baseStats[stat]
+        total += statValue + levelStats[stat]
+      }
+      return Math.round(total)
+    }
+
     hasMegaForm() {
         return this.megaId in pokemons
     }
