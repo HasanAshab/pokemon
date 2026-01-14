@@ -639,10 +639,6 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
   });
 }
 
-export function getArtilleriesBroken(artillaries, diffPercent) {
-
-}
-
 export function getForceImbalanceRate(kingdom, forceType, type, totalExtraStudent = null) {
   if (totalExtraStudent === null) {
   const ranksIdList = Object.keys(humans).slice(forceType === "soldiers" ? 1 : 0);

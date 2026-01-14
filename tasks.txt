@@ -1,5 +1,4 @@
 * Tasks
-reduce population
 revive with event
 hokage sys support
 

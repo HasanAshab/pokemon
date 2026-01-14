@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave } from "../../war.js";
-import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getArtilleriesBroken, getEspionageRisk, getEspionageCost } from "../../utils.js";
+import { getEffectiveDefensiveIQ, sumObj, modObj, prepareDefenceWaves, prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getForceImbalanceRate, getPopulation, getTotalSecurityRate, reducePopulation, getCommandedArea, getEffectiveOffensiveIQ, getArtilleriesAtDefence, getEspionageRisk, getEspionageCost } from "../../utils.js";
 
 globalThis.wars = []
 var i = 0;
@@ -612,9 +612,6 @@ startWarBtn.onclick = () => {
 
     const war = new WAR_SYSTEMS[strategySelect.value](atkWave, defWave);
     netWin += war.result.win ? 1 : -1;
-
-    const defArtilleries = getArtilleriesAtDefence(defKingdom, parseInt(areaPercentageInput.value), directionSelect.value);
-    const defArtilleriesBroken = getArtilleriesBroken;
 
     resultDiv.innerHTML += war.comments().join("<br>");
     return new Promise((resolve, _) => {
