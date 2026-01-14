@@ -953,11 +953,11 @@ export function searchForBeasts(kingdom) {
     .filter(id => new Pokemon(id).cp() <= maxMight)
     .filter(id => new Pokemon(id).cp() >= minMight);
 
-  if (beastIds.length === 0) {
-    return { id: null, quantity: 0 };
-  }
-
+    
   const id = randomFrom(beastIds);
+  if (!id) {
+    return null;
+  }
   const beastCp = new Pokemon(id).cp();  
   const quantity = Math.round((maxMight + (minMight * 0.5)) / beastCp);
 

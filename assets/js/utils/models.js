@@ -107,7 +107,7 @@ export class Pokemon extends PSPokemon {
           this.meta.abilities = Object.values(this.meta.abilities)
         }
      
-        // Warning: Token_Used Feature is now Deprecated and removed
+        // Warning: This Feature is now Deprecated and removed
         // this.meta.token_used = Object.assign({
         //   "hp":0,
         //   "spe":0,
@@ -883,9 +883,15 @@ export class Item {
         this.pokemon = manager.pokemon
         this._item = items[this.id]
         Object.assign(this, this._item)
-        this._apply()
+        if (!this._isDeprecated())
+            this._apply()
     }
     
+    _isDeprecated() {
+        if (this.type === "nation_genetics") return true
+        return false
+    }
+
     _apply() {
         if ("tokens" in  this._item) {
             for (const key in this._item.tokens) {              
@@ -922,7 +928,7 @@ class ItemManager {
     }
 
     names() {
-      return this._items.map(item => item.id)
+        return this._items.map(item => item.id)
     }
 
     remove(id) {
@@ -932,15 +938,16 @@ class ItemManager {
     }
 
     reset() {
-      if (this.items)
-        this._items.forEach(item => this.remove(item.id))
+        if (this.items)
+            this._items.forEach(item => this.remove(item.id))
 
-      this._rawItems = Array.from(
+        this._rawItems = Array.from(
             new Set([
                 ...(this.pokemon._pokemon.items || []),
                 ...(this.pokemon.meta.items || [])
             ])
         )
+
         this._items = this._rawItems.filter(id => {
             if (Item.exists(id)) return true
             return false

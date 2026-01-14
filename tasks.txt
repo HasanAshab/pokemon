@@ -1,5 +1,7 @@
 * Tasks
 revive with event
+reduce population
+hokage sys support
 
 
 artilary cost estimator
