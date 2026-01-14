@@ -991,8 +991,21 @@ export function getBuildCost(kingdom, size, floor, durability) {
 }
 
 export function getRequiredMechanicLevel(power, size) {
-  return power * (1/size)
+  // Prevent divide-by-zero or unrealistic size
+  if (size <= 0) size = 1;
+
+  // Tunable constants
+  const powerFactor = 1.007;   // how strongly power increases level
+  const sizeFactor = 1.7;    // how strongly size reduces it
+  const base = 1;
+
+  // Core formula
+  const level = base + (Math.pow(power, powerFactor) / Math.pow(size, sizeFactor));
+
+  // Round up to integer mechanic level
+  return Math.ceil(level);
 }
+
 
 export function getMechanicCost(kingdom, mechanicLevel) {
   return (kingdom.pci * 2.5) * (mechanicLevel * 1.2)

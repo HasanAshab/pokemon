@@ -1,7 +1,9 @@
 * Tasks
 revive with event
 hokage sys support
-
+arena
+capacity bug with grade
+grade increases retreat 15%
 
 artilary cost estimator
 

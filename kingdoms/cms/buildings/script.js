@@ -768,6 +768,7 @@ function calculateConstructionCost() {
   const floor = parseInt(document.getElementById('floorInput').value) || 1;
   const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
   const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
+  const includeCommission = document.getElementById('includeConstructionCommission').checked;
   
   if (size <= 0) {
     alert('Please enter a valid size greater than 0');
@@ -794,7 +795,9 @@ function calculateConstructionCost() {
   // Calculate total costs for all quantities
   const totalArchCost = archCostPerUnit * quantity;
   const totalMaterialCost = materialCostPerUnit * quantity;
-  const totalCost = totalCostPerUnit * quantity;
+  const totalCostWithCommission = totalCostPerUnit * quantity;
+  const totalCostWithoutCommission = totalMaterialCost;
+  const totalCost = includeCommission ? totalCostWithCommission : totalCostWithoutCommission;
   
   // Display results
   document.getElementById('archLevel').textContent = requiredArchLevel;
@@ -805,7 +808,7 @@ function calculateConstructionCost() {
     `${materialCostPerUnit.toLocaleString()} × ${quantity} = ${totalMaterialCost.toLocaleString()}` :
     `${totalMaterialCost.toLocaleString()}`;
   document.getElementById('totalCost').textContent = quantity > 1 ?
-    `${totalCostPerUnit.toLocaleString()} × ${quantity} = ${totalCost.toLocaleString()}` :
+    `${(includeCommission ? totalCostPerUnit : materialCostPerUnit).toLocaleString()} × ${quantity} = ${totalCost.toLocaleString()}` :
     `${totalCost.toLocaleString()}`;
   
   // Show results section and pay button
@@ -814,6 +817,7 @@ function calculateConstructionCost() {
   
   // Store current calculation for payment
   window.currentConstructionCost = totalCost;
+  window.currentConstructionIncludesCommission = includeCommission;
 }
 
 // Payment function for construction
@@ -861,6 +865,13 @@ document.getElementById('calculateBtn').addEventListener('click', calculateConst
       calculateConstructionCost();
     }
   });
+});
+
+// Recalculate when commission checkbox changes
+document.getElementById('includeConstructionCommission').addEventListener('change', () => {
+  if (document.getElementById('costResults').style.display !== 'none') {
+    calculateConstructionCost();
+  }
 });
 
 globalThis.hideQuickFindForm = () => {
@@ -1044,6 +1055,7 @@ function calculateArtilleryTotalPrice() {
   const lifetime = parseInt(document.getElementById('artilleryLifetimeInput').value) || 0;
   const size = parseInt(document.getElementById('artillerySizeInput').value) || 0;
   const quantity = parseInt(document.getElementById('artilleryQuantityInput').value) || 1;
+  const includeCommission = document.getElementById('includeArtilleryCommission').checked;
   
   const kingdom = kingdoms[name];
   
@@ -1051,19 +1063,27 @@ function calculateArtilleryTotalPrice() {
   const requiredMechanicLevel = getRequiredMechanicLevel(power, size);
   const mechanicCost = getMechanicCost(kingdom, requiredMechanicLevel);
   const materialCost = getArtilleryMaterialCost(kingdom, lifetime, size);
-  const unitPrice = calculateArtilleryPrice(kingdom, power, lifetime, size);
-  const totalPrice = unitPrice * quantity;
+  const unitPriceWithCommission = calculateArtilleryPrice(kingdom, power, lifetime, size);
+  const unitPriceWithoutCommission = materialCost;
+  
+  // Calculate totals
+  const totalMechanicCost = mechanicCost * quantity;
+  const totalMaterialCost = materialCost * quantity;
+  const totalPriceWithCommission = unitPriceWithCommission * quantity;
+  const totalPriceWithoutCommission = unitPriceWithoutCommission * quantity;
+  const totalPrice = includeCommission ? totalPriceWithCommission : totalPriceWithoutCommission;
   
   // Update display
-  document.getElementById('artilleryMechanicLevel').textContent = requiredMechanicLevel.toFixed(2);
-  document.getElementById('artilleryMechanicCost').textContent = (mechanicCost * quantity).toLocaleString();
-  document.getElementById('artilleryMaterialCost').textContent = (materialCost * quantity).toLocaleString();
+  document.getElementById('artilleryMechanicLevel').textContent = requiredMechanicLevel;
+  document.getElementById('artilleryMechanicCost').textContent = totalMechanicCost.toLocaleString();
+  document.getElementById('artilleryMaterialCost').textContent = totalMaterialCost.toLocaleString();
   document.getElementById('artilleryTotalPrice').textContent = totalPrice.toLocaleString();
   
   // Show results
   document.getElementById('artilleryResults').style.display = 'block';
   
   window.currentArtilleryPrice = totalPrice;
+  window.currentArtilleryIncludesCommission = includeCommission;
 }
 
 // Payment function for artillery
@@ -1105,6 +1125,13 @@ document.getElementById('calculateArtilleryBtn').addEventListener('click', calcu
       calculateArtilleryTotalPrice();
     }
   });
+});
+
+// Recalculate when commission checkbox changes
+document.getElementById('includeArtilleryCommission').addEventListener('change', () => {
+  if (document.getElementById('artilleryResults').style.display !== 'none') {
+    calculateArtilleryTotalPrice();
+  }
 });
 
 // Remove initial artillery calculation

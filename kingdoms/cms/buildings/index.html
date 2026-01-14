@@ -295,6 +295,12 @@
             <label for="quantityInput">Quantity:</label>
             <input type="number" id="quantityInput" min="1" value="1" />
           </div>
+          <div class="input-group">
+            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+              <input type="checkbox" id="includeConstructionCommission" checked style="width: auto; margin: 0;" />
+              Include Commission
+            </label>
+          </div>
           <button id="calculateBtn" class="btn primary-btn">Calculate Cost</button>
         </div>
         <div id="costResults" class="cost-results" style="display: none;">
@@ -344,6 +350,12 @@
           <div class="input-group">
             <label for="artilleryQuantityInput">Quantity:</label>
             <input type="number" id="artilleryQuantityInput" min="1" value="1" />
+          </div>
+          <div class="input-group">
+            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+              <input type="checkbox" id="includeArtilleryCommission" checked style="width: auto; margin: 0;" />
+              Include Commission
+            </label>
           </div>
           <button id="calculateArtilleryBtn" class="btn primary-btn">Calculate Price</button>
         </div>
