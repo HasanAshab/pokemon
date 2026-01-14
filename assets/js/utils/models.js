@@ -198,7 +198,7 @@ export class Pokemon extends PSPokemon {
     cp() {
       let total = 0
       for (const stat in this.stats) {
-        const statValue = this.stats[stat]
+        const statValue = this.stats[stat]        
         total += statValue
       }
       return Math.round(total)
@@ -218,6 +218,7 @@ export class Pokemon extends PSPokemon {
       const levelStats = this._calculateLevelStat();
       for (const stat in this._pokemon.baseStats) {
         const statValue = this._pokemon.baseStats[stat]
+        
         total += statValue + levelStats[stat]
       }
       return Math.round(total)
@@ -372,7 +373,7 @@ export class Pokemon extends PSPokemon {
         const baseStats = this._pokemon.baseStats;        
         const levelStats = this._calculateLevelStat();
         const natureStats = this._calculateNatureStat();
-        const tokenStats = this._calculateTokenStat();
+        const tokenStats = this._calculateTokenStat();        
         const totalStats = {};
         Object.keys(baseStats).forEach(statName => {
           totalStats[statName] =

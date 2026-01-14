@@ -68,16 +68,16 @@ export class SoldierStack extends Map {
       return sum + (image.stats[stat] * quantity);
     }, 0);
   }
-  
+
   armorScore() {
     return this.reduce((score, [image, quantity]) => {
       const ahp = image.items._items.reduce((ahp, item) => {        
         if (item.type === "armor") {          
           const totalStat = Object.values(item.stats).reduce((sum, stat) => sum + stat, 0)
-          ahp += totalStat * (item.covers / 100)
-          ahp += Object.values(item.tokens || {}).reduce((sum, stat) => sum + stat, 0)
+          ahp += totalStat * ((item.covers / 100) * 1.4)
+          ahp += Object.values(item.tokens || {}).reduce((sum, stat) => sum + stat, 0) * 0.5
         }
-        return ahp
+        return Math.round(ahp)
       }, 0)
       return score + (ahp * quantity)
     }, 0)

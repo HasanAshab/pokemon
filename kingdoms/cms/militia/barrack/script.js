@@ -404,12 +404,9 @@ function renderForceSection(type,forceType) {
   const stack = getSoldierStack(barrackForce[type])
   const might = stack.withoutAmmoCP();
   const weaponMight = stack.cp() - might;
-  console.log(stack.cp(), might);
-  
   const armorMight = stack.armorScore();
   const ammoMight = weaponMight + armorMight;
-  const totalMight = might + ammoMight;
-  
+  const totalMight = might + ammoMight;  
   const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Might`);
   mightEl.textContent = `${might.toLocaleString()} + ${ammoMight.toLocaleString()} = ${totalMight.toLocaleString()}`;
 }

@@ -6,7 +6,7 @@ function convertMoveToItem(move) {
   return {
     type: "weapon",
     tokensPercent: {
-      [atkStatName]: 12 * move.retreat,
+      [atkStatName]: 40 * move.retreat,
     },
     tokens: modObj(move.tokenChanges, 0.7)
   }
@@ -246,7 +246,7 @@ export default {
       spd: 40 
     }
   },
-    silverlocket2: {
+  silverlocket2: {
     type: "armor",
     covers: 40,
     stats: {
