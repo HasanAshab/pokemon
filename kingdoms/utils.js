@@ -1012,7 +1012,7 @@ export function getMechanicCost(kingdom, mechanicLevel) {
 }
 
 export function getArtilleryMaterialCost(kingdom, lifetime, size) {
-  return (kingdom.pci * 0.1) * lifetime * size
+  return (kingdom.pci * 0.1) * (lifetime * 1.2) * size
 }
 
 export function calculateArtilleryPrice(kingdom, power, lifetime, size) {

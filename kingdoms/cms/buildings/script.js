@@ -9,6 +9,7 @@ const name = localStorage.getItem('$current_kingdom') || (() => {
 const kingdomNameEl = document.getElementById("kingdomName");
 const buildingsContainer = document.getElementById("buildingsContainer");
 const addBuildingBtn = document.getElementById("addBuildingBtn");
+const maintainsFilter = document.getElementById("maintainsFilter");
 const companies = JSON.parse(localStorage.getItem("companies"))
 
 kingdomNameEl.textContent = name ? `${name}'s Buildings` : "Unknown Kingdom";
@@ -17,6 +18,9 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].buildings) kingdoms[name].buildings = [];
 if (!kingdoms[name].events) kingdoms[name].events = { future: [], past: [] };
+
+// Current filter state
+let currentMaintainsFilter = "all";
 
 // Event modal variables
 let currentEventCallback = null;
@@ -133,7 +137,17 @@ function getLifespanDisplay(building) {
 
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
-  kingdoms[name].buildings.forEach((building, index) => {
+  
+  // Filter buildings based on selected maintains item
+  const filteredBuildings = kingdoms[name].buildings.filter((building) => {
+    if (currentMaintainsFilter === "all") return true;
+    
+    // Check if building has baseMaintains and the selected item with value > 0
+    if (!building.baseMaintains) return false;
+    return (building.baseMaintains[currentMaintainsFilter] || 0) > 0;
+  });
+  
+  filteredBuildings.forEach((building, index) => {
     
     const div = document.createElement("div");
     div.className = "building";
@@ -760,6 +774,41 @@ document.getElementById("deleteExpiredBtn").onclick = () => {
   }
 };
 
+// Populate maintains filter dropdown
+function populateMaintainsFilter() {
+  const maintainsSet = new Set();
+  
+  // Collect all unique maintains items from all buildings
+  kingdoms[name].buildings.forEach((building) => {
+    if (building.baseMaintains) {
+      Object.keys(building.baseMaintains).forEach((item) => {
+        if (building.baseMaintains[item] > 0) {
+          maintainsSet.add(item);
+        }
+      });
+    }
+  });
+  
+  // Clear existing options except "All"
+  maintainsFilter.innerHTML = '<option value="all">All</option>';
+  
+  // Add options for each maintains item
+  Array.from(maintainsSet).sort().forEach((item) => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item;
+    maintainsFilter.appendChild(option);
+  });
+}
+
+// Handle maintains filter change
+maintainsFilter.addEventListener('change', () => {
+  currentMaintainsFilter = maintainsFilter.value;
+  renderBuildings();
+});
+
+// Initialize
+populateMaintainsFilter();
 renderBuildings();
 
 // Cost Estimator functionality
