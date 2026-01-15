@@ -387,7 +387,7 @@ function addKoHandler(move) {
 
     const finalChance = Math.min(1, koChance * (move.koRatio ?? 0)) - 0.05;
     
-    console.log(`${move.name} KO chance: ${finalChance}`);
+    finalChance > 0 && console.log(`${move.name} KO chance: ${finalChance}`);
     
     return Math.random() < finalChance ? Infinity : bp;
   };

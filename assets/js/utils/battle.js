@@ -6,6 +6,7 @@ import { Hit } from "./damage.js"
 import { fixFloat, weightedRandom, sumObj, modObj, calcLevelStat } from "./helpers.js"
 import { WeatherManager } from "./weathers.js";
 
+
 class BaseBattle extends EventEmitter {
   scenePerTurn = 1
   //Possible turns per wave with their weight
@@ -18,6 +19,10 @@ class BaseBattle extends EventEmitter {
   waveNo = 0
   ctx = {
     veryClose: false
+  }
+  teamsAP = {
+    "you": 0,
+    "enemy": 0
   }
   _states = new Map()
   _history = []
@@ -1002,6 +1007,18 @@ class BattleState extends EventEmitter {
         this.battle.removePokemon(this.pokemon)
       }
     }, "clear-fainted")
+
+    this.on("turn", () => {
+      const ap = this.battle.teamsAP[this.pokemon._tag === "you" ? "enemy" : "you"]
+      if (ap <= 0) return
+      const workingAP = ap / this.team.length
+        
+      const chance = 100
+      if (chance >= Math.random() * 100) {
+        console.log(`${this.pokemon.meta.name}: Targeted by Artillery!`);
+        popupQueue.add(`Artillery Targeted 🎯`, this.pokemon._tag)
+      }
+    })
 
     this.setMoves(pokemon.meta.moves || [])
   }

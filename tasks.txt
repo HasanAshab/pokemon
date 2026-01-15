@@ -1,11 +1,13 @@
 * Tasks
-revive with event
-hokage sys support
-arena
+ap on battle
 capacity bug with grade
 grade increases retreat 15%
-ap on battle
+
+arena
 beast oil
+hokage sys support
+revive with event
+
 break artilary, remove beasts
 auto generate military
 
