@@ -442,136 +442,135 @@ export default {
   },
   
   "gen-food-low-1": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": -50,
-      "def": -30,
-      "atk": -30,
-      "spd": -30,
-      "spe": -30,
-      "spa": -30
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 0,
+      "def": 3,
+      "atk": 3,
+      "spd": 3,
+      "spe": 3,
+      "spa": 3
     },
-    meta: { budget: 300 }
+    "meta": { "budget": 300 }
   },
   "gen-food-low-2": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": -40,
-      "def": -20,
-      "atk": -20,
-      "spd": -20,
-      "spe": -20,
-      "spa": -20
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 1,
+      "def": 5,
+      "atk": 5,
+      "spd": 5,
+      "spe": 5,
+      "spa": 5
     },
-    meta: { budget: 700 }
+    "meta": { "budget": 700 }
   },
   "gen-food-low-3": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": -30,
-      "def": -10,
-      "atk": -10,
-      "spd": -10,
-      "spe": -10,
-      "spa": -10
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 2,
+      "def": 7,
+      "atk": 7,
+      "spd": 7,
+      "spe": 7,
+      "spa": 7
     },
-    meta: { budget: 1000 }
+    "meta": { "budget": 1000 }
   },
   "gen-food-low-4": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": -20,
-      "def": -10,
-      "atk": -10,
-      "spd": -10,
-      "spe": -10,
-      "spa": -10
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 3,
+      "def": 9,
+      "atk": 9,
+      "spd": 9,
+      "spe": 9,
+      "spa": 9
     },
-    meta: { budget: 1500 }
+    "meta": { "budget": 1500 }
   },
   "gen-food-mid-1": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": -10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 6,
+      "def": 13,
+      "atk": 13,
+      "spd": 13,
+      "spe": 13,
+      "spa": 13
     },
-    meta: { budget: 2500 }
+    "meta": { "budget": 2500 }
   },
   "gen-food-mid-2": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": 0,
-      "def": 20,
-      "atk": 20,
-      "spd": 20,
-      "spe": 20,
-      "spa": 20
-
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 7,
+      "def": 16,
+      "atk": 16,
+      "spd": 16,
+      "spe": 16,
+      "spa": 16
     },
-    meta: { budget: 3500 }
+    "meta": { "budget": 3500 }
   },
   "gen-food-mid-3": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": 10,
-      "def": 30,
-      "atk": 30,
-      "spd": 30,
-      "spe": 30,
-      "spa": 30
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 8,
+      "def": 19,
+      "atk": 19,
+      "spd": 19,
+      "spe": 19,
+      "spa": 19
     },
-    meta: { budget: 4500 }
+    "meta": { "budget": 4500 }
   },
   "gen-food-high-1": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": 20,
-      "def": 40,
-      "atk": 40,
-      "spd": 40,
-      "spe": 40,
-      "spa": 40
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 11,
+      "def": 25,
+      "atk": 25,
+      "spd": 25,
+      "spe": 25,
+      "spa": 25
     },
-    meta: { budget: 6000 }
+    "meta": { "budget": 6000 }
   },
   "gen-food-high-2": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": 30,
-      "def": 50,
-      "atk": 50,
-      "spd": 50,
-      "spe": 50,
-      "spa": 50
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 13,
+      "def": 28,
+      "atk": 28,
+      "spd": 28,
+      "spe": 28,
+      "spa": 28
     },
-    meta: { budget: 8000 }
+    "meta": { "budget": 8000 }
   },
   "gen-food-high-3": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": 40,
-      "def": 60,
-      "atk": 60,
-      "spd": 60,
-      "spe": 60,
-      "spa": 60
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 15,
+      "def": 32,
+      "atk": 32,
+      "spd": 32,
+      "spe": 32,
+      "spa": 32
     },
-    meta: { budget: 10000 }
+    "meta": { "budget": 10000 }
   },
   "gen-food-bulk-1": {
-    type: "food_genetics",
-    tokensPercent: {
-      "hp": 60,
-      "def": 100,
-      "atk": 90,
-      "spd": 60,
-      "spe": 30,
-      "spa": 60
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 20,
+      "def": 40,
+      "atk": 33,
+      "spd": 28,
+      "spe": 22,
+      "spa": 28
     },
-    meta: { budget: 15000 }
+    "meta": { "budget": 15000 }
   }
 }
