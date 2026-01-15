@@ -406,7 +406,9 @@ function renderForceSection(type,forceType) {
   const weaponMight = stack.cp() - might;
   const armorMight = stack.armorScore();
   const ammoMight = weaponMight + armorMight;
-  const totalMight = might + ammoMight;  
+  console.log(type, weaponMight, armorMight);
+
+  const totalMight = might + ammoMight;
   const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Might`);
   mightEl.textContent = `${might.toLocaleString()} + ${ammoMight.toLocaleString()} = ${totalMight.toLocaleString()}`;
 }
@@ -456,7 +458,6 @@ function renderAllForces(forceType) {
   const forcesTotalQuantityEl = document.getElementById("forcesTotalQuantity")
   forcesTotalQuantityEl.textContent = forcesTotalQuantity
 
-  let totalMight = 0;
   let baseMight = 0;
   let ammoMight = 0;
   Object.keys(barrackForce).forEach((type) => {
@@ -466,11 +467,10 @@ function renderAllForces(forceType) {
     const armorMight = stack.armorScore();
     baseMight += might;
     ammoMight += weaponMight + armorMight;
-    totalMight += might + ammoMight;
   });
-  
+
   const totalMightEl = document.getElementById("forcesMight");
-  totalMightEl.textContent = `${baseMight.toLocaleString()} + ${ammoMight.toLocaleString()} = ${totalMight.toLocaleString()}`;
+  totalMightEl.textContent = `${baseMight.toLocaleString()} + ${ammoMight.toLocaleString()} = ${(baseMight + ammoMight).toLocaleString()}`;
 }
 
 function getInitialXp(imageId) {
