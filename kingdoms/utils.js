@@ -995,15 +995,15 @@ export function getRequiredMechanicLevel(power, size) {
   if (size <= 0) size = 1;
 
   // Tunable constants
-  const powerFactor = 1.007;   // how strongly power increases level
-  const sizeFactor = 1.7;    // how strongly size reduces it
+  const powerFactor = 1.09;   // how strongly power increases level
+  const sizeFactor = 0.9;    // how strongly size reduces it
   const base = 1;
 
   // Core formula
-  const level = base + (Math.pow(power, powerFactor) / Math.pow(size, sizeFactor));
+  const level = (base + (Math.pow(power, powerFactor) / Math.pow(size, sizeFactor))) * 0.06;
 
   // Round up to integer mechanic level
-  return Math.ceil(level);
+  return Math.round(level);
 }
 
 
