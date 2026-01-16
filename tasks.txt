@@ -1,6 +1,4 @@
 * Tasks
-grade increases retreat 15%
-
 arena
 beast oil
 hokage sys support

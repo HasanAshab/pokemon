@@ -433,7 +433,8 @@ export class Move {
 
     get retreat() {
         const mod = this._user?.state?.retreatModifier(this) ?? 1
-        return parseFloat(parseFloat(this._ref.retreat * mod).toFixed(2))
+        const gradeMod = Math.max(1, (100 + (15 * (this._meta.grade || 0))) / 100)        
+        return parseFloat(parseFloat(this._ref.retreat * mod * gradeMod).toFixed(2))
     }
 
     set retreat(value) {
