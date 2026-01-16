@@ -1737,6 +1737,8 @@ function cleanupFriendlyMatch() {
 window.addEventListener('beforeunload', cleanupFriendlyMatch);
 
 window.onload = () => {
+  fetch('www.google.com').catch(() => alert('You are offline! Some features may not work.'));
+
   globalThis.pokemonMap = {}
   globalThis.fields = Navigation.getBattleFields().length > 0 ? Navigation.getBattleFields() : (getParam("fields")?.split(',').filter(Boolean) ?? [])
   loadTeams()
