@@ -21,8 +21,8 @@ class BaseBattle extends EventEmitter {
     veryClose: false
   }
   teamsAP = {
-    "you": 0,
-    "enemy": 0
+    "you": 200,
+    "enemy": 200, //todo
   }
   _states = new Map()
   _history = []
@@ -217,7 +217,7 @@ class BaseBattle extends EventEmitter {
     }
   }
 
-  async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false) {
+  async run(senario, clonemode1 = false, clonemode2 = false, ajmode = false, artilleryMode = false) {
     const oldVeryClose = this.ctx.veryClose
     if (clonemode1 || clonemode2) {
       this.ctx.waveLocked = true
@@ -262,7 +262,7 @@ class BaseBattle extends EventEmitter {
       move1._target = this.pokemon2
       move2._target = this.pokemon1
     }
-    catch (e) {
+    catch (e) {      
       move1._meta = {}
       move2._meta = {}
     }
@@ -274,7 +274,7 @@ class BaseBattle extends EventEmitter {
     // TEMP: move power management
     this.pokemon1.state.damage.chainModifyPower('*', this.pokemon1.state.stats._statChanges["pow"] || 1)
     this.pokemon2.state.damage.chainModifyPower('*', this.pokemon2.state.stats._statChanges["pow"] || 1)
-
+    
     move1 = senario.get(this.pokemon1)
     move2 = senario.get(this.pokemon2)
 
@@ -751,6 +751,11 @@ class BaseBattle extends EventEmitter {
         await this._handleCapacityMove(this.pokemon2, move2)
       }
     }
+
+    if (!artilleryMode) {
+      await this._handleArtillery("you")
+      await this._handleArtillery("enemy")
+    }
   }
 
   async _handleStatusCapacity(attacker, defender, move) {
@@ -828,6 +833,40 @@ class BaseBattle extends EventEmitter {
     }
 
     move.resetCapacity()
+  }
+
+  async _handleArtillery(playerTag) {
+      const opponentTag = playerTag === "you" ? "enemy" : "you"
+      const team = playerTag === "you" ? this.team1 : this.team2
+      const ap = this.teamsAP[opponentTag]
+      if (ap <= 0) return
+
+      const artillery = new Pokemon("$artillery", { name: `Artillery (${opponentTag})`}, opponentTag)
+      artillery._pokemon.baseStats.atk = (ap / team.length) * 0.5
+      
+      this.addPokemon(artillery)
+      const artilleryMove = artillery.state.addMove("$artilleryprojectile")
+      const oldActive = this.getActive(playerTag)
+      const oldActiveOpponent = this.getActive(opponentTag)
+      this.activate(artillery, opponentTag)
+      
+      // popupQueue.add(`Artillery Fired 🎯`, playerTag)
+      for (const p of team) {      
+        if (p.id === "$artillery") continue
+        const pokemonMoveId = p.type === "beast" ? "block" : "dodge"
+        const scene = new Map([
+          [artillery, artilleryMove],
+          [p, new Move(pokemonMoveId)]
+        ])
+        
+        this.activate(p, playerTag)
+        await this.run(scene, false, false, false, true)
+      }
+
+      this.activate(oldActive, playerTag)
+      this.activate(oldActiveOpponent, opponentTag)
+      this.removePokemon(artillery)
+
   }
 
   _checkFailure(pokemon, senario) {
@@ -1007,18 +1046,6 @@ class BattleState extends EventEmitter {
         this.battle.removePokemon(this.pokemon)
       }
     }, "clear-fainted")
-
-    this.on("turn", () => {
-      const ap = this.battle.teamsAP[this.pokemon._tag === "you" ? "enemy" : "you"]
-      if (ap <= 0) return
-      const workingAP = ap / this.team.length
-        
-      const chance = 100
-      if (chance >= Math.random() * 100) {
-        console.log(`${this.pokemon.meta.name}: Targeted by Artillery!`);
-        popupQueue.add(`Artillery Targeted 🎯`, this.pokemon._tag)
-      }
-    })
 
     this.setMoves(pokemon.meta.moves || [])
   }

@@ -45,5 +45,16 @@ export default {
   ...humans,
   ...entities,
   ...entitiesExtra,
-  ...beasts
+  ...beasts,
+  "$artillery": {
+    num: 9999999,
+    name: "Artillery",
+    types: ["None"],
+    baseStats: { hp: 100, atk: 0, def: 0, spa: 0, spd: 0, spe: humans.genin.baseStats.spe },
+    abilities: {},
+    heightm: 0,
+    weightkg: 0,
+    color: "None",
+    evos: [],
+  }
 }

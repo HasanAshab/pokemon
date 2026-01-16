@@ -1,5 +1,4 @@
 * Tasks
-ap on battle
 capacity bug with grade
 grade increases retreat 15%
 

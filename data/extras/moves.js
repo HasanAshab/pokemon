@@ -1919,5 +1919,20 @@ export default {
       return true
     },
   },
+
+  "$artilleryprojectile": {
+    num: 100066,
+    accuracy: 80,
+    basePower: 5,
+    multihit: 10,
+    category: "Physical",
+    name: "Artillery Projectile",
+    pp: null,
+    priority: 0,
+    flags: { contact: 1 },
+    target: "normal",
+    type: "Normal",
+    contestType: "Tough",
+  }
 }
 
