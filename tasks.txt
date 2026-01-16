@@ -1,5 +1,4 @@
 * Tasks
-capacity bug with grade
 grade increases retreat 15%
 
 arena
