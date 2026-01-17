@@ -544,7 +544,7 @@ function sendEspionage() {
 shiftSelect.onchange = () => renderWaves();
 
 document.getElementById("addWaveBtn").onclick = () => {
-  attackWaves.push({
+  .push({
     commander: Object.keys(kingdoms[attackerSelect.value].commanders || {})[0] || "",
     soldiers: [],
   });
@@ -599,9 +599,13 @@ startWarBtn.onclick = () => {
     const soldierStack = prepareSoldiers(kingdom, wave.soldiers, 100, "emergency");
     const commander = prepareCommander(kingdom, wave.commander);
     const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
-    commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
-    dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
-    
+
+    if (!commander.isAnonymous)
+      commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
+
+    if (!dwave.commander.isAnonymous)
+      dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
+
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
     const artillaries = getArtilleriesAtDefence(
       defKingdom,
