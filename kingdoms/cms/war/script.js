@@ -83,6 +83,23 @@ function renderWaves() {
     const waveDiv = document.createElement("div");
     waveDiv.className = "wave-item";
 
+    // Commander selection section
+    const commanderSection = document.createElement("div");
+    commanderSection.className = "commander-section";
+    
+    // Toggle between named and anonymous commander
+    const commanderTypeToggle = document.createElement("label");
+    commanderTypeToggle.innerHTML = `
+      <input type="checkbox" ${wave.isAnonymous ? 'checked' : ''} onchange="toggleCommanderType(${index}, this.checked)">
+      Use Anonymous Commander
+    `;
+    commanderSection.appendChild(commanderTypeToggle);
+
+    // Named commander select (shown when not anonymous)
+    const namedCommanderDiv = document.createElement("div");
+    namedCommanderDiv.className = "named-commander";
+    namedCommanderDiv.style.display = wave.isAnonymous ? 'none' : 'block';
+    
     const commanderSelect = document.createElement("select");
     Object.keys(kingdoms[attackerSelect.value].commanders || {}).forEach((commanderId) => {
       const option = document.createElement("option");
@@ -91,19 +108,57 @@ function renderWaves() {
       if (wave.commander === commanderId) option.selected = true;
       commanderSelect.appendChild(option);
     });
-    const setCommanderIQ = () => {
-      const atkKingdom = kingdoms[attackerSelect.value]
-      const defKingdom = kingdoms[defenderSelect.value]
-      const actualIQ = atkKingdom.commanders[commanderSelect.value].iq.offensive;
-      const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
-      const effectiveIQ = getEffectiveOffensiveIQ(actualIQ, attackedArea)
-      iqLabel.textContent = `IQ: ${effectiveIQ}`;
+    
+    namedCommanderDiv.appendChild(commanderSelect);
+
+    // Anonymous commander IQ input (shown when anonymous)
+    const anonymousCommanderDiv = document.createElement("div");
+    anonymousCommanderDiv.className = "anonymous-commander";
+    anonymousCommanderDiv.style.display = wave.isAnonymous ? 'block' : 'none';
+    
+    const iqLabel = document.createElement("label");
+    iqLabel.textContent = "Offensive IQ:";
+    const iqInput = document.createElement("input");
+    iqInput.type = "number";
+    iqInput.min = "1";
+    iqInput.max = "100";
+    iqInput.value = wave.iq?.offensive || 50;
+    iqInput.style.width = "80px";
+    iqInput.style.marginLeft = "10px";
+    
+    anonymousCommanderDiv.appendChild(iqLabel);
+    anonymousCommanderDiv.appendChild(iqInput);
+
+    // IQ display
+    const iqDisplayLabel = document.createElement("label");
+    iqDisplayLabel.className = "iq-display";
+    
+    const updateIQDisplay = () => {
+      if (wave.isAnonymous) {
+        const customIQ = parseInt(iqInput.value) || 50;
+        const atkKingdom = kingdoms[attackerSelect.value];
+        const defKingdom = kingdoms[defenderSelect.value];
+        const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100);
+        const effectiveIQ = getEffectiveOffensiveIQ(customIQ, attackedArea);
+        iqDisplayLabel.textContent = `Effective IQ: ${effectiveIQ}`;
+      } else {
+        const atkKingdom = kingdoms[attackerSelect.value];
+        const defKingdom = kingdoms[defenderSelect.value];
+        const actualIQ = atkKingdom.commanders[commanderSelect.value]?.iq.offensive || 0;
+        const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100);
+        const effectiveIQ = getEffectiveOffensiveIQ(actualIQ, attackedArea);
+        iqDisplayLabel.textContent = `Effective IQ: ${effectiveIQ}`;
+      }
     };
 
-    const iqLabel = document.createElement("label");
-    setCommanderIQ();
-    commanderSelect.onchange = setCommanderIQ
-    setInterval(setCommanderIQ, 1000)
+    updateIQDisplay();
+    commanderSelect.onchange = updateIQDisplay;
+    iqInput.oninput = updateIQDisplay;
+    setInterval(updateIQDisplay, 1000);
+
+    commanderSection.appendChild(namedCommanderDiv);
+    commanderSection.appendChild(anonymousCommanderDiv);
+    commanderSection.appendChild(iqDisplayLabel);
 
     const soldiersDiv = document.createElement("div");
     soldiersDiv.className = "soldiers-list";
@@ -170,18 +225,6 @@ function renderWaves() {
         percentageLabel.textContent = `${percentageInput.value}% (${quantity} soldiers)`;
       };
 
-      // const itemsInput = document.createElement("input");
-      // itemsInput.type = "text";
-      // itemsInput.className = "items-inp";
-      // itemsInput.placeholder = "Items (comma-separated)";
-      // itemsInput.value = soldier.items?.join(",") || "";
-
-      // const abilitiesInput = document.createElement("input");
-      // abilitiesInput.type = "text";
-      // abilitiesInput.className = "abilities-inp";
-      // abilitiesInput.placeholder = "Abilities (comma-separated)";
-      // abilitiesInput.value = soldier.abilities?.join(",") || "";
-
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-soldier-btn";
       removeBtn.innerHTML = "×";
@@ -192,10 +235,6 @@ function renderWaves() {
       soldierDiv.appendChild(percentageInput);
       soldierDiv.appendChild(percentageLabel);
       soldierDiv.appendChild(document.createElement("br"));
-      // soldierDiv.appendChild(itemsInput);
-      // soldierDiv.appendChild(document.createElement("br"));
-      // soldierDiv.appendChild(abilitiesInput);
-      // soldierDiv.appendChild(document.createElement("br"));
       soldierDiv.appendChild(removeBtn);
 
       return soldierDiv;
@@ -211,26 +250,26 @@ function renderWaves() {
     saveBtn.textContent = "Save Wave";
     saveBtn.onclick = () => {
       const newWave = {
-        commander: commanderSelect.value,
         soldiers: [],
       };
+
+      // Handle commander data based on type
+      if (wave.isAnonymous) {
+        newWave.isAnonymous = true;
+        newWave.iq = {
+          offensive: parseInt(iqInput.value) || 50
+        };
+      } else {
+        newWave.commander = commanderSelect.value;
+        newWave.isAnonymous = false;
+      }
 
       const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
       soldierEntries.forEach((entry) => {
         const image = entry.querySelector("span").textContent;
         const percentage = parseInt(entry.querySelector('input[type="range"]').value) || 0;        
         const items = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(s => s.image.id === image).image.items || []
-        // const items = entry
-        //   .querySelector('input.items-inp')
-        //   .value.split(",")
-        //   .map((item) => item.trim())
-        //   .filter((item) => item);
         const abilities = []
-        // const abilities = entry
-        //   .querySelector('input.abilities-inp')
-        //   .value.split(",")
-        //   .map((ability) => ability.trim())
-        //   .filter((ability) => ability);
 
         newWave.soldiers.push({ image, percentage, items, abilities });
       });      
@@ -246,8 +285,7 @@ function renderWaves() {
       renderWaves();
     };
 
-    waveDiv.appendChild(commanderSelect);
-    waveDiv.appendChild(iqLabel);
+    waveDiv.appendChild(commanderSection);
     waveDiv.appendChild(soldiersDiv);
     waveDiv.appendChild(saveBtn);
     waveDiv.appendChild(deleteBtn);
@@ -443,6 +481,23 @@ globalThis.removeRow = (containerId, { currentTarget }) => {
   dataRowsWrapper.removeChild(currentTarget.parentElement);
 }
 
+// Toggle between named and anonymous commander
+globalThis.toggleCommanderType = (waveIndex, isAnonymous) => {
+  const wave = attackWaves[waveIndex];
+  if (isAnonymous) {
+    // Switch to anonymous
+    wave.isAnonymous = true;
+    wave.iq = { offensive: 50 };
+    delete wave.commander;
+  } else {
+    // Switch to named
+    wave.isAnonymous = false;
+    wave.commander = Object.keys(kingdoms[attackerSelect.value].commanders || {})[0] || "";
+    delete wave.iq;
+  }
+  renderWaves();
+}
+
 // Espionage functionality
 let useSecurityOverride = false;
 
@@ -544,9 +599,10 @@ function sendEspionage() {
 shiftSelect.onchange = () => renderWaves();
 
 document.getElementById("addWaveBtn").onclick = () => {
-  .push({
+  attackWaves.push({
     commander: Object.keys(kingdoms[attackerSelect.value].commanders || {})[0] || "",
     soldiers: [],
+    isAnonymous: false
   });
   renderWaves();
 };
@@ -600,10 +656,10 @@ startWarBtn.onclick = () => {
     const commander = prepareCommander(kingdom, wave.commander);
     const attackedArea = defKingdom.landArea * (parseInt(areaPercentageInput.value) / 100)
 
-    if (!commander.isAnonymous)
+    // if (!commander.isAnonymous)
       commander.iq.offensive = getEffectiveOffensiveIQ(commander.iq.offensive, attackedArea);
 
-    if (!dwave.commander.isAnonymous)
+    // if (!dwave.commander.isAnonymous)
       dwave.commander.iq.defensive = getEffectiveDefensiveIQ(dwave.commander.iq.defensive, getCommandedArea(defKingdom, dwave.commander.name));
 
     const atkWave = new AttackWave(commander, soldierStack, attackerOpts);
