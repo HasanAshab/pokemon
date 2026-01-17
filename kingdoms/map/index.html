@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kingdom Map</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .map-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    .map-viewport {
+      position: relative;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, #2c5530 0%, #1a3d1f 25%, #0f2912 50%, #1a3d1f 75%, #2c5530 100%);
+      background-size: 400px 400px;
+      transform-origin: 0 0;
+      transition: transform 0.1s ease-out;
+    }
+
+    .map-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .grid-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.3;
+    }
+
+    .labels-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* UI Controls */
+    .controls {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      padding: 15px;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      max-width: 280px;
+    }
+
+    .control-group {
+      margin-bottom: 12px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #ccc;
+    }
+
+    .control-group select,
+    .control-group input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .control-group button {
+      width: 100%;
+      padding: 6px 8px;
+      border: none;
+      border-radius: 4px;
+      background: #007bff;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .control-group button:hover {
+      background: #0056b3;
+    }
+
+    .control-group button.danger {
+      background: #dc3545;
+    }
+
+    .control-group button.danger:hover {
+      background: #c82333;
+    }
+
+    .mode-buttons {
+      display: flex;
+      gap: 4px;
+    }
+
+    .mode-buttons button {
+      flex: 1;
+      padding: 8px 4px;
+      font-size: 10px;
+    }
+
+    .mode-buttons button.active {
+      background: #28a745;
+    }
+
+    /* Legend */
+    .legend {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      padding: 15px;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      max-width: 250px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .legend h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .kingdom-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #333;
+      font-size: 12px;
+    }
+
+    .kingdom-item:last-child {
+      border-bottom: none;
+    }
+
+    .kingdom-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kingdom-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid #555;
+    }
+
+    .kingdom-name {
+      font-weight: 500;
+    }
+
+    .kingdom-area {
+      color: #aaa;
+      font-size: 11px;
+    }
+
+    .kingdom-locked {
+      color: #ffc107;
+      font-size: 10px;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .controls {
+        top: 5px;
+        left: 5px;
+        padding: 10px;
+        max-width: 200px;
+      }
+
+      .legend {
+        top: 5px;
+        right: 5px;
+        padding: 10px;
+        max-width: 180px;
+      }
+
+      .control-group label {
+        font-size: 11px;
+      }
+
+      .control-group select,
+      .control-group input,
+      .control-group button {
+        font-size: 11px;
+        padding: 5px 6px;
+      }
+    }
+
+    /* Status messages */
+    .status-message {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      z-index: 15;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .status-message.show {
+      opacity: 1;
+    }
+
+    .status-message.error {
+      background: rgba(220, 53, 69, 0.9);
+    }
+
+    .status-message.success {
+      background: rgba(40, 167, 69, 0.9);
+    }
+  </style>
+</head>
+<body>
+  <div class="map-container" id="mapContainer">
+    <div class="map-viewport" id="mapViewport">
+      <canvas class="grid-canvas" id="gridCanvas"></canvas>
+      <canvas class="map-canvas" id="mapCanvas"></canvas>
+      <canvas class="labels-canvas" id="labelsCanvas"></canvas>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="control-group">
+      <label>Selected Kingdom</label>
+      <select id="kingdomSelect">
+        <option value="">Select Kingdom</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label>Capture Mode</label>
+      <div class="mode-buttons">
+        <button id="modeDefault" class="active">Smart</button>
+        <button id="modeEdit">Edit</button>
+        <button id="modeConflict">War</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label>Capture Size</label>
+      <select id="captureMultiplier">
+        <option value="1">1 cell</option>
+        <option value="5">5 cells</option>
+        <option value="10">10 cells</option>
+        <option value="50">50 cells</option>
+        <option value="100">100 cells</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <button id="toggleGrid">Toggle Grid</button>
+    </div>
+
+    <div class="control-group">
+      <button id="lockKingdom">Lock Kingdom</button>
+    </div>
+
+    <div class="control-group">
+      <button id="clearTerritory" class="danger">Clear Territory</button>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <h3>Kingdoms</h3>
+    <div id="legendContent"></div>
+  </div>
+
+  <!-- Status Messages -->
+  <div class="status-message" id="statusMessage"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

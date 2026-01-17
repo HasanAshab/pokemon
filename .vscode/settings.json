@@ -1,5 +1,4 @@
 {
   "liveServer.settings.port": 5993,
-  "kiroAgent.configureMCP": "Disabled",
-  "html.autoClosingTags": false
+  "kiroAgent.configureMCP": "Disabled"
 }
