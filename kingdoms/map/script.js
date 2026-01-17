@@ -11,11 +11,11 @@
  */
 
 // ===== CONSTANTS =====
-const GRID_SIZE = 20; // pixels per cell
+const GRID_SIZE = 2; // pixels per cell (reduced from 20)
 const MAP_WIDTH = 2000; // cells
 const MAP_HEIGHT = 2000; // cells
-const CANVAS_WIDTH = MAP_WIDTH * GRID_SIZE;
-const CANVAS_HEIGHT = MAP_HEIGHT * GRID_SIZE;
+const CANVAS_WIDTH = MAP_WIDTH * GRID_SIZE; // 4000px instead of 40000px
+const CANVAS_HEIGHT = MAP_HEIGHT * GRID_SIZE; // 4000px instead of 40000px
 
 // ===== STATE =====
 let kingdoms = {};
@@ -94,8 +94,8 @@ function setupCanvases() {
   });
   
   // Set initial viewport position (center of map)
-  mapOffset.x = -CANVAS_WIDTH / 4;
-  mapOffset.y = -CANVAS_HEIGHT / 4;
+  mapOffset.x = -(CANVAS_WIDTH - window.innerWidth) / 2;
+  mapOffset.y = -(CANVAS_HEIGHT - window.innerHeight) / 2;
   updateViewportTransform();
 }
 
