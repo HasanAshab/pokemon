@@ -1,4 +1,5 @@
 * Tasks
+digit map
 arena
 beast oil
 hokage sys support

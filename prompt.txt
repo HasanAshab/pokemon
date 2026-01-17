@@ -1,1 +1,206 @@
-now make this page elegance but simple and not overwhelming. and easy UI/UX
+Now at 
+
+---
+
+## 1. Base Map
+
+* Use a provided **static world map image** as the background.
+* The map is **larger than the viewport** and must be scrollable (both directions).
+* Mobile-first, touch-friendly.
+* No external map APIs.
+
+---
+
+## 2. Kingdom Data Source
+
+* Read from:
+
+```js
+localStorage.getItem("kingdoms")
+```
+
+* Expected structure:
+
+```js
+kingdoms = {
+  Aleron: {
+    map: {
+        color: "#ff0000",
+        territory: [],
+        locked: false
+    }
+  }
+}
+```
+
+* If `map` key is missing, initialize it.
+* Persist **every change immediately** back to LocalStorage.
+
+---
+
+## 3. Territory System
+
+* Overlay the map with a **deterministic grid**.
+* Each grid cell = **1 sq km**.
+* Grid size must never change between sessions.
+
+### Territory representation
+
+```js
+{ x, y }
+```
+
+---
+
+## 4. Capture Modes
+
+There are **three mutually exclusive modes**:
+
+### A) Default Mode (Smart Capture)
+
+This is the **primary mode**.
+
+Rules:
+
+* Clicking an **uncaptured cell** → capture it.
+* Clicking a cell owned by **another kingdom**:
+
+  * DO NOT steal directly
+  * Instead, capture the **closest uncaptured cell** to the click
+* Works the same for **Capture Multiplier N**:
+
+  * Capture N closest uncaptured cells around the click point
+  * Must be spatially clustered
+  * Skip occupied cells
+* If no uncaptured cells exist nearby → no action
+
+This mode prevents accidental overwrites and preserves borders.
+
+---
+
+### B) Edit Mode (Free Edit)
+
+Rules:
+
+* Clicking any cell assigns it to the selected kingdom
+* Existing ownership is overwritten immediately
+* Intended for setup, corrections, or map creation
+
+---
+
+### C) Conflict Mode (Restricted Capture)
+
+Rules:
+
+* Clicking enemy territory requires explicit confirmation
+* Optional hooks for rule checks (adjacency, cost, etc.)
+* Designed for “war” scenarios
+
+---
+
+## 5. Capture Multiplier (N)
+
+* Default N = 1
+* User-selectable values (e.g. 1, 5, 10, 50, 100)
+* One interaction captures **N cells**
+* Distribution:
+
+  * Centered on click
+  * Radial or square
+* Must not exceed map bounds
+
+---
+
+## 6. Locked Territory Protection
+
+* Each kingdom has `locked: boolean`
+* If `locked === true`:
+
+  * Territory **cannot be modified** in any mode
+  * Attempting to capture shows a warning
+* Unlocking requires explicit user confirmation
+* Locked kingdoms are visually indicated (icon or opacity)
+
+This prevents accidental destruction on mobile.
+
+---
+
+## 7. Rendering
+
+* Territories rendered as **semi-transparent overlays**
+* Use each kingdom’s stored color
+* Use **canvas rendering**, not per-cell DOM elements
+* Render only visible viewport for performance
+
+---
+
+## 8. Kingdom Name Labels
+
+* For each kingdom:
+
+  * Compute territory centroid
+  * Render name label inside territory
+  * Auto-contrast text color
+  * Hide label if area < threshold (e.g. < 10 cells)
+
+---
+
+## 9. Legend / Sidebar
+
+* Show list of kingdoms:
+
+  * Name
+  * Area (number of cells = sq km)
+* Sorted by **area descending**
+* Updates live
+* Compact mobile layout
+
+---
+
+## 10. UI Controls
+
+* Kingdom selector
+* Capture Mode selector (Default / Edit / Conflict)
+* Capture Multiplier selector (N)
+* Lock / Unlock toggle per kingdom
+* Optional:
+
+  * Grid visibility toggle
+  * Clear territory (confirmation required)
+
+---
+
+## 11. Persistence Rules
+
+* Every interaction updates LocalStorage immediately
+* Reload restores:
+
+  * Territories
+  * Colors
+  * Lock state
+  * Areas
+  * Labels
+
+---
+
+## 12. Technical Constraints
+
+* Offline-first
+* No backend
+* Lightweight JS only
+* Touch optimized
+* Code must be structured and commented
+
+---
+
+## 13. Deliverables
+
+* One self-contained Map Page
+* Clear separation of:
+
+  * Data
+  * Rendering
+  * Interaction logic
+* Assumptions documented at top
+
+---
