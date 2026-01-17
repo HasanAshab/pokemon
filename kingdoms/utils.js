@@ -496,6 +496,19 @@ export function calcAmmoCost(kingdom) {
   }, 0)
 }
 
+export function calcTotalChakraOilConsumption(kingdom) {
+  const calcTotalTiersOfBeasts = (shift) => {
+    let totalTiers = 0
+    for (const soldiers of kingdom.barrack.soldiers[shift]) {
+      const pokemon = new Pokemon(soldiers.image.id)
+      if (pokemon.type !== "beast") continue
+      totalTiers += getTierOf(pokemon.id) * soldiers.quantity
+    }
+    return totalTiers
+  }
+  return calcTotalTiersOfBeasts("emergency")
+}
+
 export function calcNetProd(kingdom, localize = false) {  
   const sysProd = {
     coins: calcLandTax(kingdom) + calculateTax(kingdom),
@@ -508,8 +521,9 @@ export function calcNetProd(kingdom, localize = false) {
       calcAmmoCost(kingdom) +
       calcCommandersSalary(kingdom) +
       calcEmployeeSalary(kingdom),
+    chakraOil: calcTotalChakraOilConsumption(kingdom),
   };
-  
+
   // Add marketplace profits/losses
   if (kingdom.marketplace && kingdom.marketplace.length > 0) {
     const storage = getStorage(kingdom);

@@ -93,14 +93,21 @@ function setupCanvases() {
     canvas.style.height = CANVAS_HEIGHT + 'px';
   });
   
-  // Set initial viewport position (center of map)
-  mapOffset.x = -(CANVAS_WIDTH - window.innerWidth) / 2;
-  mapOffset.y = -(CANVAS_HEIGHT - window.innerHeight) / 2;
+  // Ensure canvases have transparent backgrounds
+  mapCtx.globalCompositeOperation = 'source-over';
+  gridCtx.globalCompositeOperation = 'source-over';
+  labelsCtx.globalCompositeOperation = 'source-over';
+  
+  // Set initial viewport position (start at 0,0 - no transform initially)
+  mapOffset.x = 0;
+  mapOffset.y = 0;
   updateViewportTransform();
 }
 
 function updateViewportTransform() {
-  mapViewport.style.transform = `translate(${mapOffset.x}px, ${mapOffset.y}px)`;
+  // Temporarily disable transform to debug
+  // mapViewport.style.transform = `translate(${mapOffset.x}px, ${mapOffset.y}px)`;
+  console.log('Transform would be:', `translate(${mapOffset.x}px, ${mapOffset.y}px)`);
 }
 
 // ===== EVENT LISTENERS =====
@@ -408,6 +415,7 @@ function render() {
 }
 
 function clearCanvases() {
+  // Clear canvases properly without filling with black
   mapCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   gridCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   labelsCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);

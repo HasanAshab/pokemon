@@ -39,32 +39,27 @@
       border: 2px solid rgba(255, 0, 0, 0.3);
     }
 
-    .map-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 2;
-      background: transparent;
-    }
-
-    .grid-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.3;
-      background: transparent;
-    }
-
+    .map-canvas,
+    .grid-canvas,
     .labels-canvas {
       position: absolute;
       top: 0;
       left: 0;
       pointer-events: none;
+      background: transparent !important;
+    }
+
+    .map-canvas {
+      z-index: 2;
+    }
+
+    .grid-canvas {
+      z-index: 1;
+      opacity: 0.3;
+    }
+
+    .labels-canvas {
       z-index: 3;
-      background: transparent;
     }
 
     /* UI Controls */

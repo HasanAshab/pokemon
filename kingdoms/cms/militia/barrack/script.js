@@ -103,7 +103,7 @@ document.getElementById("addDayPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.day.push({
     image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
-    ivSalaryPercent: 80, // Default 80% of PCI for police
+    ivSalaryPercent: 0, // Default 80% of PCI for police
   });
   save();
   renderForceSection("day","police");
@@ -113,7 +113,7 @@ document.getElementById("addNightPoliceBtn").onclick = () => {
   kingdoms[name].barrack.polices.night.push({
     image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
-    ivSalaryPercent: 85, // Default 85% of PCI for night police (higher pay)
+    ivSalaryPercent: 0, // Default 85% of PCI for night police (higher pay)
   });
   save();
   renderForceSection("night","police");
@@ -326,12 +326,12 @@ function renderForceSection(type,forceType) {
     const ivSalaryPercentInput = document.createElement("input");
     ivSalaryPercentInput.className = "iv-salary-percent";
     ivSalaryPercentInput.type = "number";
-    ivSalaryPercentInput.min = "0";
-    ivSalaryPercentInput.max = "500";
-    ivSalaryPercentInput.step = "5";
-    ivSalaryPercentInput.value = force.ivSalaryPercent || 70;
+    ivSalaryPercentInput.step = "1";
+    ivSalaryPercentInput.value = force.ivSalaryPercent || 0;
     ivSalaryPercentInput.onblur = () => {
-      force.ivSalaryPercent = parseFloat(ivSalaryPercentInput.value) || 70;
+      console.log(ivSalaryPercentInput.value);
+      force.ivSalaryPercent = parseFloat(ivSalaryPercentInput.value) || 0;
+      console.log(force.ivSalaryPercent);
       save();
       renderAllForces(forceType);
     };
@@ -340,7 +340,7 @@ function renderForceSection(type,forceType) {
     const isUnderWar = kingdom.underWar || false;
     // Only apply war multiplier to soldiers, not police
     const warMultiplier = (isUnderWar && forceType === 'soldiers') ? 1.1136 : 1;
-    const baseSalaryPerPerson = (kingdomPCI * (force.ivSalaryPercent || 70)) / 100;
+    const baseSalaryPerPerson = (kingdomPCI * force.ivSalaryPercent) / 100;
     const actualSalaryPerPerson = baseSalaryPerPerson * warMultiplier;
     const totalSalary = force.quantity * actualSalaryPerPerson;
     
@@ -406,8 +406,6 @@ function renderForceSection(type,forceType) {
   const weaponMight = stack.cp() - might;
   const armorMight = stack.armorScore();
   const ammoMight = weaponMight + armorMight;
-  console.log(type, weaponMight, armorMight);
-
   const totalMight = might + ammoMight;
   const mightEl = document.getElementById(`${type}${forceType.charAt(0).toUpperCase() + forceType.slice(1)}Might`);
   mightEl.textContent = `${might.toLocaleString()} + ${ammoMight.toLocaleString()} = ${totalMight.toLocaleString()}`;
@@ -482,7 +480,7 @@ document.getElementById("addDaySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.day.push({
     image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
-    ivSalaryPercent: 70, // Default 70% of PCI for day soldiers
+    ivSalaryPercent: 0, // Default 0% of PCI for day soldiers
   });
   save();
   renderForceSection("day","soldier");
@@ -492,7 +490,7 @@ document.getElementById("addNightSoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.night.push({
     image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
-    ivSalaryPercent: 75, // Default 75% of PCI for night soldiers (higher pay)
+    ivSalaryPercent: 0, // Default 75% of PCI for night soldiers (higher pay)
   });
   save();
   renderForceSection("night","soldier");
@@ -502,7 +500,7 @@ document.getElementById("addEmergencySoldierBtn").onclick = () => {
   kingdoms[name].barrack.soldiers.emergency.push({
     image: { id: "student", xp: getInitialXp("student") },
     quantity: 0,
-    ivSalaryPercent: 90, // Default 90% of PCI for emergency soldiers (highest pay)
+    ivSalaryPercent: 0, // Default 90% of PCI for emergency soldiers (highest pay)
   });
   save();
   renderForceSection("emergency","soldier");

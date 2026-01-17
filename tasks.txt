@@ -1,7 +1,7 @@
 * Tasks
-digit map
+bug: beast on emergency reduces imbalance
+war better ux
 arena
-beast oil
 hokage sys support
 revive with event
 
