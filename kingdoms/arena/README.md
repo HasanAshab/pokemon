@@ -6,7 +6,18 @@ The Arena is a battle simulation system that allows teams to fight against each 
 
 ### Team Types
 - **Kingdom Teams**: Use emergency soldiers from a selected kingdom
+  - Automatically loads all available emergency troops when kingdom is selected
+  - Shows available quantities for each soldier type
+  - Validates quantities against available troops
 - **Anonymous Teams**: Use any soldiers with custom quantities
+  - Text input with autocomplete datalist of all available pokemon IDs
+  - No quantity restrictions
+
+### Automatic Features
+- **Auto-load Troops**: When selecting a kingdom, all emergency soldiers are automatically added
+- **Smart Input**: Anonymous teams get text input with datalist, kingdom teams get dropdown
+- **Quantity Validation**: Automatically fixes quantities that exceed available troops
+- **Visual Feedback**: Invalid quantities are highlighted and auto-corrected
 
 ### Battle Mechanics
 - Uses the same war system as kingdom battles
@@ -31,8 +42,13 @@ The Arena is a battle simulation system that allows teams to fight against each 
 
 1. **Set up Team 1**:
    - Choose between Kingdom or Anonymous team
-   - If Kingdom: Select a kingdom and use their emergency soldiers
-   - If Anonymous: Add any soldiers with custom quantities
+   - **Kingdom Mode**: 
+     - Select a kingdom from dropdown
+     - All emergency soldiers are automatically loaded
+     - Modify quantities as needed (auto-validates against available troops)
+   - **Anonymous Mode**: 
+     - Type soldier names using autocomplete
+     - Set any quantities desired
 
 2. **Set up Team 2**:
    - Same options as Team 1
@@ -46,6 +62,12 @@ The Arena is a battle simulation system that allows teams to fight against each 
    - See winner, scores, and analysis
    - Review casualties and battle commentary
    - Start new battle or reset teams
+
+### Input Validation
+- Kingdom teams: Quantities automatically capped at available troops
+- Invalid quantities are highlighted in red and auto-corrected
+- Minimum quantity is always 1
+- Anonymous teams have no quantity restrictions
 
 ## Technical Details
 

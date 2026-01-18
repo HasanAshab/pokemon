@@ -1,5 +1,6 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave, SoldierStack } from "../war.js";
 import { prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getStorage } from "../utils.js";
+import pokemons from "../../data/pokemons.js";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 
@@ -17,9 +18,13 @@ const teams = {
   }
 };
 
+// Get all available pokemon IDs for datalist
+const allPokemonIds = Object.keys(pokemons).filter(id => id !== '$artillery');
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
   loadKingdomSelects();
+  createDatalist();
   updateSoldierSelects();
 });
 
@@ -47,14 +52,55 @@ function loadKingdomSelects() {
   // Add event listeners
   team1Select.addEventListener('change', () => {
     teams[1].kingdom = team1Select.value;
+    if (team1Select.value && !teams[1].isAnonymous) {
+      loadAllKingdomTroops(1);
+    }
     updateSoldierSelects();
     renderTeamSoldiers(1);
   });
   
   team2Select.addEventListener('change', () => {
     teams[2].kingdom = team2Select.value;
+    if (team2Select.value && !teams[2].isAnonymous) {
+      loadAllKingdomTroops(2);
+    }
     updateSoldierSelects();
     renderTeamSoldiers(2);
+  });
+}
+
+function createDatalist() {
+  // Create datalist for anonymous team soldier selection
+  const datalist = document.createElement('datalist');
+  datalist.id = 'pokemonList';
+  
+  allPokemonIds.forEach(id => {
+    const option = document.createElement('option');
+    option.value = id;
+    datalist.appendChild(option);
+  });
+  
+  document.body.appendChild(datalist);
+}
+
+function loadAllKingdomTroops(teamNum) {
+  const team = teams[teamNum];
+  if (!team.kingdom || team.isAnonymous) return;
+  
+  const kingdom = kingdoms[team.kingdom];
+  if (!kingdom.barrack?.soldiers?.emergency) return;
+  
+  // Clear existing soldiers
+  team.soldiers = [];
+  
+  // Add all emergency soldiers with their available quantities
+  kingdom.barrack.soldiers.emergency.forEach(soldier => {
+    if (soldier.quantity > 0) {
+      team.soldiers.push({
+        image: soldier.image.id,
+        quantity: soldier.quantity
+      });
+    }
   });
 }
 
@@ -64,40 +110,50 @@ function updateSoldierSelects() {
 }
 
 function updateTeamSoldierSelect(teamNum) {
-  const select = document.getElementById(`team${teamNum}SoldierSelect`);
+  const selectContainer = document.querySelector(`#team${teamNum}SoldierSelect`).parentElement;
   const team = teams[teamNum];
   
-  // Clear existing options
-  select.innerHTML = '<option value="">Select Soldier</option>';
+  // Remove existing input/select
+  const existingElement = selectContainer.querySelector('select, input');
+  if (existingElement) {
+    existingElement.remove();
+  }
   
   if (team.isAnonymous) {
-    // For anonymous teams, show all available soldiers
-    const allSoldiers = new Set();
-    Object.values(kingdoms).forEach(kingdom => {
+    // Create text input with datalist for anonymous teams
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = `team${teamNum}SoldierSelect`;
+    input.placeholder = 'Type soldier name...';
+    input.setAttribute('list', 'pokemonList');
+    input.style.flex = '1';
+    input.style.margin = '0';
+    selectContainer.insertBefore(input, selectContainer.firstChild);
+  } else {
+    // Create select dropdown for kingdom teams
+    const select = document.createElement('select');
+    select.id = `team${teamNum}SoldierSelect`;
+    select.style.flex = '1';
+    select.style.margin = '0';
+    
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select Soldier';
+    select.appendChild(defaultOption);
+    
+    if (team.kingdom && kingdoms[team.kingdom]) {
+      const kingdom = kingdoms[team.kingdom];
       if (kingdom.barrack?.soldiers?.emergency) {
         kingdom.barrack.soldiers.emergency.forEach(soldier => {
-          allSoldiers.add(soldier.image.id);
+          const option = document.createElement('option');
+          option.value = soldier.image.id;
+          option.textContent = `${soldier.image.id} (${soldier.quantity} available)`;
+          select.appendChild(option);
         });
       }
-    });
-    
-    Array.from(allSoldiers).sort().forEach(soldierId => {
-      const option = document.createElement('option');
-      option.value = soldierId;
-      option.textContent = soldierId;
-      select.appendChild(option);
-    });
-  } else if (team.kingdom && kingdoms[team.kingdom]) {
-    // For kingdom teams, show only emergency soldiers from that kingdom
-    const kingdom = kingdoms[team.kingdom];
-    if (kingdom.barrack?.soldiers?.emergency) {
-      kingdom.barrack.soldiers.emergency.forEach(soldier => {
-        const option = document.createElement('option');
-        option.value = soldier.image.id;
-        option.textContent = `${soldier.image.id} (${soldier.quantity} available)`;
-        select.appendChild(option);
-      });
     }
+    
+    selectContainer.insertBefore(select, selectContainer.firstChild);
   }
 }
 
@@ -111,21 +167,42 @@ globalThis.toggleTeamType = (teamNum, isAnonymous) => {
   // Clear soldiers when switching type
   team.soldiers = [];
   
+  // If switching to kingdom mode and a kingdom is selected, load all troops
+  if (!isAnonymous && team.kingdom) {
+    loadAllKingdomTroops(teamNum);
+  }
+  
   updateSoldierSelects();
   renderTeamSoldiers(teamNum);
 };
 
 globalThis.addSoldier = (teamNum) => {
-  const soldierSelect = document.getElementById(`team${teamNum}SoldierSelect`);
+  const soldierElement = document.getElementById(`team${teamNum}SoldierSelect`);
   const quantityInput = document.getElementById(`team${teamNum}Quantity`);
   const team = teams[teamNum];
   
-  const soldierId = soldierSelect.value;
+  const soldierId = soldierElement.value;
   const quantity = parseInt(quantityInput.value) || 1;
   
   if (!soldierId) {
     alert('Please select a soldier');
     return;
+  }
+  
+  // Validate soldier ID exists in pokemons data for anonymous teams
+  if (team.isAnonymous && !allPokemonIds.includes(soldierId)) {
+    alert('Invalid soldier ID. Please select from the list.');
+    return;
+  }
+  
+  // For kingdom teams, validate soldier exists and check availability
+  if (!team.isAnonymous && team.kingdom) {
+    const kingdom = kingdoms[team.kingdom];
+    const availableSoldier = kingdom.barrack?.soldiers?.emergency?.find(s => s.image.id === soldierId);
+    if (!availableSoldier) {
+      alert('Soldier not found in kingdom emergency forces');
+      return;
+    }
   }
   
   // Check if soldier already exists in team
@@ -140,7 +217,7 @@ globalThis.addSoldier = (teamNum) => {
   }
   
   // Reset inputs
-  soldierSelect.value = '';
+  soldierElement.value = '';
   quantityInput.value = '1';
   
   renderTeamSoldiers(teamNum);
@@ -161,11 +238,24 @@ function renderTeamSoldiers(teamNum) {
     const soldierDiv = document.createElement('div');
     soldierDiv.className = 'soldier-entry';
     
+    // Get max available quantity for kingdom teams
+    let maxQuantity = null;
+    let availabilityText = '';
+    if (!team.isAnonymous && team.kingdom) {
+      const kingdom = kingdoms[team.kingdom];
+      const availableSoldier = kingdom.barrack?.soldiers?.emergency?.find(s => s.image.id === soldier.image);
+      if (availableSoldier) {
+        maxQuantity = availableSoldier.quantity;
+        availabilityText = ` (max: ${maxQuantity})`;
+      }
+    }
+    
     soldierDiv.innerHTML = `
-      <div class="soldier-name">${soldier.image}</div>
+      <div class="soldier-name">${soldier.image}${availabilityText}</div>
       <div class="soldier-controls">
-        <input type="number" min="1" value="${soldier.quantity}" 
+        <input type="number" min="1" ${maxQuantity ? `max="${maxQuantity}"` : ''} value="${soldier.quantity}" 
                onchange="updateSoldierQuantity(${teamNum}, ${index}, this.value)"
+               onblur="validateSoldierQuantity(${teamNum}, ${index}, this)"
                class="quantity-input">
         <button class="remove-soldier-btn" onclick="removeSoldier(${teamNum}, ${index})">×</button>
       </div>
@@ -178,6 +268,48 @@ function renderTeamSoldiers(teamNum) {
 globalThis.updateSoldierQuantity = (teamNum, index, newQuantity) => {
   const quantity = parseInt(newQuantity) || 1;
   teams[teamNum].soldiers[index].quantity = Math.max(1, quantity);
+};
+
+globalThis.validateSoldierQuantity = (teamNum, index, inputElement) => {
+  const team = teams[teamNum];
+  const soldier = team.soldiers[index];
+  const requestedQuantity = parseInt(inputElement.value) || 1;
+  
+  // For kingdom teams, validate against available quantity
+  if (!team.isAnonymous && team.kingdom) {
+    const kingdom = kingdoms[team.kingdom];
+    const availableSoldier = kingdom.barrack?.soldiers?.emergency?.find(s => s.image.id === soldier.image);
+    
+    if (availableSoldier) {
+      const maxAvailable = availableSoldier.quantity;
+      if (requestedQuantity > maxAvailable) {
+        // Auto-fix to maximum available
+        inputElement.value = maxAvailable;
+        soldier.quantity = maxAvailable;
+        
+        // Show feedback
+        inputElement.style.backgroundColor = '#ffe6e6';
+        setTimeout(() => {
+          inputElement.style.backgroundColor = '';
+        }, 1000);
+        
+        return;
+      }
+    }
+  }
+  
+  // Ensure minimum quantity of 1
+  if (requestedQuantity < 1) {
+    inputElement.value = 1;
+    soldier.quantity = 1;
+    
+    inputElement.style.backgroundColor = '#ffe6e6';
+    setTimeout(() => {
+      inputElement.style.backgroundColor = '';
+    }, 1000);
+  } else {
+    soldier.quantity = requestedQuantity;
+  }
 };
 
 globalThis.removeSoldier = (teamNum, index) => {
