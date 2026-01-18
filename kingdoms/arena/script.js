@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave, SoldierStack } from "../war.js";
-import { prepareSoldiers, prepareCommander, handleWoundedSoldiers, getSoldierImbalancePenalty, getStorage } from "../utils.js";
+import { handleWoundedSoldiers, getSoldierImbalancePenalty, getStorage } from "../utils.js";
 import pokemons from "../../data/pokemons.js";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadKingdomSelects();
   createDatalist();
   updateSoldierSelects();
+
+  document.getElementById('team2Anonymous').click();
 });
 
 function loadKingdomSelects() {
@@ -385,7 +387,7 @@ function prepareTeamWave(teamNum, strategy) {
   if (team.isAnonymous) {
     // For anonymous teams, create soldiers directly
     const soldierData = team.soldiers.map(soldier => [
-      { id: soldier.image, type: getImageType(soldier.image) },
+      { id: soldier.image },
       soldier.quantity
     ]);
     soldierStack = new SoldierStack(soldierData);
@@ -424,15 +426,6 @@ function prepareTeamWave(teamNum, strategy) {
   } else {
     return new DefenseWave(dummyCommander, soldierStack, options);
   }
-}
-
-function getImageType(imageId) {
-  // Simple type detection - you might want to improve this
-  // based on your actual data structure
-  if (imageId.includes('human') || imageId.match(/^[A-Z]/)) {
-    return 'human';
-  }
-  return 'beast';
 }
 
 function displayBattleResults(war, team1, team2) {
@@ -511,8 +504,8 @@ function formatWoundedSoldiers(soldierStack) {
   }
   
   const casualties = [];
-  soldierStack.forEach(([image, quantity]) => {
-    casualties.push(`${image}: ${quantity}`);
+  soldierStack.forEach(([image, quantity]) => {    
+    casualties.push(`${image.id}: ${quantity}`);
   });
   
   return casualties.join('<br>');
