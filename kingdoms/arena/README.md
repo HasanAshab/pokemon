@@ -61,13 +61,22 @@ The Arena is a battle simulation system that allows teams to fight against each 
 4. **View Results**:
    - See winner, scores, and analysis
    - Review casualties and battle commentary
-   - Start new battle or reset teams
+   - **Click "Confirm Battle Results"** to apply changes to kingdom data
+   - Results are pending until confirmed - no kingdom data is modified until confirmation
 
 ### Input Validation
 - Kingdom teams: Quantities automatically capped at available troops
 - Invalid quantities are highlighted in red and auto-corrected
 - Minimum quantity is always 1
 - Anonymous teams have no quantity restrictions
+
+### Battle Results Confirmation
+- Battle results are displayed immediately but **not applied** to kingdom data
+- A warning message indicates results are pending confirmation
+- Click "Confirm Battle Results" to apply casualties and save changes
+- Once confirmed, the button becomes disabled and shows "✓ Confirmed"
+- Kingdom soldier counts are only updated after confirmation
+- Anonymous teams are not affected by confirmation (no kingdom data to update)
 
 ## Technical Details
 

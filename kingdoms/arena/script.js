@@ -1,5 +1,5 @@
 import { WAR_SYSTEMS, AttackWave, DefenseWave, SoldierStack } from "../war.js";
-import { handleWoundedSoldiers, getSoldierImbalancePenalty, getStorage } from "../utils.js";
+import { handleWoundedSoldiers, getSoldierImbalancePenalty } from "../utils.js";
 import pokemons from "../../data/pokemons.js";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -319,6 +319,9 @@ globalThis.removeSoldier = (teamNum, index) => {
   renderTeamSoldiers(teamNum);
 };
 
+// Store battle results for confirmation
+let pendingBattleResults = null;
+
 globalThis.startBattle = () => {
   const team1 = teams[1];
   const team2 = teams[2];
@@ -348,19 +351,15 @@ globalThis.startBattle = () => {
     // Create battle
     const war = new WAR_SYSTEMS[strategy](wave1, wave2);
     
-    // Display results
+    // Store results for later confirmation
+    pendingBattleResults = {
+      war: war,
+      team1: team1,
+      team2: team2
+    };
+    
+    // Display results (without applying effects)
     displayBattleResults(war, team1, team2);
-    
-    // Handle wounded soldiers for kingdom teams
-    if (!team1.isAnonymous && team1.kingdom) {
-      handleWoundedSoldiers(kingdoms[team1.kingdom], war.result.wounded.atk, "emergency");
-    }
-    if (!team2.isAnonymous && team2.kingdom) {
-      handleWoundedSoldiers(kingdoms[team2.kingdom], war.result.wounded.def, "emergency");
-    }
-    
-    // Save kingdoms data
-    localStorage.setItem('kingdoms', JSON.stringify(kingdoms));
     
   } catch (error) {
     console.error('Battle error:', error);
@@ -447,11 +446,11 @@ function displayBattleResults(war, team1, team2) {
     
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
       <div style="text-align: center;">
-        <h4 style="color: #007bff;">Team 1 (${team1Name})</h4>
+        <h4 style="color: #007bff;">${team1Name}</h4>
         <div>Score: <strong>${Math.round(war.result.scores.atk).toLocaleString()}</strong></div>
       </div>
       <div style="text-align: center;">
-        <h4 style="color: #dc3545;">Team 2 (${team2Name})</h4>
+        <h4 style="color: #dc3545;">${team2Name}</h4>
         <div>Score: <strong>${Math.round(war.result.scores.def).toLocaleString()}</strong></div>
       </div>
     </div>
@@ -491,7 +490,9 @@ function displayBattleResults(war, team1, team2) {
   
   html += `
     <div style="text-align: center; margin-top: 2rem;">
-      <button class="btn btn-primary" onclick="resetArena()">New Battle</button>
+      <button id="confirmBattleBtn" class="btn btn-success" onclick="confirmBattleResults()">
+        Confirm Battle Results
+      </button>
     </div>
   `;
   
@@ -511,26 +512,40 @@ function formatWoundedSoldiers(soldierStack) {
   return casualties.join('<br>');
 }
 
-globalThis.resetArena = () => {
-  // Reset teams
-  teams[1] = { isAnonymous: false, kingdom: null, soldiers: [] };
-  teams[2] = { isAnonymous: false, kingdom: null, soldiers: [] };
+globalThis.confirmBattleResults = () => {
+  if (!pendingBattleResults) {
+    alert('No battle results to confirm');
+    return;
+  }
   
-  // Reset UI
-  document.getElementById('team1Anonymous').checked = false;
-  document.getElementById('team2Anonymous').checked = false;
-  document.getElementById('team1KingdomSelect').value = '';
-  document.getElementById('team2KingdomSelect').value = '';
-  document.getElementById('team1Kingdom').style.display = 'block';
-  document.getElementById('team2Kingdom').style.display = 'block';
+  const { war, team1, team2 } = pendingBattleResults;
   
-  // Hide results
-  document.getElementById('battleResults').style.display = 'none';
+  // Handle wounded soldiers for kingdom teams
+  if (!team1.isAnonymous && team1.kingdom) {
+    handleWoundedSoldiers(kingdoms[team1.kingdom], war.result.wounded.atk, "emergency");
+  }
+  if (!team2.isAnonymous && team2.kingdom) {
+    handleWoundedSoldiers(kingdoms[team2.kingdom], war.result.wounded.def, "emergency");
+  }
   
-  // Re-render soldiers
-  renderTeamSoldiers(1);
-  renderTeamSoldiers(2);
+  // Save kingdoms data
+  localStorage.setItem('kingdoms', JSON.stringify(kingdoms));
   
-  // Update soldier selects
-  updateSoldierSelects();
+  // Clear pending results
+  pendingBattleResults = null;
+  
+  // Update the confirm button to show it's been confirmed
+  const confirmBtn = document.getElementById('confirmBattleBtn');
+  if (confirmBtn) {
+    confirmBtn.textContent = '✓ Confirmed';
+    confirmBtn.disabled = true;
+    confirmBtn.style.background = '#28a745';
+  }
+  
+  // Show success message
+  const outputDiv = document.getElementById('battleOutput');
+  const successMsg = document.createElement('div');
+  successMsg.style.cssText = 'background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: bold;';
+  successMsg.textContent = 'Battle results confirmed! Kingdom data has been updated.';
+  outputDiv.appendChild(successMsg);
 };
