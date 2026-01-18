@@ -1,5 +1,4 @@
 * Tasks
-hokage sys support
 revive with event
 copy paste buildings
 arena
@@ -12,6 +11,7 @@ bfcache prob
 offline summon
 
 *ovi
+hokage sys support
 bug: beast on emergency reduces imbalance
 war attack wave soldiers count
 

@@ -156,13 +156,13 @@ globalThis.showDisasterResearchersAccuracy = () => {
 // Function to get happening events count
 function getHappeningEventsCount() {
   if (!kingdom.events || !kingdom.events.future) return 0;
-  return kingdom.events.future.filter(event => event.remainingMonths <= 0).length;
+  return kingdom.events.future.filter(event => event.hasCountdown && event.remainingMonths <= 0).length;
 }
 
 // Function to get upcoming events count (2 months or less, but more than 0)
 function getUpcomingEventsCount() {
   if (!kingdom.events || !kingdom.events.future) return 0;
-  return kingdom.events.future.filter(event => event.remainingMonths > 0 && event.remainingMonths <= 2).length;
+  return kingdom.events.future.filter(event => event.remainingMonths > 0 && event.remainingMonths <= Math.max(2, kingdom.disaster.visionRange)).length;
 }
 
 // Function to update events badge
