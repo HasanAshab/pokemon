@@ -75,6 +75,42 @@ function renderKingdomSelects() {
   })
 }
 
+function createDefaultWave() {
+  const attackerKingdom = kingdoms[attackerSelect.value];
+  if (!attackerKingdom || !attackerKingdom.barrack?.soldiers?.emergency) {
+    return {
+      commander: Object.keys(attackerKingdom?.commanders || {})[0] || "",
+      soldiers: [],
+      isAnonymous: false
+    };
+  }
+
+  // Create soldiers array with all available soldiers at 100%
+  const soldiers = attackerKingdom.barrack.soldiers.emergency.map(soldier => ({
+    image: soldier.image.id,
+    percentage: 100,
+    items: soldier.image.items || [],
+    abilities: []
+  }));
+
+  return {
+    commander: Object.keys(attackerKingdom.commanders || {})[0] || "",
+    soldiers: soldiers,
+    isAnonymous: false
+  };
+}
+
+function refreshWavesForNewAttacker() {
+  // Clear existing waves
+  attackWaves.length = 0;
+  
+  // Add default wave with all soldiers at 100%
+  attackWaves.push(createDefaultWave());
+  
+  // Re-render waves
+  renderWaves();
+}
+
 function renderWaves() {
   const wavesList = document.getElementById("wavesList");
   wavesList.innerHTML = "";
@@ -599,11 +635,7 @@ function sendEspionage() {
 shiftSelect.onchange = () => renderWaves();
 
 document.getElementById("addWaveBtn").onclick = () => {
-  attackWaves.push({
-    commander: Object.keys(kingdoms[attackerSelect.value].commanders || {})[0] || "",
-    soldiers: [],
-    isAnonymous: false
-  });
+  attackWaves.push(createDefaultWave());
   renderWaves();
 };
 
@@ -748,6 +780,19 @@ startWarBtn.onclick = () => {
 renderStrategySelect();
 renderKingdomSelects();
 loadDirectionData();
+
+// Add event handler for attacker select to refresh waves
+attackerSelect.addEventListener('change', () => {
+  if (attackerSelect.value) {
+    refreshWavesForNewAttacker();
+  }
+});
+
+// Initialize with default wave if attacker is selected
+if (attackerSelect.value) {
+  attackWaves.push(createDefaultWave());
+}
+
 renderWaves();
 showDefenderData();
 
