@@ -417,24 +417,42 @@ export function getTransLogs(kingdom, itemName) {
     logs.push(`Employee Salary &#x2190; <span style="color: red; font-weight: bold">${calcEmployeeSalary(kingdom).toLocaleString()}</span>`);
   }
 
+
   // Add marketplace entries
   if (kingdom.marketplace && kingdom.marketplace.length > 0) {
+    let totalMarketplaceProfit = 0;
     const storage = getStorage(kingdom);
     kingdom.marketplace.forEach(item => {
-      const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
-      const profit = actualQuantity * item.unitPrice;
-      
-      if (itemName === "coins" && profit !== 0) {
-        const arrow = profit > 0 ? "&#x2192;" : "&#x2190;";
-        const color = profit > 0 ? "green" : "red";
-        const sign = profit > 0 ? "+" : "";
-        logs.push(`Marketplace (${item.itemName}) ${arrow} <span style="color: ${color}; font-weight: bold">${sign}${profit.toLocaleString()}</span>`);
+      if (item.actionType === 'sell') {
+        const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
+        const profit = actualQuantity * item.unitPrice;
+        totalMarketplaceProfit += profit;
+        if (itemName === item.itemName && actualQuantity > 0) {    
+          logs.push(`Marketplace &#x2190; <span style="color: red; font-weight: bold">-${actualQuantity.toLocaleString()}</span>`);
+        }
       }
-      
-      if (itemName === item.itemName && actualQuantity > 0) {
-        logs.push(`Marketplace &#x2190; <span style="color: red; font-weight: bold">-${actualQuantity.toLocaleString()}</span>`);
+
+      if (item.actionType === 'buy') {
+        const actualQuantity = item.buyWholeDemand ? Math.max(0, (calcNetProd(kingdom, false, false)[item.itemName] || 0) * -1) : item.quantity;
+        const profit = actualQuantity * item.unitPrice;
+        totalMarketplaceProfit -= profit;
+        if (itemName === item.itemName && actualQuantity > 0) {    
+          logs.push(`Marketplace &#x2192; <span style="color: green; font-weight: bold">+${actualQuantity.toLocaleString()}</span>`);
+        }
       }
     });
+
+    const profit = totalMarketplaceProfit;      
+    if (itemName === "coins" && profit !== 0) {
+      const arrow = profit > 0 ? "&#x2192;" : "&#x2190;";
+      const color = profit > 0 ? "green" : "red";
+      const sign = profit > 0 ? "+" : "";
+      logs.push(`Marketplace ${arrow} <span style="color: ${color}; font-weight: bold">${sign}${profit.toLocaleString()}</span>`);
+    }
+  }
+
+  if (itemName === "chakraOil") {
+    logs.push(`Beasts &#x2190; <span style="color: red; font-weight: bold">${-calcTotalChakraOilConsumption(kingdom).toLocaleString()}</span>`);
   }
 
   getEnabledBuildings(kingdom).forEach(build => {
@@ -499,17 +517,16 @@ export function calcAmmoCost(kingdom) {
 export function calcTotalChakraOilConsumption(kingdom) {
   const calcTotalTiersOfBeasts = (shift) => {
     let totalTiers = 0
-    for (const soldiers of kingdom.barrack.soldiers[shift]) {
-      const pokemon = new Pokemon(soldiers.image.id)
-      if (pokemon.type !== "beast") continue
-      totalTiers += getTierOf(pokemon.id) * soldiers.quantity
+    for (const { image, quantity } of kingdom.barrack.soldiers[shift]) {
+      if (!isBeastImage(image.id)) continue
+      totalTiers += getTierOf(image.id) * quantity
     }
     return totalTiers
   }
   return calcTotalTiersOfBeasts("emergency")
 }
 
-export function calcNetProd(kingdom, localize = false) {  
+export function calcNetProd(kingdom, localize = false, includeMarketplace = true) {
   const sysProd = {
     coins: calcLandTax(kingdom) + calculateTax(kingdom),
   };
@@ -524,27 +541,44 @@ export function calcNetProd(kingdom, localize = false) {
     chakraOil: calcTotalChakraOilConsumption(kingdom),
   };
 
+  
   // Add marketplace profits/losses
-  if (kingdom.marketplace && kingdom.marketplace.length > 0) {
+  if (includeMarketplace && kingdom.marketplace && kingdom.marketplace.length > 0) {
     const storage = getStorage(kingdom);
-    kingdom.marketplace.forEach(item => {
-      const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
-      const profit = actualQuantity * item.unitPrice;
-      
-      if (!sysProd.coins) sysProd.coins = 0;
-      sysProd.coins += profit;
-      
-      // Subtract the sold items from production (they're being sold)
-      if (item.itemName !== 'coins') {
-        if (!sysCons[item.itemName]) sysCons[item.itemName] = 0;
-        sysCons[item.itemName] += actualQuantity;
+    kingdom.marketplace.forEach(item => {      
+      if (item.actionType === 'sell') {
+        const actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
+        const profit = actualQuantity * item.unitPrice;
+
+        if (!sysProd.coins) sysProd.coins = 0;
+        sysProd.coins += profit;
+
+        // Subtract the sold items from production (they're being sold)
+        if (item.itemName !== 'coins') {
+          if (!sysCons[item.itemName]) sysCons[item.itemName] = 0;
+          sysCons[item.itemName] += actualQuantity;
+        }
+      }
+
+      else if (item.actionType === 'buy') {        
+        const actualQuantity = item.buyWholeDemand ? Math.max(0, (calcNetProd(kingdom, false, false)[item.itemName] || 0) * -1) : item.quantity;
+        const profit = actualQuantity * item.unitPrice;
+
+        if (!sysCons.coins) sysCons.coins = 0;
+        sysCons.coins += profit;
+        
+        // Add the bought items to production (they're being bought)
+        if (item.itemName !== 'coins') {
+          if (!sysProd[item.itemName]) sysProd[item.itemName] = 0;
+          sysProd[item.itemName] += actualQuantity;
+        }
       }
     });
   }
   
   const buildProd = calcBuildNetProd(kingdom);
   const prod = sumObj(sumObj(sysProd, buildProd), modObj(sysCons, -1));
-  
+
   if (!localize) return prod;
   return Object.keys(prod).reduce((acc, key) => {
     acc[key] = prod[key].toLocaleString();
@@ -1034,4 +1068,9 @@ export function calculateArtilleryPrice(kingdom, power, lifetime, size) {
   const mechanicCost = getMechanicCost(kingdom, requiredMechanicLevel);
   const materialCost = getArtilleryMaterialCost(kingdom, lifetime, size);
   return mechanicCost + materialCost
+}
+
+export function isBeastImage(imageId) {
+  const image = pokemons[imageId];
+  return image.type === "beast";
 }

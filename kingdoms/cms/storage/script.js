@@ -20,7 +20,7 @@ if (!kingdoms[name].marketplace) kingdoms[name].marketplace = [];
 function saveAndRefresh(storage) {
   Object.keys(getMaintainedStorage(kingdoms[name])).forEach(item => {
     storage[item] = 0;
-  })
+  })  
 
   kingdoms[name].storage = storage;
   localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
@@ -197,7 +197,10 @@ addItemBtn.onclick = () => {
 const newMonthBtn = document.getElementById("newMonthBtn");
 newMonthBtn.onclick = () => {
   const netProd = calcNetProd(kingdoms[name]);
+  console.log(netProd);
+  console.log(kingdoms[name].storage.chakraOil);
   kingdoms[name].storage = sumObj(kingdoms[name].storage, netProd)
+  console.log(kingdoms[name].storage.chakraOil);
 
   const newDensity = (getPopulation(kingdoms[name]) + getPopulationGrowth(kingdoms[name])) / kingdoms[name].landArea
   kingdoms[name].density = newDensity 
@@ -216,27 +219,27 @@ newMonthBtn.onclick = () => {
   }
 
   // Process marketplace transactions - both sales and purchases
-  if (kingdoms[name].marketplace && kingdoms[name].marketplace.length > 0) {
-    kingdoms[name].marketplace.forEach(item => {
-      if (item.actionType === 'sell') {
-        // Handle selling - remove items from storage
-        const actualQuantity = item.sellAll ? (kingdoms[name].storage[item.itemName] || 0) : item.quantity;
-        if (kingdoms[name].storage[item.itemName]) {
-          kingdoms[name].storage[item.itemName] = Math.max(0, kingdoms[name].storage[item.itemName] - actualQuantity);
-        }
-      } else if (item.actionType === 'buy') {
-        // Handle buying - add items to storage
-        const actualQuantity = item.buyWholeDemand ? 
-          Math.abs(netProd[item.itemName] || 0) : // Use absolute value of negative production
-          item.quantity;
+  // if (kingdoms[name].marketplace && kingdoms[name].marketplace.length > 0) {
+  //   kingdoms[name].marketplace.forEach(item => {
+  //     if (item.actionType === 'sell') {
+  //       // Handle selling - remove items from storage
+  //       const actualQuantity = item.sellAll ? (kingdoms[name].storage[item.itemName] || 0) : item.quantity;
+  //       if (kingdoms[name].storage[item.itemName]) {
+  //         kingdoms[name].storage[item.itemName] = Math.max(0, kingdoms[name].storage[item.itemName] - actualQuantity);
+  //       }
+  //     } else if (item.actionType === 'buy') {
+  //       // Handle buying - add items to storage
+  //       const actualQuantity = item.buyWholeDemand ? 
+  //         Math.abs(netProd[item.itemName] || 0) : // Use absolute value of negative production
+  //         item.quantity;
         
-        if (!kingdoms[name].storage[item.itemName]) {
-          kingdoms[name].storage[item.itemName] = 0;
-        }
-        kingdoms[name].storage[item.itemName] += actualQuantity;
-      }
-    });
-  }
+  //       if (!kingdoms[name].storage[item.itemName]) {
+  //         kingdoms[name].storage[item.itemName] = 0;
+  //       }
+  //       kingdoms[name].storage[item.itemName] += actualQuantity;
+  //     }
+  //   });
+  // }
 
   // Reduce event countdowns
   if (kingdoms[name].events && kingdoms[name].events.future) {
@@ -255,8 +258,7 @@ newMonthBtn.onclick = () => {
   }
 
   pushDisasterEvents(kingdoms[name]);
-  pushBeastCounterEvents(kingdoms[name]);
-
+  pushBeastCounterEvents(kingdoms[name]);  
   saveAndRefresh(kingdoms[name].storage);
   updateLifetimeDisplay();
   renderMarketplace();
@@ -463,12 +465,12 @@ function addMarketplaceItem() {
   const sellAll = sellAllCheckbox.checked;
   const buyWholeDemand = buyWholeDemandCheckbox.checked;
   const quantity = parseInt(quantityInput.value) || 1;
-  
+
   if (!itemName) {
     alert('Please select an item');
     return;
   }
-  
+
   if (isNaN(unitPrice)) {
     alert('Please enter a valid unit price');
     return;
@@ -723,9 +725,8 @@ function renderMarketplace() {
     if (item.actionType === 'sell') {
       actualQuantity = item.sellAll ? (storage[item.itemName] || 0) : item.quantity;
     } else {
-      actualQuantity = item.buyWholeDemand ? Math.abs(netProd[item.itemName] || 0) : item.quantity;
-    }
-    
+      actualQuantity = item.buyWholeDemand ? Math.max(0, (calcNetProd(kingdoms[name], false, false)[item.itemName] || 0) * -1) : item.quantity;
+    }    
     const totalItemProfit = actualQuantity * item.unitPrice * (item.actionType === 'sell' ? 1 : -1);
     totalProfit += totalItemProfit;
     

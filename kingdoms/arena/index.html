@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Arena</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .teams-setup {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .team-section {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 1.5rem;
+      background: #f9f9f9;
+    }
+
+    .team-section.team1 {
+      border-color: #007bff;
+    }
+
+    .team-section.team2 {
+      border-color: #dc3545;
+    }
+
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .team-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .team1 .team-title {
+      color: #007bff;
+    }
+
+    .team2 .team-title {
+      color: #dc3545;
+    }
+
+    .team-type-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group select, .form-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .soldiers-list {
+      margin: 1rem 0;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 1rem;
+      background: white;
+    }
+
+    .soldier-entry {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: #f8f9fa;
+      border-radius: 4px;
+    }
+
+    .soldier-name {
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .soldier-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .quantity-input {
+      width: 80px !important;
+    }
+
+    .remove-soldier-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .add-soldier-section {
+      display: flex;
+      gap: 0.5rem;
+      align-items: end;
+      margin-top: 1rem;
+    }
+
+    .add-soldier-section select {
+      flex: 1;
+    }
+
+    .add-soldier-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .battle-section {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .battle-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .start-battle-btn {
+      background: #ff6b35;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .start-battle-btn:hover {
+      background: #e55a2b;
+    }
+
+    .start-battle-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .battle-results {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .battle-results h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .teams-setup {
+        grid-template-columns: 1fr;
+      }
+      
+      .battle-controls {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header style="text-align: center; margin-bottom: 2rem;">
+      <h1>Arena Battle</h1>
+      <p>Set up teams and battle in the arena</p>
+    </header>
+
+    <!-- Teams Setup -->
+    <div class="teams-setup">
+      <!-- Team 1 -->
+      <div class="team-section team1">
+        <div class="team-header">
+          <div class="team-title">Team 1</div>
+          <div class="team-type-toggle">
+            <label>
+              <input type="checkbox" id="team1Anonymous" onchange="toggleTeamType(1, this.checked)">
+              Anonymous Team
+            </label>
+          </div>
+        </div>
+
+        <!-- Kingdom Selection (shown when not anonymous) -->
+        <div id="team1Kingdom" class="form-group">
+          <label>Select Kingdom:</label>
+          <select id="team1KingdomSelect">
+            <option value="">Choose Kingdom</option>
+          </select>
+        </div>
+
+        <!-- Soldiers List -->
+        <div class="soldiers-list" id="team1Soldiers">
+          <div style="text-align: center; color: #666; padding: 2rem;">
+            No soldiers added yet
+          </div>
+        </div>
+
+        <!-- Add Soldier Section -->
+        <div class="add-soldier-section">
+          <div class="form-group" style="flex: 1; margin: 0;">
+            <select id="team1SoldierSelect">
+              <option value="">Select Soldier</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin: 0;">
+            <input type="number" id="team1Quantity" placeholder="Qty" min="1" value="1" class="quantity-input">
+          </div>
+          <button class="add-soldier-btn" onclick="addSoldier(1)">Add</button>
+        </div>
+      </div>
+
+      <!-- Team 2 -->
+      <div class="team-section team2">
+        <div class="team-header">
+          <div class="team-title">Team 2</div>
+          <div class="team-type-toggle">
+            <label>
+              <input type="checkbox" id="team2Anonymous" onchange="toggleTeamType(2, this.checked)">
+              Anonymous Team
+            </label>
+          </div>
+        </div>
+
+        <!-- Kingdom Selection (shown when not anonymous) -->
+        <div id="team2Kingdom" class="form-group">
+          <label>Select Kingdom:</label>
+          <select id="team2KingdomSelect">
+            <option value="">Choose Kingdom</option>
+          </select>
+        </div>
+
+        <!-- Soldiers List -->
+        <div class="soldiers-list" id="team2Soldiers">
+          <div style="text-align: center; color: #666; padding: 2rem;">
+            No soldiers added yet
+          </div>
+        </div>
+
+        <!-- Add Soldier Section -->
+        <div class="add-soldier-section">
+          <div class="form-group" style="flex: 1; margin: 0;">
+            <select id="team2SoldierSelect">
+              <option value="">Select Soldier</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin: 0;">
+            <input type="number" id="team2Quantity" placeholder="Qty" min="1" value="1" class="quantity-input">
+          </div>
+          <button class="add-soldier-btn" onclick="addSoldier(2)">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Battle Section -->
+    <div class="battle-section">
+      <div class="battle-controls">
+        <div class="form-group">
+          <label>Battle Strategy:</label>
+          <select id="battleStrategy">
+            <option value="sabotage">Sabotage</option>
+            <option value="occupy">Occupy</option>
+            <option value="harvest">Harvest</option>
+          </select>
+        </div>
+        <button class="start-battle-btn" id="startBattleBtn" onclick="startBattle()">
+          ⚔️ Start Battle
+        </button>
+      </div>
+
+      <!-- Battle Results -->
+      <div id="battleResults" class="battle-results" style="display: none;">
+        <h3>Battle Results</h3>
+        <div id="battleOutput"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

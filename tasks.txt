@@ -1,9 +1,8 @@
 * Tasks
-bug: beast on emergency reduces imbalance
-war better ux
-arena
 hokage sys support
 revive with event
+copy paste buildings
+arena
 
 break artilary, remove beasts
 auto generate military
@@ -13,7 +12,8 @@ bfcache prob
 offline summon
 
 *ovi
-Kingdom Buildings, war better ui
+bug: beast on emergency reduces imbalance
+war attack wave soldiers count
 
 * bug
 abilities multiple opponent event system
