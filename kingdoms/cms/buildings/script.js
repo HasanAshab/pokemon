@@ -1119,10 +1119,16 @@ globalThis.hideQuickFindForm = () => {
   quickFindForm.classList.remove("active");
 }
 
-function renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox) {
+function renderQuickBuildingLinks(quickFindForm, searchNameInput, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox) {
   const linksContainer = quickFindForm.querySelector(".links-container");
   linksContainer.innerHTML = "";
   let buildings = kingdoms[name].buildings;
+  
+  // Filter by search name
+  if (searchNameInput.value.trim()) {
+    const searchTerm = searchNameInput.value.trim().toLowerCase();
+    buildings = buildings.filter(b => b.name.toLowerCase().includes(searchTerm));
+  }
   
   if (ownedBySel.value !== "all")
     buildings = buildings.filter(b => b.ownedBy === ownedBySel.value);
@@ -1199,6 +1205,7 @@ globalThis.showQuickFindForm = () => {
   const quickFindForm = document.getElementById("quickFindForm");
   quickFindForm.classList.add("active");
   const controlerBar = quickFindForm.querySelector(".controler-bar");
+  const searchNameInput = controlerBar.querySelector(".search-name");
   const ownedBySel = controlerBar.querySelector(".owned-by");
   const propertySel = controlerBar.querySelector(".property");
   const sortBySizeCheckBox = controlerBar.querySelector(".sort-by-size");
@@ -1207,10 +1214,11 @@ globalThis.showQuickFindForm = () => {
   const showOnlyExpirableCheckBox = controlerBar.querySelector(".show-only-expirable");
   const sortByDurabilityCheckBox = controlerBar.querySelector(".sort-by-durability");
   setupOwnedBySelect(ownedBySel);
-  renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox);
-  const controlers = [ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox];
+  renderQuickBuildingLinks(quickFindForm, searchNameInput, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox);
+  const controlers = [searchNameInput, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox];
   controlers.forEach(el => {
-    el.onchange = () => renderQuickBuildingLinks(quickFindForm, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox);
+    const eventType = el.type === 'text' ? 'input' : 'change';
+    el.addEventListener(eventType, () => renderQuickBuildingLinks(quickFindForm, searchNameInput, ownedBySel, propertySel, sortBySizeCheckBox, showSizeCheckBox, showQuantityCheckBox, showOnlyExpirableCheckBox, sortByDurabilityCheckBox));
   });
 }
 // Smart scroll functionality
