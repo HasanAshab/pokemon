@@ -12,9 +12,9 @@ bfcache prob
 offline summon
 
 *ovi
-hokage sys support
-bug: beast on emergency reduces imbalance
 war attack wave soldiers count
+bug: beast on emergency reduces imbalance
+
 
 * bug
 abilities multiple opponent event system

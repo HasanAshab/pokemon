@@ -548,7 +548,7 @@ function renderBuildings() {
     // Upgrade option
     if (upgradeCost > 0) {
       const upgradeOption = document.createElement("button");
-      upgradeOption.className = "dropdown-item primary";
+      upgradeOption.className = "dropdown-item upgrade";
       upgradeOption.textContent = building.quantity > 1 
         ? `Upgrade (${(upgradeCost / building.quantity).toLocaleString()} X ${building.quantity} = ${upgradeCost.toLocaleString()}$)`
         : `Upgrade (${upgradeCost.toLocaleString()}$)`;
@@ -643,8 +643,40 @@ function renderBuildings() {
       dropdownMenu.appendChild(repairOption);
     }
     
-    // Add divider if we have upgrade or repair options
-    if ((upgradeCost > 0) || (building.brokenQuantity > 0)) {
+    // Duplicate option
+    const duplicateOption = document.createElement("button");
+    duplicateOption.className = "dropdown-item duplicate";
+    duplicateOption.textContent = "Duplicate";
+    duplicateOption.onclick = () => {
+      // Create a deep copy of the building
+      const duplicatedBuilding = JSON.parse(JSON.stringify(building));
+      
+      // Update the name
+      duplicatedBuilding.name = `${building.name} Copy`;
+      
+      // Reset some properties for the new building
+      duplicatedBuilding.currentLevel = 1;
+      duplicatedBuilding.brokenQuantity = 0;
+      duplicatedBuilding.state = "enabled";
+      delete duplicatedBuilding.expired;
+      
+      // Add to buildings array
+      kingdoms[name].buildings.push(duplicatedBuilding);
+      
+      // Save and refresh
+      saveAndRefresh();
+      
+      // Close dropdown
+      dropdownMenu.classList.remove('show');
+      
+      // Show success message
+      alert(`Building duplicated as "${duplicatedBuilding.name}"`);
+    };
+    
+    dropdownMenu.appendChild(duplicateOption);
+    
+    // Add divider after action buttons (upgrade, repair, duplicate)
+    if ((upgradeCost > 0) || (building.brokenQuantity > 0) || true) {
       const divider = document.createElement("div");
       divider.className = "dropdown-divider";
       dropdownMenu.appendChild(divider);
