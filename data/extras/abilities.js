@@ -283,7 +283,6 @@ export default {
   },
 
   bhuiyakugan1: {
-    dependencies: ["bhuiyakugan0"],
     retreat: 0.5,
     onActivate(pokemon) {
         pokemon.state.chainModifyRetreat(0.5, move => move.flags.summon)
@@ -294,7 +293,6 @@ export default {
   },
 
   bhuiyakugan2: {
-    dependencies: ["bhuiyakugan0"],
     retreat: 2,
     onActivate(pokemon) {
       pokemon.state.moves.forEach(move => {

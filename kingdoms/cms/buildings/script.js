@@ -535,10 +535,126 @@ function renderBuildings() {
     const itemActions = document.createElement("div");
     itemActions.className = "building-actions";
 
-    const editBtn = document.createElement("button");
-    editBtn.className = "btn primary-btn";
-    editBtn.textContent = "Edit";
-    editBtn.onclick = () => {
+    // Create dropdown toggle button (3 dots)
+    const dropdownToggle = document.createElement("button");
+    dropdownToggle.className = "dropdown-toggle";
+    dropdownToggle.textContent = "⋯";
+    dropdownToggle.title = "Building Actions";
+    
+    // Create dropdown menu
+    const dropdownMenu = document.createElement("div");
+    dropdownMenu.className = "dropdown-menu";
+    
+    // Upgrade option
+    if (upgradeCost > 0) {
+      const upgradeOption = document.createElement("button");
+      upgradeOption.className = "dropdown-item primary";
+      upgradeOption.textContent = building.quantity > 1 
+        ? `Upgrade (${(upgradeCost / building.quantity).toLocaleString()} X ${building.quantity} = ${upgradeCost.toLocaleString()}$)`
+        : `Upgrade (${upgradeCost.toLocaleString()}$)`;
+      
+      if (building.state === "disabled") {
+        upgradeOption.disabled = true;
+      }
+      
+      upgradeOption.onclick = () => {
+        if (building.state === "disabled") {
+          alert("Cannot upgrade a disabled building!");
+          return;
+        }
+        
+        const storage = kingdoms[name].storage;
+        if ((storage.coins || 0) >= upgradeCost) {
+          // Show event modal for upgrade
+          const eventTitle = `${building.name} Upgrade Complete!`;
+          showEventModal(
+            "Set Upgrade Time",
+            `How long will it take to upgrade ${building.name}?`,
+            null // No callback needed
+          );
+          // Update the current event title for the modal
+          currentEventTitle = eventTitle;
+          
+          // Perform upgrade immediately
+          storage.coins -= upgradeCost;
+          building.currentLevel++;
+          saveAndRefresh();
+        } else {
+          alert("Not enough coins!");
+        }
+        dropdownMenu.classList.remove('show');
+      };
+      
+      dropdownMenu.appendChild(upgradeOption);
+    }
+    
+    // Repair option (only show if there are broken buildings)
+    if (building.brokenQuantity > 0) {
+      const repairCostPerUnit = Math.round(upgradePrice(building.basePrice, building.currentLevel - 1) / 4);
+      const totalRepairCost = repairCostPerUnit * building.brokenQuantity;
+      
+      const repairOption = document.createElement("button");
+      repairOption.className = "dropdown-item warning";
+      repairOption.textContent = building.brokenQuantity > 1 ? 
+        `Repair All (${repairCostPerUnit.toLocaleString()} X ${building.brokenQuantity} = ${totalRepairCost.toLocaleString()}$)` :
+        `Repair (${repairCostPerUnit.toLocaleString()}$)`;
+      
+      repairOption.onclick = () => {
+        if (building.state === "disabled") {
+          alert("Cannot repair a disabled building!");
+          return;
+        }
+        
+        let quantityToRepair = building.brokenQuantity;
+        
+        // If more than 1 broken, ask how many to repair
+        if (building.brokenQuantity > 1) {
+          const input = prompt(`How many buildings do you want to repair? (1-${building.brokenQuantity})`);
+          const parsed = parseInt(input);
+          
+          if (isNaN(parsed) || parsed < 1 || parsed > building.brokenQuantity) {
+            alert("Invalid quantity!");
+            return;
+          }
+          
+          quantityToRepair = parsed;
+        }
+        
+        const finalRepairCost = repairCostPerUnit * quantityToRepair;
+        const storage = kingdoms[name].storage;
+        
+        if ((storage.coins || 0) >= finalRepairCost) {
+          if (confirm(`Repair ${quantityToRepair} building(s) for ${finalRepairCost.toLocaleString()} coins?`)) {
+            // Deduct repair cost
+            storage.coins -= finalRepairCost;
+            
+            // Reduce broken quantity
+            building.brokenQuantity -= quantityToRepair;
+            
+            saveAndRefresh();
+            alert(`Successfully repaired ${quantityToRepair} building(s)!`);
+          }
+        } else {
+          alert(`Not enough coins! Need ${finalRepairCost.toLocaleString()} but only have ${(storage.coins || 0).toLocaleString()}.`);
+        }
+        dropdownMenu.classList.remove('show');
+      };
+      
+      dropdownMenu.appendChild(repairOption);
+    }
+    
+    // Add divider if we have upgrade or repair options
+    if ((upgradeCost > 0) || (building.brokenQuantity > 0)) {
+      const divider = document.createElement("div");
+      divider.className = "dropdown-divider";
+      dropdownMenu.appendChild(divider);
+    }
+    
+    // Edit option
+    const editOption = document.createElement("button");
+    editOption.className = "dropdown-item primary";
+    editOption.textContent = "Edit";
+    editOption.onclick = () => {
       nameInput.disabled = false;
       propertySelect.disabled = false;
       ownedBySelect.disabled = false;
@@ -552,8 +668,8 @@ function renderBuildings() {
       brokenQuantityInput.style.display = "block";
       lifespanControls.style.display = "flex";
       
-      editBtn.textContent = "Save";
-      editBtn.onclick = () => {
+      editOption.textContent = "Save";
+      editOption.onclick = () => {
         const buildingName = nameInput.value.trim();
         
         // Save building changes first
@@ -614,20 +730,65 @@ function renderBuildings() {
           building.consumes = extractValues(consumesContainer);
           saveAndRefresh();
         }
+        dropdownMenu.classList.remove('show');
       };
+      dropdownMenu.classList.remove('show');
     };
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "btn secondary-btn";
-    delBtn.textContent = "Delete";
-    delBtn.onclick = () => {
-      kingdoms[name].buildings.splice(index, 1);
+    
+    // Toggle Enable/Disable option
+    const toggleOption = document.createElement("button");
+    toggleOption.className = building.state === "disabled" ? "dropdown-item success" : "dropdown-item warning";
+    toggleOption.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    toggleOption.onclick = () => {
+      building.state = building.state === "disabled" ? "enabled" : "disabled";
       saveAndRefresh();
+      dropdownMenu.classList.remove('show');
     };
-
-    itemActions.appendChild(editBtn);
-    itemActions.appendChild(toggleStatusBtn); // Add the toggle button
-    itemActions.appendChild(delBtn);
+    
+    // Delete option
+    const deleteOption = document.createElement("button");
+    deleteOption.className = "dropdown-item danger";
+    deleteOption.textContent = "Delete";
+    deleteOption.onclick = () => {
+      if (confirm(`Are you sure you want to delete "${building.name}"?`)) {
+        kingdoms[name].buildings.splice(index, 1);
+        saveAndRefresh();
+      }
+      dropdownMenu.classList.remove('show');
+    };
+    
+    // Add divider before delete
+    const deleteDivider = document.createElement("div");
+    deleteDivider.className = "dropdown-divider";
+    
+    // Append options to dropdown menu
+    dropdownMenu.appendChild(editOption);
+    dropdownMenu.appendChild(toggleOption);
+    dropdownMenu.appendChild(deleteDivider);
+    dropdownMenu.appendChild(deleteOption);
+    
+    // Toggle dropdown on click
+    dropdownToggle.onclick = (e) => {
+      e.stopPropagation();
+      // Close all other dropdowns first
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        if (menu !== dropdownMenu) {
+          menu.classList.remove('show');
+        }
+      });
+      // Toggle current dropdown
+      dropdownMenu.classList.toggle('show');
+    };
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!itemActions.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+    
+    itemActions.appendChild(dropdownToggle);
+    itemActions.appendChild(dropdownMenu);
 
     div.appendChild(nameLabel);
     div.appendChild(nameInput);
@@ -675,8 +836,6 @@ function renderBuildings() {
     div.appendChild(producesContainer);
     div.appendChild(consumesLabel);
     div.appendChild(consumesContainer);
-    div.appendChild(upgradeBtn);
-    div.appendChild(repairBtn);
     div.appendChild(itemActions);
 
     buildingsContainer.appendChild(div);

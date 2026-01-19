@@ -534,9 +534,69 @@ function renderHospital() {
 
 //renderAcademy();
 // renderHospital();
-renderAllForces("soldier");
+function loadHokageFields() {
+  const hokageImageInput = document.getElementById("hokageImage");
+  const hokageLevelInput = document.getElementById("hokageLevel");
+  const hokageSalaryInput = document.getElementById("hokageSalary");
+  const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
+    (soldier) => soldier.isHokage === true
+  )
+  console.log(kingdoms[name].barrack.soldiers.emergency);
+  
+  if (hokageData) {
+    hokageImageInput.value =  hokageData.image.id;
+    hokageLevelInput.value = hokageData.image.xp / 100;
+    hokageSalaryInput.value = hokageData.ivSalaryPercent;
+  }
+} 
 
+globalThis.updateHokageImage = ({currentTarget}) => {
+const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
+    (soldier) => soldier.isHokage === true
+  )
+  
+  if (hokageData) {
+    hokageData.image.id = currentTarget.value;
+    hokageData.image.xp = getInitialXp(currentTarget.value);
+    console.log(hokageData);
+    
+    save();
+    loadHokageFields();
+  }else {
+    kingdoms[name].barrack.soldiers.emergency.push({
+      image: { id: currentTarget.value, xp: getInitialXp(currentTarget.value) },
+      quantity: 1,
+      ivSalaryPercent: 0, // Default 90% of PCI for emergency soldiers (highest pay)
+      isHokage: true,
+    });
+    save();
+    loadHokageFields();
+  }
+}
+globalThis.updateHokageLevel = ({currentTarget}) => {
+  const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
+    (soldier) => soldier.isHokage === true
+  )
+  if (hokageData) {
+    hokageData.image.xp = currentTarget.value * 100;
+    save();
+    loadHokageFields();
+  }
+}
+globalThis.updateHokageSalary = ({currentTarget}) => {
+  const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
+    (soldier) => soldier.isHokage === true
+  )
+  if (hokageData) {
+    hokageData.ivSalaryPercent = currentTarget.value;
+    save();
+    loadHokageFields();
+  }
+}
+
+renderAllForces("soldier");
 loadPokemonsDatalist("pokemon-data-list");
+loadHokageFields();
 showImbalanceData();
 globalThis.redirectToAmmoPage = () => {
   // Import navigation utility dynamically

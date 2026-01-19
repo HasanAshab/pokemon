@@ -1,4 +1,5 @@
 * Tasks
+manual event countdown
 revive with event
 copy paste buildings
 arena

@@ -51,7 +51,15 @@
    <p>Everything is balanced 🎉</p>
       <div class="shifts-data-wrapper"></div>
   </section>
-  
+  <section id="hokageSection" class="tab-soldier active tab">
+    <h2>Hokage</h2>
+    <div class="hokage-fields-wrapper">
+      <input list="pokemon-data-list" onblur="updateHokageImage(event)" type="text" id="hokageImage" placeholder="Enter Image"/>
+      <input type="number" onblur="updateHokageLevel(event)" id="hokageLevel" placeholder="Level">
+      <input type="number" onblur="updateHokageSalary(event)" id="hokageSalary" placeholder="Enter Salary">
+    </div>
+  </section>
+
   <section id="dayPolicesSection" class="tab-police tab">
     <h2>Day Polices</h2>
     <h4>Might: <span id="dayPolicesMight">0</span></h4>
