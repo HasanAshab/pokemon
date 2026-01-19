@@ -687,6 +687,7 @@ function renderBuildings() {
     editOption.className = "dropdown-item primary";
     editOption.textContent = "Edit";
     editOption.onclick = () => {
+      // Show all elements for edit mode
       nameInput.disabled = false;
       propertySelect.disabled = false;
       ownedBySelect.disabled = false;
@@ -699,6 +700,24 @@ function renderBuildings() {
       floorInput.style.display = "block";
       brokenQuantityInput.style.display = "block";
       lifespanControls.style.display = "flex";
+      
+      // Show all labels and displays that might be hidden in view mode
+      brokenQuantityLabel.style.display = "block";
+      brokenQuantityDisplay.style.display = "block";
+      MaintainsLabel.style.display = "block";
+      MaintainsDisplay.style.display = "block";
+      statusLabel.style.display = "block";
+      statusDisplay.style.display = "block";
+      durabilityLabel.style.display = "block";
+      floorLabel.style.display = "block";
+      sizeLabel.style.display = "block";
+      ownedByLabel.style.display = "block";
+      ownedBySelect.style.display = "block";
+      propertyLabel.style.display = "block";
+      propertySelect.style.display = "block";
+      
+      // Reset MaintainsDisplay to show all maintains (including zeros) in edit mode
+      MaintainsDisplay.textContent = objToFlags(calculateMaintains(building.baseMaintains || {}, building.currentLevel));
       
       editOption.textContent = "Save";
       editOption.onclick = () => {
@@ -821,6 +840,52 @@ function renderBuildings() {
     
     itemActions.appendChild(dropdownToggle);
     itemActions.appendChild(dropdownMenu);
+
+    // Apply view mode cleaning rules
+    function applyViewModeRules() {
+      // 1. Hide Broken Quantity section if no broken buildings (All working)
+      if (building.brokenQuantity === 0) {
+        brokenQuantityLabel.style.display = "none";
+        brokenQuantityDisplay.style.display = "none";
+      }
+
+      // 2. Show only non-zero maintains keys in view mode
+      const maintainsData = calculateMaintains(building.baseMaintains || {}, building.currentLevel);
+      const nonZeroMaintains = Object.entries(maintainsData).filter(([key, value]) => value > 0);
+      
+      if (nonZeroMaintains.length > 0) {
+        const nonZeroMaintainsObj = Object.fromEntries(nonZeroMaintains);
+        MaintainsDisplay.textContent = objToFlags(nonZeroMaintainsObj);
+      } else {
+        // 3. Hide Maintains section if all values are 0
+        MaintainsLabel.style.display = "none";
+        MaintainsDisplay.style.display = "none";
+      }
+
+      // 4. Hide Status section when building is Enabled
+      if (building.state === "enabled") {
+        statusLabel.style.display = "none";
+        statusDisplay.style.display = "none";
+      }
+
+      // 5. Hide Durability, Current size, and Floor when baseSize is 0
+      if (building.baseSize === 0) {
+        durabilityLabel.style.display = "none";
+        floorLabel.style.display = "none";
+        sizeLabel.style.display = "none";
+      }
+
+      // 6. Hide Owned by and Property when property type is govt
+      if (building.property === "govt") {
+        ownedByLabel.style.display = "none";
+        ownedBySelect.style.display = "none";
+        propertyLabel.style.display = "none";
+        propertySelect.style.display = "none";
+      }
+    }
+
+    // Apply cleaning rules initially (view mode)
+    applyViewModeRules();
 
     div.appendChild(nameLabel);
     div.appendChild(nameInput);
