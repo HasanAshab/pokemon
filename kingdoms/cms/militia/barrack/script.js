@@ -7,7 +7,8 @@ import {
   getForceImbalanceRate,
   getSecurityRate,
   getPoliceStationSecurityRate,
-  getInitialFixedXp
+  getInitialFixedXp,
+  isBeastImage
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
@@ -209,8 +210,11 @@ shiftsDataWrapper.innerHTML = "";
 
     for (const rankId of ranksIdList) {
       const q = forceList.reduce(
-        (sum, s) => sum + (s.image.id === rankId ? s.quantity : 0),
-        0,
+        (sum, s) => { 
+          
+         return sum + (s.image.id === rankId && !isBeastImage(s.image.id) && !s.isHokage ? s.quantity : 0)
+        },
+        0
       );
       quantityMap.set(rankId, q);
     }
@@ -292,6 +296,9 @@ function renderForceSection(type,forceType) {
   container.innerHTML = "";
  
    barrackForce[type].forEach((force, index) => {
+    if (force.isHokage === true) return
+      
+    
     const div = document.createElement("div");
     div.className = forceType +"-card";
 
@@ -329,9 +336,7 @@ function renderForceSection(type,forceType) {
     ivSalaryPercentInput.step = "1";
     ivSalaryPercentInput.value = force.ivSalaryPercent || 0;
     ivSalaryPercentInput.onblur = () => {
-      console.log(ivSalaryPercentInput.value);
       force.ivSalaryPercent = parseFloat(ivSalaryPercentInput.value) || 0;
-      console.log(force.ivSalaryPercent);
       save();
       renderAllForces(forceType);
     };
@@ -541,7 +546,6 @@ function loadHokageFields() {
   const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
     (soldier) => soldier.isHokage === true
   )
-  console.log(kingdoms[name].barrack.soldiers.emergency);
   
   if (hokageData) {
     hokageImageInput.value =  hokageData.image.id;
@@ -558,7 +562,6 @@ const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
   if (hokageData) {
     hokageData.image.id = currentTarget.value;
     hokageData.image.xp = getInitialXp(currentTarget.value);
-    console.log(hokageData);
     
     save();
     loadHokageFields();
