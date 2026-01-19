@@ -94,7 +94,9 @@ section {
     padding: 15px;
   }
 }
-
+ #hokageSection{
+  background-color: rgba(144, 143, 146, 0.753);
+ }
 #forcesData {
   display: flex;
   justify-content: center;
