@@ -48,13 +48,15 @@ function loadAllCardItems(){
 }
 }
 function loadSoldierAmmoCards(shiftData,shiftElement,shiftName){
+  
+  
   const soldierAmmoCardsContainer = shiftElement.querySelector(".soldier-ammo-cards-container")
   soldierAmmoCardsContainer.innerHTML = ""
   shiftData.forEach(soldier => {
     soldierAmmoCardsContainer.innerHTML +=` 
-     <div class="soldier-ammo-card" data-index="${totalItemsMultyInputBox}" data-shift="${shiftName}">
+     <div class="soldier-ammo-card ${soldier.isHokage ? 'hokage' : ''}"  data-index="${totalItemsMultyInputBox}" data-shift="${shiftName}">
           <div class="header">
-            <h3 class="rank">${soldier.image.id}</h3>
+            <h3 class="rank">${soldier.image.id} ${soldier.isHokage ? "👑" : "" }</h3>
           </div>
           <div class="body">
             <div class="multy-input-box" data-property="items" data-index="${totalItemsMultyInputBox++}">

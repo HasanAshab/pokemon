@@ -64,7 +64,9 @@ tr:hover {
   padding: 1vw;
   background-color: #f2f2f2;
 }
-
+.soldier-ammo-card.hokage{
+  border: 2px solid gold;
+}
 .soldier-ammo-card > .body{
   background-color: white;
   
