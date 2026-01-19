@@ -150,7 +150,7 @@ function renderBuildings() {
   filteredBuildings.forEach((building, index) => {
     
     const div = document.createElement("div");
-    div.className = "building";
+    div.className = building.baseSize === 0 ? "building contract" : "building";
     div.id = building.name;
     
     // Add enabled/disabled state visual indicator
@@ -726,8 +726,8 @@ function renderBuildings() {
         // Save building changes first
         saveBuildingChanges();
         
-        // Ask if construction is required
-        if (confirm("Does it require construction?")) {
+        // Ask if construction is required (skip for contracts with baseSize 0)
+        if (building.baseSize > 0 && confirm("Does it require construction?")) {
           const eventTitle = `${buildingName} Construction Complete!`;
           showEventModal(
             "Set Construction Time",

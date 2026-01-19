@@ -10,10 +10,10 @@ auto generate military
 
 bfcache prob
 offline summon
+bug: beast on emergency reduces imbalance
 
 *ovi
 war attack wave soldiers count
-bug: beast on emergency reduces imbalance
 
 
 * bug
