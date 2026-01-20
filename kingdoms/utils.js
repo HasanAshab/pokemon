@@ -1075,9 +1075,17 @@ export function isBeastImage(imageId) {
   return image.type === "beast";
 }
 
+export function getCamps(kingdom) {
+  const camps = [];
+  const kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
+  for (const k in kingdoms) {
+    if (kingdoms[k].type === "camp" && kingdoms[k].owner === kingdom.id) 
+      camps.push(kingdoms[k]);
+  }
+  return camps;
+}
 
-export function getMilitaryBudgetReport(kingdom) {
-  // now at  page, Show Kingdoms Military budget. along with the properties returned by  also show Total Budget and its 
+export function getSinlgeMilitaryBudgetReport(kingdom) {
   const report = {};
   report["Soldiers"] = {
     "Salary": calcSoldiersSalary(kingdom),
@@ -1098,6 +1106,21 @@ export function getMilitaryBudgetReport(kingdom) {
   report["Beasts"] = {
     "Researchers Salary": beastResearchersSalary,
     "Chakra Oil Import": chakraOilImportingQuantity * chakraOilMarketItem.unitPrice,
+  }
+  return report
+}
+
+export function getMilitaryBudgetReport(kingdom) {
+  // now at  page, Show Kingdoms Military budget. along with the properties returned by  also show Total Budget and its 
+  
+  const report = {
+    "Kingdom": getSinlgeMilitaryBudgetReport(kingdom)
+  }
+
+  const camps = getCamps(kingdom);
+
+  for (const c of camps) {
+    report[c.id] = getSinlgeMilitaryBudgetReport(c);
   }
   return report
 }

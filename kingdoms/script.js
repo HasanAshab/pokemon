@@ -233,68 +233,6 @@ function createKingdomCard(name, kingdom) {
   return card;
 }
 
-// Function to create a group header
-function createGroupHeader(title, count) {
-  const header = document.createElement("div");
-  header.className = "group-header";
-  header.innerHTML = `<h3>${title} (${count})</h3>`;
-  return header;
-}
-
-// Render kingdoms grouped by type
-// 1. First render all main kingdoms
-if (kingdomGroups.kingdoms.length > 0) {
-  const kingdomsHeader = createGroupHeader("Kingdoms", kingdomGroups.kingdoms.length);
-  container.appendChild(kingdomsHeader);
-  
-  kingdomGroups.kingdoms.forEach(({ name, kingdom }) => {
-    const card = createKingdomCard(name, kingdom);
-    container.appendChild(card);
-  });
-}
-
-// 2. Then render camps and outposts grouped by their owner
-kingdomGroups.kingdoms.forEach(({ name: ownerName }) => {
-  const camps = kingdomGroups.camps[ownerName] || [];
-  const outposts = kingdomGroups.outposts[ownerName] || [];
-  
-  if (camps.length > 0 || outposts.length > 0) {
-    // Create owner group header
-    const ownerHeader = document.createElement("div");
-    ownerHeader.className = "owner-group-header";
-    ownerHeader.innerHTML = `<h4>🏰 ${ownerName}'s Territories</h4>`;
-    container.appendChild(ownerHeader);
-    
-    // Add camps
-    if (camps.length > 0) {
-      const campsSubHeader = createGroupHeader("Camps", camps.length);
-      campsSubHeader.style.marginLeft = "20px";
-      campsSubHeader.querySelector("h3").style.fontSize = "16px";
-      container.appendChild(campsSubHeader);
-      
-      camps.forEach(({ name, kingdom }) => {
-        const card = createKingdomCard(name, kingdom);
-        card.style.marginLeft = "40px";
-        container.appendChild(card);
-      });
-    }
-    
-    // Add outposts
-    if (outposts.length > 0) {
-      const outpostsSubHeader = createGroupHeader("Outposts", outposts.length);
-      outpostsSubHeader.style.marginLeft = "20px";
-      outpostsSubHeader.querySelector("h3").style.fontSize = "16px";
-      container.appendChild(outpostsSubHeader);
-      
-      outposts.forEach(({ name, kingdom }) => {
-        const card = createKingdomCard(name, kingdom);
-        card.style.marginLeft = "40px";
-        container.appendChild(card);
-      });
-    }
-  }
-});
-
 // Handle orphaned camps and outposts (those with unknown or non-existent owners)
 const orphanedCamps = [];
 const orphanedOutposts = [];
@@ -311,37 +249,50 @@ Object.keys(kingdomGroups.outposts).forEach(owner => {
   }
 });
 
+// Render kingdoms grouped by type
+// 1. First render all main kingdoms
+kingdomGroups.kingdoms.forEach(({ name, kingdom }) => {
+  const card = createKingdomCard(name, kingdom);
+  container.appendChild(card);
+  
+  // Add territories for this kingdom
+  const camps = kingdomGroups.camps[name] || [];
+  const outposts = kingdomGroups.outposts[name] || [];
+  
+  // Add camps
+  camps.forEach(({ name: campName, kingdom: campKingdom }) => {
+    const card = createKingdomCard(campName, campKingdom);
+    card.style.marginLeft = "40px";
+    container.appendChild(card);
+  });
+  
+  // Add outposts
+  outposts.forEach(({ name: outpostName, kingdom: outpostKingdom }) => {
+    const card = createKingdomCard(outpostName, outpostKingdom);
+    card.style.marginLeft = "40px";
+    container.appendChild(card);
+  });
+  
+  // Add gap after each kingdom group (except the last one)
+  const isLastKingdom = kingdomGroups.kingdoms[kingdomGroups.kingdoms.length - 1].name === name;
+  if (!isLastKingdom || orphanedCamps.length > 0 || orphanedOutposts.length > 0) {
+    const gap = document.createElement("div");
+    gap.style.height = "20px";
+    container.appendChild(gap);
+  }
+});
+
+// Handle orphaned camps and outposts at the end
 if (orphanedCamps.length > 0 || orphanedOutposts.length > 0) {
-  const orphanedHeader = document.createElement("div");
-  orphanedHeader.className = "owner-group-header";
-  orphanedHeader.innerHTML = `<h4>❓ Unassigned Territories</h4>`;
-  container.appendChild(orphanedHeader);
+  orphanedCamps.forEach(({ name, kingdom }) => {
+    const card = createKingdomCard(name, kingdom);
+    container.appendChild(card);
+  });
   
-  if (orphanedCamps.length > 0) {
-    const campsSubHeader = createGroupHeader("Camps", orphanedCamps.length);
-    campsSubHeader.style.marginLeft = "20px";
-    campsSubHeader.querySelector("h3").style.fontSize = "16px";
-    container.appendChild(campsSubHeader);
-    
-    orphanedCamps.forEach(({ name, kingdom }) => {
-      const card = createKingdomCard(name, kingdom);
-      card.style.marginLeft = "40px";
-      container.appendChild(card);
-    });
-  }
-  
-  if (orphanedOutposts.length > 0) {
-    const outpostsSubHeader = createGroupHeader("Outposts", orphanedOutposts.length);
-    outpostsSubHeader.style.marginLeft = "20px";
-    outpostsSubHeader.querySelector("h3").style.fontSize = "16px";
-    container.appendChild(outpostsSubHeader);
-    
-    orphanedOutposts.forEach(({ name, kingdom }) => {
-      const card = createKingdomCard(name, kingdom);
-      card.style.marginLeft = "40px";
-      container.appendChild(card);
-    });
-  }
+  orphanedOutposts.forEach(({ name, kingdom }) => {
+    const card = createKingdomCard(name, kingdom);
+    container.appendChild(card);
+  });
 }
 
 // Draw connection lines between connected kingdoms
