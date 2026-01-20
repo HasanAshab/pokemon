@@ -53,10 +53,22 @@ function loadSoldierAmmoCards(shiftData,shiftElement,shiftName){
   const soldierAmmoCardsContainer = shiftElement.querySelector(".soldier-ammo-cards-container")
   soldierAmmoCardsContainer.innerHTML = ""
   shiftData.forEach(soldier => {
+    // Determine special role and styling
+    let specialClass = '';
+    let specialEmoji = '';
+    
+    if (soldier.isHokage) {
+      specialClass = 'hokage';
+      specialEmoji = '👑';
+    } else if (soldier.isKage) {
+      specialClass = 'kage';
+      specialEmoji = '🎗️';
+    }
+    
     soldierAmmoCardsContainer.innerHTML +=` 
-     <div class="soldier-ammo-card ${soldier.isHokage ? 'hokage' : ''}"  data-index="${totalItemsMultyInputBox}" data-shift="${shiftName}">
+     <div class="soldier-ammo-card ${specialClass}"  data-index="${totalItemsMultyInputBox}" data-shift="${shiftName}">
           <div class="header">
-            <h3 class="rank">${soldier.image.id} ${soldier.isHokage ? "👑" : "" }</h3>
+            <h3 class="rank">${soldier.image.id} ${specialEmoji}</h3>
           </div>
           <div class="body">
             <div class="multy-input-box" data-property="items" data-index="${totalItemsMultyInputBox++}">

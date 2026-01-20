@@ -67,6 +67,11 @@ tr:hover {
 .soldier-ammo-card.hokage{
   border: 2px solid gold;
 }
+
+.soldier-ammo-card.kage{
+  border: 2px solid #8b4513;
+  background-color: #faf8f5;
+}
 .soldier-ammo-card > .body{
   background-color: white;
   
