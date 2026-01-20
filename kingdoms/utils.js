@@ -1077,6 +1077,7 @@ export function isBeastImage(imageId) {
 
 
 export function getMilitaryBudgetReport(kingdom) {
+  // now at  page, Show Kingdoms Military budget. along with the properties returned by  also show Total Budget and its 
   const report = {};
   report["Soldiers"] = {
     "Salary": calcSoldiersSalary(kingdom),
@@ -1098,6 +1099,5 @@ export function getMilitaryBudgetReport(kingdom) {
     "Researchers Salary": beastResearchersSalary,
     "Chakra Oil Import": chakraOilImportingQuantity * chakraOilMarketItem.unitPrice,
   }
-
   return report
 }
