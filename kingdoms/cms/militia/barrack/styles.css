@@ -97,6 +97,79 @@ section {
  #hokageSection{
   border: 3px solid gold;
  }
+
+.hokage-fields-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.hokage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hokage-field label {
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.hokage-field input {
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.hokage-field input:focus {
+  border-color: gold;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+.hokage-salary-display {
+  margin-top: 10px;
+  padding: 15px;
+  background: linear-gradient(135deg, #fff9c4 0%, #fff3a0 100%);
+  border: 2px solid gold;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.hokage-actual-salary {
+  font-size: 16px;
+  color: #b8860b;
+}
+
+.hokage-actual-salary span {
+  color: #ff6b35;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+@media (min-width: 768px) {
+  .hokage-fields-wrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 600px;
+    align-items: end;
+  }
+  
+  .hokage-field {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .hokage-salary-display {
+    flex: 1 0 100%;
+    margin-top: 20px;
+  }
+}
 #forcesData {
   display: flex;
   justify-content: center;

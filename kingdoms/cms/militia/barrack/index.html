@@ -54,9 +54,23 @@
   <section id="hokageSection" class="tab-soldier active tab">
     <h2>Hokage 👑</h2>
     <div class="hokage-fields-wrapper">
-      <input list="pokemon-data-list" onblur="updateHokageImage(event)" type="text" id="hokageImage" placeholder="Enter Image"/>
-      <input type="number" onblur="updateHokageLevel(event)" id="hokageLevel" placeholder="Level">
-      <input type="number" onblur="updateHokageSalary(event)" id="hokageSalary" placeholder="Enter Salary">
+      <div class="hokage-field">
+        <label for="hokageImage">Image:</label>
+        <input list="pokemon-data-list" onblur="updateHokageImage(event)" type="text" id="hokageImage" placeholder="Enter Image"/>
+      </div>
+      <div class="hokage-field">
+        <label for="hokageLevel">Level:</label>
+        <input type="number" onblur="updateHokageLevel(event)" id="hokageLevel" placeholder="Level" min="1">
+      </div>
+      <div class="hokage-field">
+        <label for="hokageSalary">Salary (% of PCI):</label>
+        <input type="number" onblur="updateHokageSalary(event)" id="hokageSalary" placeholder="Enter Salary %" min="0" step="1">
+      </div>
+      <div class="hokage-salary-display">
+        <div class="hokage-actual-salary">
+          <strong>Actual Salary: <span id="hokageActualSalary">0$</span></strong>
+        </div>
+      </div>
     </div>
   </section>
 

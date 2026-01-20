@@ -566,14 +566,46 @@ function loadHokageFields() {
   const hokageImageInput = document.getElementById("hokageImage");
   const hokageLevelInput = document.getElementById("hokageLevel");
   const hokageSalaryInput = document.getElementById("hokageSalary");
+  const hokageActualSalaryEl = document.getElementById("hokageActualSalary");
+  
   const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
     (soldier) => soldier.isHokage === true
   )
   
   if (hokageData) {
-    hokageImageInput.value =  hokageData.image.id;
+    hokageImageInput.value = hokageData.image.id;
     hokageLevelInput.value = hokageData.image.xp / 100;
     hokageSalaryInput.value = hokageData.ivSalaryPercent;
+    
+    // Calculate and display actual salary
+    updateHokageActualSalary(hokageData);
+  } else {
+    // Clear fields if no hokage data
+    hokageImageInput.value = "";
+    hokageLevelInput.value = "";
+    hokageSalaryInput.value = "";
+    if (hokageActualSalaryEl) hokageActualSalaryEl.textContent = "0$";
+  }
+}
+
+function updateHokageActualSalary(hokageData) {
+  const hokageActualSalaryEl = document.getElementById("hokageActualSalary");
+  if (!hokageActualSalaryEl || !hokageData) return;
+  
+  const kingdomPCI = kingdom.pci || 50;
+  const isUnderWar = kingdom.underWar || false;
+  const warMultiplier = isUnderWar ? 1.1136 : 1;
+  
+  const baseSalary = (kingdomPCI * hokageData.ivSalaryPercent) / 100;
+  const actualSalary = baseSalary * warMultiplier;
+  
+  if (isUnderWar) {
+    hokageActualSalaryEl.innerHTML = `
+      <span style="text-decoration: line-through; color: #666; margin-right: 8px;">${baseSalary.toFixed()}$</span>
+      <span style="color: #dc3545; font-weight: bold;">${actualSalary.toFixed()}$ ⚔️</span>
+    `;
+  } else {
+    hokageActualSalaryEl.textContent = `${actualSalary.toFixed()}$`;
   }
 } 
 
@@ -588,17 +620,20 @@ const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
     
     save();
     loadHokageFields();
+    renderAllForces("soldier"); // Refresh to update totals
   }else {
     kingdoms[name].barrack.soldiers.emergency.push({
       image: { id: currentTarget.value, xp: getInitialXp(currentTarget.value) },
       quantity: 1,
-      ivSalaryPercent: 0, // Default 90% of PCI for emergency soldiers (highest pay)
+      ivSalaryPercent: 0, // Default 0% of PCI for hokage
       isHokage: true,
     });
     save();
     loadHokageFields();
+    renderAllForces("soldier"); // Refresh to update totals
   }
 }
+
 globalThis.updateHokageLevel = ({currentTarget}) => {
   const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
     (soldier) => soldier.isHokage === true
@@ -609,14 +644,16 @@ globalThis.updateHokageLevel = ({currentTarget}) => {
     loadHokageFields();
   }
 }
+
 globalThis.updateHokageSalary = ({currentTarget}) => {
   const hokageData = kingdoms[name].barrack.soldiers.emergency.find(
     (soldier) => soldier.isHokage === true
   )
   if (hokageData) {
-    hokageData.ivSalaryPercent = currentTarget.value;
+    hokageData.ivSalaryPercent = parseFloat(currentTarget.value) || 0;
     save();
     loadHokageFields();
+    renderAllForces("soldier"); // Refresh to update totals
   }
 }
 

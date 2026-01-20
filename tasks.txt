@@ -1,7 +1,4 @@
 * Tasks
-active military
-
-
 manual event countdown
 revive with event
 war attack wave soldiers count
