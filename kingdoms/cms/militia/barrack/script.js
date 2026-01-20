@@ -453,13 +453,36 @@ function renderAllForces(forceType) {
   }
 
   let forcesTotalQuantity = 0;
+  let dayQuantity = 0;
+  let nightQuantity = 0;
+  let emergencyQuantity = 0;
+  
   Object.keys(barrackForce).forEach((type) => {
+    let typeQuantity = 0;
     for (const force of barrackForce[type]) {
-      forcesTotalQuantity += force.quantity
+      typeQuantity += force.quantity;
+      forcesTotalQuantity += force.quantity;
     }
-  })
-  const forcesTotalQuantityEl = document.getElementById("forcesTotalQuantity")
-  forcesTotalQuantityEl.textContent = forcesTotalQuantity
+    
+    // Update individual shift quantities
+    if (type === "day") dayQuantity = typeQuantity;
+    else if (type === "night") nightQuantity = typeQuantity;
+    else if (type === "emergency") emergencyQuantity = typeQuantity;
+  });
+  
+  const forcesTotalQuantityEl = document.getElementById("forcesTotalQuantity");
+  forcesTotalQuantityEl.textContent = forcesTotalQuantity;
+  
+  // Update individual shift quantity displays (only for soldiers)
+  if (forceType === "soldiers") {
+    const daySoldiersQuantityEl = document.getElementById("daySoldiersQuantity");
+    const nightSoldiersQuantityEl = document.getElementById("nightSoldiersQuantity");
+    const emergencySoldiersQuantityEl = document.getElementById("emergencySoldiersQuantity");
+    
+    if (daySoldiersQuantityEl) daySoldiersQuantityEl.textContent = dayQuantity;
+    if (nightSoldiersQuantityEl) nightSoldiersQuantityEl.textContent = nightQuantity;
+    if (emergencySoldiersQuantityEl) emergencySoldiersQuantityEl.textContent = emergencyQuantity;
+  }
 
   let baseMight = 0;
   let ammoMight = 0;
