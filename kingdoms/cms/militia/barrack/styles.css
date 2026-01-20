@@ -171,156 +171,143 @@ section {
   }
 }
 
-/* Kage Section Styling */
+/* Kage Section Styling - Simple and Clean */
 #kageSection {
-  border: 3px solid #8b4513;
-  background: linear-gradient(135deg, #f5f5dc 0%, #faf0e6 100%);
+  border: 2px solid #8b4513;
 }
 
-.kage-controls {
+.kage-header-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   flex-wrap: wrap;
   gap: 10px;
 }
 
 .add-kage-btn {
-  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+  background: #8b4513;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .add-kage-btn:hover {
-  background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
-  transform: translateY(-1px);
+  background: #a0522d;
 }
 
 .kage-total-salary {
-  background: linear-gradient(135deg, #deb887 0%, #f4a460 100%);
-  padding: 10px 15px;
-  border-radius: 6px;
-  border: 2px solid #8b4513;
-  font-size: 16px;
-  color: #654321;
+  font-weight: bold;
+  color: #8b4513;
+  font-size: 14px;
 }
 
 .kage-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 .kage-card {
-  background: white;
-  border: 2px solid #8b4513;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
-  transition: all 0.3s ease;
-}
-
-.kage-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(139, 69, 19, 0.3);
-}
-
-.kage-header {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  background: #fafafa;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #deb887;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.kage-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #8b4513;
+.kage-card h4 {
   margin: 0;
-}
-
-.kage-delete-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: background 0.3s ease;
-}
-
-.kage-delete-btn:hover {
-  background: #c82333;
-}
-
-.kage-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  color: #8b4513;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .kage-field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 }
 
 .kage-field label {
+  font-size: 12px;
   font-weight: bold;
-  color: #654321;
-  font-size: 14px;
+  color: #555;
 }
 
-.kage-field input {
-  padding: 8px 12px;
-  border: 2px solid #ddd;
+.kage-card input {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  width: 100px;
 }
 
-.kage-field input:focus {
-  border-color: #8b4513;
-  outline: none;
-  box-shadow: 0 0 5px rgba(139, 69, 19, 0.3);
+.kage-card input:first-of-type {
+  width: 120px;
 }
 
-.kage-salary-display {
-  margin-top: 10px;
-  padding: 10px;
-  background: linear-gradient(135deg, #fff8dc 0%, #ffefd5 100%);
-  border: 1px solid #deb887;
-  border-radius: 6px;
+.kage-salary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   text-align: center;
+  font-size: 12px;
+}
+
+.kage-salary-info label {
+  font-size: 12px;
   font-weight: bold;
-  color: #8b4513;
+  color: #555;
+}
+
+.kage-delete-btn {
+  padding: 8px 12px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  min-height: 36px;
+}
+
+.kage-delete-btn:hover {
+  background: #c0392b;
 }
 
 @media (min-width: 768px) {
-  .kage-fields {
-    flex-direction: row;
-    align-items: end;
-    gap: 15px;
+  .kage-card {
+    padding: 12px;
+    gap: 10px;
+    align-items: center;
   }
   
-  .kage-field {
-    flex: 1;
-    min-width: 120px;
+  .kage-card h4 {
+    width: auto;
+    margin-bottom: 0;
+    margin-right: 15px;
   }
   
-  .kage-salary-display {
-    flex: 1;
-    margin-top: 0;
-    margin-left: 15px;
+  .kage-card input {
+    padding: 6px 8px;
+  }
+  
+  .kage-delete-btn {
+    padding: 6px 12px;
+    min-height: auto;
   }
 }
 #forcesData {

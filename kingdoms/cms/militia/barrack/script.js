@@ -767,36 +767,64 @@ function renderKages() {
     const kageCard = document.createElement('div');
     kageCard.className = 'kage-card';
     
-    kageCard.innerHTML = `
-      <div class="kage-header">
-        <h3 class="kage-title">${kage.name}</h3>
-        <button class="kage-delete-btn" onclick="removeKage(${kage.id})">Delete</button>
-      </div>
-      <div class="kage-fields">
-        <div class="kage-field">
-          <label>Image:</label>
-          <input list="pokemon-data-list" type="text" value="${kage.image.id}" 
-                 onblur="updateKageImage(${kage.id}, this.value)" placeholder="Enter Image">
-        </div>
-        <div class="kage-field">
-          <label>Level:</label>
-          <input type="number" value="${kage.image.xp / 100}" min="1"
-                 onblur="updateKageLevel(${kage.id}, this.value)" placeholder="Level">
-        </div>
-        <div class="kage-field">
-          <label>Salary (% of PCI):</label>
-          <input type="number" value="${kage.ivSalaryPercent}" min="0" step="1"
-                 onblur="updateKageSalary(${kage.id}, this.value)" placeholder="Salary %">
-        </div>
-        <div class="kage-salary-display">
-          <div>Actual Salary: <span class="kage-actual-salary-amount">${
-            isUnderWar ? 
-            `<span style="text-decoration: line-through; color: #666; margin-right: 8px;">${baseSalary.toFixed()}$</span><span style="color: #dc3545; font-weight: bold;">${actualSalary.toFixed()}$ ⚔️</span>` :
-            `${actualSalary.toFixed()}$`
-          }</span></div>
-        </div>
-      </div>
+    // Create elements
+    const title = document.createElement('h4');
+    title.textContent = kage.name;
+    
+    const imageField = document.createElement('div');
+    imageField.className = 'kage-field';
+    imageField.innerHTML = `
+      <label>Image</label>
+      <input list="pokemon-data-list" type="text" value="${kage.image.id}" 
+             onblur="updateKageImage(${kage.id}, this.value)" placeholder="Enter Image">
     `;
+    
+    const levelField = document.createElement('div');
+    levelField.className = 'kage-field';
+    levelField.innerHTML = `
+      <label>Level</label>
+      <input type="number" value="${kage.image.xp / 100}" min="1"
+             onblur="updateKageLevel(${kage.id}, this.value)" placeholder="Level">
+    `;
+    
+    const salaryField = document.createElement('div');
+    salaryField.className = 'kage-field';
+    salaryField.innerHTML = `
+      <label>Salary %</label>
+      <input type="number" value="${kage.ivSalaryPercent}" min="0" step="1"
+             onblur="updateKageSalary(${kage.id}, this.value)" placeholder="Salary %">
+    `;
+    
+    const salaryInfo = document.createElement('div');
+    salaryInfo.className = 'kage-salary-info';
+    
+    if (isUnderWar) {
+      salaryInfo.innerHTML = `
+        <label>Actual Salary</label>
+        <div>
+          <span style="text-decoration: line-through; color: #666;">${baseSalary.toFixed()}$</span>
+          <span style="color: #dc3545; font-weight: bold;">${actualSalary.toFixed()}$ ⚔️</span>
+        </div>
+      `;
+    } else {
+      salaryInfo.innerHTML = `
+        <label>Actual Salary</label>
+        <div>${actualSalary.toFixed()}$</div>
+      `;
+    }
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'kage-delete-btn';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.onclick = () => removeKage(kage.id);
+    
+    // Append elements
+    kageCard.appendChild(title);
+    kageCard.appendChild(imageField);
+    kageCard.appendChild(levelField);
+    kageCard.appendChild(salaryField);
+    kageCard.appendChild(salaryInfo);
+    kageCard.appendChild(deleteBtn);
     
     container.appendChild(kageCard);
   });
