@@ -15,6 +15,7 @@ import {
   getResearchersAccuracy,
   getMaxSearchableMightOfBeasts,
   reducePopulation,
+  getMilitaryBudgetReport,
 } from "../utils.js";
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
@@ -569,3 +570,6 @@ updateBeastResearchersDisplay();
 
 // Update events badge periodically (in case events data changes)
 setInterval(updateEventsBadge, 5000);
+
+console.log(getMilitaryBudgetReport(kingdom));
+

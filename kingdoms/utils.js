@@ -452,7 +452,7 @@ export function getTransLogs(kingdom, itemName) {
   }
 
   if (itemName === "chakraOil") {
-    logs.push(`Beasts &#x2190; <span style="color: red; font-weight: bold">${-calcTotalChakraOilConsumption(kingdom).toLocaleString()}</span>`);
+    logs.push(`Beasts &#x2190; <span style="color: red; font-weight: bold">${-calcTotalChakraOilConsumptionByBeasts(kingdom).toLocaleString()}</span>`);
   }
 
   getEnabledBuildings(kingdom).forEach(build => {
@@ -514,7 +514,7 @@ export function calcAmmoCost(kingdom) {
   }, 0)
 }
 
-export function calcTotalChakraOilConsumption(kingdom) {
+export function calcTotalChakraOilConsumptionByBeasts(kingdom) {
   const calcTotalTiersOfBeasts = (shift) => {
     let totalTiers = 0
     for (const { image, quantity } of kingdom.barrack.soldiers[shift]) {
@@ -538,7 +538,7 @@ export function calcNetProd(kingdom, localize = false, includeMarketplace = true
       calcAmmoCost(kingdom) +
       calcCommandersSalary(kingdom) +
       calcEmployeeSalary(kingdom),
-    chakraOil: calcTotalChakraOilConsumption(kingdom),
+    chakraOil: calcTotalChakraOilConsumptionByBeasts(kingdom),
   };
 
   
@@ -1073,4 +1073,31 @@ export function calculateArtilleryPrice(kingdom, power, lifetime, size) {
 export function isBeastImage(imageId) {
   const image = pokemons[imageId];
   return image.type === "beast";
+}
+
+
+export function getMilitaryBudgetReport(kingdom) {
+  const report = {};
+  report["Soldiers"] = {
+    "Salary": calcSoldiersSalary(kingdom),
+    "Ammonation": calcAmmoCost(kingdom)
+  }
+  
+  report["Commanders Salary"] = calcCommandersSalary(kingdom);
+
+  const artillariesSize = getArtilleries(kingdom).reduce((acc, build) => acc + calculateSize(build.baseSize, build.currentLevel) * build.quantity, 0);
+  report["Artillery Maintenance"] = calculateLandPrice(artillariesSize, kingdom, "rent", 2) * 2;
+
+  
+  const hiredBeastResearchers = kingdom.marketplace.find(item => item.itemName === "bRes" && item.actionType === "buy") || { unitPrice: 0, quantity: 0 };
+  const beastResearchersSalary = hiredBeastResearchers.unitPrice * (hiredBeastResearchers.buyWholeDemand ? getStorage(kingdom).bRes || 0 : hiredBeastResearchers.quantity);
+  const chakraOilRequired = calcTotalChakraOilConsumptionByBeasts(kingdom);
+  const chakraOilMarketItem = kingdom.marketplace.find(item => item.itemName === "chakraOil" && item.actionType === "buy") || { unitPrice: 0, quantity: 0 };
+  const chakraOilImportingQuantity = Math.min(chakraOilRequired, chakraOilMarketItem.buyWholeDemand ? chakraOilRequired : chakraOilMarketItem.quantity);
+  report["Beasts"] = {
+    "Researchers Salary": beastResearchersSalary,
+    "Chakra Oil Import": chakraOilImportingQuantity * chakraOilMarketItem.unitPrice,
+  }
+
+  return report
 }
