@@ -490,6 +490,61 @@ body {
   100% { stroke-dashoffset: 20; }
 }
 
+/* Group Headers */
+.group-header {
+  margin: 2rem 0 1rem 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.group-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.owner-group-header {
+  margin: 1.5rem 0 1rem 0;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border-left: 4px solid #f39c12;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.owner-group-header h4 {
+  margin: 0;
+  color: #8b4513;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Kingdom Type Styling */
+.kingdom-type {
+  color: #2c3e50 !important;
+  font-weight: 600;
+}
+
+.camp-type {
+  color: #8b4513 !important;
+  font-weight: 600;
+}
+
+.outpost-type {
+  color: #556b2f !important;
+  font-weight: 600;
+}
+
+/* Territory indentation */
+.card[style*="margin-left: 40px"] {
+  border-left: 3px solid #ddd;
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+}
+
 /* Network Legend */
 .network-legend {
   width: 200px;

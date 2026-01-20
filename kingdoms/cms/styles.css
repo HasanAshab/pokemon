@@ -24,6 +24,37 @@ input {
   margin-bottom: 1rem;
 }
 
+select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 1rem;
+}
+
+select:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Kingdom Type Styling */
+#kingdomType {
+  background-color: #f8f9fa;
+}
+
+#ownerKingdom {
+  background-color: #fff3cd;
+  border-color: #f39c12;
+}
+
+#ownerLabel {
+  color: #8b4513;
+  font-weight: 600;
+}
+
 .bar-group {
   margin: 1rem 0;
 }

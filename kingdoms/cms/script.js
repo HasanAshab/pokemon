@@ -58,6 +58,9 @@ const disasterResearchersVisionRangeValue = document.getElementById("disasterRes
 const beastResearchersMinMight = document.getElementById("beastResearchersMinMight");
 const beastResearchersMaxMightLabel = document.getElementById("beastResearchersMaxMightLabel");
 const beastResearchersMaxMightBar = document.getElementById("beastResearchersMaxMightBar");
+const kingdomTypeSelect = document.getElementById("kingdomType");
+const ownerKingdomSelect = document.getElementById("ownerKingdom");
+const ownerLabel = document.getElementById("ownerLabel");
 kingdomName.textContent = name || "Unknown Kingdom";
 
 let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
@@ -234,6 +237,54 @@ densityInput.value = kingdom.density;
 pciInput.value = kingdom.pci;
 taxRateInput.value = (kingdom.taxRate * 100).toFixed(0);
 taxRateValue.textContent = taxRateInput.value;
+
+// Initialize kingdom type
+kingdomTypeSelect.value = kingdom.type || 'Kingdom';
+loadOwnerKingdomOptions();
+toggleOwnerSelect();
+
+// Kingdom type change handler
+kingdomTypeSelect.addEventListener('change', () => {
+  kingdom.type = kingdomTypeSelect.value;
+  toggleOwnerSelect();
+  loadOwnerKingdomOptions();
+});
+
+// Owner kingdom change handler
+ownerKingdomSelect.addEventListener('change', () => {
+  kingdom.owner = ownerKingdomSelect.value || undefined;
+});
+
+function toggleOwnerSelect() {
+  const isSubordinate = kingdomTypeSelect.value === 'Camp' || kingdomTypeSelect.value === 'Outpost';
+  ownerLabel.style.display = isSubordinate ? 'block' : 'none';
+  if (!isSubordinate) {
+    delete kingdom.owner;
+    ownerKingdomSelect.value = '';
+  }
+}
+
+function loadOwnerKingdomOptions() {
+  ownerKingdomSelect.innerHTML = '<option value="">Select Owner</option>';
+  
+  // Only show kingdoms that are of type "Kingdom" or don't have a type (default to Kingdom)
+  Object.keys(kingdoms).forEach(kingdomName => {
+    if (kingdomName === name) return; // Don't include self
+    
+    const kingdomData = kingdoms[kingdomName];
+    const kingdomType = kingdomData.type || 'Kingdom';
+    
+    if (kingdomType === 'Kingdom') {
+      const option = document.createElement('option');
+      option.value = kingdomName;
+      option.textContent = kingdomName;
+      if (kingdom.owner === kingdomName) {
+        option.selected = true;
+      }
+      ownerKingdomSelect.appendChild(option);
+    }
+  });
+}
 
 function loadDisasterCheckboxes() {
   const disasterContainer = document.getElementById("disasterCheckboxes");
@@ -520,6 +571,12 @@ saveBtn.addEventListener("click", () => {
   _kingdom.closerKingdoms = kingdom.closerKingdoms;
   _kingdom.disaster = kingdom.disaster;
   _kingdom.beasts = kingdom.beasts;
+  _kingdom.type = kingdom.type;
+  if (kingdom.owner) {
+    _kingdom.owner = kingdom.owner;
+  } else {
+    delete _kingdom.owner;
+  }
 
   // Update the kingdoms object
   kingdoms[name] = _kingdom;
