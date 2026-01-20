@@ -545,6 +545,14 @@ body {
   background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
 }
 
+/* Owner indicator styling */
+.owner-indicator {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-style: italic;
+}
+
 /* Network Legend */
 .network-legend {
   width: 200px;

@@ -45,13 +45,57 @@ loadDisasterSuppressor();
 
 const container = document.getElementById("cardContainer");
 
+// Group kingdoms by type and ownership
+const kingdomGroups = {
+  kingdoms: [],
+  camps: {},
+  outposts: {}
+};
+
+// First pass: categorize kingdoms
 Object.keys(kingdoms).forEach((name) => {
+  const kingdom = kingdoms[name];
+  const type = kingdom.type || 'Kingdom';
+  
+  if (type === 'Kingdom') {
+    kingdomGroups.kingdoms.push({ name, kingdom });
+  } else if (type === 'Camp') {
+    const owner = kingdom.owner || 'Unknown';
+    if (!kingdomGroups.camps[owner]) kingdomGroups.camps[owner] = [];
+    kingdomGroups.camps[owner].push({ name, kingdom });
+  } else if (type === 'Outpost') {
+    const owner = kingdom.owner || 'Unknown';
+    if (!kingdomGroups.outposts[owner]) kingdomGroups.outposts[owner] = [];
+    kingdomGroups.outposts[owner].push({ name, kingdom });
+  }
+});
+
+// Function to get type emoji and styling
+function getKingdomTypeInfo(type) {
+  switch (type) {
+    case 'Kingdom':
+      return { emoji: '🏰', class: 'kingdom-type', color: '#2c3e50' };
+    case 'Camp':
+      return { emoji: '⛺', class: 'camp-type', color: '#8b4513' };
+    case 'Outpost':
+      return { emoji: '🏕️', class: 'outpost-type', color: '#556b2f' };
+    default:
+      return { emoji: '🏰', class: 'kingdom-type', color: '#2c3e50' };
+  }
+}
+
+// Function to create a kingdom card
+function createKingdomCard(name, kingdom) {
+  const type = kingdom.type || 'Kingdom';
+  const typeInfo = getKingdomTypeInfo(type);
+  
   const card = document.createElement("div");
-  card.className = "card";
+  card.className = `card ${typeInfo.class}`;
 
   const label = document.createElement("div");
-  label.textContent = name;
+  label.textContent = `${typeInfo.emoji} ${name}`;
   label.className = "card-name";
+  label.style.color = typeInfo.color;
 
   // Create 3-dot menu container
   const menuContainer = document.createElement("div");
@@ -131,7 +175,7 @@ Object.keys(kingdoms).forEach((name) => {
   removeBtn.className = "remove-option";
   removeBtn.onclick = (e) => {
     e.stopPropagation();
-    if (confirm(`Delete kingdom "${name}"?`)) {
+    if (confirm(`Delete ${type.toLowerCase()} "${name}"?`)) {
       delete kingdoms[name];
       localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
       location.reload();
@@ -165,6 +209,17 @@ Object.keys(kingdoms).forEach((name) => {
     card.appendChild(protectionIndicator);
   }
 
+  // Add ownership indicator for camps and outposts
+  if (type !== 'Kingdom' && kingdom.owner) {
+    const ownerIndicator = document.createElement("div");
+    ownerIndicator.className = "owner-indicator";
+    ownerIndicator.textContent = `Owner: ${kingdom.owner}`;
+    ownerIndicator.style.fontSize = "12px";
+    ownerIndicator.style.color = "#666";
+    ownerIndicator.style.marginTop = "5px";
+    card.appendChild(ownerIndicator);
+  }
+
   card.appendChild(label);
   card.appendChild(menuContainer);
 
@@ -175,8 +230,119 @@ Object.keys(kingdoms).forEach((name) => {
     });
   };
 
-  container.appendChild(card);
+  return card;
+}
+
+// Function to create a group header
+function createGroupHeader(title, count) {
+  const header = document.createElement("div");
+  header.className = "group-header";
+  header.innerHTML = `<h3>${title} (${count})</h3>`;
+  return header;
+}
+
+// Render kingdoms grouped by type
+// 1. First render all main kingdoms
+if (kingdomGroups.kingdoms.length > 0) {
+  const kingdomsHeader = createGroupHeader("Kingdoms", kingdomGroups.kingdoms.length);
+  container.appendChild(kingdomsHeader);
+  
+  kingdomGroups.kingdoms.forEach(({ name, kingdom }) => {
+    const card = createKingdomCard(name, kingdom);
+    container.appendChild(card);
+  });
+}
+
+// 2. Then render camps and outposts grouped by their owner
+kingdomGroups.kingdoms.forEach(({ name: ownerName }) => {
+  const camps = kingdomGroups.camps[ownerName] || [];
+  const outposts = kingdomGroups.outposts[ownerName] || [];
+  
+  if (camps.length > 0 || outposts.length > 0) {
+    // Create owner group header
+    const ownerHeader = document.createElement("div");
+    ownerHeader.className = "owner-group-header";
+    ownerHeader.innerHTML = `<h4>🏰 ${ownerName}'s Territories</h4>`;
+    container.appendChild(ownerHeader);
+    
+    // Add camps
+    if (camps.length > 0) {
+      const campsSubHeader = createGroupHeader("Camps", camps.length);
+      campsSubHeader.style.marginLeft = "20px";
+      campsSubHeader.querySelector("h3").style.fontSize = "16px";
+      container.appendChild(campsSubHeader);
+      
+      camps.forEach(({ name, kingdom }) => {
+        const card = createKingdomCard(name, kingdom);
+        card.style.marginLeft = "40px";
+        container.appendChild(card);
+      });
+    }
+    
+    // Add outposts
+    if (outposts.length > 0) {
+      const outpostsSubHeader = createGroupHeader("Outposts", outposts.length);
+      outpostsSubHeader.style.marginLeft = "20px";
+      outpostsSubHeader.querySelector("h3").style.fontSize = "16px";
+      container.appendChild(outpostsSubHeader);
+      
+      outposts.forEach(({ name, kingdom }) => {
+        const card = createKingdomCard(name, kingdom);
+        card.style.marginLeft = "40px";
+        container.appendChild(card);
+      });
+    }
+  }
 });
+
+// Handle orphaned camps and outposts (those with unknown or non-existent owners)
+const orphanedCamps = [];
+const orphanedOutposts = [];
+
+Object.keys(kingdomGroups.camps).forEach(owner => {
+  if (owner === 'Unknown' || !kingdomGroups.kingdoms.find(k => k.name === owner)) {
+    orphanedCamps.push(...kingdomGroups.camps[owner]);
+  }
+});
+
+Object.keys(kingdomGroups.outposts).forEach(owner => {
+  if (owner === 'Unknown' || !kingdomGroups.kingdoms.find(k => k.name === owner)) {
+    orphanedOutposts.push(...kingdomGroups.outposts[owner]);
+  }
+});
+
+if (orphanedCamps.length > 0 || orphanedOutposts.length > 0) {
+  const orphanedHeader = document.createElement("div");
+  orphanedHeader.className = "owner-group-header";
+  orphanedHeader.innerHTML = `<h4>❓ Unassigned Territories</h4>`;
+  container.appendChild(orphanedHeader);
+  
+  if (orphanedCamps.length > 0) {
+    const campsSubHeader = createGroupHeader("Camps", orphanedCamps.length);
+    campsSubHeader.style.marginLeft = "20px";
+    campsSubHeader.querySelector("h3").style.fontSize = "16px";
+    container.appendChild(campsSubHeader);
+    
+    orphanedCamps.forEach(({ name, kingdom }) => {
+      const card = createKingdomCard(name, kingdom);
+      card.style.marginLeft = "40px";
+      container.appendChild(card);
+    });
+  }
+  
+  if (orphanedOutposts.length > 0) {
+    const outpostsSubHeader = createGroupHeader("Outposts", orphanedOutposts.length);
+    outpostsSubHeader.style.marginLeft = "20px";
+    outpostsSubHeader.querySelector("h3").style.fontSize = "16px";
+    container.appendChild(outpostsSubHeader);
+    
+    orphanedOutposts.forEach(({ name, kingdom }) => {
+      const card = createKingdomCard(name, kingdom);
+      card.style.marginLeft = "40px";
+      container.appendChild(card);
+    });
+  }
+}
 
 // Draw connection lines between connected kingdoms
 drawConnectionLines();
