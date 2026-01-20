@@ -240,14 +240,14 @@
     
     /* Artillery-style buildings (baseMaintains.defence > 0) */
     .building.artillery {
-      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-      border: 3px solid #e74c3c;
+      background: linear-gradient(135deg, #a8d5ba 0%, #c8e6c9 100%);
+      border: 3px solid #2e4a35;
       border-radius: 8px;
-      box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
+      box-shadow: 0 6px 16px rgba(46, 74, 53, 0.4);
       position: relative;
       padding: 20px;
       margin: 15px 0;
-      color: #ecf0f1;
+      color: #1b5e20;
     }
     
     .building.artillery::before {
@@ -257,6 +257,7 @@
       right: 15px;
       font-size: 24px;
       opacity: 0.8;
+      filter: sepia(1) hue-rotate(90deg) saturate(1.2);
     }
     
     .building.artillery::after {
@@ -266,69 +267,70 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #e74c3c 0%, #c0392b 50%, #e74c3c 100%);
+      background: linear-gradient(90deg, #2e4a35 0%, #1b5e20 50%, #2e4a35 100%);
     }
     
     .building.artillery .building-actions {
-      background: rgba(231, 76, 60, 0.2);
+      background: rgba(46, 74, 53, 0.2);
       border-radius: 4px;
       padding: 5px;
     }
     
     .building.artillery .dropdown-toggle {
-      background: #e74c3c;
-      color: white;
+      background: #2e4a35;
+      color: #c8e6c9;
     }
     
     .building.artillery .dropdown-toggle:hover {
-      background: #c0392b;
+      background: #1b5e20;
     }
     
     .building.artillery input[type="text"],
     .building.artillery input[type="number"],
     .building.artillery select {
-      background: #34495e;
-      border: 1px solid #e74c3c;
-      color: #ecf0f1;
+      background: #e8f5e8;
+      border: 1px solid #2e4a35;
+      color: #1b5e20;
     }
     
     .building.artillery input[type="text"]:focus,
     .building.artillery input[type="number"]:focus,
     .building.artillery select:focus {
-      background: #2c3e50;
-      border-color: #e67e22;
-      box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+      background: #f1f8e9;
+      border-color: #1b5e20;
+      box-shadow: 0 0 0 2px rgba(46, 74, 53, 0.3);
     }
     
     .building.artillery label {
-      color: #bdc3c7;
+      color: #2e7d32;
       font-weight: 600;
     }
     
     .building.artillery div {
-      color: #ecf0f1;
+      color: #1b5e20;
     }
     
     /* Special styling for artillery status indicators */
     .building.artillery .status-display {
-      color: #2ecc71 !important;
-      text-shadow: 0 0 4px rgba(46, 204, 113, 0.5);
+      color: #388e3c !important;
+      text-shadow: 0 0 4px rgba(56, 142, 60, 0.5);
     }
     
     /* Contract + Artillery combination */
     .building.contract.artillery {
-      background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
-      border: 3px solid #d2691e;
-      color: #f5deb3;
+      background: linear-gradient(135deg, #c8e6c9 0%, #dcedc8 100%);
+      border: 3px solid #1b5e20;
+      color: #2e7d32;
     }
     
     .building.contract.artillery::before {
       content: "📄🎯";
       font-size: 20px;
+      filter: sepia(1) hue-rotate(90deg) saturate(1.2);
     }
     
     .building.contract.artillery::after {
-      background: linear-gradient(90deg, #d2691e 0%, #cd853f 50%, #d2691e 100%);
+      background: linear-gradient(90deg, #1b5e20 0%, #2e4a35 50%, #1b5e20 100%);
     }
     
     /* 3-dots dropdown styles */
