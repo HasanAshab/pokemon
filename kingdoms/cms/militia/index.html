@@ -9,12 +9,30 @@
 </head>
 <body>
   <div class="container">
-    <h1 id="kingdomName">Kingdom</h1>
-<div class="bottom-cards">
+    <div class="bottom-cards">
   <div class="info-card" data-target="commanders">Commanders</div>
   <div class="info-card" data-target="barrack">Barrack</div>
   <div class="info-card" data-target="defence">Defence</div>
 </div>
+    <h1 style="text-align: center;">Military Budget</h1>
+    
+    <!-- Military Budget Section -->
+    <div class="budget-section">
+      <div class="budget-summary">
+        <div class="budget-item total">
+          <span class="label">Total:</span>
+          <span class="value" id="totalBudget">$0</span>
+        </div>
+        <div class="budget-item percentage">
+          <span class="label">Percentage of Tax:</span>
+          <span class="value" id="budgetPercentage">0%</span>
+        </div>
+      </div>
+      
+      <div class="budget-breakdown" id="budgetBreakdown">
+        <!-- Budget breakdown will be populated by JavaScript -->
+      </div>
+    </div>
 
   <script type="module" src="script.js"></script>
 </body>

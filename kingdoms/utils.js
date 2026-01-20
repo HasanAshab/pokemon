@@ -1075,11 +1075,11 @@ export function isBeastImage(imageId) {
   return image.type === "beast";
 }
 
-export function getCamps(kingdom) {
+export function getOwnedKingdoms(kingdom, types) {
   const camps = [];
   const kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
   for (const k in kingdoms) {
-    if (kingdoms[k].type === "camp" && kingdoms[k].owner === kingdom.id) 
+    if (types.includes(kingdoms[k].type) && kingdoms[k].owner === kingdom.id) 
       camps.push(kingdoms[k]);
   }
   return camps;
@@ -1095,8 +1095,9 @@ export function getSinlgeMilitaryBudgetReport(kingdom) {
   report["Commanders Salary"] = calcCommandersSalary(kingdom);
 
   const artillariesSize = getArtilleries(kingdom).reduce((acc, build) => acc + calculateSize(build.baseSize, build.currentLevel) * build.quantity, 0);
-  report["Artillery Maintenance"] = calculateLandPrice(artillariesSize, kingdom, "rent", 2) * 2;
+  report["Artillery Maintenance"] = calculateLandPrice(artillariesSize, kingdom, "rent", 2) * 2.5;
 
+  console.log(kingdom);
   
   const hiredBeastResearchers = kingdom.marketplace.find(item => item.itemName === "bRes" && item.actionType === "buy") || { unitPrice: 0, quantity: 0 };
   const beastResearchersSalary = hiredBeastResearchers.unitPrice * (hiredBeastResearchers.buyWholeDemand ? getStorage(kingdom).bRes || 0 : hiredBeastResearchers.quantity);
@@ -1110,17 +1111,21 @@ export function getSinlgeMilitaryBudgetReport(kingdom) {
   return report
 }
 
-export function getMilitaryBudgetReport(kingdom) {
-  // now at  page, Show Kingdoms Military budget. along with the properties returned by  also show Total Budget and its 
+export function getMilitaryBudgetReport(kingdom) {  
+  const kingdomTypeMap = {
+    "Kingdom": "🏰",
+    "Camp": "⛺",
+    "Outpost": "🏕️"
+  }
+  console.log(kingdom.type);
   
   const report = {
-    "Kingdom": getSinlgeMilitaryBudgetReport(kingdom)
+    [kingdomTypeMap[kingdom.type] + " " + kingdom.id]: getSinlgeMilitaryBudgetReport(kingdom)
   }
+  const ownedKingdoms = getOwnedKingdoms(kingdom, ["Camp"]);
 
-  const camps = getCamps(kingdom);
-
-  for (const c of camps) {
-    report[c.id] = getSinlgeMilitaryBudgetReport(c);
+  for (const k of ownedKingdoms) {
+    report[`${kingdomTypeMap[k.type]} ${k.id}`] = getSinlgeMilitaryBudgetReport(k);
   }
   return report
 }
