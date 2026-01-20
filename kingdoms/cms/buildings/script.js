@@ -138,6 +138,24 @@ function getLifespanDisplay(building) {
 function renderBuildings() {
   buildingsContainer.innerHTML = "";
   
+  // Check if there's a copied building and show/hide paste button
+  const copiedBuilding = localStorage.getItem('$copiedKingdomBuilding');
+  const pasteBuildingBtn = document.getElementById('pasteBuildingBtn');
+  
+  if (copiedBuilding && pasteBuildingBtn) {
+    try {
+      const buildingData = JSON.parse(copiedBuilding);
+      pasteBuildingBtn.style.display = 'inline-block';
+      pasteBuildingBtn.textContent = `Paste "${buildingData.name}"`;
+    } catch (e) {
+      // Invalid data, remove it
+      localStorage.removeItem('$copiedKingdomBuilding');
+      pasteBuildingBtn.style.display = 'none';
+    }
+  } else if (pasteBuildingBtn) {
+    pasteBuildingBtn.style.display = 'none';
+  }
+  
   // Filter buildings based on selected maintains item
   const filteredBuildings = kingdoms[name].buildings.filter((building) => {
     if (currentMaintainsFilter === "all") return true;
@@ -689,6 +707,27 @@ function renderBuildings() {
     
     dropdownMenu.appendChild(duplicateOption);
     
+    // Copy option (for cross-kingdom copying)
+    const copyOption = document.createElement("button");
+    copyOption.className = "dropdown-item copy";
+    copyOption.textContent = "Copy";
+    copyOption.onclick = () => {
+      // Create a deep copy of the building for cross-kingdom copying
+      const copiedBuilding = JSON.parse(JSON.stringify(building));
+      
+      // Store in localStorage for cross-kingdom pasting
+      localStorage.setItem('$copiedKingdomBuilding', JSON.stringify(copiedBuilding));
+      
+      // Close dropdown
+      dropdownMenu.classList.remove('show');
+      
+      // Show success message and refresh to show paste button
+      alert(`Building "${building.name}" copied! You can now paste it in any kingdom.`);
+      renderBuildings(); // Refresh to show paste button if needed
+    };
+    
+    dropdownMenu.appendChild(copyOption);
+    
     // Add divider after action buttons (upgrade, repair, duplicate)
     if ((upgradeCost > 0) || (building.brokenQuantity > 0) || true) {
       const divider = document.createElement("div");
@@ -1041,6 +1080,58 @@ document.getElementById("deleteExpiredBtn").onclick = () => {
     kingdoms[name].buildings = kingdoms[name].buildings.filter(b => b.expired !== true);
     saveAndRefresh();
     alert(`Deleted ${expiredBuildings.length} expired buildings.`);
+  }
+};
+
+// Paste building function
+document.getElementById("pasteBuildingBtn").onclick = () => {
+  const copiedBuildingData = localStorage.getItem('$copiedKingdomBuilding');
+  
+  if (!copiedBuildingData) {
+    alert("No building to paste!");
+    return;
+  }
+  
+  try {
+    const copiedBuilding = JSON.parse(copiedBuildingData);
+    
+    // Create a fresh copy for this kingdom
+    const pastedBuilding = JSON.parse(JSON.stringify(copiedBuilding));
+    
+    // Reset some properties for the pasted building
+    pastedBuilding.currentLevel = 1;
+    pastedBuilding.brokenQuantity = 0;
+    pastedBuilding.state = "enabled";
+    delete pastedBuilding.expired;
+    
+    // Ensure unique name in this kingdom
+    let baseName = pastedBuilding.name;
+    let counter = 1;
+    let newName = baseName;
+    
+    while (kingdoms[name].buildings.some(b => b.name === newName)) {
+      newName = `${baseName} (${counter})`;
+      counter++;
+    }
+    
+    pastedBuilding.name = newName;
+    
+    // Add to current kingdom
+    kingdoms[name].buildings.push(pastedBuilding);
+    
+    // Remove from localStorage
+    localStorage.removeItem('$copiedKingdomBuilding');
+    
+    // Save and refresh
+    saveAndRefresh();
+    
+    // Show success message
+    alert(`Building pasted as "${pastedBuilding.name}"!`);
+    
+  } catch (e) {
+    alert("Error pasting building: Invalid data");
+    localStorage.removeItem('$copiedKingdomBuilding');
+    renderBuildings();
   }
 };
 

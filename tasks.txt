@@ -1,8 +1,5 @@
 * Tasks
-
 active military
-copy paste buildings
-
 
 
 manual event countdown

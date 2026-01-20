@@ -444,6 +444,15 @@
       background: #f3e5f5;
     }
     
+    .dropdown-item.copy {
+      color: #17a2b8;
+      font-weight: 500;
+    }
+    
+    .dropdown-item.copy:hover {
+      background: #e1f7fa;
+    }
+    
     .dropdown-item.success {
       color: #28a745;
     }
@@ -582,6 +591,7 @@
       
       <div class="header-controls">
         <button id="addBuildingBtn" class="btn primary-btn">Add New Building</button>
+        <button id="pasteBuildingBtn" class="btn success-btn" style="display: none;">Paste Building</button>
         <button id="deleteDisabledBtn" class="btn danger-btn">Delete All Disabled</button>
         <button id="deleteExpiredBtn" class="btn warning-btn">Delete All Expired</button>
         <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #495057;">
