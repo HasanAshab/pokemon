@@ -170,6 +170,159 @@ section {
     margin-top: 20px;
   }
 }
+
+/* Kage Section Styling */
+#kageSection {
+  border: 3px solid #8b4513;
+  background: linear-gradient(135deg, #f5f5dc 0%, #faf0e6 100%);
+}
+
+.kage-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.add-kage-btn {
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-kage-btn:hover {
+  background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
+  transform: translateY(-1px);
+}
+
+.kage-total-salary {
+  background: linear-gradient(135deg, #deb887 0%, #f4a460 100%);
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 2px solid #8b4513;
+  font-size: 16px;
+  color: #654321;
+}
+
+.kage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.kage-card {
+  background: white;
+  border: 2px solid #8b4513;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+  transition: all 0.3s ease;
+}
+
+.kage-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(139, 69, 19, 0.3);
+}
+
+.kage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #deb887;
+}
+
+.kage-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #8b4513;
+  margin: 0;
+}
+
+.kage-delete-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+
+.kage-delete-btn:hover {
+  background: #c82333;
+}
+
+.kage-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.kage-field label {
+  font-weight: bold;
+  color: #654321;
+  font-size: 14px;
+}
+
+.kage-field input {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.kage-field input:focus {
+  border-color: #8b4513;
+  outline: none;
+  box-shadow: 0 0 5px rgba(139, 69, 19, 0.3);
+}
+
+.kage-salary-display {
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(135deg, #fff8dc 0%, #ffefd5 100%);
+  border: 1px solid #deb887;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  color: #8b4513;
+}
+
+@media (min-width: 768px) {
+  .kage-fields {
+    flex-direction: row;
+    align-items: end;
+    gap: 15px;
+  }
+  
+  .kage-field {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .kage-salary-display {
+    flex: 1;
+    margin-top: 0;
+    margin-left: 15px;
+  }
+}
 #forcesData {
   display: flex;
   justify-content: center;

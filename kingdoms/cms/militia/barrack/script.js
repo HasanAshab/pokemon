@@ -296,7 +296,7 @@ function renderForceSection(type,forceType) {
   container.innerHTML = "";
  
    barrackForce[type].forEach((force, index) => {
-    if (force.isHokage === true) return
+    if (force.isHokage === true || force.isKage === true) return
       
     
     const div = document.createElement("div");
@@ -428,6 +428,9 @@ function renderAllForces(forceType) {
   const totalSalary = Object.keys(barrackForce).reduce((total, type) => {
     return total + calcTypeSalary(barrackForce[type], forceType);
   }, 0);
+
+  // Note: Kage salaries are already included in emergency soldiers calculation
+  // since Kages are stored in the emergency array with isKage flag
 
   const totalSalaryEl = document.getElementById("totalSalaryContainer");
   totalSalaryEl.id = "totalSalaryContainer";
@@ -657,10 +660,173 @@ globalThis.updateHokageSalary = ({currentTarget}) => {
   }
 }
 
+// Kage Management Functions
+function getRomanNumeral(num) {
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+  return romanNumerals[num - 1] || `${num}`;
+}
+
+function getKages() {
+  return kingdoms[name].barrack.soldiers.emergency.filter(soldier => soldier.isKage === true);
+}
+
+function addKage() {
+  const existingKages = getKages();
+  const kageNumber = existingKages.length + 1;
+  const newKage = {
+    id: Date.now(), // Unique identifier
+    name: `Kage ${getRomanNumeral(kageNumber)}`,
+    image: { id: "student", xp: getInitialXp("student") },
+    ivSalaryPercent: 0,
+    quantity: 1,
+    isKage: true
+  };
+  
+  kingdoms[name].barrack.soldiers.emergency.push(newKage);
+  save();
+  renderKages();
+  renderAllForces("soldier");
+}
+
+function removeKage(kageId) {
+  const emergencyArray = kingdoms[name].barrack.soldiers.emergency;
+  const kageIndex = emergencyArray.findIndex(soldier => soldier.isKage === true && soldier.id === kageId);
+  
+  if (kageIndex !== -1) {
+    emergencyArray.splice(kageIndex, 1);
+    
+    // Renumber remaining kages
+    const remainingKages = getKages();
+    remainingKages.forEach((kage, index) => {
+      kage.name = `Kage ${getRomanNumeral(index + 1)}`;
+    });
+    
+    save();
+    renderKages();
+    renderAllForces("soldier");
+  }
+}
+
+function updateKageImage(kageId, imageId) {
+  const kage = kingdoms[name].barrack.soldiers.emergency.find(soldier => soldier.isKage === true && soldier.id === kageId);
+  if (kage) {
+    kage.image.id = imageId;
+    kage.image.xp = getInitialXp(imageId);
+    save();
+    renderKages();
+  }
+}
+
+function updateKageLevel(kageId, level) {
+  const kage = kingdoms[name].barrack.soldiers.emergency.find(soldier => soldier.isKage === true && soldier.id === kageId);
+  if (kage) {
+    kage.image.xp = level * 100;
+    save();
+    renderKages();
+  }
+}
+
+function updateKageSalary(kageId, salaryPercent) {
+  const kage = kingdoms[name].barrack.soldiers.emergency.find(soldier => soldier.isKage === true && soldier.id === kageId);
+  if (kage) {
+    kage.ivSalaryPercent = parseFloat(salaryPercent) || 0;
+    save();
+    renderKages();
+    renderAllForces("soldier");
+  }
+}
+
+function calculateKageActualSalary(kage) {
+  const kingdomPCI = kingdom.pci || 50;
+  const isUnderWar = kingdom.underWar || false;
+  const warMultiplier = isUnderWar ? 1.1136 : 1;
+  
+  const baseSalary = (kingdomPCI * kage.ivSalaryPercent) / 100;
+  const actualSalary = baseSalary * warMultiplier;
+  
+  return { baseSalary, actualSalary, isUnderWar };
+}
+
+function renderKages() {
+  const container = document.getElementById('kageContainer');
+  const kageTotalSalaryEl = document.getElementById('kageTotalSalary');
+  
+  container.innerHTML = '';
+  
+  let totalKageSalary = 0;
+  let totalKageBaseSalary = 0;
+  const isUnderWar = kingdom.underWar || false;
+  
+  const kages = getKages();
+  
+  kages.forEach((kage) => {
+    const { baseSalary, actualSalary } = calculateKageActualSalary(kage);
+    totalKageBaseSalary += baseSalary;
+    totalKageSalary += actualSalary;
+    
+    const kageCard = document.createElement('div');
+    kageCard.className = 'kage-card';
+    
+    kageCard.innerHTML = `
+      <div class="kage-header">
+        <h3 class="kage-title">${kage.name}</h3>
+        <button class="kage-delete-btn" onclick="removeKage(${kage.id})">Delete</button>
+      </div>
+      <div class="kage-fields">
+        <div class="kage-field">
+          <label>Image:</label>
+          <input list="pokemon-data-list" type="text" value="${kage.image.id}" 
+                 onblur="updateKageImage(${kage.id}, this.value)" placeholder="Enter Image">
+        </div>
+        <div class="kage-field">
+          <label>Level:</label>
+          <input type="number" value="${kage.image.xp / 100}" min="1"
+                 onblur="updateKageLevel(${kage.id}, this.value)" placeholder="Level">
+        </div>
+        <div class="kage-field">
+          <label>Salary (% of PCI):</label>
+          <input type="number" value="${kage.ivSalaryPercent}" min="0" step="1"
+                 onblur="updateKageSalary(${kage.id}, this.value)" placeholder="Salary %">
+        </div>
+        <div class="kage-salary-display">
+          <div>Actual Salary: <span class="kage-actual-salary-amount">${
+            isUnderWar ? 
+            `<span style="text-decoration: line-through; color: #666; margin-right: 8px;">${baseSalary.toFixed()}$</span><span style="color: #dc3545; font-weight: bold;">${actualSalary.toFixed()}$ ⚔️</span>` :
+            `${actualSalary.toFixed()}$`
+          }</span></div>
+        </div>
+      </div>
+    `;
+    
+    container.appendChild(kageCard);
+  });
+  
+  // Update total kage salary display
+  if (isUnderWar && totalKageSalary > 0) {
+    kageTotalSalaryEl.innerHTML = `
+      <span style="text-decoration: line-through; color: #666; margin-right: 8px;">${totalKageBaseSalary.toFixed()}$</span>
+      <span style="color: #dc3545; font-weight: bold;">${totalKageSalary.toFixed()}$ ⚔️</span>
+    `;
+  } else {
+    kageTotalSalaryEl.textContent = `${totalKageSalary.toFixed()}$`;
+  }
+}
+
+// Make functions globally available
+globalThis.addKage = addKage;
+globalThis.removeKage = removeKage;
+globalThis.updateKageImage = updateKageImage;
+globalThis.updateKageLevel = updateKageLevel;
+globalThis.updateKageSalary = updateKageSalary;
+
 renderAllForces("soldier");
 loadPokemonsDatalist("pokemon-data-list");
 loadHokageFields();
+renderKages(); // Initialize Kage rendering
 showImbalanceData();
+
+// Add event listener for Add Kage button
+document.getElementById("addKageBtn").onclick = addKage;
 globalThis.redirectToAmmoPage = () => {
   // Import navigation utility dynamically
   import('../../../../assets/js/utils/navigation.js').then(({ Navigation }) => {

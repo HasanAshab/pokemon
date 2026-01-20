@@ -711,7 +711,7 @@ export function getForceImbalanceRate(kingdom, forceType, type, totalExtraStuden
         const extraStudent = q - senseiQ * 3;
 
         if (senseiQ > 0 && extraStudent !== 0) {
-          imbalanceDataList.push({ extraStudent, student:{ rankId, q}, sensei:{ rankId: senseiRankId, q: senseiQ} });
+          imbalanceDataList.push({ extraStudent, student:{ rankId, q }, sensei:{ rankId: senseiRankId, q: senseiQ} });
         }
       }
     });
