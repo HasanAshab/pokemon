@@ -211,8 +211,7 @@ shiftsDataWrapper.innerHTML = "";
     for (const rankId of ranksIdList) {
       const q = forceList.reduce(
         (sum, s) => { 
-          
-         return sum + (s.image.id === rankId && !isBeastImage(s.image.id) && !s.isHokage ? s.quantity : 0)
+         return sum + (s.image.id === rankId && !isBeastImage(s.image.id) && !s.isHokage && !s.isKage ? s.quantity : 0)
         },
         0
       );

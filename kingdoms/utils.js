@@ -696,9 +696,11 @@ export function getForceImbalanceRate(kingdom, forceType, type, totalExtraStuden
     const imbalanceDataList = [];
 
     for (const rankId of ranksIdList) {
-      const q = forceList.reduce(
-        (sum, s) => sum + (s.image.id === rankId ? s.quantity : 0),
-        0,
+        const q = forceList.reduce(
+        (sum, s) => {           
+         return sum + (s.image.id === rankId && !isBeastImage(s.image.id) && !s.isHokage && !s.isKage ? s.quantity : 0)
+        },
+        0
       );
       quantityMap.set(rankId, q);
     }
