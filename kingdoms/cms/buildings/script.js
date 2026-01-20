@@ -150,7 +150,21 @@ function renderBuildings() {
   filteredBuildings.forEach((building, index) => {
     
     const div = document.createElement("div");
-    div.className = building.baseSize === 0 ? "building contract" : "building";
+    
+    // Determine building classes
+    let classes = ["building"];
+    
+    // Add contract class for buildings with baseSize = 0
+    if (building.baseSize === 0) {
+      classes.push("contract");
+    }
+    
+    // Add artillery class for buildings with defence > 0
+    if (building.baseMaintains && building.baseMaintains.defence > 0) {
+      classes.push("artillery");
+    }
+    
+    div.className = classes.join(" ");
     div.id = building.name;
     
     // Add enabled/disabled state visual indicator

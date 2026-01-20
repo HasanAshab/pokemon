@@ -1,8 +1,13 @@
 * Tasks
+
+active military
+copy paste buildings
+
+
+
 manual event countdown
 revive with event
-copy paste buildings
-arena
+war attack wave soldiers count
 
 break artilary, remove beasts
 auto generate military
@@ -13,7 +18,6 @@ offline summon
 bug: beast on emergency reduces imbalance
 
 *ovi
-war attack wave soldiers count
 
 
 * bug
