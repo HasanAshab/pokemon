@@ -245,23 +245,28 @@ function renderWaves() {
       const soldierDiv = document.createElement("div");
       soldierDiv.className = "soldier-entry";
 
-      const percentageInput = document.createElement("input");
-      percentageInput.type = "number";
-      percentageInput.min = "0";
-      percentageInput.max = "100";
-      percentageInput.value = soldier.percentage || 0;
-      percentageInput.style.width = "80px";
-      const percentageLabel = document.createElement("span");
-      percentageLabel.textContent = `${percentageInput.value}% (0 soldiers)`;
+      // Get total available soldiers for this type
+      const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
+        s => s.image.id === soldier.image
+      ).quantity;
+      
+      // Calculate initial quantity from percentage
+      const initialQuantity = Math.ceil(total * ((soldier.percentage || 0) / 100));
 
-      percentageInput.oninput = () => {
-        const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(
-          s => s.image.id === soldier.image
-        ).quantity;
-        const percentage = Math.max(0, Math.min(100, parseInt(percentageInput.value) || 0));
-        percentageInput.value = percentage; // Ensure value stays within bounds
-        const quantity = Math.ceil(total * (percentage / 100));
-        percentageLabel.textContent = `${percentage}% (${quantity} soldiers)`;
+      const quantityInput = document.createElement("input");
+      quantityInput.type = "number";
+      quantityInput.min = "0";
+      quantityInput.max = total.toString();
+      quantityInput.value = initialQuantity;
+      quantityInput.style.width = "80px";
+      
+      const quantityLabel = document.createElement("span");
+      quantityLabel.textContent = ` / ${total} soldiers`;
+
+      quantityInput.oninput = () => {
+        const quantity = Math.max(0, Math.min(total, parseInt(quantityInput.value) || 0));
+        quantityInput.value = quantity; // Ensure value stays within bounds
+        quantityLabel.textContent = ` / ${total} soldiers`;
       };
 
       const removeBtn = document.createElement("button");
@@ -271,8 +276,8 @@ function renderWaves() {
 
       soldierDiv.innerHTML = `<span>${soldier.image}</span>`;
       soldierDiv.appendChild(document.createElement("br"));
-      soldierDiv.appendChild(percentageInput);
-      soldierDiv.appendChild(percentageLabel);
+      soldierDiv.appendChild(quantityInput);
+      soldierDiv.appendChild(quantityLabel);
       soldierDiv.appendChild(document.createElement("br"));
       soldierDiv.appendChild(removeBtn);
 
@@ -306,7 +311,12 @@ function renderWaves() {
       const soldierEntries = soldiersDiv.querySelectorAll(".soldier-entry");
       soldierEntries.forEach((entry) => {
         const image = entry.querySelector("span").textContent;
-        const percentage = parseInt(entry.querySelector('input[type="number"]').value) || 0;        
+        const quantity = parseInt(entry.querySelector('input[type="number"]').value) || 0;
+        
+        // Convert quantity back to percentage for storage compatibility
+        const total = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(s => s.image.id === image).quantity;
+        const percentage = total > 0 ? Math.round((quantity / total) * 100) : 0;
+        
         const items = kingdoms[attackerSelect.value].barrack.soldiers.emergency.find(s => s.image.id === image).image.items || []
         const abilities = []
 
