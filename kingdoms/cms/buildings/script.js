@@ -36,7 +36,8 @@ function createEvent(title, years, months) {
     title: title,
     remainingMonths: totalMonths,
     isSecret: false,
-    isHappened: false
+    isHappened: false,
+    eventType: 'custom'
   };
   
   kingdoms[name].events.future.push(event);

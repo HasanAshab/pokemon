@@ -290,7 +290,8 @@ function pushBeastCounterEvents(kingdom) {
       title: title,
       remainingMonths: 2,
       isSecret: false,
-      isHappened: false
+      isHappened: false,
+      eventType: 'beast'
     };
     kingdom.events.future.push(event);
   }

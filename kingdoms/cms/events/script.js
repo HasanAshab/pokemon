@@ -11,6 +11,20 @@ let kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 if (!kingdoms[name]) kingdoms[name] = {};
 if (!kingdoms[name].events) kingdoms[name].events = { future: [], past: [] };
 
+
+function getIconForEvent(event) {
+  if (event.secret) return '🔒';
+  if (!event.hasCountdown) return '⚠️'
+  const mapping = {
+    'construction': '🏗️',
+    'upgrade': '⏫',
+    'disaster': '🌪️',
+    'beast': '👹',
+    'heal': '❤️‍🩹',
+  }
+  return mapping[event.type] || '';
+}
+
 // Migrate existing events to include hasCountdown property
 function migrateEvents() {
   let needsSave = false;
@@ -115,7 +129,8 @@ function addEvent() {
     remainingMonths: totalMonths,
     hasCountdown,
     isSecret,
-    isHappened: false
+    isHappened: false,
+    eventType: 'custom'
   };
   
   kingdoms[name].events.future.push(event);
