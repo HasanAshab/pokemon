@@ -227,6 +227,28 @@ function deleteAllPastEvents() {
   }
 }
 
+function reduceAllEventsByOneMonth() {
+  const futureEventsWithCountdown = kingdoms[name].events.future.filter(event => event.hasCountdown);
+  
+  if (futureEventsWithCountdown.length === 0) {
+    alert('No future events with countdown to reduce.');
+    return;
+  }
+  
+  const count = futureEventsWithCountdown.length;
+  if (confirm(`Reduce ${count} future events by 1 month? This will advance time for all events.`)) {
+    kingdoms[name].events.future.forEach(event => {
+      if (event.hasCountdown && event.remainingMonths > 0) {
+        event.remainingMonths = Math.max(0, event.remainingMonths - 1);
+      }
+    });
+    
+    saveKingdoms();
+    renderEvents();
+    alert(`Reduced ${count} events by 1 month.`);
+  }
+}
+
 function markAllHappeningEventsAsHappened() {
   const happeningEvents = kingdoms[name].events.future.filter(event => 
     event.hasCountdown && event.remainingMonths <= 0
@@ -320,39 +342,95 @@ function renderFutureEvents() {
     return a.remainingMonths - b.remainingMonths;
   });
   
+  // Group events by remaining months
+  const eventGroups = new Map();
+  
   sortedEvents.forEach(event => {
-    const isHappening = event.hasCountdown && event.remainingMonths <= 0;
-    const showCountdown = event.hasCountdown && (!event.isSecret || event.remainingMonths <= 0);
+    let groupKey;
+    let groupLabel;
+    let groupClass = '';
     
-    const eventDiv = document.createElement('div');
-    eventDiv.className = `event-item ${isHappening ? 'happening' : ''} ${event.isSecret ? 'secret' : ''}`;
-    
-    const displayTitle = event.title;
-    let countdownHtml = '';
-    
-    if (event.hasCountdown && showCountdown) {
-      const countdownText = getCountdownDisplay(event.remainingMonths);
-      countdownHtml = `<div class="event-countdown ${isHappening ? 'happening' : ''}">${countdownText}</div>`;
-    } else if (!event.hasCountdown) {
-      countdownHtml = `<div class="event-countdown">Reminder</div>`;
+    if (!event.hasCountdown) {
+      groupKey = 'reminders';
+      groupLabel = 'Reminders';
+      groupClass = 'reminder';
+    } else if (event.remainingMonths <= 0) {
+      groupKey = 'happening';
+      groupLabel = 'Happening Now!';
+      groupClass = 'happening';
+    } else {
+      groupKey = event.remainingMonths;
+      const { years, months } = monthsToYearsMonths(event.remainingMonths);
+      if (years > 0 && months > 0) {
+        groupLabel = `In ${years}y ${months}m`;
+      } else if (years > 0) {
+        groupLabel = `In ${years}y`;
+      } else {
+        groupLabel = `In ${months}m`;
+      }
     }
     
-    eventDiv.innerHTML = `
-      <div class="event-header">
-        <div class="event-title ${event.isSecret ? 'event-description' : ''}">${displayTitle}</div>
-        ${countdownHtml}
-      </div>
-      <div class="event-controls">
-        <label>
-          <input type="checkbox" ${event.isSecret ? 'checked' : ''} onchange="toggleEventSecret(${event.id}, true)" />
-          Secret
-        </label>
-        <button class="btn success-btn" onclick="markEventHappened(${event.id})">Mark as Happened</button>
-        <button class="btn danger-btn" onclick="deleteEvent(${event.id}, true)">Delete</button>
-      </div>
-    `;
+    if (!eventGroups.has(groupKey)) {
+      eventGroups.set(groupKey, {
+        label: groupLabel,
+        class: groupClass,
+        events: []
+      });
+    }
     
-    container.appendChild(eventDiv);
+    eventGroups.get(groupKey).events.push(event);
+  });
+  
+  // Render each group
+  eventGroups.forEach((group, groupKey) => {
+    const monthGroupDiv = document.createElement('div');
+    monthGroupDiv.className = 'month-group';
+    
+    const headerDiv = document.createElement('div');
+    headerDiv.className = `month-group-header ${group.class}`;
+    headerDiv.textContent = `${group.label} (${group.events.length})`;
+    
+    const eventsDiv = document.createElement('div');
+    eventsDiv.className = 'month-group-events';
+    
+    group.events.forEach(event => {
+      const isHappening = event.hasCountdown && event.remainingMonths <= 0;
+      const showCountdown = event.hasCountdown && (!event.isSecret || event.remainingMonths <= 0);
+      
+      const eventDiv = document.createElement('div');
+      eventDiv.className = `event-item ${isHappening ? 'happening' : ''} ${event.isSecret ? 'secret' : ''}`;
+      
+      const displayTitle = event.title;
+      let countdownHtml = '';
+      
+      if (event.hasCountdown && showCountdown) {
+        const countdownText = getCountdownDisplay(event.remainingMonths);
+        countdownHtml = `<div class="event-countdown ${isHappening ? 'happening' : ''}">${countdownText}</div>`;
+      } else if (!event.hasCountdown) {
+        countdownHtml = `<div class="event-countdown">Reminder</div>`;
+      }
+      
+      eventDiv.innerHTML = `
+        <div class="event-header">
+          <div class="event-title ${event.isSecret ? 'event-description' : ''}">${displayTitle}</div>
+          ${countdownHtml}
+        </div>
+        <div class="event-controls">
+          <label>
+            <input type="checkbox" ${event.isSecret ? 'checked' : ''} onchange="toggleEventSecret(${event.id}, true)" />
+            Secret
+          </label>
+          <button class="btn success-btn" onclick="markEventHappened(${event.id})">Mark as Happened</button>
+          <button class="btn danger-btn" onclick="deleteEvent(${event.id}, true)">Delete</button>
+        </div>
+      `;
+      
+      eventsDiv.appendChild(eventDiv);
+    });
+    
+    monthGroupDiv.appendChild(headerDiv);
+    monthGroupDiv.appendChild(eventsDiv);
+    container.appendChild(monthGroupDiv);
   });
 }
 
@@ -456,6 +534,7 @@ document.getElementById('togglePastEventsBtn').addEventListener('click', toggleP
 document.getElementById('hasCountdown').addEventListener('change', toggleCountdownInputs);
 
 // Bulk operation event listeners
+document.getElementById('reduceAllEventsBtn').addEventListener('click', reduceAllEventsByOneMonth);
 document.getElementById('deleteAllPastBtn').addEventListener('click', deleteAllPastEvents);
 document.getElementById('markAllHappeningBtn').addEventListener('click', markAllHappeningEventsAsHappened);
 document.getElementById('deleteAllFutureBtn').addEventListener('click', deleteAllFutureEvents);

@@ -164,6 +164,44 @@
       cursor: not-allowed;
     }
     
+    .month-group {
+      margin-bottom: 20px;
+    }
+    
+    .month-group-header {
+      background: #007bff;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px 6px 0 0;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+    
+    .month-group-header.happening {
+      background: #dc3545;
+    }
+    
+    .month-group-header.reminder {
+      background: #6c757d;
+    }
+    
+    .month-group-events {
+      border: 1px solid #dee2e6;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 10px;
+      background: #f8f9fa;
+    }
+    
+    .month-group-events .event-item {
+      margin-bottom: 10px;
+    }
+    
+    .month-group-events .event-item:last-child {
+      margin-bottom: 0;
+    }
+    
     @media (max-width: 768px) {
       .event-form {
         flex-direction: column;
@@ -219,6 +257,7 @@
       <div class="events-section">
         <h3>Bulk Operations</h3>
         <div class="event-form">
+          <button id="reduceAllEventsBtn" class="btn primary-btn">Reduce All Events by 1 Month</button>
           <button id="deleteAllPastBtn" class="btn danger-btn">Delete All Past Events</button>
           <button id="markAllHappeningBtn" class="btn warning-btn">Mark All Happening Events as Happened</button>
           <button id="deleteAllFutureBtn" class="btn danger-btn">Delete All Future Events</button>
