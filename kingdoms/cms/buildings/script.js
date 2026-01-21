@@ -70,12 +70,18 @@ function confirmEventModal() {
     return;
   }
   
-  if (createEvent(currentEventTitle, years, months)) {
-    closeEventModal();
-    // No callback execution needed - events are just for tracking
+  if (currentEventCallback) {
+    currentEventCallback(years, months);
   } else {
-    alert('Failed to create event');
+    // Fallback for simple event creation
+    if (createEvent(currentEventTitle, years, months)) {
+      alert('Event created successfully');
+    } else {
+      alert('Failed to create event');
+    }
   }
+  
+  closeEventModal();
 }
 
 // Make modal functions globally available
@@ -246,12 +252,28 @@ function renderBuildings() {
     statusLabel.textContent = "Status";
     
     const statusDisplay = document.createElement("div");
-    const statusText = building.state === "disabled" ? 
-      (building.expired ? "Expired" : "Disabled") : "Enabled";
+    let statusText = "Enabled";
+    let statusColor = "#44ff44";
+    
+    if (building.state === "disabled") {
+      if (building.expired) {
+        statusText = "Expired";
+        statusColor = "#ff8800";
+      } else if (building.constructionInProgress) {
+        statusText = "Under Construction";
+        statusColor = "#0066cc";
+      } else if (building.upgradeInProgress) {
+        statusText = `Upgrading to Level ${building.targetLevel}`;
+        statusColor = "#9966cc";
+      } else {
+        statusText = "Disabled";
+        statusColor = "#ff4444";
+      }
+    }
+    
     statusDisplay.textContent = statusText;
     statusDisplay.style.fontWeight = "bold";
-    statusDisplay.style.color = building.state === "disabled" ? 
-      (building.expired ? "#ff8800" : "#ff4444") : "#44ff44";
+    statusDisplay.style.color = statusColor;
 
     // Lifespan display and controls (only show for non-permanent buildings)
     const lifespanLabel = document.createElement("label");
@@ -481,19 +503,34 @@ function renderBuildings() {
       const storage = kingdoms[name].storage;
       if ((storage.coins || 0) >= upgradeCost) {
         // Show event modal for upgrade
-        const eventTitle = `${building.name} Upgrade Complete!`;
+        const eventTitle = `${building.name} Upgrade Complete`;
         showEventModal(
           "Set Upgrade Time",
           `How long will it take to upgrade ${building.name}?`,
-          null // No callback needed
+          (years, months) => {
+            // Take payment and disable building immediately
+            storage.coins -= upgradeCost;
+            building.state = "disabled";
+            building.upgradeInProgress = true;
+            building.targetLevel = building.currentLevel + 1;
+            
+            // Create event with building reference
+            const totalMonths = (years * 12) + months;
+            const event = {
+              id: Date.now(),
+              title: eventTitle,
+              remainingMonths: totalMonths,
+              hasCountdown: true,
+              isSecret: false,
+              isHappened: false,
+              buildingId: building.name,
+              eventType: 'upgrade'
+            };
+            kingdoms[name].events.future.push(event);
+            saveAndRefresh();
+            alert(`Payment of ${upgradeCost.toLocaleString()}$ taken. Building disabled during upgrade.`);
+          }
         );
-        // Update the current event title for the modal
-        currentEventTitle = eventTitle;
-        
-        // Perform upgrade immediately
-        storage.coins -= upgradeCost;
-        building.currentLevel++;
-        saveAndRefresh();
       } else {
         alert("Not enough coins!");
       }
@@ -556,12 +593,29 @@ function renderBuildings() {
 
     // Toggle Enable/Disable Button
     const toggleStatusBtn = document.createElement("button");
-    toggleStatusBtn.className = building.state === "disabled" ? "btn success-btn" : "btn warning-btn";
-    toggleStatusBtn.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    
+    // Determine if building can be toggled
+    const canToggle = !(building.constructionInProgress || building.upgradeInProgress);
+    
+    if (canToggle) {
+      toggleStatusBtn.className = building.state === "disabled" ? "btn success-btn" : "btn warning-btn";
+      toggleStatusBtn.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    } else {
+      toggleStatusBtn.className = "btn secondary-btn";
+      toggleStatusBtn.disabled = true;
+      toggleStatusBtn.style.opacity = "0.5";
+      if (building.constructionInProgress) {
+        toggleStatusBtn.textContent = "Under Construction";
+      } else if (building.upgradeInProgress) {
+        toggleStatusBtn.textContent = "Upgrading";
+      }
+    }
     
     toggleStatusBtn.onclick = () => {
-      building.state = building.state === "disabled" ? "enabled" : "disabled";
-      saveAndRefresh();
+      if (canToggle) {
+        building.state = building.state === "disabled" ? "enabled" : "disabled";
+        saveAndRefresh();
+      }
     };
 
     const itemActions = document.createElement("div");
@@ -598,19 +652,35 @@ function renderBuildings() {
         const storage = kingdoms[name].storage;
         if ((storage.coins || 0) >= upgradeCost) {
           // Show event modal for upgrade
-          const eventTitle = `${building.name} Upgrade Complete!`;
+          const eventTitle = `${building.name} Upgrade Complete`;
           showEventModal(
             "Set Upgrade Time",
             `How long will it take to upgrade ${building.name}?`,
-            null // No callback needed
+            (years, months) => {
+              // Take payment and disable building immediately
+              storage.coins -= upgradeCost;
+              building.state = "disabled";
+              building.upgradeInProgress = true;
+              building.targetLevel = building.currentLevel + 1;
+              
+              // Create event with building reference
+              const totalMonths = (years * 12) + months;
+              const event = {
+                id: Date.now(),
+                title: eventTitle,
+                remainingMonths: totalMonths,
+                hasCountdown: true,
+                isSecret: false,
+                isHappened: false,
+                buildingId: building.name,
+                eventType: 'upgrade'
+              };
+              
+              kingdoms[name].events.future.push(event);
+              saveAndRefresh();
+              alert(`Payment of ${upgradeCost.toLocaleString()}$ taken. Building disabled during upgrade.`);
+            }
           );
-          // Update the current event title for the modal
-          currentEventTitle = eventTitle;
-          
-          // Perform upgrade immediately
-          storage.coins -= upgradeCost;
-          building.currentLevel++;
-          saveAndRefresh();
         } else {
           alert("Not enough coins!");
         }
@@ -841,11 +911,29 @@ function renderBuildings() {
     
     // Toggle Enable/Disable option
     const toggleOption = document.createElement("button");
-    toggleOption.className = building.state === "disabled" ? "dropdown-item success" : "dropdown-item warning";
-    toggleOption.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    
+    // Determine if building can be toggled
+    const canToggleDropdown = !(building.constructionInProgress || building.upgradeInProgress);
+    
+    if (canToggleDropdown) {
+      toggleOption.className = building.state === "disabled" ? "dropdown-item success" : "dropdown-item warning";
+      toggleOption.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    } else {
+      toggleOption.className = "dropdown-item";
+      toggleOption.disabled = true;
+      toggleOption.style.opacity = "0.5";
+      if (building.constructionInProgress) {
+        toggleOption.textContent = "Under Construction";
+      } else if (building.upgradeInProgress) {
+        toggleOption.textContent = "Upgrading";
+      }
+    }
+    
     toggleOption.onclick = () => {
-      building.state = building.state === "disabled" ? "enabled" : "disabled";
-      saveAndRefresh();
+      if (canToggleDropdown) {
+        building.state = building.state === "disabled" ? "enabled" : "disabled";
+        saveAndRefresh();
+      }
       dropdownMenu.classList.remove('show');
     };
     
@@ -1246,20 +1334,80 @@ function payForConstruction() {
     return;
   }
   
-  if (confirm(`Pay ${totalCost.toLocaleString()} coins for construction?`)) {
-    // Deduct cost from kingdom storage
-    if (!kingdom.storage) kingdom.storage = {};
-    kingdom.storage.coins = (kingdom.storage.coins || 0) - totalCost;
-    
-    // Save changes
-    localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
-    
-    // Clear current cost and hide pay button
-    window.currentConstructionCost = null;
-    document.getElementById('payButtonContainer').style.display = 'none';
-    
-    alert(`Payment successful! ${totalCost.toLocaleString()} coins deducted. Remaining balance: ${kingdom.storage.coins.toLocaleString()} coins.`);
+  // Get construction parameters
+  const size = parseInt(document.getElementById('sizeInput').value) || 10;
+  const floor = parseInt(document.getElementById('floorInput').value) || 1;
+  const durability = parseInt(document.getElementById('durabilityInput').value) || 1;
+  const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
+  
+  // Prompt for building name
+  const buildingName = prompt('Enter building name:');
+  if (!buildingName || !buildingName.trim()) {
+    alert('Building name is required');
+    return;
   }
+  
+  // Show event modal for construction time
+  showEventModal(
+    "Set Construction Time",
+    `How long will it take to construct ${buildingName}?`,
+    (years, months) => {
+      // Deduct cost from kingdom storage
+      if (!kingdom.storage) kingdom.storage = {};
+      kingdom.storage.coins = (kingdom.storage.coins || 0) - totalCost;
+      
+      // Create new building (disabled)
+      const newBuilding = {
+        id: Date.now(),
+        name: buildingName.trim(),
+        baseSize: size,
+        currentLevel: 1,
+        quantity: quantity,
+        brokenQuantity: 0,
+        basePrice: Math.round(totalCost / quantity), // Approximate base price
+        baseMaintains: {},
+        produces: {},
+        consumes: {},
+        property: "govt",
+        ownedBy: "",
+        state: "disabled", // Start disabled
+        constructionInProgress: true,
+        durability: durability,
+        floor: floor
+      };
+      
+      // Add building to kingdom
+      if (!kingdom.buildings) kingdom.buildings = [];
+      kingdom.buildings.push(newBuilding);
+      
+      // Create construction completion event
+      const totalMonths = (years * 12) + months;
+      const event = {
+        id: Date.now() + 1, // Ensure unique ID
+        title: `${buildingName} Construction Complete`,
+        remainingMonths: totalMonths,
+        hasCountdown: true,
+        isSecret: false,
+        isHappened: false,
+        buildingId: newBuilding.name,
+        eventType: 'construction'
+      };
+      
+      kingdom.events.future.push(event);
+      
+      // Save changes
+      localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+      
+      // Clear current cost and hide pay button
+      window.currentConstructionCost = null;
+      document.getElementById('payButtonContainer').style.display = 'none';
+      
+      // Refresh buildings display
+      renderBuildings();
+      
+      alert(`Payment successful! ${totalCost.toLocaleString()} coins deducted. Building created but disabled during construction. Remaining balance: ${kingdom.storage.coins.toLocaleString()} coins.`);
+    }
+  );
 }
 
 // Make payForConstruction globally available

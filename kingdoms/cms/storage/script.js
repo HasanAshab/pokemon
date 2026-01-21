@@ -197,10 +197,7 @@ addItemBtn.onclick = () => {
 const newMonthBtn = document.getElementById("newMonthBtn");
 newMonthBtn.onclick = () => {
   const netProd = calcNetProd(kingdoms[name]);
-  console.log(netProd);
-  console.log(kingdoms[name].storage.chakraOil);
   kingdoms[name].storage = sumObj(kingdoms[name].storage, netProd)
-  console.log(kingdoms[name].storage.chakraOil);
 
   const newDensity = (getPopulation(kingdoms[name]) + getPopulationGrowth(kingdoms[name])) / kingdoms[name].landArea
   kingdoms[name].density = newDensity 

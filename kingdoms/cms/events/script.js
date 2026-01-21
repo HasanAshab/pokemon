@@ -160,8 +160,38 @@ function markEventHappened(eventId) {
   if (eventIndex !== -1) {
     const event = kingdoms[name].events.future.splice(eventIndex, 1)[0];
     event.isHappened = true;
-    kingdoms[name].events.past.push(event);
     
+    
+    // Handle building-related events
+    if (event.buildingId && event.eventType) {
+      const building = kingdoms[name].buildings?.find(b => b.name === event.buildingId);
+      console.log(building);
+      
+      if (building) {
+        if (event.eventType === 'upgrade') {
+          // Complete the upgrade
+          if (building.upgradeInProgress && building.targetLevel) {
+            building.currentLevel = building.targetLevel;
+            delete building.upgradeInProgress;
+            delete building.targetLevel;
+          }
+          building.state = "enabled";
+          alert(`${building.name} upgrade completed! Building re-enabled.`);
+        } else if (event.eventType === 'construction') {
+          // Complete the construction
+          if (building.constructionInProgress) {
+            delete building.constructionInProgress;
+          }
+          building.state = "enabled";
+          alert(`${building.name} construction completed! Building is now operational.`);
+        }
+        
+        // Save the updated building data
+        localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
+      }
+    }
+    
+    kingdoms[name].events.past.push(event);
     saveKingdoms();
     renderEvents();
   }
@@ -209,6 +239,31 @@ function markAllHappeningEventsAsHappened() {
   
   const count = happeningEvents.length;
   if (confirm(`Are you sure you want to mark all ${count} happening events as happened?`)) {
+    // Process building events first
+    happeningEvents.forEach(event => {
+      if (event.buildingId && event.eventType) {
+        const building = kingdoms[name].buildings?.find(b => b.name === event.buildingId);
+        
+        if (building) {
+          if (event.eventType === 'upgrade') {
+            // Complete the upgrade
+            if (building.upgradeInProgress && building.targetLevel) {
+              building.currentLevel = building.targetLevel;
+              delete building.upgradeInProgress;
+              delete building.targetLevel;
+            }
+            building.state = "enabled";
+          } else if (event.eventType === 'construction') {
+            // Complete the construction
+            if (building.constructionInProgress) {
+              delete building.constructionInProgress;
+            }
+            building.state = "enabled";
+          }
+        }
+      }
+    });
+    
     // Move happening events from future to past
     kingdoms[name].events.future = kingdoms[name].events.future.filter(event => {
       if (event.hasCountdown && event.remainingMonths <= 0) {
@@ -221,7 +276,13 @@ function markAllHappeningEventsAsHappened() {
     
     saveKingdoms();
     renderEvents();
-    alert(`Marked ${count} happening events as happened.`);
+    
+    const buildingEventsCount = happeningEvents.filter(e => e.buildingId && e.eventType).length;
+    if (buildingEventsCount > 0) {
+      alert(`Marked ${count} happening events as happened. ${buildingEventsCount} buildings have been completed and re-enabled.`);
+    } else {
+      alert(`Marked ${count} happening events as happened.`);
+    }
   }
 }
 
