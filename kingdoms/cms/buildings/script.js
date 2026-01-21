@@ -623,15 +623,12 @@ function renderBuildings() {
             delete building.upgradeInProgress;
             delete building.targetLevel;
           } else if (building.constructionInProgress) {
-            // For construction, we need to calculate the original cost and remove the building
-            // Since we don't store the original cost, we'll estimate it
+            // For construction of existing buildings, refund the basePrice * quantity
             refundAmount = building.basePrice * building.quantity;
             
-            // Remove the building entirely
-            const buildingIndex = kingdoms[name].buildings.findIndex(b => b.name === building.name);
-            if (buildingIndex !== -1) {
-              kingdoms[name].buildings.splice(buildingIndex, 1);
-            }
+            // Reset building state (don't remove existing buildings)
+            building.state = "enabled";
+            delete building.constructionInProgress;
           }
           
           // Remove the event
@@ -873,15 +870,12 @@ function renderBuildings() {
             delete building.upgradeInProgress;
             delete building.targetLevel;
           } else if (building.constructionInProgress) {
-            // For construction, we need to calculate the original cost and remove the building
-            // Since we don't store the original cost, we'll estimate it
+            // For construction of existing buildings, refund the basePrice * quantity
             refundAmount = building.basePrice * building.quantity;
             
-            // Remove the building entirely
-            const buildingIndex = kingdoms[name].buildings.findIndex(b => b.name === building.name);
-            if (buildingIndex !== -1) {
-              kingdoms[name].buildings.splice(buildingIndex, 1);
-            }
+            // Reset building state (don't remove existing buildings)
+            building.state = "enabled";
+            delete building.constructionInProgress;
           }
           
           // Remove the event
@@ -948,14 +942,40 @@ function renderBuildings() {
         
         // Ask if construction is required (skip for contracts with baseSize 0)
         if (building.baseSize > 0 && confirm("Does it require construction?")) {
-          const eventTitle = `${buildingName} Construction Complete!`;
-          showEventModal(
-            "Set Construction Time",
-            `How long will it take to construct ${buildingName}?`,
-            null // No callback needed
-          );
-          // Update the current event title for the modal
-          currentEventTitle = eventTitle;
+          const constructionCost = building.basePrice * building.quantity;
+          const storage = kingdoms[name].storage;
+          
+          if ((storage.coins || 0) >= constructionCost) {
+            const eventTitle = `${buildingName} Construction Complete`;
+            showEventModal(
+              "Set Construction Time",
+              `How long will it take to construct ${buildingName}?`,
+              (years, months) => {
+                // Take payment and disable building immediately
+                storage.coins -= constructionCost;
+                building.state = "disabled";
+                building.constructionInProgress = true;
+                
+                // Create event with building reference
+                const totalMonths = (years * 12) + months;
+                const event = {
+                  id: Date.now(),
+                  title: eventTitle,
+                  remainingMonths: totalMonths,
+                  hasCountdown: true,
+                  isSecret: false,
+                  isHappened: false,
+                  buildingId: building.name,
+                  eventType: 'construction'
+                };
+                kingdoms[name].events.future.push(event);
+                saveAndRefresh();
+                alert(`Payment of ${constructionCost.toLocaleString()}$ taken. Building disabled during construction.`);
+              }
+            );
+          } else {
+            alert("Not enough coins for construction!");
+          }
         }
         
         function saveBuildingChanges() {
