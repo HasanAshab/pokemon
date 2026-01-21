@@ -744,6 +744,7 @@ startWarBtn.onclick = () => {
           handleWoundedSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
           resolve(war)
           btn.disabled = true
+          localStorage.setItem('kingdoms', JSON.stringify(kingdoms))
         }
 
         globalThis.retryWar = (btn) => {

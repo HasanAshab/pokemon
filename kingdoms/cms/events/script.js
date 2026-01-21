@@ -205,6 +205,12 @@ function markEventHappened(eventId) {
         localStorage.setItem("kingdoms", JSON.stringify(kingdoms));
       }
     }
+
+    if (event.eventType === "heal") {
+      event.meta.units.forEach(unit => {        
+        kingdoms[name].barrack.soldiers[event.meta.shift].find(s => s.image.id === unit.imageId).quantity += unit.quantity;
+      })
+    }
     
     kingdoms[name].events.past.push(event);
     saveKingdoms();

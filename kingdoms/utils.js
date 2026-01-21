@@ -673,41 +673,32 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
   let totalWounds = 0;
   let healData = [];
 
-  // collect wounds
-  for (const s of kingdom.barrack.soldiers[shift]) {
-    if (!soldierStack.has(s.image.id)) continue;
+  // remove wounded from barrack & collect heal data
+  kingdom.barrack.soldiers[shift] =
+    kingdom.barrack.soldiers[shift].map((s) => {
+      if (!soldierStack.has(s.image.id)) return s;
 
-    let [image, requestedQty] = soldierStack.get(s.image.id);
-    let qty = Math.min(s.quantity, requestedQty);
+      let [image, requestedQty] = soldierStack.get(s.image.id);
+      let qty = Math.min(s.quantity, requestedQty);
 
-    if (qty > 0) {
-      totalWounds += qty;
-      healData.push({ image, quantity: qty });
-    }
-  }
+      if (qty > 0) {
+        totalWounds += qty;
+        healData.push({ imageId: image.id, quantity: qty });
+        s.quantity -= qty; // REMOVE all wounded immediately
+      }
+
+      return s;
+    });
 
   if (totalWounds === 0) return;
 
-  // deaths from overflow
+  // deaths affect population only
   const deaths = Math.max(0, totalWounds - hospitalCap);
   if (deaths > 0) {
-    let remainingDeaths = deaths;
-
-    kingdom.barrack.soldiers[shift] =
-      kingdom.barrack.soldiers[shift].map((s) => {
-        if (!soldierStack.has(s.image.id) || remainingDeaths <= 0)
-          return s;
-
-        const kill = Math.min(s.quantity, remainingDeaths);
-        s.quantity -= kill;
-        remainingDeaths -= kill;
-        return s;
-      });
-
     reducePopulation(kingdom, deaths);
   }
 
-  // months calculation
+  // healing duration
   let remainingMonths = BASE_MONTHS;
 
   if (hospitalCap > totalWounds) {
@@ -716,13 +707,15 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 
   remainingMonths = Math.max(1, Math.min(BASE_MONTHS, remainingMonths));
 
-  // push single healing event
+  // single healing event
   kingdom.events.future.push({
+    id: Date.now(),
     title: `${Math.min(totalWounds, hospitalCap)} Units Healing`,
-    type: "heal",
+    eventType: "heal",
     remainingMonths,
     meta: {
       shift,
+      healed: Math.min(totalWounds, hospitalCap),
       units: healData
     }
   });
