@@ -13,16 +13,16 @@ if (!kingdoms[name].events) kingdoms[name].events = { future: [], past: [] };
 
 
 function getIconForEvent(event) {
-  if (event.secret) return '🔒';
-  if (!event.hasCountdown) return '⚠️'
+  if (event.isSecret) return '🔒';
+  if (!event.hasCountdown) return '⚠️';
   const mapping = {
     'construction': '🏗️',
     'upgrade': '⏫',
     'disaster': '🌪️',
     'beast': '👹',
     'heal': '❤️‍🩹',
-  }
-  return mapping[event.type] || '';
+  };
+  return mapping[event.eventType] || '📅';
 }
 
 // Migrate existing events to include hasCountdown property
@@ -410,25 +410,17 @@ function renderFutureEvents() {
     
     group.events.forEach(event => {
       const isHappening = event.hasCountdown && event.remainingMonths <= 0;
-      const showCountdown = event.hasCountdown && (!event.isSecret || event.remainingMonths <= 0);
       
       const eventDiv = document.createElement('div');
       eventDiv.className = `event-item ${isHappening ? 'happening' : ''} ${event.isSecret ? 'secret' : ''}`;
       
       const displayTitle = event.title;
-      let countdownHtml = '';
-      
-      if (event.hasCountdown && showCountdown) {
-        const countdownText = getCountdownDisplay(event.remainingMonths);
-        countdownHtml = `<div class="event-countdown ${isHappening ? 'happening' : ''}">${countdownText}</div>`;
-      } else if (!event.hasCountdown) {
-        countdownHtml = `<div class="event-countdown">Reminder</div>`;
-      }
+      const eventIcon = getIconForEvent(event);
       
       eventDiv.innerHTML = `
         <div class="event-header">
           <div class="event-title ${event.isSecret ? 'event-description' : ''}">${displayTitle}</div>
-          ${countdownHtml}
+          <div class="event-countdown">${eventIcon}</div>
         </div>
         <div class="event-controls">
           <label>
@@ -461,11 +453,12 @@ function renderPastEvents() {
     eventDiv.className = `event-item ${event.isSecret ? 'secret' : ''}`;
     
     const displayTitle = event.title;
+    const eventIcon = getIconForEvent(event);
     
     eventDiv.innerHTML = `
       <div class="event-header">
         <div class="event-title ${event.isSecret ? 'event-description' : ''}">${displayTitle}</div>
-        <div class="event-countdown">Completed</div>
+        <div class="event-countdown">${eventIcon}</div>
       </div>
       <div class="event-controls">
         <label>
