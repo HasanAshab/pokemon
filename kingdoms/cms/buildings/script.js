@@ -592,31 +592,71 @@ function renderBuildings() {
     }
 
     // Toggle Enable/Disable Button
-    const toggleStatusBtn = document.createElement("button");
+    // Toggle Enable/Disable Button or Cancel Button
+    const actionBtn = document.createElement("button");
     
-    // Determine if building can be toggled
-    const canToggle = !(building.constructionInProgress || building.upgradeInProgress);
-    
-    if (canToggle) {
-      toggleStatusBtn.className = building.state === "disabled" ? "btn success-btn" : "btn warning-btn";
-      toggleStatusBtn.textContent = building.state === "disabled" ? "Enable" : "Disable";
+    // Check if building is under construction or upgrade
+    if (building.constructionInProgress || building.upgradeInProgress) {
+      // Show Cancel button
+      actionBtn.className = "btn danger-btn";
+      actionBtn.textContent = building.constructionInProgress ? "Cancel Construction" : "Cancel Upgrade";
+      
+      actionBtn.onclick = () => {
+        const workType = building.constructionInProgress ? "construction" : "upgrade";
+        const buildingName = building.name;
+        
+        if (confirm(`Cancel ${workType} of ${buildingName}? You will get your money back.`)) {
+          // Find and remove the associated event
+          const eventIndex = kingdoms[name].events.future.findIndex(e => 
+            e.buildingId === building.name && e.eventType === workType
+          );
+          
+          let refundAmount = 0;
+          
+          if (building.upgradeInProgress) {
+            // Calculate refund for upgrade
+            const upgradeCost = upgradePrice(building.basePrice, building.currentLevel) * building.quantity;
+            refundAmount = upgradeCost;
+            
+            // Reset building state
+            building.state = "enabled";
+            delete building.upgradeInProgress;
+            delete building.targetLevel;
+          } else if (building.constructionInProgress) {
+            // For construction, we need to calculate the original cost and remove the building
+            // Since we don't store the original cost, we'll estimate it
+            refundAmount = building.basePrice * building.quantity;
+            
+            // Remove the building entirely
+            const buildingIndex = kingdoms[name].buildings.findIndex(b => b.name === building.name);
+            if (buildingIndex !== -1) {
+              kingdoms[name].buildings.splice(buildingIndex, 1);
+            }
+          }
+          
+          // Remove the event
+          if (eventIndex !== -1) {
+            kingdoms[name].events.future.splice(eventIndex, 1);
+          }
+          
+          // Refund the money
+          if (!kingdoms[name].storage) kingdoms[name].storage = {};
+          kingdoms[name].storage.coins = (kingdoms[name].storage.coins || 0) + refundAmount;
+          
+          saveAndRefresh();
+          alert(`${workType.charAt(0).toUpperCase() + workType.slice(1)} cancelled! Refunded ${refundAmount.toLocaleString()} coins.`);
+        }
+      };
     } else {
-      toggleStatusBtn.className = "btn secondary-btn";
-      toggleStatusBtn.disabled = true;
-      toggleStatusBtn.style.opacity = "0.5";
-      if (building.constructionInProgress) {
-        toggleStatusBtn.textContent = "Under Construction";
-      } else if (building.upgradeInProgress) {
-        toggleStatusBtn.textContent = "Upgrading";
-      }
-    }
-    
-    toggleStatusBtn.onclick = () => {
-      if (canToggle) {
+      // Show normal Enable/Disable button
+      actionBtn.className = building.state === "disabled" ? "btn success-btn" : "btn warning-btn";
+      actionBtn.textContent = building.state === "disabled" ? "Enable" : "Disable";
+      
+      actionBtn.onclick = () => {
         building.state = building.state === "disabled" ? "enabled" : "disabled";
         saveAndRefresh();
-      }
-    };
+      };
+    }
 
     const itemActions = document.createElement("div");
     itemActions.className = "building-actions";
@@ -803,6 +843,63 @@ function renderBuildings() {
       const divider = document.createElement("div");
       divider.className = "dropdown-divider";
       dropdownMenu.appendChild(divider);
+    }
+    
+    // Cancel option (for buildings under construction or upgrade)
+    if (building.constructionInProgress || building.upgradeInProgress) {
+      const cancelOption = document.createElement("button");
+      cancelOption.className = "dropdown-item danger";
+      cancelOption.textContent = building.constructionInProgress ? "Cancel Construction" : "Cancel Upgrade";
+      
+      cancelOption.onclick = () => {
+        const workType = building.constructionInProgress ? "construction" : "upgrade";
+        const buildingName = building.name;
+        
+        if (confirm(`Cancel ${workType} of ${buildingName}? You will get your money back.`)) {
+          // Find and remove the associated event
+          const eventIndex = kingdoms[name].events.future.findIndex(e => 
+            e.buildingId === building.name && e.eventType === workType
+          );
+          
+          let refundAmount = 0;
+          
+          if (building.upgradeInProgress) {
+            // Calculate refund for upgrade
+            const upgradeCost = upgradePrice(building.basePrice, building.currentLevel) * building.quantity;
+            refundAmount = upgradeCost;
+            
+            // Reset building state
+            building.state = "enabled";
+            delete building.upgradeInProgress;
+            delete building.targetLevel;
+          } else if (building.constructionInProgress) {
+            // For construction, we need to calculate the original cost and remove the building
+            // Since we don't store the original cost, we'll estimate it
+            refundAmount = building.basePrice * building.quantity;
+            
+            // Remove the building entirely
+            const buildingIndex = kingdoms[name].buildings.findIndex(b => b.name === building.name);
+            if (buildingIndex !== -1) {
+              kingdoms[name].buildings.splice(buildingIndex, 1);
+            }
+          }
+          
+          // Remove the event
+          if (eventIndex !== -1) {
+            kingdoms[name].events.future.splice(eventIndex, 1);
+          }
+          
+          // Refund the money
+          if (!kingdoms[name].storage) kingdoms[name].storage = {};
+          kingdoms[name].storage.coins = (kingdoms[name].storage.coins || 0) + refundAmount;
+          
+          saveAndRefresh();
+          alert(`${workType.charAt(0).toUpperCase() + workType.slice(1)} cancelled! Refunded ${refundAmount.toLocaleString()} coins.`);
+        }
+        dropdownMenu.classList.remove('show');
+      };
+      
+      dropdownMenu.appendChild(cancelOption);
     }
     
     // Edit option
