@@ -724,12 +724,32 @@ startWarBtn.onclick = () => {
           Artilleries Broken: <br>
             ${war.result.brokenArtilleries.def.reduce((str, ar) => str += `${ar.name}: ${ar.quantity}<br>`, "")}<br>
           <button style="background-color: blue; color: white" onclick="confirmResult(this)">Confirm</button>
+          <button style="background-color: orange; color: white; margin-left: 10px;" onclick="retryWar(this)">Retry</button>
         `
         globalThis.confirmResult = (btn) => {
           handleWoundedSoldiers(atkKingdom, war.result.wounded.atk, "emergency")
           handleWoundedSoldiers(defKingdom, war.result.wounded.def, shiftSelect.value)
           resolve(war)
           btn.disabled = true
+        }
+
+        globalThis.retryWar = (btn) => {
+          // Reset war state
+          i = 0;
+          netWin = 0;
+          globalThis.wars = [];
+          
+          // Clear the result div
+          resultDiv.innerHTML = "";
+          
+          // Re-enable the start war button
+          startWarBtn.disabled = false;
+          
+          // Disable the retry button to prevent multiple clicks
+          btn.disabled = true;
+          
+          // Automatically start the war again with same settings
+          startWarBtn.click();
         }
       }, 1)
     })
