@@ -676,11 +676,12 @@ export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
 
     let [image, quantity] = soldierStack.get(s.image.id);
     quantity = Math.min(s.quantity, quantity)
+
     hospitalCap -= quantity;
     if (hospitalCap < 0) {
-      const woundedCount = Math.abs(hospitalCap)
-      s.quantity -= woundedCount;
-      reducePopulation(kingdom, woundedCount);
+      const deadCount = Math.abs(hospitalCap)
+      s.quantity -= deadCount;
+      reducePopulation(kingdom, deadCount);
       hospitalCap = 0;
     }
     return s;
