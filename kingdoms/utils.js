@@ -667,26 +667,67 @@ export function reducePopulation(kingdom, quantity) {
 
 
 export function handleWoundedSoldiers(kingdom, soldierStack, shift) {
-  let hospitalCap = getHospitalCapacity(kingdom);
+  const BASE_MONTHS = 6;
+  const hospitalCap = getHospitalCapacity(kingdom);
 
-  kingdom.barrack.soldiers[shift] = kingdom.barrack.soldiers[shift].map((s) => {
-    
-    if (!soldierStack.has(s.image.id))
-      return s
+  let totalWounds = 0;
+  let healData = [];
 
-    let [image, quantity] = soldierStack.get(s.image.id);
-    quantity = Math.min(s.quantity, quantity)
+  // collect wounds
+  for (const s of kingdom.barrack.soldiers[shift]) {
+    if (!soldierStack.has(s.image.id)) continue;
 
-    hospitalCap -= quantity;
-    if (hospitalCap < 0) {
-      const deadCount = Math.abs(hospitalCap)
-      s.quantity -= deadCount;
-      reducePopulation(kingdom, deadCount);
-      hospitalCap = 0;
+    let [image, requestedQty] = soldierStack.get(s.image.id);
+    let qty = Math.min(s.quantity, requestedQty);
+
+    if (qty > 0) {
+      totalWounds += qty;
+      healData.push({ image, quantity: qty });
     }
-    return s;
+  }
+
+  if (totalWounds === 0) return;
+
+  // deaths from overflow
+  const deaths = Math.max(0, totalWounds - hospitalCap);
+  if (deaths > 0) {
+    let remainingDeaths = deaths;
+
+    kingdom.barrack.soldiers[shift] =
+      kingdom.barrack.soldiers[shift].map((s) => {
+        if (!soldierStack.has(s.image.id) || remainingDeaths <= 0)
+          return s;
+
+        const kill = Math.min(s.quantity, remainingDeaths);
+        s.quantity -= kill;
+        remainingDeaths -= kill;
+        return s;
+      });
+
+    reducePopulation(kingdom, deaths);
+  }
+
+  // months calculation
+  let remainingMonths = BASE_MONTHS;
+
+  if (hospitalCap > totalWounds) {
+    remainingMonths = Math.ceil(BASE_MONTHS * (totalWounds / hospitalCap));
+  }
+
+  remainingMonths = Math.max(1, Math.min(BASE_MONTHS, remainingMonths));
+
+  // push single healing event
+  kingdom.events.future.push({
+    title: `${Math.min(totalWounds, hospitalCap)} Units Healing`,
+    type: "heal",
+    remainingMonths,
+    meta: {
+      shift,
+      units: healData
+    }
   });
 }
+
 
 export function getForceImbalanceRate(kingdom, forceType, type, totalExtraStudent = null) {
   if (totalExtraStudent === null) {

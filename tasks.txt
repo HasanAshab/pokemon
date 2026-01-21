@@ -1,6 +1,6 @@
 * Tasks
 revive with event
-war attack wave soldiers count
+war attack wave soldiers count range -> numbers
 
 break artilary, remove beasts
 auto generate military
