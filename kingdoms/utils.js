@@ -67,7 +67,9 @@ export function getTotalSecurityRate(kingdom){
 
 export function getSecurityRate(kingdom, forceType){
   const target = 15.35671;
-  const might = (getMight(kingdom, forceType, "day")
+  const might = forceType === "soldiers" ? 
+    getMight(kingdom, forceType, "emergency")
+    : (getMight(kingdom, forceType, "day")
     + getMight(kingdom, forceType, "night")) / 2
   const ratio = might / getPopulation(kingdom)  
   const closeness = (ratio / target) * 100;
@@ -1133,8 +1135,6 @@ export function getSinlgeMilitaryBudgetReport(kingdom) {
 
   const artillariesSize = getArtilleries(kingdom).reduce((acc, build) => acc + calculateSize(build.baseSize, build.currentLevel) * build.quantity, 0);
   report["Artillery Maintenance"] = calculateLandPrice(artillariesSize, kingdom, "rent", 2) * 2.5;
-
-  console.log(kingdom);
   
   const hiredBeastResearchers = kingdom.marketplace.find(item => item.itemName === "bRes" && item.actionType === "buy") || { unitPrice: 0, quantity: 0 };
   const beastResearchersSalary = hiredBeastResearchers.unitPrice * (hiredBeastResearchers.buyWholeDemand ? getStorage(kingdom).bRes || 0 : hiredBeastResearchers.quantity);
@@ -1148,16 +1148,61 @@ export function getSinlgeMilitaryBudgetReport(kingdom) {
   return report
 }
 
-export function getMilitaryBudgetReport(kingdom) {  
+export function getMilitaryBudgetReport(kingdom) {
+  console.log(getMilitaryStatsReport(kingdom));
+  
+  const kingdomTypeMap = {
+    "Kingdom": "🏰",
+    "Camp": "⛺",
+    "Outpost": "🏕️"
+  }  
+  const report = {
+    [kingdomTypeMap[kingdom.type] + " " + kingdom.id]: getSinlgeMilitaryBudgetReport(kingdom)
+  }
+  const ownedKingdoms = getOwnedKingdoms(kingdom, ["Camp"]);
+
+  for (const k of ownedKingdoms) {
+    report[`${kingdomTypeMap[k.type]} ${k.id}`] = getSinlgeMilitaryBudgetReport(k);
+  }
+  return report
+}
+
+
+export function getMilitaryMP(kingdom) {
+  let total = 0;
+  for (const shift in kingdom.barrack.soldiers) {
+    for (const soldier of kingdom.barrack.soldiers[shift]) {
+      const image = new Pokemon(soldier.image.id, soldier.image);
+      console.log(image);
+      
+      if (image.type === "human") 
+        total += image.cp() * soldier.quantity
+    }
+  }
+  return total
+}
+
+
+export function getSinlgeMilitaryStatsReport(kingdom) {
+  const report = {};
+  const countSoldiers = shift => kingdom.barrack.soldiers[shift].reduce((acc, s) => acc + s.quantity, 0);
+  report["Reserved"] = countSoldiers("day") + countSoldiers("night") + countSoldiers("emergency")
+  report["Active"] = Math.round((countSoldiers("day") + countSoldiers("night")) / 2)
+
+  report["Power"] = {
+    "Man (MP)": getMilitaryMP(kingdom),
+  }
+  return report
+}
+
+export function getMilitaryStatsReport(kingdom) {
   const kingdomTypeMap = {
     "Kingdom": "🏰",
     "Camp": "⛺",
     "Outpost": "🏕️"
   }
-  console.log(kingdom.type);
-  
   const report = {
-    [kingdomTypeMap[kingdom.type] + " " + kingdom.id]: getSinlgeMilitaryBudgetReport(kingdom)
+    [kingdomTypeMap[kingdom.type] + " " + kingdom.id]: getSinlgeMilitaryStatsReport(kingdom)
   }
   const ownedKingdoms = getOwnedKingdoms(kingdom, ["Camp"]);
 

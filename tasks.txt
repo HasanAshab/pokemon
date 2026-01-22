@@ -1,5 +1,4 @@
 * Tasks
-revive with event
 
 break artilary, remove beasts
 auto generate military
