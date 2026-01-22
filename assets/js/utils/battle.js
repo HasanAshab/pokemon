@@ -21,8 +21,8 @@ class BaseBattle extends EventEmitter {
     veryClose: false
   }
   teamsAP = {
-    "you": 200,
-    "enemy": 200, //todo
+    "you": 0,
+    "enemy": 0,
   }
   _states = new Map()
   _history = []

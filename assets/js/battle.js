@@ -1137,6 +1137,10 @@ function setEffects(effects, playerTag) {
       "name": "Infatuation",
       "color": "Fairy"
     },
+    "attract": {
+      "name": "Attracted",
+      "color": "Fairy"
+    },
     "trp": {
       "name": "Trap",
       "color": "Ground"

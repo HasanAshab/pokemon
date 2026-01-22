@@ -874,6 +874,22 @@ class GrabbedEffect extends ExpirableEffect {
     }
 }
 
+class AttractEffect extends Effect {
+    static effectName = "attract"
+
+    onTurn() {
+        this.status.canMove = Math.random() > 0.5
+    }
+
+    onTurnEnd() {
+        this.status.canMove = true
+    }
+    
+    displayMeta() {
+        return !this.status.canMove ? '🔴' : '⚪'
+    }
+}
+
 
 export const EFFECTS = makeEffectsMap([
     BurnEffect,
@@ -900,6 +916,7 @@ export const EFFECTS = makeEffectsMap([
     InnerGateEffect,
     RechargingEffect,
     GrabbedEffect,
+    AttractEffect,
 ])
 
 
