@@ -1,4 +1,4 @@
-import { canDodge, modObj, sumObj } from "../../assets/js/utils/helpers.js"
+import { canDodge, capitalizeFirstLetter, deepClone, modObj, sumObj } from "../../assets/js/utils/helpers.js"
 import typeChart from "../default/types.js"
 import entities from "../default/entities.js"
 
@@ -122,6 +122,90 @@ function makeEntitySageMoves() {
   return moves
 }
 
+
+function makeMultiMaterialWeaponMoves(id, baseWeaponMove) {
+  const materialsData = [
+    {
+      name: "rock",
+      type: "Rock",
+      powerMod: 1,
+      effectChanceMod: 1,
+      tokenChangeMod: 1,
+    },
+    {
+      name: "copper",
+      type: "Rock",
+      powerMod: 1.15,
+      effectChanceMod: 1.1,
+      tokenChangeMod: 1.1,
+    },
+    {
+      name: "tin",
+      type: "Steel",
+      powerMod: 1.15,
+      effectChanceMod: 1.1,
+      tokenChangeMod: 1.1,
+    },
+    {
+      name: "bronze",
+      type: "Steel",
+      powerMod: 1.3,
+      effectChanceMod: 1.2,
+      tokenChangeMod: 1.2,
+    },
+    {
+      name: "iron",
+      type: "Steel",
+      powerMod: 1.3,
+      effectChanceMod: 1.2,
+      tokenChangeMod: 1.2,
+    },
+    {
+      name: "steel",
+      type: "Steel",
+      powerMod: 1.3,
+      effectChanceMod: 1.2,
+      tokenChangeMod: 1.2,
+    },
+    {
+      name: "steel:refined",
+      type: "Steel",
+      powerMod: 1.3,
+      effectChanceMod: 1.2,
+      tokenChangeMod: 1.2,
+    },
+    {
+      name: "steel:crucible",
+      type: "Steel",
+      powerMod: 1.3,
+      effectChanceMod: 1.2,
+      tokenChangeMod: 1.2,
+    },
+  ]
+
+  const moves = {}
+  for (const data of materialsData) {
+    const move = deepClone(baseWeaponMove)
+    move.name = `${capitalizeFirstLetter(id)} (${capitalizeFirstLetter(data.name)})`
+    move.type = data.type
+    move.basePower = Math.round(data.powerMod * baseWeaponMove.basePower)
+    
+    move.effects.self.forEach(effect => {
+      effect.chance = Math.round(data.effectChanceMod * effect.chance)
+    })
+    move.effects.target.forEach(effect => {
+      effect.chance = Math.round(data.effectChanceMod * effect.chance)
+    })
+
+    for (const stat in move.tokenChanges) {
+      move.tokenChanges[stat] = Math.round(data.tokenChangeMod * move.tokenChanges[stat])
+    }
+
+
+    moves[`${id}:${data.name}`] = move
+  }
+  return moves
+}
 
 export default {
   ...makeFieldMoves(),
@@ -425,10 +509,13 @@ export default {
       metronome: 1,
       weapon: 1
     },
-    critRatio: 1,
-    secondary: {
-      chance: 4,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 4,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Rock",
@@ -438,26 +525,27 @@ export default {
     }
   },
 
-  kunai: {
+  ...makeMultiMaterialWeaponMoves('kunai', {
     num: 100001,
     accuracy: 100,
     basePower: 50,
     category: "Physical",
-    name: "Kunai",
     pp: 30 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 2,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 2,
+        isVolatile: true
+      }]
     },
     target: "normal",
-    type: "Rock",
-    contestType: "Tough",
     tokenChanges: {
       spe: -6
     }
-  },
+  }),
 
   ninjastar: {
     num: 100002,
@@ -468,9 +556,13 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 1,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 1,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Rock",
@@ -507,9 +599,13 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 5,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 5,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -528,9 +624,13 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 2,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 2,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -550,9 +650,13 @@ export default {
     pp: 25 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 8,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 8,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -573,9 +677,13 @@ export default {
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
     critRatio: 2,
-    secondary: {
-      chance: 30,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 30,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -599,9 +707,13 @@ export default {
       self: { atk: -1 },
       target: {}
     },
-    secondary: {
-      chance: 10,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 10,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Rock",
@@ -620,9 +732,13 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 30,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 30,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -678,9 +794,13 @@ export default {
       metronome: 1,
       weapon: 1
     },
-    secondary: {
-      chance: 10,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 10,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -725,9 +845,13 @@ export default {
       metronome: 1,
       weapon: 1
     },
-    secondary: {
-      chance: 3,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 3,
+        isVolatile: true
+      }]
     },
     target: "foeSide",
     capacity: 2,
@@ -752,9 +876,13 @@ export default {
       metronome: 1,
       weapon: 1
     },
-    secondary: {
-      chance: 30,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 30,
+        isVolatile: true
+      }]
     },
     target: "foeSide",
     capacity: 2,
@@ -1189,9 +1317,13 @@ export default {
     pp: 3 * 3,
     priority: 0,
     flags: { contact: 0, protect: 1, weapon: 1 },
-    secondary: {
-      chance: 10,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 10,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Normal",
@@ -1773,9 +1905,13 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 5,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 5,
+        isVolatile: true
+      }]
     },
     target: "normal",
     type: "Steel",
@@ -1793,9 +1929,13 @@ export default {
     pp: 15 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
-    secondary: {
-      chance: 5,
-      status: "bleed"
+    effects: {
+      self: [],
+      target: [{
+        name: "bleed",
+        chance: 5,
+        isVolatile: true
+      }]
     },
     capacity: 2,
     target: "foeSide",

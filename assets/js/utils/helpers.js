@@ -19,6 +19,10 @@ export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj))
+}
+
 export function toTitleCase(str) {
   return str.replace("-", " ").replace(
     /\w\S*/g,
