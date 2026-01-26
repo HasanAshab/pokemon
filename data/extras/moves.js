@@ -497,7 +497,7 @@ export default {
     num: 100000,
     accuracy: 100,
     multihit: [2, 5],
-    basePower: 15,
+    basePower: 12,
     category: "Physical",
     name: "Chakra Blade",
     pp: 15 * 3,
@@ -513,7 +513,7 @@ export default {
       self: [],
       target: [{
         name: "bleed",
-        chance: 4,
+        chance: 1,
         isVolatile: true
       }]
     },
@@ -528,7 +528,7 @@ export default {
   ...makeMultiMaterialWeaponMoves('kunai', {
     num: 100001,
     accuracy: 100,
-    basePower: 50,
+    basePower: 40,
     category: "Physical",
     pp: 30 * 3,
     priority: 0,
@@ -550,7 +550,7 @@ export default {
   ninjastar: {
     num: 100002,
     accuracy: 100,
-    basePower: 15,
+    basePower: 12,
     category: "Physical",
     name: "Ninja Star",
     pp: 15 * 3,
@@ -575,7 +575,7 @@ export default {
 
   bamboo: {
     num: 100003,
-    accuracy: 80,
+    accuracy: 70,
     basePower: 60,
     category: "Physical",
     name: "Bamboo",
@@ -592,8 +592,8 @@ export default {
   },
   ninjablade: {
     num: 100004,
-    accuracy: 100,
-    basePower: 60,
+    accuracy: 90,
+    basePower: 50,
     category: "Physical",
     name: "Ninja Blade",
     pp: 15 * 3,
@@ -603,7 +603,7 @@ export default {
       self: [],
       target: [{
         name: "bleed",
-        chance: 5,
+        chance: 3,
         isVolatile: true
       }]
     },
@@ -611,14 +611,14 @@ export default {
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      spe: -10
+      spe: -8
     },
   },
 
   kohgastar: {
     num: 100005,
-    accuracy: 100,
-    basePower: 17,
+    accuracy: 85,
+    basePower: 14,
     category: "Physical",
     name: "Kohga Star",
     pp: 15 * 3,
@@ -636,17 +636,17 @@ export default {
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      spe: -10
+      spe: -8
     },
     multihit: [2, 5],
   },
 
   sword: {
     num: 100006,
-    accuracy: 70,
-    basePower: 90,
+    accuracy: 80,
+    basePower: 70,
     category: "Physical",
-    name: "sword",
+    name: "Sword",
     pp: 25 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, weapon: 1 },
@@ -654,7 +654,7 @@ export default {
       self: [],
       target: [{
         name: "bleed",
-        chance: 8,
+        chance: 5,
         isVolatile: true
       }]
     },
@@ -662,15 +662,15 @@ export default {
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      spe: -17
+      spe: -14
     },
   },
 
 
   katana: {
     num: 100007,
-    accuracy: 80,
-    basePower: 100,
+    accuracy: 95,
+    basePower: 110,
     category: "Physical",
     name: "Katana",
     pp: 25 * 3,
@@ -692,10 +692,11 @@ export default {
       spe: -25
     }
   },
+
   shuriken: {
     num: 100008,
-    accuracy: 60,
-    basePower: 130,
+    accuracy: 70,
+    basePower: 100,
     category: "Physical",
     name: "Shuriken",
     pp: 2 * 3,
@@ -704,14 +705,14 @@ export default {
     flags: { protect: 1, mirror: 1, metronome: 1, weapon: 1 },
     statChanges: {
       chance: 100,
-      self: { atk: -1 },
+      self: { atk: -0.5 },
       target: {}
     },
     effects: {
       self: [],
       target: [{
         name: "bleed",
-        chance: 10,
+        chance: 15,
         isVolatile: true
       }]
     },
@@ -719,14 +720,15 @@ export default {
     type: "Rock",
     contestType: "Tough",
     tokenChanges: {
-      spe: -45
+      spe: -25
     }
 
   },
+
   longsword: {
     num: 100009,
-    accuracy: 60,
-    basePower: 140,
+    accuracy: 70,
+    basePower: 100,
     category: "Physical",
     name: "Long Sword",
     pp: 15 * 3,
@@ -736,7 +738,7 @@ export default {
       self: [],
       target: [{
         name: "bleed",
-        chance: 30,
+        chance: 13,
         isVolatile: true
       }]
     },
@@ -746,14 +748,15 @@ export default {
     statChanges: {
       chance: 100,
       self: {
-        atk: -1
+        atk: -0.5
       },
       target: {}
     },
     tokenChanges: {
-      spe: -50
+      spe: -25
     }
   },
+
   ninechaku: {
     num: 100010,
     accuracy: 100,
