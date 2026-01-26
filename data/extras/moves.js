@@ -195,29 +195,35 @@ function makeMultiMaterialWeaponMoves(id, baseWeaponMove) {
       effectChanceMod: 1.5,
       tokenChangeMod: 1.6,
     },
+  {
+      name: "crystal",
+      type: "Steel",
+      powerMod: 3.2,
+      effectChanceMod: 1.7,
+      tokenChangeMod: 1.6,
+    },
     {
       name: "aurora",
       type: "Fairy",
-      powerMod: 3,
-      effectChanceMod: 1.5,
+      powerMod: 3.25,
+      effectChanceMod: 1.7,
       tokenChangeMod: 0.6,
     },
     {
       name: "dragonite",
       type: "Dragon",
-      powerMod: 3.4,
+      powerMod: 3.5,
       effectChanceMod: 1.6,
       tokenChangeMod: 1.8,
     },
     {
       name: "scream",
       type: "Ghost",
-      powerMod: 3.5,
+      powerMod: 3.6,
       effectChanceMod: 1.8,
       tokenChangeMod: 1.3,
     },
   ]
-
   const moves = {}
   for (const data of materialsData) {
     const move = deepClone(baseWeaponMove)

@@ -1,5 +1,6 @@
 * Tasks
-actual retreat++, auto pricing
+dualweapon
+auto pricing
 break artilary, remove beasts
 auto generate military
 

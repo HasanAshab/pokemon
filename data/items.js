@@ -1,4 +1,4 @@
-import { modObj } from "../assets/js/utils/helpers.js"
+import { deepClone, modObj } from "../assets/js/utils/helpers.js"
 import moves from "./moves.js"
 
 function convertMoveToItem(move) {
@@ -19,6 +19,19 @@ function makeWeaponizedItems() {
       acc[id] = convertMoveToItem(move)      
       return acc
     }, {})
+}
+
+function makeArmorSets(id, baseArmorItem) {
+  const coverSets = [20, 40, 80]
+
+  return coverSets.reduce((acc, cover, i) => {
+    const item = deepClone(baseArmorItem)
+    item.covers = cover
+    item.tokens = modObj(item.tokens, 1 + ((cover - coverSets[0]) / 100))
+    acc[`${id}${i + 1}`] = item
+    console.log(item);
+    return acc
+  }, {})
 }
 
 
@@ -55,9 +68,53 @@ export default {
     },
     tokens: {}  
   },
-  latherarmor1: {
+  ...makeArmorSets("latherarmor", {
+      type: "armor",
+      stats: {
+        def: 30
+      },
+      tokens: {
+        spe: -2
+      }
+  }),
+copperarmor: {
     type: "armor",
-    covers: 20,
+    stats: {
+      def: 60
+    },
+    tokens: {
+      spe: -4
+    }
+  },
+flintarmor: {
+    type: "armor",
+    stats: {
+      def: 120
+    },
+    tokens: {
+      spe: -8
+    }
+  },
+  tinarmor: {
+    type: "armor",
+    stats: {
+      def: 240
+    },
+    tokens: {
+      spe: -16
+    }
+  },
+ bronzearmor: {
+    type: "armor",
+    stats: {
+      def: 480
+    },
+    tokens: {
+      spe: -32
+    }
+  },
+ ironarmor: {
+    type: "armor",
     stats: {
       def: 30
     },
@@ -65,97 +122,8 @@ export default {
       spe: -1
     }
   },
-  latherarmor2: {
+ steelarmor: {
     type: "armor",
-    covers: 40,
-    stats: {
-      def: 30
-    },
-    tokens: {
-      spe: -4
-    }
-  },
-
-  latherarmor3: {
-    type: "armor",
-    covers: 80,
-    stats: {
-      def: 30
-    },
-    tokens: {
-      spe: -8
-    }
-  },
-
-  bronzearmor1: {
-    type: "armor",
-    covers: 20,
-    stats: {
-      def: 50
-    },
-    tokens: {
-      spe: -3
-    }
-  },
-
-  bronzearmor2: {
-    type: "armor",
-    covers: 40,
-    stats: {
-      def: 50
-    },
-    tokens: {
-      spe: -7
-    }
-  },
-
-  bronzearmor3: {
-    type: "armor",
-    covers: 80,
-    stats: {
-      def: 50
-    },
-    tokens: {
-      spe: -12
-    }
-  },
-
-  bronzearmor1: {
-    type: "armor",
-    covers: 20,
-    stats: {
-      def: 68
-    },
-    tokens: {
-      spe: -5
-    }
-  },
-
-  bronzearmor2: {
-    type: "armor",
-    covers: 40,
-    stats: {
-      def: 68
-    },
-    tokens: {
-      spe: -10
-    }
-  },
-
-  bronzearmor3: {
-    type: "armor",
-    covers: 80,
-    stats: {
-      def: 68
-    },
-    tokens: {
-      spe: -15
-    }
-  },
-  
-  steelarmor1: {
-    type: "armor",
-    covers: 20,
     stats: {
       def: 45
     },
@@ -163,59 +131,49 @@ export default {
       spe: -7
     }
   },
-
-  steelarmor2: {
+metalarmor: {
     type: "armor",
-    covers: 40,
     stats: {
-      def: 45
+      def: 30
     },
     tokens: {
-      spe: -14
+      spe: -1
     }
   },
-
-  steelarmor3: {
+platinumarmor: {
     type: "armor",
-    covers: 80,
     stats: {
-      def: 45
+      def: 30
     },
     tokens: {
-      spe: -20
+      spe: -1
     }
   },
-
-  ironarmor1: {
+crystalarmor: {
     type: "armor",
-    covers: 20,
     stats: {
-      def: 55
+      def: 30
     },
     tokens: {
-      spe: -9
+      spe: -1
     }
   },
-
-  ironarmor2: {
+auroraarmor: {
     type: "armor",
-    covers: 40,
     stats: {
-      def: 55
+      def: 30
     },
     tokens: {
-      spe: -17
+      spe: -1
     }
   },
-
-  ironarmor3: {
+dragonarmor: {
     type: "armor",
-    covers: 80,
     stats: {
-      def: 55
+      def: 30
     },
     tokens: {
-      spe: -25
+      spe: -1
     }
   },
   bronzelocket1: {

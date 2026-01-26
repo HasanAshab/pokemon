@@ -342,7 +342,7 @@ function setRetreat(move) {
     retreat += 0.5
   }
     
-  retreat = adjustToClosestRetreat(retreat)
+//   retreat = adjustToClosestRetreat(retreat)
 
   // we failed to detect its speciality
   if (retreat <= 1 && move.category !== "Status") {
