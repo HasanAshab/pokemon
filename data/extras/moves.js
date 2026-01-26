@@ -133,53 +133,88 @@ function makeMultiMaterialWeaponMoves(id, baseWeaponMove) {
       tokenChangeMod: 1,
     },
     {
+      name: "bone",
+      type: "Ground",
+      powerMod: 1,
+      effectChanceMod: 1,
+      tokenChangeMod: 1,
+    },
+    {
       name: "copper",
       type: "Rock",
-      powerMod: 1.15,
-      effectChanceMod: 1.1,
-      tokenChangeMod: 1.1,
+      powerMod: 1.25,
+      effectChanceMod: 1,
+      tokenChangeMod: 1,
+    },
+    {
+      name: "flint",
+      type: "Rock",
+      powerMod: 1,
+      effectChanceMod: 1,
+      tokenChangeMod: 1,
     },
     {
       name: "tin",
       type: "Steel",
-      powerMod: 1.15,
-      effectChanceMod: 1.1,
-      tokenChangeMod: 1.1,
+      powerMod: 1.2,
+      effectChanceMod: 1.17,
+      tokenChangeMod: 0.8,
     },
     {
       name: "bronze",
-      type: "Steel",
+      type: "Rock",
       powerMod: 1.3,
-      effectChanceMod: 1.2,
-      tokenChangeMod: 1.2,
+      effectChanceMod: 1.17,
+      tokenChangeMod: 1.1,
     },
     {
       name: "iron",
       type: "Steel",
-      powerMod: 1.3,
+      powerMod: 1.7,
       effectChanceMod: 1.2,
-      tokenChangeMod: 1.2,
+      tokenChangeMod: 1.4,
     },
     {
       name: "steel",
       type: "Steel",
-      powerMod: 1.3,
-      effectChanceMod: 1.2,
+      powerMod: 1.65,
+      effectChanceMod: 1.4,
       tokenChangeMod: 1.2,
     },
     {
-      name: "steel:refined",
+      name: "metal",
       type: "Steel",
-      powerMod: 1.3,
-      effectChanceMod: 1.2,
+      powerMod: 1.7,
+      effectChanceMod: 1.4,
+      tokenChangeMod: 1.25,
+    },
+    {
+      name: "platinum",
+      type: "Steel",
+      powerMod: 1.8,
+      effectChanceMod: 1.5,
       tokenChangeMod: 1.2,
     },
     {
-      name: "steel:crucible",
-      type: "Steel",
-      powerMod: 1.3,
-      effectChanceMod: 1.2,
-      tokenChangeMod: 1.2,
+      name: "aurora",
+      type: "Fairy",
+      powerMod: 2,
+      effectChanceMod: 1.5,
+      tokenChangeMod: 0.6,
+    },
+    {
+      name: "dragonite",
+      type: "Dragon",
+      powerMod: 2,
+      effectChanceMod: 1.5,
+      tokenChangeMod: 0.6,
+    },
+    {
+      name: "scream",
+      type: "Ghost",
+      powerMod: 2,
+      effectChanceMod: 1.5,
+      tokenChangeMod: 0.6,
     },
   ]
 
@@ -493,7 +528,7 @@ export default {
       return true
     },
   },
-  chakrablade: {
+  ...makeMultiMaterialWeaponMoves('chakrablade', {
     num: 100000,
     accuracy: 100,
     multihit: [2, 5],
@@ -523,7 +558,7 @@ export default {
     tokenChanges: {
       spe: -6
     }
-  },
+  }),
 
   ...makeMultiMaterialWeaponMoves('kunai', {
     num: 100001,
@@ -590,7 +625,7 @@ export default {
       spe: -10
     }
   },
-  ninjablade: {
+  ...makeMultiMaterialWeaponMoves('ninjablade', {
     num: 100004,
     accuracy: 90,
     basePower: 50,
@@ -613,7 +648,7 @@ export default {
     tokenChanges: {
       spe: -8
     },
-  },
+  }),
 
   kohgastar: {
     num: 100005,
