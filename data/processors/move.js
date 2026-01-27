@@ -307,7 +307,6 @@ function setRetreat(move) {
       + critRatioBonus
       + multiTargetBonus
   )
-  move.name === "Kunai (Rock)" && console.log(multiplier);
   
   if (move.category === "Status" && move.target === "foeSide")
       multiplier += 2

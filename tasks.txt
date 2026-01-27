@@ -3,6 +3,7 @@ cp + auto pricing
 substitute
 dualweapon
 station
+weapon + armor reduce atk instead of spe
 
 break artilary, remove beasts
 auto generate military

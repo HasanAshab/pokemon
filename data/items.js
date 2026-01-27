@@ -334,6 +334,18 @@ dragonarmor: {
       "atk": 15,
       "spa": 15,
       "spd": 10,
+      "spe": 10
+    }
+  },
+  "gen-age-prime": {
+    type: "age_genetics",
+    tokensPercent: {
+      "hp": 30,
+      "def": 15,
+      "atk": 20,
+      "spa": 20,
+      "spd": 15,
+      "spe": 15
     }
   },
   "gen-age-50": {
@@ -344,6 +356,7 @@ dragonarmor: {
       "atk": -3,
       "spa": -3,
       "spd": -3, 
+      "spe": -3
     }
   },
   "gen-body-fat": {
@@ -353,7 +366,8 @@ dragonarmor: {
       "def": 5,
       "atk": 5,
       "spd": -5,
-      "spe": -15
+      "spa": -5,
+      "spe": -10
     }
   },
   "gen-body-thik": {
@@ -363,41 +377,89 @@ dragonarmor: {
       "def": -5,
       "atk": -5,
       "spd": 5,
-      "spe": 15
+      "spa": 5,
+      "spe": 10
     }
   },
 
- "gen-body-fit-1": {
+ "gen-body-med": {
     type: "body_genetics",
     tokensPercent: {
       "hp": 0,
       "def": 0,
       "atk": 0,
       "spd": 0,
-      "spe": 0
+      "spe": 0,
+      "spa": 0
     }
   },
-  "gen-body-fit-2": {
+  "gen-body-fit-1": {
     type: "body_genetics",
     tokensPercent: {
       "hp": 5,
       "def": 5,
       "atk": 5,
       "spd": 5,
-      "spe": 5
+      "spe": 5,
+      "spa": 5
     }
   },
-  "gen-body-fit-3": {
+  "gen-body-fit-2": {
     type: "body_genetics",
     tokensPercent: {
       "hp": 10,
       "def": 10,
       "atk": 10,
       "spd": 10,
-      "spe": 10
+      "spe": 10,
+      "spa": 10
+
+    } 
+  },
+  "gen-body-fit-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 15,
+      "def": 15,
+      "atk": 15,
+      "spd": 15,
+      "spe": 15,
+      "spa": 15
     }
   },
-  
+  "gen-body-bulk-1": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 20,
+      "def": 20,
+      "atk": 20,
+      "spd": 20,
+      "spe": 20,
+      "spa": 20
+    }
+  },
+  "gen-body-bulk-2": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 25,
+      "def": 25,
+      "atk": 25,
+      "spd": 25,
+      "spe": 25,
+      "spa": 25
+    }
+  },
+  "gen-body-bulk-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 30,
+      "def": 30,
+      "atk": 30,
+      "spd": 30,
+      "spe": 30,
+      "spa": 30
+    }
+  },
   "gen-food-low-1": {
     "type": "food_genetics",
     "tokensPercent": {
@@ -533,12 +595,34 @@ dragonarmor: {
 }
 
 
+function calcScoreOfWeaponItem(itemId) {
+  const item = items[itemId]  
+  const tokensPercentTotal = calcObj(item.tokensPercent)
+  const tokensTotal = calcObj(item.tokens)
+  const score = (15 * tokensPercentTotal) + tokensTotal
+  return score
+}
+
+function calcScoreOfArmorItem(itemId) {
+  const item = items[itemId]
+  if (!item.stats) return 0  
+  const totalStats = calcObj(item.stats) + (item.tokens ? calcObj(item.tokens) : 0)
+  const score = totalStats * item.covers
+  return score
+}
+
+function calcScoreOfGeneticsItem(itemId) {
+  const item = items[itemId]  
+  const tokensPercentTotal = calcObj(item.tokensPercent)
+  const score = 15 * tokensPercentTotal
+  return score
+}
 
 function getDefaultPriceOfItem(itemId) {
   const item = items[itemId]
-
+  let price = 0
   if (!item) {
-    return 0
+    return price
   }
 
   if (item.meta?.budget) {
@@ -546,23 +630,27 @@ function getDefaultPriceOfItem(itemId) {
   }
 
   if (item.type === "weapon") {
-    const tokensPercentTotal = calcObj(item.tokensPercent)
-    const tokensTotal = calcObj(item.tokens)
-
-    const score = (15 * tokensPercentTotal) + tokensTotal
-
-    // 517.2 score => 100 price
-    const BASE_SCORE = 517.2
+    const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
     const BASE_PRICE = 100
-
-    const price = (score / BASE_SCORE) * BASE_PRICE
-
-    // optional: keep prices clean for gameplay
-    return Math.round(price)
-    // or: return Number(price.toFixed(2))
+    const score = calcScoreOfWeaponItem(itemId)
+    price = (score / BASE_SCORE) * BASE_PRICE
   }
 
-  return 0
+  else if (item.type === "armor") {
+    const BASE_SCORE = calcScoreOfArmorItem("latherarmor1")
+    const BASE_PRICE = 100
+    const score = calcScoreOfArmorItem(itemId)
+    price = (score / BASE_SCORE) * BASE_PRICE
+  }
+
+  else if (item.type === "body_genetics") {
+    const BASE_SCORE = calcScoreOfGeneticsItem("gen-food-low-1")
+    const BASE_PRICE = 100
+    const score = calcScoreOfGeneticsItem(itemId)
+    price = (score / BASE_SCORE) * BASE_PRICE
+  }
+
+  return Math.round(price)
 }
 
 for (const id in items) {

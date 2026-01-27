@@ -53,6 +53,7 @@ function filterItems() {
   for (const [itemId, item] of Object.entries(items)) {  
     if (["age_genetics", "nation_genetics"].includes(item.type))
         continue;
+    if (itemId.startsWith("$")) continue;
     if (!item.type) continue;
 
     if (!currentSearch) {
@@ -126,6 +127,7 @@ function createTypeGroup(type, items) {
   
   const itemCount = Object.keys(items).length;
   
+  type = type.replace('_', ' ');
   return `
     <div class="type-group">
       <div class="type-header">
