@@ -632,13 +632,20 @@ function getDefaultPriceOfItem(itemId) {
   }
 
   else if (item.type === "body_genetics") {
-    const BASE_SCORE = calcScoreOfGeneticsItem("gen-food-low-1")
+    const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
+    const BASE_PRICE = 100
+    const score = calcScoreOfGeneticsItem(itemId)
+    price = (score / BASE_SCORE) * BASE_PRICE
+  }
+  
+  else if (item.type === "age_genetics") {
+    const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
     const BASE_PRICE = 100
     const score = calcScoreOfGeneticsItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
 
-  return Math.round(price)
+  return Math.max(0, Math.round(price))
 }
 
 for (const id in items) {

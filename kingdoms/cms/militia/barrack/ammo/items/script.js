@@ -9,11 +9,13 @@ const modal = document.getElementById('itemModal');
 const modalItemName = document.getElementById('modalItemName');
 const modalItemJson = document.getElementById('modalItemJson');
 const closeModal = document.querySelector('.close');
+const toggleAllBtn = document.getElementById('toggleAllBtn');
 
 // State
 let currentItems = items;
 let currentSearch = '';
 let currentSort = 'cheap';
+let allCollapsed = true; // Start with all groups collapsed
 
 // Initialize the page
 function init() {
@@ -25,6 +27,7 @@ function init() {
 function setupEventListeners() {
   searchInput.addEventListener('input', handleSearch);
   sortSelect.addEventListener('change', handleSort);
+  toggleAllBtn.addEventListener('click', toggleAllGroups);
   closeModal.addEventListener('click', hideModal);
   
   // Close modal when clicking outside
@@ -51,7 +54,7 @@ function handleSort(e) {
 function filterItems() {  
   const filtered = {};
   for (const [itemId, item] of Object.entries(items)) {  
-    if (["age_genetics", "nation_genetics"].includes(item.type))
+    if (["nation_genetics"].includes(item.type))
         continue;
     if (itemId.startsWith("$")) continue;
     if (!item.type) continue;
@@ -126,14 +129,16 @@ function createTypeGroup(type, items) {
     .join('');
   
   const itemCount = Object.keys(items).length;
+  const typeId = type.replace(/[^a-zA-Z0-9]/g, '_'); // Create safe ID for type
   
   type = type.replace('_', ' ');
   return `
     <div class="type-group">
-      <div class="type-header">
-        ${type} (${itemCount} items)
+      <div class="type-header" onclick="toggleGroup('${typeId}')">
+        <span>${type} (${itemCount} items)</span>
+        <span class="collapse-icon ${allCollapsed ? 'collapsed' : ''}">▼</span>
       </div>
-      <div class="items-grid">
+      <div class="items-grid ${allCollapsed ? 'collapsed' : ''}" id="group-${typeId}">
         ${itemCards}
       </div>
     </div>
@@ -163,6 +168,63 @@ function renderItems() {
     .join('');
   
   itemsContainer.innerHTML = groupsHtml;
+  
+  // Update toggle button text after rendering
+  updateToggleAllButton();
+}
+
+// Toggle individual group
+function toggleGroup(typeId) {
+  const group = document.getElementById(`group-${typeId}`);
+  const icon = group.parentElement.querySelector('.collapse-icon');
+  
+  if (group.classList.contains('collapsed')) {
+    group.classList.remove('collapsed');
+    icon.classList.remove('collapsed');
+  } else {
+    group.classList.add('collapsed');
+    icon.classList.add('collapsed');
+  }
+  
+  // Update toggle all button text based on current state
+  updateToggleAllButton();
+}
+
+// Toggle all groups
+function toggleAllGroups() {
+  const allGroups = document.querySelectorAll('.items-grid');
+  const allIcons = document.querySelectorAll('.collapse-icon');
+  
+  if (allCollapsed) {
+    // Expand all
+    allGroups.forEach(group => group.classList.remove('collapsed'));
+    allIcons.forEach(icon => icon.classList.remove('collapsed'));
+    allCollapsed = false;
+    toggleAllBtn.textContent = 'Collapse All';
+  } else {
+    // Collapse all
+    allGroups.forEach(group => group.classList.add('collapsed'));
+    allIcons.forEach(icon => icon.classList.add('collapsed'));
+    allCollapsed = true;
+    toggleAllBtn.textContent = 'Expand All';
+  }
+}
+
+// Update toggle all button text based on current state
+function updateToggleAllButton() {
+  const allGroups = document.querySelectorAll('.items-grid');
+  const collapsedGroups = document.querySelectorAll('.items-grid.collapsed');
+  
+  if (collapsedGroups.length === allGroups.length) {
+    allCollapsed = true;
+    toggleAllBtn.textContent = 'Expand All';
+  } else if (collapsedGroups.length === 0) {
+    allCollapsed = false;
+    toggleAllBtn.textContent = 'Collapse All';
+  } else {
+    // Mixed state - show expand all to make it consistent
+    toggleAllBtn.textContent = 'Expand All';
+  }
 }
 
 // Show item details in modal
@@ -180,8 +242,9 @@ function hideModal() {
   modal.style.display = 'none';
 }
 
-// Make showItemDetails globally available
+// Make functions globally available
 globalThis.showItemDetails = showItemDetails;
+globalThis.toggleGroup = toggleGroup;
 
 // Initialize when DOM is loaded
 init();
