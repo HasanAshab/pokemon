@@ -267,22 +267,12 @@ function setRetreat(move) {
     200, 210, 220, 230, 240, 250
   ];
   let retreat;
-  const adjustToClosestRetreat = num => {
-    return retreats.reduce((prev, curr) => 
-        Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev
-    )
-  }
   
   if(move.category === "Status") {
       retreat = 1
   }
   else {
-    for (let i = 0; i < thresholds.length; i++) {
-        if (move.basePower <= thresholds[i]) {
-          retreat = retreats[i];
-          break;
-        }
-    }
+    retreat = Math.max(0.5, (move.basePower / 10) * 0.5)
   }
 
   if (move.stallingMove) {
@@ -305,13 +295,20 @@ function setRetreat(move) {
     ? move.critRatio * 0.5
     : 0
 
+  const multiTargetBonus = ["allySide", "foeSide"].includes(move.target)
+    ? 2
+    : 0
+
   let multiplier = (
       move.effects.target.length
   //  - move.effects.self.length
       + selfStatEffectBonus
       + targetStatEffectBonus
       + critRatioBonus
+      + multiTargetBonus
   )
+  move.name === "Kunai (Rock)" && console.log(multiplier);
+  
   if (move.category === "Status" && move.target === "foeSide")
       multiplier += 2
   if (move.category === "Status" && move.target === "allAdjacent")

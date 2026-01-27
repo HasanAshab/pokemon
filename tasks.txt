@@ -1,7 +1,9 @@
 * Tasks
 cp + auto pricing
-Items Page
+substitute
 dualweapon
+station
+
 break artilary, remove beasts
 auto generate military
 
