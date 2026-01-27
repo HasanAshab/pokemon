@@ -2,7 +2,7 @@ import { fixFloat } from "./helpers.js";
 
 
 export class Damage {
-    static STAB_MODIFIER = 1.35;
+    static STAB_MODIFIER = 1.45;
     static CRIT_MULTIPLIER = 1.5;
     static BASE_CRIT_CHANCE = 1 / 24;
     static RAND_MODIFIER_RANGE = [0.85, 0.15]
