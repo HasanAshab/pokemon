@@ -1947,7 +1947,7 @@ export default {
     num: 100060,
     accuracy: 100,
     basePower: 40,
-    multihit: [2],
+    multihit: 2,
     category: "Physical",
     name: "Dual Blade",
     pp: 15 * 3,

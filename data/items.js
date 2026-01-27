@@ -178,19 +178,18 @@ dragonarmor: {
   },
   bronzelocket1: {
     type: "armor",
-    covers: 20,
     stats: {
-      spd: 25 
+      spd: 25
     }
   },
-    bronzelocket2: {
+  bronzelocket2: {
     type: "armor",
     covers: 40,
     stats: {
       spd: 25
     }
   },
-    bronzelocket3: {
+  bronzelocket3: {
     type: "armor",
     covers: 80,
     stats: {
@@ -538,7 +537,7 @@ dragonarmor: {
 function getDefaultPriceOfItem(itemId) {
   const item = items[itemId]
 
-  console.log(item);
+  // console.log(item);
   if (!item) {
     return 0
   }
@@ -550,7 +549,7 @@ function getDefaultPriceOfItem(itemId) {
   if (item.type === "weapon") {
     const tokensPercentTotal = calcObj(item.tokensPercent)
     const tokensTotal = calcObj(item.tokens)
-    console.log(tokensPercentTotal, tokensTotal);
+    const score = (15 * tokensPercentTotal) + tokensTotal
   }
   return 0
 }

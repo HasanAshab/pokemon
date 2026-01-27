@@ -476,6 +476,38 @@ function loadCopyFromKingdomSelect() {
     copyFromKingdomSelect.innerHTML += `<option value="${kingdom}">${kingdom}</option>`
   })
 }
+globalThis.setDefaultPrices = function() {
+  if (!confirm('This will reset all item prices to their default values. Are you sure?')) {
+    return
+  }
+  
+  let updatedCount = 0
+  
+  // Update all items that have default budget prices
+  Object.keys(items).forEach(itemId => {
+    const defaultPrice = items[itemId].meta?.budget
+    if (defaultPrice !== undefined && defaultPrice > 0) {
+      kingdom.barrack.ammo[itemId] = defaultPrice
+      updatedCount++
+    }
+  })
+  
+  // Also update any existing items in ammo that might not be in the main items list
+  Object.keys(kingdom.barrack.ammo).forEach(itemId => {
+    if (items[itemId]?.meta?.budget !== undefined) {
+      kingdom.barrack.ammo[itemId] = items[itemId].meta.budget
+    }
+  })
+  
+  if (updatedCount > 0) {
+    saveKingdoms(kingdoms)
+    setItemsTable(kingdom.barrack.ammoPriceChange)
+    alert(`Successfully updated ${updatedCount} item prices to default values`)
+  } else {
+    alert('No items with default prices found')
+  }
+}
+
 window.onload = ()=>{
 
   if (!kingdom.barrack.ammo){
