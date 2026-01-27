@@ -415,39 +415,117 @@ dragonarmor: {
       "spa": 45
     }
   },
+  "gen-body-athletic-1": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 65,
+      "def": 65,
+      "atk": 65,
+      "spd": 65,
+      "spe": 65,
+      "spa": 65
+    }
+  },
+  "gen-body-athletic-2": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 85,
+      "def": 85,
+      "atk": 85,
+      "spd": 85,
+      "spe": 85,
+      "spa": 85
+    }
+  },
+  "gen-body-athletic-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 105,
+      "def": 105,
+      "atk": 105,
+      "spd": 105,
+      "spe": 105,
+      "spa": 105
+    }
+  },
+  "gen-body-athletic-4": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 125,
+      "def": 125,
+      "atk": 125,
+      "spd": 125,
+      "spe": 125,
+      "spa": 125
+    }
+  },
+  "gen-body-muscular-1": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 150,
+      "def": 150,
+      "atk": 150,
+      "spd": 150,
+      "spe": 125,
+      "spa": 150
+    }
+  },
+  "gen-body-muscular-2": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 175,
+      "def": 175,
+      "atk": 175,
+      "spd": 175,
+      "spe": 125,
+      "spa": 175
+    }
+  },
+  "gen-body-muscular-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 200,
+      "def": 200,
+      "atk": 200,
+      "spd": 200,
+      "spe": 125,
+      "spa": 200
+    }
+  },
   "gen-body-bulk-1": {
     type: "body_genetics",
     tokensPercent: {
-      "hp": 70,
-      "def": 70,
-      "atk": 70,
-      "spd": 45,
-      "spe": -20,
-      "spa": 45
+      "hp": 300,
+      "def": 300,
+      "atk": 300,
+      "spd": 200,
+      "spe": 70,
+      "spa": 200
     }
   },
   "gen-body-bulk-2": {
     type: "body_genetics",
     tokensPercent: {
-      "hp": 100,
-      "def": 100,
-      "atk": 100,
-      "spd": 45,
-      "spe": -35,
-      "spa": 45
+      "hp": 400,
+      "def": 400,
+      "atk": 400,
+      "spd": 200,
+      "spe": 40,
+      "spa": 200
     }
   },
   "gen-body-bulk-3": {
     type: "body_genetics",
     tokensPercent: {
-      "hp": 130,
-      "def": 130,
-      "atk": 130,
-      "spd": 45,
-      "spe": -50,
-      "spa": 45
+      "hp": 550,
+      "def": 550,
+      "atk": 550,
+      "spd": 200,
+      "spe": 5,
+      "spa": 200
     }
   },
+
   "gen-food-low-1": {
     "type": "food_genetics",
     "tokensPercent": {
@@ -458,7 +536,6 @@ dragonarmor: {
       "spe": 3,
       "spa": 3
     },
-    "meta": { "budget": 300 }
   },
   "gen-food-low-2": {
     "type": "food_genetics",
@@ -470,7 +547,6 @@ dragonarmor: {
       "spe": 5,
       "spa": 5
     },
-    "meta": { "budget": 700 }
   },
   "gen-food-low-3": {
     "type": "food_genetics",
@@ -482,7 +558,6 @@ dragonarmor: {
       "spe": 7,
       "spa": 7
     },
-    "meta": { "budget": 1000 }
   },
   "gen-food-low-4": {
     "type": "food_genetics",
@@ -494,7 +569,6 @@ dragonarmor: {
       "spe": 9,
       "spa": 9
     },
-    "meta": { "budget": 1500 }
   },
   "gen-food-mid-1": {
     "type": "food_genetics",
@@ -506,7 +580,6 @@ dragonarmor: {
       "spe": 13,
       "spa": 13
     },
-    "meta": { "budget": 2500 }
   },
   "gen-food-mid-2": {
     "type": "food_genetics",
@@ -518,7 +591,6 @@ dragonarmor: {
       "spe": 16,
       "spa": 16
     },
-    "meta": { "budget": 3500 }
   },
   "gen-food-mid-3": {
     "type": "food_genetics",
@@ -530,7 +602,6 @@ dragonarmor: {
       "spe": 19,
       "spa": 19
     },
-    "meta": { "budget": 4500 }
   },
   "gen-food-high-1": {
     "type": "food_genetics",
@@ -542,8 +613,8 @@ dragonarmor: {
       "spe": 25,
       "spa": 25
     },
-    "meta": { "budget": 6000 }
   },
+
   "gen-food-high-2": {
     "type": "food_genetics",
     "tokensPercent": {
@@ -554,7 +625,6 @@ dragonarmor: {
       "spe": 28,
       "spa": 28
     },
-    "meta": { "budget": 8000 }
   },
   "gen-food-high-3": {
     "type": "food_genetics",
@@ -566,7 +636,6 @@ dragonarmor: {
       "spe": 32,
       "spa": 32
     },
-    "meta": { "budget": 10000 }
   },
   "gen-food-bulk-1": {
     "type": "food_genetics",
@@ -578,7 +647,6 @@ dragonarmor: {
       "spe": 22,
       "spa": 28
     },
-    "meta": { "budget": 15000 }
   }
 }
 
@@ -609,7 +677,7 @@ function calcScoreOfGeneticsItem(itemId) {
 function getDefaultPriceOfItem(itemId) {
   const item = items[itemId]
   let price = 0
-  if (!item) {
+  if (!item || !item.type) {
     return price
   }
 
@@ -619,28 +687,21 @@ function getDefaultPriceOfItem(itemId) {
 
   if (item.type === "weapon") {
     const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
-    const BASE_PRICE = 100
+    const BASE_PRICE = 200
     const score = calcScoreOfWeaponItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
 
   else if (item.type === "armor") {
     const BASE_SCORE = calcScoreOfArmorItem("latherarmor1")
-    const BASE_PRICE = 100
+    const BASE_PRICE = 200
     const score = calcScoreOfArmorItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
 
-  else if (item.type === "body_genetics") {
+  else if (item.type.endsWith("_genetics")) {
     const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
-    const BASE_PRICE = 100
-    const score = calcScoreOfGeneticsItem(itemId)
-    price = (score / BASE_SCORE) * BASE_PRICE
-  }
-  
-  else if (item.type === "age_genetics") {
-    const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
-    const BASE_PRICE = 100
+    const BASE_PRICE = 200
     const score = calcScoreOfGeneticsItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
