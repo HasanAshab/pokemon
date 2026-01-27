@@ -6,9 +6,9 @@ function convertMoveToItem(move) {
   return {
     type: "weapon",
     tokensPercent: {
-      [atkStatName]: 40 * move.retreat,
+      [atkStatName]: 10 * move.retreat,
     },
-    tokens: modObj(move.tokenChanges, 0.7)
+    tokens: modObj(move.tokenChanges, 1.3),
   }
 }
 
@@ -26,10 +26,10 @@ function makeArmorSets(id, baseArmorItem) {
 
   return coverSets.reduce((acc, cover, i) => {
     const item = deepClone(baseArmorItem)
+    item.type = "armor"
     item.covers = cover
     item.tokens = modObj(item.tokens, 1 + ((cover - coverSets[0]) / 100))
     acc[`${id}${i + 1}`] = item
-    console.log(item);
     return acc
   }, {})
 }

@@ -13,6 +13,12 @@ export const modObj = (obj, mod) => {
   }, {})
 }
 
+export const calcObj = (obj) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    acc += obj[key]
+    return acc
+  }, 0)
+}
 export const camelize = s => s.replace(/-./g, x=>x[1].toUpperCase())
 
 export function capitalizeFirstLetter(string) {

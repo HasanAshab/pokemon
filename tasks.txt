@@ -1,6 +1,7 @@
 * Tasks
+cp + auto pricing
+Items Page
 dualweapon
-auto pricing
 break artilary, remove beasts
 auto generate military
 

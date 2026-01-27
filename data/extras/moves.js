@@ -248,6 +248,10 @@ function makeMultiMaterialWeaponMoves(id, baseWeaponMove) {
   return moves
 }
 
+function makeDualWeaponMoves(id, baseWeaponMove) {
+  
+}
+
 export default {
   ...makeFieldMoves(),
   ...makeEntitySageMoves(),
