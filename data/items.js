@@ -1,4 +1,4 @@
-import { deepClone, modObj } from "../assets/js/utils/helpers.js"
+import { calcObj, deepClone, modObj } from "../assets/js/utils/helpers.js"
 import moves from "./moves.js"
 
 function convertMoveToItem(move) {
@@ -35,7 +35,7 @@ function makeArmorSets(id, baseArmorItem) {
 }
 
 
-export default {
+const items = {
   ...makeWeaponizedItems(),
   $blackbeastlayer: {
     type: "armor",
@@ -532,3 +532,34 @@ dragonarmor: {
     "meta": { "budget": 15000 }
   }
 }
+
+
+
+function getDefaultPriceOfItem(itemId) {
+  const item = items[itemId]
+
+  console.log(item);
+  if (!item) {
+    return 0
+  }
+
+  if (item.meta?.budget) {
+    return item.meta.budget
+  }
+  
+  if (item.type === "weapon") {
+    const tokensPercentTotal = calcObj(item.tokensPercent)
+    const tokensTotal = calcObj(item.tokens)
+    console.log(tokensPercentTotal, tokensTotal);
+  }
+  return 0
+}
+
+for (const id in items) {
+  if (!items[id].meta) {
+    items[id].meta = {}
+  }
+  items[id].meta.budget = getDefaultPriceOfItem(id)
+}
+
+export default items

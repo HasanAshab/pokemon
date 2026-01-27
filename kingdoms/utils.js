@@ -5,8 +5,6 @@ import humans from "../data/humans.js";
 import { SoldierStack } from "./war.js";
 import pokemons from "../data/pokemons.js";
 import beasts from "../data/beasts.js";
-import items from "../data/items.js";
-import { calcObj } from "../assets/js/utils/helpers.js";
 
 export function getPopulation(kingdom) {
   return kingdom.landArea * kingdom.density;
@@ -1218,32 +1216,3 @@ export function getMilitaryStatsReport(kingdom) {
   return report
 }
 
-
-export function getDefaultPriceOfItem(itemId) {
-  const item = items[itemId]
-
-  console.log(item);
-  if (!item) {
-    return 0
-  }
-
-  if (item.meta?.budget) {
-    return item.meta.budget
-  }
-  
-  if (item.type === "weapon") {
-    const tokensPercentTotal = calcObj(item.tokensPercent)
-    const tokensTotal = calcObj(item.tokens)
-    console.log(tokensPercentTotal, tokensTotal);
-    
-  }
-  return 0
-}
-
-export function getItemsWithPrices() {
-  const itemsWithPrices = {}
-  for (const id in items) {
-    itemsWithPrices[id] = getDefaultPriceOfItem(id)
-  }
-  return itemsWithPrices
-}
