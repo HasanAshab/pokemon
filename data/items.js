@@ -28,7 +28,9 @@ function makeArmorSets(id, baseArmorItem) {
     const item = deepClone(baseArmorItem)
     item.type = "armor"
     item.covers = cover
-    item.tokens = modObj(item.tokens, 1 + ((cover - coverSets[0]) / 100))
+    item.tokens = item.tokens 
+      ? modObj(item.tokens, 1 + ((cover - coverSets[0]) / 100))
+      : {}
     acc[`${id}${i + 1}`] = item
     return acc
   }, {})
@@ -176,26 +178,12 @@ dragonarmor: {
       spe: -1
     }
   },
-  bronzelocket1: {
+  ...makeArmorSets("bronzelocket", {
     type: "armor",
     stats: {
       spd: 25
     }
-  },
-  bronzelocket2: {
-    type: "armor",
-    covers: 40,
-    stats: {
-      spd: 25
-    }
-  },
-  bronzelocket3: {
-    type: "armor",
-    covers: 80,
-    stats: {
-      spd: 25
-    }
-  },
+  }),
     silverlocket1: {
     type: "armor",
     covers: 20,
