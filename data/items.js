@@ -77,7 +77,7 @@ const items = {
         spe: -2
       }
   }),
-copperarmor: {
+  ...makeArmorSets("copperarmor", {
     type: "armor",
     stats: {
       def: 60
@@ -85,7 +85,7 @@ copperarmor: {
     tokens: {
       spe: -4
     }
-  },
+  }),
 flintarmor: {
     type: "armor",
     stats: {
@@ -537,7 +537,6 @@ dragonarmor: {
 function getDefaultPriceOfItem(itemId) {
   const item = items[itemId]
 
-  // console.log(item);
   if (!item) {
     return 0
   }
@@ -545,12 +544,24 @@ function getDefaultPriceOfItem(itemId) {
   if (item.meta?.budget) {
     return item.meta.budget
   }
-  
+
   if (item.type === "weapon") {
     const tokensPercentTotal = calcObj(item.tokensPercent)
     const tokensTotal = calcObj(item.tokens)
+
     const score = (15 * tokensPercentTotal) + tokensTotal
+
+    // 517.2 score => 100 price
+    const BASE_SCORE = 517.2
+    const BASE_PRICE = 100
+
+    const price = (score / BASE_SCORE) * BASE_PRICE
+
+    // optional: keep prices clean for gameplay
+    return Math.round(price)
+    // or: return Number(price.toFixed(2))
   }
+
   return 0
 }
 

@@ -592,7 +592,7 @@ export default {
     }
   }),
 
-  ninjastar: {
+  ...makeMultiMaterialWeaponMoves("ninjastar", {
     num: 100002,
     accuracy: 100,
     basePower: 12,
@@ -616,7 +616,7 @@ export default {
       spe: -6
     },
     multihit: [2, 5],
-  },
+  }),
 
   bamboo: {
     num: 100003,
