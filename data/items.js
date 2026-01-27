@@ -306,34 +306,34 @@ dragonarmor: {
   "gen-age-18": {
     type: "age_genetics",
     tokensPercent: {
-      "hp": 10,
-      "def": 5,
-      "atk": 5,
-      "spa": 5,
-      "spd": 5,
-      "spe": 5
+      "hp": 20,
+      "def": 6,
+      "atk": 14,
+      "spa": 14,
+      "spd": 6,
+      "spe": 20
     }
   },
-  "gen-age-25": {
+  "gen-age-(25-29:40-49)": {
     type: "age_genetics",
     tokensPercent: {
-      "hp": 20,
-      "def": 10,
-      "atk": 15,
-      "spa": 15,
-      "spd": 10,
-      "spe": 10
+      "hp": 50,
+      "def": 18,
+      "atk": 35,
+      "spa": 35,
+      "spd": 18,
+      "spe": 50
     }
   },
   "gen-age-prime": {
     type: "age_genetics",
     tokensPercent: {
-      "hp": 30,
-      "def": 15,
-      "atk": 20,
-      "spa": 20,
-      "spd": 15,
-      "spe": 15
+      "hp": 90,
+      "def": 60,
+      "atk": 85,
+      "spa": 85,
+      "spd": 60,
+      "spe": 95
     }
   },
   "gen-age-50": {
@@ -384,29 +384,6 @@ dragonarmor: {
   "gen-body-fit-1": {
     type: "body_genetics",
     tokensPercent: {
-      "hp": 5,
-      "def": 5,
-      "atk": 5,
-      "spd": 5,
-      "spe": 5,
-      "spa": 5
-    }
-  },
-  "gen-body-fit-2": {
-    type: "body_genetics",
-    tokensPercent: {
-      "hp": 10,
-      "def": 10,
-      "atk": 10,
-      "spd": 10,
-      "spe": 10,
-      "spa": 10
-
-    } 
-  },
-  "gen-body-fit-3": {
-    type: "body_genetics",
-    tokensPercent: {
       "hp": 15,
       "def": 15,
       "atk": 15,
@@ -415,29 +392,7 @@ dragonarmor: {
       "spa": 15
     }
   },
-  "gen-body-bulk-1": {
-    type: "body_genetics",
-    tokensPercent: {
-      "hp": 20,
-      "def": 20,
-      "atk": 20,
-      "spd": 20,
-      "spe": 20,
-      "spa": 20
-    }
-  },
-  "gen-body-bulk-2": {
-    type: "body_genetics",
-    tokensPercent: {
-      "hp": 25,
-      "def": 25,
-      "atk": 25,
-      "spd": 25,
-      "spe": 25,
-      "spa": 25
-    }
-  },
-  "gen-body-bulk-3": {
+  "gen-body-fit-2": {
     type: "body_genetics",
     tokensPercent: {
       "hp": 30,
@@ -446,6 +401,51 @@ dragonarmor: {
       "spd": 30,
       "spe": 30,
       "spa": 30
+
+    } 
+  },
+  "gen-body-fit-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 45,
+      "def": 45,
+      "atk": 45,
+      "spd": 45,
+      "spe": 45,
+      "spa": 45
+    }
+  },
+  "gen-body-bulk-1": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 70,
+      "def": 70,
+      "atk": 70,
+      "spd": 45,
+      "spe": -20,
+      "spa": 45
+    }
+  },
+  "gen-body-bulk-2": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 100,
+      "def": 100,
+      "atk": 100,
+      "spd": 45,
+      "spe": -35,
+      "spa": 45
+    }
+  },
+  "gen-body-bulk-3": {
+    type: "body_genetics",
+    tokensPercent: {
+      "hp": 130,
+      "def": 130,
+      "atk": 130,
+      "spd": 45,
+      "spe": -50,
+      "spa": 45
     }
   },
   "gen-food-low-1": {
