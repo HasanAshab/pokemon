@@ -1,6 +1,5 @@
 * Tasks
-food gen
-cp + auto pricing
+cp
 substitute
 dualweapon
 station

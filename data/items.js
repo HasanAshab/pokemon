@@ -530,39 +530,6 @@ dragonarmor: {
     "type": "food_genetics",
     "tokensPercent": {
       "hp": 0,
-      "def": 3,
-      "atk": 3,
-      "spd": 3,
-      "spe": 3,
-      "spa": 3
-    },
-  },
-  "gen-food-low-2": {
-    "type": "food_genetics",
-    "tokensPercent": {
-      "hp": 1,
-      "def": 5,
-      "atk": 5,
-      "spd": 5,
-      "spe": 5,
-      "spa": 5
-    },
-  },
-  "gen-food-low-3": {
-    "type": "food_genetics",
-    "tokensPercent": {
-      "hp": 2,
-      "def": 7,
-      "atk": 7,
-      "spd": 7,
-      "spe": 7,
-      "spa": 7
-    },
-  },
-  "gen-food-low-4": {
-    "type": "food_genetics",
-    "tokensPercent": {
-      "hp": 3,
       "def": 9,
       "atk": 9,
       "spd": 9,
@@ -570,82 +537,115 @@ dragonarmor: {
       "spa": 9
     },
   },
-  "gen-food-mid-1": {
+  "gen-food-low-2": {
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 3,
+      "def": 15,
+      "atk": 15,
+      "spd": 15,
+      "spe": 15,
+      "spa": 15
+    },
+  },
+  "gen-food-low-3": {
     "type": "food_genetics",
     "tokensPercent": {
       "hp": 6,
-      "def": 13,
-      "atk": 13,
-      "spd": 13,
-      "spe": 13,
-      "spa": 13
+      "def": 21,
+      "atk": 21,
+      "spd": 21,
+      "spe": 21,
+      "spa": 21
+    },
+  },
+  "gen-food-low-4": {
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 9,
+      "def": 27,
+      "atk": 27,
+      "spd": 27,
+      "spe": 27,
+      "spa": 27
+    },
+  },
+  "gen-food-mid-1": {
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 36,
+      "def": 65,
+      "atk": 65,
+      "spd": 65,
+      "spe": 65,
+      "spa": 65
     },
   },
   "gen-food-mid-2": {
     "type": "food_genetics",
     "tokensPercent": {
-      "hp": 7,
-      "def": 16,
-      "atk": 16,
-      "spd": 16,
-      "spe": 16,
-      "spa": 16
+      "hp": 42,
+      "def": 85,
+      "atk": 85,
+      "spd": 85,
+      "spe": 85,
+      "spa": 85
     },
   },
   "gen-food-mid-3": {
     "type": "food_genetics",
     "tokensPercent": {
-      "hp": 8,
-      "def": 19,
-      "atk": 19,
-      "spd": 19,
-      "spe": 19,
-      "spa": 19
+      "hp": 60,
+      "def": 105,
+      "atk": 105,
+      "spd": 105,
+      "spe": 105,
+      "spa": 105
     },
   },
   "gen-food-high-1": {
     "type": "food_genetics",
     "tokensPercent": {
-      "hp": 11,
-      "def": 25,
-      "atk": 25,
-      "spd": 25,
-      "spe": 25,
-      "spa": 25
+      "hp": 90,
+      "def": 145,
+      "atk": 145,
+      "spd": 145,
+      "spe": 145,
+      "spa": 145
     },
   },
 
   "gen-food-high-2": {
     "type": "food_genetics",
     "tokensPercent": {
-      "hp": 13,
-      "def": 28,
-      "atk": 28,
-      "spd": 28,
-      "spe": 28,
-      "spa": 28
+      "hp": 110,
+      "def": 175,
+      "atk": 175,
+      "spd": 175,
+      "spe": 175,
+      "spa": 175
     },
   },
   "gen-food-high-3": {
     "type": "food_genetics",
     "tokensPercent": {
-      "hp": 15,
-      "def": 32,
-      "atk": 32,
-      "spd": 32,
-      "spe": 32,
-      "spa": 32
+      "hp": 130,
+      "def": 205,
+      "atk": 205,
+      "spd": 205,
+      "spe": 205,
+      "spa": 205
     },
   },
   "gen-food-bulk-1": {
     "type": "food_genetics",
     "tokensPercent": {
-      "hp": 20,
-      "def": 40,
-      "atk": 33,
-      "spd": 28,
-      "spe": 22,
-      "spa": 28
+      "hp": 180,
+      "def": 255,
+      "atk": 255,
+      "spd": 255,
+      "spe": 255,
+      "spa": 255
     },
   }
 }
