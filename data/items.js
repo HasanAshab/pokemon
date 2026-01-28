@@ -687,6 +687,7 @@ function calcScoreOfGeneticsItem(itemId) {
 
 function getDefaultPriceOfItem(itemId) {
   const item = items[itemId]
+  const BASE_PRICE = 230
   let price = 0
   if (!item || !item.type) {
     return price
@@ -698,21 +699,18 @@ function getDefaultPriceOfItem(itemId) {
 
   if (item.type === "weapon") {
     const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
-    const BASE_PRICE = 200
     const score = calcScoreOfWeaponItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
 
   else if (item.type === "armor") {
     const BASE_SCORE = calcScoreOfArmorItem("latherarmor1")
-    const BASE_PRICE = 200
     const score = calcScoreOfArmorItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
 
   else if (item.type.endsWith("_genetics")) {
     const BASE_SCORE = calcScoreOfWeaponItem("kunai:rock")
-    const BASE_PRICE = 200
     const score = calcScoreOfGeneticsItem(itemId)
     price = (score / BASE_SCORE) * BASE_PRICE
   }
