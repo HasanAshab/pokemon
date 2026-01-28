@@ -8,7 +8,8 @@ import {
   getSecurityRate,
   getPoliceStationSecurityRate,
   getInitialFixedXp,
-  isBeastImage
+  isBeastImage,
+  getSoldierStack
 } from "../../../utils.js";
 import { SoldierStack } from "../../../war.js";
 
@@ -156,16 +157,7 @@ const createField = (labelText, inputEl,forceType) => {
   return wrapper;
 };
 
-function getSoldierStack(soldiers) {
-  const stackData = soldiers.map((soldier) => {
-    const image = pokemons[soldier.image.id];
-    image.id = soldier.image.id;
-    image.xp = soldier.image.xp;
-    image.items = soldier.image.items;
-    return [image, soldier.quantity];
-  });
-  return new SoldierStack(stackData);
-}
+
 globalThis.balanceSoldiers = (action,amount, forceType, shift, rankId) => {
   if ( !forceType.endsWith("s") )
   forceType += "s" 

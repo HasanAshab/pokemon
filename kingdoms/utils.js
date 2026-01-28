@@ -1182,6 +1182,42 @@ export function getMilitaryMP(kingdom) {
   return total
 }
 
+export function getSoldierStack(soldiers, allowedTypes) {
+  const stackData = soldiers.map((soldier) => {
+    const image = pokemons[soldier.image.id];
+    if (allowedTypes && !allowedTypes.includes(image.type)) return null;
+    image.id = soldier.image.id;
+    image.xp = soldier.image.xp;
+    image.items = soldier.image.items;
+    return [image, soldier.quantity];
+  }).filter(Boolean);
+  return new SoldierStack(stackData);
+}
+
+export function calcKingdomNP(kingdom) {
+  let total = 0;
+  for (const soldiers of Object.values(kingdom.barrack.soldiers)) {
+    const stack = getSoldierStack(soldiers, ["human"]);
+    total += stack.withoutAmmoCP();
+  }
+  return Math.round(total)
+}
+
+export function calcKingdomAA(kingdom) {
+  let total = 0;
+  for (const soldiers of Object.values(kingdom.barrack.soldiers)) {
+    const stack = getSoldierStack(soldiers, ["human"]);
+    const might = stack.withoutAmmoCP();
+    const weaponMight = stack.cp() - might;
+    const armorMight = stack.armorScore();
+    total += weaponMight + armorMight
+  }
+  return Math.round(total)
+}
+
+export function calcKingdomAP(kingdom) {
+  return getArtilleriesAtDefence(kingdom, 100, "N").reduce((acc, artillery) => acc + artillery.defence * artillery.quantity, 0);
+}
 
 export function getSinlgeMilitaryStatsReport(kingdom) {
   const report = {};
@@ -1192,13 +1228,12 @@ export function getSinlgeMilitaryStatsReport(kingdom) {
 
   // Calculate power based on actual kingdom data
   const reservedSoldiers = report["Reserved"];
-  const activeSoldiers = report["Active"];
   
   report["Power"] = {
-    "Ninja Power (NP)": Math.round(activeSoldiers * 50), // 50 NP per active soldier
-    "Ammo (AA)": Math.round(reservedSoldiers * 25), // 25 AA per reserved soldier
-    "Artillery (AP)": Math.round((kingdom.buildings?.filter(b => b.baseMaintains?.defence > 0 && b.state === "enabled").length || 0) * 500), // 500 AP per artillery building
-    "Beast (BP)": Math.round((kingdom.beasts?.length || 0) * 200) // 200 BP per beast
+    "Ninja Power (NP)": calcKingdomNP(kingdom),
+    "Ammo (AA)": calcKingdomAA(kingdom),
+    "Artillery (AP)": calcKingdomAP(kingdom),
+    "Beast (BP)": 
   }
   
   return report
