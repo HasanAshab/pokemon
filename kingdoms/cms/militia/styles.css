@@ -1,16 +1,29 @@
 body {
   font-family: Arial, sans-serif;
   background: #f2f2f2;
-  padding: 2rem;
+  padding: 1rem;
+  margin: 0;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 100%;
   margin: auto;
   background: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Mobile-first responsive design */
+@media (min-width: 768px) {
+  body {
+    padding: 2rem;
+  }
+  
+  .container {
+    max-width: 500px;
+    padding: 2rem;
+  }
 }
 
 label {
@@ -64,33 +77,50 @@ label {
 
 .bottom-cards {
   display: flex;
-  gap: 16px;
-  margin-top: 40px;
-  padding: 20px;
-  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+  padding: 15px;
   border-top: 1px solid #ccc;
 }
 
 .info-card {
-  flex: 1;
-  max-width: 200px;
   background: #f2f2f2;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 8px;
   text-align: center;
   font-weight: bold;
+  font-size: 0.9rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: background 0.2s ease;
+  cursor: pointer;
 }
 
 .info-card:hover {
   background: #e6e6e6;
 }
 
+/* Desktop layout for bottom cards */
+@media (min-width: 768px) {
+  .bottom-cards {
+    flex-direction: row;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .info-card {
+    flex: 1;
+    max-width: 200px;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+}
+
 /* Stats Section Styling */
 .stats-section {
-  margin: 2rem 0;
-  padding: 1.5rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
   background: #f8f8f8;
   border-radius: 8px;
   border: 1px solid #d0d0d0;
@@ -99,9 +129,9 @@ label {
 .stats-summary {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -111,30 +141,32 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .stats-item.total {
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #2c3e50;
   border-bottom: 2px solid #333;
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.6rem;
 }
 
 .power-breakdown {
   background: white;
   border-radius: 6px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   margin-bottom: 1.5rem;
 }
 
 .power-breakdown h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   color: #2c3e50;
-  font-size: 1.2rem;
-  padding-bottom: 0.5rem;
+  font-size: 1.1rem;
+  padding-bottom: 0.4rem;
   border-bottom: 2px solid #333;
 }
 
@@ -142,8 +174,10 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
   border-bottom: 1px solid #f0f0f0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .power-item:last-child {
@@ -153,65 +187,68 @@ label {
 .power-label {
   font-weight: 500;
   color: #34495e;
+  font-size: 0.9rem;
 }
 
 .power-value {
   font-weight: bold;
   color: #333;
+  font-size: 0.9rem;
 }
 
 .power-percentage {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #666;
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
 }
 
 .stats-breakdown {
   display: grid;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .territory-stats {
   background: white;
   border-radius: 6px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .territory-stats-header {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   color: #2c3e50;
-  font-size: 1.2rem;
-  padding-bottom: 0.5rem;
+  font-size: 1.1rem;
+  padding-bottom: 0.4rem;
   border-bottom: 2px solid #333;
+  word-break: break-word;
 }
 
 .stats-categories {
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .stats-category {
   background: #f8f9fa;
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.75rem;
   border-left: 4px solid #333;
 }
 
 .stats-category h4 {
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.5rem 0;
   color: #34495e;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .stats-items {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .stats-category .stats-item {
-  padding: 0.25rem 0;
-  font-size: 0.9rem;
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
 }
 
 .stats-category .stats-item .label {
@@ -222,28 +259,106 @@ label {
   color: #333;
 }
 
+/* Desktop adjustments for stats */
+@media (min-width: 768px) {
+  .stats-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+  }
+  
+  .stats-summary {
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+  }
+  
+  .stats-item.total {
+    font-size: 1.1rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .power-breakdown {
+    padding: 1.5rem;
+  }
+  
+  .power-breakdown h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .power-item {
+    padding: 0.5rem 0;
+  }
+  
+  .power-label, .power-value {
+    font-size: 1rem;
+  }
+  
+  .power-percentage {
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+  }
+  
+  .stats-breakdown {
+    gap: 1.5rem;
+  }
+  
+  .territory-stats {
+    padding: 1.5rem;
+  }
+  
+  .territory-stats-header {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .stats-categories {
+    gap: 1rem;
+  }
+  
+  .stats-category {
+    padding: 1rem;
+  }
+  
+  .stats-category h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .stats-items {
+    gap: 0.5rem;
+  }
+  
+  .stats-category .stats-item {
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+  }
+}
+
 /* Budget Section Styling */
 .budget-section {
-  margin: 2rem 0;
-  padding: 1.5rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
   background: #e8f5e8;
   border-radius: 8px;
   border: 1px solid #c3e6c3;
 }
 
 .budget-section h2 {
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1rem 0;
   color: #2c3e50;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-align: center;
 }
 
 .budget-summary {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -253,81 +368,88 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .budget-item.total {
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #2c3e50;
   border-bottom: 2px solid #27ae60;
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.6rem;
 }
 
 .budget-item.percentage {
   color: #e74c3c;
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .budget-item.tax {
   color: #27ae60;
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .budget-item .label {
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .budget-item .value {
   font-weight: bold;
+  font-size: 0.9rem;
 }
 
 .budget-breakdown {
   display: grid;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .territory-budget {
   background: white;
   border-radius: 6px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .territory-header {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   color: #2c3e50;
-  font-size: 1.2rem;
-  padding-bottom: 0.5rem;
+  font-size: 1.1rem;
+  padding-bottom: 0.4rem;
   border-bottom: 2px solid #27ae60;
+  word-break: break-word;
 }
 
 .budget-categories {
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .budget-category {
   background: #f8f9fa;
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.75rem;
   border-left: 4px solid #27ae60;
 }
 
 .budget-category h4 {
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.5rem 0;
   color: #34495e;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .budget-items {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .budget-category .budget-item {
-  padding: 0.25rem 0;
-  font-size: 0.9rem;
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
 }
 
 .budget-category .budget-item .label {
@@ -336,4 +458,117 @@ label {
 
 .budget-category .budget-item .value {
   color: #27ae60;
+}
+
+/* Desktop adjustments for budget */
+@media (min-width: 768px) {
+  .budget-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+  }
+  
+  .budget-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .budget-summary {
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+  }
+  
+  .budget-item.total {
+    font-size: 1.1rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .budget-item.percentage,
+  .budget-item.tax {
+    font-size: 1rem;
+  }
+  
+  .budget-item .label,
+  .budget-item .value {
+    font-size: 1rem;
+  }
+  
+  .budget-breakdown {
+    gap: 1.5rem;
+  }
+  
+  .territory-budget {
+    padding: 1.5rem;
+  }
+  
+  .territory-header {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .budget-categories {
+    gap: 1rem;
+  }
+  
+  .budget-category {
+    padding: 1rem;
+  }
+  
+  .budget-category h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .budget-items {
+    gap: 0.5rem;
+  }
+  
+  .budget-category .budget-item {
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+  }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .container {
+    padding: 0.75rem;
+    border-radius: 6px;
+  }
+  
+  h1 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+  }
+  
+  .stats-item.total,
+  .budget-item.total {
+    font-size: 0.95rem;
+  }
+  
+  .power-breakdown h3,
+  .territory-stats-header,
+  .territory-header {
+    font-size: 1rem;
+  }
+  
+  .budget-section h2 {
+    font-size: 1.2rem;
+  }
+  
+  .bottom-cards {
+    margin-top: 20px;
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .info-card {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
 }
