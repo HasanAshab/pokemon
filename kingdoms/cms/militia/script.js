@@ -66,7 +66,7 @@ function renderPowerBreakdown(statsReport) {
         <div class="power-item">
           <span class="power-label">${type}:</span>
           <span class="power-value">
-            ${formatCurrency(value)}
+            ${formatPower(value)}
             <span class="power-percentage">(${percentage.toFixed(1)}%)</span>
           </span>
         </div>
@@ -75,7 +75,7 @@ function renderPowerBreakdown(statsReport) {
   `;
   
   // Update total power display
-  document.getElementById("totalPower").textContent = formatCurrency(totalPower);
+  document.getElementById("totalPower").textContent = formatPower(totalPower);
 }
 
 // Function to render stats breakdown
@@ -105,11 +105,11 @@ function renderStatsBreakdown(statsReport) {
       <div class="stats-items">
         <div class="stats-item">
           <span class="label">Reserved:</span>
-          <span class="value">${formatCurrency(territory.Reserved || 0)}</span>
+          <span class="value">${formatPersonnel(territory.Reserved || 0)}</span>
         </div>
         <div class="stats-item">
           <span class="label">Active:</span>
-          <span class="value">${formatCurrency(territory.Active || 0)}</span>
+          <span class="value">${formatPersonnel(territory.Active || 0)}</span>
         </div>
       </div>
     `;
@@ -125,7 +125,7 @@ function renderStatsBreakdown(statsReport) {
           ${Object.entries(territory.Power).map(([powerType, value]) => `
             <div class="stats-item">
               <span class="label">${powerType}:</span>
-              <span class="value">${formatCurrency(value)}</span>
+              <span class="value">${formatPower(value)}</span>
             </div>
           `).join('')}
         </div>
@@ -186,6 +186,16 @@ function calculateTotalBudget(budgetReport) {
 // Function to format currency
 function formatCurrency(amount) {
   return `$${Math.floor(amount).toLocaleString()}`;
+}
+
+// Function to format power (might)
+function formatPower(amount) {
+  return `${Math.floor(amount).toLocaleString()}`;
+}
+
+// Function to format personnel numbers
+function formatPersonnel(amount) {
+  return `${Math.floor(amount).toLocaleString()}`;
 }
 
 // Function to render budget breakdown
