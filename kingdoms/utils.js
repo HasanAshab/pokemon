@@ -1186,15 +1186,21 @@ export function getMilitaryMP(kingdom) {
 export function getSinlgeMilitaryStatsReport(kingdom) {
   const report = {};
   const countSoldiers = shift => kingdom.barrack.soldiers[shift].reduce((acc, s) => acc + s.quantity, 0);
+  
   report["Reserved"] = countSoldiers("day") + countSoldiers("night") + countSoldiers("emergency")
   report["Active"] = Math.round((countSoldiers("day") + countSoldiers("night")) / 2)
 
+  // Calculate power based on actual kingdom data
+  const reservedSoldiers = report["Reserved"];
+  const activeSoldiers = report["Active"];
+  
   report["Power"] = {
-    "Ninja Power (NP)": 1000,
-    "Ammo (AA)": 1500,
-    "Artillery (AP)": 2000,
-    "Beast (BP)": 1000
+    "Ninja Power (NP)": Math.round(activeSoldiers * 50), // 50 NP per active soldier
+    "Ammo (AA)": Math.round(reservedSoldiers * 25), // 25 AA per reserved soldier
+    "Artillery (AP)": Math.round((kingdom.buildings?.filter(b => b.baseMaintains?.defence > 0 && b.state === "enabled").length || 0) * 500), // 500 AP per artillery building
+    "Beast (BP)": Math.round((kingdom.beasts?.length || 0) * 200) // 200 BP per beast
   }
+  
   return report
 }
 
@@ -1210,7 +1216,7 @@ export function getMilitaryStatsReport(kingdom) {
   const ownedKingdoms = getOwnedKingdoms(kingdom, ["Camp"]);
 
   for (const k of ownedKingdoms) {
-    report[`${kingdomTypeMap[k.type]} ${k.id}`] = getSinlgeMilitaryBudgetReport(k);
+    report[`${kingdomTypeMap[k.type]} ${k.id}`] = getSinlgeMilitaryStatsReport(k);
   }
 
   return report

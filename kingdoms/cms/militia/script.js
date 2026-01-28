@@ -1,4 +1,4 @@
-import { getMilitaryBudgetReport, calculateTax } from "../../utils.js";
+import { getMilitaryBudgetReport, getMilitaryStatsReport, calculateTax } from "../../utils.js";
 
 // Get kingdom name from localStorage (new method) or URL params (fallback)
 const name = localStorage.getItem('$current_kingdom') || (() => {
@@ -8,6 +8,151 @@ const name = localStorage.getItem('$current_kingdom') || (() => {
 
 const kingdoms = JSON.parse(localStorage.getItem("kingdoms") || "{}");
 const kingdom = kingdoms[name];
+
+// Function to calculate total power from stats report
+function calculateTotalPower(statsReport) {
+  let totalPower = 0;
+  
+  for (const territoryName in statsReport) {
+    const territory = statsReport[territoryName];
+    if (territory.Power) {
+      for (const powerType in territory.Power) {
+        totalPower += territory.Power[powerType] || 0;
+      }
+    }
+  }
+  
+  return totalPower;
+}
+
+// Function to calculate power breakdown with percentages
+function calculatePowerBreakdown(statsReport) {
+  const powerTotals = {};
+  let totalPower = 0;
+  
+  // Aggregate all power types across territories
+  for (const territoryName in statsReport) {
+    const territory = statsReport[territoryName];
+    if (territory.Power) {
+      for (const powerType in territory.Power) {
+        const powerValue = territory.Power[powerType] || 0;
+        powerTotals[powerType] = (powerTotals[powerType] || 0) + powerValue;
+        totalPower += powerValue;
+      }
+    }
+  }
+  
+  // Convert to array with percentages and sort by value
+  const powerBreakdown = Object.entries(powerTotals)
+    .map(([type, value]) => ({
+      type,
+      value,
+      percentage: totalPower > 0 ? (value / totalPower * 100) : 0
+    }))
+    .sort((a, b) => b.value - a.value); // Sort by highest value first
+  
+  return { powerBreakdown, totalPower };
+}
+
+// Function to render power breakdown
+function renderPowerBreakdown(statsReport) {
+  const container = document.getElementById("powerBreakdown");
+  const { powerBreakdown, totalPower } = calculatePowerBreakdown(statsReport);
+  
+  container.innerHTML = `
+    <h3>Power Distribution</h3>
+    <div class="power-items">
+      ${powerBreakdown.map(({ type, value, percentage }) => `
+        <div class="power-item">
+          <span class="power-label">${type}:</span>
+          <span class="power-value">
+            ${formatCurrency(value)}
+            <span class="power-percentage">(${percentage.toFixed(1)}%)</span>
+          </span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  
+  // Update total power display
+  document.getElementById("totalPower").textContent = formatCurrency(totalPower);
+}
+
+// Function to render stats breakdown
+function renderStatsBreakdown(statsReport) {
+  const container = document.getElementById("statsBreakdown");
+  container.innerHTML = "";
+  
+  for (const territoryName in statsReport) {
+    const territory = statsReport[territoryName];
+    
+    const territoryDiv = document.createElement("div");
+    territoryDiv.className = "territory-stats";
+    
+    const territoryHeader = document.createElement("h3");
+    territoryHeader.textContent = territoryName;
+    territoryHeader.className = "territory-stats-header";
+    territoryDiv.appendChild(territoryHeader);
+    
+    const categoriesDiv = document.createElement("div");
+    categoriesDiv.className = "stats-categories";
+    
+    // Basic stats (Reserved, Active)
+    const basicStatsDiv = document.createElement("div");
+    basicStatsDiv.className = "stats-category";
+    basicStatsDiv.innerHTML = `
+      <h4>Personnel</h4>
+      <div class="stats-items">
+        <div class="stats-item">
+          <span class="label">Reserved:</span>
+          <span class="value">${formatCurrency(territory.Reserved || 0)}</span>
+        </div>
+        <div class="stats-item">
+          <span class="label">Active:</span>
+          <span class="value">${formatCurrency(territory.Active || 0)}</span>
+        </div>
+      </div>
+    `;
+    categoriesDiv.appendChild(basicStatsDiv);
+    
+    // Power stats
+    if (territory.Power) {
+      const powerStatsDiv = document.createElement("div");
+      powerStatsDiv.className = "stats-category";
+      powerStatsDiv.innerHTML = `
+        <h4>Power</h4>
+        <div class="stats-items">
+          ${Object.entries(territory.Power).map(([powerType, value]) => `
+            <div class="stats-item">
+              <span class="label">${powerType}:</span>
+              <span class="value">${formatCurrency(value)}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      categoriesDiv.appendChild(powerStatsDiv);
+    }
+    
+    territoryDiv.appendChild(categoriesDiv);
+    container.appendChild(territoryDiv);
+  }
+}
+
+// Function to update stats display
+function updateStatsDisplay() {
+  if (!kingdom) {
+    console.error("Kingdom not found");
+    return;
+  }
+  
+  const statsReport = getMilitaryStatsReport(kingdom);
+  
+  // Update power breakdown and total
+  renderPowerBreakdown(statsReport);
+  
+  // Update stats breakdown
+  renderStatsBreakdown(statsReport);
+}
 
 // Function to calculate total budget from budget report
 function calculateTotalBudget(budgetReport) {
@@ -159,7 +304,8 @@ function updateBudgetDisplay() {
   renderBudgetBreakdown(budgetReport);
 }
 
-// Initialize budget display
+// Initialize displays
+updateStatsDisplay();
 updateBudgetDisplay();
 
 document.querySelectorAll(".info-card").forEach((card) => {

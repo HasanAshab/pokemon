@@ -87,6 +87,141 @@ label {
   background: #e6e6e6;
 }
 
+/* Stats Section Styling */
+.stats-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #e8f5e8;
+  border-radius: 8px;
+  border: 1px solid #c3e6c3;
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stats-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.stats-item.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #27ae60;
+  padding-bottom: 0.75rem;
+}
+
+.power-breakdown {
+  background: white;
+  border-radius: 6px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
+
+.power-breakdown h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #27ae60;
+}
+
+.power-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.power-item:last-child {
+  border-bottom: none;
+}
+
+.power-label {
+  font-weight: 500;
+  color: #34495e;
+}
+
+.power-value {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.power-percentage {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.stats-breakdown {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.territory-stats {
+  background: white;
+  border-radius: 6px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.territory-stats-header {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #27ae60;
+}
+
+.stats-categories {
+  display: grid;
+  gap: 1rem;
+}
+
+.stats-category {
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 1rem;
+  border-left: 4px solid #27ae60;
+}
+
+.stats-category h4 {
+  margin: 0 0 0.75rem 0;
+  color: #34495e;
+  font-size: 1rem;
+}
+
+.stats-items {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stats-category .stats-item {
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.stats-category .stats-item .label {
+  color: #666;
+}
+
+.stats-category .stats-item .value {
+  color: #2c3e50;
+}
+
 /* Budget Section Styling */
 .budget-section {
   margin: 2rem 0;
