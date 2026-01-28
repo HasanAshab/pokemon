@@ -570,6 +570,17 @@ dragonarmor: {
       "spa": 27
     },
   },
+  "gen-food-low-5": {
+    "type": "food_genetics",
+    "tokensPercent": {
+      "hp": 15,
+      "def": 37,
+      "atk": 37,
+      "spd": 37,
+      "spe": 37,
+      "spa": 37
+    },
+  },
   "gen-food-mid-1": {
     "type": "food_genetics",
     "tokensPercent": {
