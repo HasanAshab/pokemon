@@ -1,6 +1,6 @@
 * Tasks
-move tireing
 cp
+move tireing
 substitute
 dualweapon
 station

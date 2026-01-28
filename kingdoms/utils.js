@@ -1190,10 +1190,10 @@ export function getSinlgeMilitaryStatsReport(kingdom) {
   report["Active"] = Math.round((countSoldiers("day") + countSoldiers("night")) / 2)
 
   report["Power"] = {
-    "Man (MP)": {
-      "Raw": getMilitaryMP(kingdom),
-      "Ammo": 200
-    },
+    "Ninja Power (NP)": 1000,
+    "Ammo (AA)": 1500,
+    "Artillery (AP)": 2000,
+    "Beast (BP)": 1000
   }
   return report
 }
