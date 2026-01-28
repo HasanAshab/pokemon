@@ -91,9 +91,9 @@ label {
 .stats-section {
   margin: 2rem 0;
   padding: 1.5rem;
-  background: #e8f5e8;
+  background: #f8f8f8;
   border-radius: 8px;
-  border: 1px solid #c3e6c3;
+  border: 1px solid #d0d0d0;
 }
 
 .stats-summary {
@@ -118,7 +118,7 @@ label {
   font-weight: bold;
   font-size: 1.1rem;
   color: #2c3e50;
-  border-bottom: 2px solid #27ae60;
+  border-bottom: 2px solid #333;
   padding-bottom: 0.75rem;
 }
 
@@ -135,7 +135,7 @@ label {
   color: #2c3e50;
   font-size: 1.2rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #27ae60;
+  border-bottom: 2px solid #333;
 }
 
 .power-item {
@@ -157,7 +157,7 @@ label {
 
 .power-value {
   font-weight: bold;
-  color: #27ae60;
+  color: #333;
 }
 
 .power-percentage {
@@ -183,7 +183,7 @@ label {
   color: #2c3e50;
   font-size: 1.2rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #27ae60;
+  border-bottom: 2px solid #333;
 }
 
 .stats-categories {
@@ -195,7 +195,7 @@ label {
   background: #f8f9fa;
   border-radius: 4px;
   padding: 1rem;
-  border-left: 4px solid #27ae60;
+  border-left: 4px solid #333;
 }
 
 .stats-category h4 {
@@ -219,16 +219,16 @@ label {
 }
 
 .stats-category .stats-item .value {
-  color: #2c3e50;
+  color: #333;
 }
 
 /* Budget Section Styling */
 .budget-section {
   margin: 2rem 0;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: #e8f5e8;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #c3e6c3;
 }
 
 .budget-section h2 {
@@ -260,7 +260,7 @@ label {
   font-weight: bold;
   font-size: 1.1rem;
   color: #2c3e50;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid #27ae60;
   padding-bottom: 0.75rem;
 }
 
@@ -299,7 +299,7 @@ label {
   color: #2c3e50;
   font-size: 1.2rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid #27ae60;
 }
 
 .budget-categories {
@@ -311,7 +311,7 @@ label {
   background: #f8f9fa;
   border-radius: 4px;
   padding: 1rem;
-  border-left: 4px solid #3498db;
+  border-left: 4px solid #27ae60;
 }
 
 .budget-category h4 {
@@ -335,5 +335,5 @@ label {
 }
 
 .budget-category .budget-item .value {
-  color: #2c3e50;
+  color: #27ae60;
 }
