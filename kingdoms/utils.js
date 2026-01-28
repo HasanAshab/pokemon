@@ -1148,9 +1148,7 @@ export function getSinlgeMilitaryBudgetReport(kingdom) {
   return report
 }
 
-export function getMilitaryBudgetReport(kingdom) {
-  console.log(getMilitaryStatsReport(kingdom));
-  
+export function getMilitaryBudgetReport(kingdom) {  
   const kingdomTypeMap = {
     "Kingdom": "🏰",
     "Camp": "⛺",
@@ -1203,6 +1201,15 @@ export function calcKingdomNP(kingdom) {
   return Math.round(total)
 }
 
+export function calcKingdomBP(kingdom) {
+  let total = 0;
+  for (const soldiers of Object.values(kingdom.barrack.soldiers)) {
+    const stack = getSoldierStack(soldiers, ["beast"]);
+    total += stack.withoutAmmoCP();
+  }
+  return Math.round(total)
+}
+
 export function calcKingdomAA(kingdom) {
   let total = 0;
   for (const soldiers of Object.values(kingdom.barrack.soldiers)) {
@@ -1233,7 +1240,7 @@ export function getSinlgeMilitaryStatsReport(kingdom) {
     "Ninja Power (NP)": calcKingdomNP(kingdom),
     "Ammo (AA)": calcKingdomAA(kingdom),
     "Artillery (AP)": calcKingdomAP(kingdom),
-    "Beast (BP)": 
+    "Beast (BP)": calcKingdomBP(kingdom),
   }
   
   return report
