@@ -299,6 +299,10 @@ function setRetreat(move) {
     ? 2
     : 0
 
+  const capacityBonus = move.capacity > 1
+    ? move.capacity
+    : 0
+
   let multiplier = (
       move.effects.target.length
   //  - move.effects.self.length
@@ -306,6 +310,7 @@ function setRetreat(move) {
       + targetStatEffectBonus
       + critRatioBonus
       + multiTargetBonus
+      + capacityBonus
   )
   
   if (move.category === "Status" && move.target === "foeSide")

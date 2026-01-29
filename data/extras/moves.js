@@ -249,7 +249,29 @@ function makeMultiMaterialWeaponMoves(id, baseWeaponMove) {
 }
 
 function makeDualWeaponMoves(id, baseWeaponMove) {
+  const moves = {}
+  moves[id] = baseWeaponMove
+  const dualMove = deepClone(baseWeaponMove)
+  dualMove.name = `${capitalizeFirstLetter(id)} (Dual)`
+  dualMove.basePower = Math.round(baseWeaponMove.basePower * 0.75)
+  dualMove.capacity = 2
+  dualMove.target = "foeSide"
+  moves[`${id}:dual`] = dualMove
+  return moves
+}
+
+function makeDualAndMultiMaterialWeaponMoves(id, baseWeaponMove) {
+  const moves = {}
+  const baseMoves = makeDualWeaponMoves(id, baseWeaponMove)
+  for (const [id, move] of Object.entries(baseMoves)) {
+    const materialMoves = makeMultiMaterialWeaponMoves(id, move)
+    for (const [materialId, materialMove] of Object.entries(materialMoves)) {
+      moves[materialId] = materialMove
+    }
+  }
+  console.log(moves);
   
+  return moves
 }
 
 export default {
@@ -570,7 +592,7 @@ export default {
     }
   }),
 
-  ...makeMultiMaterialWeaponMoves('kunai', {
+  ...makeDualAndMultiMaterialWeaponMoves('kunai', {
     num: 100001,
     accuracy: 100,
     basePower: 40,

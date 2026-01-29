@@ -1,7 +1,6 @@
 * Tasks
 move tireing
 substitute
-dualweapon
 station
 weapon + armor reduce atk instead of spe
 
