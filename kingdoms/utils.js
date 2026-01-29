@@ -232,11 +232,12 @@ export function getArtilleries(kingdom) {
 export function getArtilleriesAtDefence(kingdom, areaPercentage, direction) {
   const tensionMod = getMilitaryTensionMod(kingdom, direction);
   const artillaries = getArtilleries(kingdom);
+  const notUnderWarMod = kingdom.underWar ? 1 : 0.2;
   return artillaries.reduce((acc, build) => {
     const quantity = Math.min(build.quantity, Math.round(build.quantity * (areaPercentage / 100) * tensionMod))
     quantity > 0 && acc.push({
       name: build.name,
-      defence: calcBuildMaintains(build).defence,
+      defence: calcBuildMaintains(build).defence * notUnderWarMod,
       quantity,
     })
     return acc
@@ -293,9 +294,12 @@ export function calculatePeopleUsedLandArea(population, pci, taxRate) {
 
 export function calculateBuildUsedLandArea(kingdom) {
   return kingdom.buildings.reduce((acc, build) => {
-    return (
-      acc + calculateSize(build.baseSize, build.currentLevel) * build.quantity
-    );
+    let size = calculateSize(build.baseSize, build.currentLevel) * build.quantity;
+    if (build.baseMaintains.defence > 0) {
+        const notUnderWarMod = kingdom.underWar ? 1 : 0.2;
+        size *= notUnderWarMod
+    }
+    return acc + size;
   }, 0);
 }
 
@@ -1223,6 +1227,7 @@ export function calcKingdomAA(kingdom) {
 }
 
 export function calcKingdomAP(kingdom) {
+  kingdom.underWar = true;
   return getArtilleriesAtDefence(kingdom, 100, "N").reduce((acc, artillery) => acc + artillery.defence * artillery.quantity, 0);
 }
 
