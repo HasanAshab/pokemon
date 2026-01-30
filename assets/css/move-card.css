@@ -34,6 +34,17 @@
   align-items: center;
 
 }
+.single-card-wrapper > .info-wrapper > .info.properties{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.single-card-wrapper > .info-wrapper > .info.properties > .property {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .card {
   background-color: white;
   width: 170px;
