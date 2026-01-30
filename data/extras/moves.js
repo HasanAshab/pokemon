@@ -268,9 +268,7 @@ function makeDualAndMultiMaterialWeaponMoves(id, baseWeaponMove) {
     for (const [materialId, materialMove] of Object.entries(materialMoves)) {
       moves[materialId] = materialMove
     }
-  }
-  console.log(moves);
-  
+  }  
   return moves
 }
 

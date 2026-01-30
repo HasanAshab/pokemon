@@ -2,7 +2,6 @@
 move tireing
 substitute
 station
-weapon + armor reduce atk instead of spe
 
 break artilary, remove beasts
 auto generate military

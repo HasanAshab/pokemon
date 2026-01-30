@@ -423,7 +423,7 @@ export class Move {
         this._reducedCapacity = 0
     }
   
-    get isNeverFails() {
+    get isNeverFails() {        
         return this.accuracy === true || this.category !== "Status"
     }
 
@@ -439,6 +439,17 @@ export class Move {
 
     set retreat(value) {
         this._ref.retreat = value
+    }
+
+    get weight() {
+        return Math.abs(this.tokenChanges?.spa || 0 + this.tokenChanges?.atk || 0)
+    }
+
+    bleedChance() {
+        return this.effects.target.reduce((sum, effect) => {
+            if (effect.name === "bleed")
+                return sum + effect.chance
+        }, 0)
     }
 
     effectiveness(type) {
