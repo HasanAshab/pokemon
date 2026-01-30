@@ -588,7 +588,8 @@ export default {
     type: "Rock",
     contestType: "Tough",
     tokenChanges: {
-      atk: -7
+      atk: -3,
+      spa: -3
     }
   }),
 
@@ -610,7 +611,8 @@ export default {
     },
     target: "normal",
     tokenChanges: {
-      atk: -7
+      atk: -3,
+      spa: -3
     }
   }),
 
@@ -635,7 +637,8 @@ export default {
     type: "Rock",
     contestType: "Tough",
     tokenChanges: {
-      atk: -7
+      atk: -3,
+      spa: -3
     },
     multihit: [2, 5],
   }),
@@ -678,7 +681,8 @@ export default {
     type: "Steel",
     contestType: "Tough",
     tokenChanges: {
-      atk: -9
+      atk: -5,
+      spa: -5
     },
   }),
 

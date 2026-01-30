@@ -76,7 +76,8 @@ const items = {
         def: 70
       },
       tokens: {
-        spe: -4
+        atk: -3,
+        spa: -3
       }
   }),
   ...makeArmorSets("copperarmor", {
@@ -85,7 +86,8 @@ const items = {
       def: 210
     },
     tokens: {
-      spe: -12
+      atk: -10,
+      spa: -10
     }
   }),
 flintarmor: {
@@ -94,7 +96,8 @@ flintarmor: {
       def: 630
     },
     tokens: {
-      spe: -36
+      atk: -30,
+      spa: -30
     }
   },
   tinarmor: {
