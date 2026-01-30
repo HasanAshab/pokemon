@@ -73,28 +73,28 @@ const items = {
   ...makeArmorSets("latherarmor", {
       type: "armor",
       stats: {
-        def: 30
+        def: 70
       },
       tokens: {
-        spe: -2
+        spe: -4
       }
   }),
   ...makeArmorSets("copperarmor", {
     type: "armor",
     stats: {
-      def: 60
+      def: 210
     },
     tokens: {
-      spe: -4
+      spe: -12
     }
   }),
 flintarmor: {
     type: "armor",
     stats: {
-      def: 120
+      def: 630
     },
     tokens: {
-      spe: -8
+      spe: -36
     }
   },
   tinarmor: {
@@ -181,7 +181,7 @@ dragonarmor: {
   ...makeArmorSets("bronzelocket", {
     type: "armor",
     stats: {
-      spd: 25
+      spd: 50
     }
   }),
     silverlocket1: {
