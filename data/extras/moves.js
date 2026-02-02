@@ -641,7 +641,7 @@ export default {
     multihit: [2, 5],
   }),
 
-  bamboo: {
+  ...makeMultiMaterialWeaponMoves('bamboo', {
     num: 100003,
     accuracy: 70,
     basePower: 60,
@@ -652,12 +652,17 @@ export default {
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, shield: 1 },
     secondary: null,
     target: "normal",
+    effects: {
+      self: [],
+      target: []
+    },
     type: "Normal",
     contestType: "Tough",
     tokenChanges: {
-      spe: -10
-    }
-  },
+      atk: -7,
+      spa: -7
+    },
+  }),
   ...makeMultiMaterialWeaponMoves('ninjablade', {
     num: 100004,
     accuracy: 90,
@@ -2039,20 +2044,25 @@ export default {
       spe: -1
     }
   },
-  heavystaff:{
+  ...makeMultiMaterialWeaponMoves('heavystaff',{
     num: 100063,
     accuracy: 100,
     basePower: 70,
     category: "Physical",
     name: "Heavy Staff",
-    pp: 10 * 3,
+    pp: 30 * 3,
     priority: 0,
     flags: { contact: 1, protect: 1, mirror: 1, metronome: 1, shield: 1 },
     target: "normal",
     type: "Steel",
     contestType: "Cool",
+     effects: {
+      self: [],
+      target: []
+    },
     tokenChanges: {
-      spe: -15
+      atk: -9,
+      spa: -9
     },
     retreatBonus: 1,
     onTryMove(pokemon, target) {
@@ -2075,7 +2085,7 @@ export default {
       }, listenerName)
       return true
     }
-  },
+  }),
   ropedart: {
     num: 100064,
     accuracy: 70,
