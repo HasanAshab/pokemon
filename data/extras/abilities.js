@@ -130,6 +130,7 @@ export default {
     }
   },
   offsusano: {
+    retreat: 2.5,
     oldSpeedStat: null,
     oldAccuracyStat: null,
     onActivate(pokemon) {
@@ -372,7 +373,7 @@ export default {
   purplethunder: { retreat: 2 },
   
   chakrafarm: {
-    retreat: 0,
+    retreat: 0.5,
     onWave(pokemon) {
       const chance = Math.random() * 100      
       if (chance >= 85) {
@@ -393,7 +394,7 @@ export default {
     }
   },
   regeneration: {
-    retreat: 3,
+    retreat: 8,
     unrecoverableHP: 0,
     onTurn(pokemon) {
       if (this.ability.unrecoverableHP + pokemon.hp >= pokemon.maxhp) return
