@@ -138,13 +138,13 @@ function addFlags(move) {
 
 function modifyPP(move) {
     if (![null, undefined].includes(move.pp)) {
-      move.pp = move.flags.combo ? 5 : Math.round(move.pp / 6) || 1;
+      move.pp = move.flags.combo ? 5 : Math.round(move.pp / 3) || 1;
     }
-
+    
     // TEMP
-    if (move.flags.weapon) {
-      move.pp = 9
-    }
+    // if (move.flags.weapon) {
+    //   move.pp = 9
+    // }
 
     if (move.isOneTime) {
       move.pp = 1

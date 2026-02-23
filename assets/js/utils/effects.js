@@ -564,7 +564,7 @@ class ShadowCloneEffect extends Effect {
     }
 
     _calculateManCount() {
-        const maxChakra = Math.floor(this.state.retreat * 0.5)
+        const maxChakra = Math.floor(this.state.retreat * 0.3)
         const count = Math.floor(maxChakra / this.constructor.COST_PER_CLONE)
         return count
     }
