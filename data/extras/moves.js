@@ -1257,7 +1257,7 @@ export default {
       shield: 1,
     },
     secondary: null,
-    target: "normal",
+    target: "foeSide",
     type: "Normal",
     contestType: "Tough"
   },
