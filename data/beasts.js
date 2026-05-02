@@ -186,5 +186,13 @@ export default {
     baseStats: { hp: 522, atk: 452, def: 592, spa: 1079, spd: 800, spe: 250 },
     abilities: { 0: "Drought" },
     heightm: 4.2
-  }
+  },
+  witchson: {
+    num: 1,
+    name: "Witch Son",
+    types: ["Fighting", "Dark"],
+    baseStats: { hp: 100, atk: 100, def: 100, spa: 50, spd: 100, spe: 38 },
+    abilities: {},
+    heightm: 1.2
+  },
 };
